@@ -24,6 +24,19 @@ if (!defined("dir_classes"))
 if (!defined("dir_interfaces"))
     define("cPHP_dir_interfaces", cPHP_dir ."interfaces/");
 
+/**
+ * This is temporary,... auto loader
+ */
+function __autoload ( $class ) {
+    
+    $class = explode("::", $class);
+    array_shift( $class );
+    $class = cPHP_dir_classes . implode( "/", $class ) .".php";
+    
+    if ( file_exists( $class ) )
+        include_once $class;
+    
+}
 
 /**
  * Set up custom exception handling

@@ -17,7 +17,7 @@ class general extends PHPUnit_Extensions_OutputTestCase
     public function testIncludeOutput ()
     {
         $this->expectOutputString('');
-        require_once rtrim( dirname( __FILE__ ), "/" ) ."/../lib/commonPHP.php";
+        require_once rtrim( dirname( __FILE__ ), "/" ) ."/../trunk/commonPHP.php";
     }
 }
 
