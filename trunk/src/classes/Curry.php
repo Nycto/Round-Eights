@@ -8,7 +8,7 @@
 namespace cPHP;
 
 /**
- * 
+ * Base class for Argument Currying classes
  */
 abstract class Curry
 {
