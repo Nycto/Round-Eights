@@ -12,12 +12,7 @@ namespace cPHP;
  */
 abstract class Curry
 {
-    
-    /**
-     * The method to be invoked
-     */
-    protected $callback;
-    
+
     /**
      * Any arguments to pass to curry to the left
      */
@@ -43,11 +38,25 @@ abstract class Curry
     protected $length;
     
     /**
-     * 
+     * Static method for in-line create
+     *
+     * @param mixed $action The callable action being curried
+     * @param mixed $args... any arguments to pass to the constructor
+     * @return Returns a new instance
      */
-    static public function create ()
+    static public function create ( $action )
     {
+        $instance = new static( $action );
         
+        if ( func_num_args() > 1 ) {
+            
+            $args = func_get_args();
+            array_shift( $args );
+            $instance->setRightByArray( $args );
+            
+        }
+        
+        return $instance;
     }
     
     /**
@@ -71,7 +80,7 @@ abstract class Curry
      */
     public function setLeftByArray ( array $args = array() )
     {
-        $this->rightArgs = array_values( $args );
+        $this->leftArgs = array_values( $args );
         return $this;
     }
     
@@ -143,12 +152,30 @@ abstract class Curry
     }
     
     /**
+     * Clears both the left and right arguments
+     *
+     * @return object Returns a self reference
+     */
+    public function clearArgs ()
+    {
+        return $this->clearRight()->clearLeft();
+    }
+    
+    /**
+     *
+     */
+    public function setOffset ( $offset )
+    {
+        
+    }
+    
+    /**
      * Applies the slicing and combines the given arguments with the left args and right args
-     *'
+     *
      * @param array $args The arguments to curry
      * @return Returns the arguments to pass to the function
      */
-    protected function collectArgs ( array $args )
+    public function collectArgs ( array $args )
     {
         if ( $this->offset != 0 || !isset($this->length) ) {
             
@@ -173,8 +200,8 @@ abstract class Curry
     /**
      * Calls the contained function with the given arguments
      *
-     * @param mixed $args... Any arguments to apply to the function
-     * @return mixed Returns the results of the invokation
+     * @param mixed $args... The arguments to pass to the callback
+     * @return mixed Returns the result of the invokation
      */
     public function call ()
     {

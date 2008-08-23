@@ -8,8 +8,7 @@ define("cPHP_included", TRUE);
 
 // mark the location of the commonPHP library
 if ( !defined("cPHP_dir") ) {
-    $commonPHPdir = dirname(__FILE__);
-    $commonPHPdir = str_replace("\\", "/", $commonPHPdir);
+    $commonPHPdir = str_replace("\\", "/", __DIR__);
     $commonPHPdir = rtrim( $commonPHPdir, "/" ) ."/";
     define("cPHP_dir", $commonPHPdir);
     unset($commonPHPdir);
@@ -31,10 +30,17 @@ function __autoload ( $class ) {
     
     $class = explode("::", $class);
     array_shift( $class );
-    $class = cPHP_dir_classes . implode( "/", $class ) .".php";
+    
+    $first = reset( $class );
+    
+    if ( $first == "interface" ) 
+        $class = cPHP_dir_interfaces . implode( "/", array_slice( $class, 1 ) ) .".php";
+        
+    else
+        $class = cPHP_dir_classes . implode( "/", $class ) .".php";
     
     if ( file_exists( $class ) )
-        include_once $class;
+        require_once $class;
     
 }
 
