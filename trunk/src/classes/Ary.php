@@ -20,17 +20,20 @@ class Ary implements Iterator, Countable, ArrayAccess
 {
     
     /**
-     * No wrapping will be perfomed. If the given offset falls outside of the length, FALSE is returned. Negative offsets are allowed
+     * No wrapping will be perfomed. If the given offset falls outside of the
+     * length, FALSE is returned. Negative offsets are allowed
      */
     const OFFSET_NONE = 1;
     
     /**
-     * The offset will be wrapped until it fits within the length. Negative offsets are allowed
+     * The offset will be wrapped until it fits within the length. Negative
+     * offsets are allowed
      */
     const OFFSET_WRAP = 2;
     
     /**
-     * The offset will be wrapped once. Anything past the edge after this initial wrap is cut down to the edge. Negative offsets are allowed
+     * The offset will be wrapped once. Anything past the edge after this initial
+     * wrap is cut down to the edge. Negative offsets are allowed
      */
     const OFFSET_RESTRICT = 3;
     
@@ -248,46 +251,45 @@ class Ary implements Iterator, Countable, ArrayAccess
         }
     
         // Get the position of the current pointer
-        $pointer = array_pointer_offset($Array);
+        $pointer = $this->pointer();
     
         // If we are already at our destination...
         if ($pointer == $offset)
-            return current($Array);
+            return $this;
     
-        // If we the point we are seeking to is closer to the beginning than it is to the end or to the pointer, seek from the start
-        if ($offset < abs($pointer - $offset) && $offset < abs($end - $offset)) {
-            reset($Array);
+        // If the point we are seeking to is closer to the beginning than it is
+        // to the end or to the current pointer position, seek from the start
+        if ($offset < abs($pointer - $offset) && $offset < abs($count - $offset)) {
+            reset( $this->array );
             $pointer = 0;
         }
     
-        // If the point we are seeking to is closer to the end than the start or the current pointer, seek from the end
-        else if (abs($end - $offset) < abs($pointer - $offset)) {
-            end($Array);
-            $pointer = $end;
+        // If the point we are seeking to is closer to the end than the start or
+        // the current pointer position, seek from the end
+        else if (abs($count - $offset) < abs($pointer - $offset)) {
+            end( $this->array );
+            $pointer = $count;
         }
     
         // If we are seeking backward
         if ($pointer > $offset) {
     
-            // seek to JUST before final point
-            for ($pointer--; $pointer > $offset; $pointer--)
-                prev($Array);
-    
-            return prev($Array);
+            // seek to the before final point
+            for ($pointer--; $pointer >= $offset; $pointer--)
+                prev( $this->array );
     
         }
     
         // If we are seeking forward
         else {
     
-            // seek to JUST before final point
-            for ($pointer++; $pointer < $offset; $pointer++)
-                next($Array);
-    
-            return next($Array);
+            // seek to the final point
+            for ($pointer++; $pointer <= $offset; $pointer++)
+                next( $this->array );
     
         }
     
+        return $this;
 
     }
     
@@ -368,19 +370,6 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     
     /**
-     * Returns the current offset
-     *
-     * @return Integer|Boolean Returns the offset, or FALSE if the array is empty
-     */
-    public function getOffset ()
-    {
-        if (count($Array) <= 0)
-            return FALSE;
-    
-        return array_key_offset($Array, key($Array));
-    }
-    
-    /**
      * Returns the offset of a given key
      *
      * This will throw an exception if the key is not found in the array
@@ -393,9 +382,41 @@ class Ary implements Iterator, Countable, ArrayAccess
         if ( !array_key_exists($key, $this->array) )
             throw new ArgumentError(0, "Key", "Key does not exist in the given Array");
     
-        $Array = array_keys($Array);
+        $keyList = array_keys( $this->array );
     
-        return array_search($key, $Array);
+        return array_search($key, $keyList);
+    }
+    
+    /**
+     * Returns the offset of the pointer
+     *
+     * @return Integer|Boolean Returns the offset, or FALSE if the array is empty
+     */
+    public function pointer ()
+    {
+        if (count( $this->array ) <= 0)
+            return FALSE;
+    
+        return $this->keyOffset( $this->array, key($this->array) );
+    }
+    
+    /**
+     * Returns the value of the element at the given offset
+     *
+     * @param Integer $offset The offset to fetch
+     * @param Integer $wrapFlag How to handle offsets outside the array range
+     * @return mixed
+     */
+    public function offset ( $offset, $wrapFlag = self::OFFSET_RESTRICT )
+    {
+        $offset = $this->calcOffset( $offset, $wrapFlag );
+        
+        if ($offset === FALSE)
+            throw new OffsetError(1, "Offset", "Invalid offset");
+    
+        $sliced = array_slice( $this->array, $offset, 1 );
+        
+        return reset($sliced);
     }
     
     /**
@@ -457,39 +478,72 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * 
+     */
+    
+    /**
+     * Returns the raw array contained in this instance
+     *
+     * @return Array
+     */
+    public function get()
+    {
+        return $this->array;
+    }
+    
+    /**
+     * Returns an array of the keys in this instance
+     *
+     * @return Object Returns a cArray object
+     */
+    public function keys ()
+    {
+        return new self( array_keys( $this->array ) );
+    }
+    
+    /**
+     * Returns an array of the values in this instance
+     * 
+     * @return Object Returns a cArray object
+     */
+    public function values ()
+    {
+        return new self( array_values( $this->array ) );
+    }
+    
+    /**
+     * Unsets all the values from this array
+     *
+     * @return Object Returns a self reference
+     */
+    public function clear ()
+    {
+        $this->array = array();
+        return $this;
+    }
+    
+    
+    /**
      * Sorting Methods
      */
     
     /**
      * Sorts the array in this instance
      *
-     * @param Boolean $assoc Whether to preserve the index/value relationship
      * @param Boolean $reverse Whether to sort in to reverse order
      * @param Integer $type The type of comparison to use when sorting. Valid values are:
      *      SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING
      * @return Object Returns a self reference
      */
-    public function sort( $assoc = TRUE, $reverse = FALSE, $type = SORT_REGULAR )
+    public function sort( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING )) )
             throw new ArgumentError(2, "Sort Type", "Invalid Sort Type");
         
-        if ( !$assoc ) {
-            
-            if ( $reverse )
-                sort( $this->array, $type );
-            else
-                rsort( $this->array, $type );
-            
-        }
-        else {
-            
-            if ( $reverse )
-                asort( $this->array, $type );
-            else
-                arsort( $this->array, $type );
-            
-        }
+        if ( $reverse )
+            arsort( $this->array, $type );
+        else
+            asort( $this->array, $type );
         
         return $this;
     }
@@ -593,51 +647,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
-     * 
-     */
-    
-    /**
-     * Returns the raw array contained in this instance
-     *
-     * @return Array
-     */
-    public function get()
-    {
-        return $this->array;
-    }
-    
-    /**
-     * Returns an array of the keys in this instance
-     *
-     * @return Object Returns a cArray object
-     */
-    public function keys ()
-    {
-        return new self( array_keys( $this->array ) );
-    }
-    
-    /**
-     * Returns an array of the values in this instance
-     * 
-     * @return Object Returns a cArray object
-     */
-    public function values ()
-    {
-        return new self( array_values( $this->array ) );
-    }
-    
-    /**
-     * Selects a random value from the array and returns it
-     *
-     * @return mixed
-     */
-    public function random ()
-    {
-        
-    }
-    
-    
-    /**
      *
      */
     
@@ -652,6 +661,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function map ( $callback, $flags = 0 )
     {
+        
     }
     
     /**
@@ -663,11 +673,46 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Reduces a multi-dimensional array down to a single-dimensional array
      *
+     * Takes a multi-dimensional array and flattens it down to a single-dimensional array
+     *
+     * @param array $Array The array you wish to flatten
+     * @return array Returns the flattened array
      */
     public function flatten ( $maxDepth = 1 )
     {
         
+        $flatten = function ( $array, $maxDepth, $flatten ) {
+        
+            $output = array();
+        
+            foreach($array AS $key => $value) {
+        
+                if ( !is_array($array[$key]) ) {
+                    $output = array_merge( $output, array( $key => $value ) );
+                }
+        
+                else if ($maxDepth <= 1) {
+                    $flat = $flatten($array[$key], 1, $flatten);
+                    $output = array_merge($output, $flat);
+                    unset ($flat);
+                }
+                
+                else {
+                    $output[$key] = $flatten($array[$key], $maxDepth - 1, $flatten);
+                }
+        
+            }
+        
+            return $output;
+        };
+        
+        $maxDepth = max(intval(reduce($maxDepth)), 1);
+        
+        return new self(
+                $flatten( $this->array, $maxDepth, $flatten )
+            );
     }
     
     /**
@@ -700,17 +745,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function pluck ()
     {
         
-    }
-    
-    /**
-     * Unsets all the values from this array
-     *
-     * @return Object Returns a self reference
-     */
-    public function clear ()
-    {
-        $this->array = array();
-        return $this;
     }
     
     /**

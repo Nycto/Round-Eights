@@ -27,7 +27,7 @@ class Exception extends ::Exception
     /**
      * A description of this Exception
      */
-    protected $description = "A General Error";
+    protected $description = "A General Error Occured";
 
     /**
      * Identifies the offset in the backtrace that caused the problem

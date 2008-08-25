@@ -9,7 +9,7 @@ require_once 'PHPUnit/Framework.php';
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * numeric function test suite
+ * test suite
  */
 class classes_curry
 {
@@ -23,7 +23,7 @@ class classes_curry
 }
 
 /**
- * numeric function unit tests
+ * unit tests
  */
 class classes_curry_tests extends PHPUnit_Framework_TestCase
 {
