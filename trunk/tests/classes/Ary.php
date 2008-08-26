@@ -114,6 +114,59 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testCalcOffset ()
+    {
+        
+        /* Disabled while the custom exceptions are developed
+        $this->assertFalse(
+                cPHP::Ary::create(array())->calcOffset(2, cPHP::Ary::OFFSET_NONE)
+            );
+        */
+
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_NONE) );
+
+        /* Disabled while the custom exceptions are developed
+        $this->assert_false( cPHP::Ary::range(1, 5)->calcOffset(5, cPHP::Ary::OFFSET_NONE) );
+        $this->assert_false( cPHP::Ary::range(1, 5)->calcOffset(-6, cPHP::Ary::OFFSET_NONE) );
+        */
+
+        $this->assertEquals(1, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(2, cPHP::Ary::range(1, 5)->calcOffset(-8, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_WRAP) );
+
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-8, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_RESTRICT) );
+
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_LIMIT) );
+        
+    }
+    
     public function testPushPop ()
     {
         $ary = new cPHP::Ary( array(3 => 1, 1 => 3) );

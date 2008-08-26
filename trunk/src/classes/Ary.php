@@ -108,8 +108,12 @@ class Ary implements Iterator, Countable, ArrayAccess
      * This is generally used by array functions to wrap offsets
      *
      * @param Integer $offset The offset being wrapped
-     * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
-     *      Allowed values are: cArray::OFFSET_NONE, cArray::OFFSET_WRAP, cArray::OFFSET_RESTRICT, cArray::OFFSET_LIMIT
+     * @param Integer $wrapFlag How to handle offsets that fall outside of the
+     *      length of the list. Allowed values are:
+     *          - cPHP::Ary::OFFSET_NONE
+     *          - cPHP::Ary::OFFSET_WRAP
+     *          - cPHP::Ary::OFFSET_RESTRICT
+     *          - cPHP::Ary::OFFSET_LIMIT
      * @return Integer Returns the wrapped offset
      */
     public function calcOffset ($offset, $wrapFlag)
@@ -494,7 +498,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Returns an array of the keys in this instance
      *
-     * @return Object Returns a cArray object
+     * @return Object Returns a cPHP::Ary object
      */
     public function keys ()
     {
@@ -504,7 +508,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Returns an array of the values in this instance
      * 
-     * @return Object Returns a cArray object
+     * @return Object Returns a cPHP::Ary object
      */
     public function values ()
     {
@@ -655,7 +659,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *
      * @param mixed $callback The callback to apply. This must be callable
      * @param Integer $flags Flags to adjust the internal functioning. Valid flags are:
-     *      cArray::RECURSIVE, cArray::LEFT_ARGS, cArray::SEND_KEY
+     *      cPHP::Ary::RECURSIVE, cPHP::Ary::LEFT_ARGS, cPHP::Ary::SEND_KEY
      * @param mixed $args... Any arguments to send to the callback
      * @return Object Returns a self reference
      */

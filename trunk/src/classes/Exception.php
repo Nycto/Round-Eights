@@ -35,7 +35,7 @@ class Exception extends ::Exception
     protected $fault;
 
     /**
-     * Set the verbosity of the errors
+     * Set the global verbosity of the errors
      *
      * @param Boolean $setting
      */
@@ -45,7 +45,7 @@ class Exception extends ::Exception
     }
     
     /**
-     * Returns the current verbosity state
+     * Returns the current global verbosity state
      *
      * @return Boolean
      */
@@ -73,14 +73,20 @@ class Exception extends ::Exception
      * Returns the trace string for a given offset
      *
      * @param integer $offset The offset of the trace
+     * @param integer $wrapFlag The offset wrapping mode to use
      * @return array A list of the backtrace details at the given offset
      */
-    public function getTraceByOffset ($offset, $wrapFlag = RESTRICT)
+    public function getTraceByOffset ($offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
     {
         $trace = $this->getTrace();
         if (count($trace) <= 0)
             return FALSE;
-        return array_offset($trace, $offset, $wrapFlag);
+        
+        $trace = new cPHP::Ary( $trace );
+        
+        return new cPHP::Ary(
+                $trace->offset($offset, $wrapFlag)
+            );
     }
 
     /**
@@ -117,23 +123,19 @@ class Exception extends ::Exception
      * Sets the fault of the exception
      *
      * @param Integer $offset The offset at fault for the current exception
+     * @param integer $wrapFlag The offset wrapping mode to use
      * @return object Returns a self reference
      */
-    public function setFault ($offset, $wrapFlag = RESTRICT)
+    public function setFault ( $offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT )
     {
         $trace = $this->getTrace();
 
         if (count($trace) <= 0)
             return FALSE;
 
-        $offset = calcWrapFlag(count($trace), $offset, $wrapFlag);
-        if (is_int($offset)) {
-            $this->fault = $offset;
-        }
-        else {
-            trigger_error("Invalid Fault offset", E_USER_NOTICE);
-            $this->unsetFault();
-        }
+        $trace = new cPHP::Ary( $trace );
+        
+        $this->fault = $trace->calcOffset( $offset, $wrapFlag);
         
         return $this;
     }
@@ -181,15 +183,15 @@ class Exception extends ::Exception
     {
         $shift = intval(reduce($shift));
 
-        $traceCnt = $this->getTraceCount();
+        $trace = new cPHP::Ary( $this->getTrace() );
 
-        if ($traceCnt <= 0)
+        if (count($trace) <= 0)
             return FALSE;
 
-        $fault = $this->getFaultOffset();
-
-        if ($fault === FALSE)
-            $fault = $traceCnt - 1;
+        if ( !$this->issetFault() )
+            $fault = -2;
+        else
+            $fault = $this->getFaultOffset();
 
         $fault += $shift;
 
