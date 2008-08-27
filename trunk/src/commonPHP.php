@@ -68,12 +68,32 @@ set_exception_handler(function ( $exception ) {
     }
 });
 
+/**
+ * Function flags
+ */
+
+// Used by is_empty to define what is allowed
+define ("ALLOW_NULL", 1);
+define ("ALLOW_FALSE", 2);
+define ("ALLOW_ZERO", 4);
+define ("ALLOW_BLANK", 8);
+define ("ALLOW_SPACES", 16);
+define ("ALLOW_EMPTY_ARRAYS", 32);
+
+// Used by stripW to define what to keep
+define ("ALLOW_UNDERSCORES", 64);
+define ("ALLOW_NEWLINES", 128);
+define ("ALLOW_TABS", 256);
+define ("ALLOW_DASHES", 512);
+
 
 /**
  * Include the function files
  */
 require_once cPHP_dir_functions ."general.php";
 require_once cPHP_dir_functions ."numbers.php";
+require_once cPHP_dir_functions ."strings.php";
+require_once cPHP_dir_functions ."debug.php";
 
 
 /**

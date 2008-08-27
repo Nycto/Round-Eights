@@ -164,7 +164,7 @@ class Exception extends ::Exception
     /**
      * Returns the fault offset
      *
-     * @return Integer
+     * @return Integer|Boolean Returns the offset, or FALSE if no fault is set
      */
     public function getFaultOffset ()
     {
@@ -179,7 +179,7 @@ class Exception extends ::Exception
      * @param Integer
      * @return object Returns a self reference
      */
-    public function shiftFault ($shift = 1)
+    public function shiftFault ($shift = -1)
     {
         $shift = intval(reduce($shift));
 
@@ -189,13 +189,13 @@ class Exception extends ::Exception
             return FALSE;
 
         if ( !$this->issetFault() )
-            $fault = -2;
+            $fault = -1;
         else
             $fault = $this->getFaultOffset();
 
         $fault += $shift;
 
-        $fault = calcWrapFlag($traceCnt, $fault, LIMIT);
+        $fault = $trace->calcOffset($fault, cPHP::Ary::OFFSET_RESTRICT);
 
         return $this->setFault($fault);
     }
@@ -207,11 +207,10 @@ class Exception extends ::Exception
      */
     public function getFault ()
     {
-        $offset = $this->getFaultOffset();
-        if ($offset === FALSE)
+        if ( !$this->issetFault() )
             return FALSE;
-        else
-            return $this->getTraceByOffset( $offset );
+        
+        return $this->getTraceByOffset( $this->getFaultOffset() );
     }
 
     /**
@@ -221,12 +220,10 @@ class Exception extends ::Exception
      * @param Integer $wrapFlag
      * @return String
      */
-    public function getFaultOffsetString ($offset, $wrapFlag = RESTRICT)
+    public function getTraceOffsetString ($offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
     {
+        
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
-
-        if ($trace === FALSE)
-            return NULL;
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
@@ -246,7 +243,7 @@ class Exception extends ::Exception
      * @param Integer $wrapFlag
      * @return String A string of HTML
      */
-    public function getFaultOffsetHTML ($offset, $wrapFlag = RESTRICT)
+    public function getTraceOffsetHTML ($offset, $wrapFlag = RESTRICT)
     {
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 
@@ -276,7 +273,7 @@ class Exception extends ::Exception
         $fault = $this->getFaultOffset();
         if ($fault === FALSE)
             return NULL;
-        return "Caused By:\n". $this->getOffsetString($fault);
+        return "Caused By:\n". $this->getTraceOffsetString($fault);
     }
 
     /**

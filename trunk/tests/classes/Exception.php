@@ -71,21 +71,52 @@ class classes_exception_tests extends PHPUnit_Framework_TestCase
     {
         $err = new cPHP::Exception();
         
+        
+        // test whether setFault and issetFault work
         $this->assertFalse( $err->issetFault() );
-        
         $this->assertSame( $err, $err->setFault(-1) );
-        
         $this->assertTrue( $err->issetFault() );
         
         
-        $this->assertThat( $err->getFaultOffset(), $this->isType("int") );
+        // Ensure that getFaultOffset returns an integer
+        $fault = $err->getFaultOffset();
+        $this->assertThat( $fault, $this->isType("int") );
+        $this->assertThat( $fault, $this->greaterThan( 0 ) );
         
-        $this->assertThat( $err->getFaultOffset(), $this->greaterThan( 0 ) );
+        
+        // Test that shiftFault works
+        $this->assertSame( $err, $err->shiftFault( -1 ) );
+        $this->assertEquals( $fault - 1, $err->getFaultOffset() );
         
         
+        // Now reset the fault and test shiftFault without any arguments
+        $this->assertSame( $err, $err->setFault( $fault ) );
+        $this->assertSame( $err, $err->shiftFault() );
+        $this->assertEquals( $fault - 1, $err->getFaultOffset() );
+        
+        
+        // Make sure getFault returns an array
+        $this->assertThat( $err->getFault(), $this->isInstanceOf("cPHP::Ary") );
+        
+        
+        // test unsetFault
         $this->assertSame( $err, $err->unsetFault() );
-        
         $this->assertFalse( $err->issetFault() );
+        
+        
+        // Test shift Fault when no fault is currently set
+        $err->shiftFault();
+        $this->assertEquals(
+                count( $err->getTrace() ) - 2,
+                $err->getFaultOffset()
+            );
+        
+    }
+    
+    public function testGetTraceOffsetString ()
+    {
+        $err = new cPHP::Exception();
+        
         
     }
     

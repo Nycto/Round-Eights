@@ -56,7 +56,7 @@ function strContains($needle, $haystack, $ignoreCase = TRUE)
  * @param String $needle The string being searched for
  * @param String $haystack The string that you trying to find the needle in
  * @param Boolean $ignoreCase Whether the search should be case sensitive
- * @return Array Returns an array containing the found offsets. If the needle is not contained in the haystack, an empty array is returned
+ * @return object Returns an array containing the found offsets. If the needle is not contained in the haystack, an empty array is returned
  */
 function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
 {
@@ -68,11 +68,11 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
         throw new ArgumentError(0, 'needle', 'Must not be empty');
 
     if (!strContains($needle, $haystack, $ignoreCase))
-        return Array();
+        return new cPHP::Ary;
 
     $count = $ignoreCase ? substr_icount($haystack, $needle) : substr_count($haystack, $needle);
 
-    $found = Array();
+    $found = array();
 
     $offset = 0;
 
@@ -80,10 +80,10 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
 
     for ($i = 0; $i < $count; $i++) {
         $found[] =  $ignoreCase ? stripos( $haystack, $needle, $offset ) : strpos( $haystack, $needle, $offset );
-        $offset = end($found) + $length;
+        $offset = end( $found ) + $length;
     }
 
-    return $found;
+    return new cPHP::Ary( $found );
 }
 
 /**
@@ -95,14 +95,14 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
  * @param Integer $wrapFlag How to handle offset wrapping when the offset, per {@link calcWrapFlag()}.
  * @return Integer Returns the offsets, from 0, of the needle in the haystack
  */
-function strnpos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = RESTRICT)
+function strnpos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
 {
     $found = strOffsets($needle, $haystack, $ignoreCase);
 
     if (count($found) <= 0)
         return FALSE;
     else
-        return array_offset($found, $offset, $wrapFlag);
+        return $found->offset($offset, $wrapFlag);
 }
 
 /**
@@ -113,30 +113,14 @@ function strnpos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = R
  */
 function unshout ($string)
 {
-    // We use a little trick that allows us to use this function as it's
-    // own callback. When that is in action, $deep becomes true
-    STATIC $deep;
 
-    if (!isset($deep) || !$deep) {
-
-        $string = stringVal($string);
-
-        $deep = true;
-
-        $string = preg_replace_callback(
-                '/\b(\w)(\w*[A-Z]\w*)\b/',
-                "unshout",
-                $string
-            );
-
-        $deep = false;
-
-        return $string;
-
-    }
-    else {
-        return $string[1] . strtolower($string[2]);
-    }
+    return preg_replace_callback(
+            '/\b(\w)(\w*[A-Z]\w*)\b/',
+            function ( $match ) {
+                    return $match[1] . strtolower($match[2]);
+                },
+            strVal( $string )
+        );
 
 }
 
@@ -156,13 +140,7 @@ function unshout ($string)
 function stripW ($string, $flags = 0)
 {
 
-    $flags = low(intval(reduce($flags)), 0);
-    if (func_num_args() > 2) {
-        $args = array_slice(func_get_args(), 2);
-        foreach ($args AS $arg) {
-            $flags = $flags | low(intval(reduce($arg)), 0);
-        }
-    }
+    $flags = max( intval(reduce($flags)), 0 );
 
     return preg_replace(
             "/[^a-z0-9"
@@ -188,10 +166,10 @@ function stripW ($string, $flags = 0)
 function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
 
-    if (is_array($repeated))
+    if (is_array($repeated) )
         $repeated = implode( '|', cArray_map( array_stringize( array_flatten( $repeated ) ), 'preg_quote', FALSE, '/' ) );
     else
-        $repeated = preg_quote(stringVal($repeated), '/');
+        $repeated = preg_quote(strval($repeated), '/');
 
     if (is_empty( $repeated ))
         throw new ArgumentError(1, 'Repeated', 'Must not be empty');
@@ -345,8 +323,8 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
  */
 function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
 {
-    $haystack = strtolower(stringVal($haystack));
-    $needle = strtolower(stringVal($needle));
+    $haystack = strtolower(strVal($haystack));
+    $needle = strtolower(strVal($needle));
 
     if (!is_int($length))
         return substr_count( $haystack, $needle, $offset );
@@ -598,7 +576,7 @@ function strTruncate ($string, $maxLength, $delimiter = '...')
     $delimiter = stringVal($delimiter);
 
     // The maxLength must be at LEAST the length of the delimiter, plus a character on both sides
-    $maxLength = low( intval($maxLength), strlen($delimiter) + 2 );
+    $maxLength = max( intval($maxLength), strlen($delimiter) + 2 );
 
     if (strlen( $string ) <= $maxLength)
         return $string;
@@ -608,70 +586,6 @@ function strTruncate ($string, $maxLength, $delimiter = '...')
     return substr( $string, 0, $firstLength )
         .$delimiter
         .substr( $string, strlen( $string ) - ( $maxLength - strlen($delimiter) - $firstLength ) );
-}
-
-/**
- * Given a string representation of a URL query, this return an array of the values
- *
- * @param String $query The URL query string to parse
- * @param Integer $flags Any options to customize how the function works. Available options:
- *  - PARSEQUERY_ENCODED_KEYS: Prevents the urldecode function from being run on the keys
- *  - PARSEQUERY_ENCODED_VALUES: Prevents the urldecode function from being run on the values
- *  - PARSEQUERY_FLAT: Prevents a multidimensional array from being returned
- */
-function parseQuery ( $query, $flags = 0 )
-{
-    $flags = intval($flags);
-
-    $query = stringVal($query);
-
-    // translate any question marks to ampersands
-    $query = str_replace( "?", "&", $query );
-
-    $query = explode("&", $query);
-
-    $out = array();
-
-    foreach ($query AS $pair) {
-
-        if (is_empty($pair))
-            continue;
-
-        $pair = explode("=", $pair);
-
-        // if the key is empty, do nothing with it
-        if (empty($pair[0]))
-            continue;
-
-        // If they want us to decode the Key
-        if ( !($flags & PARSEQUERY_ENCODED_KEYS) )
-            $pair[0] = urldecode( $pair[0] );
-
-        // If they want us to decode the values
-        if ( !($flags & PARSEQUERY_ENCODED_VALUES) )
-            $pair[1] = urldecode( $pair[1] );
-
-        // If they want a multi-dimension result and at least one pair of brackets is included in the key...
-        if ( !($flags & PARSEQUERY_FLAT) && str_contains("[", $pair[0]) && endsWith( rtrim($pair[0]), "]" ) ) {
-
-            $pair[0] = explode("[", $pair[0]);
-
-            $primary = array_shift( $pair[0] );
-
-            $pair[0] = cArray_map( $pair[0], "rtrim" );
-            $pair[0] = cArray_map( $pair[0], "strStripTail", FALSE, "]" );
-
-            array_branch ( $out, FALSE, $pair[1], $primary, $pair[0] );
-
-        }
-        else {
-            $out[ $pair[0] ] = $pair[1];
-        }
-
-    }
-
-    return $out;
-
 }
 
 /**
