@@ -499,6 +499,39 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 $ary->get()
             );
         
+        
+
+
+        $ary = cPHP::Ary::create(array(
+                new cPHP::Ary(array(1,2,3)),
+                array(4,5, new cPHP::Ary(array(6,7,8)) )
+            ))->flatten();
+        
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array(1,2,3,4,5,6,7,8),
+                $ary->get()
+            );
+
+
+        $ary = cPHP::Ary::create(array(
+                new cPHP::Ary(array(1,2,3)),
+                array(4,5, new cPHP::Ary(array(6,7,8)) )
+            ))->flatten( 3 );
+        
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array(1,2,3),
+                $ary->offsetGet(0)->get()
+            );
+        
+        $subAry = $ary->offsetGet(1);
+        $this->assertType("array", $subAry);
+        $this->assertEquals(
+                array(6, 7, 8),
+                $subAry[2]->get()
+            );
+        
     }
     
     public function testSort ()
@@ -518,6 +551,24 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 array( 1 => 'f', 2 => 'e', 3 => 'd', 4 => 'c', 5 => 'b', 6 => 'a' ),
                 $ary->get()
+            );
+        
+    }
+    
+    public function testCollect ()
+    {
+        
+        $this->assertEquals(
+                array(50, 90),
+                cPHP::Ary::create( array( "50", "90") )->collect("floatval")->get()
+            );
+        
+        
+        $lambda = function ( $value, $key ) { return "$key:$value"; };
+        
+        $this->assertEquals(
+                array("0:50", "1:90"),
+                cPHP::Ary::create( array( "50", "90") )->collect($lambda)->get()
             );
         
     }

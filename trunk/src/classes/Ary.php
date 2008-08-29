@@ -655,15 +655,42 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     
     /**
+     * Applies a given callback to every element in this array and collects
+     * result of each callback in to a resulting array
+     *
+     * @param mixed $callback The callback to apply. This must be callable
+     * @return Object Returns a new array object
+     */
+    public function collect ( $callback )
+    {
+        $sendKey = TRUE;
+        
+        // Determine if the callback is internal
+        if ( is_string($callback) ) {
+            $refl = new ReflectionFunction($callback);
+            $sendKey = !$refl->isInternal();
+            unset($refl);
+        }
+        
+        $output = new self;
+        
+        foreach ( $this->array AS $key => $value ) {
+            if ( $sendKey )
+                $output->offsetSet( $key, $callback( $value, $key ) );
+            else
+                $output->offsetSet( $key, $callback( $value ) );
+        }
+        
+        return $output;
+    }
+    
+    /**
      * Applies a given callback to every element in this array
      *
      * @param mixed $callback The callback to apply. This must be callable
-     * @param Integer $flags Flags to adjust the internal functioning. Valid flags are:
-     *      cPHP::Ary::RECURSIVE, cPHP::Ary::LEFT_ARGS, cPHP::Ary::SEND_KEY
-     * @param mixed $args... Any arguments to send to the callback
      * @return Object Returns a self reference
      */
-    public function map ( $callback, $flags = 0 )
+    public function each ( $callback )
     {
         
     }
@@ -693,14 +720,28 @@ class Ary implements Iterator, Countable, ArrayAccess
         
             foreach($array AS $key => $value) {
         
-                if ( !is_array($array[$key]) ) {
+                // If it isn't an array, just plop it on to the end of the output
+                if ( !is_array($array[$key]) && !($array[$key] instanceof cPHP::Ary ) ) {
+                    
+                    // There really is a good reason I do it like this... and that
+                    // is "because of the way array_merge handles conflicting keys"
                     $output = array_merge( $output, array( $key => $value ) );
                 }
         
                 else if ($maxDepth <= 1) {
-                    $flat = $flatten($array[$key], 1, $flatten);
+                    
+                    if ( $array[$key] instanceof cPHP::Ary )
+                        $flat = $flatten($array[$key]->get(), 1, $flatten);
+                    else
+                        $flat = $flatten($array[$key], 1, $flatten);
+                        
                     $output = array_merge($output, $flat);
                     unset ($flat);
+                }
+                
+                // If we have not yet reached the maximum depth, maintain this key
+                else if ( $array[$key] instanceof cPHP::Ary ) {
+                    $output[$key] = $array[$key]->flatten($maxDepth - 1);
                 }
                 
                 else {
@@ -730,7 +771,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      *
      */
-    public function compact ()
+    public function compact ( )
     {
         
     }
