@@ -424,6 +424,21 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Key functions
+     */
+    
+    /**
+     * Returns whether a key exists in this array
+     *
+     * @param mixed $key
+     * @return Boolean
+     */
+    public function keyExists ( $key )
+    {
+        return array_key_exists( $key, $this->array );
+    }
+    
+    /**
      * List manipulation functions
      */
     
@@ -524,6 +539,17 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         $this->array = array();
         return $this;
+    }
+    
+    /**
+     * Returns whether the given value is contained within the array
+     *
+     * @param mixed $value
+     * @return Boolean
+     */
+    public function contains ( $value )
+    {
+        return in_array( $value, $this->array );
     }
     
     
@@ -655,6 +681,39 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     
     /**
+     * Joins the elements in this array together using a string
+     *
+     * @param string $glue The string to put
+     * @return String
+     */
+    public function implode( $glue = "" )
+    {
+       return implode( $glue, $this->array );
+    }
+    
+    /**
+     *
+     */
+    
+    /**
+     * Given a callback, determines if the key should be sent.
+     *
+     * @param mixed $callback
+     * @return boolean
+     */
+    protected function sendKey ( $callback )
+    {
+        if ( is_string($callback) ) {
+            $refl = new ReflectionFunction($callback);
+            
+            // We dont send the key to internal functions... this causes errors
+            return !$refl->isInternal();
+        }
+        
+        return TRUE;
+    }
+    
+    /**
      * Applies a given callback to every element in this array and collects
      * result of each callback in to a resulting array
      *
@@ -663,14 +722,11 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function collect ( $callback )
     {
-        $sendKey = TRUE;
         
-        // Determine if the callback is internal
-        if ( is_string($callback) ) {
-            $refl = new ReflectionFunction($callback);
-            $sendKey = !$refl->isInternal();
-            unset($refl);
-        }
+        if (!is_callable($callback))
+            throw new ArgumentError(0, "Callback", "Must be callable");
+        
+        $sendKey = $this->sendKey( $callback );
         
         $output = new self;
         
@@ -685,20 +741,48 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Removes the values from an array that cause the callback to return false
+     *
+     * @param array $Array The array to be filtered
+     */
+    public function filter ( $callback )
+    {
+        
+        if (!is_callable($callback))
+            throw new ArgumentError(0, "Callback", "Must be callable");
+        
+        $sendKey = $this->sendKey( $callback );
+        
+        $output = new self;
+    
+        foreach( $this->array AS $key => $value ) {
+            
+            if ( $sendKey ) {
+                
+                if ( $callback($value, $key) )
+                    $output[ $key ] = $value;
+                
+            }
+            else {
+                
+                if ( $callback($value) )
+                    $output[ $key ] = $value;
+                    
+            }
+    
+        }
+    
+        return $output;
+    }
+
+    
+    /**
      * Applies a given callback to every element in this array
      *
      * @param mixed $callback The callback to apply. This must be callable
      * @return Object Returns a self reference
      */
     public function each ( $callback )
-    {
-        
-    }
-    
-    /**
-     *
-     */
-    public function walk ()
     {
         
     }
@@ -769,10 +853,50 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Recursively removes all the empty values from an array
      *
+     * @param integer $flags Any valid is_empty flags to use to determine if a value is empty
+     * @return object Returns a compacted version of the current array
      */
-    public function compact ( )
+    public function compact ( $flags = 0 )
     {
+        $flags = max( intval($flags), 0 );
+        
+        $compact = function ( $array, &$compact ) use ( $flags ) {
+            
+            $output = array();
+            
+            foreach ( $array AS $key => $value ) {
+                
+                if ( $value instanceof cPHP::Ary ) {
+                    
+                    if ( count($value) > 0 ) {
+                        
+                        $value = $compact( $value->get(), $compact );
+                    
+                        if ( !is_empty($value, $flags) )
+                            $output[ $key ] = new cPHP::Ary($value);
+                            
+                    }
+                    
+                }
+                else {
+                    
+                    if ( is_array($value) && count($value) > 0 )
+                        $value = $compact( $value, $compact );
+                        
+                    if ( !is_empty($value, $flags) )
+                        $output[ $key ] = $value;
+                
+                }
+                
+            }
+            
+            return $output;
+            
+        };
+        
+        return new cPHP::Ary( $compact( $this->array, $compact ) );
         
     }
     
@@ -790,6 +914,16 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function pluck ()
     {
         
+    }
+    
+    /**
+     * Returns a version of the current array without duplicates
+     *
+     * @return object
+     */
+    public function unique ()
+    {
+        return new cPHP::Ary( array_unique($this->array) );
     }
     
     /**

@@ -15,7 +15,7 @@ class functions_strings
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Exception Class');
+        $suite = new PHPUnit_Framework_TestSuite('commonPHP String Functions');
         $suite->addTestSuite( 'general' );
         $suite->addTestSuite( 'functions_strings_tests' );
         return $suite;
@@ -251,585 +251,514 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function truncateWords ()
+    public function testTruncateWords ()
     {
         $this->assertEquals(
                 "string with so...ds that ne...ed down",
-                truncateWords( "string with someverylongwords that needtobetrimmed down", 10)
+                cPHP::truncateWords( "string with someverylongwords that needtobetrimmed down", 10)
             );
 
         $this->assertEquals(
                 "string with so...s that ne...d down",
-                truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6)
+                cPHP::truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6)
             );
 
         $this->assertEquals(
                 "string with so..ds that ne..ed down",
-                truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6, '..')
+                cPHP::truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6, '..')
             );
 
         $this->assertEquals(
                 "string with someverylongwords that needtobetrimmed down",
-                truncateWords( "string with someverylongwords that needtobetrimmed down", 20 )
+                cPHP::truncateWords( "string with someverylongwords that needtobetrimmed down", 20 )
             );
     }
 
-    public function stripQuoted ()
+    public function testStripQuoted ()
     {
         $this->assertEquals(
                 "This  with quotes",
-                stripQuoted( "This 'is a string' with\"\" quotes" )
+                cPHP::stripQuoted( "This 'is a string' with\"\" quotes" )
             );
 
         $this->assertEquals(
                 "This  withot",
-                stripQuoted( "This /is a string& with/ qu&ot&es", '/', '&' )
+                cPHP::stripQuoted( "This /is a string& with/ qu&ot&es", array('/', '&') )
             );
     }
 
-    public function substr_icount ()
+    public function testSubstr_icount ()
     {
 
         $this->assertEquals(
                 2,
-                substr_icount( 'This Is A Test', 'is' )
+                cPHP::substr_icount( 'This Is A Test', 'is' )
             );
 
         $this->assertEquals(
                 2,
-                substr_icount( 'This Is A Test', 'Is' )
+                cPHP::substr_icount( 'This Is A Test', 'Is' )
             );
 
         $this->assertEquals(
                 2,
-                substr_icount( 'This Is A Test', 'IS' )
+                cPHP::substr_icount( 'This Is A Test', 'IS' )
             );
 
         $this->assertEquals(
                 1,
-                substr_icount( 'This Is A Test', 'is', 3 )
+                cPHP::substr_icount( 'This Is A Test', 'is', 3 )
             );
 
         $this->assertEquals(
                 0,
-                substr_icount( 'This Is A Test', 'is', 3, 3 )
+                cPHP::substr_icount( 'This Is A Test', 'is', 3, 3 )
             );
     }
 
-    public function startsWith ()
+    public function testStartsWith ()
     {
-        $this->assertTrue( startsWith('string with content', 'string') );
-        $this->assertTrue( startsWith('string with content', 'String') );
+        $this->assertTrue( cPHP::startsWith('string with content', 'string') );
+        $this->assertTrue( cPHP::startsWith('string with content', 'String') );
 
-        $this->assertTrue( startsWith('string with content', 'string', TRUE) );
-        $this->assertTrue( startsWith('string with content', 'String', TRUE) );
+        $this->assertTrue( cPHP::startsWith('string with content', 'string', TRUE) );
+        $this->assertTrue( cPHP::startsWith('string with content', 'String', TRUE) );
 
-        $this->assertTrue( startsWith('string with content', 'string', FALSE) );
+        $this->assertTrue( cPHP::startsWith('string with content', 'string', FALSE) );
 
-        $this->assertFalse( startsWith('string with content', 'String', FALSE) );
-        $this->assertFalse( startsWith('string with content', 'strn', FALSE) );
+        $this->assertFalse( cPHP::startsWith('string with content', 'String', FALSE) );
+        $this->assertFalse( cPHP::startsWith('string with content', 'strn', FALSE) );
     }
 
-    public function endsWith ()
+    public function testEndsWith ()
     {
-        $this->assertTrue( endsWith('string with content', 'content') );
-        $this->assertTrue( endsWith('string with content', 'Content') );
+        $this->assertTrue( cPHP::endsWith('string with content', 'content') );
+        $this->assertTrue( cPHP::endsWith('string with content', 'Content') );
 
-        $this->assertTrue( endsWith('string with content', 'content', TRUE) );
-        $this->assertTrue( endsWith('string with content', 'Content', TRUE) );
+        $this->assertTrue( cPHP::endsWith('string with content', 'content', TRUE) );
+        $this->assertTrue( cPHP::endsWith('string with content', 'Content', TRUE) );
 
-        $this->assertTrue( endsWith('string with content', 'content', FALSE) );
+        $this->assertTrue( cPHP::endsWith('string with content', 'content', FALSE) );
 
-        $this->assertFalse( endsWith('string with content', 'Content', FALSE) );
-        $this->assertFalse( endsWith('string with content', 'contnt', FALSE) );
+        $this->assertFalse( cPHP::endsWith('string with content', 'Content', FALSE) );
+        $this->assertFalse( cPHP::endsWith('string with content', 'contnt', FALSE) );
     }
 
-    public function strTail ()
+    public function testStrTail ()
     {
         $this->assertEquals(
                 'stringtail',
-                strTail('string', 'tail')
+                cPHP::strTail('string', 'tail')
             );
 
         $this->assertEquals(
                 'stringtail',
-                strTail('stringtail', 'tail')
+                cPHP::strTail('stringtail', 'tail')
             );
 
         $this->assertEquals(
                 'stringtail',
-                strTail('string', 'tail', TRUE)
+                cPHP::strTail('string', 'tail', TRUE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                strTail('stringtail', 'tail', TRUE)
+                cPHP::strTail('stringtail', 'tail', TRUE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                strTail('string', 'tail', FALSE)
+                cPHP::strTail('string', 'tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                strTail('stringtail', 'tail', FALSE)
+                cPHP::strTail('stringtail', 'tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringtailTail',
-                strTail('stringtail', 'Tail', FALSE)
+                cPHP::strTail('stringtail', 'Tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringTail',
-                strTail('stringTail', 'Tail', FALSE)
+                cPHP::strTail('stringTail', 'Tail', FALSE)
             );
     }
 
-    public function strStripTail ()
+    public function testStrStripTail ()
     {
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with content", "ent" )
+                cPHP::strStripTail( "string with content", "ent" )
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with cont", "ent" )
+                cPHP::strStripTail( "string with cont", "ent" )
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with content", "ent", TRUE )
+                cPHP::strStripTail( "string with content", "ent", TRUE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with content", "ENT", TRUE )
+                cPHP::strStripTail( "string with content", "ENT", TRUE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with cont", "ent", TRUE)
+                cPHP::strStripTail( "string with cont", "ent", TRUE)
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with content", "ent", FALSE )
+                cPHP::strStripTail( "string with content", "ent", FALSE )
             );
 
         $this->assertEquals(
                 'string with content',
-                strStripTail( "string with content", "Ent", FALSE )
+                cPHP::strStripTail( "string with content", "Ent", FALSE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                strStripTail( "string with cont", "ent", FALSE)
+                cPHP::strStripTail( "string with cont", "ent", FALSE)
             );
 
         $this->assertEquals(
                 '',
-                strStripTail( "string", "string", TRUE )
+                cPHP::strStripTail( "string", "string", TRUE )
             );
 
         $this->assertEquals(
                 'string',
-                strStripTail( "string", "" )
+                cPHP::strStripTail( "string", "" )
             );
     }
 
-    public function strHead ()
+    public function testStrHead ()
     {
         $this->assertEquals(
                 'headstring',
-                strHead('string', 'head')
+                cPHP::strHead('string', 'head')
             );
 
         $this->assertEquals(
                 'headstring',
-                strHead('headstring', 'head')
+                cPHP::strHead('headstring', 'head')
             );
 
         $this->assertEquals(
                 'headstring',
-                strHead('string', 'head', TRUE)
+                cPHP::strHead('string', 'head', TRUE)
             );
 
         $this->assertEquals(
                 'headstring',
-                strHead('headstring', 'head', TRUE)
+                cPHP::strHead('headstring', 'head', TRUE)
             );
 
         $this->assertEquals(
                 'headstring',
-                strHead('string', 'head', FALSE)
+                cPHP::strHead('string', 'head', FALSE)
             );
 
         $this->assertEquals(
                 'headstring',
-                strHead('headstring', 'head', FALSE)
+                cPHP::strHead('headstring', 'head', FALSE)
             );
 
         $this->assertEquals(
                 'Headheadstring',
-                strHead('headstring', 'Head', FALSE)
+                cPHP::strHead('headstring', 'Head', FALSE)
             );
 
         $this->assertEquals(
                 'Headstring',
-                strHead('Headstring', 'Head', FALSE)
+                cPHP::strHead('Headstring', 'Head', FALSE)
             );
     }
 
-    public function strStripHead ()
+    public function testStrStripHead ()
     {
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "ing with content", "str" )
+                cPHP::strStripHead( "ing with content", "str" )
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "ing with content", "str" )
+                cPHP::strStripHead( "ing with content", "str" )
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "ing with content", "str", TRUE )
+                cPHP::strStripHead( "ing with content", "str", TRUE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "string with content", "STR", TRUE )
+                cPHP::strStripHead( "string with content", "STR", TRUE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "ing with content", "str", TRUE)
+                cPHP::strStripHead( "ing with content", "str", TRUE)
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "string with content", "str", FALSE )
+                cPHP::strStripHead( "string with content", "str", FALSE )
             );
 
         $this->assertEquals(
                 'string with content',
-                strStripHead( "string with content", "Str", FALSE )
+                cPHP::strStripHead( "string with content", "Str", FALSE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                strStripHead( "ing with content", "str", FALSE)
+                cPHP::strStripHead( "ing with content", "str", FALSE)
             );
 
         $this->assertEquals(
                 '',
-                strStripHead( "string", "string", TRUE )
+                cPHP::strStripHead( "string", "string", TRUE )
             );
 
         $this->assertEquals(
                 'string',
-                strStripHead( "string", "" )
+                cPHP::strStripHead( "string", "" )
             );
     }
 
-    public function strWeld ()
+    public function testStrWeld ()
     {
         $this->assertEquals(
                 '/dir/file',
-                strWeld('/dir', 'file', '/')
+                cPHP::strWeld('/dir', 'file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                strWeld('/dir/', 'file', '/')
+                cPHP::strWeld('/dir/', 'file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                strWeld('/dir', '/file', '/')
+                cPHP::strWeld('/dir', '/file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                strWeld('/dir/', '/file', '/')
+                cPHP::strWeld('/dir/', '/file', '/')
             );
 
         $this->assertEquals(
                 'onEleven',
-                strWeld('one', 'eleven', 'E')
+                cPHP::strWeld('one', 'eleven', 'E')
             );
 
         $this->assertEquals(
                 'onEleven',
-                strWeld('one', 'eleven', 'E', TRUE)
+                cPHP::strWeld('one', 'eleven', 'E', TRUE)
             );
 
         $this->assertEquals(
                 'oneEeleven',
-                strWeld('one', 'eleven', 'E', FALSE)
+                cPHP::strWeld('one', 'eleven', 'E', FALSE)
             );
     }
 
-    public function strPartition ()
+    public function testStrPartition ()
     {
+        $result = cPHP::strPartition("", 5, 10, 12);
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals( array(), $result->get() );
+        
+        
+        $result = cPHP::strPartition("This is a string to split", 5, 10, 12);
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals( array( "This ", "is a ", "st", "ring to split" ), $result->get() );
+        
+
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", 5, 10, 12)
+                cPHP::strPartition("This is a string to split", array( 5, 10 ), 12)->get()
             );
 
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", array( 5, 10 ), 12)
+                cPHP::strPartition("This is a string to split", -10, 5, 10, 12)->get()
             );
 
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", -10, 5, 10, 12)
+                cPHP::strPartition("This is a string to split", 0, 5, 10, 12)->get()
             );
 
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", 0, 5, 10, 12)
+                cPHP::strPartition("This is a string to split", 12, 10, 5)->get()
             );
 
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", 12, 10, 5)
+                cPHP::strPartition("This is a string to split", 5, 10, 12, 10)->get()
             );
 
         $this->assertEquals(
                 array( "This ", "is a ", "st", "ring to split" ),
-                strPartition("This is a string to split", 5, 10, 12, 10)
-            );
-
-        $this->assertEquals(
-                array( "This ", "is a ", "st", "ring to split" ),
-                strPartition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )
+                cPHP::strPartition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )->get()
             );
 
         $this->assertEquals(
                 array( "T", "his is a string to spli", "t" ),
-                strPartition( "This is a string to split", 0, 1, 24, 25 )
+                cPHP::strPartition( "This is a string to split", 0, 1, 24, 25 )->get()
             );
     }
 
-    public function strCompare ()
+    public function testStrCompare ()
     {
         $this->assertEquals(
                 0,
-                strCompare('Test', 'test', TRUE)
+                cPHP::strCompare('Test', 'test', TRUE)
             );
 
         $this->assertEquals(
                 -6,
-                strCompare('Not The Same', 'test', TRUE)
+                cPHP::strCompare('Not The Same', 'test', TRUE)
             );
 
         $this->assertEquals(
                 16,
-                strCompare('test', 'Different Than', TRUE)
+                cPHP::strCompare('test', 'Different Than', TRUE)
             );
 
         $this->assertEquals(
                 0,
-                strCompare('The Same', 'The Same', FALSE)
+                cPHP::strCompare('The Same', 'The Same', FALSE)
             );
 
         $this->assertEquals(
                 -1,
-                strCompare('Test', 'test', FALSE)
+                cPHP::strCompare('Test', 'test', FALSE)
             );
 
         $this->assertEquals(
                 1,
-                strCompare('Casesensitive', 'CaseSensitivE', FALSE)
+                cPHP::strCompare('Casesensitive', 'CaseSensitivE', FALSE)
             );
     }
 
-    public function strEnclose ()
+    public function testStrEnclose ()
     {
 
         $this->assertEquals(
                 "wrap data wrap",
-                strEnclose( " data ", "wrap" )
+                cPHP::strEnclose( " data ", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                strEnclose( "wrap data ", "wrap" )
+                cPHP::strEnclose( "wrap data ", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                strEnclose( " data wrap", "wrap" )
+                cPHP::strEnclose( " data wrap", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                strEnclose( "wrap data wrap", "wrap" )
+                cPHP::strEnclose( "wrap data wrap", "wrap" )
             );
 
 
 
         $this->assertEquals(
                 "Wrap data Wrap",
-                strEnclose( " data ", "Wrap", TRUE )
+                cPHP::strEnclose( " data ", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "wrap data Wrap",
-                strEnclose( "wrap data ", "Wrap", TRUE )
+                cPHP::strEnclose( "wrap data ", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "Wrap data wrap",
-                strEnclose( " data wrap", "Wrap", TRUE )
+                cPHP::strEnclose( " data wrap", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                strEnclose( "wrap data wrap", "Wrap", TRUE )
+                cPHP::strEnclose( "wrap data wrap", "Wrap", TRUE )
             );
 
 
 
         $this->assertEquals(
                 "Wrap data Wrap",
-                strEnclose( " data ", "Wrap", FALSE )
+                cPHP::strEnclose( " data ", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrapwrap data Wrap",
-                strEnclose( "wrap data ", "Wrap", FALSE )
+                cPHP::strEnclose( "wrap data ", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrap data wrapWrap",
-                strEnclose( " data wrap", "Wrap", FALSE )
+                cPHP::strEnclose( " data wrap", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrapwrap data wrapWrap",
-                strEnclose( "wrap data wrap", "Wrap", FALSE )
+                cPHP::strEnclose( "wrap data wrap", "Wrap", FALSE )
             );
     }
 
-    public function strTruncate ()
+    public function testStrTruncate ()
     {
         $this->assertEquals (
                 "Not long enough",
-                strTruncate ( "Not long enough", 30 )
+                cPHP::strTruncate ( "Not long enough", 30 )
             );
 
         $this->assertEquals (
                 "too long ...own good",
-                strTruncate ( "too long for it's own good", 20 )
+                cPHP::strTruncate ( "too long for it's own good", 20 )
             );
 
         $this->assertEquals (
                 "too long -- own good",
-                strTruncate ( "too long for it's own good", 20, "--" )
+                cPHP::strTruncate ( "too long for it's own good", 20, "--" )
             );
     }
 
-    public function parseQuery ()
+    public function testPluralize ()
     {
+        $this->assertEquals( "tests", cPHP::pluralize("test") );
+        $this->assertEquals( "   tests   ", cPHP::pluralize("   test   ") );
 
-        $this->assertEquals(
-                array ( "key" => "value" ),
-                parseQuery( "key=value" )
-            );
+        $this->assertEquals( "tries", cPHP::pluralize("try") );
+        $this->assertEquals( "   tries   ", cPHP::pluralize("   try   ") );
 
-        $this->assertEquals(
-                array ( "key" => "value", "key2" => "value2", "key3" => "value3" ),
-                parseQuery( "?key=value?key2=value2&?&key3=value3?" )
-            );
+        $this->assertEquals( "TESTS", cPHP::pluralize("TEST") );
+        $this->assertEquals( "TRIES", cPHP::pluralize("TRY") );
 
-        $this->assertEquals(
-                array ( "key" => "value", "key3" => "value3" ),
-                parseQuery( "?key=value&=value2&key3=value3" )
-            );
+        $this->assertEquals( "test", cPHP::pluralize("test", 1) );
+        $this->assertEquals( "try", cPHP::pluralize("try", 1) );
 
-        $this->assertEquals(
-                array ( "key" => "value2" ),
-                parseQuery( "key=value&key=value2" )
-            );
-
-
-        // test the URL decoding
-        $this->assertEquals(
-                array ( "key more" => "value for decoding" ),
-                parseQuery( "key%20more=value%20for%20decoding" )
-            );
-
-        $this->assertEquals(
-                array ( "key%20more" => "value for decoding" ),
-                parseQuery( "key%20more=value%20for%20decoding", PARSEQUERY_ENCODED_KEYS )
-            );
-
-        $this->assertEquals(
-                array ( "key more" => "value%20for%20decoding" ),
-                parseQuery( "key%20more=value%20for%20decoding", PARSEQUERY_ENCODED_VALUES )
-            );
-
-        $this->assertEquals(
-                array ( "key%20more" => "value%20for%20decoding" ),
-                parseQuery( "key%20more=value%20for%20decoding", PARSEQUERY_ENCODED_KEYS | PARSEQUERY_ENCODED_VALUES )
-            );
-
-        // Test the recursive parsing
-        $this->assertEquals(
-                array( "key" => array( 1 => "value" ) ),
-                parseQuery( "key[1]=value" )
-            );
-
-        // Test the recursive parsing
-        $this->assertEquals(
-                array( "key" => array( 1 => "value" ) ),
-                parseQuery( "key[1]  =value" )
-            );
-
-        $this->assertEquals(
-                array( "key" => array( 1 => "value" ) ),
-                parseQuery( "key[1]  =value" )
-            );
-
-        $this->assertEquals(
-                array( "key" => array( "index" => array( 1 => "value3", 2 => "value2" ), "other" => "value4" ) ),
-                parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" )
-            );
-
+        $this->assertEquals( "tests", cPHP::pluralize("test", 5) );
+        $this->assertEquals( "tries", cPHP::pluralize("try", 5) );
     }
-    public function pluralize ()
-    {
-        $this->assertEquals( "tests", pluralize("test") );
-        $this->assertEquals( "   tests   ", pluralize("   test   ") );
 
-        $this->assertEquals( "tries", pluralize("try") );
-        $this->assertEquals( "   tries   ", pluralize("   try   ") );
-
-        $this->assertEquals( "TESTS", pluralize("TEST") );
-        $this->assertEquals( "TRIES", pluralize("TRY") );
-
-
-        $this->assertEquals( "test", pluralize("test", 1) );
-        $this->assertEquals( "try", pluralize("try", 1) );
-
-        $this->assertEquals( "tests", pluralize("test", 5) );
-        $this->assertEquals( "tries", pluralize("try", 5) );
-
-        try {
-            pluralize("      ");
-            $this->assert_exception("ArgumentError");
-        }
-        catch ( Exception $err ){
-            $this->assert_exception("ArgumentError", FALSE, $err);
-        }
-    }
 }
 
 ?>

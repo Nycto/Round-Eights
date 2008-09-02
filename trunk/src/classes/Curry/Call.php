@@ -26,14 +26,30 @@ class Call extends cPHP::Curry
      */
     public function __construct ( $callback )
     {
+        if ( !is_callable($callback) )
+            throw new ArgumentError( 0, "Callback", "Must be Callable" );
         
+        $this->callback = $callback;
     }
     
     /**
+     * Invokes the current callback with the given array of arguments and returns the results
      *
+     * @param $args Array The arguments to apply to the callback
+     * @return mixed
      */
-    public function apply ( array $args )
+    public function apply ( array $args = array() )
     {
+        
+        return call_user_func_array(
+            
+                // For object, skip the shortcuts and just jump straight to the invoke method
+                is_object($this->callback) ?
+                    array( $this->callback, "__invoke") : $this->callback,
+                    
+                $this->collectArgs( $args )
+                
+            );
         
     }
     

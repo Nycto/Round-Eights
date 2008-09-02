@@ -1,8 +1,8 @@
 <?php
 /**
- * Math functions
+ * String functions
  *
- * @package numeric
+ * @package strings
  */
 
 namespace cPHP;
@@ -166,10 +166,16 @@ function stripW ($string, $flags = 0)
 function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
 
-    if (is_array($repeated) )
-        $repeated = implode( '|', cArray_map( array_stringize( array_flatten( $repeated ) ), 'preg_quote', FALSE, '/' ) );
-    else
+    if (is_array($repeated) ) {
+        $repeated = cPHP::Ary::create( $repeated )->flatten()->collect("strval");
+        foreach( $repeated AS $key => $value ) {
+            $repeated[ $key ] = preg_quote($value, "/");
+        }
+        $repeated = $repeated->implode("|");
+    }
+    else {
         $repeated = preg_quote(strval($repeated), '/');
+    }
 
     if (is_empty( $repeated ))
         throw new ArgumentError(1, 'Repeated', 'Must not be empty');
@@ -193,14 +199,14 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
-    $string = stringVal($string);
+    $string = strval($string);
     if (is_empty($string))
         return '';
 
-    $glue = stringVal( $glue );
+    $glue = strval( $glue );
 
     // Maxlength must be at least 1
-    $maxLength = low( $maxLength, 1 );
+    $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
     if (is_vague($trimTo) || intval($trimTo) <= 0)
@@ -208,10 +214,10 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 
     // The trimTo length can't be greater than the max length
     // The trimTo must be at least the length of the glue + characters on each side
-    $trimTo = low($trimTo, strlen($glue) + 2);
+    $trimTo = max($trimTo, strlen($glue) + 2);
 
     // We now double check to make sure the maxlength is at least equal to the trimTo
-    $maxLength = low( $maxLength, $trimTo );
+    $maxLength = max( $maxLength, $trimTo );
 
 
     $first = ceil( ( $trimTo - strlen( $glue ) ) / 2);
@@ -227,66 +233,29 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 }
 
 /**
- * multi dimensional version of explode
- */
-function explode_recursive ( $string, $delimiter )
-{
-
-    $string = stringVal( $string );
-
-    $args = func_get_args();
-    $args = array_flatten($args);
-
-    // Remove the $String from the argument list
-    array_shift($args);
-
-    $separator = array_shift($args);
-    $separator = strval(reduce($separator));
-
-    if (is_empty($separator))
-        throw new ArgumentError(1, "Delimitier", "Must not be empty");
-
-    $string = explode($separator, $string);
-
-    if (count($args) > 0) {
-
-        foreach ($string AS $key => $value) {
-
-            $string[$key] = explode_recursive($value, $args);
-
-        }
-
-    }
-
-    return $string;
-
-}
-
-/**
  * Removes quoted text from a string.
  *
  * To define your own quotes, simply add them as arguments. For a more advanced
  * Quotation interface, see the Quoted Class.
  *
  * @param String $string The string to remove the quoted values from
- * @param String $quotes... Strings that should be treated as quotes
+ * @param String $quotes Strings that should be treated as quotes
  * @return String Returns the string with all quoted segments removed
  */
 function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 {
 
-    $string = stringVal($string);
+    $string = strval($string);
 
-    if (func_num_args() > 1) {
-
-        $quotes = func_get_args();
-        array_shift( $quotes );
-        $quotes = array_compact( array_unique( array_trim( array_flatten ( $quotes ) ) ) );
-
-    }
+    $quotes = new cPHP::Ary( $quotes );
+    $quotes = $quotes->flatten()->collect("trim")->unique()->compact();
 
     $split = preg_split(
-            '/(?<!\\\\)(?:\\\\\\\\)*('. implode("|", cArray_map( $quotes, "preg_quote", FALSE, '/' ) ) .')/i',
+            '/(?<!\\\\)(?:\\\\\\\\)*('
+                . $quotes->collect( 
+                        cPHP::Curry::Call::Create("preg_quote")->setRight("/")->setLimit(1)
+                    )->implode("|")
+                .')/i',
             $string,
             -1,
             PREG_SPLIT_DELIM_CAPTURE
@@ -297,13 +266,13 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     foreach ($split AS $key => $part) {
 
-        if (is_null($curQuote) && in_array($part, $quotes))
+        if ( is_null($curQuote) && $quotes->contains($part) )
             $curQuote = $part;
 
         else if (is_null($curQuote))
             $output .= $part;
 
-        else if (in_array($part, $quotes))
+        else if ( $quotes->contains($part) )
             $curQuote = null;
 
     }
@@ -342,11 +311,11 @@ function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
  */
 function startsWith ($string, $head, $ignoreCase = TRUE)
 {
-    $string = stringVal($string);
-    $head = stringVal($head);
+    $string = strval($string);
+    $head = strval($head);
 
-    // not is_empty because it's okay if it is filled with spaces
-    // all strings start with an empty character...
+    // Not is_empty because it's okay if it is filled with spaces.
+    // True is returned because all strings start with an empty character.
     if (empty($head))
         return TRUE;
 
@@ -367,8 +336,8 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
 function endsWith ($string, $tail, $ignoreCase = TRUE)
 {
 
-    $string = stringVal($string);
-    $tail = stringVal($tail);
+    $string = strval($string);
+    $tail = strval($tail);
 
     // not is_empty because it's okay if it is filled with spaces
     // all strings end with an empty character...
@@ -390,14 +359,14 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
  */
 function strTail ($string, $tail, $ignoreCase = TRUE)
 {
-    $string = stringVal($string);
-    $tail = stringVal($tail);
+    $string = strval($string);
+    $tail = strval($tail);
 
     // not is_empty because it's okay if it is filled with spaces
     if (empty($tail))
         return $string;
 
-    return !endsWith($string, $tail, $ignoreCase)?$string.$tail:$string;
+    return !endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
 }
 
 /**
@@ -410,8 +379,8 @@ function strTail ($string, $tail, $ignoreCase = TRUE)
  */
 function strStripTail ($string, $tail, $ignoreCase = TRUE)
 {
-    $string = stringVal($string);
-    $tail = stringVal($tail);
+    $string = strval($string);
+    $tail = strval($tail);
 
     // not is_empty because it's okay if it is filled with spaces
     if (empty($tail))
@@ -435,8 +404,8 @@ function strStripTail ($string, $tail, $ignoreCase = TRUE)
  */
 function strHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = stringVal($string);
-    $head = stringVal($head);
+    $string = strval($string);
+    $head = strval($head);
 
     // not is_empty because it's okay if it is filled with spaces
     if (empty($head))
@@ -485,9 +454,9 @@ function strStripHead ($string, $head, $ignoreCase = TRUE)
  */
 function strWeld ($string1, $string2, $glue, $ignoreCase = TRUE)
 {
-    $string1 = stringVal($string1);
-    $string2 = stringVal($string2);
-    $glue = stringVal($glue);
+    $string1 = strval($string1);
+    $string2 = strval($string2);
+    $glue = strval($glue);
 
     if (is_vague($glue, ALLOW_SPACES))
         return $string1 . $string2;
@@ -507,17 +476,16 @@ function strWeld ($string1, $string2, $glue, $ignoreCase = TRUE)
  */
 function strPartition ($string, $offsets)
 {
-    $string = stringVal($string);
+    $string = strval($string);
 
     if (strlen($string) <= 0)
-        return Array();
+        return new cPHP::Ary;
 
     $offsets = func_get_args();
     array_shift($offsets);
-    $offsets = array_unique( array_integerize( array_flatten( $offsets ) ) );
-    sort($offsets);
+    $offsets = cPHP::Ary::Create( $offsets )->flatten()->collect("intval")->unique()->sort();
 
-    $out = Array();
+    $out = new cPHP::Ary;
 
     $last = 0;
 
@@ -542,7 +510,9 @@ function strPartition ($string, $offsets)
  */
 function strCompare ($string1, $string2, $ignoreCase = TRUE)
 {
-    return $ignoreCase?strcasecmp( stringVal($string1), stringVal($string2) ):strcmp( stringVal($string1), stringVal($string2) );
+    return $ignoreCase ?
+        strcasecmp( strval($string1), strval($string2) ) :
+        strcmp( strval($string1), strval($string2) );
 }
 
 /**
@@ -572,8 +542,8 @@ function strEnclose ($string, $enclose, $ignoreCase = TRUE)
 function strTruncate ($string, $maxLength, $delimiter = '...')
 {
 
-    $string = stringVal($string);
-    $delimiter = stringVal($delimiter);
+    $string = strval($string);
+    $delimiter = strval($delimiter);
 
     // The maxLength must be at LEAST the length of the delimiter, plus a character on both sides
     $maxLength = max( intval($maxLength), strlen($delimiter) + 2 );
@@ -596,7 +566,7 @@ function strTruncate ($string, $maxLength, $delimiter = '...')
  */
 function pluralize ( $string, $count = 2 )
 {
-    $string = stringVal($string);
+    $string = strval($string);
 
     if ( is_empty( trim($string) ) )
         throw new ArgumentError(0, "String", "Must not be empty");

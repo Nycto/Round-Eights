@@ -333,6 +333,15 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals(8, $ary->offset(7) );
     }
     
+    public function testKeyExists ()
+    {
+        $this->assertTrue( cPHP::Ary::range(1, 15)->keyExists(0) );
+        $this->assertFalse( cPHP::Ary::range(1, 15)->keyExists(15) );
+        
+        $this->assertFalse( cPHP::Ary::create(array("key" => "value"))->keyExists(14) );
+        $this->assertTrue( cPHP::Ary::create(array("key" => "value"))->keyExists("key") );
+    }
+    
     public function testSeek ()
     {
         $ary = cPHP::Ary::range(0, 19);
@@ -555,6 +564,14 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testImplode ()
+    {
+        $ary = new cPHP::Ary(array(5, "string", "other"));
+        
+        $this->assertEquals( "5stringother", $ary->implode() );
+        $this->assertEquals( "5, string, other", $ary->implode(", ") );
+    }
+    
     public function testCollect ()
     {
         
@@ -571,6 +588,83 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 cPHP::Ary::create( array( "50", "90") )->collect($lambda)->get()
             );
         
+    }
+    
+    public function testFilter ()
+    {
+        
+        $oddTest = function( $first, $second ) {
+            return $first % 2 == 0;
+        };
+        
+        $ary = new cPHP::Ary( array(1, 2, 3, 4, 5 ) );
+
+        $this->assertEquals(
+                array(1 => 2, 3 => 4),
+                $ary->filter( $oddTest )->get()
+            );
+        
+        
+        $ary = new cPHP::Ary( array("1", "2", 3, 4, "5" ) );
+
+        $this->assertEquals(
+                array(0 => "1", 1 => "2", 4 => "5"),
+                $ary->filter( "is_string" )->get()
+            );
+        
+    }
+    
+    public function testCompact ()
+    {
+        
+        $ary = new cPHP::Ary( array( 0, TRUE, NULL, "string", FALSE, 1, array(), array(1.5, ""), "  ", "0" ) );
+        
+        $this->assertEquals(
+                array( 1 => TRUE, 3 => "string", 5 => 1, 7 => array(1.5), 9 => "0"),
+                $ary->compact()->get()
+            );
+
+        $this->assertEquals(
+                array( 1 => TRUE, 2 => NULL, 3 => "string", 4 => FALSE, 5 => 1, 7 => array(1.5), 9 => "0"),
+                $ary->compact( ALLOW_FALSE | ALLOW_NULL )->get()
+            );
+        
+        
+        $ary = new cPHP::Ary(array(
+                new cPHP::Ary(array("full", "of", "stuff", FALSE)),
+                new cPHP::Ary,
+                array(1.5, ""),
+            ));
+        
+        $ary = $ary->compact();
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        
+        $ary = $ary->get();
+        
+        $this->assertArrayHasKey( 0, $ary );
+        $this->assertArrayHasKey( 2, $ary );
+        $this->assertArrayNotHasKey( 1, $ary );
+        
+        $this->assertThat( $ary[0], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array("full", "of", "stuff"),
+                $ary[0]->get()
+            );
+        
+        $this->assertType("array", $ary[2]);
+        $this->assertEquals( array(1.5), $ary[2] );
+        
+    }
+    
+    public function testUnique ()
+    {
+        $ary = new cPHP::Ary(array(1, 2, 4, 2, 9, 1, 6 ));
+        
+        $this->assertThat( $ary->unique(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array(0 => 1, 1 => 2, 2 => 4, 4 => 9, 6 => 6 ),
+                $ary->unique()->get()
+            );
     }
     
 }

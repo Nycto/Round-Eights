@@ -5,14 +5,12 @@
  * @package Filters
  */
 
-if (!isset($_SERVER["SCRIPT_FILENAME"]) || strcasecmp($_SERVER["SCRIPT_FILENAME"], __FILE__) == 0) die("This file can not be loaded directly");
-
 /**
  * Collects a list of filters into a single filter
  *
  * This will feed the result of each filter in to the next
  */
-class Filter implements iFilter
+class Filter implements cPHP::iface::Filter
 {
     
     /**
@@ -37,7 +35,7 @@ class Filter implements iFilter
      * @param object $filter The filter to add
      * @return object Returns a self reference
      */
-    public function add ( iFilter $filter )
+    public function add ( cPHP::iface::Filter $filter )
     {
         $this->filters[] = $filter;
         return $this;

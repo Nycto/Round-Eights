@@ -10,7 +10,7 @@ namespace cPHP;
 /**
  * Base class for Argument Currying classes
  */
-abstract class Curry
+abstract class Curry implements cPHP::iface::Filter
 {
 
     /**
@@ -162,11 +162,102 @@ abstract class Curry
     }
     
     /**
+     * Set the start offset used to slice up the call arguments
      *
+     * @param Integer $offset
+     * @return object Returns a self reference
      */
     public function setOffset ( $offset )
     {
-        
+        $this->offset = intval($offset);
+        return $this;
+    }
+    
+    /**
+     * Returns the argument slicing offset
+     *
+     * @return Integer
+     */
+    public function getOffset ()
+    {
+        return $this->offset;
+    }
+    
+    /**
+     * Returns the argument slicing offset
+     *
+     * @return object Returns a self reference
+     */
+    public function clearOffset ()
+    {
+        $this->offset = 0;
+        return $this;
+    }
+    
+    /**
+     * Set the length limit for slicing up the call arguments
+     *
+     * @param Integer $limit
+     * @return object Returns a self reference
+     */
+    public function setLimit ( $limit )
+    {
+        $this->limit = intval($limit);
+        return $this;
+    }
+    
+    /**
+     * Returns whether the argument slicing limit is set
+     *
+     * @return Boolean
+     */
+    public function issetLimit ()
+    {
+        return isset($this->limit);
+    }
+    
+    /**
+     * Returns the argument slicing limit
+     *
+     * @return FALSE|Integer Returns FALSE if no limit is set
+     */
+    public function getLimit ()
+    {
+        if ( !$this->issetLimit() )
+            return FALSE;
+        else
+            return $this->limit;
+    }
+    
+    /**
+     * Clears the argument slicing limit
+     *
+     * @return object Returns a self reference
+     */
+    public function clearLimit ()
+    {
+        unset( $this->limit );
+        return $this;
+    }
+    
+    /**
+     * Clears both the argument slicing limit and the offset
+     *
+     * @return object Returns a self reference
+     */
+    public function clearSlicing ()
+    {
+        return $this->clearLimit()->clearOffset();
+    }
+    
+    /**
+     * Clears all the settings from this instance
+     *
+     * @return object Returns a self reference 
+     */
+    public function clear ()
+    {
+        return $this->clearArgs()->clearSlicing();
     }
     
     /**
@@ -177,13 +268,14 @@ abstract class Curry
      */
     public function collectArgs ( array $args )
     {
-        if ( $this->offset != 0 || !isset($this->length) ) {
+        
+        // Slicing is only needed if the offset is not 0, or they have inflicted a length limit
+        if ( $this->offset != 0 || isset($this->limit) ) {
             
-            if ( !isset($this->length) )
-                $args = array_slice( $args, $this->offset );
+            if ( isset($this->limit) )
+                $args = array_slice( $args, $this->offset, $this->limit );
             else
-                $args = array_slice( $args, $this->offset, $this->length );
-            
+                $args = array_slice( $args, $this->offset );
         }
         
         return array_merge( $this->leftArgs, $args, $this->rightArgs );
@@ -195,7 +287,7 @@ abstract class Curry
      * @param array $args The list of arguments to apply to this function
      * @return mixed Returns the results of the function call
      */
-    abstract public function apply ( array $args );
+    abstract public function apply ( array $args = array() );
     
     /**
      * Calls the contained function with the given arguments
@@ -219,6 +311,17 @@ abstract class Curry
     {
         $args = func_get_args();
         return $this->apply( $args );
+    }
+    
+    /**
+     * Method for use with the filtering objects. Invokes the contained method with the given value
+     *
+     * @param $value mixed The value to be filtered
+     * @return mixed The result of the filtering 
+     */
+    public function filter ( $value )
+    {
+        return $this->apply( array($value) );
     }
     
 }

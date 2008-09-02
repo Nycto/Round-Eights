@@ -5,12 +5,12 @@
  * @package Filters
  */
 
-if (!isset($_SERVER["SCRIPT_FILENAME"]) || strcasecmp($_SERVER["SCRIPT_FILENAME"], __FILE__) == 0) die("This file can not be loaded directly");
+namespace cPHP::iface;
 
 /**
  * Basic filter definition
  */
-interface iFilter {
+interface Filter {
     
     /**
      * Takes a value, processes it in a standard way and returns the result

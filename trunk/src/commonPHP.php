@@ -33,7 +33,7 @@ function __autoload ( $class ) {
     
     $first = reset( $class );
     
-    if ( $first == "interface" ) 
+    if ( $first == "iface" ) 
         $class = cPHP_dir_interfaces . implode( "/", array_slice( $class, 1 ) ) .".php";
         
     else

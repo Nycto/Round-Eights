@@ -113,11 +113,11 @@ class classes_exception_tests extends PHPUnit_Framework_TestCase
         
     }
     
-    public function testGetTraceOffsetString ()
+    public function testData ()
     {
-        $err = new cPHP::Exception();
+        $err = new cPHP::Exception;
         
-        
+        $this->assertSame( $err, $err->addData("lbl", 20) );
     }
     
 }

@@ -141,6 +141,124 @@ class classes_curry_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals( array(), $curry->getRight() );  
     }
     
+    public function testOffset ()
+    {
+        
+        $curry = new cPHP::Curry::Call( "trim" );
+        
+        $this->assertEquals( 0, $curry->getOffset() );
+        
+        $this->assertSame( $curry, $curry->setOffset( 1 ) );
+        
+        $this->assertEquals( 1, $curry->getOffset() );
+        
+        $this->assertSame( $curry, $curry->clearOffset() );
+        
+        $this->assertEquals( 0, $curry->getOffset() );
+        
+        $this->assertSame( $curry, $curry->setOffset( 5 ) );
+        
+        $this->assertEquals( 5, $curry->getOffset() );
+    }
+    
+    public function testLimit ()
+    {
+        $curry = new cPHP::Curry::Call( "trim" );
+        
+        $this->assertFalse( $curry->issetLimit() );
+        $this->assertFalse( $curry->getLimit() );
+        
+        $this->assertSame( $curry, $curry->setLimit( 2 ) );
+        
+        $this->assertTrue( $curry->issetLimit() );
+        $this->assertEquals( 2, $curry->getLimit() );
+        
+        $this->assertSame( $curry, $curry->clearLimit() );
+        
+        $this->assertFalse( $curry->issetLimit() );
+        $this->assertFalse( $curry->getLimit() );
+        
+        $this->assertSame( $curry, $curry->setLimit( 5 ) );
+        
+        $this->assertTrue( $curry->issetLimit() );
+        $this->assertEquals( 5, $curry->getLimit() );
+    }
+    
+    public function testClearSlicing ()
+    {
+        
+        $curry = new cPHP::Curry::Call( "trim" );
+        $curry->setLimit( 1 );
+        $curry->setOffset( 1 );
+        
+        $this->assertSame( $curry, $curry->clearSlicing() );
+        
+        $this->assertEquals( 0, $curry->getOffset() );
+        $this->assertFalse( $curry->issetLimit() );
+    }
+    
+    public function testClear ()
+    {
+        
+        $curry = new cPHP::Curry::Call( "trim" );
+        $curry->setRight("wakka", "peanut");
+        $curry->setLeft("bean", "orange");
+        $curry->setLimit( 1 );
+        $curry->setOffset( 1 );
+        
+        
+        $this->assertSame( $curry, $curry->clear() );
+        
+        $this->assertEquals( array(), $curry->getLeft() );
+        $this->assertEquals( array(), $curry->getRight() );  
+        $this->assertEquals( 0, $curry->getOffset() );
+        $this->assertFalse( $curry->issetLimit() );
+        
+    }
+    
+    public function testCollectArgs ()
+    {
+        $curry = new cPHP::Curry::Call( "trim" );
+        
+        $this->assertEquals(
+                array(1, 2, 3),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+        
+        $curry->setLeft("l1", "l2");
+        $this->assertEquals(
+                array("l1", "l2", 1, 2, 3),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+        
+        $curry->setRight("r1", "r2");
+        $this->assertEquals(
+                array("l1", "l2", 1, 2, 3, "r1", "r2"),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+        
+        $curry->setOffset( 1 );
+        $this->assertEquals(
+                array("l1", "l2", 2, 3, "r1", "r2"),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+        
+        $curry->setLimit( 1 );
+        
+        $this->assertEquals(
+                array("l1", "l2", 2, "r1", "r2"),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+        
+        $curry->clear();
+        
+        $curry->setLimit( 2 );
+        $this->assertEquals(
+                array(1, 2),
+                $curry->collectArgs( array(1, 2, 3) )
+            );
+    }
+    
 }
 
 ?>

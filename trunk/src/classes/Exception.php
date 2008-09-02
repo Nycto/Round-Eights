@@ -33,6 +33,11 @@ class Exception extends ::Exception
      * Identifies the offset in the backtrace that caused the problem
      */
     protected $fault;
+    
+    /**
+     * Stores specific exception data. Each item has a label and a value
+     */
+    protected $data = array();
 
     /**
      * Set the global verbosity of the errors
@@ -212,6 +217,33 @@ class Exception extends ::Exception
         
         return $this->getTraceByOffset( $this->getFaultOffset() );
     }
+    
+    /**
+     * Adds a piece of data to this instance
+     *
+     * @param String $label The label of this data
+     * @param mixed $data The actual data
+     * @return object Returns a self reference
+     */
+    public function addData ( $label, $value )
+    {
+        $this->data[] = array(
+                "label" => trim(strval($label)),
+                "value" => $value
+            );
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the data list for the current instance
+     *
+     * @return object Returns an array object. Each entry is a piece of data with a label and value
+     */
+    public function getData ()
+    {
+        return new cPHP::Ary( $this->data );
+    }
 
     /**
      * Returns a string detailing a trace offset
@@ -229,11 +261,24 @@ class Exception extends ::Exception
         foreach ($trace['args'] AS $arg) {
             $args[] = getDump($arg);
         }
+        
+        if ( $trace->keyExists('function') ) {
+            $function = $trace['function'];
+            
+            if ( $trace->keyExists('type') )
+                $function = $trace['type'] . $function;
+            
+            if ( $trace->keyExists('class') )
+                $function = $trace['class'] . $function;
+        }
+        else {
+            $function = FALSE;
+        }
 
-        return (array_key_exists('file', $trace)?"  File: ". $trace['file'] ."\n":"")
-            .(array_key_exists('line', $trace)?"  Line: ". $trace['line'] ."\n":"")
-            .(array_key_exists('function', $trace)?"  Function: ". $trace['function'] ."\n":"")
-            .(count($args) > 0?"  Func Args: ". implode(", ", $args) ."\n":"");
+        return ( $trace->keyExists('file') ?"  File: ". $trace['file'] ."\n" : "" )
+            .( $trace->keyExists('line') ?"  Line: ". $trace['line'] ."\n" : "" )
+            .( $function ? "  Function: ". $function ."\n" : "" )
+            .( count($args) > 0 ? "  Arguments:\n    ". implode("\n    ", $args) ."\n" : "" );
     }
 
     /**
@@ -243,24 +288,36 @@ class Exception extends ::Exception
      * @param Integer $wrapFlag
      * @return String A string of HTML
      */
-    public function getTraceOffsetHTML ($offset, $wrapFlag = RESTRICT)
+    public function getTraceOffsetHTML ($offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
     {
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 
-        if ($trace === FALSE)
-            return NULL;
-
         $args = Array();
         foreach ($trace['args'] AS $arg) {
-            $args[] = getDump($arg);
+            $args[] = htmlspecialchars( getDump($arg) );
         }
-
-        return "<dl>"
-            .(array_key_exists('file', $trace)?"<dt>File</dt><dd>". $trace['file'] ."</dd>":"")
-            .(array_key_exists('line', $trace)?"<dt>Line</dt><dd>". $trace['line'] ."</dd>":"")
-            .(array_key_exists('function', $trace)?"<dt>Function</dt><dd>". $trace['function'] ."</dd>":"")
-            .(count($args) > 0?"<dt>Func Args</dt><dd>". implode("</dd><dd>", $args) ."</dd>":"")
+        
+        if ( $trace->keyExists('function') ) {
+            $function = $trace['function'];
+            
+            if ( $trace->keyExists('type') )
+                $function = $trace['type'] . $function;
+            
+            if ( $trace->keyExists('class') )
+                $function = $trace['class'] . $function;
+        }
+        else {
+            $function = FALSE;
+        }
+            
+        return
+            "<dl class='PHPException_TraceItem'>"
+            .( $trace->keyExists('file') ? "<dt>File</dt><dd>". htmlspecialchars($trace['file']) ."</dd>" : "" )
+            .( $trace->keyExists('line') ? "<dt>Line</dt><dd>". htmlspecialchars($trace['line']) ."</dd>" : "" )
+            .( $function ? "<dt>Function</dt><dd>". htmlspecialchars($function) ."</dd>" : "" )
+            .( count($args) > 0 ? "<dt>Arguments</dt><dd>". implode("</dd><dd>", $args) ."</dd>" : "" )
             ."</dl>";
+            
     }
 
     /**
@@ -286,7 +343,7 @@ class Exception extends ::Exception
         $fault = $this->getFaultOffset();
         if ($fault === FALSE)
             return NULL;
-        return "<b>Caused By</b>". $this->getOffsetHTML($fault);
+        return "<strong>Caused By</strong>". $this->getOffsetHTML($fault);
     }
 
     /**

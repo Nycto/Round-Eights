@@ -11,31 +11,16 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 /**
  * Runs all the tests in the functions folder
  */
-class functions_allTests
+class functions_allTests 
 {
     
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Functions');
+        $suite = new cPHP_Base_TestSuite('commonPHP Functions');
         
         $suite->addTestSuite( 'general' );
 
-        // Now we automaticall find all tests in the current directory, include their files, and add them to this suite
-        $dir = rtrim( dirname( __FILE__ ), "/" ) ."/";
-        $tests = glob($dir . "*.php");
-        foreach( $tests AS $file ) {
-            
-            $base = basename( $file );
-            
-            if ( $base == basename( __FILE__ ) )
-                continue;
-            
-            require_once $file;
-            
-            $base = str_replace( ".php", "", $base );
-            
-            $suite->addTestSuite('functions_'. $base);
-        }
+        $suite->addFromFiles( "functions_", __DIR__, basename(__FILE__) );
         
         return $suite;
     }

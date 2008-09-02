@@ -16,26 +16,11 @@ class classes_allTests
     
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Classes');
+        $suite = new cPHP_Base_TestSuite('commonPHP Classes');
         
         $suite->addTestSuite( 'general' );
 
-        // Now we automaticall find all tests in the current directory, include their files, and add them to this suite
-        $dir = rtrim( dirname( __FILE__ ), "/" ) ."/";
-        $tests = glob($dir . "*.php");
-        foreach( $tests AS $file ) {
-            
-            $base = basename( $file );
-            
-            if ( $base == basename( __FILE__ ) )
-                continue;
-            
-            require_once $file;
-            
-            $base = str_replace( ".php", "", $base );
-            
-            $suite->addTestSuite('classes_'. $base);
-        }
+        $suite->addFromFiles( "classes_", __DIR__, basename(__FILE__) );
         
         return $suite;
     }
