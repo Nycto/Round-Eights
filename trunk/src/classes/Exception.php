@@ -27,7 +27,7 @@ class Exception extends ::Exception
     /**
      * A description of this Exception
      */
-    protected $description = "A General Error Occured";
+    protected $description = "General Errors";
 
     /**
      * Identifies the offset in the backtrace that caused the problem
@@ -72,6 +72,17 @@ class Exception extends ::Exception
 
         if ( !is_bool($fault) && !is_null($fault) )
             $this->setFault($fault);
+    }
+    
+    /**
+     * Invoking an exception will cause it to be thrown
+     *
+     * @param Integer $shift Passing an argument allws you to shift the fault
+     */
+    public function __invoke ( $shift = -1 )
+    {
+        $this->shiftFault( $shift );
+        throw $this;
     }
 
     /**
@@ -227,11 +238,7 @@ class Exception extends ::Exception
      */
     public function addData ( $label, $value )
     {
-        $this->data[] = array(
-                "label" => trim(strval($label)),
-                "value" => $value
-            );
-        
+        $this->data[ trim(strval($label)) ] = $value;
         return $this;
     }
     
@@ -243,6 +250,22 @@ class Exception extends ::Exception
     public function getData ()
     {
         return new cPHP::Ary( $this->data );
+    }
+    
+    /**
+     * Returns the value of a specific piece of data
+     *
+     * @param String $label The label to fetch
+     * @return mixed Returns the value. If it the requested data isn't set, NULL is returned
+     */
+    public function getDataValue ( $label )
+    {
+        $label = trim(strval($label));
+        
+        if ( array_key_exists($label, $this->data) )
+            return $this->data[ $label ];
+        else
+            return NULL;
     }
 
     /**
@@ -270,6 +293,8 @@ class Exception extends ::Exception
             
             if ( $trace->keyExists('class') )
                 $function = $trace['class'] . $function;
+            
+            $function .= "()";
         }
         else {
             $function = FALSE;
@@ -305,18 +330,28 @@ class Exception extends ::Exception
             
             if ( $trace->keyExists('class') )
                 $function = $trace['class'] . $function;
+                
+            $function .= "()";
         }
         else {
             $function = FALSE;
         }
             
         return
-            "<dl class='PHPException_TraceItem'>"
-            .( $trace->keyExists('file') ? "<dt>File</dt><dd>". htmlspecialchars($trace['file']) ."</dd>" : "" )
-            .( $trace->keyExists('line') ? "<dt>Line</dt><dd>". htmlspecialchars($trace['line']) ."</dd>" : "" )
-            .( $function ? "<dt>Function</dt><dd>". htmlspecialchars($function) ."</dd>" : "" )
-            .( count($args) > 0 ? "<dt>Arguments</dt><dd>". implode("</dd><dd>", $args) ."</dd>" : "" )
-            ."</dl>";
+            "<dl class='cPHP_Exception_TraceItem'>\n"
+            .( $trace->keyExists('file') ?
+                    "<dt class='cPHP_Exception_TraceItem_File'>File</dt>\n"
+                    ."<dd class='cPHP_Exception_TraceItem_File'>". htmlspecialchars($trace['file']) ."</dd>\n" : "" )
+            .( $trace->keyExists('line') ?
+                    "<dt class='cPHP_Exception_TraceItem_Line'>Line</dt>\n"
+                    ."<dd class='cPHP_Exception_TraceItem_Line'>". htmlspecialchars($trace['line']) ."</dd>\n" : "" )
+            .( $function ?
+                    "<dt class='cPHP_Exception_TraceItem_Func'>Function</dt>\n"
+                    ."<dd class='cPHP_Exception_TraceItem_Func'>". htmlspecialchars($function) ."</dd>\n" : "" )
+            .( count($args) > 0 ?
+                    "<dt class='cPHP_Exception_TraceItem_Arg'>Arguments</dt>\n"
+                    ."<dd class='cPHP_Exception_TraceItem_Arg'>". implode("</dd><dd>", $args) ."</dd>\n" : "" )
+            ."</dl>\n";
             
     }
 
@@ -343,41 +378,58 @@ class Exception extends ::Exception
         $fault = $this->getFaultOffset();
         if ($fault === FALSE)
             return NULL;
-        return "<strong>Caused By</strong>". $this->getOffsetHTML($fault);
+        
+        return
+            "<div class='cPHP_Exception_Fault'>\n"
+            ."<h3>Caused By</h3>\n"
+            .$this->getTraceOffsetHTML($fault)
+            ."</div>\n";
     }
 
     /**
      * Returns specifics about this exception
+     *
+     * @return String
      */
     public function getDetailsString ()
     {
-
-        if (!$this->issetMessage() && !$this->issetCode() && !$this->issetData() && !$this->issetLabel())
+        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        else
-            return "Details:\n"
-                .($this->issetCode()?"  Code: ". $this->getCode() ."\n":"")
-                .($this->issetLabel()?"  ". $this->label_string .": ". $this->getLabel() ."\n":"")
-                .($this->issetData()?"  ". $this->data_string .": ". $this->getDataString() ."\n":"")
-                .($this->issetMessage()?"  Message: ". $this->getMessage() ."\n":"");
+        
+        $data = array();
+        foreach ( $this->data AS $key => $value )
+            $data[] = $key .": ". $value;
+        
+        return "Details:\n"
+                .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
+                .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
+                .( count($data) > 0 ? "  ". implode("\n  ", $data) ."\n" : "" );
     }
 
     /**
      * Returns specifics about this exception rendered as HTML
+     *
+     * @return String
      */
     public function getDetailsHTML ()
     {
-
-        if (!$this->issetMessage() && !$this->issetCode() && !$this->issetData() && !$this->issetLabel())
+        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        else
-            return "<b>Details:</b>"
-                ."<dl>"
-                .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>":"")
-                .($this->issetLabel()?"<dt>". $this->label_string ."</dt><dd>". $this->getLabel() ."</dd>":"")
-                .($this->issetData()?"<dt>". $this->data_string ."</dt><dd>". $this->getDataString() ."</dd>":"")
-                .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>":"")
-                ."</dl>";
+        
+        $data = array();
+        foreach ( $this->data AS $key => $value )
+            $data[] = "<dt>". htmlspecialchars($key) ."</dt>"
+                ."<dd>". $value ."</dd>";
+
+        return
+            "<div class='cPHP_Exception_Details'>\n"
+            ."<h3>Details</h3>\n"
+            ."<dl>\n"
+            .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
+            .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>\n":"")
+            .( count($data) > 0 ? implode("\n", $data) ."\n" : "" )
+            ."</dl>\n"
+            ."</div>\n";
     }
 
     /**
@@ -399,11 +451,16 @@ class Exception extends ::Exception
      */
     public function getThrownHTML ()
     {
-        return "<strong>Thrown At:</strong>"
-            ."<dl>"
-                ."<dt>File</dt><dd>". $this->getFile() ."</dd>"
-                ."<dt>Line</dt><dd>". $this->getLine() ."</dd>"
-            ."</dl>";
+        return
+            "<div class='cPHP_Exception_Thrown'>\n"
+            ."<h3>Thrown At:</h3>\n"
+            ."<dl>\n"
+                ."<dt>File</dt>\n"
+                ."<dd>". $this->getFile() ."</dd>\n"
+                ."<dt>Line</dt>\n"
+                ."<dd>". $this->getLine() ."</dd>\n"
+            ."</dl>"
+            ."</div>";
     }
 
     /**
@@ -425,13 +482,54 @@ class Exception extends ::Exception
         else
             return NULL;
     }
+    
+    /**
+     * Returns a well formatted version of the stack trace
+     *
+     * @return String
+     */
+    public function getTraceString ()
+    {
+        $result = "";
+        
+        $length = count( $this->getTrace() );
+        
+        for( $i = 0; $i < $length; $i++ ) {
+            $result .=
+                "  #". ( $length - $i ) ."\n"
+                ."  ". str_replace("\n", "\n  ", rtrim($this->getTraceOffsetString( $i )) ) ."\n";
+        }
+        
+        return "Full Stack Trace:\n". $result ."  #0\n    {main}\n";
+    }
 
     /**
      * Returns the stack trace formatted as HTML
+     *
+     * @return String
      */
     public function getTraceHTML ()
     {
-        return "<ol>". preg_replace('/^\#[0-9]+\s+(.+)$/m', '<li>\1</li>', $this->getTraceAsString() ) ."</ol>";
+        
+        $result = "";
+        
+        $length = count( $this->getTrace() );
+        
+        for( $i = 0; $i < $length; $i++ ) {
+            $result .=
+                "<li>\n"
+                .$this->getTraceOffsetHTML( $i )
+                ."</li>\n";
+        }
+        
+        return
+            "<div class='cPHP_Exception_Trace'>\n"
+            ."<h3>Full Stack Trace</h3>\n"
+            ."<ol>"
+            .$result
+            ."<li>{main}</li>\n"
+            ."</ol>\n"
+            ."</div>\n";
     }
 
     /**
@@ -443,8 +541,7 @@ class Exception extends ::Exception
             .$this->getDetailsString()
             .$this->getFaultString()
             .$this->getThrownString()
-            ."Full Stack Trace:\n  "
-            .str_replace( "\n", "\n  ", $this->getTraceAsString() );
+            .$this->getTraceString();
     }
 
     /**
@@ -452,11 +549,15 @@ class Exception extends ::Exception
      */
     public function getVerboseHTML ()
     {
-        return "<dl><dt>Exception Thrown</dt><dd>". $this->getClassString() ."</dd></dl>\n"
-            .$this->getDetailsHTML() ."\n"
-            .$this->getFaultHTML() ."\n"
-            .$this->getThrownHTML() ."\n"
-            ."<b>Full Stack Trace:</b>" .$this->getTraceHTML() ."\n";
+        return
+            "<div class='cPHP_Exception'>\n"
+            ."<h1>Exception Thrown</h1>\n"
+            ."<h2>". $this->getClassString() ."</h2>\n"
+            .$this->getDetailsHTML()
+            .$this->getFaultHTML()
+            .$this->getThrownHTML()
+            .$this->getTraceHTML() 
+            ."</div>";
     }
 
     /**

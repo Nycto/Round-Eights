@@ -117,7 +117,17 @@ class classes_exception_tests extends PHPUnit_Framework_TestCase
     {
         $err = new cPHP::Exception;
         
-        $this->assertSame( $err, $err->addData("lbl", 20) );
+        $this->assertSame( $err, $err->addData("Data Label", 20) );
+        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals( array("Data Label" => 20), $err->getData()->get() );
+        $this->assertEquals( 20, $err->getDataValue("Data Label") );
+        
+    }
+    
+    public function testThrowing ()
+    {
+        $this->setExpectedException('cPHP::Exception');
+        throw new cPHP::Exception;
     }
     
 }
