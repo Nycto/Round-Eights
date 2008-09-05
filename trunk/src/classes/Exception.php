@@ -70,7 +70,7 @@ class Exception extends ::Exception
     {
         parent::__construct($message, $code);
 
-        if ( !is_bool($fault) && !is_null($fault) )
+        if ( !::cPHP::is_vague($fault, ::cPHP::ALLOW_ZERO) )
             $this->setFault($fault);
     }
     
@@ -147,7 +147,7 @@ class Exception extends ::Exception
         $trace = $this->getTrace();
 
         if (count($trace) <= 0)
-            return FALSE;
+            return $this;
 
         $trace = new cPHP::Ary( $trace );
         
@@ -192,22 +192,25 @@ class Exception extends ::Exception
     /**
      * Sets the fault relative to it's current value
      *
-     * @param Integer
+     * @param Integer $shift
+     * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function shiftFault ($shift = -1)
+    public function shiftFault ($shift = 1, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
     {
+
+        // Shifting the fault when no fault is set marks it to the end of the list
+        if ( !$this->issetFault() )
+            return $this->setFault(0);
+            
         $shift = intval(reduce($shift));
 
         $trace = new cPHP::Ary( $this->getTrace() );
 
         if (count($trace) <= 0)
             return FALSE;
-
-        if ( !$this->issetFault() )
-            $fault = -1;
-        else
-            $fault = $this->getFaultOffset();
+        
+        $fault = $this->getFaultOffset();
 
         $fault += $shift;
 

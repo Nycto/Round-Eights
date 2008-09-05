@@ -125,7 +125,7 @@ class Ary implements Iterator, Countable, ArrayAccess
         switch ($wrapFlag) {
             
             default:
-                throw new ArgumentError(1, "wrapFlag", "Invalid wrap type");
+                throw new ::cPHP::Exception::Data::Argument(1, "wrapFlag", "Invalid wrap type");
             
             case self::OFFSET_NONE:
                 if (!between($offset, 0 - $length, $length - 1))
