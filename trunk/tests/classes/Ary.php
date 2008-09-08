@@ -15,8 +15,8 @@ class classes_ary
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Array Class');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP Array Class');
+        $suite->addLib();
         $suite->addTestSuite( 'classes_ary_tests' );
         return $suite;
     }

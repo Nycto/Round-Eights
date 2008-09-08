@@ -18,7 +18,7 @@ class classes_allTests
     {
         $suite = new cPHP_Base_TestSuite('commonPHP Classes');
         
-        $suite->addTestSuite( 'general' );
+        $suite->addLib();
 
         $suite->addFromFiles( "classes_", __DIR__, basename(__FILE__) );
         

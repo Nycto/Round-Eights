@@ -15,8 +15,8 @@ class functions_strings
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP String Functions');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP String Functions');
+        $suite->addLib();
         $suite->addTestSuite( 'functions_strings_tests' );
         return $suite;
     }

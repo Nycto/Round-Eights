@@ -15,8 +15,8 @@ class functions_debug
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Debug Functions');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP Debug Functions');
+        $suite->addLib();
         $suite->addTestSuite( 'functions_debug_tests' );
         return $suite;
     }

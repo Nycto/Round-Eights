@@ -18,8 +18,8 @@ class AllTests
     
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('All commonPHP Tests');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('All commonPHP Tests');
+        $suite->addLib();
         $suite->addTestSuite( 'functions_allTests' );
         $suite->addTestSuite( 'classes_allTests' );
         return $suite;

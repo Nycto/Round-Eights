@@ -15,8 +15,8 @@ class functions_general
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP general Functions');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP general Functions');
+        $suite->addLib();
         $suite->addTestSuite( 'functions_general_tests' );
         return $suite;
     }

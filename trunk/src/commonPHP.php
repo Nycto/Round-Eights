@@ -112,7 +112,12 @@ cPHP::defineIf ( "_BASENAME", basename($_SERVER['SCRIPT_FILENAME']) );
 
 $commonPHP_base = pathinfo(_BASENAME);
 cPHP::defineIf( "_FILENAME", $commonPHP_base['filename'] );
-cPHP::defineIf( "_EXTENSION", $commonPHP_base['extension'] );
+
+if ( array_key_exists('extension', $commonPHP_base) )
+    cPHP::defineIf( "_EXTENSION", $commonPHP_base['extension'] );
+else
+    cPHP::defineIf( "_EXTENSION", NULL );
+    
 unset( $commonPHP_base );
 
 cPHP::defineIf( "_CWD", rtrim( realpath( getcwd() ), "/" ) ."/" );

@@ -46,11 +46,14 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
                 continue;
             
             if ( is_dir( $search . $file ) )
-                $result = array_merge( $result, $this->collectTestFiles( $base, $file ) );
-            else if ( preg_match('/\.php$/i', $file) )
+                $result = array_merge( $result, $this->collectTestFiles( $base, $dir . $file ) );
+                
+            else if ( preg_match('/.+\.php$/i', $file) )
                 $result[] = $dir . $file;
             
         }
+        
+        sort( $result );
         
         return $result;
     }
@@ -61,6 +64,7 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
      * @param String $testPrefix
      * @param String $dir The directory to search in
      * @param String $exclude The file name to exclude from the search
+     * @return object Returns a self reference
      */
     public function addFromFiles ( $testPrefix, $dir, $exclude )
     {
@@ -82,6 +86,24 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
             $this->addTestSuite( $testPrefix . $file );
         }
         
+        return $this;
+    }
+    
+    /**
+     * If needed, this will add a test to include the cPHP library and the tests associated with including it
+     *
+     * @return object Returns a self reference
+     */
+    public function addLib ()
+    {
+        static $included;
+        
+        if ( !isset($included) || !$included ) {
+            $included = TRUE;
+            $this->addTestSuite( 'general' );
+        }
+        
+        return $this;
     }
     
 }

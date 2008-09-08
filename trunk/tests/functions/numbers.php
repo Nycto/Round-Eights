@@ -15,8 +15,8 @@ class functions_numbers
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP numeric Functions');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP numeric Functions');
+        $suite->addLib();
         $suite->addTestSuite( 'functions_numbers_tests' );
         return $suite;
     }

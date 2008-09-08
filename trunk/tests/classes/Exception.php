@@ -15,8 +15,8 @@ class classes_exception
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Exception Class');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP Exception Class');
+        $suite->addLib();
         $suite->addTestSuite( 'classes_exception_tests' );
         return $suite;
     }

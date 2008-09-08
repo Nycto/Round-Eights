@@ -17,13 +17,11 @@ class functions_allTests
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite('commonPHP Functions');
-        
-        $suite->addTestSuite( 'general' );
-
+        $suite->addLib();
         $suite->addFromFiles( "functions_", __DIR__, basename(__FILE__) );
-        
         return $suite;
     }
 
 }
+
 ?>

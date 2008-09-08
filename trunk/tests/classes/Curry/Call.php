@@ -15,8 +15,8 @@ class classes_curry_call
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('commonPHP Curry Call Class');
-        $suite->addTestSuite( 'general' );
+        $suite = new cPHP_Base_TestSuite('commonPHP Curry Call Class');
+        $suite->addLib();
         $suite->addTestSuite( 'classes_curry_call_tests' );
         return $suite;
     }
