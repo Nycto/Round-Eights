@@ -17,7 +17,7 @@ class Argument extends ::cPHP::Exception::Data
     protected $description = "Errors caused by faulty arguments";
 
     /**
-     * The argument at fault
+     * The offset of the argument at fault
      */
     protected $arg;
 
@@ -66,7 +66,7 @@ class Argument extends ::cPHP::Exception::Data
             trigger_error("Error fetching fault trace arguments", E_USER_ERROR);
 
         if (count($fault['args']) <= 0)
-            return $this;
+            return $this->unsetArg();
         
         $fault['args'] = new ::cPHP::Ary($fault['args']);
 
@@ -81,13 +81,24 @@ class Argument extends ::cPHP::Exception::Data
     }
 
     /**
-     * Boolean whether or not an arg is set
+     * Boolean whether or not an argument is set
      *
      * @return Boolean
      */
     public function issetArg ()
     {
         return isset($this->arg);
+    }
+    
+    /**
+     * Unsets the argument pointer
+     *
+     * @return object Returns a self reference
+     */
+    public function unsetArg ()
+    {
+        $this->arg = NULL;
+        return $this;
     }
 
     /**
@@ -112,7 +123,7 @@ class Argument extends ::cPHP::Exception::Data
      */
     public function setFault ($offset, $arg = NULL)
     {
-        $result = parent::setFault($offset);
+        parent::setFault($offset);
 
         if (!::cPHP::is_vague($arg, ::cPHP::ALLOW_ZERO))
             $this->setArg( $arg );
@@ -121,6 +132,17 @@ class Argument extends ::cPHP::Exception::Data
             $this->setArg( $this->arg );
 
         return $this;
+    }
+    
+    /**
+     * Unsets the fault
+     *
+     * @return Object Returns a self reference
+     */
+    public function unsetFault ()
+    {
+        $this->unsetArg();
+        return parent::unsetFault();
     }
 
     /**
@@ -143,19 +165,52 @@ class Argument extends ::cPHP::Exception::Data
     /**
      * Returns specifics about this exception
      *
+     * @return String
+     */
     public function getDetailsString ()
     {
-        
-        if (!$this->issetMessage() && !$this->issetCode() && !$this->issetData() && !$this->issetLabel())
+        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        else
-            return "Details:\n"
-                .($this->issetCode()?"  Code: ". $this->getCode() ."\n":"")
-                .($this->issetLabel()?"  ". $this->label_string .": ". $this->getLabel() ."\n":"")
-                .($this->issetArg()?"  Arg #: ". ($this->getArgOffset() + 1) ."\n":"")
-                .($this->issetData()?"  ". $this->data_string .": ". $this->getDataString() ."\n":"")
-                .($this->issetMessage()?"  Message: ". $this->getMessage() ."\n":"");
-    }*/
+        
+        $data = array();
+        foreach ( $this->data AS $key => $value )
+            $data[] = $key .": ". $value;
+        
+        return "Details:\n"
+                .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
+                .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
+                .( $this->issetArg() ? "  Arg Offset: ". $this->getArgOffset() ."\n" : "" )
+                .( $this->issetArg() ? "  Arg Value: ". ::cPHP::getDump( $this->getArgData() ) ."\n" : "" )
+                .( count($data) > 0 ? "  ". implode("\n  ", $data) ."\n" : "" );
+    }
+
+    /**
+     * Returns specifics about this exception rendered as HTML
+     *
+     * @return String
+     */
+    public function getDetailsHTML ()
+    {
+        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
+            return NULL;
+        
+        $data = array();
+        foreach ( $this->data AS $key => $value )
+            $data[] = "<dt>". htmlspecialchars($key) ."</dt>"
+                ."<dd>". $value ."</dd>";
+
+        return
+            "<div class='cPHP_Exception_Details'>\n"
+            ."<h3>Details</h3>\n"
+            ."<dl>\n"
+            .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
+            .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>\n":"")
+            .( $this->issetArg() ? "<dt>Arg Offset</dt><dd>". $this->getArgOffset() ."</dd>\n" : "" )
+            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". ::cPHP::getDump( $this->getArgData() ) ."</dd>\n" : "" )
+            .( count($data) > 0 ? implode("\n", $data) ."\n" : "" )
+            ."</dl>\n"
+            ."</div>\n";
+    }
 
 }
 

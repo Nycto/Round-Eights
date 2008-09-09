@@ -23,7 +23,7 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
      * @param String $dir A subdirectory of the base to search in
      * @return array
      */
-    private function collectTestFiles ( $base, $dir = FALSE )
+    private function collectFiles ( $base, $dir = FALSE )
     {
         
         $base = rtrim($base, "/" ) ."/";
@@ -46,7 +46,7 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
                 continue;
             
             if ( is_dir( $search . $file ) )
-                $result = array_merge( $result, $this->collectTestFiles( $base, $dir . $file ) );
+                $result = array_merge( $result, $this->collectFiles( $base, $dir . $file ) );
                 
             else if ( preg_match('/.+\.php$/i', $file) )
                 $result[] = $dir . $file;
@@ -71,7 +71,7 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
         
         $dir = rtrim($dir, "/" ) ."/";
         
-        $list = $this->collectTestFiles($dir);
+        $list = $this->collectFiles($dir);
         
         foreach ( $list AS $file ) {
             

@@ -18,6 +18,7 @@ class classes_exception
         $suite = new cPHP_Base_TestSuite('commonPHP Exception Class');
         $suite->addLib();
         $suite->addTestSuite( 'classes_exception_tests' );
+        
         return $suite;
     }
 }

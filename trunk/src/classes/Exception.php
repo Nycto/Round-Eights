@@ -537,6 +537,8 @@ class Exception extends ::Exception
 
     /**
      * Returns a verbose string detailing this exception
+     *
+     * @return String
      */
     public function getVerboseString ()
     {
@@ -549,6 +551,8 @@ class Exception extends ::Exception
 
     /**
      * Returns the HTML for displaying this error
+     *
+     * @return String
      */
     public function getVerboseHTML ()
     {
@@ -565,6 +569,8 @@ class Exception extends ::Exception
 
     /**
      * Returns a short string detailing this exception
+     *
+     * @return String
      */
     public function getShortString ()
     {
@@ -573,6 +579,8 @@ class Exception extends ::Exception
 
     /**
      * Return the HTML version
+     *
+     * @return String
      */
     public function getShortHTML ()
     {
@@ -581,6 +589,8 @@ class Exception extends ::Exception
 
     /**
      * Returns a string about this exception
+     *
+     * @return String
      */
     public function __toString ()
     {
@@ -592,6 +602,8 @@ class Exception extends ::Exception
 
     /**
      * Returns the HTML for this exception
+     *
+     * @return String
      */
     public function toHTML ()
     {
