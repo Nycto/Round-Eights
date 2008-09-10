@@ -5,6 +5,8 @@
  * @package Filters
  */
 
+namespace cPHP;
+
 /**
  * Collects a list of filters into a single filter
  *

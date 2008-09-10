@@ -65,7 +65,7 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
     $haystack = strVal($haystack);
 
     if (empty($needle))
-        throw new ArgumentError(0, 'needle', 'Must not be empty');
+        throw new ::cPHP::Exception::Data::Argument(0, 'needle', 'Must not be empty');
 
     if (!strContains($needle, $haystack, $ignoreCase))
         return new cPHP::Ary;

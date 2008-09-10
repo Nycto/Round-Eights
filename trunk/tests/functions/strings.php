@@ -119,16 +119,12 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
                 cPHP::strOffsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )->get()
             );
 
-        /*
-        try {
-            cPHP::strOffsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
-            $this->assert_exception('ArgumentError');
-        }
-        catch (Exception $err) {
-            $this->assert_exception('ArgumentError', FALSE, $err);
-        }
-        */
-
+    }
+    
+    public function testStrOffsetsException ()
+    {
+        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        cPHP::strOffsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
     }
 
     public function testStrnpos ()
@@ -249,6 +245,12 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
                 "start T tyty yyyy end",
                 cPHP::stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
             );
+    }
+    
+    public function testStripRepeatsException ()
+    {
+        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        cPHP::strOffsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
     }
 
     public function testTruncateWords ()
