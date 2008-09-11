@@ -87,6 +87,12 @@ class classes_curry_call_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals( "called", $callback("argument") );
     }
     
+    public function testInstantiateException ()
+    {
+        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        $callback = new cPHP::Curry::Call( "ThisIsUnUncallableValue" );
+    }
+    
 }
 
 ?>

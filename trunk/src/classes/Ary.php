@@ -129,7 +129,7 @@ class Ary implements Iterator, Countable, ArrayAccess
             
             case self::OFFSET_NONE:
                 if (!between($offset, 0 - $length, $length - 1))
-                    throw new ArgumentError(0, "wrapFlag", "Invalid offset");
+                    throw new ::cPHP::Exception::Data::Argument(0, "wrapFlag", "Invalid offset");
                 
                 else if ($offset >= 0)
                     return $offset;
@@ -384,7 +384,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         $key = reduce($key);
         if ( !array_key_exists($key, $this->array) )
-            throw new ArgumentError(0, "Key", "Key does not exist in the given Array");
+            throw new ::cPHP::Exception::Data::Argument(0, "Key", "Key does not exist in the given Array");
     
         $keyList = array_keys( $this->array );
     
@@ -567,8 +567,8 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function sort( $reverse = FALSE, $type = SORT_REGULAR )
     {
-        if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING )) )
-            throw new ArgumentError(2, "Sort Type", "Invalid Sort Type");
+        if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
+            throw new ::cPHP::Exception::Data::Argument(1, "Sort Type", "Invalid Sort Type");
         
         if ( $reverse )
             arsort( $this->array, $type );
@@ -588,8 +588,8 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function sortByKey( $reverse = FALSE, $type = SORT_REGULAR )
     {
-        if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING )) )
-            throw new ArgumentError(2, "Sort Type", "Invalid Sort Type");
+        if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
+            throw new ::cPHP::Exception::Data::Argument(1, "Sort Type", "Invalid Sort Type");
         
         if ( $reverse )
             ksort( $this->array, $type );
@@ -625,7 +625,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function customSort ( $callback, $assoc = TRUE )
     {
         if ( !is_callable($callback) )
-            throw new ArgumentError(0, "callback", "Must be callable");
+            throw new ::cPHP::Exception::Data::Argument(0, "callback", "Must be callable");
         
         if ( $assoc )
             usort( $this->array, $callback );
@@ -724,7 +724,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         
         if (!is_callable($callback))
-            throw new ArgumentError(0, "Callback", "Must be callable");
+            throw new ::cPHP::Exception::Data::Argument(0, "Callback", "Must be callable");
         
         $sendKey = $this->sendKey( $callback );
         
@@ -749,7 +749,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         
         if (!is_callable($callback))
-            throw new ArgumentError(0, "Callback", "Must be callable");
+            throw new ::cPHP::Exception::Data::Argument(0, "Callback", "Must be callable");
         
         $sendKey = $this->sendKey( $callback );
         

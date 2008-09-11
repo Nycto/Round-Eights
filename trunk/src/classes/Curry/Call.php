@@ -27,7 +27,7 @@ class Call extends cPHP::Curry
     public function __construct ( $callback )
     {
         if ( !is_callable($callback) )
-            throw new ArgumentError( 0, "Callback", "Must be Callable" );
+            throw new cPHP::Exception::Data::Argument( 0, "Callback", "Must be Callable" );
         
         $this->callback = $callback;
     }

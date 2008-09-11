@@ -116,12 +116,12 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
     
     public function testCalcOffset ()
     {
+        try {
+            cPHP::Ary::create(array())->calcOffset(2, "invalid offset value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
         
-        /* Disabled while the custom exceptions are developed
-        $this->assertFalse(
-                cPHP::Ary::create(array())->calcOffset(2, cPHP::Ary::OFFSET_NONE)
-            );
-        */
 
         $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_NONE) );
         $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_NONE) );
@@ -129,11 +129,25 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_NONE) );
         $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_NONE) );
         $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_NONE) );
-
-        /* Disabled while the custom exceptions are developed
-        $this->assert_false( cPHP::Ary::range(1, 5)->calcOffset(5, cPHP::Ary::OFFSET_NONE) );
-        $this->assert_false( cPHP::Ary::range(1, 5)->calcOffset(-6, cPHP::Ary::OFFSET_NONE) );
-        */
+        
+        try {
+            cPHP::Ary::create(array())->calcOffset(2, cPHP::Ary::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        
+        try {
+            cPHP::Ary::range(1, 5)->calcOffset(5, cPHP::Ary::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        
+        try {
+            cPHP::Ary::range(1, 5)->calcOffset(-6, cPHP::Ary::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        
 
         $this->assertEquals(1, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_WRAP) );
         $this->assertEquals(2, cPHP::Ary::range(1, 5)->calcOffset(-8, cPHP::Ary::OFFSET_WRAP) );
@@ -307,6 +321,12 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $ary->keyOffset( 4 ) );
         $this->assertEquals( 5, $ary->keyOffset( 64 ) );
         $this->assertEquals( 3, $ary->keyOffset( 32 ) );
+        
+        try {
+            cPHP::Ary::range(1, 5)->keyOffset(60);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
     }
     
     public function testPointer ()
@@ -562,6 +582,12 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 $ary->get()
             );
         
+        
+        try {
+            $ary->sort( TRUE, "Invalid sort type" );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
     }
     
     public function testImplode ()
@@ -588,6 +614,12 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 cPHP::Ary::create( array( "50", "90") )->collect($lambda)->get()
             );
         
+        
+        try {
+            cPHP::Ary::create()->collect("This is an uncallable value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
     }
     
     public function testFilter ()
@@ -611,6 +643,13 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 array(0 => "1", 1 => "2", 4 => "5"),
                 $ary->filter( "is_string" )->get()
             );
+        
+        
+        try {
+            cPHP::Ary::create()->filter("This is an uncallable value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
         
     }
     

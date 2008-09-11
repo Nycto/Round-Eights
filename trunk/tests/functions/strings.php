@@ -250,7 +250,7 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
     public function testStripRepeatsException ()
     {
         $this->setExpectedException('::cPHP::Exception::Data::Argument');
-        cPHP::strOffsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
+        ::cPHP::stripRepeats( 'Stringy string with multiple occurances of the word string, Stringity string', '' );
     }
 
     public function testTruncateWords ()
@@ -759,6 +759,12 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( "tests", cPHP::pluralize("test", 5) );
         $this->assertEquals( "tries", cPHP::pluralize("try", 5) );
+    }
+    
+    public function testPluralizeException ()
+    {
+        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        cPHP::pluralize( '' );
     }
 
 }

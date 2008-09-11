@@ -167,7 +167,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
 
     if (is_array($repeated) ) {
-        $repeated = cPHP::Ary::create( $repeated )->flatten()->collect("strval");
+        $repeated = ::cPHP::Ary::create( $repeated )->flatten()->collect("strval");
         foreach( $repeated AS $key => $value ) {
             $repeated[ $key ] = preg_quote($value, "/");
         }
@@ -177,8 +177,8 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote(strval($repeated), '/');
     }
 
-    if (is_empty( $repeated ))
-        throw new ArgumentError(1, 'Repeated', 'Must not be empty');
+    if ( is_empty( $repeated ) )
+        throw new ::cPHP::Exception::Data::Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
             '/('. $repeated .')\1+/'. ($ignoreCase?'i':''),
@@ -569,7 +569,7 @@ function pluralize ( $string, $count = 2 )
     $string = strval($string);
 
     if ( is_empty( trim($string) ) )
-        throw new ArgumentError(0, "String", "Must not be empty");
+        throw new ::cPHP::Exception::Data::Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )
         return $string;
