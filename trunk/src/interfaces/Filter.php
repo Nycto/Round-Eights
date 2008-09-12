@@ -10,7 +10,8 @@ namespace cPHP::iface;
 /**
  * Basic filter definition
  */
-interface Filter {
+interface Filter
+{
     
     /**
      * Takes a value, processes it in a standard way and returns the result

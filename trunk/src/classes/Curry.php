@@ -282,12 +282,25 @@ abstract class Curry implements cPHP::iface::Filter
     }
     
     /**
+     * Internal function that actually executs the currying.
+     *
+     * It is given an array of arguments. It should call the method and return the results
+     *
+     * @param array $args The list of arguments to apply to this function
+     * @return mixed Returns the results of the function call
+     */
+    abstract protected function exec ( array $args = array() );
+    
+    /**
      * Calls the method using the contents of an array as the arguments
      *
      * @param array $args The list of arguments to apply to this function
      * @return mixed Returns the results of the function call
      */
-    abstract public function apply ( array $args = array() );
+    public function apply ( array $args = array() )
+    {
+        return $this->exec( $this->collectArgs($args) );
+    }
     
     /**
      * Calls the contained function with the given arguments
@@ -298,7 +311,7 @@ abstract class Curry implements cPHP::iface::Filter
     public function call ()
     {
         $args = func_get_args();
-        return $this->apply( $args );
+        return $this->exec( $this->collectArgs($args) );
     }
     
     /**
@@ -310,7 +323,7 @@ abstract class Curry implements cPHP::iface::Filter
     public function __invoke ()
     {
         $args = func_get_args();
-        return $this->apply( $args );
+        return $this->exec( $this->collectArgs($args) );
     }
     
     /**
@@ -321,7 +334,7 @@ abstract class Curry implements cPHP::iface::Filter
      */
     public function filter ( $value )
     {
-        return $this->apply( array($value) );
+        return $this->exec( $this->collectArgs( array($value) ) );
     }
     
 }

@@ -38,7 +38,7 @@ class Call extends cPHP::Curry
      * @param $args Array The arguments to apply to the callback
      * @return mixed
      */
-    public function apply ( array $args = array() )
+    protected function exec ( array $args = array() )
     {
         
         return call_user_func_array(
