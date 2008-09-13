@@ -774,7 +774,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     
         return $output;
     }
-
     
     /**
      * Applies a given callback to every element in this array
@@ -784,7 +783,19 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function each ( $callback )
     {
+        if (!is_callable($callback))
+            throw new ::cPHP::Exception::Data::Argument(0, "Callback", "Must be callable");
         
+        $sendKey = $this->sendKey( $callback );
+        
+        foreach ( $this->array AS $key => $value ) {
+            if ( $sendKey )
+                call_user_func( $callback, $value, $key );
+            else
+                call_user_func( $callback, $value );
+        }
+        
+        return $this;
     }
     
     /**

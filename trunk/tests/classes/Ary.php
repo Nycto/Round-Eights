@@ -653,6 +653,27 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testEach ()
+    {
+        $result = array();
+        $lambda = function ( $value, $key ) use ( &$result ) {
+            $result[ $value ] = $key;
+        };
+        
+        $ary = cPHP::Ary::create( array( "one" => 50, "two" => 90 ) );
+        
+        $this->assertSame( $ary, $ary->each( $lambda ) );
+        $this->assertEquals( array( 50 => "one", 90 => "two"), $result );
+        $this->assertEquals( array( "one" => 50, "two" => 90 ), $ary->get() );
+        
+        try {
+            $ary->each("This is an uncallable value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        
+    }
+    
     public function testCompact ()
     {
         
