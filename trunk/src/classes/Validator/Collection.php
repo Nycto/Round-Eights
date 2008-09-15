@@ -55,8 +55,28 @@ abstract class Collection extends cPHP::Validator
      * @param Object The validator to addd to this instance
      * @return Object Returns a self reference
      */
-    public function add( ::cPHP::iface::Validator $validator )
+    public function add( $validator )
     {
+        if ( is_object($validator) ) {
+            
+            if ( !$validator instanceof cPHP::iface::Validator )
+                throw new cPHP::Exception::Data::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+            
+        }
+        else {
+            $validator = ::cPHP::strval( $validator );
+            
+            if ( !is_subclass_of($validator, "cPHP::iface::Validator") ) {
+                
+                $refl = new ReflectionClass( $validator );
+                if ( !$refl->implementsInterface( "cPHP::iface::Validator" ) )
+                    throw new cPHP::Exception::Data::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+                
+            }
+            
+            $validator = new $validator;
+        }
+        
         $this->validators[] = $validator;
         return $this;
     }

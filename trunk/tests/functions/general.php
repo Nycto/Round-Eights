@@ -130,8 +130,15 @@ class functions_general_tests extends PHPUnit_Framework_TestCase
     
     public function testStrVal ()
     {
-        $this->assertEquals( "string", cPHP::strVal("string") );
+        $this->assertEquals( "string", ::cPHP::strVal("string") );
         $this->assertEquals( "5", cPHP::strVal(5) );
+        
+        $toString = $this->getMock("stub_strval", array("__toString"));
+        $toString->expects( $this->once() )
+            ->method("__toString")
+            ->will( $this->returnValue("String Version") );
+        
+        $this->assertEquals( "String Version", ::cPHP::strVal( $toString ) );
     }
 
 }

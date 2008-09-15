@@ -28,7 +28,7 @@ class classes_validator_collection
 class classes_validator_collection_tests extends PHPUnit_Framework_TestCase
 {
     
-    public function testAdd ()
+    public function testAddObject ()
     {
         $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
         
@@ -39,6 +39,52 @@ class classes_validator_collection_tests extends PHPUnit_Framework_TestCase
         $list = $collection->getValidators();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
         $this->assertEquals(array( $valid ), $list->get());
+    }
+    
+    public function testAddObjectError ()
+    {
+        $this->setExpectedException("cPHP::Exception::Data::Argument");
+        
+        $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
+        $valid = $this->getMock("stub_random_class");
+        
+        $collection->add($valid);
+    }
+    
+    public function testAddInterfaceString ()
+    {
+        $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
+        
+        $valid = get_class( $this->getMock("cPHP::iface::Validator", array("validate")) );
+        
+        $this->assertSame( $collection, $collection->add($valid) );
+        
+        $list = $collection->getValidators();
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list->offsetGet(0), $this->isInstanceOf( $valid ) );
+    }
+    
+    public function testAddClassString ()
+    {
+        $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
+        
+        $valid = get_class( $collection );
+        
+        $this->assertSame( $collection, $collection->add($valid) );
+        
+        $list = $collection->getValidators();
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list->offsetGet(0), $this->isInstanceOf( $valid ) );
+    }
+    
+    public function testAddStringError ()
+    {
+        $this->setExpectedException("cPHP::Exception::Data::Argument");
+        
+        $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
+        $valid = get_class( $this->getMock("stub_random_class") );
+        
+        $collection->add($valid);
     }
     
     public function testAddMany ()
