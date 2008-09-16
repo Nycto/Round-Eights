@@ -142,6 +142,14 @@ class classes_validator_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testIsValid ()
+    {
+        $passes = $this->getMockValidator( NULL );
+        $this->assertTrue( $passes->isValid("To Validate") );
+        
+        $fails = $this->getMockValidator( "Default Error" );
+        $this->assertFalse( $fails->isValid("To Validate") );
+    }
 }
 
 ?>

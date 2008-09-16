@@ -23,24 +23,10 @@ class Email implements cPHP::iface::Filter
      */
     public function filter ( $value )
     {
-        $value = ::cPHP::strval( $value );
-        
-        $value = preg_replace(
-                '/[^a-z0-9'. preg_quote("!#$%&'*+-/=?^_`{|}~@.[]", '/') .']/i',
-                '',
-                $value
+        return filter_var(
+                ::cPHP::strval( $value ),
+                FILTER_SANITIZE_EMAIL
             );
-        
-        if ( substr_count($value, "@") > 1 ) {
-            $pos = strpos($value, "@");
-            
-            $value =
-                substr($value, 0, $pos)
-                ."@"
-                .str_replace("@", "", substr($value, $pos + 1));
-        }
-        
-        return $value;
     }
     
 }

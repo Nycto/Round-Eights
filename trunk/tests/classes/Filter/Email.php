@@ -72,13 +72,6 @@ class classes_filter_email_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals('ab12!@#$asd%?D{}', $filter->filter('ab12!@#$asd%<>?D{}'));
     }
     
-    public function testMultipleAts ()
-    {
-        $filter = new cPHP::Filter::Email;
-        
-        $this->assertEquals('asdf43@fdk04vasfklkdldkl94', $filter->filter('asdf43@fdk04@vasfkl@kdl@dkl94'));
-    }
-    
 }
 
 ?>

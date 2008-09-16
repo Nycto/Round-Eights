@@ -23,16 +23,10 @@ class URL implements cPHP::iface::Filter
      */
     public function filter ( $value )
     {
-        $value = ::cPHP::strval( $value );
-        
-        $value = preg_replace(
-                '/[^a-z0-9'. preg_quote("$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=", '/') .']/i',
-                '',
-                $value
-            );
-        
-        return $value;
-        
+        return filter_var(
+            ::cPHP::strval($value),
+            FILTER_SANITIZE_URL
+        );
     }
     
 }

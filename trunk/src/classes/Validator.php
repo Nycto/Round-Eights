@@ -45,6 +45,16 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
         
         return $output;
     }
+    
+    /**
+     * Runs the validation and returns whether the value passes or not
+     *
+     * @return Boolean
+     */
+    public function isValid ( $value )
+    {
+        return $this->validate( $value )->isValid();
+    }
 
     /**
      * The function that actually performs the validation
