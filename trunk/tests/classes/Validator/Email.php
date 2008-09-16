@@ -37,6 +37,9 @@ class classes_validator_email_tests extends PHPUnit_Framework_TestCase
         $this->assertTrue( $validator->isValid('Abc@example.com') );
         $this->assertTrue( $validator->isValid('aBC@example.com') );
         $this->assertTrue( $validator->isValid('abc.123@example.com') );
+        $this->assertTrue( $validator->isValid('abc.123@sub.example.com') );
+        $this->assertTrue( $validator->isValid('abc.123@sub.sub.example.com') );
+        $this->assertTrue( $validator->isValid('abc+123@example.com') );
         $this->assertTrue( $validator->isValid('1234567890@example.com') );
         $this->assertTrue( $validator->isValid('_______@example.com') );
         $this->assertTrue( $validator->isValid('abc+mailbox/department=shipping@example.com') );
