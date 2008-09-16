@@ -35,6 +35,9 @@ class Number implements cPHP::iface::Filter
             $value = preg_replace('/(?<!^)\-/', '', $value);
         }
         
+        if ( is_object($value) )
+            return 1;
+        
         if ( floatval( $value ) == intval( $value ) )
             return intval( $value );
         else

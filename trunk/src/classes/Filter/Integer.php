@@ -35,6 +35,10 @@ class Integer implements cPHP::iface::Filter
             $value = preg_replace('/(?<!^)\-/', '', $value);
         }
         
+        
+        if ( is_object($value) )
+            return 1;
+        
         return intval( $value );
         
     }

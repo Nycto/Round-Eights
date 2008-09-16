@@ -35,6 +35,9 @@ class Float implements cPHP::iface::Filter
             $value = preg_replace('/(?<!^)\-/', '', $value);
         }
         
+        if ( is_object($value) )
+            return 1.0;
+        
         return floatval( $value );
     }
     
