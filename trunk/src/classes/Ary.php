@@ -669,11 +669,36 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
-     * 
+     * Translates an array to contain the specified keys
+     *
+     * If a key isn't set in the original array, it fills the array by offset.
+     *
+     * @param mixed $keys... The keys being filtered
+     * @return object Returns a cPHP object
      */
-    public function hone ()
+    public function hone ($keys)
     {
-        
+        $keys = func_get_args();
+        $keys = self::create($keys)->flatten()->unique()->get();
+    
+        // get values in the array that do not have the required keys
+        $no_keys = array_diff_key( $this->array, array_flip($keys) );
+    
+        $out = new ::cPHP::Ary;
+    
+        // Rather than using internal functions, we are looping in order to
+        // preserve the order of the keys
+        foreach ($keys AS $key) {
+            
+            if (array_key_exists($key, $this->array))
+                $out[$key] = $this->array[$key];
+                
+            else if (count($no_keys) > 0)
+                $out[$key] = array_shift($no_keys);
+        }
+    
+        return $out;
+    
     }
     
     /**

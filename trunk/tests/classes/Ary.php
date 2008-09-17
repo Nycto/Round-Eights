@@ -590,6 +590,34 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         catch ( ::cPHP::Exception::Data::Argument $err ) {}
     }
     
+    public function testHone ()
+    {
+        $ary = new ::cPHP::Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
+
+        $result = $ary->hone('five', 'three', 'six');
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array ( 'five' => 5, 'three' => 3, 'six' => 1 ),
+                $result->get()
+            );
+        
+        
+        $result = $ary->hone( array('ten', 'eleven'), 'twelve');
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array ( 'ten' => 1, 'eleven' => 2, 'twelve' => 3 ),
+                $result->get()
+            );
+        
+        
+        $result = $ary->hone( array('seven', 'six'), 'five', array(array('four')));
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array ( 'seven' => 1, 'six' => 2, 'five' => 5, 'four' => 4 ),
+                $result->get()
+            );
+    }
+    
     public function testImplode ()
     {
         $ary = new cPHP::Ary(array(5, "string", "other"));
