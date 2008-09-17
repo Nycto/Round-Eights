@@ -69,10 +69,7 @@ class Email extends ::cPHP::Validator
         if ( ::cPHP::endsWith($local, ".") )
             return "Email Address is not valid";
         
-        if ( strlen($local) > 64 )
-            return "Email Address is too long";
-        
-        if ( strlen($domain) > 255 )
+        if ( strlen($local) > 64 || strlen($domain) > 255 )
             return "Email Address is too long";
         
         $regex = '/'
