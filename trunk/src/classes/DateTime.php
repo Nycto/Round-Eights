@@ -29,6 +29,34 @@ class DateTime
     protected $format;
 
     /**
+     * Sets the time from an array
+     *
+     * The following keys are accepted:
+     * 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
+     *
+     * These keys are defined by the getdate() php function
+     */
+    public function setArray ( $time )
+    {
+        $time = array_hone(
+                $time,
+                'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
+            );
+        // Fill in the blanks
+        $time = array_merge( getdate(), $time );
+        $this->set_unixTimeStamp(
+                mktime(
+                        $time['hours'],
+                        $time['minutes'],
+                        $time['seconds'],
+                        $time['mon'],
+                        $time['mday'],
+                        $time['year']
+                    )
+            );
+    }
+
+    /**
      * Returns whether a string is a MySQL time stamp
      *
      * Accepts either YYYYMMDD, YYYYMMDDHHMMSS, YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
@@ -37,26 +65,67 @@ class DateTime
      *      Example: 2007-08-16, 20070816, 2008-11-23 11:48:32, or 20081123114832
      * @return Boolean
      */
-    static public function isMySQL ( $datetime )
+    public function isSQL ( $datetime )
     {
-        $datetime = cPHP::strval( $datetime );
+        $datetime = ::cPHP::strval( $datetime );
 
-        if (strlen($datetime) != 8 && strlen($datetime) != 14)
-            return FALSE;
+        $year = '(?:[1-9][0-9]{3})';
+        $month = '(?:0[0-9]|1[0-2])';
+        $day = '(?:[0-2][0-9]|3[01])';
 
-        return preg_match(
+        $hour = '(?:[01][0-9]|2[0-3])';
+        $min = '(?:[0-5][0-9])';
+        $sec = '(?:[0-5][0-9])';
+        
+        $versions = array(
+            $year . $month . $day,
+            $year ."-". $month ."-". $day,
+            $year . $month . $day . $hour . $min . $sec,
+            $year ."-". $month ."-". $day ." ". $hour .":". $min .":". $sec
+        );
+        
+        return preg_match('/^(?:'. implode('|', $versions) .')$/', $datetime) ? TRUE : FALSE;
+    }
+    
+    /**
+     * Sets the value for this instance from a SQL date/datetime string
+     *
+     * @param String $datetime A SQL formatted date
+     *      YYYYMMDDHHMMSS, YYYY-MM-DD HH:MM:SS, YYYYMMDD, or YYYY-MM-DD
+     *      Example: 2007-08-16, 20070816, 2008-11-23 11:48:32, or 20081123114832
+     * @return object Returns a self reference
+     */
+    public function setSQL ( $datetime )
+    {
+        $datetime = ::cPHP::stripW($datetime);
+        
+        if ( !$this->isMySQL($datetime) )
+            throw new ::cPHP::Exception::Data::Argument(0, "SQL Date/Time", "Invalid SQL date time string");
+
+        $result = preg_match(
                 '/^'
-                .'[1-9][0-9]{3}' // Year
-                .'(?:0[0-9]|1[0-2])' // Month
-                .'(?:[0-2][0-9]|3[01])' // Day
+                .'([1-9][0-9]{3})' // Year
+                .'(0[0-9]|1[0-2])' // Month
+                .'([0-2][0-9]|3[01])' // Day
                 .'(?:'
-                    .'(?:[01][0-9]|2[0-3])' // Hour
-                    .'(?:[0-5][0-9]){2}' // Minute and Second
-                .')?' // option time
+                    .'([01][0-9]|2[0-3])' // Hour
+                    .'([0-5][0-9])' // Minutes
+                    .'([0-5][0-9])' // Seconds
+                .')?' // time is optional
                 .'$/',
-                $datetime
-            )
-            ? TRUE : FALSE;
+                $datetime,
+                $parsed
+            );
+
+        // Unset the "original value" offset
+        unset ( $parsed[0] );
+
+        if ( count($parsed) < 6 )
+            $parsed = array_merge( $parsed, array_fill(0, 6 - count($parsed), 0) );
+
+        $parsed = array_reverse( $parsed );
+
+        $this->set_array( $parsed );
     }
 
     /**
@@ -118,7 +187,6 @@ class DateTime
      */
     public function __construct ( )
     {
-        parent::__construct();
 
         if (func_num_args() == 1) {
 
@@ -246,34 +314,6 @@ class DateTime
     }
 
     /**
-     * Sets the time from an array
-     *
-     * The following keys are accepted:
-     * 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
-     *
-     * These keys are defined by the getdate() php function
-     */
-    public function set_array ( $time )
-    {
-        $time = array_hone(
-                $time,
-                'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
-            );
-        // Fill in the blanks
-        $time = array_merge( getdate(), $time );
-        $this->set_unixTimeStamp(
-                mktime(
-                        $time['hours'],
-                        $time['minutes'],
-                        $time['seconds'],
-                        $time['mon'],
-                        $time['mday'],
-                        $time['year']
-                    )
-            );
-    }
-
-    /**
      * Returns an array version of this date
      *
      * The returned value is per the getdate() array format
@@ -285,45 +325,6 @@ class DateTime
         if (is_empty($this->time))
             throw new VariableError('time', 'No time has been set for this instance');
         return getdate( $this->time );
-    }
-
-    /**
-     * Sets the value for this instance from a MySQL date/datetime string
-     *
-     * @param String $datetime A MySQL formatted date
-     *      Example: 2007-08-16, 20070816, 2008-11-23 11:48:32, or 20081123114832
-     */
-    public function set_MySQL ( $datetime )
-    {
-        $datetime = stripW($datetime);
-
-        $result = preg_match(
-                '/^'
-                .'([1-9][0-9]{3})' // Year
-                .'(0[0-9]|1[0-2])' // Month
-                .'([0-2][0-9]|3[01])' // Day
-                .'(?:'
-                    .'([01][0-9]|2[0-3])' // Hour
-                    .'([0-5][0-9])' // Minutes
-                    .'([0-5][0-9])' // Seconds
-                .')?' // option time
-                .'$/',
-                $datetime,
-                $parsed
-            );
-
-        if (!$result)
-            throw new ArgumentError(0, "MySQL date/datetime", "Invalid MySQL date time string. Must be YYYYMMDDHHMMSS or YYYYMMDD");
-
-        // Unset the "original value" offset
-        unset ( $parsed[0] );
-
-        if ( count($parsed) < 6 )
-            $parsed = array_merge( $parsed, array_fill(0, 6 - count($parsed), 0) );
-
-        $parsed = array_reverse( $parsed );
-
-        $this->set_array( $parsed );
     }
 
     /**

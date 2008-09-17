@@ -28,25 +28,30 @@ class classes_datetime
 class classes_datetime_tests extends PHPUnit_Framework_TestCase
 {
 
-/*
-    public function testIsMySQL ()
+    public function testIsSQL ()
     {
-        $this->assertTrue( cPHP::DateTime::isMySQL("20071110093625") );
-        $this->assertTrue( cPHP::DateTime::isMySQL("2007-11-10 09:36:25") );
-        $this->assertTrue( cPHP::DateTime::isMySQL("20071110") );
-        $this->assertTrue( cPHP::DateTime::isMySQL("2007-11-10") );
+        $date = new cPHP::DateTime;
         
-        $this->assertTrue( cPHP::DateTime::isMySQL(20071110093625) );
+        $this->assertTrue( $date->isSQL("20071110093625") );
+        $this->assertTrue( $date->isSQL("2007-11-10 09:36:25") );
+        $this->assertTrue( $date->isSQL("20071110") );
+        $this->assertTrue( $date->isSQL("2007-11-10") );
         
-        $this->assertFalse( cPHP::DateTime::isMySQL("11102007093625") );
-        $this->assertFalse( cPHP::DateTime::isMySQL("11-10-2007 09:36:25") );
-        $this->assertFalse( cPHP::DateTime::isMySQL("11102007") );
-        $this->assertFalse( cPHP::DateTime::isMySQL("11-10-2007") );
+        $this->assertTrue( $date->isSQL(20071110093625) );
         
-        $this->assertFalse( cPHP::DateTime::isMySQL("20071") );
-        $this->assertFalse( cPHP::DateTime::isMySQL(1192086000) );
+        $this->assertFalse( $date->isSQL("11102007093625") );
+        $this->assertFalse( $date->isSQL("11-10-2007 09:36:25") );
+        $this->assertFalse( $date->isSQL("11102007") );
+        $this->assertFalse( $date->isSQL("11-10-2007") );
+        
+        $this->assertFalse( $date->isSQL("20071") );
+        $this->assertFalse( $date->isSQL(1192086000) );
+        
+        $this->assertFalse( $date->isSQL("2007 11 10") );
+        $this->assertFalse( $date->isSQL("2007/11/10") );
     }
 
+/*
     public function MySQL ()
     {
 
