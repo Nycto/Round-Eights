@@ -596,6 +596,14 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
 
         $result = $ary->hone('five', 'three', 'six');
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        
+        // Make sure the original array remains unchanged
+        $this->assertNotSame( $ary, $result );
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ),
+                $ary->get()
+            );
+        
         $this->assertEquals(
                 array ( 'five' => 5, 'three' => 3, 'six' => 1 ),
                 $result->get()
@@ -614,6 +622,93 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
         $this->assertEquals(
                 array ( 'seven' => 1, 'six' => 2, 'five' => 5, 'four' => 4 ),
+                $result->get()
+            );
+    }
+    
+    public function testTranslateKeys ()
+    {
+        $ary = new ::cPHP::Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
+        
+        $result = $ary->translateKeys(array('one' => 'eno', 'three' => 'eerht', 'four' => 'ruof'));
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        
+        // Make sure the original array remains unchanged
+        $this->assertNotSame( $ary, $result );
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ),
+                $ary->get()
+            );
+        
+        $this->assertEquals(
+                array( 'eno' => 1, 'two' => 2, 'eerht' => 3, 'ruof' => 4, 'five' => 5 ),
+                $result->get()
+            );
+        
+        
+        try {
+            $ary->translateKeys("This is not a valid key map");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals("Must be an array or a cPHP::Ary object", $err->getMessage());
+        }
+        
+        
+        try {
+            $ary->translateKeys(array("five" => NULL) );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data $err ) {
+            $this->assertEquals("Invalid key value", $err->getMessage());
+        }
+        
+        
+        try {
+            $ary->translateKeys(array("five" => $this->getMock("stub_translateKeys")) );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Data $err ) {
+            $this->assertEquals("Invalid key value", $err->getMessage());
+        }
+    }
+    
+    public function testChangeKeyCase ()
+    {
+        $ary = new ::cPHP::Ary(array( 'One' => 1, 'Two' => 2, 'Three' => 3 ));
+        
+        $result = $ary->changeKeyCase();
+        
+        $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertNotSame( $ary, $result );
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'three' => 3 ),
+                $result->get()
+            );
+        
+        
+        $result = $ary->changeKeyCase( CASE_LOWER );
+        
+        $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertNotSame( $ary, $result );
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'three' => 3 ),
+                $result->get()
+            );
+        
+        
+        $result = $ary->changeKeyCase( CASE_UPPER );
+        
+        $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertNotSame( $ary, $result );
+        $this->assertEquals(
+                array( 'ONE' => 1, 'TWO' => 2, 'THREE' => 3 ),
                 $result->get()
             );
     }

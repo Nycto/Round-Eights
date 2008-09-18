@@ -29,10 +29,12 @@ class Data extends ::cPHP::Exception
     {
         parent::__construct($message, $code, $fault);
         
-        if ( !::cPHP::is_empty($label) )
-            $this->addData("Label", $label);
-            
-        $this->addData("Value", $value);
+        $label = ::cPHP::strval( $label );
+        
+        $this->addData(
+                ::cPHP::is_empty($label) ? "Value" : $label,
+                ::cPHP::getDump($value)
+            );
     }
 }
 

@@ -27,6 +27,56 @@ class classes_datetime
  */
 class classes_datetime_tests extends PHPUnit_Framework_TestCase
 {
+    
+    public function testSetTimeStamp ()
+    {
+        $date = new cPHP::DateTime;
+        
+        $this->assertSame( $date, $date->setTimeStamp(987654321) );
+        $this->assertSame( 987654321, $date->getTimeStamp() );
+        
+        $this->assertSame( $date, $date->setTimeStamp("132435") );
+        $this->assertSame( 132435, $date->getTimeStamp() );
+    }
+    
+    public function testSetArray ()
+    {
+        $time = new ::cPHP::DateTime;
+        $time->setArray( array(5, 10, 20, 15, 12, 2007) );
+        $this->assertEquals( 1197778205, $time->getTimeStamp() );
+
+
+        $time = new ::cPHP::DateTime;
+        $time->setArray( array("seconds" => 5, "minutes" => 10, "hours" => 20, "day" => 15, "month" => 12, "year" => 2007) );
+        $this->assertEquals( 1197778205, $time->getTimeStamp() );
+        
+
+        $time = new ::cPHP::DateTime;
+        $time->setArray( array("month" => 12, "minutes" => 10, "year" => 2007, "seconds" => 5, "hours" => 20, "day" => 15) );
+        $this->assertEquals( 1197778205, $time->getTimeStamp() );
+        
+
+        $time = new ::cPHP::DateTime;
+        $time->setArray( array("mon" => 12, "minutes" => 10, "year" => 2007, "seconds" => 5, "hours" => 20, "mday" => 15) );
+        $this->assertEquals( 1197778205, $time->getTimeStamp() );
+    }
+    
+    public function GetArray ()
+    {
+        
+        $this->assertEquals(
+                array (
+                        'seconds' => 5, 'minutes' => 10,
+                        'hours' => 20, 'mday' => 15,
+                        'wday' => 6, 'mon' => 12,
+                        'year' => 2007, 'yday' => 348,
+                        'weekday' => 'Saturday',
+                        'month' => 'December',
+                        0 => 1197778205
+                    ),
+                $time->array
+            );
+    }
 
     public function testIsSQL ()
     {

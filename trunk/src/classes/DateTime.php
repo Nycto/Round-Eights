@@ -27,6 +27,31 @@ class DateTime
      * When converting to a string, this is the format to use
      */
     protected $format;
+    
+    /**
+     * Returns the time value currently held in this instance
+     *
+     * @return Null|Integer Returns NULL if no time has been set yet
+     */
+    public function getTimeStamp ()
+    {
+        if ( isset($this->time) )
+            return $this->time;
+        else
+            return NULL;
+    }
+    
+    /**
+     * Sets the time value in this instance from a unix timestamp
+     *
+     * @param Integer $timestamp
+     * @return object Returns a self reference
+     */
+    public function setTimeStamp ( $timestamp )
+    {
+        $this->time = intval($timestamp);
+        return $this;
+    }
 
     /**
      * Sets the time from an array
@@ -35,25 +60,37 @@ class DateTime
      * 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
      *
      * These keys are defined by the getdate() php function
+     *
+     * @param Array|Object An array containing
+     * @return object Returns a self reference
      */
     public function setArray ( $time )
     {
-        $time = array_hone(
-                $time,
-                'seconds', 'minutes', 'hours', 'mday', 'mon', 'year'
-            );
+        
+        $time = new ::cPHP::Ary( $time );
+        
+        $time = $time->changeKeyCase()
+            ->translateKeys(array(
+                    "day" => "mday",
+                    "month" => "mon"
+                ))
+            ->hone('seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
+        
         // Fill in the blanks
-        $time = array_merge( getdate(), $time );
-        $this->set_unixTimeStamp(
-                mktime(
-                        $time['hours'],
-                        $time['minutes'],
-                        $time['seconds'],
-                        $time['mon'],
-                        $time['mday'],
-                        $time['year']
-                    )
-            );
+        $time = array_merge( getdate(), $time->get() );
+        
+        $this->time =
+            mktime(
+                    $time['hours'],
+                    $time['minutes'],
+                    $time['seconds'],
+                    $time['mon'],
+                    $time['mday'],
+                    $time['year']
+                    
+                );
+        
+        return $this;
     }
 
     /**

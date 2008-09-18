@@ -674,7 +674,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      * If a key isn't set in the original array, it fills the array by offset.
      *
      * @param mixed $keys... The keys being filtered
-     * @return object Returns a cPHP object
+     * @return object Returns a cPHP::Ary object
      */
     public function hone ($keys)
     {
@@ -699,6 +699,55 @@ class Ary implements Iterator, Countable, ArrayAccess
     
         return $out;
     
+    }
+    
+    /**
+     * Changes the keys in this array from one value to another using an associative array
+     *
+     * @param Array $map The lookup map to use for translation
+     * @return object Returns a cPHP::Ary object
+     */
+    public function translateKeys ( $map )
+    {
+        if ( !is_array($map) && !($map instanceof ::cPHP::Ary) )
+            throw new ::cPHP::Exception::Data::Argument(0, "Translation Map", "Must be an array or a cPHP::Ary object");
+        
+        if ( $map instanceof ::cPHP::Ary )
+            $map = $map->get();
+        
+        $output = new ::cPHP::Ary;
+        
+        foreach ( $this->array AS $key => $value ) {
+            if ( array_key_exists( $key, $map ) ) {
+                
+                // Ensure the new key is valid
+                if ( is_object( $map[$key] ) || is_null( $map[$key] ) ) {
+                    $err = new ::cPHP::Exception::Data($map[$key], "New Key Value", "Invalid key value");
+                    $err->addData("Existing Key Value", ::cPHP::getDump($key) );
+                    throw $err;
+                }
+                
+                $output[ $map[$key] ] = $value;
+            }
+            else {
+                $output[ $key ] = $value;
+            }
+        }
+        
+        return $output;
+    }
+    
+    /**
+     * Returns a version of this array where all the keys have had their case changed
+     *
+     * @param Integer $case 
+     */
+    public function changeKeyCase ( $case = CASE_LOWER )
+    {
+        if ( $case != CASE_LOWER && $case != CASE_UPPER )
+            throw new ::cPHP::Exception::Data::Argument( 0, "Case Flag", "Must be CASE_LOWER or CASE_UPPER" );
+        
+        return new ::cPHP::Ary( array_change_key_case( $this->array, $case ) );
     }
     
     /**
