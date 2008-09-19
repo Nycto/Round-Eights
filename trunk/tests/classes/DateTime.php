@@ -61,8 +61,20 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals( 1197778205, $time->getTimeStamp() );
     }
     
-    public function GetArray ()
+    public function testGetArray ()
     {
+        $time = new ::cPHP::DateTime;
+        
+        try {
+            $time->getArray();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch (::cPHP::Exception::Variable $err) {
+            $this->assertEquals("No time has been set for this instance", $err->getMessage());
+        }
+        
+        
+        $time->setTimeStamp(1197778205);
         
         $this->assertEquals(
                 array (
@@ -74,7 +86,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
                         'month' => 'December',
                         0 => 1197778205
                     ),
-                $time->array
+                $time->getArray()
             );
     }
 
@@ -101,6 +113,89 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
         $this->assertFalse( $date->isSQL("2007/11/10") );
     }
 
+    public function testSetSQL ()
+    {
+        $time = new cPHP::DateTime;
+        
+        try {
+            $time->setSQL("Does not pass isSQL");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch (::cPHP::Exception::Data::Argument $err) {
+            $this->assertEquals("Invalid SQL date time", $err->getMessage());
+        }
+        
+        $this->assertSame( $time, $time->setSQL("20071110093625") );
+        $this->assertSame( 1194716185, $time->getTimeStamp() );
+        
+        $this->assertSame( $time, $time->setSQL("20071110") );
+        $this->assertSame( 1194681600, $time->getTimeStamp() );
+    }
+    
+    public function testGetSQL ()
+    {
+        $time = new ::cPHP::DateTime;
+        
+        try {
+            $time->getSQL();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch (::cPHP::Exception::Variable $err) {
+            $this->assertEquals("No time has been set for this instance", $err->getMessage());
+        }
+        
+        $time->setTimeStamp(1194681600);
+        $this->assertSame("2007-11-10 00:00:00", $time->getSQL());
+        
+        $time->setTimeStamp(1194716185);
+        $this->assertSame("2007-11-10 09:36:25", $time->getSQL());
+        
+        $time->setTimeStamp(428111974);
+        $this->assertSame("1983-07-26 16:59:34", $time->getSQL());
+        
+    }
+    
+    public function testInterpret ()
+    {
+        $time = new ::cPHP::DateTime;
+        
+        $this->assertSame( $time, $time->interpret( "10 September 2000" ) );
+        $this->assertEquals( 968569200, $time->getTimeStamp() );
+        
+        try {
+            $time->interpret("NOPE");
+            $time->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals("Unable to parse string to a valid time", $err->getMessage() );
+        }
+    }
+    
+    public function testDefaultFormat ()
+    {
+        ::cPHP::DateTime::setDefaultFormat("Y-m-d");
+        
+        $this->assertEquals( "Y-m-d", ::cPHP::DateTime::getDefaultFormat() );
+    }
+    
+    public function testFormat ()
+    {
+        $time = new ::cPHP::DateTime;
+        
+        ::cPHP::DateTime::setDefaultFormat('F j, Y, g:i a');
+        
+        $this->assertEquals('F j, Y, g:i a', $time->getFormat());
+        
+        ::cPHP::DateTime::setDefaultFormat('F j, Y, g:i');
+        
+        $this->assertEquals('F j, Y, g:i', $time->getFormat());
+        
+        $this->assertSame( $time, $time->setFormat('g:i a') );
+        
+        $this->assertEquals( 'g:i a', $time->getFormat() );
+        
+        $this->assertEquals( 'F j, Y, g:i', ::cPHP::DateTime::getDefaultFormat() );
+    }
 /*
     public function MySQL ()
     {

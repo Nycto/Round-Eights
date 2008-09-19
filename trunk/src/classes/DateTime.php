@@ -27,6 +27,26 @@ class DateTime
      * When converting to a string, this is the format to use
      */
     protected $format;
+
+    /**
+     * Sets the default date/time format
+     *
+     * @param String $format The date format
+     */
+    static public function setDefaultFormat ($format)
+    {
+        self::$defaultFormat = ::cPHP::strval($format);
+    }
+
+    /**
+     * Returns the current default date/time format
+     *
+     * @return String The default date format
+     */
+    static public function getDefaultFormat ()
+    {
+        return self::$defaultFormat;
+    }
     
     /**
      * Returns the time value currently held in this instance
@@ -94,6 +114,22 @@ class DateTime
     }
 
     /**
+     * Returns an array version of this date
+     *
+     * The returned value is per the getdate() array format.
+     *
+     * Note that this will throw a cPHP::Exception::Variable if this instance doesn't contain a time
+     *
+     * @return Array Returns an array as "getdate()" would
+     */
+    public function getArray ()
+    {
+        if ( !isset($this->time) )
+            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+        return getdate( $this->time );
+    }
+
+    /**
      * Returns whether a string is a MySQL time stamp
      *
      * Accepts either YYYYMMDD, YYYYMMDDHHMMSS, YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
@@ -136,8 +172,8 @@ class DateTime
     {
         $datetime = ::cPHP::stripW($datetime);
         
-        if ( !$this->isMySQL($datetime) )
-            throw new ::cPHP::Exception::Data::Argument(0, "SQL Date/Time", "Invalid SQL date time string");
+        if ( !$this->isSQL($datetime) )
+            throw new ::cPHP::Exception::Data::Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
         $result = preg_match(
                 '/^'
@@ -157,28 +193,69 @@ class DateTime
         // Unset the "original value" offset
         unset ( $parsed[0] );
 
+        // If the time is missing from the stamp, fill it in with 0s
         if ( count($parsed) < 6 )
             $parsed = array_merge( $parsed, array_fill(0, 6 - count($parsed), 0) );
 
+        // We reverse it so that it is compatible with the order that setArray takes
         $parsed = array_reverse( $parsed );
 
-        $this->set_array( $parsed );
+        return $this->setArray( $parsed );
+    }
+    
+    /**
+     * Returns a MySQL formatted version of this date
+     *
+     * The returned value is of the format: YYYY-MM-DD HH:MM:SS
+     *
+     * @return string
+     */
+    public function getSQL ()
+    {
+        if ( !isset($this->time) )
+            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+        return date( "Y-m-d H:i:s", $this->time );
     }
 
     /**
-     * Sets the default date/time format
+     * Sets the timestamp from a string representation of a date
+     *
+     * @param String $string The string to interpret
+     * @return object Returns a self reference
      */
-    static public function setFormat ($format)
+    public function interpret ( $string )
     {
-        self::$defaultFormat = stringVal($format);
+        $string = strtotime( ::cPHP::strval( $string ) );
+        if ($string === FALSE)
+            throw new ::cPHP::Exception::Data::Argument(0, "Date/Time String", "Unable to parse string to a valid time");
+        return $this->setTimeStamp( $string );
     }
 
     /**
-     * Returns the default format
+     * Returns the format string.
+     *
+     * If none has been explicitly defined, it will pull the default format
+     *
+     * @return String
      */
-    static public function getFormat ()
+    public function getFormat ()
     {
-        return self::$defaultFormat;
+        if (isset($this->format) )
+            return $this->format;
+        else
+            return self::getDefaultFormat();
+    }
+    
+    /**
+     * Sets the format string
+     *
+     * @param String $format The format for this instance
+     * @return object Returns a self reference
+     */
+    public function setFormat( $format )
+    {
+        $this->format = ::cPHP::strval( $format );
+        return $this;
     }
 
     /**
@@ -245,54 +322,6 @@ class DateTime
     }
 
     /**
-     * Apply accessor rules
-     */
-    public function applySetGet ()
-    {
-        $this->variable_rw('time', 'format');
-        $this->variable_cast('string', 'format');
-    }
-
-    /**
-     * Generalized function for setting values
-     */
-    public function _set ( $variable, $value )
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-
-        $variable = self::normalizeTimePart($variable);
-
-        if ( !$variable )
-            throw new VariableError($variable, "Could not set variable, invalid time part");
-
-        $array = $this->get_array();
-
-        $array[ $variable ] = intval( numberVal( $value ) );
-
-        $this->set_array( $array );
-
-        return TRUE;
-    }
-    /**
-     * Generalized function for getting values
-     */
-    public function _get ( $variable )
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-
-        $variable = self::normalizeTimePart($variable);
-
-        if ( !$variable )
-            throw new VariableError($variable, "Could not set variable, invalid time part");
-
-        $array = $this->get_array();
-
-        return $array[ $variable ];
-    }
-
-    /**
      * Sets the time... attempts to detect the best way to do this
      *
      * It checks for the following (in this order):
@@ -335,57 +364,11 @@ class DateTime
     }
 
     /**
-     * Sets this instance from a unix timestamp
-     */
-    public function set_unixTimeStamp ( $time )
-    {
-        $this->time = intval( numberVal($time) );
-    }
-
-    /**
      * Sets the time to now
      */
     public function now()
     {
         return $this->__set('unixTimeStamp', time());
-    }
-
-    /**
-     * Returns an array version of this date
-     *
-     * The returned value is per the getdate() array format
-     *
-     * @return Array Returns an array as "getdate()" would
-     */
-    public function get_array ()
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-        return getdate( $this->time );
-    }
-
-    /**
-     * Returns a MySQL formatted version of this date
-     *
-     * The returned value is per the getdate() array format
-     */
-    public function get_MySQL ()
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-        return date( "Y-m-d H:i:s", $this->time );
-    }
-
-    /**
-     * Sets the value from a string
-     */
-    public function set_string ( $string )
-    {
-        $string = stringVal( $string );
-        $string = strtotime( $string );
-        if ($string === FALSE)
-            throw new ArgumentError(0, "Date/Time String", "Unable to parse this string to a valid time");
-        $this->set_unixTimeStamp( $string );
     }
 
     /**
@@ -463,19 +446,6 @@ class DateTime
         if ($interval === FALSE)
             throw new ArgumentError(0, "Date/Time Interval", "Unable to parse this string to a valid time");
         $this->set_unixTimeStamp( $interval );
-    }
-
-    /**
-     * Returns the format string.
-     *
-     * If none has been explicitly defined, it will pull the default string
-     */
-    public function get_format ()
-    {
-        if (isset($this->format))
-            return $this->format;
-        else
-            return self::getFormat();
     }
 
     /**
