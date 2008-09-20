@@ -12,11 +12,29 @@ namespace cPHP;
  */
 class DateTime
 {
+    
+    /**
+     * Standard date formats
+     */
+    const FORMAT_SQL_DATETIME = 'Y-m-d H:i:s';
+    const FORMAT_SQL_DATE = 'Y-m-d';
+    const FORMAT_DEFAULT = 'F j, Y, g:i a';
+    
+    /**
+     * Date/time units for use with the math method
+     */
+    const UNIT_SECONDS = 'second';
+    const UNIT_MINUTES = 'minute';
+    const UNIT_HOURS = 'hour';
+    const UNIT_DAYS = 'day';
+    const UNIT_WEEKS = 'week';
+    const UNIT_MONTHS = 'month';
+    const UNIT_YEARS = 'year';
 
     /**
      * The default time format to use
      */
-    static protected $defaultFormat = 'F j, Y, g:i a';
+    static protected $defaultFormat = self::FORMAT_DEFAULT;
 
     /**
      * The unix timestamp this instance represents
@@ -46,6 +64,93 @@ class DateTime
     static public function getDefaultFormat ()
     {
         return self::$defaultFormat;
+    }
+    
+    /**
+     * Normalizes a time unit string
+     *
+     * This will throw an Argumet exception if it can't parse the unit
+     *
+     * @param string $unit The string of a unit to normalize
+     * @return string The normalized version
+     */
+    static public function normalizeUnit ( $unit )
+    {
+        
+        $unit = strtolower( ::cPHP::stripW( $unit ) );
+        $unit = ::cPHP::strStripTail( $unit, "s" );
+        
+        switch ( $unit ) {
+            default:
+                throw new ::cPHP::Exception::Data::Argument(1, "Units", "Invalid time unit");
+            
+            case "second":
+            case "minute":
+            case "hour":
+            case "day":
+            case "week":
+            case "month":
+            case "year":
+                return $unit;
+            
+            case "sec":
+                return "second";
+            
+            case "min":
+                return "minute";
+            
+            case "mday":
+                return "day";
+            
+            case "mon":
+                return "month";
+            
+        }
+    }
+    
+    /**
+     * Returns whether a string is a MySQL time stamp
+     *
+     * Accepts either YYYYMMDD, YYYYMMDDHHMMSS, YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
+     *
+     * @param String $datetime A MySQL formatted date
+     *      Example: 2007-08-16, 20070816, 2008-11-23 11:48:32, or 20081123114832
+     * @return Boolean
+     */
+    static public function isSQL ( $datetime )
+    {
+        $datetime = ::cPHP::strval( $datetime );
+
+        $year = '(?:[1-9][0-9]{3})';
+        $month = '(?:0[0-9]|1[0-2])';
+        $day = '(?:[0-2][0-9]|3[01])';
+
+        $hour = '(?:[01][0-9]|2[0-3])';
+        $min = '(?:[0-5][0-9])';
+        $sec = '(?:[0-5][0-9])';
+        
+        $versions = array(
+            $year . $month . $day,
+            $year ."-". $month ."-". $day,
+            $year . $month . $day . $hour . $min . $sec,
+            $year ."-". $month ."-". $day ." ". $hour .":". $min .":". $sec
+        );
+        
+        return preg_match('/^(?:'. implode('|', $versions) .')$/', $datetime) ? TRUE : FALSE;
+    }
+    
+    /**
+     * Constructor...
+     *
+     * If given a single argument, it will try and devise the best way to translate it to a time
+     *
+     * @param mixed $input
+     */
+    public function __construct ( $input = NULL )
+    {
+        if (func_num_args() > 0 && !::cPHP::is_vague($input) )
+            $this->interpret( $input );
+            
     }
     
     /**
@@ -128,37 +233,6 @@ class DateTime
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
         return getdate( $this->time );
     }
-
-    /**
-     * Returns whether a string is a MySQL time stamp
-     *
-     * Accepts either YYYYMMDD, YYYYMMDDHHMMSS, YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
-     *
-     * @param String $datetime A MySQL formatted date
-     *      Example: 2007-08-16, 20070816, 2008-11-23 11:48:32, or 20081123114832
-     * @return Boolean
-     */
-    public function isSQL ( $datetime )
-    {
-        $datetime = ::cPHP::strval( $datetime );
-
-        $year = '(?:[1-9][0-9]{3})';
-        $month = '(?:0[0-9]|1[0-2])';
-        $day = '(?:[0-2][0-9]|3[01])';
-
-        $hour = '(?:[01][0-9]|2[0-3])';
-        $min = '(?:[0-5][0-9])';
-        $sec = '(?:[0-5][0-9])';
-        
-        $versions = array(
-            $year . $month . $day,
-            $year ."-". $month ."-". $day,
-            $year . $month . $day . $hour . $min . $sec,
-            $year ."-". $month ."-". $day ." ". $hour .":". $min .":". $sec
-        );
-        
-        return preg_match('/^(?:'. implode('|', $versions) .')$/', $datetime) ? TRUE : FALSE;
-    }
     
     /**
      * Sets the value for this instance from a SQL date/datetime string
@@ -172,7 +246,7 @@ class DateTime
     {
         $datetime = ::cPHP::stripW($datetime);
         
-        if ( !$this->isSQL($datetime) )
+        if ( !self::isSQL($datetime) )
             throw new ::cPHP::Exception::Data::Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
         $result = preg_match(
@@ -212,9 +286,7 @@ class DateTime
      */
     public function getSQL ()
     {
-        if ( !isset($this->time) )
-            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
-        return date( "Y-m-d H:i:s", $this->time );
+        return $this->getFormatted( self::FORMAT_SQL_DATETIME );
     }
 
     /**
@@ -223,7 +295,7 @@ class DateTime
      * @param String $string The string to interpret
      * @return object Returns a self reference
      */
-    public function interpret ( $string )
+    public function setString ( $string )
     {
         $string = strtotime( ::cPHP::strval( $string ) );
         if ($string === FALSE)
@@ -257,72 +329,56 @@ class DateTime
         $this->format = ::cPHP::strval( $format );
         return $this;
     }
-
+    
     /**
-     * Translates a string to it's getdate() equivilent
+     * Removes the formatting specific to this instance
      *
-     * @param String $string A string to normalize
-     * @return String|Boolean Returns the normalized string on success, FALSE if the string could not be translated
+     * @return object Returns a self reference
      */
-    static public function normalizeTimePart ( $string )
+    public function clearFormat ()
     {
-
-        $string = strStripTail( stripW( strtolower($string) ), "s" );
-
-        $map = array(
-            'second' => 'seconds',
-            'sec' => 'seconds',
-
-            'minute' => 'minutes',
-            'min' => 'minutes',
-
-            'hour' => 'hours',
-
-            'day' => 'mday',
-
-            'month' => 'mon',
-            'mon' => 'mon',
-
-            'year' => 'year'
-        );
-
-        if ( !array_key_exists($string, $map) )
-            return FALSE;
+        $this->format = null;
+        return $this;
+    }
+    
+    /**
+     * Returns a formatted version of this time
+     *
+     * @param $format String|Vague If vague, it uses the default format. Otherwise, it uses the custom string
+     * @return String
+     */
+    public function getFormatted ($format = FALSE)
+    {
+        if ( !isset($this->time) )
+            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+        
+        if ( is_vague($format) )
+            $format = $this->getFormat();
         else
-            return $map[ $string ];
+            $format = ::cPHP::strval( $format );
+        
+        return date( $format, $this->time );
     }
-
+    
     /**
-     * Constructor
+     * Return a readable representation of this time
      *
-     * If given a single argument, it will try and devise the best way to translate it to a time
-     *
-     * If given multiple arguments, it acts like mktime
+     * @return string
      */
-    public function __construct ( )
+    public function __toString ()
     {
-
-        if (func_num_args() == 1) {
-
-            $source = func_get_arg( 0 );
-
-            if (!is_vague($source))
-                $this->__set('time', $source);
-
+        try {
+            return $this->getFormatted();
         }
-        else if ( func_num_args() > 1 ) {
-            $source = func_get_args();
-            $source = array_hone(
-                    $source,
-                    // These are ordered the same as the mktime arguments
-                    'hours', 'minutes', 'seconds', 'mon', 'mday', 'year'
-                );
-            $this->__set('array', $source);
+        // This will be thrown if no time is currently set in this instance.
+        // We catch it because toString isn't allowed to throw exceptions
+        catch ( ::cPHP::Exception::Variable $err ) {
+            return "";
         }
     }
-
+    
     /**
-     * Sets the time... attempts to detect the best way to do this
+     * Attempts to determine the best way to convert an input to a date/time
      *
      * It checks for the following (in this order):
      *  - If an integer, it sets it as a unix timestamp
@@ -332,43 +388,137 @@ class DateTime
      *  - if it is a MySQL date/datetime
      *  - if numeric, it sets it as a unix timestamp
      *  - otherwise, it interprets it via strtotime
+     *
+     * @param mixed $input The input value to interpret
+     * @return object Returns a self reference
      */
-    public function set_time ( $time )
+    public function interpret ( $input )
     {
-
+        
         // If it is an integer, set it as a unix timestamp
-        if (is_int($time))
-            $this->set_unixTimeStamp( $time );
+        if (is_int($input) || is_float($input) ) {
+            $this->time = intval( $input );
+        }
 
-        else if ($time instanceof cDateTime)
-            $this->set_unixTimeStamp( $time->time );
+        else if ($input instanceof cDateTime) {
+            $this->setTimeStamp( $input->getTimeStamp() );
+        }
 
-        else if (is_array($time))
-            $this->set_array( $time );
+        else if ( is_array($input) ){
+            $this->setArray( $input );
+        }
 
         else {
 
-            $time = stringVal($time);
+            $input = ::cPHP::strval( $input );
 
-            if (self::isMySQL($time))
-                $this->set_MySQL( $time );
+            if ( self::isSQL( $input ) )
+                $this->setSQL( $input );
 
-            else if (is_numeric($time))
-                $this->set_unixTimeStamp( $time );
+            else if ( is_numeric($input) )
+                $this->setTimeStamp( $input );
 
             else
-                $this->set_string( $time );
+                $this->setString( $input );
 
         }
 
+        return $this;
     }
-
+    
     /**
-     * Sets the time to now
+     * Adds or subtracts amounts of time from the current value
+     *
+     * @param Integer|Float $value The value to add to this instance
+     * @param String $unit The units of the value to add
+     * @return object Returns a self reference
      */
-    public function now()
+    public function math ( $value, $unit )
     {
-        return $this->__set('unixTimeStamp', time());
+        if ( !isset($this->time) )
+            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+        
+        $value = ::cPHP::numval( $value );
+        
+        $unit = ::cPHP::DateTime::normalizeUnit($unit);
+        
+        switch ( $unit ) {
+            
+            default:
+                throw new ::cPHP::Exception::Data::Argument(1, "Units", "Invalid time unit");
+            
+            case "year":
+                $ary = $this->getArray();
+                $ary['year'] += intval( $value );
+                $this->setArray( $ary );
+                break;
+            
+            case "month":
+                $ary = $this->getArray();
+                $ary['mon'] += intval( $value );
+                $this->setArray( $ary );
+                break;
+            
+            case "week":
+                $value *= 7;
+            
+            case "day":
+                $value *= 24;
+            
+            case "hour":
+                $value *= 60;
+            
+            case "minute":
+                $value *= 60;
+            
+            case "second":
+                $this->time += intval( $value );
+                break;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Returns a specific unit from the current time value
+     *
+     * @param string $unit The unit to return
+     * @return Integer
+     */
+    public function get ( $unit )
+    {
+        if ( !isset($this->time) )
+            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+        
+        try {
+            $unit = self::normalizeUnit( $unit );
+        }
+        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        
+        $ary = $this->getArray();
+
+        switch ( $unit ) {
+            default:
+                throw new ::cPHP::Exception::Data::Argument(0, "Unit", "Invalid time unit");
+            case "second":
+                return $ary['seconds'];
+            case "minute":
+                return $ary['minutes'];
+            case "hour":
+                return $ary['hours'];
+            case "day":
+                return $ary['mday'];
+            case "weekday":
+            case "wday":
+                return $ary['wday'];
+            case "month":
+                return $ary['mon'];
+            case "year":
+                return $ary['year'];
+            case "yday":
+                return $ary['yday'];
+        }
+        
     }
 
     /**
@@ -434,43 +584,6 @@ class DateTime
     }
 
     /**
-     * Applies the given date interval to this string
-     *
-     * Uses strtotime's notation for date math
-     */
-    public function math ( $interval )
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-        $interval = strtotime( $interval, $this->time );
-        if ($interval === FALSE)
-            throw new ArgumentError(0, "Date/Time Interval", "Unable to parse this string to a valid time");
-        $this->set_unixTimeStamp( $interval );
-    }
-
-    /**
-     * Return a readable representation of this time
-     */
-    public function __toString ()
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-        return date( $this->__get('format'), $this->time );
-    }
-
-    /**
-     * Returns a formatted version of this time
-     *
-     * @param $format String|Vague If vague, it uses the default format. Otherwise, it uses the custom string
-     */
-    public function format ($format = FALSE)
-    {
-        if (is_empty($this->time))
-            throw new VariableError('time', 'No time has been set for this instance');
-        return date( is_vague($format)?$this->__get('format'):stringVal($format), $this->time );
-    }
-
-    /**
      * Sets the time to the start of the day
      *
      * Sets the time to 00:00:00 without changing the date
@@ -499,6 +612,17 @@ class DateTime
     {
         $date = $this->get_array();
         $this->setDate($date['year'], $date['mon'] + 1, 0 );
+    }
+
+    /**
+     * Sets the time to now
+     *
+     * @return object Returns a self reference
+     */
+    public function toNow()
+    {
+        $this->time = time();
+        return $this;
     }
 }
 

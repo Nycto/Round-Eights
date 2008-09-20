@@ -646,6 +646,12 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             );
         
         
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'six' => 3, 'four' => 4, 'five' => 5 ),
+                $ary->translateKeys(array('one' => 'five', 'three' => 'six'))->get()
+            );
+        
+        
         try {
             $ary->translateKeys("This is not a valid key map");
             $this->fail('An expected exception has not been raised.');

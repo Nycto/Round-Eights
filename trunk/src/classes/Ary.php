@@ -718,6 +718,7 @@ class Ary implements Iterator, Countable, ArrayAccess
         $output = new ::cPHP::Ary;
         
         foreach ( $this->array AS $key => $value ) {
+            
             if ( array_key_exists( $key, $map ) ) {
                 
                 // Ensure the new key is valid
@@ -727,7 +728,12 @@ class Ary implements Iterator, Countable, ArrayAccess
                     throw $err;
                 }
                 
-                $output[ $map[$key] ] = $value;
+                // Don't overwrite any existing keys
+                if ( array_key_exists( $map[$key], $this->array ) )
+                    $output[ $key ] = $value;
+                else
+                    $output[ $map[$key] ] = $value;
+                
             }
             else {
                 $output[ $key ] = $value;
