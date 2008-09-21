@@ -2,7 +2,7 @@
 /**
  * File for the array object
  *
- * @package Array
+ * @package DateTime
  */
 
 namespace cPHP;
@@ -200,9 +200,14 @@ class DateTime
                     "month" => "mon"
                 ))
             ->hone('seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
+            
+        $time = $time->get();
+        
+        if ( isset($this->time) )
+            $time += getdate( $this->time );
         
         // Fill in the blanks
-        $time = array_merge( getdate(), $time->get() );
+        $time += getdate();
         
         $this->time =
             mktime(
@@ -520,6 +525,44 @@ class DateTime
         }
         
     }
+    
+    /**
+     * Generalized function for setting values
+     *
+     * @param string $unit The time unit to set
+     * @param Integer $value The new value for this part of the time
+     * @return object Returns a self reference
+     */
+    public function set ( $unit, $value )
+    {
+        $value = intval( $value );
+
+        switch ( self::normalizeUnit( $unit ) ) {
+            
+            default:
+                throw new ::cPHP::Exception::Data::Argument(0, "Unit", "Invalid time unit");
+            
+            case "second":
+                return $this->setArray( array('seconds' => $value) );
+            
+            case "minute":
+                return $this->setArray( array('minutes' => $value) );
+            
+            case "hour":
+                return $this->setArray( array('hours' => $value) );
+            
+            case "day":
+                return $this->setArray( array('mday' => $value) );
+            
+            case "month":
+                return $this->setArray( array('mon' => $value) );
+            
+            case "year":
+                return $this->setArray( array('year' => $value) );
+            
+        }
+        
+    }
 
     /**
      * updates just the Time part of the date
@@ -529,22 +572,15 @@ class DateTime
      * @param Integer $hours The new hours to set
      * @param Integer $minutes The new minutes
      * @param Integer $seconds The new seconds
+     * @return object Returns a self reference
      */
     public function setTime ( $hours, $minutes, $seconds )
     {
-
-        // If no time is currently set, use the current year/month/day
-        $date = is_empty($this->time) ? getdate() : $this->get_array();
-
-        $this->__set(
-                'unixTimeStamp',
-                mktime(
-                        intval( numberVal( $hours ) ),
-                        intval( numberVal( $minutes ) ),
-                        intval( numberVal( $seconds ) ),
-                        $date['mon'], $date['mday'], $date['year']
-                    )
-            );
+        return $this->setArray(array(
+                "hours" => intval( $hours ),
+                "minutes" => intval( $minutes ),
+                "seconds" => intval( $seconds ),
+            ));
     }
 
     /**
@@ -555,63 +591,95 @@ class DateTime
      * @param Integer $year The new year
      * @param Integer $month The new month
      * @param Integer $day The new day
+     * @return object Returns a self reference
      */
     public function setDate ( $year, $month, $day )
     {
-        if (is_empty($this->time)) {
-            $this->__set(
-                    'unixTimeStamp',
-                    mktime(
-                            0, 0, 0,
-                            intval( numberVal( $month ) ),
-                            intval( numberVal( $day ) ),
-                            intval( numberVal( $year ) )
-                        )
-                );
-        }
-        else {
-            $this->__set(
-                    'unixTimeStamp',
-                    mktime(
-                            $this->_get('hour'), $this->_get('minute'), $this->_get('second'),
-                            intval( numberVal( $month ) ),
-                            intval( numberVal( $day ) ),
-                            intval( numberVal( $year ) )
-                        )
-                );
-        }
-
+        $ary = array(
+                "year" => intval( $year ),
+                "month" => intval( $month),
+                "day" => intval( $day),
+            );
+        
+        if ( !isset($this->time) )
+            $ary += array( "hours" => 0, "minutes" => 0, "seconds" => 0 );
+        
+        return $this->setArray( $ary );
+        
+    }
+    
+    /**
+     * Similar to mktime, sets the time from a list of input
+     * 
+     * @param Integer $year The new year
+     * @param Integer $month The new month
+     * @param Integer $day The new day
+     * @param Integer $hours The new hours to set
+     * @param Integer $minutes The new minutes
+     * @param Integer $seconds The new seconds
+     * @return object Returns a self reference
+     */
+    public function setDateTime ( $year, $month, $day, $hour, $minutes, $seconds )
+    {
+        $this->time = mktime(
+                intval( $hour ),
+                intval( $minutes ),
+                intval( $seconds ),
+                intval( $month ),
+                intval( $day ),
+                intval( $year )
+            );
+        
+        return $this;
     }
 
     /**
      * Sets the time to the start of the day
      *
      * Sets the time to 00:00:00 without changing the date
+     *
+     * @return object Returns a self reference
      */
     public function toStartOfDay ()
     {
-        $this->setTime(0,0,0);
+        return $this->setTime(0,0,0);
     }
 
     /**
      * Sets the time to the End of the day
      *
      * Sets the time to 23:59:59 without changing the date
+     *
+     * @return object Returns a self reference
      */
     public function toEndOfDay ()
     {
-        $this->setTime(23, 59, 59);
+        return $this->setTime(23, 59, 59);
     }
 
     /**
      * Sets the day to the last day of the month
      *
      * Does not affect the time
+     *
+     * @return object Returns a self reference
      */
     public function toEndOfMonth ()
     {
-        $date = $this->get_array();
-        $this->setDate($date['year'], $date['mon'] + 1, 0 );
+        $date = $this->getArray();
+        return $this->setDate($date['year'], $date['mon'] + 1, 0 );
+    }
+
+    /**
+     * Sets the day to the first day of the month
+     *
+     * Does not affect the time
+     *
+     * @return object Returns a self reference
+     */
+    public function toStartOfMonth ()
+    {
+        return $this->set("day", 1);
     }
 
     /**
@@ -624,6 +692,7 @@ class DateTime
         $this->time = time();
         return $this;
     }
+
 }
 
 ?>
