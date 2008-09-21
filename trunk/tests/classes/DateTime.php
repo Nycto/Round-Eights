@@ -434,12 +434,12 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals("year", ::cPHP::DateTime::normalizeUnit("YeArS"));
     }
     
-    public function testMath ()
+    public function testAdd_exceptions ()
     {
         $time = new ::cPHP::DateTime;
         
         try {
-            $time->math( 1, "second" );
+            $time->add( 1, "second" );
             $this->fail("An expected exception was not thrown");
         }
         catch (::cPHP::Exception::Variable $err) {
@@ -449,60 +449,159 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
         $time->setTimeStamp( 968655600 );
         
         try {
-            $time->math( 1, "invalid unit" );
+            $time->add( 1, "invalid unit" );
             $this->fail("An expected exception was not thrown");
         }
         catch (::cPHP::Exception::Data::Argument $err) {
             $this->assertEquals("Invalid time unit", $err->getMessage());
         }
+    }
+    
+    public function testAdd_add ()
+    {
+        $time = new ::cPHP::DateTime;
         
-        $this->assertSame( $time, $time->math(5, ::cPHP::DateTime::UNIT_SECONDS) );
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(0, ::cPHP::DateTime::UNIT_SECONDS) );
+        $this->assertEquals( 968655600, $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5, ::cPHP::DateTime::UNIT_SECONDS) );
         $this->assertEquals( 968655600 + 5, $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(5, ::cPHP::DateTime::UNIT_MINUTES) );
+        $this->assertSame( $time, $time->add(5, ::cPHP::DateTime::UNIT_MINUTES) );
         $this->assertEquals( 968655600 + (5 * 60), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(5, ::cPHP::DateTime::UNIT_HOURS) );
+        $this->assertSame( $time, $time->add(5, ::cPHP::DateTime::UNIT_HOURS) );
         $this->assertEquals( 968655600 + (5 * 60 * 60), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(5, ::cPHP::DateTime::UNIT_WEEKS) );
+        $this->assertSame( $time, $time->add(5, ::cPHP::DateTime::UNIT_WEEKS) );
         $this->assertEquals( 968655600 + (5 * 60 * 60 * 24 * 7), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(2, ::cPHP::DateTime::UNIT_MONTHS) );
+        $this->assertSame( $time, $time->add(2, ::cPHP::DateTime::UNIT_MONTHS) );
         $this->assertEquals( 973926000, $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(2, ::cPHP::DateTime::UNIT_YEARS) );
+        $this->assertSame( $time, $time->add(2, ::cPHP::DateTime::UNIT_YEARS) );
         $this->assertEquals( 1031727600, $time->getTimeStamp() );
         
+    }
+    
+    public function testAdd_subtract ()
+    {
+        $time = new ::cPHP::DateTime;
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-5, ::cPHP::DateTime::UNIT_SECONDS) );
+        $this->assertSame( $time, $time->add(-5, ::cPHP::DateTime::UNIT_SECONDS) );
         $this->assertEquals( 968655600 - 5, $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-5, ::cPHP::DateTime::UNIT_MINUTES) );
+        $this->assertSame( $time, $time->add(-5, ::cPHP::DateTime::UNIT_MINUTES) );
         $this->assertEquals( 968655600 - (5 * 60), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-5, ::cPHP::DateTime::UNIT_HOURS) );
+        $this->assertSame( $time, $time->add(-5, ::cPHP::DateTime::UNIT_HOURS) );
         $this->assertEquals( 968655600 - (5 * 60 * 60), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-5, ::cPHP::DateTime::UNIT_WEEKS) );
+        $this->assertSame( $time, $time->add(-5, ::cPHP::DateTime::UNIT_WEEKS) );
         $this->assertEquals( 968655600 - (5 * 60 * 60 * 24 * 7), $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-2, ::cPHP::DateTime::UNIT_MONTHS) );
+        $this->assertSame( $time, $time->add(-2, ::cPHP::DateTime::UNIT_MONTHS) );
         $this->assertEquals( 963298800, $time->getTimeStamp() );
         
         $time->setTimeStamp( 968655600 );
-        $this->assertSame( $time, $time->math(-2, ::cPHP::DateTime::UNIT_YEARS) );
+        $this->assertSame( $time, $time->add(-2, ::cPHP::DateTime::UNIT_YEARS) );
         $this->assertEquals( 905497200, $time->getTimeStamp() );
+        
+    }
+    
+    public function testAdd_floats ()
+    {
+        $time = new ::cPHP::DateTime;
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.5, ::cPHP::DateTime::UNIT_SECONDS) );
+        $this->assertEquals( 968655600 + 5, $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(-5.5, ::cPHP::DateTime::UNIT_SECONDS) );
+        $this->assertEquals( 968655600 - 5, $time->getTimeStamp() );
+        
+        
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.5, ::cPHP::DateTime::UNIT_MINUTES) );
+        $this->assertEquals( 968655600 + (5.5 * 60), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.333, ::cPHP::DateTime::UNIT_MINUTES) );
+        $this->assertEquals( 968655600 + intval(5.333 * 60), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(-5.75, ::cPHP::DateTime::UNIT_MINUTES) );
+        $this->assertEquals( 968655600 - intval(5.75 * 60), $time->getTimeStamp() );
+        
+        
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.5, ::cPHP::DateTime::UNIT_HOURS) );
+        $this->assertEquals( 968655600 + (5.5 * 60 * 60), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.333, ::cPHP::DateTime::UNIT_HOURS) );
+        $this->assertEquals( 968655600 + intval(5.333 * 60 * 60), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(-5.75, ::cPHP::DateTime::UNIT_HOURS) );
+        $this->assertEquals( 968655600 - intval(5.75 * 60 * 60), $time->getTimeStamp() );
+        
+        
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.5, ::cPHP::DateTime::UNIT_WEEKS) );
+        $this->assertEquals( 968655600 + (5.5 * 60 * 60 * 24 * 7), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(5.333, ::cPHP::DateTime::UNIT_WEEKS) );
+        $this->assertEquals( 968655600 + intval(5.333 * 60 * 60 * 24 * 7), $time->getTimeStamp() );
+        
+        $time->setTimeStamp( 968655600 );
+        $this->assertSame( $time, $time->add(-5.75, ::cPHP::DateTime::UNIT_WEEKS) );
+        $this->assertEquals( 968655600 - intval(5.75 * 60 * 60 * 24 * 7), $time->getTimeStamp() );
+        
+        
+        
+        $time->setSQL( "2007-01-05 07:42:12" );
+        $this->assertSame( $time, $time->add(2.5, ::cPHP::DateTime::UNIT_MONTHS) );
+        $this->assertEquals( "2007-03-20 19:42:12", $time->getSQL() );
+        
+        $time->setSQL( "2007-01-16 07:42:12" );
+        $this->assertSame( $time, $time->add(2.333, ::cPHP::DateTime::UNIT_MONTHS) );
+        $this->assertEquals( "2007-03-26 15:27:19", $time->getSQL() );
+        
+        $time->setSQL( "2007-04-30 07:42:12" );
+        $this->assertSame( $time, $time->add(-.75, ::cPHP::DateTime::UNIT_MONTHS) );
+        $this->assertEquals( "2007-04-07 01:42:12", $time->getSQL() );
+        
+        
+        
+        $time->setSQL( "2007-01-16 07:42:12" );
+        $this->assertSame( $time, $time->add(2.5, ::cPHP::DateTime::UNIT_YEARS) );
+        $this->assertEquals( "2009-07-17 19:42:12", $time->getSQL() );
+        
+        $time->setSQL( "2007-01-16 07:42:12" );
+        $this->assertSame( $time, $time->add(2.333, ::cPHP::DateTime::UNIT_YEARS) );
+        $this->assertEquals( "2009-05-17 20:47:00", $time->getSQL() );
+        
+        $time->setSQL( "2007-01-16 07:42:12" );
+        $this->assertSame( $time, $time->add(-2.75, ::cPHP::DateTime::UNIT_YEARS) );
+        $this->assertEquals( "2004-04-16 19:42:12", $time->getSQL() );
         
     }
     

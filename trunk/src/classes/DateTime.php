@@ -438,7 +438,7 @@ class DateTime
      * @param String $unit The units of the value to add
      * @return object Returns a self reference
      */
-    public function math ( $value, $unit )
+    public function add ( $value, $unit )
     {
         if ( !isset($this->time) )
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
@@ -447,36 +447,66 @@ class DateTime
         
         $unit = ::cPHP::DateTime::normalizeUnit($unit);
         
+        if ( $value == 0 )
+            return $this;
+        
         switch ( $unit ) {
             
             default:
                 throw new ::cPHP::Exception::Data::Argument(1, "Units", "Invalid time unit");
             
-            case "year":
+            case self::UNIT_MONTHS:
+                $unit = "mon";
+                
+            case self::UNIT_YEARS:
+                
                 $ary = $this->getArray();
-                $ary['year'] += intval( $value );
+                $ary[ $unit ] += intval( $value );
+                
                 $this->setArray( $ary );
+                
+                // If there is a fraction involved, we need to calculate the length of the unit
+                // Because the length of these particular units changes,
+                // we do it relative to the current value. 
+                if ( intval($value) != $value ) {
+                    
+                    $copy = clone $this;
+                    
+                    // Add a whole unit to the current time
+                    $copy->add(
+                            1 * ( $value < 0 ? -1 : 1 ),
+                            $unit
+                        );
+                    
+                    // Find the difference of adding a hole unit in seconds
+                    $diff = abs( $copy->getTimeStamp() - $this->getTimeStamp() );
+                    
+                    // Multiply it by the decimal of the original value to
+                    $diff *= $value - intval($value);
+                    
+                    // Then add that many seconds on to the current date
+                    $this->add($diff, self::UNIT_SECONDS);
+                }
+                
                 break;
             
-            case "month":
-                $ary = $this->getArray();
-                $ary['mon'] += intval( $value );
-                $this->setArray( $ary );
-                break;
             
-            case "week":
+            // Notice the lack of "breaks" in the next few cases. This allows
+            // the units to cascade down until they are converted to seconds
+            
+            case self::UNIT_WEEKS:
                 $value *= 7;
             
-            case "day":
+            case self::UNIT_DAYS:
                 $value *= 24;
             
-            case "hour":
+            case self::UNIT_HOURS:
                 $value *= 60;
             
-            case "minute":
+            case self::UNIT_MINUTES:
                 $value *= 60;
             
-            case "second":
+            case self::UNIT_SECONDS:
                 $this->time += intval( $value );
                 break;
         }
