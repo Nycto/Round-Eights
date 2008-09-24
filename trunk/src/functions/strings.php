@@ -125,7 +125,7 @@ function unshout ($string)
 }
 
 /**
- * Removes everything but letters, numbers and spaces from a string
+ * Removes everything but letters and numbers from a string
  *
  * named after the regular expression used
  *
@@ -135,6 +135,7 @@ function unshout ($string)
  *  - ALLOW_NEWLINES
  *  - ALLOW_SPACES
  *  - ALLOW_UNDERSCORES
+ *  - ALLOW_DASHES
  * @return String Returns the stripped string
  */
 function stripW ($string, $flags = 0)
