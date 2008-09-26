@@ -47,6 +47,12 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         $tag = new cPHP::Tag("a", "a snip of content");
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
+        
+        
+        $tag = new cPHP::Tag("a", "a snip of content", array("href" => "#"));
+        $this->assertSame("a", $tag->getTag());
+        $this->assertSame("a snip of content", $tag->getContent());
+        $this->assertSame(array("href" => "#"), $tag->getAttrs()->get());
     }
     
     public function testSetTag ()
@@ -242,18 +248,48 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         }
     }
     
+    public function testGetAttrs ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $tag->setAttr("Rel", "nofollow");
+        
+        $attrs = $tag->getAttrs();
+        
+        $this->assertThat( $attrs, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("rel" => "nofollow"), $attrs->get() );
+    }
+    
     public function testSetAttr ()
     {
         $tag = new cPHP::Tag("hr");
         
         $this->assertSame( $tag, $tag->setAttr("Rel", "nofollow") );
-        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
+        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs()->get() );
         
         $this->assertSame( $tag, $tag->setAttr("class", "title") );
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
         
         $this->assertSame( $tag, $tag->setAttr("class", "link") );
-        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("rel", TRUE) );
+        $this->assertSame( array("rel" => TRUE, "class" => "link"), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("class") );
+        $this->assertSame( array("rel" => TRUE, "class" => TRUE), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("rel", FALSE) );
+        $this->assertSame( array("rel" => FALSE, "class" => TRUE), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("class", null) );
+        $this->assertSame( array("rel" => FALSE, "class" => null), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("rel", 50) );
+        $this->assertSame( array("rel" => 50, "class" => null), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->setAttr("class", array( 1.5, 50 ) ) );
+        $this->assertSame( array("rel" => 50, "class" => 1.5), $tag->getAttrs()->get() );
         
         try {
             $tag->setAttr("  ", "empty");
@@ -262,20 +298,9 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         catch ( cPHP::Exception::Data::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
-    }
-    
-    public function testIsAttrSet ()
-    {
-        $tag = new cPHP::Tag("hr");
-        
-        $this->assertFalse( $tag->isAttrSet("class") );
-        
-        $tag->setAttr("class", "title");
-        
-        $this->assertTrue( $tag->isAttrSet("class") );
         
         try {
-            $tag->isAttrSet("  ", "empty");
+            $tag->setAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
         catch ( cPHP::Exception::Data::Argument $err ) {
@@ -283,23 +308,42 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         }
     }
     
-    public function testClearAttr ()
+    public function testAttrExists ()
     {
         $tag = new cPHP::Tag("hr");
         
-        $this->assertSame( $tag, $tag->clearAttr("rel") );
+        $this->assertFalse( $tag->attrExists("class") );
+        
+        $tag->setAttr("class", "title");
+        
+        $this->assertTrue( $tag->attrExists("class") );
+        
+        try {
+            $tag->attrExists("  ");
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
+    public function testUnsetAttr ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $this->assertSame( $tag, $tag->unsetAttr("rel") );
         
         $tag->setAttr("rel", "nofollow")
             ->setAttr("class", "title");
         
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
         
-        $this->assertSame( $tag, $tag->clearAttr("rel") );
+        $this->assertSame( $tag, $tag->unsetAttr("rel") );
         
-        $this->assertSame( array("class" => "title"), $tag->getAttrs() );
+        $this->assertSame( array("class" => "title"), $tag->getAttrs()->get() );
         
         try {
-            $tag->clearAttr("  ");
+            $tag->unsetAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
         catch ( cPHP::Exception::Data::Argument $err ) {
@@ -326,26 +370,178 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         }
     }
     
-    public function testImportAttrs ()
+    public function testImport ()
     {
+        $this->markTestSkipped("To be reconsidered... how do flags fit in?");
+        
         $tag = new cPHP::Tag("hr");
         
-        $this->assertSame( array(), $tag->getAttrs() );
+        $this->assertSame( array(), $tag->getAttrs()->get() );
         
         $this->assertSame(
                 $tag,
-                $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) )
+                $tag->import( array( "rel" => "nofollow", "class" => "link" ) )
             );
         
-        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs() );
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->import( array() ) );
+           
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        
+        $tag->clearAttrs();
+        
+        $this->assertSame(
+                $tag,
+                $tag->import( new ::cPHP::Ary( array( "rel" => "nofollow", "class" => "link" ) ) )
+            );
+           
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
         
         try {
-            $tag->importAttrs( array( "rel" => "nofollow", "  " => "link" ) );
+            $tag->import( array( "rel" => "nofollow", "  " => "link" ) );
             $this->fail("An expected exception has not been thrown");
         }
         catch ( cPHP::Exception::Data::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
+        
+        try {
+            $tag->import( "This is not traversable" );
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must be an array or a traversable object", $err->getMessage() );
+        }
+    }
+    
+    public function testClearAttrs ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $this->assertSame( array(), $tag->getAttrs()->get() );
+        
+        $tag->import( array( "rel" => "nofollow", "class" => "link" ) );
+        
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        
+        $this->assertSame( $tag, $tag->clearAttrs() );
+        
+        $this->assertSame( array(), $tag->getAttrs()->get() );
+        
+    }
+    
+    public function testSetAccessor ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $tag['Rel'] = "nofollow";
+        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs()->get() );
+        
+        $tag['class'] = "title";
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        
+        $tag['class'] = "link";
+        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs()->get() );
+        
+        try {
+            $tag['  '] = "link";
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+        
+        try {
+            $tag[] = "link";
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
+    public function testExistsAccessor ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $this->assertFalse( isset($tag["class"]) );
+        
+        $tag->setAttr("class", "title");
+        
+        $this->assertTrue( isset($tag["class"]) );
+        
+        try {
+            isset($tag["  "]);
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
+    public function testUnsetAccessor ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        unset( $tag['rel'] );
+        
+        $tag->setAttr("rel", "nofollow")
+            ->setAttr("class", "title");
+        
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        
+        unset( $tag['rel'] );
+        
+        $this->assertSame( array("class" => "title"), $tag->getAttrs()->get() );
+        
+        try {
+            unset( $tag['  '] );
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
+    public function testGetAcessor ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $this->assertNull( $tag["rel"] );
+        
+        $tag->setAttr("rel", "nofollow");
+        
+        $this->assertSame( "nofollow", $tag["rel"] );
+        
+        try {
+            $tag["  "];
+            $this->fail("An expected exception has not been thrown");
+        }
+        catch ( cPHP::Exception::Data::Argument $err ) {
+            $this->assertEquals( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
+    public function testCallStatic ()
+    {
+        $tag = ::cPHP::Tag::div();
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame("div", $tag->getTag());
+        $this->assertNull($tag->getContent());
+        $this->assertSame(array(), $tag->getAttrs()->get());
+        
+        $tag = ::cPHP::Tag::strong("words");
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame("strong", $tag->getTag());
+        $this->assertSame("words", $tag->getContent());
+        $this->assertSame(array(), $tag->getAttrs()->get());
+        
+        $tag = ::cPHP::Tag::a("this is content", array("href" => "#"));
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame("a", $tag->getTag());
+        $this->assertSame("this is content", $tag->getContent());
+        $this->assertSame(array( "href" => "#" ), $tag->getAttrs()->get());
     }
     
 }

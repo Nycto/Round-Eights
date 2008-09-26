@@ -14,7 +14,7 @@ namespace cPHP;
  * as a supplement. Sometimes, DOMXML is overkill. The goal for this class
  * is to contain a single tag.
  */
-class Tag
+class Tag implements ArrayAccess
 {
 
     /**
@@ -33,9 +33,35 @@ class Tag
     protected $attrs = array();
 
     /**
-     * The contents of this tag
+     * Any boolean flags to add as attributes
+     */
+    protected $flags = array();
+
+    /**
+     * The content of this tag
      */
     protected $content;
+    
+    /**
+     * Allows a tag instance to be created by calling a method with the tag name.
+     *
+     * @param string $func The function called statically, which will be used as the tag name
+     * @param array $args Any args passed to the function call.
+     *      Offset 0 will be used as the content, offset 1 as the attributes
+     * @return Object Returns a new cPHP::Tag object
+     */
+    static public function __callStatic ( $func, $args )
+    {
+        $tag = new static( $func );
+        
+        if ( count($args) > 0 )
+            $tag->setContent( array_shift($args) );
+        
+        if ( count($args) > 0 )
+            $tag->import( array_shift($args) );
+        
+        return $tag;
+    }
     
     /**
      * Takes an HTML attribute and strips it down
@@ -59,10 +85,11 @@ class Tag
      *
      * @param String $tag The tag contained in this instance
      */
-    public function __construct ( $tag, $content = null )
+    public function __construct ( $tag, $content = null, $attrs = array() )
     {
         $this->setTag( $tag );
         $this->setContent( $content );
+        $this->import( $attrs );
     }
     
     /**
@@ -204,16 +231,19 @@ class Tag
      */
     public function getAttrs ()
     {
-        return $this->attrs;
+        return new ::cPHP::Ary( $this->attrs );
     }
     
     /**
      * Sets a specific HTML attribute
      *
      * @param String $attr The attribute being set
+     * @param mixed $value The value of this attribute
+     *      Setting this to boolean true (or not passing it as an argument),
+     *      marks this attribute as a boolean value
      * @param object Returns a self reference
      */
-    public function setAttr ( $attr, $value )
+    public function setAttr ( $attr, $value = TRUE )
     {
         $this->attrs[ self::normalizeAttrName( $attr ) ] = ::cPHP::reduce($value);
         return $this;
@@ -225,7 +255,7 @@ class Tag
      * @param String $attr The attribute to test
      * @return Boolean
      */
-    public function isAttrSet ( $attr )
+    public function attrExists ( $attr )
     {
         return array_key_exists( self::normalizeAttrName( $attr ), $this->attrs );
     }
@@ -236,7 +266,7 @@ class Tag
      * @param String $attr The attribute to test
      * @param object Returns a self reference
      */
-    public function clearAttr ( $attr )
+    public function unsetAttr ( $attr )
     {
         $attr = self::normalizeAttrName( $attr );
         unset( $this->attrs[ $attr ] );
@@ -251,7 +281,7 @@ class Tag
      */
     public function getAttr ( $attr )
     {
-        if ( !$this->isAttrSet($attr) )
+        if ( !$this->attrExists($attr) )
             return null;
         
         return $this->attrs[ self::normalizeAttrName( $attr ) ];
@@ -263,13 +293,73 @@ class Tag
      * @param mixed $attrs The list of attributes to import
      * @return object Returns a self reference
      */
-    public function importAttrs ( $attrs )
+    public function import ( $attrs )
     {
-        $attrs = ::cPHP::Ary::create( $attrs );
+        if ( is_array($attrs) )
+            $attrs = ::cPHP::Ary::create( $attrs );
+        else if ( !( $attrs instanceof Traversable ) )
+            throw new ::cPHP::Exception::Data::Argument( 0, "Attribute List", "Must be an array or a traversable object" );
+
         foreach ( $attrs AS $key => $value ) {
             $this->setAttr( $key, $value );
         }
         return $this;
+    }
+    
+    /**
+     * Removes all attributes from this instance
+     *
+     * @return object Returns a self reference
+     */
+    public function clearAttrs ()
+    {
+        $this->attrs = array();
+        return $this;
+    }
+    
+    /**
+     * Array access method... wraps attrExists
+     * 
+     * @param String $attr The attribute to test
+     * @return Boolean
+     */
+    public function offsetExists ( $offset )
+    {
+        return $this->attrExists( $offset );
+    }
+    
+    /**
+     * Array access method... wraps getAttr
+     *
+     * @param String $attr The attribute to return
+     * @return mixed
+     */
+    public function offsetGet ( $offset )
+    {
+        return $this->getAttr($offset);
+    }
+    
+    /**
+     * Array access method... wraps setAttr
+     *
+     * @param String $attr The attribute to set
+     * @param mixed $value The value for the attribute
+     * @return null
+     */
+    public function offsetSet ( $offset, $value )
+    {
+        $this->setAttr($offset, $value);
+    }
+    
+    /**
+     * Array access method... wraps unsetAttr
+     *
+     * @param String $attr The attribute to clear
+     * @return null
+     */
+    public function offsetUnset ( $offset )
+    {
+        return $this->unsetAttr($offset);
     }
     
 }
