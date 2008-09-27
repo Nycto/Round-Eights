@@ -909,6 +909,34 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testMerge ()
+    {
+        $ary = new cPHP::Ary( array( 1, 2, "con" => 4 ) );
+        
+        $merged = $ary->merge( array( 5, 6, "con" => 7 ) );
+        
+        $this->assertThat( $merged, $this->isInstanceOf( "cPHP::Ary" ) );
+        
+        $this->assertEquals(
+                array( 1, 2, 5, 6, "con" => 7 ),
+                $merged->get()
+            );
+    }
+    
+    public function testAdd()
+    {
+        $ary = new cPHP::Ary( array( 1, 2, "con" => 4 ) );
+        
+        $merged = $ary->add( array( 2 => 3, "con" => 7 ) );
+        
+        $this->assertThat( $merged, $this->isInstanceOf( "cPHP::Ary" ) );
+        
+        $this->assertEquals(
+                array( 1, 2, 3, "con" => 4 ),
+                $merged->get()
+            );
+    }
+    
 }
 
 ?>

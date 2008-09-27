@@ -1032,6 +1032,37 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Merges an array in to this array and returns the result
+     *
+     * This is like running array_merge( $this, $array ). Thus, the keys
+     * in the argument will overwrite the keys in this array
+     *
+     * @param mixed $array The input data to merge in to the array
+     * @return Object Returns a self reference
+     */
+    public function merge ( $array )
+    {
+        return new self( array_merge(
+                $this->array,
+                self::create( $array )->get()
+            ) );
+    }
+    
+    /**
+     * Merges an array in to this array and returns the result
+     *
+     * This is like running "$this + $array". Meaning, the keys in the argument
+     * the conflict with existing keys will be ignored
+     *
+     * @param mixed $array The input data to merge in to the array
+     * @return Object Returns a self reference
+     */
+    public function add ( $array )
+    {
+        return new self( $this->array + self::create( $array )->get() );
+    }
+    
+    /**
      *
      */
     
