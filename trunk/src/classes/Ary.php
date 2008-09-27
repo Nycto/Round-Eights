@@ -54,20 +54,22 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Class method for creating a new instance
      *
-     * @throws cPHP::Exception::
      * @param mixed The array to use for this instance
      * @return object Returns a new array object
      */
     static public function create( $array = array() )
     {
+        return new self( $array );
+    /*
         if ( is_array($array) )
             return new self( $array );
         
         else if ( $array instanceof self )
-            return $array;
+            return clone $array;
         
         else
             return new self( array( $array ) );
+    */
     }
     
     /**
@@ -93,14 +95,25 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Constructor
      *
-     * @param Array The array to use for this instance
+     * @param mixed The data to load in to this instance
+     *      If an array is given, it will be copied in to this value
+     *      If a cPHP::Ary is given, it's value will be extracted and imported
+     *      If an instance of Traversable is given, it will be converted to an array
+     *      If any other value is given, it will be wrapped in an array and imported
      */
-    public function __construct( array $array = array() )
+    public function __construct( $array = array() )
     {
-        
-        if ( func_num_args() > 0 )
+        if ( is_array($array) )
             $this->array = $array;
         
+        else if ( $array instanceof self )
+            $this->array = $array->get();
+        
+        else if ( $array instanceof Traversable )
+            $this->array = iterator_to_array( $array );
+        
+        else
+            $this->array = array( $array );
     }
     
     /**

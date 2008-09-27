@@ -28,6 +28,59 @@ class classes_ary
 class classes_ary_tests extends PHPUnit_Framework_TestCase
 {
     
+    public function testConstruct ()
+    {
+        $ary = new cPHP::Ary(array( 4, 3, "other"));
+        $this->assertEquals(
+                array( 4, 3, "other"),
+                $ary->get()
+            );
+        
+        
+        $newAry = new cPHP::Ary( $ary );
+        $this->assertNotSame( $ary, $newAry );
+        $this->assertEquals(
+                array( 4, 3, "other" ),
+                $newAry->get()
+            );
+        
+        
+        $iterAggr = $this->getMock("IteratorAggregate", array("getIterator"));
+        $iterAggr->expects( $this->once() )
+            ->method("getIterator")
+            ->with()
+            ->will( $this->returnValue( new ArrayObject( array( 4, 3, "other" ) ) ) );
+            
+        $ary = new cPHP::Ary( $iterAggr );
+        $this->assertEquals(
+                array( 4, 3, "other" ),
+                $ary->get()
+            );
+        
+        
+        $iter = new ArrayIterator( array( 4, 3, "other" ) );
+        $ary = new cPHP::Ary( $iter );
+        $this->assertEquals(
+                array( 4, 3, "other" ),
+                $ary->get()
+            );
+        
+        
+        $ary = new cPHP::Ary( "string" );
+        $this->assertEquals(
+                array( "string" ),
+                $ary->get()
+            );
+        
+        
+        $ary = new cPHP::Ary( 1 );
+        $this->assertEquals(
+                array( 1 ),
+                $ary->get()
+            );
+        
+    }
+    
     public function testCreate ()
     {
         $ary = cPHP::Ary::create(array( 4, 3, "other"));
