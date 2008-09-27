@@ -23,7 +23,11 @@ class Tag implements ArrayAccess
     protected $tag;
 
     /**
-     * Whether or not this tag is empty
+     * Whether or not this tag is empty.
+     *
+     * This is actually an override. The class will try to determine if a tag
+     * should be empty by looking at whether it has content and, then the type
+     * of tag.
      */
     protected $empty;
 
@@ -31,11 +35,6 @@ class Tag implements ArrayAccess
      * The attributes for this tag
      */
     protected $attrs = array();
-
-    /**
-     * Any boolean flags to add as attributes
-     */
-    protected $flags = array();
 
     /**
      * The content of this tag
@@ -58,7 +57,7 @@ class Tag implements ArrayAccess
             $tag->setContent( array_shift($args) );
         
         if ( count($args) > 0 )
-            $tag->import( array_shift($args) );
+            $tag->importAttrs( array_shift($args) );
         
         return $tag;
     }
@@ -81,15 +80,29 @@ class Tag implements ArrayAccess
     }
     
     /**
+     * Puts quotes around a string and prepares it to be used as the value of an HTML attribute
+     *
+     * @param String $string The value being quoted
+     * @return String Returns the quoted value
+     */
+    static public function quoteAttr ($string)
+    {
+        return '"'. htmlspecialchars( ::cPHP::strval( $string ) ) .'"';
+    }
+    
+    /**
      * Constructor...
      *
-     * @param String $tag The tag contained in this instance
+     * @param String $tag The tag this instance represents
+     * @param String $content Any content for this instance
+     * @param Array $attrs Any attributes to load in
+     * @return null
      */
     public function __construct ( $tag, $content = null, $attrs = array() )
     {
         $this->setTag( $tag );
         $this->setContent( $content );
-        $this->import( $attrs );
+        $this->importAttrs( $attrs );
     }
     
     /**
@@ -235,6 +248,16 @@ class Tag implements ArrayAccess
     }
     
     /**
+     * Returns whether there are any attributes set
+     *
+     * @return Boolean
+     */
+    public function hasAttrs ()
+    {
+        return count( $this->attrs ) > 0 ? TRUE : FALSE;
+    }
+    
+    /**
      * Sets a specific HTML attribute
      *
      * @param String $attr The attribute being set
@@ -293,7 +316,7 @@ class Tag implements ArrayAccess
      * @param mixed $attrs The list of attributes to import
      * @return object Returns a self reference
      */
-    public function import ( $attrs )
+    public function importAttrs ( $attrs )
     {
         if ( is_array($attrs) )
             $attrs = ::cPHP::Ary::create( $attrs );
@@ -362,6 +385,77 @@ class Tag implements ArrayAccess
         return $this->unsetAttr($offset);
     }
     
+    /**
+     * Returns a string of the attributes in this instance
+     *
+     * @return String
+     */
+    public function getAttrString ()
+    {
+        $attrs = array();
+        $flags = array();
+    
+        foreach ( $this->attrs AS $label => $data) {
+    
+            // If it equals TRUE, that means it's a flag
+            if ( $data === TRUE )
+                $flags[] = $label;
+            else 
+                $attrs[] = $label ."=". self::quoteAttr($data);
+    
+        }
+        
+        return implode(" ", array_merge($attrs, $flags));
+    }
+    
+    /**
+     * Returns a string representation of the open part of the tag
+     *
+     * This will return something like:  <a href='#'>
+     *
+     * @return String An opening HTML tag
+     */
+    public function getOpenTag ()
+    {
+        return '<'. $this->tag . ( $this->hasAttrs() ? ' '. $this->getAttrString() : '') .'>';
+    }
+    
+    /**
+     * Returns the html to close this tag
+     *
+     * This will return something like: </a>
+     * 
+     * @return String A closing HTML tag
+     */
+    public function getCloseTag ()
+    {
+        return '</'. $this->tag .'>';
+    }
+    
+    /**
+     * Returns an empty HTML tag
+     *
+     * This will return something like: <input name='firstName' />
+     *
+     * @return String Returns an empty HTML tag
+     */
+    public function getEmptyTag ()
+    {
+        return '<'. $this->tag . ( $this->hasAttrs() ? ' '. $this->getAttrString() : '') .' />';
+    }
+    
+    /**
+     * Returns the HTML string represented by this instance
+     *
+     * @return String Returns a string of HTML
+     */
+    public function __toString ()
+    {
+        if ( $this->isEmpty() )
+            return $this->getEmptyTag();
+        else
+            return $this->getOpenTag() . $this->getContent() . $this->getCloseTag();
+    }
 }
 
 ?>

@@ -260,6 +260,17 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( array("rel" => "nofollow"), $attrs->get() );
     }
     
+    public function testHasAttrs ()
+    {
+        $tag = new cPHP::Tag("hr");
+        
+        $this->assertFalse( $tag->hasAttrs() );
+        
+        $tag->setAttr("Rel", "nofollow");
+        
+        $this->assertTrue( $tag->hasAttrs() );
+    }
+    
     public function testSetAttr ()
     {
         $tag = new cPHP::Tag("hr");
@@ -370,22 +381,20 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         }
     }
     
-    public function testImport ()
+    public function testImportAttrs ()
     {
-        $this->markTestSkipped("To be reconsidered... how do flags fit in?");
-        
         $tag = new cPHP::Tag("hr");
         
         $this->assertSame( array(), $tag->getAttrs()->get() );
         
         $this->assertSame(
                 $tag,
-                $tag->import( array( "rel" => "nofollow", "class" => "link" ) )
+                $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) )
             );
         
         $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
         
-        $this->assertSame( $tag, $tag->import( array() ) );
+        $this->assertSame( $tag, $tag->importAttrs( array() ) );
            
         $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
         
@@ -393,13 +402,13 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         
         $this->assertSame(
                 $tag,
-                $tag->import( new ::cPHP::Ary( array( "rel" => "nofollow", "class" => "link" ) ) )
+                $tag->importAttrs( new ::cPHP::Ary( array( "rel" => "nofollow", "class" => "link" ) ) )
             );
            
         $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
         
         try {
-            $tag->import( array( "rel" => "nofollow", "  " => "link" ) );
+            $tag->importAttrs( array( "rel" => "nofollow", "  " => "link" ) );
             $this->fail("An expected exception has not been thrown");
         }
         catch ( cPHP::Exception::Data::Argument $err ) {
@@ -407,7 +416,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         }
         
         try {
-            $tag->import( "This is not traversable" );
+            $tag->importAttrs( "This is not traversable" );
             $this->fail("An expected exception has not been thrown");
         }
         catch ( cPHP::Exception::Data::Argument $err ) {
@@ -421,7 +430,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         
         $this->assertSame( array(), $tag->getAttrs()->get() );
         
-        $tag->import( array( "rel" => "nofollow", "class" => "link" ) );
+        $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) );
         
         $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
         
@@ -544,6 +553,120 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
         $this->assertSame(array( "href" => "#" ), $tag->getAttrs()->get());
     }
     
+    public function testQuoteAttr ()
+    {
+        $this->assertSame( '"test"', ::cPHP::Tag::quoteAttr("test") );
+        $this->assertSame( '"test &quot; quote"', ::cPHP::Tag::quoteAttr('test " quote') );
+        $this->assertSame( '"test \' quote"', ::cPHP::Tag::quoteAttr("test ' quote") );
+        $this->assertSame( '"test \' &quot; quotes"', ::cPHP::Tag::quoteAttr("test ' \" quotes") );
+    }
+    
+    public function testGetAttrString ()
+    {
+        $tag = new ::cPHP::Tag("a");
+        
+        $this->assertSame( "", $tag->getAttrString() );
+        
+        $tag->setAttr("href", "?test=1&other=2");
+        $this->assertSame( 'href="?test=1&amp;other=2"', $tag->getAttrString() );
+        
+        $tag->setAttr("selected");
+        $this->assertSame( 'href="?test=1&amp;other=2" selected', $tag->getAttrString() );
+        
+        $tag->setAttr("Class", "link");
+        $this->assertSame(
+                'href="?test=1&amp;other=2" class="link" selected',
+                $tag->getAttrString()
+            );
+        
+        $tag->setAttr("TITLE", "has \" ' quotes");
+        $this->assertSame(
+                'href="?test=1&amp;other=2" class="link" title="has &quot; \' quotes" selected',
+                $tag->getAttrString()
+            );
+    }
+    
+    public function testGetOpenTag()
+    {
+        $tag = new ::cPHP::Tag("a");
+        
+        $this->assertSame( "<a>", $tag->getOpenTag() );
+        
+        $tag->setTag("div");
+        
+        $this->assertSame( "<div>", $tag->getOpenTag() );
+        
+        $tag->setAttr("id", "myDiv");
+        
+        $this->assertSame( '<div id="myDiv">', $tag->getOpenTag() );
+        
+        $tag->setAttr("checked");
+        
+        $this->assertSame( '<div id="myDiv" checked>', $tag->getOpenTag() );
+        
+    }
+    
+    public function testGetCloseTag()
+    {
+        $tag = new ::cPHP::Tag("a");
+        
+        $this->assertSame( "</a>", $tag->getCloseTag() );
+        
+        $tag->setTag("div");
+        
+        $this->assertSame( "</div>", $tag->getCloseTag() );
+        
+        $tag->setAttr("id", "myDiv");
+        
+        $this->assertSame( "</div>", $tag->getCloseTag() );
+        
+        $tag->setAttr("checked");
+        
+        $this->assertSame( "</div>", $tag->getCloseTag() );
+        
+    }
+
+    public function testGetEmptyTag()
+    {
+        $tag = new ::cPHP::Tag("a");
+        
+        $this->assertSame( "<a />", $tag->getEmptyTag() );
+        
+        $tag->setTag("div");
+        
+        $this->assertSame( "<div />", $tag->getEmptyTag() );
+        
+        $tag->setAttr("id", "myDiv");
+        
+        $this->assertSame( '<div id="myDiv" />', $tag->getEmptyTag() );
+        
+        $tag->setAttr("checked");
+        
+        $this->assertSame( '<div id="myDiv" checked />', $tag->getEmptyTag() );
+    }
+
+    public function testToString()
+    {
+        $tag = new ::cPHP::Tag("input");
+        
+        $this->assertSame( "<input />", $tag->__toString() );
+        
+        $tag->setTag("option");
+        
+        $this->assertSame( "<option></option>", $tag->__toString() );
+        
+        $tag->setAttr("value", "WA");
+        
+        $this->assertSame( '<option value="WA"></option>', $tag->__toString() );
+        
+        $tag->setAttr("selected");
+        
+        $this->assertSame( '<option value="WA" selected></option>', $tag->__toString() );
+        
+        $tag->setContent("Washington");
+        
+        $this->assertSame( '<option value="WA" selected>Washington</option>', $tag->__toString() );
+    }
 }
 
 ?>
