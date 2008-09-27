@@ -43,7 +43,7 @@ class classes_validator_collection_tests extends PHPUnit_Framework_TestCase
     
     public function testAddObjectError ()
     {
-        $this->setExpectedException("cPHP::Exception::Data::Argument");
+        $this->setExpectedException("cPHP::Exception::Argument");
         
         $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
         $valid = $this->getMock("stub_random_class");
@@ -79,7 +79,7 @@ class classes_validator_collection_tests extends PHPUnit_Framework_TestCase
     
     public function testAddStringError ()
     {
-        $this->setExpectedException("cPHP::Exception::Data::Argument");
+        $this->setExpectedException("cPHP::Exception::Argument");
         
         $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
         $valid = get_class( $this->getMock("stub_random_class") );

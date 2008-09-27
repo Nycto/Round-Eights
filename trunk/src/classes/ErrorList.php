@@ -8,7 +8,7 @@
 namespace cPHP;
 
 /**
- * Contains a list of errors
+ * Helper class for managing a list of errors
  */
 class ErrorList
 {
@@ -29,7 +29,7 @@ class ErrorList
         $message = ::cPHP::strval($message);
         
         if ( ::cPHP::is_empty($message) )
-            throw new cPHP::Exception::Data::Argument( 0, "Error Message", "Must Not Be Empty" );
+            throw new cPHP::Exception::Argument( 0, "Error Message", "Must Not Be Empty" );
         
         if ( !in_array($message, $this->errors) )
             $this->errors[] = $message;

@@ -6,18 +6,18 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../../general.php";
+require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
  * test suite
  */
-class classes_exception_data_argument
+class classes_exception_argument
 {
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite('commonPHP Argument Exception Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_exception_data_argument_tests' );
+        $suite->addTestSuite( 'classes_exception_argument_tests' );
         return $suite;
     }
 }
@@ -25,7 +25,7 @@ class classes_exception_data_argument
 /**
  * unit tests
  */
-class classes_exception_data_argument_tests extends PHPUnit_Framework_TestCase
+class classes_exception_argument_tests extends PHPUnit_Framework_TestCase
 {
     
     // Returns an thrown exception
@@ -33,11 +33,11 @@ class classes_exception_data_argument_tests extends PHPUnit_Framework_TestCase
     {
         try {
             $throw = function ( $arg1, $arg2 ) {
-                throw new ::cPHP::Exception::Data::Argument(0, "test", "From our sponsors", 505, 0);
+                throw new ::cPHP::Exception::Argument(0, "test", "From our sponsors", 505, 0);
             };
             $throw("arg value", "other arg");
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {
+        catch ( ::cPHP::Exception::Argument $err ) {
             return $err;
         }
     }

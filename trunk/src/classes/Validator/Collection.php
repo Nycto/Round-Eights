@@ -60,7 +60,7 @@ abstract class Collection extends cPHP::Validator
         if ( is_object($validator) ) {
             
             if ( !$validator instanceof cPHP::iface::Validator )
-                throw new cPHP::Exception::Data::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+                throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
             
         }
         else {
@@ -70,7 +70,7 @@ abstract class Collection extends cPHP::Validator
                 
                 $refl = new ReflectionClass( $validator );
                 if ( !$refl->implementsInterface( "cPHP::iface::Validator" ) )
-                    throw new cPHP::Exception::Data::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+                    throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
                 
             }
             

@@ -82,7 +82,7 @@ class DateTime
         
         switch ( $unit ) {
             default:
-                throw new ::cPHP::Exception::Data::Argument(1, "Units", "Invalid time unit");
+                throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
             
             case "second":
             case "minute":
@@ -252,7 +252,7 @@ class DateTime
         $datetime = ::cPHP::stripW($datetime);
         
         if ( !self::isSQL($datetime) )
-            throw new ::cPHP::Exception::Data::Argument(0, "SQL Date/Time", "Invalid SQL date time");
+            throw new ::cPHP::Exception::Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
         $result = preg_match(
                 '/^'
@@ -304,7 +304,7 @@ class DateTime
     {
         $string = strtotime( ::cPHP::strval( $string ) );
         if ($string === FALSE)
-            throw new ::cPHP::Exception::Data::Argument(0, "Date/Time String", "Unable to parse string to a valid time");
+            throw new ::cPHP::Exception::Argument(0, "Date/Time String", "Unable to parse string to a valid time");
         return $this->setTimeStamp( $string );
     }
 
@@ -453,7 +453,7 @@ class DateTime
         switch ( $unit ) {
             
             default:
-                throw new ::cPHP::Exception::Data::Argument(1, "Units", "Invalid time unit");
+                throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
             
             case self::UNIT_MONTHS:
                 $unit = "mon";
@@ -528,13 +528,13 @@ class DateTime
         try {
             $unit = self::normalizeUnit( $unit );
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
         $ary = $this->getArray();
 
         switch ( $unit ) {
             default:
-                throw new ::cPHP::Exception::Data::Argument(0, "Unit", "Invalid time unit");
+                throw new ::cPHP::Exception::Argument(0, "Unit", "Invalid time unit");
             case "second":
                 return $ary['seconds'];
             case "minute":
@@ -570,7 +570,7 @@ class DateTime
         switch ( self::normalizeUnit( $unit ) ) {
             
             default:
-                throw new ::cPHP::Exception::Data::Argument(0, "Unit", "Invalid time unit");
+                throw new ::cPHP::Exception::Argument(0, "Unit", "Invalid time unit");
             
             case "second":
                 return $this->setArray( array('seconds' => $value) );

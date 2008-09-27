@@ -123,7 +123,7 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
     
     public function testStrOffsetsException ()
     {
-        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        $this->setExpectedException('::cPHP::Exception::Argument');
         cPHP::strOffsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
     }
 
@@ -249,7 +249,7 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
     
     public function testStripRepeatsException ()
     {
-        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        $this->setExpectedException('::cPHP::Exception::Argument');
         ::cPHP::stripRepeats( 'Stringy string with multiple occurances of the word string, Stringity string', '' );
     }
 
@@ -763,7 +763,7 @@ class functions_strings_tests extends PHPUnit_Framework_TestCase
     
     public function testPluralizeException ()
     {
-        $this->setExpectedException('::cPHP::Exception::Data::Argument');
+        $this->setExpectedException('::cPHP::Exception::Argument');
         cPHP::pluralize( '' );
     }
 

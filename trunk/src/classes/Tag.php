@@ -65,7 +65,7 @@ class Tag implements ArrayAccess
     /**
      * Takes an HTML attribute and strips it down
      *
-     * @throws cPHP::Exception::Data::Argument Thrown when the attribute name is empty
+     * @throws cPHP::Exception::Argument Thrown when the attribute name is empty
      * @param String $attr The name of the attribute
      * @return String The normalized version of the attribute name
      */
@@ -74,7 +74,7 @@ class Tag implements ArrayAccess
         $attr = strtolower( ::cPHP::stripW($attr) );
         
         if ( empty($attr) )
-            throw new ::cPHP::Exception::Data::Argument( 0, "Attribute Name", "Must not be empty" );
+            throw new ::cPHP::Exception::Argument( 0, "Attribute Name", "Must not be empty" );
         
         return $attr;
     }
@@ -126,7 +126,7 @@ class Tag implements ArrayAccess
         $tag = strtolower( ::cPHP::stripW($tag) );
 
         if ( ::cPHP::is_empty($tag) )
-            throw new ::cPHP::Exception::Data::Argument(0, "Tag", "Must not be empty");
+            throw new ::cPHP::Exception::Argument(0, "Tag", "Must not be empty");
 
         $this->tag = $tag;
 
@@ -321,7 +321,7 @@ class Tag implements ArrayAccess
         if ( is_array($attrs) )
             $attrs = ::cPHP::Ary::create( $attrs );
         else if ( !( $attrs instanceof Traversable ) )
-            throw new ::cPHP::Exception::Data::Argument( 0, "Attribute List", "Must be an array or a traversable object" );
+            throw new ::cPHP::Exception::Argument( 0, "Attribute List", "Must be an array or a traversable object" );
 
         foreach ( $attrs AS $key => $value ) {
             $this->setAttr( $key, $value );

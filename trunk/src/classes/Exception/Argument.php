@@ -5,12 +5,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::Data;
+namespace cPHP::Exception;
 
 /**
  * Exception class to handle bad arguments
  */
-class Argument extends ::cPHP::Exception::Data
+class Argument extends ::cPHP::Exception
 {
     
     protected $exception = "Argument Error";

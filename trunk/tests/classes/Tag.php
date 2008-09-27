@@ -39,7 +39,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag = new cPHP::Tag("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
         
@@ -69,7 +69,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->setTag("");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -243,7 +243,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             ::cPHP::Tag::normalizeAttrName("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -306,7 +306,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->setAttr("  ", "empty");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
         
@@ -314,7 +314,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->setAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -333,7 +333,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->attrExists("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -357,7 +357,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->unsetAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -376,7 +376,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->getAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -411,7 +411,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->importAttrs( array( "rel" => "nofollow", "  " => "link" ) );
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
         
@@ -419,7 +419,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag->importAttrs( "This is not traversable" );
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must be an array or a traversable object", $err->getMessage() );
         }
     }
@@ -457,7 +457,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag['  '] = "link";
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
         
@@ -465,7 +465,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag[] = "link";
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -484,7 +484,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             isset($tag["  "]);
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -508,7 +508,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             unset( $tag['  '] );
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
@@ -527,7 +527,7 @@ class classes_tag_tests extends PHPUnit_Framework_TestCase
             $tag["  "];
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( cPHP::Exception::Data::Argument $err ) {
+        catch ( cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }

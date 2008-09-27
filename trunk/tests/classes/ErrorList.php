@@ -56,7 +56,7 @@ class classes_errorlist_tests extends PHPUnit_Framework_TestCase
             $result->addError("");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
     }
     
     public function testAddErrors ()

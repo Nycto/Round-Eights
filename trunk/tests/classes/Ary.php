@@ -120,7 +120,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             cPHP::Ary::create(array())->calcOffset(2, "invalid offset value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
 
         $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_NONE) );
@@ -134,19 +134,19 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             cPHP::Ary::create(array())->calcOffset(2, cPHP::Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
         try {
             cPHP::Ary::range(1, 5)->calcOffset(5, cPHP::Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
         try {
             cPHP::Ary::range(1, 5)->calcOffset(-6, cPHP::Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
 
         $this->assertEquals(1, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_WRAP) );
@@ -326,7 +326,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             cPHP::Ary::range(1, 5)->keyOffset(60);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
     }
     
     public function testPointer ()
@@ -587,7 +587,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             $ary->sort( TRUE, "Invalid sort type" );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
     }
     
     public function testHone ()
@@ -656,7 +656,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             $ary->translateKeys("This is not a valid key map");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {
+        catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertEquals("Must be an array or a cPHP::Ary object", $err->getMessage());
         }
         
@@ -748,7 +748,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             cPHP::Ary::create()->collect("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
     }
     
     public function testFilter ()
@@ -778,7 +778,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             cPHP::Ary::create()->filter("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
     }
     
@@ -799,7 +799,7 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
             $ary->each("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {}
+        catch ( ::cPHP::Exception::Argument $err ) {}
         
     }
     

@@ -269,7 +269,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
             $time->setSQL("Does not pass isSQL");
             $this->fail("An expected exception was not thrown");
         }
-        catch (::cPHP::Exception::Data::Argument $err) {
+        catch (::cPHP::Exception::Argument $err) {
             $this->assertEquals("Invalid SQL date time", $err->getMessage());
         }
         
@@ -314,7 +314,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
             $time->setString("NOPE");
             $time->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {
+        catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertEquals("Unable to parse string to a valid time", $err->getMessage() );
         }
     }
@@ -376,7 +376,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
             $time->setString("Not a date");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {
+        catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Unable to parse string to a valid time", $err->getMessage() );
         }
     }
@@ -387,7 +387,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
             ::cPHP::DateTime::normalizeUnit("Invalid unit");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Data::Argument $err ) {
+        catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertEquals( "Invalid time unit", $err->getMessage() );
         }
         
@@ -452,7 +452,7 @@ class classes_datetime_tests extends PHPUnit_Framework_TestCase
             $time->add( 1, "invalid unit" );
             $this->fail("An expected exception was not thrown");
         }
-        catch (::cPHP::Exception::Data::Argument $err) {
+        catch (::cPHP::Exception::Argument $err) {
             $this->assertEquals("Invalid time unit", $err->getMessage());
         }
     }

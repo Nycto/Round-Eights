@@ -65,7 +65,7 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
     $haystack = strVal($haystack);
 
     if (empty($needle))
-        throw new ::cPHP::Exception::Data::Argument(0, 'needle', 'Must not be empty');
+        throw new ::cPHP::Exception::Argument(0, 'needle', 'Must not be empty');
 
     if (!strContains($needle, $haystack, $ignoreCase))
         return new cPHP::Ary;
@@ -179,7 +179,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
     }
 
     if ( is_empty( $repeated ) )
-        throw new ::cPHP::Exception::Data::Argument(1, 'Repeated', 'Must not be empty');
+        throw new ::cPHP::Exception::Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
             '/('. $repeated .')\1+/'. ($ignoreCase?'i':''),
@@ -570,7 +570,7 @@ function pluralize ( $string, $count = 2 )
     $string = strval($string);
 
     if ( is_empty( trim($string) ) )
-        throw new ::cPHP::Exception::Data::Argument(0, "String", "Must not be empty");
+        throw new ::cPHP::Exception::Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )
         return $string;
