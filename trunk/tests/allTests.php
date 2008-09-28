@@ -5,7 +5,6 @@
  * @package UnitTests
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/general.php";
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/functions/allTests.php";
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/classes/allTests.php";
