@@ -2,7 +2,7 @@
 /**
  * String parsing class
  *
- * @package QuoteParser
+ * @package Quoter
  */
 
 namespace cPHP;
@@ -306,6 +306,31 @@ class Quoter
         $string = ::cPHP::strval( $string );
         
         $openQuotes = $this->getOpenQuotes()->get();
+        
+        do {
+        
+            list( $openOffset, $openQuote ) =
+                self::findNext( $string, $openQuotes, $this->escape );
+            
+            if ( $openOffset == FALSE )
+                break;
+            
+            $unquoted = substr( $string, 0, $openOffset );
+            $string = substr( $string, $openOffset + strlen( $openQuote ) );
+            
+            list( $closeOffset, $closeQuote ) =
+                self::findNext( $string, $this->getCloseQuotesFor($openQuote)->get(), $this->escape );
+            
+            if ( $closeOffset === FALSE ) {
+                $quoted = $string;
+            }
+            else {
+                $quoted = substr( $string, 0, $closeOffset );
+                $string = substr( $string, $closeOffset + strlen( $closeOffset ) );
+            }
+        
+        } while ( $closeOffset !== FALSE && $string !== "" );
+        
     }
     
 }

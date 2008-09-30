@@ -351,6 +351,13 @@ class classes_quoter_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testParse ()
+    {
+        $quoter = new ::cPHP::Quoter;
+        
+        $quoter->parse("string 'with' quotes");
+    }
+    
 }
 
 ?>
