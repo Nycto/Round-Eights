@@ -28,7 +28,7 @@ class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
 {
     public function testSetContent ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(0, null));
+        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
         
         $this->assertNull( $section->getContent() );
         
@@ -39,7 +39,7 @@ class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
     
     public function testClearContent ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(0, null));
+        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
         
         $this->assertNull( $section->getContent() );
         
@@ -54,7 +54,7 @@ class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
     
     public function testContentExists ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(0, null));
+        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
         
         $this->assertFalse( $section->contentExists() );
         
@@ -73,7 +73,7 @@ class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
     
     public function testIsEmpty ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(0, null));
+        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
         
         $this->assertTrue( $section->isEmpty() );
         
@@ -93,12 +93,12 @@ class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
     
     public function testConstruct ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(10, "data"));
+        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(10, "data"));
         $this->assertSame( 10, $section->getOffset() );
         $this->assertSame( "data", $section->getContent() );
         
         try {
-            $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted"), array(-5, "data"));
+            $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(-5, "data"));
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Argument $err ) {

@@ -351,11 +351,222 @@ class classes_quoter_tests extends PHPUnit_Framework_TestCase
         
     }
     
-    public function testParse ()
+    public function testParse_endWithUnquoted ()
     {
         $quoter = new ::cPHP::Quoter;
         
-        $quoter->parse("string 'with' quotes");
+        $result = $quoter->parse("string 'with' quotes");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("string ", "'with'", " quotes"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( "string ", $offset->getContent() );
+        $this->assertSame( 0, $offset->getOffset() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(1);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "with", $offset->getContent() );
+        $this->assertSame( 8, $offset->getOffset() );
+        $this->assertSame( "'", $offset->getOpenQuote() );
+        $this->assertSame( "'", $offset->getCloseQuote() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(2);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( " quotes", $offset->getContent() );
+        $this->assertSame( 13, $offset->getOffset() );
+        
+    }
+    
+    public function testParse_endWithQuoted ()
+    {
+        $quoter = new ::cPHP::Quoter;
+        
+        $result = $quoter->parse("string 'with'");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("string ", "'with'"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( "string ", $offset->getContent() );
+        $this->assertSame( 0, $offset->getOffset() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(1);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "with", $offset->getContent() );
+        $this->assertSame( 8, $offset->getOffset() );
+        $this->assertSame( "'", $offset->getOpenQuote() );
+        $this->assertSame( "'", $offset->getCloseQuote() );
+    }
+    
+    public function testParse_onlyUnquoted()
+    {
+        $quoter = new ::cPHP::Quoter;
+        
+        $result = $quoter->parse("This is a string");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("This is a string"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( "This is a string", $offset->getContent() );
+        $this->assertSame( 0, $offset->getOffset() );
+    }
+    
+    public function testParse_onlyQuoted()
+    {
+        $quoter = new ::cPHP::Quoter;
+        
+        $result = $quoter->parse("'This is a string'");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("'This is a string'"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "This is a string", $offset->getContent() );
+        $this->assertSame( 1, $offset->getOffset() );
+        $this->assertSame( "'", $offset->getOpenQuote() );
+        $this->assertSame( "'", $offset->getCloseQuote() );
+    }
+    
+    public function testParse_touchingQuoted()
+    {
+        $quoter = new ::cPHP::Quoter;
+        
+        $result = $quoter->parse("'This is''a string'");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("'This is'", "'a string'"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "This is", $offset->getContent() );
+        $this->assertSame( 1, $offset->getOffset() );
+        $this->assertSame( "'", $offset->getOpenQuote() );
+        $this->assertSame( "'", $offset->getCloseQuote() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(1);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "a string", $offset->getContent() );
+        $this->assertSame( 10, $offset->getOffset() );
+        $this->assertSame( "'", $offset->getOpenQuote() );
+        $this->assertSame( "'", $offset->getCloseQuote() );
+    }
+    
+    public function testParse_oddQuotes ()
+    {
+        $quoter = new ::cPHP::Quoter;
+        $quoter->clearQuotes()
+            ->setQuote("<({", array( "END OF QUOTE", "))" ) );
+        
+        $result = $quoter->parse("<({This isEND OF QUOTE a string <({with stuff)) in it");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Quoter::Parsed") );
+        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP::Ary") );
+        
+        $this->assertSame(
+                array("<({This isEND OF QUOTE", " a string ", "<({with stuff))", " in it"),
+                $result->getSections()->collect("cPHP::strval")->get()
+            );
+        
+        
+        $offset = $result->getSections()->OffsetGet(0);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "This is", $offset->getContent() );
+        $this->assertSame( 3, $offset->getOffset() );
+        $this->assertSame( "<({", $offset->getOpenQuote() );
+        $this->assertSame( "END OF QUOTE", $offset->getCloseQuote() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(1);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( " a string ", $offset->getContent() );
+        $this->assertSame( 22, $offset->getOffset() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(2);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Quoted")
+            );
+        $this->assertSame( "with stuff", $offset->getContent() );
+        $this->assertSame( 35, $offset->getOffset() );
+        $this->assertSame( "<({", $offset->getOpenQuote() );
+        $this->assertSame( "))", $offset->getCloseQuote() );
+        
+        
+        $offset = $result->getSections()->OffsetGet(3);
+        $this->assertThat(
+                $offset,
+                $this->isInstanceOf("cPHP::Quoter::Section::Unquoted")
+            );
+        $this->assertSame( " in it", $offset->getContent() );
+        $this->assertSame( 47, $offset->getOffset() );
     }
     
 }

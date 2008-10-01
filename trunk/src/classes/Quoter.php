@@ -307,30 +307,76 @@ class Quoter
         
         $openQuotes = $this->getOpenQuotes()->get();
         
+        $result = new ::cPHP::Quoter::Parsed;
+        
+        // As we walk through the string, this is updated as the offset
+        // relative to the original string
+        $totalOffset = 0;
+        
         do {
         
-            list( $openOffset, $openQuote ) =
+            // Find the next open quote and it's offset
+            list( $openOffset, $openQuote ) = 
                 self::findNext( $string, $openQuotes, $this->escape );
             
-            if ( $openOffset == FALSE )
+            // If a quote couldn't be found, break out of the loop
+            if ( $openOffset === FALSE ) {
+                
+                $result->addSection(
+                        new ::cPHP::Quoter::Section::Unquoted( $totalOffset, $string )
+                    );
+                
                 break;
+            }
             
-            $unquoted = substr( $string, 0, $openOffset );
+            else if ( $openOffset > 0 ) {
+                
+                // Construct the unquoted section and add it to the result
+                $result->addSection(
+                        new ::cPHP::Quoter::Section::Unquoted(
+                                $totalOffset,
+                                substr( $string, 0, $openOffset )
+                            )
+                    );
+                
+            }
+            
+            $totalOffset += $openOffset + strlen( $openQuote );
+            
+            
+            // Remove the unquoted section from the string
             $string = substr( $string, $openOffset + strlen( $openQuote ) );
             
+            // Look for the close quote
             list( $closeOffset, $closeQuote ) =
                 self::findNext( $string, $this->getCloseQuotesFor($openQuote)->get(), $this->escape );
+            
             
             if ( $closeOffset === FALSE ) {
                 $quoted = $string;
             }
             else {
                 $quoted = substr( $string, 0, $closeOffset );
-                $string = substr( $string, $closeOffset + strlen( $closeOffset ) );
+                $string = substr( $string, $closeOffset + strlen( $closeQuote ) );
             }
+            
+            
+            // Construct the quoted section and add it to the result
+            $result->addSection(
+                    new ::cPHP::Quoter::Section::Quoted(
+                            $totalOffset,
+                            $quoted,
+                            $openQuote,
+                            $closeQuote
+                        )
+                );
+            
+            $totalOffset += $closeOffset + strlen( $closeQuote );
         
-        } while ( $closeOffset !== FALSE && $string !== "" );
+        } while ( $closeOffset !== FALSE && $string !== FALSE );
         
+        return $result;
+    
     }
     
 }

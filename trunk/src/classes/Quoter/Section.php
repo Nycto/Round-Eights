@@ -110,6 +110,12 @@ abstract class Section
         return $this->offset;
     }
 
+    /**
+     * To be overwriten, converts this value in to a string
+     *
+     * @return String
+     */
+    abstract public function __toString();
 }
 
 ?>
