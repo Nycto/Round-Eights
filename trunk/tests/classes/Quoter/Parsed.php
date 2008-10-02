@@ -52,6 +52,164 @@ class classes_quoter_parsed_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( "snippet(inQuotes)", "$list" );
     }
     
+    public function testSetIncludeQuoted ()
+    {
+        $list = new cPHP::Quoter::Parsed;
+        
+        $this->assertTrue( $list->getIncludeQuoted() );
+        
+        $this->assertSame( $list, $list->setIncludeQuoted( FALSE ) );
+        
+        $this->assertFalse( $list->getIncludeQuoted() );
+        
+        $this->assertSame( $list, $list->setIncludeQuoted( TRUE ) );
+        
+        $this->assertTrue( $list->getIncludeQuoted() );
+    }
+    
+    public function testSetIncludeUnquoted ()
+    {
+        $list = new cPHP::Quoter::Parsed;
+        
+        $this->assertTrue( $list->getIncludeUnquoted() );
+        
+        $this->assertSame( $list, $list->setIncludeUnquoted( FALSE ) );
+        
+        $this->assertFalse( $list->getIncludeUnquoted() );
+        
+        $this->assertSame( $list, $list->setIncludeUnquoted( TRUE ) );
+        
+        $this->assertTrue( $list->getIncludeUnquoted() );
+    }
+    
+    public function testExplode_all ()
+    {
+        $list = new ::cPHP::Quoter;
+        
+        $result = $list->parse( "String with gaps" )->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String", "with", "gaps"), $result->get() );
+        
+        $result = $list->parse( "String with gaps" )->explode("NotInString");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String 'with some' gaps" )->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String", "'with", "some'", "gaps"), $result->get() );
+        
+        $result = $list->parse( "gg" )->explode("g");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("", "", ""), $result->get() );
+    }
+    
+    public function testExplode_noQuoted ()
+    {
+        $list = new ::cPHP::Quoter;
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String", "with", "gaps"), $result->get() );
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->explode("NotInString");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String 'with some' gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String", "'with some'", "gaps"), $result->get() );
+        
+        $result = $list->parse( "gg" )
+            ->setIncludeQuoted( FALSE )
+            ->explode("g");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("", "", ""), $result->get() );
+        
+        $result = $list->parse( "'with a few''quoted gaps'" )
+            ->setIncludeQuoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("'with a few''quoted gaps'"), $result->get() );
+        
+        $result = $list->parse( "'with a few' 'quoted gaps'" )
+            ->setIncludeQuoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("'with a few'", "'quoted gaps'"), $result->get() );
+    }
+    
+    public function testExplode_noUnquoted ()
+    {
+        $list = new ::cPHP::Quoter;
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode("NotInString");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String 'with some' gaps" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String 'with", "some' gaps"), $result->get() );
+        
+        $result = $list->parse( "gg" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode("g");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("gg"), $result->get() );
+        
+        $result = $list->parse( "'with a few''quoted gaps'" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("'with", "a", "few''quoted", "gaps'"), $result->get() );
+        
+        $result = $list->parse( "'with a few' 'quoted gaps'" )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("'with", "a", "few' 'quoted", "gaps'"), $result->get() );
+    }
+    
+    public function testExplode_none ()
+    {
+        $list = new ::cPHP::Quoter;
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String with gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->setIncludeUnquoted( FALSE )
+            ->explode("NotInString");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String with gaps"), $result->get() );
+        
+        $result = $list->parse( "String 'with some' gaps" )
+            ->setIncludeQuoted( FALSE )
+            ->setIncludeUnquoted( FALSE )
+            ->explode(" ");
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("String 'with some' gaps"), $result->get() );
+    }
 }
 
 ?>

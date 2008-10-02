@@ -85,6 +85,57 @@ class Parsed
         return $this;
     }
     
+    /**
+     * Returns whether the unquoted values will included in the advanced functionality
+     *
+     * @return Boolean
+     */
+    public function getIncludeUnquoted ()
+    {
+        return $this->unquoted;
+    }
+    
+    /**
+     * Sets whether the unquoted values should be included in the advanced functionality
+     *
+     * @return Object returns a self reference
+     */
+    public function setIncludeUnquoted ( $setting )
+    {
+        $this->unquoted = $setting ? TRUE : FALSE;
+        return $this;
+    }
+    
+    /**
+     * Splits the string based on a separator and returns the resulting sections
+     *
+     * This will only explode on the separators found in the selected section.
+     *
+     * @param String $separator The separator to split the string on
+     * @return Object Returns a cPHP::Ary object containing the string sections
+     */
+    public function explode ( $separator )
+    {
+        $result = new ::cPHP::Ary(array(""));
+        
+        foreach ( $this->sections AS $section ) {
+            
+            if ( ( $section->isQuoted() && $this->quoted ) || ( !$section->isQuoted() && $this->unquoted ) )
+                $exploded = explode( $separator, $section->__toString() );
+            else
+                $exploded = array( $section->__toString() );
+            
+            $result->push(
+                    $result->pop( TRUE ) . array_shift( $exploded )
+                );
+            
+            $result = $result->merge( $exploded );
+            
+        }
+        
+        return $result;
+    }
+    
 }
 
 ?>
