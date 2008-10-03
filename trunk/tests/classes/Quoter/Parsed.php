@@ -210,6 +210,37 @@ class classes_quoter_parsed_tests extends PHPUnit_Framework_TestCase
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array("String 'with some' gaps"), $result->get() );
     }
+    
+    public function testFilter ()
+    {
+        $list = new ::cPHP::Quoter;
+        $parsed = $list->parse("string 'with' quotes")
+            ->filter( new ::cPHP::Curry::Call("strtoupper") )
+            ->__toString();
+        $this->assertSame( "STRING 'WITH' QUOTES", $parsed );
+        
+        
+        $parsed = $list->parse("string 'with' quotes")
+            ->setIncludeQuoted(FALSE)
+            ->filter( new ::cPHP::Curry::Call("strtoupper") )
+            ->__toString();
+        $this->assertSame( "STRING 'with' QUOTES", $parsed );
+        
+        
+        $parsed = $list->parse("string 'with' quotes")
+            ->setIncludeUnquoted(FALSE)
+            ->filter( new ::cPHP::Curry::Call("strtoupper") )
+            ->__toString();
+        $this->assertSame( "string 'WITH' quotes", $parsed );
+        
+        
+        $parsed = $list->parse("string 'with' quotes")
+            ->setIncludeUnquoted(FALSE)
+            ->setIncludeQuoted(FALSE)
+            ->filter( new ::cPHP::Curry::Call("strtoupper") )
+            ->__toString();
+        $this->assertSame( "string 'with' quotes", $parsed );
+    }
 }
 
 ?>

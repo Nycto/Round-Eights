@@ -136,6 +136,32 @@ class Parsed
         return $result;
     }
     
+    /**
+     * Applies a filter to the selected sections
+     *
+     * @param Object $filter The filter to apply
+     * @return Object Returns a self reference
+     */
+    public function filter ( ::cPHP::iface::Filter $filter )
+    {
+        if ( !$this->quoted && !$this->unquoted )
+            return $this;
+        
+        foreach ( $this->sections AS $section ) {
+            
+            if ( ( $section->isQuoted() && $this->quoted ) || ( !$section->isQuoted() && $this->unquoted ) ) {
+                
+                $section->setContent(
+                        $filter->filter( $section->getContent() )
+                    );
+                
+            }
+            
+        }
+        
+        return $this;
+    }
+    
 }
 
 ?>
