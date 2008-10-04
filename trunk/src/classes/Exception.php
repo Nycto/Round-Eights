@@ -14,20 +14,20 @@ class Exception extends ::Exception
 {
 
     /**
-     * Whether to give full or restricted information in an exception string
-     * This is good to turn off for production environments
-     */
-    static protected $verbose = TRUE;
-
-    /**
      * The name of the exception
      */
-    protected $exception = "General Exception";
+    const TITLE = "General Exception";
 
     /**
      * A description of this Exception
      */
-    protected $description = "General Errors";
+    const DESCRIPTION = "General Errors";
+
+    /**
+     * Whether to give full or restricted information in an exception string
+     * This is good to turn off for production environments
+     */
+    static protected $verbose = TRUE;
 
     /**
      * Identifies the offset in the backtrace that caused the problem
@@ -473,17 +473,7 @@ class Exception extends ::Exception
      */
     public function getClassString ()
     {
-        $exc = isset($this->exception) && !is_empty($this->exception);
-        $desc = isset($this->description) && !is_empty($this->description);
-
-        if ($exc && $desc)
-            return $this->exception ." (". $this->description .")";
-        else if ($exc)
-            return $this->exception;
-        else if ($desc)
-            return $this->description;
-        else
-            return NULL;
+        return static::TITLE ." (". static::DESCRIPTION .")";
     }
     
     /**

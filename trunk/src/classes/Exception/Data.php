@@ -12,9 +12,16 @@ namespace cPHP::Exception;
  */
 class Data extends ::cPHP::Exception
 {
-
-    protected $exception = "Data Error";
-    protected $description = "Errors incurred when unexpected data is encountered";
+    
+    /**
+     * The title of this exception
+     */
+    const TITLE = "Data Error";
+    
+    /**
+     * A brief description of this error type
+     */
+    const DESCRIPTION = "Errors incurred when unexpected data is encountered";
 
     /**
      * Constructor

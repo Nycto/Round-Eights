@@ -13,8 +13,15 @@ namespace cPHP::Exception;
 class Argument extends ::cPHP::Exception
 {
     
-    protected $exception = "Argument Error";
-    protected $description = "Errors caused by faulty arguments";
+    /**
+     * The title of this exception
+     */
+    const TITLE = "Argument Error";
+    
+    /**
+     * A brief description of this error type
+     */
+    const DESCRIPTION = "Errors caused by faulty arguments";
 
     /**
      * The offset of the argument at fault

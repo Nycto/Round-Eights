@@ -13,8 +13,15 @@ namespace cPHP::Exception;
 class Variable extends ::cPHP::Exception
 {
     
-    protected $exception = "Variable Error";
-    protected $description = "Errors caused by variables, not necissarily their data";
+    /**
+     * The title of this exception
+     */
+    const TITLE = "Variable Error";
+    
+    /**
+     * A brief description of this error type
+     */
+    const DESCRIPTION = "Errors caused by variables, not necissarily their data";
 
     /**
      * Constructor
