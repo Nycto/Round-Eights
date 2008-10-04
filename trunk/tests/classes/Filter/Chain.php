@@ -62,19 +62,6 @@ class classes_filter_chain_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( array($mock, $mock2), $list->get() );
     }
     
-    public function testCreate ()
-    {
-        $mock = $this->getMock("cPHP::iface::Filter", array("filter"));
-        $mock2 = $this->getMock("cPHP::iface::Filter", array("filter"));
-        
-        $filter = cPHP::Filter::Chain::create( $mock, $mock2 );
-        
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
-        $this->assertEquals( 2, count($list) );
-        $this->assertSame( array($mock, $mock2), $list->get() );
-    }
-    
     public function testClear ()
     {
         $mock = $this->getMock("cPHP::iface::Filter", array("filter"));
@@ -137,21 +124,6 @@ class classes_filter_chain_tests extends PHPUnit_Framework_TestCase
         $filter = new cPHP::Filter::Chain( $mock, $mock2, $mock3 );
         
         $this->assertEquals( 'Result From Three', $filter->filter('Input Value') );
-    }
-    
-    public function testInvoke ()
-    {
-        
-        $mock = $this->getMock("cPHP::iface::Filter", array("filter"));
-        
-        $mock->expects($this->once())
-            ->method('filter')
-            ->with($this->equalTo('Input Value'))
-            ->will($this->returnValue('Filtered Value'));
-        
-        $filter = new cPHP::Filter::Chain( $mock );
-        
-        $this->assertEquals( "Filtered Value", $filter('Input Value') );
     }
    
 }

@@ -10,7 +10,7 @@ namespace cPHP::Filter;
 /**
  * Converts a value to either a float or an integer
  */
-class Number implements cPHP::iface::Filter
+class Number extends cPHP::Filter
 {
     
     /**
@@ -45,3 +45,5 @@ class Number implements cPHP::iface::Filter
     }
     
 }
+
+?>

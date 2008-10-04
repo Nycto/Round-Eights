@@ -12,7 +12,7 @@ namespace cPHP::Filter;
  *
  * Remove everything except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=
  */
-class URL implements cPHP::iface::Filter
+class URL extends cPHP::Filter
 {
     
     /**
@@ -30,3 +30,5 @@ class URL implements cPHP::iface::Filter
     }
     
 }
+
+?>

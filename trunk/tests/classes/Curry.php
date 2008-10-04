@@ -413,6 +413,7 @@ class classes_curry_tests extends PHPUnit_Framework_TestCase
             
         $curry->filter(1);
     }
+
 }
 
 ?>

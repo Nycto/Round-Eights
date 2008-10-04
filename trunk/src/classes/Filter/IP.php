@@ -12,7 +12,7 @@ namespace cPHP::Filter;
  *
  * Removes everything except numbers and periods
  */
-class IP implements cPHP::iface::Filter
+class IP extends cPHP::Filter
 {
     
     /**
@@ -31,3 +31,5 @@ class IP implements cPHP::iface::Filter
     }
     
 }
+
+?>

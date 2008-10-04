@@ -10,7 +10,7 @@ namespace cPHP::Filter;
 /**
  * Cleans up a EMail address string
  */
-class Email implements cPHP::iface::Filter
+class Email extends cPHP::Filter
 {
     
     /**
@@ -30,3 +30,5 @@ class Email implements cPHP::iface::Filter
     }
     
 }
+
+?>

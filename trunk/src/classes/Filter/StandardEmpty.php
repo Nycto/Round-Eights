@@ -13,7 +13,7 @@ namespace cPHP::Filter;
  * If the value passed in ISN'T empty, it will return the value. Otherwise,
  * it returns the defined "standard" value
  */
-class StandardEmpty implements cPHP::iface::Filter
+class StandardEmpty extends cPHP::Filter
 {
     
     /**
@@ -114,3 +114,5 @@ class StandardEmpty implements cPHP::iface::Filter
     }
     
 }
+
+?>

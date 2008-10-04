@@ -10,7 +10,7 @@ namespace cPHP::Filter;
 /**
  * Converts a value to a float
  */
-class Float implements cPHP::iface::Filter
+class Float extends cPHP::Filter
 {
     
     /**
@@ -42,3 +42,5 @@ class Float implements cPHP::iface::Filter
     }
     
 }
+
+?>

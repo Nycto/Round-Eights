@@ -10,7 +10,7 @@ namespace cPHP::Filter;
 /**
  * Converts a value to boolean TRUE or FALSE
  */
-class Boolean implements cPHP::iface::Filter
+class Boolean extends cPHP::Filter
 {
     
     /**
@@ -54,3 +54,5 @@ class Boolean implements cPHP::iface::Filter
     }
     
 }
+
+?>

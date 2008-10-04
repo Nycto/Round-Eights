@@ -11,40 +11,14 @@ namespace cPHP::Filter;
  * Collects a list of filters into a single filter
  *
  * This will feed the result of each filter in to the next
- *
- * The original plan was for this class to be called cPHP::Filter. However, this caused
- * the "filter" method to be considered a constructor, which threw standards compliance
- * errors. Thus, it was renamed.
  */
-class Chain implements cPHP::iface::Filter
+class Chain extends cPHP::Filter
 {
     
     /**
      * The list of filters to run through
      */
     protected $filters = array();
-    
-    /**
-     * Static method for creating a new chaining filter
-     * 
-     * @param object $filters... Allows you to add filters on instantiation
-     * @return Object Returns a new instance of this class
-     */
-    static public function create ()
-    {
-        $output = new self;
-        
-        if ( func_num_args() > 0 ) {
-            $args = func_get_args();
-            
-            foreach ( $args AS $filter ) {
-                if ( $filter instanceof cPHP::iface::Filter )
-                    $output->add( $filter );
-            }
-        }
-        
-        return $output;
-    }
     
     /**
      * Constructor
@@ -108,19 +82,7 @@ class Chain implements cPHP::iface::Filter
         }
         return $value;
     }
-    
-    /**
-     * Magic method to allow this instance to be invoked like a function.
-     *
-     * Causes the filtering to happen as if the filter method was invoked
-     *
-     * @param mixed $value The value to filter
-     * @return mixed The result of the filtering
-     */
-    public function __invoke( $value )
-    {
-        return $this->filter( $value );
-    }
+
 }
 
 ?>

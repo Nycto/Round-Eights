@@ -10,7 +10,7 @@ namespace cPHP::Filter;
 /**
  * Converts a value to an integer
  */
-class Integer implements cPHP::iface::Filter
+class Integer extends cPHP::Filter
 {
     
     /**
@@ -44,3 +44,5 @@ class Integer implements cPHP::iface::Filter
     }
     
 }
+
+?>
