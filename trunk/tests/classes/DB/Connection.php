@@ -52,6 +52,23 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
         
     }
     
+    public function testForceNewAccessors ()
+    {
+        
+        $mock = $this->getMockConnection();
+        $this->assertFalse( $mock->getForceNew() );
+        
+        $this->assertSame( $mock, $mock->setForceNew(TRUE) );
+        $this->assertTrue( $mock->getForceNew() );
+        
+        $this->assertSame( $mock, $mock->setForceNew("off") );
+        $this->assertFalse( $mock->getForceNew() );
+        
+        $this->assertSame( $mock, $mock->setForceNew("on") );
+        $this->assertTrue( $mock->getForceNew() );
+        
+    }
+    
     public function testUsernameAccessors ()
     {
         $mock = $this->getMockConnection();

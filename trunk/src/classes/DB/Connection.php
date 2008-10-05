@@ -21,6 +21,11 @@ abstract class Connection
      * Whether to open a persistent connection
      */
     private $persistent = FALSE;
+    
+    /**
+     * Whether to force a new connection
+     */
+    private $forceNew = FALSE;
 
     /**
      * Log-in username
@@ -101,6 +106,30 @@ abstract class Connection
     public function setPersistent ( $setting )
     {
         $this->persistent = ::cPHP::Filter::Boolean()->filter($setting);
+        return $this;
+    }
+    
+    /**
+     * Returns whether an existing connection should be re-used if it already exists
+     * or if a new database connection should be forced
+     *
+     * @return Boolean
+     */
+    public function getForceNew ()
+    {
+        return $this->forceNew;
+    }
+
+    /**
+     * Sets whether an existing connection should be re-used if it already exists
+     * or if a new database connection should be forced
+     *
+     * @param Boolean $setting Whether a new connection should be forced
+     * @return Object Returns a self reference
+     */
+    public function setForceNew ( $setting )
+    {
+        $this->forceNew = ::cPHP::Filter::Boolean()->filter($setting);
         return $this;
     }
     
