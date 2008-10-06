@@ -165,6 +165,10 @@ class classes_validator_url_tests extends PHPUnit_Framework_TestCase
                 $validator->validate('ftp://www.example.com?test=1#fragment')->isValid()
             );
         
+        $this->assertTrue(
+                $validator->validate('foo://example.com:8042/over/there?name=ferret#nose')->isValid()
+            );
+        
     }
     
 }
