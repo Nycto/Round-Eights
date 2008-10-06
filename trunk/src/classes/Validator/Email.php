@@ -88,3 +88,5 @@ class Email extends ::cPHP::Validator
     }
 
 }
+
+?>
