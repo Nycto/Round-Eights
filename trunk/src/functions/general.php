@@ -196,4 +196,41 @@ function strVal ($value)
         return ::strval( reduce($value) );
 }
 
+/**
+ * Determines if an object or class name is an implementation of a class or interface
+ *
+ * This will return true if:
+ *  - $value is the same class as $className
+ *  - $value is a subclass of $className
+ *  - $value or one of its parents implements $className
+ *
+ * @param Object|String $value The object or class name to test
+ * @param String $className The comparison class name
+ * @return Boolean
+ */
+function kindOf ( $value, $className )
+{
+    $className = ltrim( trim( strval( $className ) ), ":" );
+    
+    if ( is_object($value) )
+        return ( $value instanceof $className ) ? TRUE : FALSE;
+    
+    $value = trim( trim( strval( $value ) ), ":" );
+    
+    if ( !class_exists($value) )
+        return FALSE;
+    
+    if ( strcasecmp($value, $className) == 0 )
+        return TRUE;
+    
+    if ( is_subclass_of($value, $className) )
+        return TRUE;
+    
+    return in_array(
+            $value,
+            array_map( "strtolower", class_implements( $value ) )
+        );
+    
+}
+
 ?>
