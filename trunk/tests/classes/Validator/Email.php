@@ -5,7 +5,6 @@
  * @package UnitTests
  */
 
-
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
