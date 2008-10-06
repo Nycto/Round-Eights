@@ -29,8 +29,11 @@ class Email extends ::cPHP::Validator
 
     /**
      * Validates an e-mail address
+     *
+     * @param mixed $value The value to validate
+     * @return String Any errors encountered
      */
-    public function process ( $value )
+    protected function process ( $value )
     {
         $value = ::cPHP::strval( $value );
         
