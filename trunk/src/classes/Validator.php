@@ -12,6 +12,49 @@ namespace cPHP;
  */
 abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validator
 {
+    
+    /**
+     * Static method for creating a new validator instance
+     *
+     * This takes the called function and looks for a class under
+     * the cPHP::Validator namespace.
+     *
+     * @throws cPHP::Exception::Argument Thrown if the validator class can't be found
+     * @param String $validator The validator class to create
+     * @param array $args Any constructor args to use during instantiation
+     * @return Object Returns a new cPHP::Validator subclass
+     */
+    static public function __callStatic ( $validator, $args )
+    {
+        $validator = "cPHP::Validator::". trim( ::cPHP::strval($validator) );
+        
+        if ( !class_exists($validator, true) ) {
+            throw new ::cPHP::Exception::Argument(
+                    0,
+                    "Validator Class Name",
+                    "Validator could not be found in cPHP::Validator namespace"
+                );
+        }
+        
+        if ( !::cPHP::kindOf( $validator, "::cPHP::iface::Validator") ) {
+            throw new ::cPHP::Exception::Argument(
+                    0,
+                    "Validator Class Name",
+                    "Class does not implement cPHP::iface::Validator"
+                );
+        }
+        
+        if ( count($args) <= 0 ) {
+            return new $validator;
+        }
+        else if ( count($args) == 1 ) {
+            return new $validator( reset($args) );
+        }
+        else {
+            $refl = new ReflectionClass( $validator );
+            return $refl->newInstanceArgs( $args );
+        }
+    }
 
     /**
      * Performs the validation and returns the result

@@ -38,6 +38,28 @@ class classes_validator_tests extends PHPUnit_Framework_TestCase
         return $mock;
     }
     
+    public function testCallStatic ()
+    {
+        $validator = cPHP::Validator::Email();
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Email") );
+        
+        try {
+            cPHP::Validator::ThisIsNotAValidator();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Validator could not be found in cPHP::Validator namespace", $err->getMessage() );
+        }
+        
+        try {
+            cPHP::Validator::Result();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Class does not implement cPHP::iface::Validator", $err->getMessage() );
+        }
+    }
+    
     public function testNoErrors ()
     {
         $mock = $this->getMockValidator ( NULL );

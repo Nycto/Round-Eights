@@ -19,19 +19,19 @@ abstract class Collection extends cPHP::Validator
     protected $validators = array();
     
     /**
-     * Static method for creating a new collection instance
+     * Static method for creating a new validator instance
      *
-     * @param object $validators... Any validators to add
-     * @return Object Returns a new collection
+     * This takes the called function and looks for a class under
+     * the cPHP::Validator namespace.
+     *
+     * @throws cPHP::Exception::Argument Thrown if the validator class can't be found
+     * @param String $validator The validator class to create
+     * @param array $args Any constructor args to use during instantiation
+     * @return Object Returns a new cPHP::Validator subclass
      */
-    static public function create ()
+    static public function __callStatic ( $validator, $args )
     {
-        $output = new static;
-        if ( func_num_args() > 0 ) {
-            $args = func_get_args();
-            $output->addMany( $args );
-        }
-        return $output;
+        return parent::__callStatic( "Collection::". $validator, $args );
     }
     
     /**
