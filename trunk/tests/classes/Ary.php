@@ -27,6 +27,24 @@ class classes_ary
 class classes_ary_tests extends PHPUnit_Framework_TestCase
 {
     
+    public function callbackObject ()
+    {
+        $args = func_get_args();
+        return "o". implode(":", $args);
+    }
+    
+    static public function callbackStatic ()
+    {
+        $args = func_get_args();
+        return "s". implode(":", $args);
+    }
+    
+    public function __invoke ()
+    {
+        $args = func_get_args();
+        return "i". implode(":", $args);
+    }
+    
     public function testConstruct ()
     {
         $ary = new cPHP::Ary(array( 4, 3, "other"));
@@ -98,6 +116,20 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 array(5, 6, 7, 8),
                 $ary->get()
             );
+    }
+    
+    public function testIs ()
+    {
+        $this->assertTrue( ::cPHP::Ary::is(array()) );
+        $this->assertTrue( ::cPHP::Ary::is( new ::cPHP::Ary ) );
+        $this->assertTrue( ::cPHP::Ary::is( new ArrayObject ) );
+        
+        $this->assertFalse( ::cPHP::Ary::is(5) );
+        $this->assertFalse( ::cPHP::Ary::is(5.0) );
+        $this->assertFalse( ::cPHP::Ary::is("string") );
+        $this->assertFalse( ::cPHP::Ary::is(FALSE) );
+        $this->assertFalse( ::cPHP::Ary::is(TRUE) );
+        $this->assertFalse( ::cPHP::Ary::is(NULL) );
     }
     
     public function testIteration ()
@@ -787,14 +819,32 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
                 cPHP::Ary::create( array( "50", "90") )->collect("floatval")->get()
             );
         
-        
         $lambda = function ( $value, $key ) { return "$key:$value"; };
-        
         $this->assertEquals(
                 array("0:50", "1:90"),
                 cPHP::Ary::create( array( "50", "90") )->collect($lambda)->get()
             );
         
+        $this->assertEquals(
+                array( 1 => "o50:1", 3 => "o90:3" ),
+                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                    ->collect(array($this, "callbackObject"))
+                    ->get()
+            );
+        
+        $this->assertEquals(
+                array( 1 => "s50:1", 3 => "s90:3" ),
+                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                    ->collect(array(__CLASS__, "callbackStatic"))
+                    ->get()
+            );
+        
+        $this->assertEquals(
+                array( 1 => "i50:1", 3 => "i90:3" ),
+                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                    ->collect( $this )
+                    ->get()
+            );
         
         try {
             cPHP::Ary::create()->collect("This is an uncallable value");
@@ -846,6 +896,10 @@ class classes_ary_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( $ary, $ary->each( $lambda ) );
         $this->assertEquals( array( 50 => "one", 90 => "two"), $result );
         $this->assertEquals( array( "one" => 50, "two" => 90 ), $ary->get() );
+        
+        $ary->each($this);
+        $ary->each(array( $this, "callbackObject" ));
+        $ary->each(array( __CLASS__, "callbackStatic" ));
         
         try {
             $ary->each("This is an uncallable value");

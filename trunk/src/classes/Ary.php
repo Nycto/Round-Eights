@@ -89,6 +89,17 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
     
     /**
+     * Returns whether a value is an array or a traversable object
+     *
+     * @param mixed $value The value to test
+     * @return Boolean
+     */
+    static public function is ( $value )
+    {
+        return is_array( $value ) || $value instanceof Traversable;
+    }
+    
+    /**
      * Member functions
      */
     
@@ -826,9 +837,9 @@ class Ary implements Iterator, Countable, ArrayAccess
         
         foreach ( $this->array AS $key => $value ) {
             if ( $sendKey )
-                $output->offsetSet( $key, $callback( $value, $key ) );
+                $output->offsetSet( $key, call_user_func( $callback, $value, $key ) );
             else
-                $output->offsetSet( $key, $callback( $value ) );
+                $output->offsetSet( $key, call_user_func( $callback, $value ) );
         }
         
         return $output;
@@ -853,13 +864,13 @@ class Ary implements Iterator, Countable, ArrayAccess
             
             if ( $sendKey ) {
                 
-                if ( $callback($value, $key) )
+                if ( call_user_func($callback, $value, $key) )
                     $output[ $key ] = $value;
                 
             }
             else {
                 
-                if ( $callback($value) )
+                if ( call_user_func( $callback, $value) )
                     $output[ $key ] = $value;
                     
             }
