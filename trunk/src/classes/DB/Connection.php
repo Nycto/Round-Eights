@@ -14,8 +14,13 @@ namespace cPHP::DB;
  * setting up the connection, performing actions against the connection and
  * automatically disconnecting
  */
-abstract class Connection
+abstract class Connection implements ::cPHP::iface::DB::Connection
 {
+    
+    /**
+     * To be overridden, this is the PHP extension required for this interface to work
+     */
+    const PHP_EXTENSION = FALSE;
     
     /**
      * Whether to open a persistent connection
@@ -58,6 +63,30 @@ abstract class Connection
     private $resource;
     
     /**
+     * Constructor...
+     */
+    public function __construct ()
+    {
+        // Ensure that the required extension is loaded
+        if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
+            throw new ::cPHP::Exception::Extension(
+                    static::PHP_EXTENSION,
+                    "Extension is not loaded"
+                );
+        }
+    }
+    
+    /**
+     * Destructor...
+     *
+     * Automatically closes the database connection when the object is cleaned up
+     */
+    public function __destruct ()
+    {
+        $this->disconnect();
+    }
+    
+    /**
      * Connect to the server
      *
      * @return Resource Returns a database connection resource
@@ -69,7 +98,7 @@ abstract class Connection
      *
      * @return null
      */
-    abstract protected function rawDisconnect ();
+    abstract protected function rawDisconnect ( $resource );
 
     /**
      * Used to escape a string for use in a query.
@@ -77,15 +106,15 @@ abstract class Connection
      * @param String $value The string to escape
      * @return String An escaped version of the string
      */
-    abstract protected function rawEscape ($value);
+    abstract protected function rawEscape ( $value );
 
     /**
      * Execute a query and return a result object
      *
-     * @param String $query The query string to execute
+     * @param String $query The query to execute
      * @return Object Returns a cPHP::DB::Result object
      */
-    abstract protected function rawQuery ($query);
+    abstract protected function rawQuery ( $query );
     
     /**
      * Returns whether the connection should use a persistent connection
@@ -354,6 +383,63 @@ abstract class Connection
     }
     
     /**
+     * Imports the settings in this instance from an array
+     *
+     * @param mixed $array The array of settings to import
+     * @return Object Returns a self reference
+     */
+    public function fromArray ( $array )
+    {
+        $array = new ::cPHP::Ary( $array );
+        
+        foreach ( $array AS $key => $value ) {
+            
+            $key = "set". strtolower( ::cPHP::stripW( $key ) );
+            $value = ::cPHP::strval( $value );
+            
+            if ( method_exists( $this, $key ) )
+                $this->$key( $value );
+            
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Imports the settings from a URI
+     *
+     * @param String $uri The settings to import
+     * @return Object Returns a self reference
+     */
+    public function fromURI ( $uri )
+    {
+        $uri = ::cPHP::strval( $uri );
+        $result = ::cPHP::Validator::URL()->validate( $uri );
+        
+        if ( !$result->isValid() )
+            throw new ::cPHP::Exception::Argument( 0, "Settings URI", $result->getFirstError() );
+        
+        $uri = new ::cPHP::Ary( parse_url( $uri ) );
+        $uri = $uri->translateKeys(array(
+                "user" => "username",
+                "pass" => "password"
+            ));
+        
+        $this->fromArray( $uri );
+        
+        if ( $uri->keyExists("path") )
+            $this->setDatabase( ltrim( $uri['path'], "/" ) );
+        
+        if ( $uri->keyExists("query") ) {
+            $query = array();
+            parse_str( $uri['query'], $query );
+            $this->fromArray( $query );
+        }
+        
+        return $this;
+    }
+    
+    /**
      * Validates the log-in credentials in preparation to connect
      *
      * @throws cPHP::Exception::Database::Connection
@@ -388,6 +474,159 @@ abstract class Connection
             return $this->host .":". $this->port;
         else
             return $this->host;
+    }
+    
+    /**
+     * Returns whether this instance is currently connected
+     *
+     * @return Boolean
+     */
+    public function isConnected ()
+    {
+        return isset($this->resource) && is_resource($this->resource);
+    }
+    
+    /**
+     * Returns the connection resource
+     *
+     * If this instance is not already connected, this will attempt to make the connection
+     *
+     * @return Resource Returns a database connection resource
+     */
+    public function getConnection ()
+    {
+        if ( !$this->isConnected() ){
+            
+            $this->validateCredentials();
+            
+            $result = $this->rawConnect();
+            
+            if ( !is_resource($result) ) {
+                throw new cPHP::Exception::Database::Connection(
+                        "Database connector did not return a resource",
+                        0,
+                        $this
+                    );
+            }
+            
+            $this->resource = $result;
+        }
+        
+        return $this->resource;
+    }
+    
+    /**
+     * Runs a query and returns the result
+     *
+     * @param String $query The query to run
+     * @result Object Returns a result object
+     */
+    public function query ( $query )
+    {
+        try {
+            $result = $this->rawQuery( ::cPHP::strval($query) );
+        }
+        catch (::cPHP::Exception::Database::Query $err) {
+            $err->shiftFault();
+            throw $err;
+        }
+        
+        if ( !( $result instanceof ::cPHP::DB::Result ) ) {
+            throw new ::cPHP::Exception::Database::Query(
+                    $query,
+                    "Query did not return a cPHP::DB::Result object",
+                    0,
+                    $this
+                );
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * If there is currently a cunnection, this will break it
+     *
+     * @return Object Returns a self reference
+     */
+    public function disconnect ()
+    {
+        if ( $this->isConnected() )
+            $this->rawDisconnect( $this->getConnection() );
+        return $this;
+    }
+    
+    /**
+     * Quotes a variable to be used in a query
+     *
+     * When given a string, it escapes the string and puts quotes around it. When
+     * given a number, it returns the number as is. When given a boolean value,
+     * it returns 0 or 1. When given a NULL value, it returns the word NULL as a string.
+     *
+     * If this function is given an array, it will apply itself to every value
+     * in the array and return the array.
+     *
+     * @param mixed $value The value to quote
+     * @param Boolean $allowNull Whether to allow 
+     * @return String|Array
+     */
+    public function quote ( $value, $allowNull = TRUE )
+    {
+
+        if ( ::cPHP::Ary::is( $value ) )
+            return ::cPHP::Ary::create( $value )->collect( array($this, "quote") );
+
+        $value = ::cPHP::reduce($value);
+        
+        if (is_bool($value))
+            return $value ? "1" : "0";
+
+        else if ( is_int($value) || is_float($value) )
+            return ::strval( $value );
+        
+        else if ( is_null($value) )
+            return $allowNull ? "NULL" : "''";
+        
+        else if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
+            return $value;
+        
+        else
+            return "'". $this->rawEscape($value) ."'";
+        
+    }
+
+    /**
+     * Escapes a variable to be used in a query
+     *
+     * This function works almost exactly like cDB::quote except that it does
+     * not add quotation marks to strings. It just escapes each value.
+     *
+     * If this function is given an array, it will apply itself to every value
+     * in the array and return that array.
+     *
+     * @param mixed $value The value to quote
+     * @param Boolean $allowNull Whether to allow 
+     * @return String|Array
+     */
+    public function escape ( $value, $allowNull = TRUE )
+    {
+
+        if ( ::cPHP::Ary::is( $value ) )
+            return ::cPHP::Ary::create( $value )->collect( array($this, "escape") );
+
+        $value = ::cPHP::reduce($value);
+        
+        if (is_bool($value))
+            return $value ? "1" : "0";
+
+        else if ( is_int($value) || is_float($value) )
+            return ::strval( $value );
+        
+        else if ( is_null($value) )
+            return $allowNull ? "NULL" : "";
+        
+        else
+            return $this->rawEscape($value);
+        
     }
     
 }

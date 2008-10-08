@@ -37,7 +37,6 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testPersistentAccessors ()
     {
-        
         $mock = $this->getMockConnection();
         $this->assertFalse( $mock->getPersistent() );
         
@@ -251,6 +250,234 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
         
         $mock->setPort(80);
         $this->assertSame("localhost:80", $mock->getHostWithPort());
+    }
+    
+    public function testFromArray ()
+    {
+        $mock = $this->getMockConnection();
+        
+        $this->assertSame(
+                $mock,
+                $mock->fromArray(array(
+                        "host" => "127.0.0.1",
+                        "PoRt" => 50,
+                        "!@#$  DATABASE" => "dbname"
+                    ))
+            );
+        
+        $this->assertSame( "127.0.0.1", $mock->getHost() );
+        $this->assertSame( 50, $mock->getPort() );
+        $this->assertSame( "dbname", $mock->getDatabase() );
+        
+    }
+    
+    public function testFromString ()
+    {
+        $mock = $this->getMockConnection();
+        
+        try {
+            $mock->fromURI("wakka.com");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "URL is not valid", $err->getMessage() );
+        }
+        
+        $this->assertSame( $mock, $mock->fromURI("db://example.com/dbnm") );
+        $this->assertSame("example.com", $mock->getHost());
+        $this->assertSame("dbnm", $mock->getDatabase());
+        
+        $this->assertSame( $mock, $mock->fromURI("db://unm:pwd@localhost/otherDB?persistent=on") );
+        $this->assertSame("localhost", $mock->getHost());
+        $this->assertSame("unm", $mock->getUserName());
+        $this->assertSame("pwd", $mock->getPassword());
+        $this->assertSame("otherDB", $mock->getDatabase());
+        $this->assertTrue( $mock->getPersistent() );
+        
+    }
+    
+    public function testIsConnected ()
+    {
+        $mock = $this->getMockConnection();
+        
+        $this->assertFalse( $mock->isConnected() );
+    }
+    
+    public function testGetConnection_invalidResource ()
+    {
+        $mock = $this->getMockConnection();
+        $mock->expects( $this->once() )
+            ->method( "rawConnect" )
+            ->will( $this->returnValue(FALSE) );
+        
+        $mock->fromURI("db://user:pword@localhost/dbname");
+        
+        try {
+            $mock->getConnection();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Database::Connection $err ) {
+            $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
+        }
+    }
+    
+    public function testQuery_invalidResult ()
+    {
+        $mock = $this->getMockConnection();
+        $mock->expects( $this->once() )
+            ->method( "rawQuery" )
+            ->with( $this->equalTo("SELECT * FROM table") )
+            ->will( $this->returnValue("not a result") );
+        
+        try {
+            $mock->query("SELECT * FROM table");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Database::Query  $err ) {
+            $this->assertSame( "Query did not return a cPHP::DB::Result object", $err->getMessage() );
+        }
+    }
+    
+    public function testQuery_throw ()
+    {
+        $mock = $this->getMockConnection();
+        $mock->expects( $this->once() )
+            ->method( "rawQuery" )
+            ->with( $this->equalTo("SELECT * FROM table") )
+            ->will(
+                    $this->throwException(
+                            new ::cPHP::Exception::Database::Query(
+                                    "SELECT * FROM table",
+                                    "Example Exception"
+                                )
+                        )
+                );
+        
+        try {
+            $mock->query("SELECT * FROM table");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Database::Query  $err ) {
+            $this->assertSame( "Example Exception", $err->getMessage() );
+        }
+    }
+    
+    public function testQuote ()
+    {
+        $mock = $this->getMockConnection();
+        
+        $this->assertSame( "1", $mock->quote( 1 ) );
+        $this->assertSame( "10.5", $mock->quote( 10.5 ) );
+        $this->assertSame( "0", $mock->quote( 00 ) );
+        
+        $this->assertSame( "1", $mock->quote( true ) );
+        $this->assertSame( "0", $mock->quote( false ) );
+        
+        $this->assertSame( "NULL", $mock->quote( null ) );
+        $this->assertSame( "''", $mock->quote( null, FALSE ) );
+        
+        $this->assertSame( "100", $mock->quote( "100" ) );
+        $this->assertSame( "0.5", $mock->quote( "0.5" ) );
+        $this->assertSame( ".5", $mock->quote( ".5" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("+0123.45e6") )
+            ->will( $this->returnValue("+0123.45e6") );
+        $this->assertSame( "'+0123.45e6'", $mock->quote( "+0123.45e6" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("0xFF") )
+            ->will( $this->returnValue("0xFF") );
+        $this->assertSame( "'0xFF'", $mock->quote( "0xFF" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("+5") )
+            ->will( $this->returnValue("+5") );
+        $this->assertSame( "'+5'", $mock->quote( "+5" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("string thing") )
+            ->will( $this->returnValue("string thing") );
+        $this->assertSame( "'string thing'", $mock->quote( "string thing" ) );
+        
+        $this->assertThat(
+                $mock->quote(array(5, 5.5)),
+                $this->isInstanceOf("cPHP::Ary")
+            );
+        $this->assertSame(
+                array("5", "5.5"),
+                $mock->quote(array(5, 5.5))->get()
+            );
+    }
+    
+    public function testEscape ()
+    {
+        $mock = $this->getMockConnection();
+        
+        $this->assertSame( "1", $mock->escape( 1 ) );
+        $this->assertSame( "10.5", $mock->escape( 10.5 ) );
+        $this->assertSame( "0", $mock->escape( 00 ) );
+        
+        $this->assertSame( "1", $mock->escape( true ) );
+        $this->assertSame( "0", $mock->escape( false ) );
+        
+        $this->assertSame( "NULL", $mock->escape( null ) );
+        $this->assertSame( "", $mock->escape( null, FALSE ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("100") )
+            ->will( $this->returnValue("100") );
+        $this->assertSame( "100", $mock->escape( "100" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("0.5") )
+            ->will( $this->returnValue("0.5") );
+        $this->assertSame( "0.5", $mock->escape( "0.5" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo(".5") )
+            ->will( $this->returnValue(".5") );
+        $this->assertSame( ".5", $mock->escape( ".5" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("+0123.45e6") )
+            ->will( $this->returnValue("+0123.45e6") );
+        $this->assertSame( "+0123.45e6", $mock->escape( "+0123.45e6" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("0xFF") )
+            ->will( $this->returnValue("0xFF") );
+        $this->assertSame( "0xFF", $mock->escape( "0xFF" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("+5") )
+            ->will( $this->returnValue("+5") );
+        $this->assertSame( "+5", $mock->escape( "+5" ) );
+        
+        $mock->expects( $this->at(0) )
+            ->method("rawEscape")
+            ->with( $this->equalTo("string thing") )
+            ->will( $this->returnValue("string thing") );
+        $this->assertSame( "string thing", $mock->escape( "string thing" ) );
+        
+        $this->assertThat(
+                $mock->quote(array(5, 5.5)),
+                $this->isInstanceOf("cPHP::Ary")
+            );
+        $this->assertSame(
+                array("5", "5.5"),
+                $mock->escape(array(5, 5.5))->get()
+            );
     }
     
 }
