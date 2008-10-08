@@ -10,7 +10,7 @@ namespace cPHP::Exception::Database;
 /**
  * Exception class for database queries
  */
-class Connection extends ::cPHP::Exception::Database
+class Query extends ::cPHP::Exception::Database
 {
 
     /**
@@ -34,7 +34,7 @@ class Connection extends ::cPHP::Exception::Database
      */
     public function __construct ( $query, $message = NULL, $code = 0, $connection = null, $fault = NULL )
     {
-        parent::__costruct( $message, $code, $connection, $fault );
+        parent::__construct( $message, $code, $connection, $fault );
         $this->addData("Query", $query);
     }
 
