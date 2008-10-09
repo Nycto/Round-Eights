@@ -836,10 +836,20 @@ class Ary implements Iterator, Countable, ArrayAccess
         $output = new self;
         
         foreach ( $this->array AS $key => $value ) {
-            if ( $sendKey )
-                $output->offsetSet( $key, call_user_func( $callback, $value, $key ) );
-            else
-                $output->offsetSet( $key, call_user_func( $callback, $value ) );
+            
+            if ( $sendKey ) {
+                if ( is_object($callback) )
+                    $output->offsetSet( $key, $callback->__invoke( $value, $key ) );
+                else
+                    $output->offsetSet( $key, call_user_func( $callback, $value, $key ) );
+            }
+            else {
+                if ( is_object($callback) )
+                    $output->offsetSet( $key, $callback->__invoke( $value ) );
+                else
+                    $output->offsetSet( $key, call_user_func( $callback, $value ) );
+            }
+            
         }
         
         return $output;
