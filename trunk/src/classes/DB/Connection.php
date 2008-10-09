@@ -567,7 +567,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow 
-     * @return String|Array
+     * @return String|Object Returns the escaped string, or a cPHP::Ary object
      */
     public function quote ( $value, $allowNull = TRUE )
     {
@@ -605,7 +605,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow 
-     * @return String|Array
+     * @return String|Object Returns the escaped string, or a cPHP::Ary object
      */
     public function escape ( $value, $allowNull = TRUE )
     {
