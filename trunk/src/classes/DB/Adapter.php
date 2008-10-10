@@ -6,40 +6,40 @@
 namespace cPHP::DB;
 
 /**
- * Base wrapper for increasing the functionality of a database connection
+ * Base wrapper for increasing the functionality of a database Link
  */
-abstract class Adapter implements ::cPHP::iface::DB::Connection
+abstract class Adapter implements ::cPHP::iface::DB::Link
 {
     
     /**
-     * The connection this decorator wraps around
+     * The Link this decorator wraps around
      */
-    private $connection;    
+    private $link;    
    
     /**
      * Constructor...
      *
-     * @param Object $connection The database connection this instance wraps around
+     * @param Object $link The database Link this instance wraps around
      */
-    public function __construct ( ::cPHP::iface::DB::Connection $connection )
+    public function __construct ( ::cPHP::iface::DB::Link $link )
     {
-        $this->connection = $connection;
+        $this->link = $link;
     }
     
     /**
-     * Returns the connection this instance wraps
+     * Returns the Link this instance wraps
      *
      * @return Object
      */
-    public function getConnection ()
+    public function getLink ()
     {
-        return $this->connection;
+        return $this->link;
     }
     
     /**
      * Runs a query and returns the result
      * 
-     * Wraps the equivilent function in the connection
+     * Wraps the equivilent function in the Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
@@ -47,13 +47,13 @@ abstract class Adapter implements ::cPHP::iface::DB::Connection
      */
     public function query ( $query, $flags = 0 )
     {
-        return $this->connection->query( $query );
+        return $this->link->query( $query );
     }
     
     /**
      * Quotes a variable to be used in a query
      *
-     * Wraps the equivilent function in the connection
+     * Wraps the equivilent function in the Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow 
@@ -61,13 +61,13 @@ abstract class Adapter implements ::cPHP::iface::DB::Connection
      */
     public function quote ( $value, $allowNull = TRUE )
     {
-        return $this->connection->quote( $value, $allowNull );
+        return $this->link->quote( $value, $allowNull );
     }
     
     /**
      * Escapes a variable to be used in a query
      *
-     * Wraps the equivilent function in the connection
+     * Wraps the equivilent function in the Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow 
@@ -75,7 +75,7 @@ abstract class Adapter implements ::cPHP::iface::DB::Connection
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-        return $this->connection->escape( $value, $allowNull );
+        return $this->link->escape( $value, $allowNull );
     }
    
 }

@@ -8,13 +8,13 @@
 namespace cPHP::DB;
 
 /**
- * Database Connection
+ * Core Database Connection
  *
- * The base class for database connections. Provides an interface for
- * setting up the connection, performing actions against the connection and
+ * The base class for database Links. Provides an interface for
+ * setting up the Link, performing actions against the Link and
  * automatically disconnecting
  */
-abstract class Connection implements ::cPHP::iface::DB::Connection
+abstract class Link implements ::cPHP::iface::DB::Link
 {
     
     /**
@@ -23,12 +23,12 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     const PHP_EXTENSION = FALSE;
     
     /**
-     * Whether to open a persistent connection
+     * Whether to open a persistent Link
      */
     private $persistent = FALSE;
     
     /**
-     * Whether to force a new connection
+     * Whether to force a new Link
      */
     private $forceNew = FALSE;
 
@@ -58,7 +58,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     private $database;
     
     /**
-     * Once connected, this is the connection resource
+     * Once connected, this is the Link resource
      */
     private $resource;
     
@@ -79,7 +79,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     /**
      * Destructor...
      *
-     * Automatically closes the database connection when the object is cleaned up
+     * Automatically closes the database Link when the object is cleaned up
      */
     public function __destruct ()
     {
@@ -117,7 +117,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     abstract protected function rawQuery ( $query );
     
     /**
-     * Returns whether the connection should use a persistent connection
+     * Returns whether the link should use a persistent connection
      *
      * @return Boolean
      */
@@ -129,7 +129,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     /**
      * Sets whether a persistent connection should be used
      *
-     * @param Boolean $setting Whether the connection should be a persistent one
+     * @param Boolean $setting Whether the Link should be a persistent one
      * @return Object Returns a self reference
      */
     public function setPersistent ( $setting )
@@ -139,7 +139,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     }
     
     /**
-     * Returns whether an existing connection should be re-used if it already exists
+     * Returns whether an existing Link should be re-used if it already exists
      * or if a new database connection should be forced
      *
      * @return Boolean
@@ -339,7 +339,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     }
     
     /**
-     * Returns the value of the Database to select after connection
+     * Returns the value of the Database to select after Link
      *
      * @return String|Null Returns null if the Database isn't set
      */
@@ -442,20 +442,20 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     /**
      * Validates the log-in credentials in preparation to connect
      *
-     * @throws cPHP::Exception::Database::Connection
+     * @throws cPHP::Exception::Database::Link
      *      This will be thrown if any of the required credentials are not set
      * @return Object Returns a self reference
      */
     public function validateCredentials ()
     {
         if ( !$this->userNameExists() )
-            throw new ::cPHP::Exception::Database::Connection("UserName must be set", 0, $this);
+            throw new ::cPHP::Exception::Database::Link("UserName must be set", 0, $this);
 
         if ( !$this->hostExists() )
-            throw new ::cPHP::Exception::Database::Connection("Host must be set", 0, $this);
+            throw new ::cPHP::Exception::Database::Link("Host must be set", 0, $this);
 
         if ( !$this->databaseExists() )
-            throw new ::cPHP::Exception::Database::Connection("Database name must be set", 0, $this);
+            throw new ::cPHP::Exception::Database::Link("Database name must be set", 0, $this);
         
         return $this;
     }
@@ -493,7 +493,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
      *
      * @return Resource Returns a database connection resource
      */
-    public function getConnection ()
+    public function getLink ()
     {
         if ( !$this->isConnected() ){
             
@@ -502,7 +502,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
             $result = $this->rawConnect();
             
             if ( !is_resource($result) ) {
-                throw new cPHP::Exception::Database::Connection(
+                throw new cPHP::Exception::Database::Link(
                         "Database connector did not return a resource",
                         0,
                         $this
@@ -552,7 +552,7 @@ abstract class Connection implements ::cPHP::iface::DB::Connection
     public function disconnect ()
     {
         if ( $this->isConnected() )
-            $this->rawDisconnect( $this->getConnection() );
+            $this->rawDisconnect( $this->getLink() );
         return $this;
     }
     

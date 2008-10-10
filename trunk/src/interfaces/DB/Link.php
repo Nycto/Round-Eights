@@ -1,6 +1,6 @@
 <?php
 /**
- * Database connection interface
+ * Database Link interface
  *
  * @package Filters
  */
@@ -8,9 +8,9 @@
 namespace cPHP::iface::DB;
 
 /**
- * Database connection interface
+ * Database Link interface
  */
-interface Connection
+interface Link
 {
     
     /**

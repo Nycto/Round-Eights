@@ -6,7 +6,7 @@
 namespace cPHP::DB::Adapter;
 
 /**
- * Connection wrapper to provide advanced 
+ * Link wrapper to provide advanced 
  */
 class Querier extends ::cPHP::DB::Adapter
 {
@@ -30,7 +30,7 @@ class Querier extends ::cPHP::DB::Adapter
         $query = ::cPHP::strval($query);
 
         try {
-            return $this->getConnection()->query( $query, $flags );
+            return $this->getLink()->query( $query, $flags );
         }
         catch (::cPHP::Exception::Database::Query $err) {
             

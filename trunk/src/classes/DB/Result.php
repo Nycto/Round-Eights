@@ -1,6 +1,6 @@
 <?php
 /**
- * Database Connection
+ * Database Link
  *
  * @package Database
  */

@@ -30,15 +30,15 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
     public function testQuery ()
     {
         
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $connection );
+        $query = new ::cPHP::DB::Adapter::Querier( $Link );
         
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->returnValue("Result Set") );
@@ -46,7 +46,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( "Result Set", $query->query("SELECT * FROM table") );
         
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(5) )
             ->will( $this->returnValue("Result Set") );
@@ -54,7 +54,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
         $this->assertSame( "Result Set", $query->query("SELECT * FROM table", 5) );
         
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->throwException(
@@ -70,7 +70,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
         }
         
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("query")
             ->with(
                     $this->equalTo("SELECT * FROM table"),
@@ -88,20 +88,20 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
     public function testGetFieldList ()
     {
         
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $connection );
+        $query = new ::cPHP::DB::Adapter::Querier( $Link );
         
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("quote")
             ->with( $this->equalTo("value") )
             ->will( $this->returnValue("'value'") );
         
-        $connection->expects( $this->at(1) )
+        $Link->expects( $this->at(1) )
             ->method("quote")
             ->with( $this->equalTo("wakka") )
             ->will( $this->returnValue("'wakka'") );
@@ -111,7 +111,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
                 "`data` = 'value', `label` = 'wakka'"
             );
         
-        $connection->expects( $this->at(0) )
+        $Link->expects( $this->at(0) )
             ->method("quote")
             ->with( $this->equalTo(5) )
             ->will( $this->returnValue("5") );
@@ -143,12 +143,12 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
     public function testInsert ()
     {
         
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $connection );
+        $query = new ::cPHP::DB::Adapter::Querier( $Link );
         
         try {
             $query->insert( "", array() );

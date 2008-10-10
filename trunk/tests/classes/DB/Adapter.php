@@ -27,37 +27,37 @@ class classes_db_adapter
 class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
 {
     
-    public function testGetConnection ()
+    public function testGetLink ()
     {
         
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
         $mock = $this->getMock(
                 "cPHP::DB::Adapter",
                 array(),
-                array( $connection )
+                array( $link )
             );
         
-        $this->assertSame( $connection, $mock->getConnection() );
+        $this->assertSame( $link, $mock->getLink() );
     }
     
     public function testQuery ()
     {
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
         $mock = $this->getMock(
                 "cPHP::DB::Adapter",
                 array(),
-                array( $connection )
+                array( $link )
             );
         
-        $connection->expects( $this->once() )
+        $link->expects( $this->once() )
             ->method( "query" )
             ->with( "SELECT * FROM table" )
             ->will( $this->returnValue("result") );
@@ -67,25 +67,25 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
     
     public function testQuote ()
     {
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
         $mock = $this->getMock(
                 "cPHP::DB::Adapter",
                 array(),
-                array( $connection )
+                array( $link )
             );
         
-        $connection->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method( "quote" )
             ->with( $this->equalTo("raw value"), $this->equalTo(TRUE) )
             ->will( $this->returnValue("quoted") );
         
         $this->assertSame( "quoted", $mock->quote("raw value") );
         
-        $connection->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method( "quote" )
             ->with( $this->equalTo("raw value"), $this->equalTo(FALSE) )
             ->will( $this->returnValue("quoted") );
@@ -95,25 +95,25 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
     
     public function testEscape()
     {
-        $connection = $this->getMock(
-                "cPHP::iface::DB::Connection",
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
                 array("query", "quote", "escape")
             );
         
         $mock = $this->getMock(
                 "cPHP::DB::Adapter",
                 array(),
-                array( $connection )
+                array( $link )
             );
         
-        $connection->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method( "escape" )
             ->with( $this->equalTo("raw value"), $this->equalTo(TRUE) )
             ->will( $this->returnValue("escaped") );
         
         $this->assertSame( "escaped", $mock->escape("raw value") );
         
-        $connection->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method( "escape" )
             ->with( $this->equalTo("raw value"), $this->equalTo(FALSE) )
             ->will( $this->returnValue("escaped") );

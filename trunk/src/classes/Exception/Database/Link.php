@@ -10,13 +10,13 @@ namespace cPHP::Exception::Database;
 /**
  * Exception class for database connection errors
  */
-class Connection extends ::cPHP::Exception::Database
+class Link extends ::cPHP::Exception::Database
 {
 
     /**
      * Title of this exception
      */
-    const TITLE = "Database Connection Error";
+    const TITLE = "Database Link Error";
     
     /**
      * A brief description of this exception

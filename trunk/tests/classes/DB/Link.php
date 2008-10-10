@@ -10,13 +10,13 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 /**
  * test suite
  */
-class classes_db_connection
+class classes_db_Link
 {
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Connection Class');
+        $suite = new cPHP_Base_TestSuite('commonPHP Database Link Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_db_connection_tests' );
+        $suite->addTestSuite( 'classes_db_Link_tests' );
         return $suite;
     }
 }
@@ -24,12 +24,12 @@ class classes_db_connection
 /**
  * unit tests
  */
-class classes_db_connection_tests extends PHPUnit_Framework_TestCase
+class classes_db_Link_tests extends PHPUnit_Framework_TestCase
 {
-    public function getMockConnection ( $args = array() )
+    public function getMockLink ( $args = array() )
     {
         return $this->getMock(
-                "cPHP::DB::Connection",
+                "cPHP::DB::Link",
                 array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery"),
                 $args
             );
@@ -37,7 +37,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testPersistentAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->getPersistent() );
         
         $this->assertSame( $mock, $mock->setPersistent(TRUE) );
@@ -54,7 +54,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     public function testForceNewAccessors ()
     {
         
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->getForceNew() );
         
         $this->assertSame( $mock, $mock->setForceNew(TRUE) );
@@ -70,7 +70,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testUsernameAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->userNameExists() );
         $this->assertNull( $mock->getUserName() );
         
@@ -93,7 +93,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testPasswordAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->passwordExists() );
         $this->assertNull( $mock->getPassword() );
         
@@ -116,7 +116,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testHostAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertTrue( $mock->hostExists() );
         $this->assertSame( "localhost", $mock->getHost() );
         
@@ -139,7 +139,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testPortAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->portExists() );
         $this->assertNull( $mock->getPort() );
         
@@ -166,7 +166,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testDatabaseAccessors ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $this->assertFalse( $mock->databaseExists() );
         $this->assertNull( $mock->getDatabase() );
         
@@ -189,21 +189,21 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testValidateCredentials ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->setUserName("uname")
             ->setHost("localhost")
             ->setDatabase("dbase");
         
         $this->assertSame( $mock, $mock->validateCredentials() );
         
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->clearHost();
         
         try {
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Connection $err ) {
+        catch ( ::cPHP::Exception::Database::Link $err ) {
             $this->assertSame( "UserName must be set", $err->getMessage() );
         }
         
@@ -213,7 +213,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Connection $err ) {
+        catch ( ::cPHP::Exception::Database::Link $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
         
@@ -223,7 +223,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Connection $err ) {
+        catch ( ::cPHP::Exception::Database::Link $err ) {
             $this->assertSame( "Database name must be set", $err->getMessage() );
         }
         
@@ -234,7 +234,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testGetHostWithPort ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->clearHost();
         
         try {
@@ -254,7 +254,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testFromArray ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         
         $this->assertSame(
                 $mock,
@@ -273,7 +273,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testFromString ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         
         try {
             $mock->fromURI("wakka.com");
@@ -298,14 +298,14 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testIsConnected ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         
         $this->assertFalse( $mock->isConnected() );
     }
     
-    public function testGetConnection_invalidResource ()
+    public function testGetLink_invalidResource ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->expects( $this->once() )
             ->method( "rawConnect" )
             ->will( $this->returnValue(FALSE) );
@@ -313,17 +313,17 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
         $mock->fromURI("db://user:pword@localhost/dbname");
         
         try {
-            $mock->getConnection();
+            $mock->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Connection $err ) {
+        catch ( ::cPHP::Exception::Database::Link $err ) {
             $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
         }
     }
     
     public function testQuery_invalidResult ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->expects( $this->once() )
             ->method( "rawQuery" )
             ->with( $this->equalTo("SELECT * FROM table") )
@@ -340,7 +340,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testQuery_throw ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         $mock->expects( $this->once() )
             ->method( "rawQuery" )
             ->with( $this->equalTo("SELECT * FROM table") )
@@ -364,7 +364,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testQuote ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         
         $this->assertSame( "1", $mock->quote( 1 ) );
         $this->assertSame( "10.5", $mock->quote( 10.5 ) );
@@ -416,7 +416,7 @@ class classes_db_connection_tests extends PHPUnit_Framework_TestCase
     
     public function testEscape ()
     {
-        $mock = $this->getMockConnection();
+        $mock = $this->getMockLink();
         
         $this->assertSame( "1", $mock->escape( 1 ) );
         $this->assertSame( "10.5", $mock->escape( 10.5 ) );
