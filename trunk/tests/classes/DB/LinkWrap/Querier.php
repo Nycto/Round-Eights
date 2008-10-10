@@ -10,13 +10,13 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../../general.php";
 /**
  * test suite
  */
-class classes_db_adapter_querier
+class classes_db_linkwrap_querier
 {
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Query Adapter Class');
+        $suite = new cPHP_Base_TestSuite('commonPHP Database Query LinkWrap Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_db_adapter_querier_tests' );
+        $suite->addTestSuite( 'classes_db_linkwrap_querier_tests' );
         return $suite;
     }
 }
@@ -24,7 +24,7 @@ class classes_db_adapter_querier
 /**
  * unit tests
  */
-class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
+class classes_db_linkwrap_querier_tests extends PHPUnit_Framework_TestCase
 {
     
     public function testQuery ()
@@ -35,7 +35,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $Link );
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
         
         
         $Link->expects( $this->at(0) )
@@ -74,14 +74,14 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
             ->method("query")
             ->with(
                     $this->equalTo("SELECT * FROM table"),
-                    $this->equalTo( ::cPHP::DB::Adapter::Querier::SILENT )
+                    $this->equalTo( ::cPHP::DB::LinkWrap::Querier::SILENT )
                 )
             ->will( $this->throwException(
                     new ::cPHP::Exception::Database::Query("SELECT * FROM table", "test exception")
                 ) );
             
         $this->assertFalse(
-                $query->query("SELECT * FROM table", ::cPHP::DB::Adapter::Querier::SILENT)
+                $query->query("SELECT * FROM table", ::cPHP::DB::LinkWrap::Querier::SILENT)
             );
     }
     
@@ -93,7 +93,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $Link );
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
         
         
         $Link->expects( $this->at(0) )
@@ -148,7 +148,7 @@ class classes_db_adapter_querier_tests extends PHPUnit_Framework_TestCase
                 array("query", "quote", "escape")
             );
         
-        $query = new ::cPHP::DB::Adapter::Querier( $Link );
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
         
         try {
             $query->insert( "", array() );

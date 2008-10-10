@@ -1,14 +1,14 @@
 <?php
 /**
- * Advanced querying adapter
+ * Advanced querying linkwrap
  */
 
-namespace cPHP::DB::Adapter;
+namespace cPHP::DB::LinkWrap;
 
 /**
  * Link wrapper to provide advanced 
  */
-class Querier extends ::cPHP::DB::Adapter
+class Querier extends ::cPHP::DB::LinkWrap
 {
     
     /**

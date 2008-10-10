@@ -8,7 +8,7 @@ namespace cPHP::DB;
 /**
  * Base wrapper for increasing the functionality of a database Link
  */
-abstract class Adapter implements ::cPHP::iface::DB::Link
+abstract class LinkWrap implements ::cPHP::iface::DB::Link
 {
     
     /**

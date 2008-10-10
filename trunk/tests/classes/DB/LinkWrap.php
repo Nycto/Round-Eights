@@ -10,13 +10,13 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 /**
  * test suite
  */
-class classes_db_adapter
+class classes_db_linkwrap
 {
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Adapter Class');
+        $suite = new cPHP_Base_TestSuite('commonPHP Database LinkWrap Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_db_adapter_tests' );
+        $suite->addTestSuite( 'classes_db_linkwrap_tests' );
         return $suite;
     }
 }
@@ -24,7 +24,7 @@ class classes_db_adapter
 /**
  * unit tests
  */
-class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
+class classes_db_linkwrap_tests extends PHPUnit_Framework_TestCase
 {
     
     public function testGetLink ()
@@ -36,7 +36,7 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
             );
         
         $mock = $this->getMock(
-                "cPHP::DB::Adapter",
+                "cPHP::DB::LinkWrap",
                 array(),
                 array( $link )
             );
@@ -52,7 +52,7 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
             );
         
         $mock = $this->getMock(
-                "cPHP::DB::Adapter",
+                "cPHP::DB::LinkWrap",
                 array(),
                 array( $link )
             );
@@ -73,7 +73,7 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
             );
         
         $mock = $this->getMock(
-                "cPHP::DB::Adapter",
+                "cPHP::DB::LinkWrap",
                 array(),
                 array( $link )
             );
@@ -101,7 +101,7 @@ class classes_db_adapter_tests extends PHPUnit_Framework_TestCase
             );
         
         $mock = $this->getMock(
-                "cPHP::DB::Adapter",
+                "cPHP::DB::LinkWrap",
                 array(),
                 array( $link )
             );
