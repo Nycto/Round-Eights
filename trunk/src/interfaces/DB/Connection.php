@@ -17,9 +17,10 @@ interface Connection
      * Runs a query and returns the result
      *
      * @param String $query The query to run
+     * @param Integer $flags Any boolean flags to set
      * @result Object Returns a result object
      */
-    public function query ( $query );
+    public function query ( $query, $flags = 0 );
     
     /**
      * Quotes a variable to be used in a query

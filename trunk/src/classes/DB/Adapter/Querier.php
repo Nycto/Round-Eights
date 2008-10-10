@@ -8,7 +8,7 @@ namespace cPHP::DB::Adapter;
 /**
  * Connection wrapper to provide advanced 
  */
-class Query extends ::cPHP::DB::Adapter
+class Querier extends ::cPHP::DB::Adapter
 {
     
     /**
@@ -30,7 +30,7 @@ class Query extends ::cPHP::DB::Adapter
         $query = ::cPHP::strval($query);
 
         try {
-            $result = $this->getConnection()->query( $query, $flags );
+            return $this->getConnection()->query( $query, $flags );
         }
         catch (::cPHP::Exception::Database::Query $err) {
             
@@ -39,9 +39,10 @@ class Query extends ::cPHP::DB::Adapter
                 throw $err;
             }
             
+            return FALSE;
+        
         }
         
-        return $result;
     }
     
     /**
@@ -78,40 +79,26 @@ class Query extends ::cPHP::DB::Adapter
      * @param String $table The table to insert into
      * @param Array|Object $fields The associative array of fields to insert
      * @param Integer $flags Any query flags to use
+     * @return Integer Returns the ID of the inserted row
      */
     public function insert ( $table, $fields, $flags = 0 )
     {
-        $table = stringVal($table);
+        $table = ::cPHP::strval($table);
 
-        if (is_empty($table))
-            throw new ArgumentError(0, "Table Name", "Must not be empty");
+        if ( ::cPHP::is_empty($table) )
+            throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
 
-        try {
-            $query = "INSERT INTO ". $table ." SET "
-                    .$this->constructFields($fields);
-        }
-        catch (GeneralError $err) {
-            $err->shiftFault();
-            throw $err;
-        }
+        $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
 
-        try {
-            $result = $this->query($query, $flags);
-        }
-        catch (QueryError $err) {
+        $result = $this->query($query, $flags);
 
-            if ( flagTest(cDB::VERBOSE, $flags) ) {
-                $err->shiftFault();
-                throw $err;
-            }
-
+        if ( $result === FALSE )
             return FALSE;
-        }
-
-        $id = $result->get_insert_id();
+        
+        $id = $result->getInsertID();
         $result->free();
 
-        return $id;
+        return $result;
     }
     
 }
