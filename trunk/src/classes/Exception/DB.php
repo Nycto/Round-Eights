@@ -10,7 +10,7 @@ namespace cPHP::Exception;
 /**
  * Exception class for database errors
  */
-class Database extends ::cPHP::Exception
+class DB extends ::cPHP::Exception
 {
 
     /**

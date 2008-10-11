@@ -457,20 +457,20 @@ abstract class Link implements ::cPHP::iface::DB::Link
     /**
      * Validates the log-in credentials in preparation to connect
      *
-     * @throws cPHP::Exception::Database::Link
+     * @throws cPHP::Exception::DB::Link
      *      This will be thrown if any of the required credentials are not set
      * @return Object Returns a self reference
      */
     public function validateCredentials ()
     {
         if ( !$this->userNameExists() )
-            throw new ::cPHP::Exception::Database::Link("UserName must be set", 0, $this);
+            throw new ::cPHP::Exception::DB::Link("UserName must be set", 0, $this);
 
         if ( !$this->hostExists() )
-            throw new ::cPHP::Exception::Database::Link("Host must be set", 0, $this);
+            throw new ::cPHP::Exception::DB::Link("Host must be set", 0, $this);
 
         if ( !$this->databaseExists() )
-            throw new ::cPHP::Exception::Database::Link("Database name must be set", 0, $this);
+            throw new ::cPHP::Exception::DB::Link("Database name must be set", 0, $this);
         
         return $this;
     }
@@ -517,7 +517,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
             $result = $this->rawConnect();
             
             if ( !is_resource($result) ) {
-                throw new cPHP::Exception::Database::Link(
+                throw new cPHP::Exception::DB::Link(
                         "Database connector did not return a resource",
                         0,
                         $this
@@ -542,13 +542,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
         try {
             $result = $this->rawQuery( ::cPHP::strval($query) );
         }
-        catch (::cPHP::Exception::Database::Query $err) {
+        catch (::cPHP::Exception::DB::Query $err) {
             $err->shiftFault();
             throw $err;
         }
         
         if ( !( $result instanceof ::cPHP::DB::Result ) ) {
-            throw new ::cPHP::Exception::Database::Query(
+            throw new ::cPHP::Exception::DB::Query(
                     $query,
                     "Query did not return a cPHP::DB::Result object",
                     0,

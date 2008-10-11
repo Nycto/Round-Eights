@@ -5,12 +5,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::Database;
+namespace cPHP::Exception::DB;
 
 /**
  * Exception class for database queries
  */
-class Query extends ::cPHP::Exception::Database
+class Query extends ::cPHP::Exception::DB
 {
 
     /**

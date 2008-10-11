@@ -32,7 +32,7 @@ class Querier extends ::cPHP::DB::LinkWrap
         try {
             return $this->getLink()->query( $query, $flags );
         }
-        catch (::cPHP::Exception::Database::Query $err) {
+        catch (::cPHP::Exception::DB::Query $err) {
             
             if ( !( $flags & self::SILENT) ) {
                 $err->shiftFault();

@@ -251,7 +251,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Link $err ) {
+        catch ( ::cPHP::Exception::DB::Link $err ) {
             $this->assertSame( "UserName must be set", $err->getMessage() );
         }
         
@@ -261,7 +261,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Link $err ) {
+        catch ( ::cPHP::Exception::DB::Link $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
         
@@ -271,7 +271,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Link $err ) {
+        catch ( ::cPHP::Exception::DB::Link $err ) {
             $this->assertSame( "Database name must be set", $err->getMessage() );
         }
         
@@ -364,7 +364,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Link $err ) {
+        catch ( ::cPHP::Exception::DB::Link $err ) {
             $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
         }
     }
@@ -423,7 +423,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Query  $err ) {
+        catch ( ::cPHP::Exception::DB::Query  $err ) {
             $this->assertSame( "Query did not return a cPHP::DB::Result object", $err->getMessage() );
         }
     }
@@ -436,7 +436,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("SELECT * FROM table") )
             ->will(
                     $this->throwException(
-                            new ::cPHP::Exception::Database::Query(
+                            new ::cPHP::Exception::DB::Query(
                                     "SELECT * FROM table",
                                     "Example Exception"
                                 )
@@ -447,7 +447,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Query  $err ) {
+        catch ( ::cPHP::Exception::DB::Query  $err ) {
             $this->assertSame( "Example Exception", $err->getMessage() );
         }
     }

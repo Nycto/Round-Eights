@@ -58,14 +58,14 @@ class classes_db_linkwrap_querier_tests extends PHPUnit_Framework_TestCase
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->throwException(
-                    new ::cPHP::Exception::Database::Query("SELECT * FROM table", "test exception")
+                    new ::cPHP::Exception::DB::Query("SELECT * FROM table", "test exception")
                 ) );
         
         try {
             $query->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Database::Query $err ) {
+        catch ( ::cPHP::Exception::DB::Query $err ) {
             $this->assertSame("test exception", $err->getMessage());
         }
         
@@ -77,7 +77,7 @@ class classes_db_linkwrap_querier_tests extends PHPUnit_Framework_TestCase
                     $this->equalTo( ::cPHP::DB::LinkWrap::Querier::SILENT )
                 )
             ->will( $this->throwException(
-                    new ::cPHP::Exception::Database::Query("SELECT * FROM table", "test exception")
+                    new ::cPHP::Exception::DB::Query("SELECT * FROM table", "test exception")
                 ) );
             
         $this->assertFalse(

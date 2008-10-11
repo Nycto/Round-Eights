@@ -5,12 +5,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::Database;
+namespace cPHP::Exception::DB;
 
 /**
  * Exception class for database queries
  */
-class Deadlock extends ::cPHP::Exception::Database
+class Deadlock extends ::cPHP::Exception::DB
 {
 
     /**
