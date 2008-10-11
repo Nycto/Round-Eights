@@ -85,6 +85,57 @@ class classes_db_linkwrap_querier_tests extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testBegin ()
+    {
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
+        
+        $Link->expects( $this->once() )
+            ->method("query")
+            ->with( $this->equalTo("BEGIN") )
+            ->will( $this->returnValue("Result Set") );
+            
+        $this->assertSame( $query, $query->begin() );
+    }
+    
+    public function testCommit ()
+    {
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
+        
+        $Link->expects( $this->once() )
+            ->method("query")
+            ->with( $this->equalTo("COMMIT") )
+            ->will( $this->returnValue("Result Set") );
+            
+        $this->assertSame( $query, $query->commit() );
+    }
+    
+    public function testRollBack ()
+    {
+        $Link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $Link );
+        
+        $Link->expects( $this->once() )
+            ->method("query")
+            ->with( $this->equalTo("ROLLBACK") )
+            ->will( $this->returnValue("Result Set") );
+            
+        $this->assertSame( $query, $query->rollBack() );
+    }
+    
     public function testGetFieldList ()
     {
         

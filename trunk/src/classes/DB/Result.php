@@ -1,6 +1,6 @@
 <?php
 /**
- * Database Link
+ * Database Query Result
  *
  * @package Database
  */
@@ -19,6 +19,11 @@ abstract class Result
     private $resource;
     
     /**
+     * The query associated with these results
+     */
+    private $query;
+    
+    /**
      * Constructor...
      *
      * @param Resource $resource The database resource
@@ -28,6 +33,51 @@ abstract class Result
     {
         if (is_resource($resource))
             $this->resource = $resource;
+            
+        $this->query = ::cPHP::strval($query);
+    }
+    
+    /**
+     * Destructor...
+     *
+     * Ensures that the resource is freed
+     */
+    public function __destruct()
+    {
+        $this->free();
+    }
+    
+    /**
+     * Returns the query associated with this result
+     *
+     * @return String
+     */
+    public function getQuery ()
+    {
+        return $this->query;
+    }
+    
+    /**
+     * Returns whether this instance currently holds a valid resource
+     *
+     * @return Boolean
+     */
+    public function hasResource ()
+    {
+        return isset( $this->resource ) && is_resource( $this->resource );
+    }
+    
+    /**
+     * Returns the resource this instance encases
+     *
+     * @return Resource|Null Returns NULL if there is no resource set
+     */
+    public function getResource ()
+    {
+        if ( $this->hasResource() )
+            return $this->resource;
+        else
+            return NULL;
     }
     
     /**
@@ -36,49 +86,20 @@ abstract class Result
      * @return null
      */
     abstract protected function rawFree ();
-
+    
     /**
-     * Internal method that returns the number of rows found
+     * Frees the resource in this instance
      *
-     * @return Integer
+     * @return Object Returns a self reference
      */
-    abstract protected function rawNumRows ();
-
-    /**
-     * Internal method to fetch the next row in a result set
-     *
-     * @return Array Returns the field values
-     */
-    abstract protected function rawFetch ();
-
-    /**
-     * Internal method to seek to a specific row in a result resource
-     *
-     * @param Integer $offset The offset to seek to
-     * @return Array Returns the field values
-     */
-    abstract protected function rawSeek ($offset);
-
-    /**
-     * Internal method to return the number of rows affected by this query
-     *
-     * @return Integer
-     */
-    abstract protected function rawAffected ();
-
-    /**
-     * Internal method to return the insert ID for this query
-     *
-     * @return Integer
-     */
-    abstract protected function rawInsertID ();
-
-    /**
-     * Internal method to get the number of fields returned
-     *
-     * @return Integer
-     */
-    abstract protected function rawNumFields ();
+    public function free ()
+    {
+        if ( $this->hasResource() )
+            $this->rawFree();
+        $this->resource = NULL;
+        return $this;
+    }
+    
 
 }
 

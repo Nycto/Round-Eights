@@ -10,13 +10,13 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 /**
  * test suite
  */
-class classes_db_Link
+class classes_db_link
 {
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite('commonPHP Database Link Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_db_Link_tests' );
+        $suite->addTestSuite( 'classes_db_link_tests' );
         return $suite;
     }
 }
@@ -24,14 +24,62 @@ class classes_db_Link
 /**
  * unit tests
  */
-class classes_db_Link_tests extends PHPUnit_Framework_TestCase
+class classes_db_link_tests extends PHPUnit_Framework_TestCase
 {
+    
     public function getMockLink ( $args = array() )
     {
         return $this->getMock(
                 "cPHP::DB::Link",
                 array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery"),
                 $args
+            );
+    }
+    
+    public function testIsSelect ()
+    {
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("SELECT * FROM table")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("    SELECT * FROM table")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect(" \r \n \t  SELECT * FROM table")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("  (  SELECT * FROM table )")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("(((SELECT * FROM table)))")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect(" (  ( ( SELECT * FROM table)))")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("EXPLAIN SELECT * FROM table")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("( (EXPLAIN SELECT * FROM table))")
+            );
+        
+        $this->assertTrue( 
+                ::cPHP::DB::Link::isSelect("( ( EXPLAIN   \n \t SELECT * FROM table))")
+            );
+        
+        $this->assertFalse( 
+                ::cPHP::DB::Link::isSelect("UPDATE table SET field = 1")
+            );
+        
+        $this->assertFalse( 
+                ::cPHP::DB::Link::isSelect("INSERT INTO table SET field = 1")
             );
     }
     
@@ -319,6 +367,48 @@ class classes_db_Link_tests extends PHPUnit_Framework_TestCase
         catch ( ::cPHP::Exception::Database::Link $err ) {
             $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
         }
+    }
+    
+    public function testDisconnect ()
+    {
+        $mock = $this->getMockLink();
+        $this->assertSame( $mock, $mock->disconnect() );
+    }
+    
+    public function testDisconnect_fakedConnection ()
+    {
+        
+        $mock = $this->getMock(
+                "cPHP::DB::Link",
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+            );
+        
+        $mock->expects( $this->at( 0 ) )
+            ->method("isConnected")
+            ->will( $this->returnValue(TRUE) );
+        
+        $mock->expects( $this->once() )
+            ->method("rawDisconnect");
+        
+        $this->assertSame( $mock, $mock->disconnect() );
+    }
+    
+    public function testDestruct ()
+    {
+        
+        $mock = $this->getMock(
+                "cPHP::DB::Link",
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+            );
+        
+        $mock->expects( $this->at( 0 ) )
+            ->method("isConnected")
+            ->will( $this->returnValue(TRUE) );
+        
+        $mock->expects( $this->once() )
+            ->method("rawDisconnect");
+        
+        $mock->__destruct();
     }
     
     public function testQuery_invalidResult ()

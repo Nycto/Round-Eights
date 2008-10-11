@@ -46,6 +46,39 @@ class Querier extends ::cPHP::DB::LinkWrap
     }
     
     /**
+     * Marks the start of a transaction
+     *
+     * @return Object Returns a self reference
+     */
+    public function begin ()
+    {
+        $this->getLink()->query( "BEGIN" );
+        return $this;
+    }
+    
+    /**
+     * Commits a transaction
+     *
+     * @return Object Returns a self reference
+     */
+    public function commit ()
+    {
+        $this->getLink()->query( "COMMIT" );
+        return $this;
+    }
+    
+    /**
+     * Rolls back the current transaction
+     *
+     * @return Object Returns a self reference
+     */
+    public function rollBack ()
+    {
+        $this->getLink()->query( "ROLLBACK" );
+        return $this;
+    }
+    
+    /**
      * Takes an array of fields and constructs a field list for a query
      *
      * @param array|object $fields The fields to iterate over where the key

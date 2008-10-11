@@ -10,8 +10,8 @@ namespace cPHP::DB;
 /**
  * Core Database Connection
  *
- * The base class for database Links. Provides an interface for
- * setting up the Link, performing actions against the Link and
+ * The base class for database connections. Provides an interface for
+ * setting up the link, performing actions against the resource and
  * automatically disconnecting
  */
 abstract class Link implements ::cPHP::iface::DB::Link
@@ -63,6 +63,21 @@ abstract class Link implements ::cPHP::iface::DB::Link
     private $resource;
     
     /**
+     * Returns whether a query is a SELECT query
+     *
+     * @param String $query The query being tested
+     * @return Boolean
+     */
+    static public function isSelect ( $query )
+    {
+        $query = ::cPHP::strval($query);
+        $query = ::cPHP::stripQuoted($query, array("'", '"', "`"));
+        $query = trim($query);
+
+        return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
+    }
+    
+    /**
      * Constructor...
      */
     public function __construct ()
@@ -98,7 +113,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      *
      * @return null
      */
-    abstract protected function rawDisconnect ( $resource );
+    abstract protected function rawDisconnect ();
 
     /**
      * Used to escape a string for use in a query.
