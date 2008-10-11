@@ -3,10 +3,10 @@
  * Unit Test configuration file
  */
 
-define ( "MYSQL_HOST", FALSE );
-define ( "MYSQL_PORT", FALSE );
-define ( "MYSQL_DATABASE", FALSE );
-define ( "MYSQL_USERNAME", FALSE );
+define ( "MYSQL_HOST", "localhost" );
+define ( "MYSQL_PORT", 3306 );
+define ( "MYSQL_DATABASE", "test" );
+define ( "MYSQL_USERNAME", "phpunit" );
 define ( "MYSQL_PASSWORD", FALSE );
 
 ?>
