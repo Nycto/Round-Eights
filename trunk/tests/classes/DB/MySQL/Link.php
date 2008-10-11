@@ -10,13 +10,13 @@ require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../../general.php";
 /**
  * test suite
  */
-class classes_db_mysql_link
+class classes_db_mysqli_link
 {
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite('commonPHP MySQL Connection Class');
+        $suite = new cPHP_Base_TestSuite('commonPHP MySQLi Connection Class');
         $suite->addLib();
-        $suite->addTestSuite( 'classes_db_mysql_link_tests' );
+        $suite->addTestSuite( 'classes_db_mysqli_link_tests' );
         return $suite;
     }
 }
@@ -24,7 +24,7 @@ class classes_db_mysql_link
 /**
  * unit tests
  */
-class classes_db_mysql_link_tests extends PHPUnit_MySQL_Framework_TestCase
+class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
 {
     
     public function testConnection ()

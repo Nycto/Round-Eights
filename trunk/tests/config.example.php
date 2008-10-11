@@ -1,6 +1,8 @@
 <?php
 /**
  * Unit Test configuration file
+ *
+ * Copy this file to config.php and customize the settings
  */
 
 define ( "MYSQL_HOST", "localhost" );

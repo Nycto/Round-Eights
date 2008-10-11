@@ -113,7 +113,7 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
 /**
  * Base test suite for a MySQL connection test
  */
-class PHPUnit_MySQL_Framework_TestCase extends PHPUnit_Framework_TestCase
+class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
     
     public function setUp ()
@@ -137,14 +137,26 @@ class PHPUnit_MySQL_Framework_TestCase extends PHPUnit_Framework_TestCase
         
         foreach ( $required AS $constant ) {
             
-            if ( !defined("MYSQL_". $constant) )
-                $this->markTestSkipped("Required constant is not defined: MYSQL_". $constant);
+            if ( !defined("MYSQLI_". $constant) )
+                $this->markTestSkipped("Required constant is not defined: MYSQLI_". $constant);
             
-            $value = constant("MYSQL_". $constant);
+            $value = constant("MYSQLI_". $constant);
             
             if ( empty($value) )
-                $this->markTestSkipped("Required constant must not be empty: MYSQL_". $constant);
+                $this->markTestSkipped("Required constant must not be empty: MYSQLI_". $constant);
         }
+        
+        // Test the connection
+        $mysqli = new mysqli(
+                MYSQLI_HOST,
+                MYSQLI_USERNAME,
+                MYSQLI_PASSWORD,
+                MYSQLI_DATABASE,
+                MYSQLI_PORT
+            );
+
+        if ($mysqli->connect_error)
+            $this->markTestSkipped("MySQLi Connection Error: ".  mysqli_connect_error());
         
     }
     
