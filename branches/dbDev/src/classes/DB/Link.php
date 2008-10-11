@@ -79,8 +79,10 @@ abstract class Link implements ::cPHP::iface::DB::Link
     
     /**
      * Constructor...
+     *
+     * @param mixed $input This can be either a URI or an associative array
      */
-    public function __construct ()
+    public function __construct ( $input = null )
     {
         // Ensure that the required extension is loaded
         if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
@@ -89,6 +91,12 @@ abstract class Link implements ::cPHP::iface::DB::Link
                     "Extension is not loaded"
                 );
         }
+        
+        if ( is_string($input) )
+            $this->fromURI( $input );
+        
+        else if ( is_array( $input ) )
+            $this->fromArray( $input );
     }
     
     /**
@@ -109,13 +117,6 @@ abstract class Link implements ::cPHP::iface::DB::Link
     abstract protected function rawConnect ();
 
     /**
-     * Disconnect from the server
-     *
-     * @return null
-     */
-    abstract protected function rawDisconnect ();
-
-    /**
      * Used to escape a string for use in a query.
      *
      * @param String $value The string to escape
@@ -130,6 +131,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * @return Object Returns a cPHP::DB::Result object
      */
     abstract protected function rawQuery ( $query );
+
+    /**
+     * Disconnect from the server
+     *
+     * @return null
+     */
+    abstract protected function rawDisconnect ();
     
     /**
      * Returns whether the link should use a persistent connection
@@ -498,7 +506,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function isConnected ()
     {
-        return isset($this->resource) && is_resource($this->resource);
+        return isset($this->resource)
+            && ( is_resource($this->resource) || is_object($this->resource) );
     }
     
     /**
@@ -516,9 +525,9 @@ abstract class Link implements ::cPHP::iface::DB::Link
             
             $result = $this->rawConnect();
             
-            if ( !is_resource($result) ) {
+            if ( !is_resource($result) && !is_object($result) ) {
                 throw new cPHP::Exception::DB::Link(
-                        "Database connector did not return a resource",
+                        "Database connector did not return a resource or an object",
                         0,
                         $this
                     );
@@ -567,7 +576,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function disconnect ()
     {
         if ( $this->isConnected() )
-            $this->rawDisconnect( $this->getLink() );
+            $this->rawDisconnect();
         return $this;
     }
     

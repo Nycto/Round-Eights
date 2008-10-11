@@ -36,6 +36,20 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testConstruct ()
+    {
+        $mock = $this->getMockLink( array("db://example.com/datab") );
+        
+        $this->assertSame( "example.com", $mock->getHost() );
+        $this->assertSame( "datab", $mock->getDatabase() );
+        
+        
+        $mock = $this->getMockLink(array( array( "host" => "db.com", "port" => 42 ) ));
+        
+        $this->assertSame( "db.com", $mock->getHost() );
+        $this->assertSame( 42, $mock->getPort() );
+    }
+    
     public function testIsSelect ()
     {
         $this->assertTrue( 
@@ -365,7 +379,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::DB::Link $err ) {
-            $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
+            $this->assertSame( "Database connector did not return a resource or an object", $err->getMessage() );
         }
     }
     

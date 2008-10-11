@@ -160,7 +160,13 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
         
     }
     
-    
+    public function getURI ()
+    {
+        return "db://"
+            .MYSQLI_USERNAME .":". MYSQLI_PASSWORD ."@"
+            .MYSQLI_HOST .":". MYSQLI_PORT
+            ."/". MYSQLI_DATABASE;
+    }
     
 }
 
