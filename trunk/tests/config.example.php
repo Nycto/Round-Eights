@@ -5,10 +5,10 @@
  * Copy this file to config.php and customize the settings
  */
 
-define ( "MYSQL_HOST", "localhost" );
-define ( "MYSQL_PORT", 3306 );
-define ( "MYSQL_DATABASE", "test" );
-define ( "MYSQL_USERNAME", "phpunit" );
-define ( "MYSQL_PASSWORD", FALSE );
+define ( "MYSQLI_HOST", "localhost" );
+define ( "MYSQLI_PORT", 3306 );
+define ( "MYSQLI_DATABASE", "test" );
+define ( "MYSQLI_USERNAME", "phpunit" );
+define ( "MYSQLI_PASSWORD", FALSE );
 
 ?>

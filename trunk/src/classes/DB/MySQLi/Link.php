@@ -10,7 +10,7 @@ namespace cPHP::DB::Link;
 /**
  * MySQL Database Link
  */
-class MySQL extends ::cPHP::DB::Link
+class MySQLi extends ::cPHP::DB::Link
 {
     
 }
