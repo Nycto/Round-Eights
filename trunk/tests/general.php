@@ -111,6 +111,48 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
 }
 
 /**
+ * Base test suite for a MySQL connection test
+ */
+class PHPUnit_MySQL_Framework_TestCase extends PHPUnit_Framework_TestCase
+{
+    
+    public function setUp ()
+    {
+        if ( !extension_loaded("mysqli") )
+            $this->markTestSkipped("MySQLi extension is not loaded");
+        
+        $config = rtrim( dirname( __FILE__ ), "/") ."/config.php";
+        
+        if ( !file_exists($config) )
+            $this->markTestSkipped("Config file does not exist: $config");
+        
+        if ( !is_readable($config) )
+            $this->markTestSkipped("Config file is not readable: $config");
+        
+        require_once $config;
+        
+        $required = array(
+                "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD"
+            );
+        
+        foreach ( $required AS $constant ) {
+            
+            if ( !defined("MYSQL_". $constant) )
+                $this->markTestSkipped("Required constant is not defined: MYSQL_". $constant);
+            
+            $value = constant("MYSQL_". $constant);
+            
+            if ( empty($value) )
+                $this->markTestSkipped("Required constant must not be empty: MYSQL_". $constant);
+        }
+        
+    }
+    
+    
+    
+}
+
+/**
  * unit tests
  */
 class general extends PHPUnit_Extensions_OutputTestCase

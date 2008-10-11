@@ -25,4 +25,5 @@ class classes_allTests
     }
 
 }
+
 ?>
