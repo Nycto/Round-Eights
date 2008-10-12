@@ -16,7 +16,7 @@ abstract class Result
     /**
      * The database result resource
      */
-    private $resource;
+    private $result;
     
     /**
      * The query associated with these results
@@ -26,13 +26,13 @@ abstract class Result
     /**
      * Constructor...
      *
-     * @param Resource $resource The database resource
+     * @param Resource|Object $result The database result resource or object
      * @param String $query The query that produced this result
      */
-    public function __construct ( $resource, $query )
+    public function __construct ( $result, $query )
     {
-        if (is_resource($resource))
-            $this->resource = $resource;
+        if (is_resource($result) || is_object($result))
+            $this->result = $result;
             
         $this->query = ::cPHP::strval($query);
     }
@@ -62,20 +62,21 @@ abstract class Result
      *
      * @return Boolean
      */
-    public function hasResource ()
+    public function hasResult ()
     {
-        return isset( $this->resource ) && is_resource( $this->resource );
+        return isset( $this->result )
+            && ( is_resource( $this->result ) || is_object( $this->result ) );
     }
     
     /**
-     * Returns the resource this instance encases
+     * Returns the result resource this instance encases
      *
      * @return Resource|Null Returns NULL if there is no resource set
      */
-    public function getResource ()
+    public function getResult ()
     {
-        if ( $this->hasResource() )
-            return $this->resource;
+        if ( $this->hasResult() )
+            return $this->result;
         else
             return NULL;
     }
@@ -94,9 +95,8 @@ abstract class Result
      */
     public function free ()
     {
-        if ( $this->hasResource() )
+        if ( $this->hasResult() )
             $this->rawFree();
-        $this->resource = NULL;
         return $this;
     }
     

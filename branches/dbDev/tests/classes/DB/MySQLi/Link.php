@@ -64,9 +64,21 @@ class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
         $this->assertSame("This \\'is\\' a string", $link->escape("This 'is' a string"));
     }
     
-    public function testQuery ()
+    public function testQuery_read ()
     {
         $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        
+        $result = $link->query("SELECT 50 + 10");
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
+        
+        $this->assertSame( "SELECT 50 + 10", $result->getQuery() );
+        
+        $raw = $result->getResult();
+        $this->assertThat( $raw, $this->isInstanceOf("mysqli_result") );
+        $this->assertSame( 1, $raw->num_rows );
+        $this->assertEquals( array(60), $raw->fetch_row() );
+        $raw->free();
     }
     
     public function testDisconnect ()

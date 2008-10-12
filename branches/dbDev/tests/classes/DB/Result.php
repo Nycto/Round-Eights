@@ -40,7 +40,7 @@ class classes_db_result_tests extends PHPUnit_Framework_TestCase
             );
     }
     
-    public function testHasResource ()
+    public function testHasResult ()
     {
         $mock = $this->getMock(
                 "cPHP::DB::Result",
@@ -49,7 +49,7 @@ class classes_db_result_tests extends PHPUnit_Framework_TestCase
             );
         
         $this->assertFalse(
-                $mock->hasResource()
+                $mock->hasResult()
             );
     }
     
@@ -71,12 +71,12 @@ class classes_db_result_tests extends PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock(
                 "cPHP::DB::Result",
-                array("rawFree", "hasResource"),
+                array("rawFree", "hasResult"),
                 array("not a resource", "SELECT * FROM table")
             );
         
         $mock->expects( $this->at(0) )
-            ->method("hasResource")
+            ->method("hasResult")
             ->will( $this->returnValue(TRUE) );
         
         $mock->expects( $this->once() )
@@ -89,12 +89,12 @@ class classes_db_result_tests extends PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock(
                 "cPHP::DB::Result",
-                array("rawFree", "hasResource"),
+                array("rawFree", "hasResult"),
                 array("not a resource", "SELECT * FROM table")
             );
         
         $mock->expects( $this->at(0) )
-            ->method("hasResource")
+            ->method("hasResult")
             ->will( $this->returnValue(TRUE) );
         
         $mock->expects( $this->once() )
@@ -103,16 +103,16 @@ class classes_db_result_tests extends PHPUnit_Framework_TestCase
         $mock->__destruct();
     }
     
-    public function testGetResource ()
+    public function testGetResult ()
     {
         
         $mock = $this->getMock(
                 "cPHP::DB::Result",
-                array("rawFree", "hasResource"),
+                array("rawFree", "hasResult"),
                 array("not a resource", "SELECT * FROM table")
             );
         
-        $this->assertNull( $mock->getResource() );
+        $this->assertNull( $mock->getResult() );
     }
     
 }
