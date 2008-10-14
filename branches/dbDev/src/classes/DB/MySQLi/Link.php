@@ -25,7 +25,6 @@ class Link extends ::cPHP::DB::Link
      */
     protected function rawConnect ()
     {
-        
         $link = @mysqli_connect(
                 $this->getHost(),
                 $this->getUserName(),
@@ -46,6 +45,23 @@ class Link extends ::cPHP::DB::Link
         
         return $link;
 
+    }
+    
+    /**
+     * Returns whether a given resource is still connected
+     *
+     * @param Resource|Object $connection The connection being tested
+     * @return Boolean
+     */
+    protected function rawIsConnected ( $connection )
+    {
+        if ( !($connection instanceof mysqli) )
+            return FALSE;
+        
+        if ( @$connection->ping() !== TRUE )
+            return FALSE;
+        
+        return TRUE;
     }
 
     /**
@@ -86,7 +102,8 @@ class Link extends ::cPHP::DB::Link
      */
     protected function rawDisconnect ()
     {
-        $this->getLink()->close();
+        $link = $this->getLink();
+        $link->close();
     }
     
 }

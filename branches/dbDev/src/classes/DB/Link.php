@@ -140,6 +140,14 @@ abstract class Link implements ::cPHP::iface::DB::Link
     abstract protected function rawDisconnect ();
     
     /**
+     * Returns whether a given resource is still connected
+     *
+     * @param Resource|Object $connection The connection being tested
+     * @return Boolean
+     */
+    abstract protected function rawIsConnected ( $connection );
+    
+    /**
      * Returns whether the link should use a persistent connection
      *
      * @return Boolean
@@ -506,8 +514,15 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function isConnected ()
     {
-        return isset($this->resource)
-            && ( is_resource($this->resource) || is_object($this->resource) );
+        $result =
+            isset($this->resource)
+            && ( is_resource($this->resource) || is_object($this->resource) )
+            && $this->rawIsConnected( $this->resource );
+            
+        if ( !$result )
+            $this->resource = null;
+        
+        return $result ? TRUE : FALSE;
     }
     
     /**
@@ -577,6 +592,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         if ( $this->isConnected() )
             $this->rawDisconnect();
+        $this->link = null;
         return $this;
     }
     

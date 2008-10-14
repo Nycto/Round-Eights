@@ -27,12 +27,6 @@ class classes_db_mysqli_link
 class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
 {
     
-    public function testConnection ()
-    {
-        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
-        $this->assertThat( $link->getLink(), $this->isInstanceOf("mysqli") );
-    }
-    
     public function testConnection_error ()
     {
         $link = new ::cPHP::DB::MySQLi::Link(
@@ -40,7 +34,7 @@ class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
             );
         
         try {
-            $this->assertThat( $link->getLink(), $this->isInstanceOf("mysqli") );
+            $link->getLink();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::DB::Link $err ) {
@@ -49,6 +43,13 @@ class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
                     $err->getMessage()
                 );
         }
+    }
+    
+    public function testConnection ()
+    {
+        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $this->assertThat( $link->getLink(), $this->isInstanceOf("mysqli") );
+        $this->assertTrue( $link->isConnected() );
     }
     
     public function testEscape ()
@@ -84,8 +85,11 @@ class classes_db_mysqli_link_tests extends PHPUnit_MySQLi_Framework_TestCase
     public function testDisconnect ()
     {
         $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $link->getLink();
         
-        $link->disconnect();
+        $this->assertTrue( $link->isConnected() );
+        
+        $this->assertSame( $link, $link->disconnect() );
         
         $this->assertFalse( $link->isConnected() );
     }

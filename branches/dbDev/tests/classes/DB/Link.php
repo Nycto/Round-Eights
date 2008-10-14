@@ -31,7 +31,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery"),
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected"),
                 $args
             );
     }
@@ -394,7 +394,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
         
         $mock = $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
         
         $mock->expects( $this->at( 0 ) )
@@ -412,7 +412,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
         
         $mock = $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
         
         $mock->expects( $this->at( 0 ) )
