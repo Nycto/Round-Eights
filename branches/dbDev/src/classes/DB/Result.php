@@ -71,7 +71,7 @@ abstract class Result
     /**
      * Returns the result resource this instance encases
      *
-     * @return Resource|Null Returns NULL if there is no resource set
+     * @return mixed Returns NULL if there is no resource set
      */
     public function getResult ()
     {
@@ -99,7 +99,6 @@ abstract class Result
             $this->rawFree();
         return $this;
     }
-    
 
 }
 
