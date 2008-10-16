@@ -29,70 +29,70 @@ class classes_db_result_read_tests extends PHPUnit_Framework_TestCase
     
     public function testGetNumRows_valid ()
     {
-        $write = $this->getMock(
+        $read = $this->getMock(
                 "cPHP::DB::Result::Read",
-                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawNumFields", "rawFree"),
+                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
         
-        $write->expects( $this->once() )
+        $read->expects( $this->once() )
             ->method("rawNumRows")
             ->will( $this->returnValue(20) );
         
-        $this->assertSame( 20, $write->getNumRows() );
-        $this->assertSame( 20, $write->getNumRows() );
-        $this->assertSame( 20, $write->getNumRows() );
+        $this->assertSame( 20, $read->getNumRows() );
+        $this->assertSame( 20, $read->getNumRows() );
+        $this->assertSame( 20, $read->getNumRows() );
     }
     
     public function testGetNumRows_invalid ()
     {
-        $write = $this->getMock(
+        $read = $this->getMock(
                 "cPHP::DB::Result::Read",
-                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawNumFields", "rawFree"),
+                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
         
-        $write->expects( $this->once() )
+        $read->expects( $this->once() )
             ->method("rawNumRows")
             ->will( $this->returnValue(null) );
         
-        $this->assertFalse( $write->getNumRows() );
-        $this->assertFalse( $write->getNumRows() );
-        $this->assertFalse( $write->getNumRows() );
+        $this->assertFalse( $read->getNumRows() );
+        $this->assertFalse( $read->getNumRows() );
+        $this->assertFalse( $read->getNumRows() );
     }
     
     public function testGetFields_valid ()
     {
-        $write = $this->getMock(
+        $read = $this->getMock(
                 "cPHP::DB::Result::Read",
-                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawNumFields", "rawFree"),
+                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
         
-        $write->expects( $this->once() )
+        $read->expects( $this->once() )
             ->method("rawFields")
-            ->will( $this->returnValue(20) );
+            ->will( $this->returnValue( array("one", "two") ) );
         
-        $this->assertSame( 20, $write->getFields() );
-        $this->assertSame( 20, $write->getFields() );
-        $this->assertSame( 20, $write->getFields() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
     }
     
     public function testGetFields_invalid ()
     {
-        $write = $this->getMock(
+        $read = $this->getMock(
                 "cPHP::DB::Result::Read",
-                array("rawFields", "rawFetch", "rawSeek", "rawFields", "rawNumFields", "rawFree"),
+                array("rawNumRows", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
         
-        $write->expects( $this->once() )
+        $read->expects( $this->once() )
             ->method("rawFields")
             ->will( $this->returnValue(null) );
         
-        $this->assertFalse( $write->getFields() );
-        $this->assertFalse( $write->getFields() );
-        $this->assertFalse( $write->getFields() );
+        $this->assertSame( array(), $read->getFields() );
+        $this->assertSame( array(), $read->getFields() );
+        $this->assertSame( array(), $read->getFields() );
     }
     
 }

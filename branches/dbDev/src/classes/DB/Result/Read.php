@@ -17,6 +17,11 @@ abstract class Read extends ::cPHP::DB::Result
      * The number of rows returned by this query
      */
     private $numRows;
+    
+    /**
+     * The list of fields in the result set
+     */
+    private $fields;
 
     /**
      * Internal method that returns the number of rows found
@@ -59,21 +64,14 @@ abstract class Read extends ::cPHP::DB::Result
     {
         if ( !isset($this->fields) ) {
             
-            $this->numRows = $this->rawNumRows();
+            $this->fields = $this->rawFields();
             
-            if ( !is_int($this->numRows) )
-                $this->numRows = FALSE;
+            if ( !is_array($this->fields) )
+                $this->fields = array();
         }
     
-        return $this->numRows;
+        return $this->fields;
     }
-
-    /**
-     * Internal method to get the number of fields returned
-     *
-     * @return Integer
-     */
-    abstract protected function rawNumFields ();
 
     /**
      * Internal method to fetch the next row in a result set
