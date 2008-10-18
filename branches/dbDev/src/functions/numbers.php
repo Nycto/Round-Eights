@@ -231,7 +231,7 @@ function numWrap ($value, $lower, $upper, $useLower = TRUE)
  *
  * @param Integer $length Starting from 1 (not 0), the length of the list being wrapped around
  * @param Integer $offset The offset being wrapped
- * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list. Appropriate values are:
+ * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
  * @return Integer|Boolean Returns the wrapped offset. Returns FALSE on failure
  */
 function offsetWrap ($length, $offset, $wrapFlag)
