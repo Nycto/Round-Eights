@@ -23,24 +23,24 @@ class Ary implements Iterator, Countable, ArrayAccess
      * No wrapping will be perfomed. If the given offset falls outside of the
      * length, FALSE is returned. Negative offsets are allowed
      */
-    const OFFSET_NONE = 1;
+    const OFFSET_NONE = cPHP::OFFSET_NONE;
     
     /**
      * The offset will be wrapped until it fits within the length. Negative
      * offsets are allowed
      */
-    const OFFSET_WRAP = 2;
+    const OFFSET_WRAP = cPHP::OFFSET_WRAP;
     
     /**
      * The offset will be wrapped once. Anything past the edge after this initial
      * wrap is cut down to the edge. Negative offsets are allowed
      */
-    const OFFSET_RESTRICT = 3;
+    const OFFSET_RESTRICT = cPHP::OFFSET_RESTRICT;
     
     /**
      * The offset is forced to within the length. Negative offsets are NOT allowed
      */
-    const OFFSET_LIMIT = 4;
+    const OFFSET_LIMIT = cPHP::OFFSET_LIMIT;
     
     /**
      * The iterator being used in this instance
@@ -60,16 +60,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     static public function create( $array = array() )
     {
         return new self( $array );
-    /*
-        if ( is_array($array) )
-            return new self( $array );
-        
-        else if ( $array instanceof self )
-            return clone $array;
-        
-        else
-            return new self( array( $array ) );
-    */
     }
     
     /**
@@ -143,38 +133,11 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function calcOffset ($offset, $wrapFlag)
     {
-        $length = count( $this->array );
-    
-        $offset = intval( reduce($offset) );
-        
-        switch ($wrapFlag) {
-            
-            default:
-                throw new ::cPHP::Exception::Argument(1, "wrapFlag", "Invalid wrap type");
-            
-            case self::OFFSET_NONE:
-                if (!between($offset, 0 - $length, $length - 1))
-                    throw new ::cPHP::Exception::Argument(0, "wrapFlag", "Invalid offset");
-                
-                else if ($offset >= 0)
-                    return $offset;
-                
-                else
-                    return $length + $offset;
-    
-            case self::OFFSET_WRAP:
-                return intwrap($offset, 0, $length - 1);
-    
-            case FALSE:
-            case self::OFFSET_RESTRICT:
-                $offset = limit($offset, 0 - $length, $length - 1);
-                if ($offset < 0)
-                    $offset = $length + $offset;
-                return $offset;
-    
-            case self::OFFSET_LIMIT:
-                return limit($offset, 0, $length - 1);
-        }
+        return cPHP::offsetWrap(
+                count( $this->array ),
+                $offset,
+                $wrapFlag
+            );
     }
     
     /**

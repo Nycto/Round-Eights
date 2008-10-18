@@ -6,6 +6,29 @@
  */
 
 namespace cPHP;
+ 
+/**
+ * Offset wrapping flag. No wrapping will be perfomed. If the given offset falls outside of the
+ * length, FALSE is returned. Negative offsets are allowed
+ */
+const OFFSET_NONE = 1;
+
+/**
+ * Offset wrapping flag. The offset will be wrapped until it fits within the length. Negative
+ * offsets are allowed
+ */
+const OFFSET_WRAP = 2;
+
+/**
+ * Offset wrapping flag. The offset will be wrapped once. Anything past the edge after this initial
+ * wrap is cut down to the edge. Negative offsets are allowed
+ */
+const OFFSET_RESTRICT = 3;
+
+/**
+ * Offset wrapping flag. The offset is forced to within the length. Negative offsets are NOT allowed
+ */
+const OFFSET_LIMIT = 4;
 
 /**
  * Returns boolean whether a number is positive
@@ -199,6 +222,57 @@ function numWrap ($value, $lower, $upper, $useLower = TRUE)
         return $upper;
 
     return $out;
+}
+
+/**
+ * calculates the offset based on the wrap flag
+ *
+ * This is generally used by array functions to wrap offsets
+ *
+ * @param Integer $length Starting from 1 (not 0), the length of the list being wrapped around
+ * @param Integer $offset The offset being wrapped
+ * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list. Appropriate values are:
+ * @return Integer|Boolean Returns the wrapped offset. Returns FALSE on failure
+ */
+function offsetWrap ($length, $offset, $wrapFlag)
+{
+
+    $length = intval( $length );
+    
+    if ( $length <= 0 )
+        throw new ::cPHP::Exception::Argument(0, "Length", "Must be greater than zero");
+
+    $offset = intval( reduce($offset) );
+    
+    switch ($wrapFlag) {
+        
+        default:
+            throw new ::cPHP::Exception::Argument(2, "wrapFlag", "Invalid offset wrap flag");
+        
+        case cPHP::OFFSET_NONE:
+            if (!between($offset, 0 - $length, $length - 1))
+                throw new ::cPHP::Exception::Argument(1, "Offset", "Offset is out of bounds");
+            
+            else if ($offset >= 0)
+                return $offset;
+            
+            else
+                return $length + $offset;
+
+        case cPHP::OFFSET_WRAP:
+            return intwrap($offset, 0, $length - 1);
+
+        case FALSE:
+        case cPHP::OFFSET_RESTRICT:
+            $offset = limit($offset, 0 - $length, $length - 1);
+            if ($offset < 0)
+                $offset = $length + $offset;
+            return $offset;
+
+        case cPHP::OFFSET_LIMIT:
+            return limit($offset, 0, $length - 1);
+    }
+    
 }
 
 ?>
