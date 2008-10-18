@@ -18,7 +18,7 @@ class Read extends ::cPHP::DB::Result::Read
      *
      * @return Integer
      */
-    protected function rawNumRows ()
+    protected function rawCount ()
     {
         
     }
