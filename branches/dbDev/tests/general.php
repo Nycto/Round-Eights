@@ -8,6 +8,8 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
+require_once rtrim( dirname( __FILE__ ), "/" ) ."/../src/commonPHP.php";
+
 error_reporting( E_ALL | E_STRICT );
 
 /**
