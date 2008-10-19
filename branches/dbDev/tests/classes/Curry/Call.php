@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_curry_call
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Curry Call Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_curry_call_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_curry_call_tests extends PHPUnit_Framework_TestCase
+class classes_curry_call extends PHPUnit_Framework_TestCase
 {
 
     // This method exists simply to test the calling of static methods

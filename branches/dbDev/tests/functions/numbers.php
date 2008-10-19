@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * numeric function test suite
- */
-class functions_numbers
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP numeric Functions');
-        $suite->addLib();
-        $suite->addTestSuite( 'functions_numbers_tests' );
-        return $suite;
-    }
-}
-
-/**
  * numeric function unit tests
  */
-class functions_numbers_tests extends PHPUnit_Framework_TestCase
+class functions_numbers extends PHPUnit_Framework_TestCase
 {
     
     function testPositive ()

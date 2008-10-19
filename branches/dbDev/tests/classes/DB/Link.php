@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_db_link
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Link Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_db_link_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_db_link_tests extends PHPUnit_Framework_TestCase
+class classes_db_link extends PHPUnit_Framework_TestCase
 {
     
     public function getMockLink ( $args = array() )

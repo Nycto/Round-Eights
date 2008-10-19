@@ -8,24 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_filter_chain
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Filter Chaining Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_filter_chain_tests' );
-        
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_filter_chain_tests extends PHPUnit_Framework_TestCase
+class classes_filter_chain extends PHPUnit_Framework_TestCase
 {
    
     public function testAdd ()

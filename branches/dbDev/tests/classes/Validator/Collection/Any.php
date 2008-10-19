@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../../general.php";
 
 /**
- * test suite
- */
-class classes_validator_collection_any
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Validator Any Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_validator_collection_any_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_validator_collection_any_tests extends PHPUnit_Framework_TestCase
+class classes_validator_collection_any extends PHPUnit_Framework_TestCase
 {
     
     public function testNoValidators ()

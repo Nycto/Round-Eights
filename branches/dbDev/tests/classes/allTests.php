@@ -16,11 +16,7 @@ class classes_allTests
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite('commonPHP Classes');
-        
-        $suite->addLib();
-
         $suite->addFromFiles( "classes_", __DIR__, basename(__FILE__) );
-        
         return $suite;
     }
 

@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * test suite
- */
-class functions_debug
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Debug Functions');
-        $suite->addLib();
-        $suite->addTestSuite( 'functions_debug_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class functions_debug_tests extends PHPUnit_Framework_TestCase
+class functions_debug extends PHPUnit_Framework_TestCase
 {
     
     public function testGetDump ()

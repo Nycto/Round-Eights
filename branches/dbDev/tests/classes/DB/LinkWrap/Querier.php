@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../../general.php";
 
 /**
- * test suite
- */
-class classes_db_linkwrap_querier
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Query LinkWrap Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_db_linkwrap_querier_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_db_linkwrap_querier_tests extends PHPUnit_Framework_TestCase
+class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 {
     
     public function testQuery ()

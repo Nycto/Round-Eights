@@ -8,24 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_validator_email
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Email Validator Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_validator_email_tests' );
-        
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_validator_email_tests extends PHPUnit_Framework_TestCase
+class classes_validator_email extends PHPUnit_Framework_TestCase
 {
     
     public function testValidAddresses ()

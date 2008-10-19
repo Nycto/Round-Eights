@@ -9,23 +9,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_validator_result
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Validator Results Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_validator_result_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_validator_result_tests extends PHPUnit_Framework_TestCase
+class classes_validator_result extends PHPUnit_Framework_TestCase
 {
     
     public function testConstruct ()

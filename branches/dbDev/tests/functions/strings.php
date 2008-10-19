@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * test suite
- */
-class functions_strings
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP String Functions');
-        $suite->addLib();
-        $suite->addTestSuite( 'functions_strings_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class functions_strings_tests extends PHPUnit_Framework_TestCase
+class functions_strings extends PHPUnit_Framework_TestCase
 {
 
     public function testInt2Ordinal ()

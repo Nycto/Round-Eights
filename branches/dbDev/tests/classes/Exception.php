@@ -8,24 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * test suite
- */
-class classes_exception
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Exception Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_exception_tests' );
-        
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_exception_tests extends PHPUnit_Framework_TestCase
+class classes_exception extends PHPUnit_Framework_TestCase
 {
     
     public function testMessage ()

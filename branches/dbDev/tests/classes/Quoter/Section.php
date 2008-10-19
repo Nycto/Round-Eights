@@ -8,24 +8,11 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
 
 /**
- * test suite
- */
-class classes_quoter_section
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Section Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_quoter_section_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_quoter_section_tests extends PHPUnit_Framework_TestCase
+class classes_quoter_section extends PHPUnit_Framework_TestCase
 {
+    
     public function testSetContent ()
     {
         $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));

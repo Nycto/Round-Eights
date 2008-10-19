@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * test suite
- */
-class classes_errorlist
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP ErrorList Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_errorlist_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_errorlist_tests extends PHPUnit_Framework_TestCase
+class classes_errorlist extends PHPUnit_Framework_TestCase
 {
     
     public function testAddError ()

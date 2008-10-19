@@ -93,23 +93,6 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
         return $this;
     }
     
-    /**
-     * If needed, this will add a test to include the cPHP library and the tests associated with including it
-     *
-     * @return object Returns a self reference
-     */
-    public function addLib ()
-    {
-        static $included;
-        
-        if ( !isset($included) || !$included ) {
-            $included = TRUE;
-            $this->addTestSuite( 'general' );
-        }
-        
-        return $this;
-    }
-    
 }
 
 /**
@@ -168,26 +151,6 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
             .MYSQLI_USERNAME .":". MYSQLI_PASSWORD ."@"
             .MYSQLI_HOST .":". MYSQLI_PORT
             ."/". MYSQLI_DATABASE;
-    }
-    
-}
-
-/**
- * unit tests
- */
-class general extends PHPUnit_Extensions_OutputTestCase
-{
-    
-    public function testLibInclude ()
-    {
-        
-        // Ensures that the library doesn't output anything when it is included
-        $this->expectOutputString('');
-        require_once rtrim( dirname( __FILE__ ), "/" ) ."/../src/commonPHP.php";
-        
-        // Ensure that we cleaned up any global variables
-        $this->assertEquals( array(), get_defined_vars() );
-        
     }
     
 }

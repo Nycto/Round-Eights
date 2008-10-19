@@ -8,23 +8,9 @@
 require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
 
 /**
- * test suite
- */
-class classes_tag
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Tag Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_tag_tests' );
-        return $suite;
-    }
-}
-
-/**
  * unit tests
  */
-class classes_tag_tests extends PHPUnit_Framework_TestCase
+class classes_tag extends PHPUnit_Framework_TestCase
 {
     
     public function testConstruct ()
