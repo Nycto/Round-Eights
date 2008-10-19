@@ -5,9 +5,9 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/general.php";
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/functions/allTests.php";
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/classes/allTests.php";
+require_once rtrim( __DIR__, "/" ) ."/general.php";
+require_once rtrim( __DIR__, "/" ) ."/functions/allTests.php";
+require_once rtrim( __DIR__, "/" ) ."/classes/allTests.php";
 
 /**
  * Unit test for running all the tests

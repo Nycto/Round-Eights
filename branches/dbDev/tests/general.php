@@ -8,7 +8,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../src/commonPHP.php";
+require_once rtrim( __DIR__, "/" ) ."/../src/commonPHP.php";
 
 error_reporting( E_ALL | E_STRICT );
 
@@ -106,7 +106,7 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
         if ( !extension_loaded("mysqli") )
             $this->markTestSkipped("MySQLi extension is not loaded");
         
-        $config = rtrim( dirname( __FILE__ ), "/") ."/config.php";
+        $config = rtrim( __DIR__, "/") ."/config.php";
         
         if ( !file_exists($config) )
             $this->markTestSkipped("Config file does not exist: $config");

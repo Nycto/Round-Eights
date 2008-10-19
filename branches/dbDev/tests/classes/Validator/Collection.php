@@ -6,7 +6,7 @@
  */
 
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
