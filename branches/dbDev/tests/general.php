@@ -160,29 +160,39 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
     {
         static $link;
         
-        if ( !isset($link) || !$link->isConnected() )
+        if ( !isset($link) || !$link->isConnected() ) {
             $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
             
+            
+            $mysqli = $link->getLink();
+            
+            
+            $result = $mysqli->query("DROP TEMPORARY TABLE IF EXISTS `". MYSQLI_TABLE ."`");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+                
+            
+            $result = $mysqli->query("CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
+                                  `id` INT NOT NULL auto_increment ,
+                               `label` VARCHAR( 255 ) NOT NULL ,
+                                `data` VARCHAR( 255 ) NOT NULL ,
+                           PRIMARY KEY ( `id` ) ,
+                                 INDEX ( `label` ))");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        
+        }
+        
         
         $mysqli = $link->getLink();
-        
-        
-        $result = $mysqli->query("DROP TEMPORARY TABLE IF EXISTS `". MYSQLI_TABLE ."`");
-        
-        if ( !$result )
-            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+                
             
-        
-        $result = $mysqli->query("CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
-                              `id` INT NOT NULL auto_increment ,
-                           `label` VARCHAR( 255 ) NOT NULL ,
-                            `data` VARCHAR( 255 ) NOT NULL ,
-                       PRIMARY KEY ( `id` ) ,
-                             INDEX ( `label` ))");
-        
-        if ( !$result )
-            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
-        
+            $result = $mysqli->query("TRUNCATE TABLE `". MYSQLI_TABLE ."`");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
         
         $result = $mysqli->query("INSERT INTO `". MYSQLI_TABLE ."`
                              VALUES (1, 'alpha', 'one'),
