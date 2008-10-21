@@ -10,5 +10,6 @@ define ( "MYSQLI_PORT", 3306 );
 define ( "MYSQLI_DATABASE", "test" );
 define ( "MYSQLI_USERNAME", "phpunit" );
 define ( "MYSQLI_PASSWORD", FALSE );
+define ( "MYSQLI_TABLE", "cPHP_Test_Table" );
 
 ?>

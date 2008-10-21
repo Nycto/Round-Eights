@@ -89,18 +89,6 @@ class classes_db_result extends PHPUnit_Framework_TestCase
         $mock->__destruct();
     }
     
-    public function testGetResult ()
-    {
-        
-        $mock = $this->getMock(
-                "cPHP::DB::Result",
-                array("rawFree", "hasResult"),
-                array("not a resource", "SELECT * FROM table")
-            );
-        
-        $this->assertNull( $mock->getResult() );
-    }
-    
 }
 
 ?>

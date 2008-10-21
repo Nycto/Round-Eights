@@ -73,7 +73,7 @@ abstract class Result
      *
      * @return mixed Returns NULL if there is no resource set
      */
-    public function getResult ()
+    protected function getResult ()
     {
         if ( $this->hasResult() )
             return $this->result;
@@ -95,8 +95,10 @@ abstract class Result
      */
     public function free ()
     {
-        if ( $this->hasResult() )
+        if ( $this->hasResult() ) {
             $this->rawFree();
+            $this->result = null;
+        }
         return $this;
     }
 

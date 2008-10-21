@@ -100,6 +100,9 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
  */
 class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
+    /**
+     *
+     */
     
     public function setUp ()
     {
@@ -117,7 +120,7 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
         require_once $config;
         
         $required = array(
-                "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD"
+                "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE"
             );
         
         foreach ( $required AS $constant ) {
@@ -151,6 +154,46 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
             .MYSQLI_USERNAME .":". MYSQLI_PASSWORD ."@"
             .MYSQLI_HOST .":". MYSQLI_PORT
             ."/". MYSQLI_DATABASE;
+    }
+    
+    public function getLink ()
+    {
+        static $link;
+        
+        if ( !isset($link) || !$link->isConnected() )
+            $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+            
+        
+        $mysqli = $link->getLink();
+        
+        
+        $result = $mysqli->query("DROP TEMPORARY TABLE IF EXISTS `". MYSQLI_TABLE ."`");
+        
+        if ( !$result )
+            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+            
+        
+        $result = $mysqli->query("CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
+                              `id` INT NOT NULL auto_increment ,
+                           `label` VARCHAR( 255 ) NOT NULL ,
+                            `data` VARCHAR( 255 ) NOT NULL ,
+                       PRIMARY KEY ( `id` ) ,
+                             INDEX ( `label` ))");
+        
+        if ( !$result )
+            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        
+        
+        $result = $mysqli->query("INSERT INTO `". MYSQLI_TABLE ."`
+                             VALUES (1, 'alpha', 'one'),
+                                    (2, 'beta', 'two'),
+                                    (3, 'gamma', 'three')");
+        
+        if ( !$result )
+            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        
+        
+        return $link;
     }
     
 }

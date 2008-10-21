@@ -40,7 +40,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
     
     public function testEscape ()
     {
-        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $link = $this->getLink();
         
         // Escape without a connection
         $this->assertSame("This \\'is\\' a string", $link->escape("This 'is' a string"));
@@ -53,19 +53,27 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
     
     public function testQuery_read ()
     {
-        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $link = $this->getLink();
         
         $result = $link->query("SELECT 50 + 10");
         
         $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
         
         $this->assertSame( "SELECT 50 + 10", $result->getQuery() );
+    }
+    
+    public function testQuery_write ()
+    {
+        $link = $this->getLink();
         
-        $raw = $result->getResult();
-        $this->assertThat( $raw, $this->isInstanceOf("mysqli_result") );
-        $this->assertSame( 1, $raw->num_rows );
-        $this->assertEquals( array(60), $raw->fetch_row() );
-        $raw->free();
+        $result = $link->query("UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1");
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Write") );
+        
+        $this->assertSame(
+                "UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1",
+                $result->getQuery()
+            );
     }
     
     public function testDisconnect ()

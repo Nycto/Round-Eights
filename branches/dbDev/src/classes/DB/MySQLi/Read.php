@@ -20,7 +20,7 @@ class Read extends ::cPHP::DB::Result::Read
      */
     protected function rawCount ()
     {
-        
+        return $this->getResult()->num_rows;
     }
 
     /**
@@ -30,7 +30,7 @@ class Read extends ::cPHP::DB::Result::Read
      */
     protected function rawFetch ()
     {
-        
+        return $this->getResult()->fetch_assoc();
     }
 
     /**
@@ -41,27 +41,24 @@ class Read extends ::cPHP::DB::Result::Read
      */
     protected function rawSeek ($offset)
     {
-        
+        $this->getResult()->data_seek($offset);
+        return $this->rawFetch();
     }
 
     /**
      * Internal method to get a list of field names returned
      *
-     * @return Integer
+     * @return Array
      */
     protected function rawFields ()
     {
+        $fields = $this->getResult()->fetch_fields();
         
-    }
-
-    /**
-     * Internal method to get the number of fields returned
-     *
-     * @return Integer
-     */
-    protected function rawNumFields ()
-    {
+        foreach ( $fields AS $key => $field ) {
+            $fields[ $key ] = $field->name;
+        }
         
+        return $fields;
     }
     
     /**
@@ -71,7 +68,8 @@ class Read extends ::cPHP::DB::Result::Read
      */
     protected function rawFree ()
     {
-        
+        $result = $this->getResult();
+        $result->free();
     }
 
 }

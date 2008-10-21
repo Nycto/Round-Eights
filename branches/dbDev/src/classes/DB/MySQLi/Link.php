@@ -87,7 +87,12 @@ class Link extends ::cPHP::DB::Link
      */
     protected function rawQuery ( $query )
     {
-        $result = $this->getLink()->query( $query );
+        $link = $this->getLink();
+        
+        $result = $link->query( $query );
+        
+        if ( $result === FALSE )
+            throw new ::cPHP::Exception::DB::Query( $query, $link->error, $link->errno );
         
         if ( self::isSelect($query) )
             return new ::cPHP::DB::MySQLi::Read( $result, $query );
