@@ -203,9 +203,12 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
             ->method("rawFields")
             ->will( $this->returnValue( array("one", "two") ) );
         
-        $this->assertSame( array("one", "two"), $read->getFields() );
-        $this->assertSame( array("one", "two"), $read->getFields() );
-        $this->assertSame( array("one", "two"), $read->getFields() );
+        $result = $read->getFields();
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array("one", "two"), $result->get() );
+        
+        $this->assertSame( array("one", "two"), $read->getFields()->get() );
+        $this->assertSame( array("one", "two"), $read->getFields()->get() );
     }
     
     public function testGetFields_invalid ()
@@ -219,10 +222,34 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
         $read->expects( $this->once() )
             ->method("rawFields")
             ->will( $this->returnValue(null) );
+            
         
-        $this->assertSame( array(), $read->getFields() );
-        $this->assertSame( array(), $read->getFields() );
-        $this->assertSame( array(), $read->getFields() );
+        $result = $read->getFields();
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array(), $result->get() );
+        
+        $this->assertSame( array(), $read->getFields()->get() );
+        $this->assertSame( array(), $read->getFields()->get() );
+    }
+    
+    public function testIsField ()
+    {
+        $read = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
+                array(null, "SELECT * FROM table")
+            );
+        
+        $read->expects( $this->once() )
+            ->method("rawFields")
+            ->will( $this->returnValue( array("one", "two") ) );
+        
+        $this->assertTrue( $read->isField("one") );
+        $this->assertTrue( $read->isField("two") );
+        
+        $this->assertFalse( $read->isField("One") );
+        $this->assertFalse( $read->isField("TWO") );
+        $this->assertFalse( $read->isField("NOT A FIELD") );
     }
     
     public function testSeek ()
@@ -319,11 +346,6 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
         $this->assertSame( $read, $read->next() );
         $this->assertFalse( $read->current() );
         $this->assertSame( 2, $read->key() );
-    }
-    
-    public function testIsField ()
-    {
-        $this->markTestIncomplete("To be written");
     }
     
 }

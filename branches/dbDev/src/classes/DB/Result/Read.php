@@ -125,7 +125,7 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
     /**
      * Returns a list of field names returned by the query
      *
-     * @return Integer|False
+     * @return Object Returns a cPHP::Ary Object
      */
     public function getFields ()
     {
@@ -137,7 +137,18 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
                 $this->fields = array();
         }
     
-        return $this->fields;
+        return new ::cPHP::Ary( $this->fields );
+    }
+    
+    /**
+     * Returns whether a field exists in the results
+     *
+     * @param String $field The case-sensitive field name
+     * @return Boolean
+     */
+    public function isField ( $field )
+    {
+        return $this->getFields()->contains( ::cPHP::strval($field) );
     }
 
     /**
