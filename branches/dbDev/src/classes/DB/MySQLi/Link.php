@@ -97,7 +97,7 @@ class Link extends ::cPHP::DB::Link
         if ( self::isSelect($query) )
             return new ::cPHP::DB::MySQLi::Read( $result, $query );
         else
-            return new ::cPHP::DB::MySQLi::Write( $result, $query );
+            return new ::cPHP::DB::Result::Write( $link->affected_rows, $link->insert_id, $query );
     }
 
     /**

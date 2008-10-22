@@ -14,6 +14,11 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
 {
     
     /**
+     * The database result resource
+     */
+    private $result;
+    
+    /**
      * The number of rows returned by this query
      */
     private $count;
@@ -32,6 +37,54 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
      * The value of the current row
      */
     private $row;
+    
+    /**
+     * Constructor...
+     *
+     * @param Resource|Object $result The database result resource or object
+     * @param String $query The query that produced this result
+     */
+    public function __construct ( $result, $query )
+    {
+        if (is_resource($result) || is_object($result))
+            $this->result = $result;
+            
+        parent::__construct($query);
+    }
+    
+    /**
+     * Destructor...
+     *
+     * Ensures that the resource is freed
+     */
+    public function __destruct()
+    {
+        $this->free();
+    }
+    
+    /**
+     * Returns whether this instance currently holds a valid resource
+     *
+     * @return Boolean
+     */
+    public function hasResult ()
+    {
+        return isset( $this->result )
+            && ( is_resource( $this->result ) || is_object( $this->result ) );
+    }
+    
+    /**
+     * Returns the result resource this instance encases
+     *
+     * @return mixed Returns NULL if there is no resource set
+     */
+    protected function getResult ()
+    {
+        if ( $this->hasResult() )
+            return $this->result;
+        else
+            return NULL;
+    }
 
     /**
      * Internal method that returns the number of rows found
@@ -222,6 +275,27 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
             $this->row = $this->rawSeek( $offset );
         }
         
+        return $this;
+    }
+    
+    /**
+     * Internal method to free the result resource
+     *
+     * @return null
+     */
+    abstract protected function rawFree ();
+    
+    /**
+     * Frees the resource in this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function free ()
+    {
+        if ( $this->hasResult() ) {
+            $this->rawFree();
+            $this->result = null;
+        }
         return $this;
     }
 

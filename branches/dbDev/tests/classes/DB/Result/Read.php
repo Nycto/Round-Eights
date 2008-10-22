@@ -79,6 +79,82 @@ class stub_db_result_read extends ::cPHP::DB::Result::Read
 class classes_db_result_read extends PHPUnit_Framework_TestCase
 {
     
+    public function testHasResult_None ()
+    {
+        $mock = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
+                array("not a resource", "SELECT * FROM table")
+            );
+        
+        $this->assertFalse(
+                $mock->hasResult()
+            );
+    }
+    
+    public function testHasResult_Object ()
+    {
+        $mock = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
+                array( $this->getMock("MockResult"), "SELECT * FROM table")
+            );
+        
+        $this->assertTrue(
+                $mock->hasResult()
+            );
+    }
+    
+    public function testFree_noResult ()
+    {
+        $mock = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
+                array("not a resource", "SELECT * FROM table")
+            );
+        
+        $mock->expects( $this->never() )
+            ->method("rawFree");
+            
+        $this->assertSame( $mock, $mock->free() );
+    }
+    
+    public function testFree_fakedResult ()
+    {
+        $mock = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree", "hasResult"),
+                array("not a resource", "SELECT * FROM table")
+            );
+        
+        $mock->expects( $this->at(0) )
+            ->method("hasResult")
+            ->will( $this->returnValue(TRUE) );
+        
+        $mock->expects( $this->once() )
+            ->method("rawFree");
+            
+        $this->assertSame( $mock, $mock->free() );
+    }
+    
+    public function testDestruct ()
+    {
+        $mock = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree", "hasResult"),
+                array("not a resource", "SELECT * FROM table")
+            );
+        
+        $mock->expects( $this->at(0) )
+            ->method("hasResult")
+            ->will( $this->returnValue(TRUE) );
+        
+        $mock->expects( $this->once() )
+            ->method("rawFree");
+            
+        $mock->__destruct();
+    }
+    
     public function testCount_valid ()
     {
         $read = $this->getMock(
@@ -243,6 +319,11 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
         $this->assertSame( $read, $read->next() );
         $this->assertFalse( $read->current() );
         $this->assertSame( 2, $read->key() );
+    }
+    
+    public function testIsField ()
+    {
+        $this->markTestIncomplete("To be written");
     }
     
 }

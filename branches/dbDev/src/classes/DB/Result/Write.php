@@ -10,7 +10,7 @@ namespace cPHP::DB::Result;
 /**
  * Database Read Query Results
  */
-abstract class Write extends ::cPHP::DB::Result
+class Write extends ::cPHP::DB::Result
 {
     
     /**
@@ -22,13 +22,25 @@ abstract class Write extends ::cPHP::DB::Result
      * This is the cached value of the insert ID
      */
     private $insertID;
-
+    
     /**
-     * Internal method to return the number of rows affected by this query
+     * Constructor...
      *
-     * @return Integer
+     * @param Integer|NULL $affected The number of rows affected by this query
+     * @param Integer|NULL $insertID The ID of the row inserted by this query
+     * @param String $query The query that produced this result
      */
-    abstract protected function rawAffected ();
+    public function __construct ( $affected, $insertID, $query )
+    {
+        if ( !::cPHP::is_vague($insertID) ) {
+            $insertID = intval($insertID);
+            $this->insertID = $insertID > 0 ? $insertID : NULL;
+        }
+        
+        $this->affected = max( intval( $affected ), 0 );
+        
+        parent::__construct($query);
+    }
     
     /**
      * Returns the number of rows affected by a query
@@ -37,23 +49,8 @@ abstract class Write extends ::cPHP::DB::Result
      */
     public function getAffected ()
     {
-        if ( !isset($this->affected) ) {
-            
-            $this->affected = $this->rawAffected();
-            
-            if ( !is_int($this->affected) )
-                $this->affected = FALSE;
-        }
-    
         return $this->affected;
     }
-
-    /**
-     * Internal method to return the insert ID for this query
-     *
-     * @return Integer
-     */
-    abstract protected function rawInsertID ();
     
     /**
      * Returns the ID of the row inserted by this query
@@ -62,14 +59,6 @@ abstract class Write extends ::cPHP::DB::Result
      */
     public function getInsertID ()
     {
-        if ( !isset($this->insertID) ) {
-            
-            $this->insertID = $this->rawInsertID();
-            
-            if ( !is_int($this->insertID) )
-                $this->insertID = FALSE;
-        }
-    
         return $this->insertID;
     }
 

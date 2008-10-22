@@ -41,7 +41,8 @@ class Write extends ::cPHP::DB::Result::Write
      */
     protected function rawFree ()
     {
-        
+        $result = $this->getResult();
+        $result->free();
     }
     
 }

@@ -30,6 +30,8 @@ class classes_db_mysqli_read extends PHPUnit_MySQLi_Framework_TestCase
         
         $result = $link->query("SELECT * FROM ". MYSQLI_TABLE);
         
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
+        
         
         $copy = array();
         foreach($result AS $key => $value) {
@@ -67,6 +69,8 @@ class classes_db_mysqli_read extends PHPUnit_MySQLi_Framework_TestCase
         
         $result = $link->query("SELECT * FROM ". MYSQLI_TABLE);
         
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
+        
         $this->assertSame(
                 array('id', 'label', 'data'),
                 $result->getFields()
@@ -78,6 +82,8 @@ class classes_db_mysqli_read extends PHPUnit_MySQLi_Framework_TestCase
         $link = $this->getLink();
         
         $result = $link->query("SELECT * FROM ". MYSQLI_TABLE);
+        
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
         
         $this->assertTrue( $result->hasResult() );
         

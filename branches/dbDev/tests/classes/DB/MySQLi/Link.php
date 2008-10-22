@@ -68,7 +68,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
         
         $result = $link->query("UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1");
         
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Write") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::Result::Write") );
         
         $this->assertSame(
                 "UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1",
