@@ -411,6 +411,29 @@ class classes_db_link extends PHPUnit_Framework_TestCase
         $mock->__destruct();
     }
     
+    public function testQuery_emptyQuery()
+    {
+        $mock = $this->getMockLink();
+        $mock->expects( $this->never() )
+            ->method( "rawQuery" );
+        
+        try {
+            $mock->query("");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument  $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+        
+        try {
+            $mock->query("    ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument  $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+    
     public function testQuery_invalidResult ()
     {
         $mock = $this->getMockLink();

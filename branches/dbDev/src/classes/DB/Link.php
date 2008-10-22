@@ -563,8 +563,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function query ( $query, $flags = 0 )
     {
+        $query = ::cPHP::strval($query);
+        
+        if ( ::cPHP::is_empty($query) )
+            throw new ::cPHP::Exception::Argument(0, "Query", "Must not be empty");
+        
         try {
-            $result = $this->rawQuery( ::cPHP::strval($query) );
+            $result = $this->rawQuery( $query );
         }
         catch (::cPHP::Exception::DB::Query $err) {
             $err->shiftFault();
