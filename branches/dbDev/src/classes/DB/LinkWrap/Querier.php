@@ -176,7 +176,8 @@ class Querier extends ::cPHP::DB::LinkWrap
         $result = $this->query($query, $flags);
 
         if ( !($result instanceof ::cPHP::DB::Result::Read) ) {
-            $err = new ::cPHP::Exception::DB::Query($query, "Query did not a valid Read result object");
+            $err = new ::cPHP::Exception::Interaction("Query did not a valid Read result object");
+            $err->addData("Query", $query);
             $err->addData("Returned Result", ::cPHP::getDump($result));
             throw $err;
         }
@@ -203,24 +204,56 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
-        $result = $this->query($query, $flags);
-
-        if (!$result instanceof cDB_result)
-            throw new QueryError($query, "Query did not return a valid result set");
-
-        if ($result->get_num_rows() <= 0) {
-            return FALSE;
+        $field = ::cPHP::strval( $field );
+        
+        if ( ::cPHP::is_empty($field) )
+            throw new ::cPHP::Exception::Argument( 0, "Field", "Must not be empty" );
+        
+        $result = $this->getRow( $query, $row, $flags );
+        
+        if ( !is_array($result) && !($result instanceof ArrayAccess) ) {
+            $err = new ::cPHP::Exception::Interaction("Row was not an array or accessable as an array");
+            $err->addData("Query", $query);
+            $err->addData("Returned Row", ::cPHP::getDump($result));
+            throw $err;
         }
-        else {
-            $field = $result->isField($field);
-            if (!$field)
-                throw new ArgumentError(0, "field name", "Field does not exist in this result set");
-
-            $value = $result->seek( $row );
-            $result->free();
-            return $value[$field];
+        
+        if ( !isset($result[ $field ]) ) {
+            $err = new ::cPHP::Exception::Argument( 0, "Field", "Field does not exist in row" );
+            $err->addData("Query", $query);
+            $err->addData("Returned Row", ::cPHP::getDump($result));
+            throw $err;
         }
+        
+        return $result[ $field ];
+    }
+    
+    /**
+     * Counts the number of rows in a table
+     *
+     * To restrict which rows are affected, pass a WHERE clause through the $where
+     * argument.
+     *
+     * @param String $table The table to update
+     * @param String $where Any WHERE clause restrictions to place on the query
+     * @param Integer $flags Any query flags to use
+     * @return Integer Returns the number of counted rows
+     */
+    public function count ($table, $where = FALSE, $flags = 0)
+    {
+        $table = ::cPHP::strval($table);
 
+        if ( ::cPHP::is_empty($table) )
+            throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
+        
+        $query = "SELECT COUNT(*) AS cnt FROM ". $table;
+        
+        $where = trim( ::cPHP::strval($where) );
+        
+        if ( !::cPHP::is_empty($where) )
+            $query .= " WHERE ". $where;
+
+        return intval( $this->getField("cnt", $query, 0, $flags) );
     }
     
 }

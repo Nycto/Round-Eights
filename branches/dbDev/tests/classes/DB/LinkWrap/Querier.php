@@ -398,13 +398,13 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->getRow( "UPDATE table SET id = 1" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Query $err ) {
+        catch ( ::cPHP::Exception::Interaction $err ) {
             $this->assertSame("Query did not a valid Read result object", $err->getMessage());
         }
         
     }
     
-    public function testGetRow_Valid ()
+    public function testGetRow_valid ()
     {
         
         $link = $this->getMock(
@@ -442,7 +442,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         
     }
     
-    public function testGetRow_OtherRow ()
+    public function testGetRow_otherRow ()
     {
         
         $link = $this->getMock(
@@ -480,7 +480,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         
     }
     
-    public function testGetRow_NoResults ()
+    public function testGetRow_noResults ()
     {
         
         $link = $this->getMock(
@@ -515,9 +515,228 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         
     }
     
-    public function testGetField ()
+    public function testGetField_errors ()
     {
-        $this->markTestIncomplete("Not yet written");
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $link );
+        
+        try {
+            $query->getField( "", "SELECT * FROM TABLE");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+        
+    }
+    
+    public function testGetField_wrongResult ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $link );
+        
+        
+        $link->expects($this->once())
+            ->method("query")
+            ->with( $this->equalTo("UPDATE table SET id = 1" ) )
+            ->will( $this->returnValue( new cPHP::DB::Result::Write(0, null, "UPDATE") ));
+    
+        try {
+            $query->getField( "fld", "UPDATE table SET id = 1" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame("Query did not a valid Read result object", $err->getMessage());
+        }
+        
+    }
+    
+    public function testGetField_nonArray ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT * FROM table" ) )
+            ->will( $this->returnValue( "This is not valid" ));
+    
+        try {
+            $query->getField( "fld", "SELECT * FROM table" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame("Row was not an array or accessable as an array", $err->getMessage());
+        }
+        
+    }
+    
+    public function testGetField_noField ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT * FROM table" ) )
+            ->will( $this->returnValue( array( 'id' => 1, 'value' => 'cejijunto' ) ));
+    
+        try {
+            $query->getField( "fld", "SELECT * FROM table" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Field does not exist in row", $err->getMessage());
+        }
+        
+    }
+    
+    public function testGetField_array ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT * FROM table" ) )
+            ->will( $this->returnValue( array( 'id' => 1, 'value' => 'cejijunto' ) ));
+    
+        $this->assertSame(
+                'cejijunto',
+                $query->getField( "value", "SELECT * FROM table" )
+            );
+        
+    }
+    
+    public function testGetField_object ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT * FROM table" ) )
+            ->will( $this->returnValue(
+                    new ::cPHP::Ary( array( 'id' => 1, 'value' => 'cejijunto' ) )
+                ));
+    
+        $this->assertSame(
+                'cejijunto',
+                $query->getField( "value", "SELECT * FROM table" )
+            );
+        
+    }
+    
+    public function testCount_errors ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = new ::cPHP::DB::LinkWrap::Querier( $link );
+        
+        try {
+            $query->count( "" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+        
+    }
+    
+    public function testCount_valid ()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT COUNT(*) AS cnt FROM table" ) )
+            ->will( $this->returnValue( array( 'cnt' => 25 ) ));
+        
+        $this->assertSame( 25, $query->count("table") );
+        
+    }
+    
+    public function testCount_withWhere()
+    {
+        
+        $link = $this->getMock(
+                "cPHP::iface::DB::Link",
+                array("query", "quote", "escape")
+            );
+        
+        $query = $this->getMock(
+                "cPHP::DB::LinkWrap::Querier",
+                array("getRow"),
+                array( $link )
+            );
+        
+        $query->expects($this->once())
+            ->method("getRow")
+            ->with( $this->equalTo("SELECT COUNT(*) AS cnt FROM table WHERE value = 'yes'" ) )
+            ->will( $this->returnValue( array( 'cnt' => 16 ) ));
+        
+        $this->assertSame( 16, $query->count("table", "value = 'yes'") );
+        
     }
     
 }
