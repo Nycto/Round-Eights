@@ -150,6 +150,16 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
     {
         return $this->getFields()->contains( ::cPHP::strval($field) );
     }
+    
+    /**
+     * Returns the number of fields in the result set
+     *
+     * @return Boolean
+     */
+    public function fieldCount ()
+    {
+        return $this->getFields()->count();
+    }
 
     /**
      * Internal method to fetch the next row in a result set

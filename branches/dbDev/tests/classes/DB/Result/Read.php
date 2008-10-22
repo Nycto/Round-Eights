@@ -252,6 +252,21 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
         $this->assertFalse( $read->isField("NOT A FIELD") );
     }
     
+    public function testFieldCount ()
+    {
+        $read = $this->getMock(
+                "cPHP::DB::Result::Read",
+                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
+                array(null, "SELECT * FROM table")
+            );
+        
+        $read->expects( $this->once() )
+            ->method("rawFields")
+            ->will( $this->returnValue( array("one", "two") ) );
+        
+        $this->assertSame( 2, $read->fieldCount() );
+    }
+    
     public function testSeek ()
     {
         $read = $this->getMock(
