@@ -5,35 +5,35 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
-
-/**
- * test suite
- */
-class classes_db_link
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database Link Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_db_link_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_db_link_tests extends PHPUnit_Framework_TestCase
+class classes_db_link extends PHPUnit_Framework_TestCase
 {
     
     public function getMockLink ( $args = array() )
     {
         return $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery"),
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected"),
                 $args
             );
+    }
+    
+    public function testConstruct ()
+    {
+        $mock = $this->getMockLink( array("db://example.com/datab") );
+        
+        $this->assertSame( "example.com", $mock->getHost() );
+        $this->assertSame( "datab", $mock->getDatabase() );
+        
+        
+        $mock = $this->getMockLink(array( array( "host" => "db.com", "port" => 42 ) ));
+        
+        $this->assertSame( "db.com", $mock->getHost() );
+        $this->assertSame( 42, $mock->getPort() );
     }
     
     public function testIsSelect ()
@@ -365,7 +365,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::DB::Link $err ) {
-            $this->assertSame( "Database connector did not return a resource", $err->getMessage() );
+            $this->assertSame( "Database connector did not return a resource or an object", $err->getMessage() );
         }
     }
     
@@ -380,7 +380,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
         
         $mock = $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
         
         $mock->expects( $this->at( 0 ) )
@@ -398,7 +398,7 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
         
         $mock = $this->getMock(
                 "cPHP::DB::Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
         
         $mock->expects( $this->at( 0 ) )
@@ -409,6 +409,29 @@ class classes_db_link_tests extends PHPUnit_Framework_TestCase
             ->method("rawDisconnect");
         
         $mock->__destruct();
+    }
+    
+    public function testQuery_emptyQuery()
+    {
+        $mock = $this->getMockLink();
+        $mock->expects( $this->never() )
+            ->method( "rawQuery" );
+        
+        try {
+            $mock->query("");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument  $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+        
+        try {
+            $mock->query("    ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument  $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
     }
     
     public function testQuery_invalidResult ()

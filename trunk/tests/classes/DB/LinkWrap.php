@@ -5,26 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
-
-/**
- * test suite
- */
-class classes_db_linkwrap
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Database LinkWrap Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_db_linkwrap_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_db_linkwrap_tests extends PHPUnit_Framework_TestCase
+class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 {
     
     public function testGetLink ()

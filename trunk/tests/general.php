@@ -8,6 +8,8 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
+require_once rtrim( __DIR__, "/" ) ."/../src/commonPHP.php";
+
 error_reporting( E_ALL | E_STRICT );
 
 /**
@@ -91,23 +93,6 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
         return $this;
     }
     
-    /**
-     * If needed, this will add a test to include the cPHP library and the tests associated with including it
-     *
-     * @return object Returns a self reference
-     */
-    public function addLib ()
-    {
-        static $included;
-        
-        if ( !isset($included) || !$included ) {
-            $included = TRUE;
-            $this->addTestSuite( 'general' );
-        }
-        
-        return $this;
-    }
-    
 }
 
 /**
@@ -115,13 +100,16 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
  */
 class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
+    /**
+     *
+     */
     
     public function setUp ()
     {
         if ( !extension_loaded("mysqli") )
             $this->markTestSkipped("MySQLi extension is not loaded");
         
-        $config = rtrim( dirname( __FILE__ ), "/") ."/config.php";
+        $config = rtrim( __DIR__, "/") ."/config.php";
         
         if ( !file_exists($config) )
             $this->markTestSkipped("Config file does not exist: $config");
@@ -132,7 +120,7 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
         require_once $config;
         
         $required = array(
-                "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD"
+                "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE"
             );
         
         foreach ( $required AS $constant ) {
@@ -160,26 +148,62 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
         
     }
     
-    
-    
-}
-
-/**
- * unit tests
- */
-class general extends PHPUnit_Extensions_OutputTestCase
-{
-    
-    public function testLibInclude ()
+    public function getURI ()
     {
+        return "db://"
+            .MYSQLI_USERNAME .":". MYSQLI_PASSWORD ."@"
+            .MYSQLI_HOST .":". MYSQLI_PORT
+            ."/". MYSQLI_DATABASE;
+    }
+    
+    public function getLink ()
+    {
+        static $link;
         
-        // Ensures that the library doesn't output anything when it is included
-        $this->expectOutputString('');
-        require_once rtrim( dirname( __FILE__ ), "/" ) ."/../src/commonPHP.php";
+        if ( !isset($link) || !$link->isConnected() ) {
+            $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+            
+            
+            $mysqli = $link->getLink();
+            
+            
+            $result = $mysqli->query("DROP TEMPORARY TABLE IF EXISTS `". MYSQLI_TABLE ."`");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+                
+            
+            $result = $mysqli->query("CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
+                                  `id` INT NOT NULL auto_increment ,
+                               `label` VARCHAR( 255 ) NOT NULL ,
+                                `data` VARCHAR( 255 ) NOT NULL ,
+                           PRIMARY KEY ( `id` ) ,
+                                 INDEX ( `label` ))");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
         
-        // Ensure that we cleaned up any global variables
-        $this->assertEquals( array(), get_defined_vars() );
+        }
         
+        
+        $mysqli = $link->getLink();
+                
+            
+            $result = $mysqli->query("TRUNCATE TABLE `". MYSQLI_TABLE ."`");
+            
+            if ( !$result )
+                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        
+        $result = $mysqli->query("INSERT INTO `". MYSQLI_TABLE ."`
+                             VALUES (1, 'alpha', 'one'),
+                                    (2, 'beta', 'two'),
+                                    (3, 'gamma', 'three')");
+        
+        if ( !$result )
+            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        
+        
+        return $link;
     }
     
 }

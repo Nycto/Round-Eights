@@ -5,27 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
-
-/**
- * test suite
- */
-class classes_datetime
-{
-    
-    static public function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP DateTime Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_datetime_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * unit tests
  */
-class classes_datetime_tests extends PHPUnit_Framework_TestCase
+class classes_datetime extends PHPUnit_Framework_TestCase
 {
     
     protected $timezone;

@@ -5,27 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../../general.php";
-
-/**
- * test suite
- */
-class classes_filter_integer
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Integer Filter Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_filter_integer_tests' );
-        
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_filter_integer_tests extends PHPUnit_Framework_TestCase
+class classes_filter_integer extends PHPUnit_Framework_TestCase
 {
     
     public function testInteger ()

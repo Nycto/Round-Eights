@@ -5,26 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
-
-/**
- * general function test suite
- */
-class functions_general
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP general Functions');
-        $suite->addLib();
-        $suite->addTestSuite( 'functions_general_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * general function unit tests
  */
-class functions_general_tests extends PHPUnit_Framework_TestCase
+class functions_general extends PHPUnit_Framework_TestCase
 {
     
     public function testSwap ()

@@ -5,26 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
-
-/**
- * test suite
- */
-class classes_curry
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Curry Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_curry_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * unit tests
  */
-class classes_curry_tests extends PHPUnit_Framework_TestCase
+class classes_curry extends PHPUnit_Framework_TestCase
 {
     
     

@@ -5,26 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
-
-/**
- * numeric function test suite
- */
-class functions_numbers
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP numeric Functions');
-        $suite->addLib();
-        $suite->addTestSuite( 'functions_numbers_tests' );
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * numeric function unit tests
  */
-class functions_numbers_tests extends PHPUnit_Framework_TestCase
+class functions_numbers extends PHPUnit_Framework_TestCase
 {
     
     function testPositive ()
@@ -129,6 +115,88 @@ class functions_numbers_tests extends PHPUnit_Framework_TestCase
         $this->assertEquals( 20, cPHP::numWrap( 20, 10, 20, FALSE ) );
     }
     
+    function testOffsetWrap ()
+    {
+        try {
+            ::cPHP::offsetWrap(5, 2, "invalid offset value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Invalid offset wrap flag", $err->getMessage() );
+        }
+        
+        try {
+            ::cPHP::offsetWrap(0, 2, "invalid offset value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be greater than zero", $err->getMessage() );
+        }
+
+        $this->assertEquals(0, cPHP::offsetWrap(5, -5, cPHP::OFFSET_NONE) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, -2, cPHP::OFFSET_NONE) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, -1, cPHP::OFFSET_NONE) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, 0, cPHP::OFFSET_NONE) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, 3, cPHP::OFFSET_NONE) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 4, cPHP::OFFSET_NONE) );
+        
+        try {
+            ::cPHP::offsetWrap(1, 2, cPHP::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Offset is out of bounds", $err->getMessage() );
+        }
+        
+        try {
+            cPHP::offsetWrap(5, 5, cPHP::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Offset is out of bounds", $err->getMessage() );
+        }
+        
+        try {
+            cPHP::offsetWrap(5, -6, cPHP::OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Offset is out of bounds", $err->getMessage() );
+        }
+        
+
+        $this->assertEquals(1, cPHP::offsetWrap(5, -14, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(2, cPHP::offsetWrap(5, -8, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, -5, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, -2, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, -1, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, 0, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, 3, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 4, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, 8, cPHP::OFFSET_WRAP) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, 15, cPHP::OFFSET_WRAP) );
+
+        $this->assertEquals(0, cPHP::offsetWrap(5, -14, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, -8, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, -5, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, -2, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, -1, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, 0, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, 3, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 4, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 8, cPHP::OFFSET_RESTRICT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 15, cPHP::OFFSET_RESTRICT) );
+
+        $this->assertEquals(0, cPHP::offsetWrap(5, -2, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, -1, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(0, cPHP::offsetWrap(5, 0, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(3, cPHP::offsetWrap(5, 3, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 4, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 8, cPHP::OFFSET_LIMIT) );
+        $this->assertEquals(4, cPHP::offsetWrap(5, 15, cPHP::OFFSET_LIMIT) );
+        
+    }
+
 }
 
 ?>

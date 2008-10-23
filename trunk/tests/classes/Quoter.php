@@ -5,27 +5,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( dirname( __FILE__ ), "/" ) ."/../general.php";
-
-/**
- * test suite
- */
-class classes_quoter
-{
-    public static function suite()
-    {
-        $suite = new cPHP_Base_TestSuite('commonPHP Quoter Class');
-        $suite->addLib();
-        $suite->addTestSuite( 'classes_quoter_tests' );
-        
-        return $suite;
-    }
-}
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * Unit Tests
  */
-class classes_quoter_tests extends PHPUnit_Framework_TestCase
+class classes_quoter extends PHPUnit_Framework_TestCase
 {
     
     public function testInitial ()
