@@ -20,6 +20,14 @@ interface Validator
      * @result object An instance of validator results
      */
     public function validate ( $value );
+
+    /**
+     * Runs the validation and returns whether the value passes or not
+     *
+     * @param mixed $value The value to validate
+     * @return Boolean
+     */
+    public function isValid ( $value );
    
 }
 

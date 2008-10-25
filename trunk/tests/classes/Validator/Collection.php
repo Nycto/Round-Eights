@@ -18,7 +18,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     {
         $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
         
-        $valid = $this->getMock("cPHP::iface::Validator", array("validate"));
+        $valid = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
         
         $this->assertSame( $collection, $collection->add($valid) );
         
@@ -41,7 +41,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     {
         $collection = $this->getMock("cPHP::Validator::Collection", array("process"));
         
-        $valid = get_class( $this->getMock("cPHP::iface::Validator", array("validate")) );
+        $valid = get_class( $this->getMock("cPHP::iface::Validator", array("validate", "isValid")) );
         
         $this->assertSame( $collection, $collection->add($valid) );
         
@@ -77,8 +77,8 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     {
         $collection = $this->getMock( "cPHP::Validator::Collection", array("process") );
         
-        $valid = $this->getMock("cPHP::iface::Validator", array("validate"));
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate"));
+        $valid = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
         
         $this->assertSame(
                 $collection,
@@ -94,8 +94,8 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         
-        $valid = $this->getMock("cPHP::iface::Validator", array("validate"));
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate"));
+        $valid = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
         
         $collection = $this->getMock(
                 "cPHP::Validator::Collection",
@@ -112,8 +112,8 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     
     public function testCallStatic ()
     {
-        $valid = $this->getMock("cPHP::iface::Validator", array("validate"));
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate"));
+        $valid = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
         
         $validator = cPHP::Validator::Collection::All();
         $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Collection::All") );
