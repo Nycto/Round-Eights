@@ -11,6 +11,7 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  * unit tests
  * 
  * Because this is a global registry, the order in which these tests is important.
+ * Each test depends upon the previous
  */
 class classes_db extends PHPUnit_Framework_TestCase
 {
