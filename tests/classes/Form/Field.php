@@ -38,6 +38,118 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_form_field extends PHPUnit_Framework_TestCase
 {
     
+    public function testSetGetName ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $this->assertSame( $field, $field->setName("fieldName") );
+        $this->assertSame("fieldName", $field->getName());
+        
+        try {
+            $field->setName("123");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
+        }
+    }
+    
+    public function testGetFilter ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $filter = $field->getFilter();
+        
+        $this->assertThat( $filter, $this->isInstanceOf("cPHP::Filter::Chain") );
+        
+        $this->assertSame( $filter, $field->getFilter() );
+    }
+    
+    public function testSetFilter ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $filter = $this->getMock("cPHP::iface::Filter", array("filter"));
+        
+        $this->assertSame( $field, $field->setFilter($filter) );
+        
+        $this->assertSame( $filter, $field->getFilter() );
+    }
+    
+    public function testGetValidator ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $validator = $field->getValidator();
+        
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Collection::Any") );
+        
+        $this->assertSame( $validator, $field->getValidator() );
+    }
+    
+    public function testSetValidator ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $validator = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        
+        $this->assertSame( $field, $field->setValidator($validator) );
+        
+        $this->assertSame( $validator, $field->getValidator() );
+    }
+    
+    public function testSetValue ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $this->assertNull( $field->getRawValue() );
+        
+        $this->assertSame( $field, $field->setValue("New Value") );
+        $this->assertSame( "New Value", $field->getRawValue() );
+        
+        $this->assertSame( $field, $field->setValue( array(505) ) );
+        $this->assertSame( 505, $field->getRawValue() );
+        
+        $this->assertSame( $field, $field->setValue( TRUE ) );
+        $this->assertSame( TRUE, $field->getRawValue() );
+        
+        $this->assertSame( $field, $field->setValue( NULL ) );
+        $this->assertSame( NULL, $field->getRawValue() );
+        
+        $this->assertSame( $field, $field->setValue( 0.22 ) );
+        $this->assertSame( 0.22, $field->getRawValue() );
+    }
+    
+    public function testGetValue ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        
+        $field->setValue("New Value");
+        
+        $this->assertSame("New Value", $field->getValue());
+        
+        $field->setFilter( new ::cPHP::Curry::Call("strtoupper") );
+        
+        $this->assertSame("NEW VALUE", $field->getValue());
+        $this->assertSame("New Value", $field->getRawValue());
+    }
+    
+    public function testGetTag ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        $field->setValue("New Value")
+            ->setName("fldName");
+        
+        $tag = $field->getTag();
+        
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "input", $tag->getTag() );
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fldName", $tag['name'] );
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( "New Value", $tag['value'] );
+    }
+    
 }
 
 ?>

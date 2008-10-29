@@ -35,7 +35,7 @@ namespace cPHP::Form;
 /**
  * The most basic form field
  */
-class Field implements ::cPHP::iface::Form::Field
+abstract class Field implements ::cPHP::iface::Form::Field
 {
     
     /**
@@ -44,9 +44,11 @@ class Field implements ::cPHP::iface::Form::Field
     private $name;
 
     /**
-     * The current value of this field
+     * The current, raw value of this field
+     *
+     * The value stored here is unfiltered and unvalidated
      */
-    private $value;
+    protected $value;
     
     /**
      * The filter to apply to any data that is fed in to this field
@@ -66,6 +68,135 @@ class Field implements ::cPHP::iface::Form::Field
     public function getName ()
     {
         return $this->name;
+    }
+    
+    /**
+     * Sets the name of this field
+     *
+     * @param String $name The field name
+     * @return Object returns a self reference
+     */
+    public function setName( $name )
+    {
+        $name = ::cPHP::Filter::Variable()->filter( $name );
+        
+        if ( !::cPHP::Validator::Variable()->isValid( $name ) )
+            throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        
+        $this->name = $name;
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the filter loaded in to this instance
+     *
+     * If no filter has been explicitly set, this will create a new chain
+     * filter, save it to this instance and return a reference to it
+     *
+     * @return Object Returns a filter object
+     */
+    public function getFilter ()
+    {
+        if ( !($this->filter instanceof ::cPHP::iface::Filter) )
+            $this->filter = new ::cPHP::Filter::Chain;
+            
+        return $this->filter;
+    }
+    
+    /**
+     * Sets the filter for this instance
+     *
+     * @param Object An object that implements the cPHP::iface::Filter interface
+     * @return Object Returns a self reference
+     */
+    public function setFilter( ::cPHP::iface::Filter $filter )
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+    
+    /**
+     * Returns the validator loaded in to this instance
+     *
+     * If no validator has been explicitly set, this will create a new "Any"
+     * validator, save it to this instance and return a reference to it
+     *
+     * @return Object Returns a Validator object
+     */
+    public function getValidator ()
+    {
+        if ( !($this->validator instanceof ::cPHP::iface::Validator) )
+            $this->validator = new ::cPHP::Validator::Collection::Any;
+            
+        return $this->validator;
+    }
+    
+    /**
+     * Sets the validator for this instance
+     *
+     * @param Object A validator object
+     * @return Object Returns a self reference
+     */
+    public function setValidator( ::cPHP::iface::Validator $validator )
+    {
+        $this->validator = $validator;
+        return $this;
+    }
+    
+    /**
+     * Returns the unfiltered, unvalidated value that is contained in this instance
+     *
+     * @return mixed The raw value of this field
+     */
+    public function getRawValue ()
+    {
+        return $this->value;
+    }
+    
+    /**
+     * Sets the value for this field
+     *
+     * This does not apply the filter when saving, however it will convert any
+     * objects or arrays using the ::cPHP::reduce function
+     *
+     * @param mixed $value The value of this field
+     * @return Object Returns a self reference
+     */
+    public function setValue ( $value )
+    {
+        $this->value = ::cPHP::reduce( $value );
+        return $this;
+    }
+    
+    /**
+     * Applies the filter and returns the resultting value
+     *
+     * @return mixed The filtered value
+     */
+    public function getValue ()
+    {
+        // Only apply the filter if there is one
+        if ( $this->filter instanceof cPHP::iface::Filter )
+            return $this->filter->filter( $this->getRawValue() );
+        else
+            return $this->getRawValue();
+    }
+    
+    /**
+     * Returns a cPHP::Tag object that represents this instance
+     *
+     * @return Object A cPHP::Tag object
+     */
+    public function getTag()
+    {
+        return ::cPHP::Tag::input(
+                null,
+                array(
+                        "value" => $this->getValue(),
+                        "name" => $this->getName()
+                    )
+            );
     }
     
 }
