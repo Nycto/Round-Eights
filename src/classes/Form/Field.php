@@ -61,6 +61,16 @@ abstract class Field implements ::cPHP::iface::Form::Field
     private $validator;
     
     /**
+     * Constructor... 
+     *
+     * @param String The name of this form field
+     */
+    public function __construct( $name )
+    {
+        $this->setName( $name );
+    }
+    
+    /**
      * Returns the name of this field
      *
      * @return String

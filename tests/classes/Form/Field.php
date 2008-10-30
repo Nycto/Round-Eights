@@ -40,7 +40,9 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testSetGetName ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        
+        $this->assertSame("fld", $field->getName());
         
         $this->assertSame( $field, $field->setName("fieldName") );
         $this->assertSame("fieldName", $field->getName());
@@ -56,7 +58,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testGetFilter ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $filter = $field->getFilter();
         
@@ -67,7 +69,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testSetFilter ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $filter = $this->getMock("cPHP::iface::Filter", array("filter"));
         
@@ -78,7 +80,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testGetValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $validator = $field->getValidator();
         
@@ -89,7 +91,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testSetValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $validator = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
         
@@ -100,7 +102,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testSetValue ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $this->assertNull( $field->getRawValue() );
         
@@ -122,7 +124,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testGetValue ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         
         $field->setValue("New Value");
         
@@ -136,7 +138,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testGetTag ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         $field->setValue("New Value")
             ->setName("fldName");
         
@@ -152,7 +154,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
     
     public function testToString ()
     {
-        $field = $this->getMock("cPHP::Form::Field");
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         $field->setValue("New Value")
             ->setName("fldName");
         
