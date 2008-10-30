@@ -190,13 +190,24 @@ abstract class Field implements ::cPHP::iface::Form::Field
      */
     public function getTag()
     {
-        return ::cPHP::Tag::input(
+        return new ::cPHP::Tag(
+                'input',
                 null,
                 array(
                         "value" => $this->getValue(),
                         "name" => $this->getName()
                     )
             );
+    }
+    
+    /**
+     * Converts this field to an HTML string
+     *
+     * @return String 
+     */
+    public function __toString()
+    {
+        return $this->getTag()->__toString();
     }
     
 }

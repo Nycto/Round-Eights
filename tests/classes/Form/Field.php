@@ -150,6 +150,23 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( "New Value", $tag['value'] );
     }
     
+    public function testToString ()
+    {
+        $field = $this->getMock("cPHP::Form::Field");
+        $field->setValue("New Value")
+            ->setName("fldName");
+        
+        $this->assertSame(
+                '<input value="New Value" name="fldName" />',
+                $field->__toString()
+            );
+        
+        $this->assertSame(
+                '<input value="New Value" name="fldName" />',
+                "$field"
+            );
+    }
+    
 }
 
 ?>
