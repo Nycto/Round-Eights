@@ -33,6 +33,47 @@
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
+ * A stub used for callbacks
+ */
+class stub_classes_ary_boolCallbacks
+{
+    
+    static public function callbackStatic ( $value, $key )
+    {
+        if ( func_num_args() != 2 ) {
+            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err->setData("Number of Args", func_num_args());
+            throw $err;
+        }
+        
+        return stripos($value, "yes") !== FALSE ? TRUE : FALSE;
+    }
+    
+    public function callbackObject ( $value, $key )
+    {
+        if ( func_num_args() != 2 ) {
+            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err->setData("Number of Args", func_num_args());
+            throw $err;
+        }
+        
+        return stripos($value, "yes") !== FALSE ? TRUE : FALSE;
+    }
+    
+    public function __invoke ( $value, $key )
+    {
+        if ( func_num_args() != 2 ) {
+            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err->setData("Number of Args", func_num_args());
+            throw $err;
+        }
+        
+        return stripos($value, "yes") !== FALSE ? TRUE : FALSE;
+    }
+    
+}
+
+/**
  * unit tests
  */
 class classes_ary extends PHPUnit_Framework_TestCase
@@ -1003,13 +1044,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
     
     public function testFind ()
     {
+        
+        // Test a closure callback
         $ary = new cPHP::Ary( range(0, 10) );
         $result = $ary->find(function ( $value, $key ) {
             return $value == 6 ? TRUE : FALSE;
         });
         $this->assertSame( 6, $result );
+    
         
-        
+        // Test a closure without a match
         $ary = new cPHP::Ary( range(0, 10) );
         $result = $ary->find(function ( $value, $key ) {
             return $value == 50 ? TRUE : FALSE;
@@ -1017,11 +1061,35 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result );
         
         
+        // Test a function name as a callback
         $ary = new cPHP::Ary( range(5, -5) );
         $result = $ary->find("cPHP::negative");
         $this->assertSame( -1, $result );
         
         
+        $ary = new cPHP::Ary( array(5, 4, "yes", 3, "also yes", 1) );
+        
+        
+        // Static method callback
+        $result = $ary->find(array(
+                "stub_classes_ary_boolCallbacks",
+                "callbackStatic"
+            ));
+        $this->assertSame( "yes", $result );
+        
+        
+        $callback = new stub_classes_ary_boolCallbacks;
+        
+        // Object method callback
+        $this->assertSame(
+                "yes",
+                $ary->find(array($callback, "callbackObject"))
+            );
+        
+        // Callable object callback
+        $this->assertSame( "yes", $ary->find($callback) );
+        
+        // invoked without a proper callback
         try {
             $ary->find("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
