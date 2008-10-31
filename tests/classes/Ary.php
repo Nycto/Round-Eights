@@ -1001,6 +1001,37 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testFind ()
+    {
+        $ary = new cPHP::Ary( range(0, 10) );
+        $result = $ary->find(function ( $value, $key ) {
+            return $value == 6 ? TRUE : FALSE;
+        });
+        $this->assertSame( 6, $result );
+        
+        
+        $ary = new cPHP::Ary( range(0, 10) );
+        $result = $ary->find(function ( $value, $key ) {
+            return $value == 50 ? TRUE : FALSE;
+        });
+        $this->assertFalse( $result );
+        
+        
+        $ary = new cPHP::Ary( range(5, -5) );
+        $result = $ary->find("cPHP::negative");
+        $this->assertSame( -1, $result );
+        
+        
+        try {
+            $ary->find("This is an uncallable value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must be callable", $err->getMessage());
+        }
+        
+    }
+    
 }
 
 ?>

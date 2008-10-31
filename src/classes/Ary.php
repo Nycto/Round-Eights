@@ -1093,10 +1093,39 @@ class Ary implements Iterator, Countable, ArrayAccess
     
     /**
      * Returns the first value that causes the callback to return TRUE
+     *
+     * @param mixed $callback The callback to apply. This must be callable
+     * @return mixed Returns the found value, or FALSE if the value couldn't be found
      */
-    public function find ()
+    public function find ( $callback )
     {
         
+        if (!is_callable($callback))
+            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+        
+        $sendKey = $this->sendKey( $callback );
+        
+        foreach ( $this->array AS $key => $value ) {
+            
+            if ( $sendKey ) {
+                if ( is_object($callback) )
+                    $result = $callback->__invoke( $value, $key );
+                else
+                    $result = call_user_func( $callback, $value, $key );
+            }
+            else {
+                if ( is_object($callback) )
+                    $result = $callback->__invoke( $value );
+                else
+                    $result = call_user_func( $callback, $value );
+            }
+            
+            if ( $result )
+                return $value;
+            
+        }
+        
+        return FALSE;
     }
     
     
