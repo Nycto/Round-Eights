@@ -35,7 +35,7 @@ namespace cPHP;
 /**
  * Collects information about the current environment and allows readonly access to it
  */
-class Env implements Countable
+class Env
 {
     
     /**
@@ -67,11 +67,11 @@ class Env implements Countable
     protected $port;
     
     /**
-     * The protocol used to request this page, usually "http"
+     * The scheme used to request this page, usually "http"
      *
      * @public
      */
-    protected $protocol;
+    protected $scheme;
     
     /**
      * The basename of the request URL
@@ -163,13 +163,124 @@ class Env implements Countable
     protected $subdomain;
     
     /**
+     * The relative path of the requested URI
+     */
+    protected $path;
+    
+    /**
+     * The relative directory of the requested URI
+     */
+    protected $dir;
+    
+    /**
+     * The absolute path of the requested URI
+     */
+    protected $absolutePath;
+    
+    /**
+     * The absolute directory of the requested URI
+     */
+    protected $absoluteDir;
+    
+    /**
      * Protected to force the use of the static constructors
      *
      * @param Array $server The $_SERVER array to parse in to this instance
      */
-    protected function __construct( $server )
+    protected function __construct( array $server )
     {
+        $this->setLocal( $server );
         
+        $this->setIP( $server );
+        $this->setQuery( $server );
+        $this->setPort( $server );
+        $this->setScheme( $server );
+    }
+    
+    /**
+     * Provides read only access to the protected variables in this instance
+     *
+     * @param String $variable The variable to fetch
+     * @return mixed Returns the value of the requested property
+     */
+    public function __get ($variable)
+    {
+        $variable = ::cPHP::stripW( $variable );
+        
+        if ( !property_exists($this, $variable) )
+            throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
+        
+        return $this->$variable;
+    }
+    
+    /**
+     * Provides read only access to detect whether a protected variable is set
+     *
+     * @param String $variable The variable to test
+     * @return Boolean Whether the requested variable has a value
+     */
+    public function __isset ($variable)
+    {
+        $variable = ::cPHP::stripW( $variable );
+        
+        if ( !property_exists($this, $variable) )
+            throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
+        
+        return isset( $this->$variable );
+    }
+    
+    /**
+     * Sets whether this script is being executed via command line or not
+     *
+     * @param Array $server The server info array
+     */
+    protected function setLocal ( array $server )
+    {
+        $this->local = isset($server['SHELL']) ? TRUE : FALSE;
+    }
+    
+    /**
+     * Fills in the IP property
+     *
+     * @param Array $server The server info array
+     */
+    protected function setIP ( array $server )
+    {
+        if ( array_key_exists("SERVER_ADDR", $server) )
+            $this->ip = $server['SERVER_ADDR'];
+    }
+    
+    /**
+     * Fills in the URL Query property
+     *
+     * @param Array $server The server info array
+     */
+    protected function setQuery ( array $server )
+    {
+        if ( array_key_exists("QUERY_STRING", $server) && !::cPHP::is_empty($server['QUERY_STRING']) )
+            $this->query = $server['QUERY_STRING'];
+    }
+    
+    /**
+     * Fills in the request port property
+     *
+     * @param Array $server The server info array
+     */
+    protected function setPort ( array $server )
+    {
+        if ( array_key_exists("SERVER_PORT", $server) && !::cPHP::is_empty($server['SERVER_PORT']) )
+            $this->port = intval( $server['SERVER_PORT'] );
+    }
+    
+    /**
+     * Fills in the protocol property
+     *
+     * @param Array $server The server info array
+     */
+    protected function setScheme ( array $server )
+    {
+        if ( array_key_exists("SERVER_PROTOCOL", $server) && !::cPHP::is_empty($server['SERVER_PROTOCOL']) )
+            $this->scheme = strtolower( strstr( $server['SERVER_PROTOCOL'], "/", TRUE ) );
     }
     
 }

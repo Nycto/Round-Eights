@@ -33,10 +33,97 @@
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
+ * Provides an interface to create multiple instances even though this is a singleton
+ */
+class Stub_Env extends ::cPHP::Env
+{
+    
+    static public function fromArray( array $data )
+    {
+        return new static( $data );
+    }
+    
+}
+
+/**
  * unit tests
  */
 class classes_env extends PHPUnit_Framework_TestCase
 {
+    
+    public function testIsLocal ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "SHELL" => "/bin/bash"
+            ));
+        
+        $this->assertTrue( $env->local );
+        $this->assertTrue( isset($env->local) );
+        
+        
+        $env = Stub_Env::fromArray(array());
+        $this->assertFalse( $env->local );
+    }
+    
+    public function testIP ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "SERVER_ADDR" => "127.0.0.1"
+            ));
+        
+        $this->assertTrue( isset($env->ip) );
+        $this->assertSame( "127.0.0.1", $env->ip );
+        
+        
+        $env = Stub_Env::fromArray(array());
+        $this->assertFalse( isset($env->ip) );
+        $this->assertNull( $env->ip );
+    }
+    
+    public function testQuery ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "QUERY_STRING" => "?var=value"
+            ));
+        
+        $this->assertTrue( isset($env->query) );
+        $this->assertSame( "?var=value", $env->query );
+        
+        
+        $env = Stub_Env::fromArray(array());
+        $this->assertFalse( isset($env->query) );
+        $this->assertNull( $env->query );
+    }
+    
+    public function testPort ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "SERVER_PORT" => "40"
+            ));
+        
+        $this->assertTrue( isset($env->port) );
+        $this->assertSame( 40, $env->port );
+        
+        
+        $env = Stub_Env::fromArray(array());
+        $this->assertFalse( isset($env->port) );
+        $this->assertNull( $env->port );
+    }
+    
+    public function testScheme ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertTrue( isset($env->scheme) );
+        $this->assertSame( "http", $env->scheme );
+        
+        
+        $env = Stub_Env::fromArray(array());
+        $this->assertFalse( isset($env->scheme) );
+        $this->assertNull( $env->scheme );
+    }
     
 }
 
