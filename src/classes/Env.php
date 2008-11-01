@@ -274,7 +274,8 @@ class Env
             $this->setScheme( $server );
             $this->setFauxDirs( $server );
             $this->setHostInfo( $server );
-            $this->setUriInfo( $server );
+            $this->setUriPath( $server );
+            $this->setUri( $server );
         }
     }
     
@@ -456,16 +457,16 @@ class Env
         if ( !self::hasKey( $server, 'PATH_INFO' ) )
             return;
         
-        $this->fauxDirs = $server['PATH_INFO'];
+        $this->fauxDirs = ::cPHP::strHead( $server['PATH_INFO'], "/" );
     }
     
     /**
-     * Sets the relative and absolute URI properties
+     * Sets the relative and absolute URI path and dir properties
      * 
      * @param Array $server The server info array
      * @return null
      */
-    protected function setUriInfo ( array &$server )
+    protected function setUriPath ( array &$server )
     {
         if ( !self::hasKey($server, 'SCRIPT_NAME') )
             return;
@@ -481,6 +482,39 @@ class Env
         $this->uriDir = strTail( dirname( $this->uriPath), "/" );
         
         $this->absUriDir = ::cPHP::strWeld( $this->hostWithPort, $this->uriDir, "/");
+    }
+    
+    /**
+     * Sets the relative and absolute URI properties
+     * 
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setUri ( array &$server )
+    {
+        $this->uri = null;
+        
+        if ( !::cPHP::is_empty( $this->uriPath ) )
+            $this->uri = $this->uriPath . $this->fauxDirs;
+        
+        if ( !::cPHP::is_empty( $this->query ) )
+            $this->uri .= ::cPHP::strHead( $this->query, "?" );
+
+        $this->absUri = null;
+        
+        if ( !::cPHP::is_empty( $this->hostWithPort ) )
+            $this->absUri .= $this->hostWithPort;
+        
+        if ( !::cPHP::is_empty( $this->scheme ) )
+            $this->absUri = $this->scheme ."://" . $this->absUri;
+            
+        if ( !::cPHP::is_empty( $this->uri ) ) {
+            $this->absUri = ::cPHP::strWeld(
+                    $this->absUri,
+                    $this->uri,
+                    "/"
+                );
+        }
     }
     
 }

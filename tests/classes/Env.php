@@ -293,9 +293,8 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "/test/faux/dirs", $env->fauxDirs );
     }
     
-    public function testSetUriInfo_withHost ()
+    public function testSetUriPath ()
     {
-        
         $env = Stub_Env::fromArray(array(
                 "HTTP_HOST" => "test.example.com",
                 "SCRIPT_NAME" => "/path/to/file.php",
@@ -313,12 +312,9 @@ class classes_env extends PHPUnit_Framework_TestCase
         
         $this->assertTrue( isset($env->absUriDir) );
         $this->assertSame( "test.example.com:40/path/to/", $env->absUriDir );
-        
-        $this->markTestIncomplete("Need to add uri and absUri");
-    
     }
     
-    public function testSetUriInfo_empty ()
+    public function testSetUriPath_empty ()
     {
         $env = Stub_Env::fromArray(array());
         
@@ -333,14 +329,131 @@ class classes_env extends PHPUnit_Framework_TestCase
         
         $this->assertFalse( isset($env->absUriDir) );
         $this->assertNull( $env->absUriDir );
+    }
+    
+    public function testSetUri ()
+    {
+        $env = Stub_Env::fromArray(array());
         
         $this->assertFalse( isset($env->uri) );
         $this->assertNull( $env->uri );
         
-        $this->assertFalse( isset($env->absUri) );
         $this->assertNull( $env->absUri );
+        $this->assertFalse( isset($env->absUri) );
         
-        $this->markTestIncomplete("Need to add uri and absUri");
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com"
+            ));
+        
+        $this->assertFalse( isset($env->uri) );
+        $this->assertNull( $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "test.example.com",
+                $env->absUri
+            );
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertFalse( isset($env->uri) );
+        $this->assertNull( $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com",
+                $env->absUri
+            );
+        
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SERVER_PORT" => "40",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertFalse( isset($env->uri) );
+        $this->assertNull( $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com:40",
+                $env->absUri
+            );
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SCRIPT_NAME" => "/path/to/file.php",
+                "SERVER_PORT" => "40",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertTrue( isset($env->uri) );
+        $this->assertSame( "/path/to/file.php", $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com:40/path/to/file.php",
+                $env->absUri
+            );
+        
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SCRIPT_NAME" => "/path/to/file.php",
+                "SERVER_PORT" => "40",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertTrue( isset($env->uri) );
+        $this->assertSame( "/path/to/file.php", $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com:40/path/to/file.php",
+                $env->absUri
+            );
+        
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SCRIPT_NAME" => "/path/to/file.php",
+                "SERVER_PORT" => "40",
+                "PATH_INFO" => "/test/faux/dirs",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertTrue( isset($env->uri) );
+        $this->assertSame( "/path/to/file.php/test/faux/dirs", $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com:40/path/to/file.php/test/faux/dirs",
+                $env->absUri
+            );
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SCRIPT_NAME" => "/path/to/file.php",
+                "SERVER_PORT" => "40",
+                "PATH_INFO" => "/test/faux/dirs",
+                "QUERY_STRING" => "?var=value",
+                "SERVER_PROTOCOL" => "HTTP/1.1"
+            ));
+        
+        $this->assertTrue( isset($env->uri) );
+        $this->assertSame( "/path/to/file.php/test/faux/dirs?var=value", $env->uri );
+        
+        $this->assertTrue( isset($env->absUri) );
+        $this->assertSame(
+                "http://test.example.com:40/path/to/file.php/test/faux/dirs?var=value",
+                $env->absUri
+            );
+        
     }
     
 }
