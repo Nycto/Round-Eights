@@ -124,6 +124,6 @@ require_once cPHP_dir_functions ."debug.php";
 /**
  * Take a snapshot of the environment
  */
-Env::get();
+::cPHP::Env::get();
 
 ?>
