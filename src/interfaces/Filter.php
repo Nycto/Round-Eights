@@ -37,7 +37,7 @@ namespace cPHP::iface;
  */
 interface Filter
 {
-    
+
     /**
      * Takes a value, processes it in a standard way and returns the result
      *
@@ -45,7 +45,7 @@ interface Filter
      * @result mixed The result of the filtering process
      */
     public function filter ( $value );
-    
+
 }
 
 ?>

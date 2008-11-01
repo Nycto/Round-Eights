@@ -44,7 +44,7 @@ error_reporting( E_ALL | E_STRICT );
  */
 class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
 {
-    
+
     /**
      * Recursively collects a list of test files relative to the given base directory
      *
@@ -54,9 +54,9 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
      */
     private function collectFiles ( $base, $dir = FALSE )
     {
-        
+
         $base = rtrim($base, "/" ) ."/";
-        
+
         if ( $dir ) {
             $dir = trim($dir, "/") ."/";
             $search = $base . $dir;
@@ -64,29 +64,29 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
         else {
             $search = $base;
         }
-        
+
         $result = array();
-        
+
         $list = scandir( $search );
-        
+
         foreach ( $list AS $file ) {
-            
+
             if ( substr($file, 0, 1) == "." )
                 continue;
-            
+
             if ( is_dir( $search . $file ) )
                 $result = array_merge( $result, $this->collectFiles( $base, $dir . $file ) );
-                
+
             else if ( preg_match('/.+\.php$/i', $file) )
                 $result[] = $dir . $file;
-            
+
         }
-        
+
         sort( $result );
-        
+
         return $result;
     }
-    
+
     /**
      * Searches a given directory for PHP files and adds the contained tests to the current suite
      *
@@ -97,27 +97,27 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
      */
     public function addFromFiles ( $testPrefix, $dir, $exclude )
     {
-        
+
         $dir = rtrim($dir, "/" ) ."/";
-        
+
         $list = $this->collectFiles($dir);
-        
+
         foreach ( $list AS $file ) {
-            
+
             if ( $file == $exclude )
                 continue;
-            
+
             require_once $dir . $file;
-            
+
             $file = str_replace( ".php", "", $file );
             $file = str_replace( "/", "_", $file );
-            
+
             $this->addTestSuite( $testPrefix . $file );
         }
-        
+
         return $this;
     }
-    
+
 }
 
 /**
@@ -128,37 +128,37 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
     /**
      *
      */
-    
+
     public function setUp ()
     {
         if ( !extension_loaded("mysqli") )
             $this->markTestSkipped("MySQLi extension is not loaded");
-        
+
         $config = rtrim( __DIR__, "/") ."/config.php";
-        
+
         if ( !file_exists($config) )
             $this->markTestSkipped("Config file does not exist: $config");
-        
+
         if ( !is_readable($config) )
             $this->markTestSkipped("Config file is not readable: $config");
-        
+
         require_once $config;
-        
+
         $required = array(
                 "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE"
             );
-        
+
         foreach ( $required AS $constant ) {
-            
+
             if ( !defined("MYSQLI_". $constant) )
                 $this->markTestSkipped("Required constant is not defined: MYSQLI_". $constant);
-            
+
             $value = constant("MYSQLI_". $constant);
-            
+
             if ( empty($value) )
                 $this->markTestSkipped("Required constant must not be empty: MYSQLI_". $constant);
         }
-        
+
         // Test the connection
         $mysqli = new mysqli(
                 MYSQLI_HOST,
@@ -170,9 +170,9 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 
         if ($mysqli->connect_error)
             $this->markTestSkipped("MySQLi Connection Error: ".  mysqli_connect_error());
-        
+
     }
-    
+
     public function getURI ()
     {
         return "db://"
@@ -180,57 +180,57 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
             .MYSQLI_HOST .":". MYSQLI_PORT
             ."/". MYSQLI_DATABASE;
     }
-    
+
     public function getLink ()
     {
         static $link;
-        
+
         if ( !isset($link) || !$link->isConnected() ) {
             $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
-            
-            
+
+
             $mysqli = $link->getLink();
-            
-            
+
+
             $result = $mysqli->query("DROP TEMPORARY TABLE IF EXISTS `". MYSQLI_TABLE ."`");
-            
+
             if ( !$result )
                 $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
-                
-            
+
+
             $result = $mysqli->query("CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
                                   `id` INT NOT NULL auto_increment ,
                                `label` VARCHAR( 255 ) NOT NULL ,
                                 `data` VARCHAR( 255 ) NOT NULL ,
                            PRIMARY KEY ( `id` ) ,
                                  INDEX ( `label` ))");
-            
+
             if ( !$result )
                 $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
-        
+
         }
-        
-        
+
+
         $mysqli = $link->getLink();
-                
-            
+
+
             $result = $mysqli->query("TRUNCATE TABLE `". MYSQLI_TABLE ."`");
-            
+
             if ( !$result )
                 $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
-        
+
         $result = $mysqli->query("INSERT INTO `". MYSQLI_TABLE ."`
                              VALUES (1, 'alpha', 'one'),
                                     (2, 'beta', 'two'),
                                     (3, 'gamma', 'three')");
-        
+
         if ( !$result )
             $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
-        
-        
+
+
         return $link;
     }
-    
+
 }
 
 ?>

@@ -2,7 +2,7 @@
 <?php
 /**
  * Given a file name, this will try to find and run it's unit test
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -41,9 +41,9 @@ $test = explode("/", $test);
 $cutoff = array_search( "src", $test );
 
 if ( $cutoff === FALSE ) {
-    
+
     $cutoff = array_search( "tests", $test );
-    
+
     if ( $cutoff === FALSE )
         die ( "Could not locate 'src' or 'tests' directory in given file: ". $$_SERVER['argv'][1] );
 }

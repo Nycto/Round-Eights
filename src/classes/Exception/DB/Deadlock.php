@@ -42,12 +42,12 @@ class Deadlock extends ::cPHP::Exception::DB
      * Title of this exception
      */
     const TITLE = "Database Query Deadlock";
-    
+
     /**
      * A brief description of this exception
      */
     const DESCRIPTION = "Thrown when a query experiences a deadlock";
-    
+
     /**
      * Constructor...
      *

@@ -37,12 +37,12 @@ namespace cPHP::Filter;
  */
 class AlphaNum extends cPHP::Filter
 {
-    
+
     /**
-     * Cleans up a string in preparation for 
+     * Cleans up a string in preparation for
      *
      * @param mixed $value The value to filter
-     * @return 
+     * @return
      */
     public function filter ( $value )
     {
@@ -52,7 +52,7 @@ class AlphaNum extends cPHP::Filter
                 ::cPHP::strval( $value )
             );
     }
-    
+
 }
 
 ?>

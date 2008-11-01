@@ -37,12 +37,12 @@ namespace cPHP::Validator;
  */
 class NotEmpty extends ::cPHP::Validator
 {
-    
+
     /**
      * Any flags to pass to the is_empty function
      */
     protected $flags = 0;
-    
+
     /**
      * Constructor...
      *

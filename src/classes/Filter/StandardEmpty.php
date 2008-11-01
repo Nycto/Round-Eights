@@ -40,17 +40,17 @@ namespace cPHP::Filter;
  */
 class StandardEmpty extends cPHP::Filter
 {
-    
+
     /**
      * Any flags to use while calling cPHP::is_empty
      */
     protected $flags = 0;
-    
+
     /**
      * The value returned when the filter input is empty
      */
     protected $value = NULL;
-    
+
     /**
      * Constructor
      *
@@ -62,7 +62,7 @@ class StandardEmpty extends cPHP::Filter
         $this->setValue( $value );
         $this->setFlags( $flags );
     }
-    
+
     /**
      * Returns the current flag
      *
@@ -72,7 +72,7 @@ class StandardEmpty extends cPHP::Filter
     {
         return $this->flags;
     }
-    
+
     /**
      * Sets the value for the flags in this instance
      *
@@ -86,7 +86,7 @@ class StandardEmpty extends cPHP::Filter
         $this->flags = max( intval($flags), 0 );
         return $this;
     }
-    
+
     /**
      * Adds the value for the flags in this instance
      *
@@ -101,7 +101,7 @@ class StandardEmpty extends cPHP::Filter
         $this->flags = $this->flags | $flags;
         return $this;
     }
-    
+
     /**
      * Returns the standard empty value
      *
@@ -111,7 +111,7 @@ class StandardEmpty extends cPHP::Filter
     {
         return $this->value;
     }
-    
+
     /**
      * Sets the standard empty value
      *
@@ -123,7 +123,7 @@ class StandardEmpty extends cPHP::Filter
         $this->value = $value;
         return $this;
     }
-    
+
     /**
      * Performs the filtering
      *
@@ -134,10 +134,10 @@ class StandardEmpty extends cPHP::Filter
     {
         if ( ::cPHP::is_empty( $value, $this->flags ) )
             return $this->value;
-        
+
         return $value;
     }
-    
+
 }
 
 ?>

@@ -37,12 +37,12 @@ namespace cPHP::DB::MySQLi;
  */
 class Link extends ::cPHP::DB::Link
 {
-    
+
     /**
      * This is the PHP extension required for this interface to work
      */
     const PHP_EXTENSION = "mysqli";
-    
+
     /**
      * Connect to the server
      *
@@ -59,19 +59,19 @@ class Link extends ::cPHP::DB::Link
             );
 
         if ( !$link ) {
-            
+
             throw new ::cPHP::Exception::DB::Link(
                     mysqli_connect_error(),
                     mysqli_connect_errno(),
                     $this
                 );
-            
+
         }
-        
+
         return $link;
 
     }
-    
+
     /**
      * Returns whether a given resource is still connected
      *
@@ -82,10 +82,10 @@ class Link extends ::cPHP::DB::Link
     {
         if ( !($connection instanceof mysqli) )
             return FALSE;
-        
+
         if ( @$connection->ping() !== TRUE )
             return FALSE;
-        
+
         return TRUE;
     }
 
@@ -113,12 +113,12 @@ class Link extends ::cPHP::DB::Link
     protected function rawQuery ( $query )
     {
         $link = $this->getLink();
-        
+
         $result = $link->query( $query );
-        
+
         if ( $result === FALSE )
             throw new ::cPHP::Exception::DB::Query( $query, $link->error, $link->errno );
-        
+
         if ( self::isSelect($query) )
             return new ::cPHP::DB::MySQLi::Read( $result, $query );
         else
@@ -135,7 +135,7 @@ class Link extends ::cPHP::DB::Link
         $link = $this->getLink();
         $link->close();
     }
-    
+
 }
 
 ?>

@@ -37,12 +37,12 @@ namespace cPHP::Validator;
  */
 abstract class Collection extends cPHP::Validator
 {
-    
+
     /**
      * The list of validators contained in this instance
      */
     protected $validators = array();
-    
+
     /**
      * Static method for creating a new validator instance
      *
@@ -58,7 +58,7 @@ abstract class Collection extends cPHP::Validator
     {
         return parent::__callStatic( "Collection::". $validator, $args );
     }
-    
+
     /**
      * Constructor
      *
@@ -73,7 +73,7 @@ abstract class Collection extends cPHP::Validator
             $this->addMany( $args );
         }
     }
-    
+
     /**
      * Adds a validator to this instance
      *
@@ -83,29 +83,29 @@ abstract class Collection extends cPHP::Validator
     public function add( $validator )
     {
         if ( is_object($validator) ) {
-            
+
             if ( !$validator instanceof cPHP::iface::Validator )
                 throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
-            
+
         }
         else {
             $validator = ::cPHP::strval( $validator );
-            
+
             if ( !is_subclass_of($validator, "cPHP::iface::Validator") ) {
-                
+
                 $refl = new ReflectionClass( $validator );
                 if ( !$refl->implementsInterface( "cPHP::iface::Validator" ) )
                     throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
-                
+
             }
-            
+
             $validator = new $validator;
         }
-        
+
         $this->validators[] = $validator;
         return $this;
     }
-    
+
     /**
      * Returns the list of validators contained in this instance
      *
@@ -115,7 +115,7 @@ abstract class Collection extends cPHP::Validator
     {
         return new ::cPHP::Ary( $this->validators );
     }
-    
+
     /**
      * Adds many validators to this instance at once
      *
@@ -133,7 +133,7 @@ abstract class Collection extends cPHP::Validator
             ->each(array($this, "add"));
         return $this;
     }
-    
+
 }
 
 ?>

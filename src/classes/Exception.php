@@ -58,7 +58,7 @@ class Exception extends ::Exception
      * Identifies the offset in the backtrace that caused the problem
      */
     protected $fault;
-    
+
     /**
      * Stores specific exception data. Each item has a label and a value
      */
@@ -73,7 +73,7 @@ class Exception extends ::Exception
     {
         self::$verbose = $setting ? true : false;
     }
-    
+
     /**
      * Returns the current global verbosity state
      *
@@ -98,7 +98,7 @@ class Exception extends ::Exception
         if ( !::cPHP::is_vague($fault, ::cPHP::ALLOW_ZERO) )
             $this->setFault($fault);
     }
-    
+
     /**
      * Invoking an exception will cause it to be thrown
      *
@@ -122,9 +122,9 @@ class Exception extends ::Exception
         $trace = $this->getTrace();
         if (count($trace) <= 0)
             return FALSE;
-        
+
         $trace = new cPHP::Ary( $trace );
-        
+
         return new cPHP::Ary(
                 $trace->offset($offset, $wrapFlag)
             );
@@ -175,9 +175,9 @@ class Exception extends ::Exception
             return $this;
 
         $trace = new cPHP::Ary( $trace );
-        
+
         $this->fault = $trace->calcOffset( $offset, $wrapFlag);
-        
+
         return $this;
     }
 
@@ -227,14 +227,14 @@ class Exception extends ::Exception
         // Shifting the fault when no fault is set marks it to the end of the list
         if ( !$this->issetFault() )
             return $this->setFault(0);
-            
+
         $shift = intval(reduce($shift));
 
         $trace = new cPHP::Ary( $this->getTrace() );
 
         if (count($trace) <= 0)
             return FALSE;
-        
+
         $fault = $this->getFaultOffset();
 
         $fault += $shift;
@@ -253,10 +253,10 @@ class Exception extends ::Exception
     {
         if ( !$this->issetFault() )
             return FALSE;
-        
+
         return $this->getTraceByOffset( $this->getFaultOffset() );
     }
-    
+
     /**
      * Adds a piece of data to this instance
      *
@@ -269,7 +269,7 @@ class Exception extends ::Exception
         $this->data[ trim(strval($label)) ] = $value;
         return $this;
     }
-    
+
     /**
      * Returns the data list for the current instance
      *
@@ -279,7 +279,7 @@ class Exception extends ::Exception
     {
         return new cPHP::Ary( $this->data );
     }
-    
+
     /**
      * Returns the value of a specific piece of data
      *
@@ -289,7 +289,7 @@ class Exception extends ::Exception
     public function getDataValue ( $label )
     {
         $label = trim(strval($label));
-        
+
         if ( array_key_exists($label, $this->data) )
             return $this->data[ $label ];
         else
@@ -305,23 +305,23 @@ class Exception extends ::Exception
      */
     public function getTraceOffsetString ($offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
     {
-        
+
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
             $args[] = getDump($arg);
         }
-        
+
         if ( $trace->keyExists('function') ) {
             $function = $trace['function'];
-            
+
             if ( $trace->keyExists('type') )
                 $function = $trace['type'] . $function;
-            
+
             if ( $trace->keyExists('class') )
                 $function = $trace['class'] . $function;
-            
+
             $function .= "()";
         }
         else {
@@ -336,7 +336,7 @@ class Exception extends ::Exception
 
     /**
      * Returns a string detailing a trace offset
-     * 
+     *
      * @param Integer $offset The backtrace offset to generate a string for
      * @param Integer $wrapFlag
      * @return String A string of HTML
@@ -349,22 +349,22 @@ class Exception extends ::Exception
         foreach ($trace['args'] AS $arg) {
             $args[] = htmlspecialchars( getDump($arg) );
         }
-        
+
         if ( $trace->keyExists('function') ) {
             $function = $trace['function'];
-            
+
             if ( $trace->keyExists('type') )
                 $function = $trace['type'] . $function;
-            
+
             if ( $trace->keyExists('class') )
                 $function = $trace['class'] . $function;
-                
+
             $function .= "()";
         }
         else {
             $function = FALSE;
         }
-            
+
         return
             "<dl class='cPHP_Exception_TraceItem'>\n"
             .( $trace->keyExists('file') ?
@@ -380,7 +380,7 @@ class Exception extends ::Exception
                     "<dt class='cPHP_Exception_TraceItem_Arg'>Arguments</dt>\n"
                     ."<dd class='cPHP_Exception_TraceItem_Arg'>". implode("</dd><dd>", $args) ."</dd>\n" : "" )
             ."</dl>\n";
-            
+
     }
 
     /**
@@ -406,7 +406,7 @@ class Exception extends ::Exception
         $fault = $this->getFaultOffset();
         if ($fault === FALSE)
             return NULL;
-        
+
         return
             "<div class='cPHP_Exception_Fault'>\n"
             ."<h3>Caused By</h3>\n"
@@ -423,11 +423,11 @@ class Exception extends ::Exception
     {
         if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        
+
         $data = array();
         foreach ( $this->data AS $key => $value )
             $data[] = $key .": ". $value;
-        
+
         return "Details:\n"
                 .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
                 .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
@@ -443,7 +443,7 @@ class Exception extends ::Exception
     {
         if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        
+
         $data = array();
         foreach ( $this->data AS $key => $value )
             $data[] = "<dt>". htmlspecialchars($key) ."</dt>"
@@ -500,7 +500,7 @@ class Exception extends ::Exception
     {
         return static::TITLE ." (". static::DESCRIPTION .")";
     }
-    
+
     /**
      * Returns a well formatted version of the stack trace
      *
@@ -509,15 +509,15 @@ class Exception extends ::Exception
     public function getTraceString ()
     {
         $result = "";
-        
+
         $length = count( $this->getTrace() );
-        
+
         for( $i = 0; $i < $length; $i++ ) {
             $result .=
                 "  #". ( $length - $i ) ."\n"
                 ."  ". str_replace("\n", "\n  ", rtrim($this->getTraceOffsetString( $i )) ) ."\n";
         }
-        
+
         return "Full Stack Trace:\n". $result ."  #0\n    {main}\n";
     }
 
@@ -528,18 +528,18 @@ class Exception extends ::Exception
      */
     public function getTraceHTML ()
     {
-        
+
         $result = "";
-        
+
         $length = count( $this->getTrace() );
-        
+
         for( $i = 0; $i < $length; $i++ ) {
             $result .=
                 "<li>\n"
                 .$this->getTraceOffsetHTML( $i )
                 ."</li>\n";
         }
-        
+
         return
             "<div class='cPHP_Exception_Trace'>\n"
             ."<h3>Full Stack Trace</h3>\n"
@@ -578,7 +578,7 @@ class Exception extends ::Exception
             .$this->getDetailsHTML()
             .$this->getFaultHTML()
             .$this->getThrownHTML()
-            .$this->getTraceHTML() 
+            .$this->getTraceHTML()
             ."</div>";
     }
 

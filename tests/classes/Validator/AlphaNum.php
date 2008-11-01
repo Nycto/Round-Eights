@@ -37,46 +37,46 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_validator_alphanum extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testNonStrings ()
     {
         $validator = new ::cPHP::Validator::AlphaNum;
-        
+
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(10);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(1.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
@@ -84,27 +84,27 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
                 $result->getErrors()->get()
             );
     }
-    
+
     public function testValid ()
     {
         $validator = new ::cPHP::Validator::AlphaNum;
-        
+
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("test1234")->isValid() );
         $this->assertTrue( $validator->validate("abc123XYZ")->isValid() );
-        
-        
+
+
         $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'abcdefghijklmnopqrstuvwxyz'
             .'1234567890';
-            
+
         $this->assertTrue( $validator->validate($valid)->isValid() );
     }
-    
+
     public function testInvalid ()
     {
         $validator = new ::cPHP::Validator::AlphaNum;
-        
+
         // Get a list of extended range ascii characters
         $string = implode( "", array_map("chr", range(127, 255) ) );
         $result = $validator->validate($string);
@@ -113,7 +113,7 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
                 array("Must be a valid PHP variable name"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
@@ -121,7 +121,7 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
                 $result->getErrors()->get()
             );
     }
-    
+
 }
 
 ?>

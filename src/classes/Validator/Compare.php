@@ -37,17 +37,17 @@ namespace cPHP::Validator;
  */
 class Compare extends ::cPHP::Validator
 {
-    
+
     /**
      * The operator to use for comparison
      */
     protected $operator;
-    
+
     /**
      * The value to compare against
      */
     protected $versus;
-    
+
     /**
      * Constructor...
      *
@@ -61,9 +61,9 @@ class Compare extends ::cPHP::Validator
 
         if ( !preg_match( '/^(?:<=?|>=?|={1,3}|<>|!={1,2})$/', $operator ) )
             throw new ::cPHP::Exception::Argument( 0, "Comparison Operator", "Unsupported comparison operator" );
-        
+
         $this->operator = $operator;
-        
+
         $this->versus = $versus;
     }
 
@@ -75,7 +75,7 @@ class Compare extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-        
+
         switch( $this->operator ) {
 
             case "<":
@@ -121,7 +121,7 @@ class Compare extends ::cPHP::Validator
                 break;
 
         }
-        
+
     }
 
 }

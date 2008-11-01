@@ -1,7 +1,7 @@
 <?php
 /**
  * Database Link interface
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -37,7 +37,7 @@ namespace cPHP::iface::DB;
  */
 interface Link
 {
-    
+
     /**
      * Runs a query and returns the result
      *
@@ -46,7 +46,7 @@ interface Link
      * @result Object Returns a result object
      */
     public function query ( $query, $flags = 0 );
-    
+
     /**
      * Quotes a variable to be used in a query
      *
@@ -58,11 +58,11 @@ interface Link
      * in the array and return the array.
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Array
      */
     public function quote ( $value, $allowNull = TRUE );
-    
+
     /**
      * Escapes a variable to be used in a query
      *
@@ -73,7 +73,7 @@ interface Link
      * in the array and return that array.
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Array
      */
     public function escape ( $value, $allowNull = TRUE );

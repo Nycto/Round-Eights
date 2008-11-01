@@ -37,12 +37,12 @@ namespace cPHP::Exception;
  */
 class Data extends ::cPHP::Exception
 {
-    
+
     /**
      * The title of this exception
      */
     const TITLE = "Data Error";
-    
+
     /**
      * A brief description of this error type
      */
@@ -60,9 +60,9 @@ class Data extends ::cPHP::Exception
     public function __construct($value, $label = NULL, $message = NULL, $code = 0, $fault = NULL)
     {
         parent::__construct($message, $code, $fault);
-        
+
         $label = ::cPHP::strval( $label );
-        
+
         $this->addData(
                 ::cPHP::is_empty($label) ? "Value" : $label,
                 ::cPHP::getDump($value)

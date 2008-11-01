@@ -37,7 +37,7 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  */
 class classes_form extends PHPUnit_Framework_TestCase
 {
-    
+
     public function getMockField ()
     {
         return $this->getMock(
@@ -45,30 +45,30 @@ class classes_form extends PHPUnit_Framework_TestCase
                 array("getName", "getValue", "setValue")
             );
     }
-    
+
     public function testSetAction ()
     {
         $form = new ::cPHP::Form;
-        
+
         $this->assertSame( $form, $form->setAction("/file.php") );
         $this->assertSame( "/file.php", $form->getAction() );
-        
+
         $this->assertSame( $form, $form->setAction("http://www.example.com/dir/file.php") );
         $this->assertSame(
                 "http://www.example.com/dir/file.php",
                 $form->getAction()
             );
     }
-    
+
     public function testSetMethod()
     {
         $form = new ::cPHP::Form;
-        
+
         $this->assertSame( "POST", $form->getMethod() );
-        
+
         $this->assertSame( $form, $form->setMethod("GET") );
         $this->assertSame( "GET", $form->getMethod() );
-        
+
         try {
             $form->setMethod("   ");
             $this->fail("An expected exception was not thrown");
@@ -77,16 +77,16 @@ class classes_form extends PHPUnit_Framework_TestCase
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
-    
+
     public function testSetEncoding ()
     {
         $form = new ::cPHP::Form;
-        
+
         $this->assertSame( "application/x-www-form-urlencoded", $form->getEncoding() );
-        
+
         $this->assertSame( $form, $form->setEncoding("multipart/form-data") );
         $this->assertSame( "multipart/form-data", $form->getEncoding() );
-        
+
         try {
             $form->setEncoding("   ");
             $this->fail("An expected exception was not thrown");
@@ -95,65 +95,65 @@ class classes_form extends PHPUnit_Framework_TestCase
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
-    
+
     public function testGetAddField ()
     {
         $form = new ::cPHP::Form;
-        
+
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array(), $fields->get() );
-        
-        
+
+
         // Add a field
         $field1 = $this->getMockField();
         $this->assertSame( $form, $form->addField($field1) );
-        
+
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array($field1), $fields->get() );
-        
-        
+
+
         // Make sure duplicates aren't allowed
         $this->assertSame( $form, $form->addField($field1) );
-        
+
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array($field1), $fields->get() );
-        
-        
+
+
         // Add another field
         $field2 = $this->getMockField();
         $this->assertSame( $form, $form->addField($field2) );
-        
+
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array($field1, $field2), $fields->get() );
     }
-    
+
     public function testClearFields ()
     {
         $form = new ::cPHP::Form;
 
         $field1 = $this->getMockField();
         $form->addField($field1);
-        
+
         $field2 = $this->getMockField();
         $form->addField($field2);
-        
+
         // Make sure the two fields were properly added
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array($field1, $field2), $fields->get() );
-        
-        
+
+
         $this->assertSame( $form, $form->clearFields() );
-        
+
         $fields = $form->getFields();
         $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array(), $fields->get() );
     }
-    
+
     public function testCount ()
     {
         $form = new ::cPHP::Form;
@@ -171,32 +171,32 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form->addField($this->getMockField());
         $this->assertSame( 3, $form->count() );
         $this->assertSame( 3, count($form) );
-        
+
         $form->clearFields();
         $this->assertSame( 0, $form->count() );
         $this->assertSame( 0, count($form) );
     }
-    
+
     public function testFind ()
     {
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
             ->will( $this->returnValue("fldOne") );
-        
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
             ->will( $this->returnValue("fldTwo") );
-        
+
         $form = new ::cPHP::Form;
         $form->addField( $field1 )->addField( $field2 );
-        
+
         $this->assertSame( $field1, $form->find("fldOne") );
-        
-        
+
+
         $this->assertFalse( $form->find("No Field") );
-        
+
         try {
              $form->find("123");
             $this->fail("An expected exception was not thrown");
@@ -204,9 +204,9 @@ class classes_form extends PHPUnit_Framework_TestCase
         catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertSame("Must be a valid PHP variable name", $err->getMessage());
         }
-        
+
     }
-    
+
 }
 
 ?>

@@ -37,37 +37,37 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_filter_alphanum extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testValidChars ()
     {
         $filter = new cPHP::Filter::AlphaNum;
-        
+
         $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'abcdefghijklmnopqrstuvwxyz'
             .'1234567890';
-        
+
         $this->assertEquals(
                 $valid,
                 $filter->filter($valid)
             );
-        
+
     }
-    
+
     public function testInvalidChars ()
     {
         $filter = new cPHP::Filter::AlphaNum;
-            
+
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~'));
-        
+
         $this->assertEquals(
                 "",
                 $filter->filter(
                         implode( "", array_map("chr", range(127, 255) ) )
                     )
             );
-        
+
     }
-    
+
 }
 
 ?>

@@ -41,17 +41,17 @@ namespace cPHP::DB;
  */
 abstract class Link implements ::cPHP::iface::DB::Link
 {
-    
+
     /**
      * To be overridden, this is the PHP extension required for this interface to work
      */
     const PHP_EXTENSION = FALSE;
-    
+
     /**
      * Whether to open a persistent Link
      */
     private $persistent = FALSE;
-    
+
     /**
      * Whether to force a new Link
      */
@@ -81,12 +81,12 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * The database to select
      */
     private $database;
-    
+
     /**
      * Once connected, this is the Link resource
      */
     private $resource;
-    
+
     /**
      * Returns whether a query is a SELECT query
      *
@@ -101,7 +101,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
 
         return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
     }
-    
+
     /**
      * Constructor...
      *
@@ -116,14 +116,14 @@ abstract class Link implements ::cPHP::iface::DB::Link
                     "Extension is not loaded"
                 );
         }
-        
+
         if ( is_string($input) )
             $this->fromURI( $input );
-        
+
         else if ( is_array( $input ) )
             $this->fromArray( $input );
     }
-    
+
     /**
      * Destructor...
      *
@@ -133,7 +133,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         $this->disconnect();
     }
-    
+
     /**
      * Connect to the server
      *
@@ -163,7 +163,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * @return null
      */
     abstract protected function rawDisconnect ();
-    
+
     /**
      * Returns whether a given resource is still connected
      *
@@ -171,7 +171,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * @return Boolean
      */
     abstract protected function rawIsConnected ( $connection );
-    
+
     /**
      * Returns whether the link should use a persistent connection
      *
@@ -193,7 +193,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->persistent = ::cPHP::Filter::Boolean()->filter($setting);
         return $this;
     }
-    
+
     /**
      * Returns whether an existing Link should be re-used if it already exists
      * or if a new database connection should be forced
@@ -217,7 +217,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->forceNew = ::cPHP::Filter::Boolean()->filter($setting);
         return $this;
     }
-    
+
     /**
      * Returns the value of the username in this instance
      *
@@ -227,9 +227,9 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return $this->username;
     }
-    
+
     /**
-     * Sets the username credential 
+     * Sets the username credential
      *
      * @param String $username The username to set
      * @return Object Returns a self reference
@@ -240,7 +240,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->username = ::cPHP::is_empty( $username ) ? null : $username;
         return $this;
     }
-    
+
     /**
      * Returns whether the username has been set
      *
@@ -250,7 +250,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return isset( $this->username );
     }
-    
+
     /**
      * Unsets the currently set username
      *
@@ -261,7 +261,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->username = null;
         return $this;
     }
-    
+
     /**
      * Returns the value of the Password in this instance
      *
@@ -271,7 +271,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return $this->password;
     }
-    
+
     /**
      * Sets the Password credential
      *
@@ -284,7 +284,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->password = ::cPHP::is_empty($password) ? null : $password;
         return $this;
     }
-    
+
     /**
      * Returns whether the Password has been set
      *
@@ -294,7 +294,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return isset( $this->password );
     }
-    
+
     /**
      * Unsets the currently set Password
      *
@@ -305,7 +305,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->password = null;
         return $this;
     }
-    
+
     /**
      * Returns the value of the Host that will be connected to
      *
@@ -315,7 +315,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return $this->host;
     }
-    
+
     /**
      * Sets the Host that will be connected to
      *
@@ -328,7 +328,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->host = ::cPHP::is_empty( $host ) ? null : $host;
         return $this;
     }
-    
+
     /**
      * Returns whether the Host has been set
      *
@@ -338,7 +338,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return isset( $this->host );
     }
-    
+
     /**
      * Clears the currently set Host
      *
@@ -349,7 +349,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->host = null;
         return $this;
     }
-    
+
     /**
      * Returns the value of the Port that will be connected on
      *
@@ -359,7 +359,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return $this->port;
     }
-    
+
     /**
      * Sets the Port that will be connected on
      *
@@ -372,7 +372,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }
-    
+
     /**
      * Returns whether the Port has been set
      *
@@ -382,7 +382,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return isset( $this->port );
     }
-    
+
     /**
      * Clears the currently set Port
      *
@@ -393,7 +393,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->port = null;
         return $this;
     }
-    
+
     /**
      * Returns the value of the Database to select after Link
      *
@@ -403,7 +403,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return $this->database;
     }
-    
+
     /**
      * Sets the Database to select after connecting to the host
      *
@@ -416,7 +416,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->database = ::cPHP::is_empty( $database ) ? null : $database;
         return $this;
     }
-    
+
     /**
      * Returns whether the Database property has been set
      *
@@ -426,7 +426,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         return isset( $this->database );
     }
-    
+
     /**
      * Clears the currently set Database
      *
@@ -437,7 +437,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->database = null;
         return $this;
     }
-    
+
     /**
      * Imports the settings in this instance from an array
      *
@@ -447,20 +447,20 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function fromArray ( $array )
     {
         $array = new ::cPHP::Ary( $array );
-        
+
         foreach ( $array AS $key => $value ) {
-            
+
             $key = "set". strtolower( ::cPHP::stripW( $key ) );
             $value = ::cPHP::strval( $value );
-            
+
             if ( method_exists( $this, $key ) )
                 $this->$key( $value );
-            
+
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Imports the settings from a URI
      *
@@ -471,30 +471,30 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         $uri = ::cPHP::strval( $uri );
         $result = ::cPHP::Validator::URL()->validate( $uri );
-        
+
         if ( !$result->isValid() )
             throw new ::cPHP::Exception::Argument( 0, "Settings URI", $result->getFirstError() );
-        
+
         $uri = new ::cPHP::Ary( parse_url( $uri ) );
         $uri = $uri->translateKeys(array(
                 "user" => "username",
                 "pass" => "password"
             ));
-        
+
         $this->fromArray( $uri );
-        
+
         if ( $uri->keyExists("path") )
             $this->setDatabase( ltrim( $uri['path'], "/" ) );
-        
+
         if ( $uri->keyExists("query") ) {
             $query = array();
             parse_str( $uri['query'], $query );
             $this->fromArray( $query );
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Validates the log-in credentials in preparation to connect
      *
@@ -512,10 +512,10 @@ abstract class Link implements ::cPHP::iface::DB::Link
 
         if ( !$this->databaseExists() )
             throw new ::cPHP::Exception::DB::Link("Database name must be set", 0, $this);
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the host name with the port attached, if one has been specified
      *
@@ -525,13 +525,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         if ( !$this->hostExists() )
             throw new ::cPHP::Exception::Interaction("Host must be set");
-        
+
         if ( $this->portExists() )
             return $this->host .":". $this->port;
         else
             return $this->host;
     }
-    
+
     /**
      * Returns whether this instance is currently connected
      *
@@ -543,13 +543,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
             isset($this->resource)
             && ( is_resource($this->resource) || is_object($this->resource) )
             && $this->rawIsConnected( $this->resource );
-            
+
         if ( !$result )
             $this->resource = null;
-        
+
         return $result ? TRUE : FALSE;
     }
-    
+
     /**
      * Returns the connection resource
      *
@@ -560,11 +560,11 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function getLink ()
     {
         if ( !$this->isConnected() ){
-            
+
             $this->validateCredentials();
-            
+
             $result = $this->rawConnect();
-            
+
             if ( !is_resource($result) && !is_object($result) ) {
                 throw new cPHP::Exception::DB::Link(
                         "Database connector did not return a resource or an object",
@@ -572,13 +572,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
                         $this
                     );
             }
-            
+
             $this->resource = $result;
         }
-        
+
         return $this->resource;
     }
-    
+
     /**
      * Runs a query and returns the result
      *
@@ -589,10 +589,10 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function query ( $query, $flags = 0 )
     {
         $query = ::cPHP::strval($query);
-        
+
         if ( ::cPHP::is_empty($query) )
             throw new ::cPHP::Exception::Argument(0, "Query", "Must not be empty");
-        
+
         try {
             $result = $this->rawQuery( $query );
         }
@@ -600,7 +600,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
             $err->shiftFault();
             throw $err;
         }
-        
+
         if ( !( $result instanceof ::cPHP::DB::Result ) ) {
             throw new ::cPHP::Exception::DB::Query(
                     $query,
@@ -609,10 +609,10 @@ abstract class Link implements ::cPHP::iface::DB::Link
                     $this
                 );
         }
-        
+
         return $result;
     }
-    
+
     /**
      * If there is currently a cunnection, this will break it
      *
@@ -625,7 +625,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
         $this->link = null;
         return $this;
     }
-    
+
     /**
      * Quotes a variable to be used in a query
      *
@@ -637,7 +637,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * in the array and return the array.
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Object Returns the escaped string, or a cPHP::Ary object
      */
     public function quote ( $value, $allowNull = TRUE )
@@ -647,22 +647,22 @@ abstract class Link implements ::cPHP::iface::DB::Link
             return ::cPHP::Ary::create( $value )->collect( array($this, "quote") );
 
         $value = ::cPHP::reduce($value);
-        
+
         if (is_bool($value))
             return $value ? "1" : "0";
 
         else if ( is_int($value) || is_float($value) )
             return ::strval( $value );
-        
+
         else if ( is_null($value) )
             return $allowNull ? "NULL" : "''";
-        
+
         else if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
             return $value;
-        
+
         else
             return "'". $this->rawEscape($value) ."'";
-        
+
     }
 
     /**
@@ -675,7 +675,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * in the array and return that array.
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Object Returns the escaped string, or a cPHP::Ary object
      */
     public function escape ( $value, $allowNull = TRUE )
@@ -685,21 +685,21 @@ abstract class Link implements ::cPHP::iface::DB::Link
             return ::cPHP::Ary::create( $value )->collect( array($this, "escape") );
 
         $value = ::cPHP::reduce($value);
-        
+
         if (is_bool($value))
             return $value ? "1" : "0";
 
         else if ( is_int($value) || is_float($value) )
             return ::strval( $value );
-        
+
         else if ( is_null($value) )
             return $allowNull ? "NULL" : "";
-        
+
         else
             return $this->rawEscape($value);
-        
+
     }
-    
+
 }
 
 ?>

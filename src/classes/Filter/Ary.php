@@ -37,12 +37,12 @@ namespace cPHP::Filter;
  */
 class Ary extends cPHP::Filter
 {
-    
+
     /**
      * The filter that will be applied to each value
      */
     private $filter;
-    
+
     /**
      * Constructor...
      *
@@ -52,7 +52,7 @@ class Ary extends cPHP::Filter
     {
         $this->setFilter( $filter );
     }
-    
+
     /**
      * Returns the filter loaded in this instance
      *
@@ -62,7 +62,7 @@ class Ary extends cPHP::Filter
     {
         return $this->filter;
     }
-    
+
     /**
      * Sets the filter that will be applied to each value of a filtered array
      *
@@ -74,7 +74,7 @@ class Ary extends cPHP::Filter
         $this->filter = $filter;
         return $this;
     }
-    
+
     /**
      * Apply this filter to an array value
      *
@@ -85,14 +85,14 @@ class Ary extends cPHP::Filter
     {
         if ( !::cPHP::Ary::is($value) || ( is_object($value) && !( $value instanceof ArrayAccess) ) )
             $value = array($value);
-        
+
         foreach( $value AS $key => $val ) {
             $value[ $key ] = $this->filter->filter( $val );
         }
-        
+
         return $value;
     }
-    
+
 }
 
 ?>

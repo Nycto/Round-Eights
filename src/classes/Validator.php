@@ -37,7 +37,7 @@ namespace cPHP;
  */
 abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validator
 {
-    
+
     /**
      * Static method for creating a new validator instance
      *
@@ -52,7 +52,7 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
     static public function __callStatic ( $validator, $args )
     {
         $validator = "cPHP::Validator::". trim( ::cPHP::strval($validator) );
-        
+
         if ( !class_exists($validator, true) ) {
             throw new ::cPHP::Exception::Argument(
                     0,
@@ -60,7 +60,7 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
                     "Validator could not be found in cPHP::Validator namespace"
                 );
         }
-        
+
         if ( !::cPHP::kindOf( $validator, "::cPHP::iface::Validator") ) {
             throw new ::cPHP::Exception::Argument(
                     0,
@@ -68,7 +68,7 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
                     "Class does not implement cPHP::iface::Validator"
                 );
         }
-        
+
         if ( count($args) <= 0 ) {
             return new $validator;
         }
@@ -90,30 +90,30 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
     public function validate ( $value )
     {
         $result = $this->process( $value );
-        
+
         if ( is_array($result) || $result instanceof ::cPHP::Ary )
             $result = ::cPHP::Ary::create( $result )->flatten()->collect("cPHP::strval")->compact()->get();
-        
+
         elseif ( $result instanceof ::cPHP::Validator::Result )
             $result = $result->getErrors();
-            
+
         else
             $result = ::cPHP::strval( $result );
-        
+
         $output = new ::cPHP::Validator::Result( $value );
-        
+
         if ( !::cPHP::is_empty($result) ) {
-            
+
             if ( $this->hasErrors() )
                 $output->addErrors( $this->getErrors() );
             else
                 $output->addErrors( $result );
-            
+
         }
-        
+
         return $output;
     }
-    
+
     /**
      * Runs the validation and returns whether the value passes or not
      *
@@ -132,7 +132,7 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
      *      This can be an array, a string, a cPHP::Validator::Result instance
      */
     abstract protected function process ($value);
-    
+
 }
 
 ?>

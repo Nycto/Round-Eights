@@ -44,12 +44,12 @@ namespace cPHP::Validator;
  */
 class RegEx extends ::cPHP::Validator
 {
-    
+
     /**
      * The Regular Expression to compare the value to
      */
     protected $regex;
-    
+
     /**
      * Constructor...
      *
@@ -73,10 +73,10 @@ class RegEx extends ::cPHP::Validator
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
             $value = ::cPHP::strval($value);
-        
+
         if ( !is_string($value) )
             return "Must be a string";
-        
+
         if ( !preg_match($this->regex, $value) )
             return "Must match the following regular expression: ". $this->regex;
     }

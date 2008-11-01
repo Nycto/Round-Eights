@@ -1,7 +1,7 @@
 <?php
 /**
  * Primary commonPHP include file
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -45,7 +45,7 @@ if (!defined("cPHP_dir_functions"))
 
 if (!defined("dir_classes"))
     define("cPHP_dir_classes", cPHP_dir ."classes/");
-    
+
 if (!defined("dir_interfaces"))
     define("cPHP_dir_interfaces", cPHP_dir ."interfaces/");
 
@@ -53,21 +53,21 @@ if (!defined("dir_interfaces"))
  * This is temporary,... auto loader
  */
 function __autoload ( $class ) {
-    
+
     $class = explode("::", $class);
     array_shift( $class );
-    
+
     $first = reset( $class );
-    
-    if ( $first == "iface" ) 
+
+    if ( $first == "iface" )
         $class = cPHP_dir_interfaces . implode( "/", array_slice( $class, 1 ) ) .".php";
-        
+
     else
         $class = cPHP_dir_classes . implode( "/", $class ) .".php";
-    
+
     if ( file_exists( $class ) )
         require_once $class;
-    
+
 }
 
 /**

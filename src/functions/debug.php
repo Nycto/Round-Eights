@@ -76,32 +76,32 @@ function getDump ($value)
         return "string('". str_replace( Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), strTruncate( addslashes($value), 50, "'...'") ) ."')";
 
     else if (is_array($value)) {
-        
+
         if ( count($value) == 0 )
             return "array(0)";
-        
+
         $output = array();
-        
+
         $i = 0;
         foreach( $value AS $key => $val ) {
-            
+
             $i++;
-            
+
             $output[] =
                 getDump($key)
                 ." => "
                 . ( is_array($val) ? "array(". count($val) .")" : getDump($val) );
-            
+
             if ( $i == 2 )
                 break;
         }
-        
+
         return "array(". count($value) .")("
             .implode(", ", $output)
             .( count($value) > 2 ? ",..." : "" )
             .")";
-            
-        
+
+
     }
 
     else if (is_object($value))

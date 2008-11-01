@@ -37,12 +37,12 @@ namespace cPHP::Exception;
  */
 class Index extends ::cPHP::Exception
 {
-    
+
     /**
      * The title of this exception
      */
     const TITLE = "Index Error";
-    
+
     /**
      * A brief description of this error type
      */
@@ -60,7 +60,7 @@ class Index extends ::cPHP::Exception
     public function __construct($value, $label = NULL, $message = NULL, $code = 0, $fault = NULL)
     {
         parent::__construct($message, $code, $fault);
-        
+
         $this->addData( "Index Label", ::cPHP::strval( $label ) );
         $this->addData( "Value", ::cPHP::getDump($value) );
     }

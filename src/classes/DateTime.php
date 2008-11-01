@@ -37,14 +37,14 @@ namespace cPHP;
  */
 class DateTime
 {
-    
+
     /**
      * Standard date formats
      */
     const FORMAT_SQL_DATETIME = 'Y-m-d H:i:s';
     const FORMAT_SQL_DATE = 'Y-m-d';
     const FORMAT_DEFAULT = 'F j, Y, g:i a';
-    
+
     /**
      * Date/time units for use with the math method
      */
@@ -90,7 +90,7 @@ class DateTime
     {
         return self::$defaultFormat;
     }
-    
+
     /**
      * Normalizes a time unit string
      *
@@ -101,14 +101,14 @@ class DateTime
      */
     static public function normalizeUnit ( $unit )
     {
-        
+
         $unit = strtolower( ::cPHP::stripW( $unit ) );
         $unit = ::cPHP::strStripTail( $unit, "s" );
-        
+
         switch ( $unit ) {
             default:
                 throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
-            
+
             case "second":
             case "minute":
             case "hour":
@@ -117,22 +117,22 @@ class DateTime
             case "month":
             case "year":
                 return $unit;
-            
+
             case "sec":
                 return "second";
-            
+
             case "min":
                 return "minute";
-            
+
             case "mday":
                 return "day";
-            
+
             case "mon":
                 return "month";
-            
+
         }
     }
-    
+
     /**
      * Returns whether a string is a MySQL time stamp
      *
@@ -153,17 +153,17 @@ class DateTime
         $hour = '(?:[01][0-9]|2[0-3])';
         $min = '(?:[0-5][0-9])';
         $sec = '(?:[0-5][0-9])';
-        
+
         $versions = array(
             $year . $month . $day,
             $year ."-". $month ."-". $day,
             $year . $month . $day . $hour . $min . $sec,
             $year ."-". $month ."-". $day ." ". $hour .":". $min .":". $sec
         );
-        
+
         return preg_match('/^(?:'. implode('|', $versions) .')$/', $datetime) ? TRUE : FALSE;
     }
-    
+
     /**
      * Constructor...
      *
@@ -175,9 +175,9 @@ class DateTime
     {
         if (func_num_args() > 0 && !::cPHP::is_vague($input) )
             $this->interpret( $input );
-            
+
     }
-    
+
     /**
      * Returns the time value currently held in this instance
      *
@@ -190,7 +190,7 @@ class DateTime
         else
             return NULL;
     }
-    
+
     /**
      * Sets the time value in this instance from a unix timestamp
      *
@@ -216,24 +216,24 @@ class DateTime
      */
     public function setArray ( $time )
     {
-        
+
         $time = new ::cPHP::Ary( $time );
-        
+
         $time = $time->changeKeyCase()
             ->translateKeys(array(
                     "day" => "mday",
                     "month" => "mon"
                 ))
             ->hone('seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
-            
+
         $time = $time->get();
-        
+
         if ( isset($this->time) )
             $time += getdate( $this->time );
-        
+
         // Fill in the blanks
         $time += getdate();
-        
+
         $this->time =
             mktime(
                     $time['hours'],
@@ -242,9 +242,9 @@ class DateTime
                     $time['mon'],
                     $time['mday'],
                     $time['year']
-                    
+
                 );
-        
+
         return $this;
     }
 
@@ -263,7 +263,7 @@ class DateTime
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
         return getdate( $this->time );
     }
-    
+
     /**
      * Sets the value for this instance from a SQL date/datetime string
      *
@@ -275,7 +275,7 @@ class DateTime
     public function setSQL ( $datetime )
     {
         $datetime = ::cPHP::stripW($datetime);
-        
+
         if ( !self::isSQL($datetime) )
             throw new ::cPHP::Exception::Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
@@ -306,7 +306,7 @@ class DateTime
 
         return $this->setArray( $parsed );
     }
-    
+
     /**
      * Returns a MySQL formatted version of this date
      *
@@ -347,7 +347,7 @@ class DateTime
         else
             return self::getDefaultFormat();
     }
-    
+
     /**
      * Sets the format string
      *
@@ -359,7 +359,7 @@ class DateTime
         $this->format = ::cPHP::strval( $format );
         return $this;
     }
-    
+
     /**
      * Removes the formatting specific to this instance
      *
@@ -370,7 +370,7 @@ class DateTime
         $this->format = null;
         return $this;
     }
-    
+
     /**
      * Returns a formatted version of this time
      *
@@ -381,15 +381,15 @@ class DateTime
     {
         if ( !isset($this->time) )
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
-        
+
         if ( is_vague($format) )
             $format = $this->getFormat();
         else
             $format = ::cPHP::strval( $format );
-        
+
         return date( $format, $this->time );
     }
-    
+
     /**
      * Return a readable representation of this time
      *
@@ -406,7 +406,7 @@ class DateTime
             return "";
         }
     }
-    
+
     /**
      * Attempts to determine the best way to convert an input to a date/time
      *
@@ -424,7 +424,7 @@ class DateTime
      */
     public function interpret ( $input )
     {
-        
+
         // If it is an integer, set it as a unix timestamp
         if (is_int($input) || is_float($input) ) {
             $this->time = intval( $input );
@@ -455,7 +455,7 @@ class DateTime
 
         return $this;
     }
-    
+
     /**
      * Adds or subtracts amounts of time from the current value
      *
@@ -467,78 +467,78 @@ class DateTime
     {
         if ( !isset($this->time) )
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
-        
+
         $value = ::cPHP::numval( $value );
-        
+
         $unit = ::cPHP::DateTime::normalizeUnit($unit);
-        
+
         if ( $value == 0 )
             return $this;
-        
+
         switch ( $unit ) {
-            
+
             default:
                 throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
-            
+
             case self::UNIT_MONTHS:
                 $unit = "mon";
-                
+
             case self::UNIT_YEARS:
-                
+
                 $ary = $this->getArray();
                 $ary[ $unit ] += intval( $value );
-                
+
                 $this->setArray( $ary );
-                
+
                 // If there is a fraction involved, we need to calculate the length of the unit
                 // Because the length of these particular units changes,
-                // we do it relative to the current value. 
+                // we do it relative to the current value.
                 if ( intval($value) != $value ) {
-                    
+
                     $copy = clone $this;
-                    
+
                     // Add a whole unit to the current time
                     $copy->add(
                             1 * ( $value < 0 ? -1 : 1 ),
                             $unit
                         );
-                    
+
                     // Find the difference of adding a hole unit in seconds
                     $diff = abs( $copy->getTimeStamp() - $this->getTimeStamp() );
-                    
+
                     // Multiply it by the decimal of the original value to
                     $diff *= $value - intval($value);
-                    
+
                     // Then add that many seconds on to the current date
                     $this->add($diff, self::UNIT_SECONDS);
                 }
-                
+
                 break;
-            
-            
+
+
             // Notice the lack of "breaks" in the next few cases. This allows
             // the units to cascade down until they are converted to seconds
-            
+
             case self::UNIT_WEEKS:
                 $value *= 7;
-            
+
             case self::UNIT_DAYS:
                 $value *= 24;
-            
+
             case self::UNIT_HOURS:
                 $value *= 60;
-            
+
             case self::UNIT_MINUTES:
                 $value *= 60;
-            
+
             case self::UNIT_SECONDS:
                 $this->time += intval( $value );
                 break;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Returns a specific unit from the current time value
      *
@@ -549,12 +549,12 @@ class DateTime
     {
         if ( !isset($this->time) )
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
-        
+
         try {
             $unit = self::normalizeUnit( $unit );
         }
         catch ( ::cPHP::Exception::Argument $err ) {}
-        
+
         $ary = $this->getArray();
 
         switch ( $unit ) {
@@ -578,9 +578,9 @@ class DateTime
             case "yday":
                 return $ary['yday'];
         }
-        
+
     }
-    
+
     /**
      * Generalized function for setting values
      *
@@ -593,30 +593,30 @@ class DateTime
         $value = intval( $value );
 
         switch ( self::normalizeUnit( $unit ) ) {
-            
+
             default:
                 throw new ::cPHP::Exception::Argument(0, "Unit", "Invalid time unit");
-            
+
             case "second":
                 return $this->setArray( array('seconds' => $value) );
-            
+
             case "minute":
                 return $this->setArray( array('minutes' => $value) );
-            
+
             case "hour":
                 return $this->setArray( array('hours' => $value) );
-            
+
             case "day":
                 return $this->setArray( array('mday' => $value) );
-            
+
             case "month":
                 return $this->setArray( array('mon' => $value) );
-            
+
             case "year":
                 return $this->setArray( array('year' => $value) );
-            
+
         }
-        
+
     }
 
     /**
@@ -655,17 +655,17 @@ class DateTime
                 "month" => intval( $month),
                 "day" => intval( $day),
             );
-        
+
         if ( !isset($this->time) )
             $ary += array( "hours" => 0, "minutes" => 0, "seconds" => 0 );
-        
+
         return $this->setArray( $ary );
-        
+
     }
-    
+
     /**
      * Similar to mktime, sets the time from a list of input
-     * 
+     *
      * @param Integer $year The new year
      * @param Integer $month The new month
      * @param Integer $day The new day
@@ -684,7 +684,7 @@ class DateTime
                 intval( $day ),
                 intval( $year )
             );
-        
+
         return $this;
     }
 

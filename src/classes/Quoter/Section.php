@@ -37,18 +37,18 @@ namespace cPHP::Quoter;
  */
 abstract class Section
 {
-    
+
     /**
      * The content of this section
      */
     private $content;
-    
+
     /**
      * In the grand scheme of the original string, this is the offset
      * of the content
      */
     private $offset;
-    
+
     /**
      * Constructor...
      *
@@ -63,14 +63,14 @@ abstract class Section
         $this->offset = $offset;
         $this->setContent( $content );
     }
-    
+
     /**
      * Returns whether the current section is quoted
      *
      * @return Boolean
      */
     abstract public function isQuoted ();
-    
+
     /**
      * Returns the content in this section
      *
@@ -80,7 +80,7 @@ abstract class Section
     {
         return $this->content;
     }
-    
+
     /**
      * Sets the content in this section
      *
@@ -92,7 +92,7 @@ abstract class Section
         $this->content = is_null($content) ? null : ::cPHP::strval( $content );
         return $this;
     }
-    
+
     /**
      * Unsets the content from this section
      *
@@ -103,7 +103,7 @@ abstract class Section
         $this->content = null;
         return $this;
     }
-    
+
     /**
      * Returns whether this instance has any content
      *
@@ -113,7 +113,7 @@ abstract class Section
     {
         return isset( $this->content );
     }
-    
+
     /**
      * Returns whether the content in this instance could be considered empty
      *
@@ -124,7 +124,7 @@ abstract class Section
     {
         return ::cPHP::is_empty( $this->content, $flags );
     }
-    
+
     /**
      * Returns the offset of the content in this string
      *

@@ -37,17 +37,17 @@ namespace cPHP::DB::Result;
  */
 class Write extends ::cPHP::DB::Result
 {
-    
+
     /**
      * This is the cached value of the affected number of rows
      */
     private $affected;
-    
+
     /**
      * This is the cached value of the insert ID
      */
     private $insertID;
-    
+
     /**
      * Constructor...
      *
@@ -61,12 +61,12 @@ class Write extends ::cPHP::DB::Result
             $insertID = intval($insertID);
             $this->insertID = $insertID > 0 ? $insertID : NULL;
         }
-        
+
         $this->affected = max( intval( $affected ), 0 );
-        
+
         parent::__construct($query);
     }
-    
+
     /**
      * Returns the number of rows affected by a query
      *
@@ -76,7 +76,7 @@ class Write extends ::cPHP::DB::Result
     {
         return $this->affected;
     }
-    
+
     /**
      * Returns the ID of the row inserted by this query
      *

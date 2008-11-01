@@ -39,12 +39,12 @@ namespace cPHP::Filter;
  */
 class Chain extends cPHP::Filter
 {
-    
+
     /**
      * The list of filters to run through
      */
     protected $filters = array();
-    
+
     /**
      * Constructor
      *
@@ -60,7 +60,7 @@ class Chain extends cPHP::Filter
             }
         }
     }
-    
+
     /**
      * Removes all the filters from this instance
      *
@@ -71,7 +71,7 @@ class Chain extends cPHP::Filter
         $this->filters = array();
         return $this;
     }
-    
+
     /**
      * Adds a new filter to this interface
      *
@@ -83,7 +83,7 @@ class Chain extends cPHP::Filter
         $this->filters[] = $filter;
         return $this;
     }
-    
+
     /**
      * Returns the array of filters contained in this instance
      *
@@ -93,7 +93,7 @@ class Chain extends cPHP::Filter
     {
         return new cPHP::Ary( $this->filters );
     }
-    
+
     /**
      * Applies the contained filters to the given value and returns the results
      *

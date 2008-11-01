@@ -39,7 +39,7 @@ namespace cPHP::Filter;
  */
 class URL extends cPHP::Filter
 {
-    
+
     /**
      * Cleans up a string in preparation for using it as an e-mail address
      *
@@ -53,7 +53,7 @@ class URL extends cPHP::Filter
             FILTER_SANITIZE_URL
         );
     }
-    
+
 }
 
 ?>

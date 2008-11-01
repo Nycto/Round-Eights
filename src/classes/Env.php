@@ -37,61 +37,61 @@ namespace cPHP;
  */
 class Env
 {
-    
+
     /**
      * Contains the singleton instance of this class
      */
     static protected $instance;
-    
+
     /**
      * Whether this script is being run locally, or was requested remotely
      *
      * @public
      */
     protected $local;
-    
+
     /**
      * The current IP
      *
      * @public
      */
     protected $ip;
-    
+
     /**
      * The raw URL query used to load this page
      *
      * @public
      */
     protected $query;
-    
+
     /**
      * The port this page was requested over
      *
      * @public
      */
     protected $port;
-    
+
     /**
      * The scheme used to request this page, usually "http"
      *
      * @public
      */
     protected $scheme;
-    
+
     /**
      * The filesystem path of the requested file
      *
      * @public public
      */
     protected $path;
-    
+
     /**
      * The filesystem directory of the requested file
      *
      * @public public
      */
     protected $dir;
-    
+
     /**
      * The basename of the request file
      *
@@ -100,7 +100,7 @@ class Env
      * @public
      */
     protected $basename;
-    
+
     /**
      * The requested filename
      *
@@ -109,7 +109,7 @@ class Env
      * @public
      */
     protected $filename;
-    
+
     /**
      * The extension of the requested file
      *
@@ -118,7 +118,7 @@ class Env
      * @public
      */
     protected $extension;
-   
+
     /**
      * The current working directory
      *
@@ -130,13 +130,13 @@ class Env
      * The full requested host
      *
      * The host is the subdomain, SLD and TLD all in one. For example, "test.example.com"
-     * 
+     *
      * This is NULL if no host was set
      *
      * @public
      */
     protected $host;
-    
+
     /**
      * The host name with the port attached.
      *
@@ -148,7 +148,7 @@ class Env
      * The top level domain of the requested URI
      *
      * In the URL "test.example.com", the TLD is "example.com"
-     * 
+     *
      * This is NULL if no TLD exists
      *
      * @public
@@ -159,7 +159,7 @@ class Env
      * The top level domain of the requested URI
      *
      * In the URL "test.example.com", the TLD is "com"
-     * 
+     *
      * This is NULL if no TLD exists
      *
      * @public
@@ -170,7 +170,7 @@ class Env
      * The second level domain of the requested URI
      *
      * In the URL "test.example.com", the SLD is "example"
-     * 
+     *
      * This is NULL if no SLD exists
      *
      * @public
@@ -187,49 +187,49 @@ class Env
      * @public
      */
     protected $subdomain;
-    
+
     /**
      * The relative path of the requested URI
      *
      * @public
      */
     protected $uriPath;
-    
+
     /**
      * The relative directory of the requested URI
      *
      * @public
      */
     protected $uriDir;
-    
+
     /**
      * The absolute path of the requested URI
      *
      * @public
      */
     protected $absUriPath;
-    
+
     /**
      * The absolute directory of the requested URI
      *
      * @public
      */
     protected $absUriDir;
-    
+
     /**
      * The relative URI
      *
      * @public
      */
     protected $uri;
-    
+
     /**
      * The absolute URI
      *
      * @public
      */
     protected $absUri;
-    
+
     /**
      * Also known as the path info, this represents any directories listed
      * after the filename of the path... for example, the following uri:
@@ -242,7 +242,7 @@ class Env
      * @public
      */
     protected $fauxDirs;
-    
+
     /**
      * Returns the global Env instance
      *
@@ -252,10 +252,10 @@ class Env
     {
         if ( !( self::$instance instanceof static ) )
             self::$instance = new static( $_SERVER );
-            
+
         return self::$instance;
     }
-    
+
     /**
      * Returns whether a given array has key with a non-empty value
      *
@@ -267,13 +267,13 @@ class Env
     {
         if ( !array_key_exists($key, $array) )
             return FALSE;
-        
+
         if ( ::cPHP::is_empty($array[$key]) )
             return FALSE;
-        
+
         return TRUE;
     }
-    
+
     /**
      * Protected to force the use of the static constructors
      *
@@ -284,7 +284,7 @@ class Env
         $this->setLocal( $server );
         $this->setCWD();
         $this->setFileInfo( $server );
-        
+
         if ( !$this->local ) {
             $this->setIP( $server );
             $this->setQuery( $server );
@@ -296,7 +296,7 @@ class Env
             $this->setUri( $server );
         }
     }
-    
+
     /**
      * Provides read only access to the protected variables in this instance
      *
@@ -306,13 +306,13 @@ class Env
     public function __get ($variable)
     {
         $variable = ::cPHP::stripW( $variable );
-        
+
         if ( !property_exists($this, $variable) )
             throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
-        
+
         return $this->$variable;
     }
-    
+
     /**
      * Provides read only access to detect whether a protected variable is set
      *
@@ -322,13 +322,13 @@ class Env
     public function __isset ($variable)
     {
         $variable = ::cPHP::stripW( $variable );
-        
+
         if ( !property_exists($this, $variable) )
             throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
-        
+
         return isset( $this->$variable );
     }
-    
+
     /**
      * Sets whether this script is being executed via command line or not
      *
@@ -339,7 +339,7 @@ class Env
     {
         $this->local = self::hasKey($server, "SHELL");
     }
-    
+
     /**
      * Fills in the IP property
      *
@@ -351,7 +351,7 @@ class Env
         if ( self::hasKey($server, "SERVER_ADDR") )
             $this->ip = $server['SERVER_ADDR'];
     }
-    
+
     /**
      * Fills in the URL Query property
      *
@@ -363,7 +363,7 @@ class Env
         if ( self::hasKey($server, "QUERY_STRING") )
             $this->query = $server['QUERY_STRING'];
     }
-    
+
     /**
      * Fills in the request port property
      *
@@ -375,7 +375,7 @@ class Env
         if ( self::hasKey($server, "SERVER_PORT") )
             $this->port = intval( $server['SERVER_PORT'] );
     }
-    
+
     /**
      * Fills in the protocol property
      *
@@ -387,7 +387,7 @@ class Env
         if ( self::hasKey($server, "SERVER_PROTOCOL") )
             $this->scheme = strtolower( strstr( $server['SERVER_PROTOCOL'], "/", TRUE ) );
     }
-    
+
     /**
      * This sets the file name, basename, path and extension of the executed file
      *
@@ -398,34 +398,34 @@ class Env
     {
         if ( !self::hasKey($server, "SCRIPT_FILENAME") )
             return;
-        
+
         $this->path = $server['SCRIPT_FILENAME'];
-        
+
         $this->basename = basename( $this->path );
         $this->dir = dirname( $this->path );
-        
+
         $info = pathinfo( $this->path );
-        
+
         $this->filename = $info['filename'];
-        
+
         if ( self::hasKey($info, "extension") )
             $this->extension = $info['extension'];
-            
+
     }
-    
+
     /**
      * Sets the current working directory
-     * 
+     *
      * @return null
      */
     public function setCWD ()
     {
         $this->cwd = getcwd();
     }
-    
+
     /**
      * Sets the host, domain, told, sld and subdomain
-     * 
+     *
      * @param Array $server The server info array
      * @return null
      */
@@ -433,40 +433,40 @@ class Env
     {
         if ( !self::hasKey($server, 'HTTP_HOST') )
             return;
-        
+
         // Confirm that it isn't equal to the IP
         if ( $this->ip == $server['HTTP_HOST'] )
             return;
-        
+
         $regex = "/^(?:(.*)\\.)?([^\\.\\:]+)\\.([^\\.\\:]+)(?:\\:([0-9]*))?$/";
-        
+
         if ( !preg_match($regex, $server['HTTP_HOST'], $domain) )
             return;
-        
+
         if ( self::hasKey($domain, 1) )
             $this->subdomain = $domain[1];
         else
             $this->subdomain = 'www';
-        
+
         $this->sld = $domain[2];
         $this->tld = $domain[3];
-        
+
         $this->domain = $this->sld .".". $this->tld;
-        
+
         if ( ::cPHP::is_empty($this->subdomain) )
             $this->host = $this->domain;
         else
             $this->host = $this->subdomain .".". $this->domain;
-            
+
         if ( !::cPHP::is_empty($this->port) && $this->port != 80 )
             $this->hostWithPort = $this->host .":". $this->port;
         else
             $this->hostWithPort = $this->host;
     }
-    
+
     /**
      * Sets the faux directory property
-     * 
+     *
      * @param Array $server The server info array
      * @return null
      */
@@ -474,13 +474,13 @@ class Env
     {
         if ( !self::hasKey( $server, 'PATH_INFO' ) )
             return;
-        
+
         $this->fauxDirs = ::cPHP::strHead( $server['PATH_INFO'], "/" );
     }
-    
+
     /**
      * Sets the relative and absolute URI path and dir properties
-     * 
+     *
      * @param Array $server The server info array
      * @return null
      */
@@ -488,44 +488,44 @@ class Env
     {
         if ( !self::hasKey($server, 'SCRIPT_NAME') )
             return;
-        
+
         // Replace an windows forward slashes
         $this->uriPath = str_replace("\\", "/", $server['SCRIPT_NAME']);
-        
+
         // Ensure it starts with a forward slash
         $this->uriPath = ::cPHP::strHead($this->uriPath, "/");
-        
+
         $this->absUriPath = ::cPHP::strWeld( $this->hostWithPort, $this->uriPath, "/");
-        
+
         $this->uriDir = strTail( dirname( $this->uriPath), "/" );
-        
+
         $this->absUriDir = ::cPHP::strWeld( $this->hostWithPort, $this->uriDir, "/");
     }
-    
+
     /**
      * Sets the relative and absolute URI properties
-     * 
+     *
      * @param Array $server The server info array
      * @return null
      */
     protected function setUri ( array &$server )
     {
         $this->uri = null;
-        
+
         if ( !::cPHP::is_empty( $this->uriPath ) )
             $this->uri = $this->uriPath . $this->fauxDirs;
-        
+
         if ( !::cPHP::is_empty( $this->query ) )
             $this->uri .= ::cPHP::strHead( $this->query, "?" );
 
         $this->absUri = null;
-        
+
         if ( !::cPHP::is_empty( $this->hostWithPort ) )
             $this->absUri .= $this->hostWithPort;
-        
+
         if ( !::cPHP::is_empty( $this->scheme ) )
             $this->absUri = $this->scheme ."://" . $this->absUri;
-            
+
         if ( !::cPHP::is_empty( $this->uri ) ) {
             $this->absUri = ::cPHP::strWeld(
                     $this->absUri,
@@ -534,7 +534,7 @@ class Env
                 );
         }
     }
-    
+
 }
 
 ?>

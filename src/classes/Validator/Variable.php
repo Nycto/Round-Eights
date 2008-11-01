@@ -54,7 +54,7 @@ class Variable extends ::cPHP::Validator
     {
         if ( !is_string($value) )
             return "Must be a string";
-        
+
         if ( !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $value) )
             return "Must be a valid PHP variable name";
     }

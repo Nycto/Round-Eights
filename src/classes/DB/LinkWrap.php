@@ -1,7 +1,7 @@
 <?php
 /**
  * Base Database Decorator
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -37,12 +37,12 @@ namespace cPHP::DB;
  */
 abstract class LinkWrap implements ::cPHP::iface::DB::Link
 {
-    
+
     /**
      * The Link this decorator wraps around
      */
-    private $link;    
-   
+    private $link;
+
     /**
      * Constructor...
      *
@@ -52,7 +52,7 @@ abstract class LinkWrap implements ::cPHP::iface::DB::Link
     {
         $this->link = $link;
     }
-    
+
     /**
      * Returns the Link this instance wraps
      *
@@ -62,10 +62,10 @@ abstract class LinkWrap implements ::cPHP::iface::DB::Link
     {
         return $this->link;
     }
-    
+
     /**
      * Runs a query and returns the result
-     * 
+     *
      * Wraps the equivilent function in the Link
      *
      * @param String $query The query to run
@@ -76,35 +76,35 @@ abstract class LinkWrap implements ::cPHP::iface::DB::Link
     {
         return $this->link->query( $query );
     }
-    
+
     /**
      * Quotes a variable to be used in a query
      *
      * Wraps the equivilent function in the Link
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Array
      */
     public function quote ( $value, $allowNull = TRUE )
     {
         return $this->link->quote( $value, $allowNull );
     }
-    
+
     /**
      * Escapes a variable to be used in a query
      *
      * Wraps the equivilent function in the Link
      *
      * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow 
+     * @param Boolean $allowNull Whether to allow
      * @return String|Array
      */
     public function escape ( $value, $allowNull = TRUE )
     {
         return $this->link->escape( $value, $allowNull );
     }
-   
+
 }
 
 ?>

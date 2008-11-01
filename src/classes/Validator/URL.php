@@ -37,17 +37,17 @@ namespace cPHP::Validator;
  */
 class URL extends ::cPHP::Validator
 {
-    
+
     /**
      * Flags that a relative URL should be allowed
      */
     const ALLOW_RELATIVE = 1;
-    
+
     /**
      * Any flags to pass to the is_empty function
      */
     protected $flags = 0;
-    
+
     /**
      * Constructor...
      *
@@ -69,28 +69,28 @@ class URL extends ::cPHP::Validator
     {
         if ( !is_string($value) )
             return "URL must be a string";
-        
+
         if ( ::cPHP::strContains(" ", $value) )
             return "URL must not contain spaces";
-        
+
         if ( ::cPHP::strContains("\t", $value) )
             return "URL must not contain tabs";
-        
+
         if ( ::cPHP::strContains("\n", $value) || ::cPHP::strContains("\r", $value) )
             return "URL must not contain line breaks";
-        
+
         if ( preg_match('/[^a-z0-9'. preg_quote('$-_.+!*\'(),{}|\\^~[]`<>#%";/?:@&=', '/') .']/i', $value) )
             return "URL contains invalid characters";
-        
+
         if ( $this->flags & self::ALLOW_RELATIVE ) {
-            
+
             $parsed = @parse_url( $value );
-            
+
             if ( $parsed === FALSE )
                 return "URL is not valid";
-            
+
         }
-        
+
         else if ( !filter_var( $value, FILTER_VALIDATE_URL ) ) {
             return "URL is not valid";
         }

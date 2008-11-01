@@ -37,12 +37,12 @@ namespace cPHP::Exception;
  */
 class Variable extends ::cPHP::Exception
 {
-    
+
     /**
      * The title of this exception
      */
     const TITLE = "Variable Error";
-    
+
     /**
      * A brief description of this error type
      */
@@ -59,13 +59,13 @@ class Variable extends ::cPHP::Exception
     public function __construct($variable, $message = NULL, $code = 0, $fault = NULL)
     {
         parent::__construct($message, $code, $fault);
-        
+
         $this->addData(
                 "Variable Name",
                 ::cPHP::strval( $variable )
             );
     }
-    
+
 }
 
 ?>

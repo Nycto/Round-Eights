@@ -52,7 +52,7 @@ class Result extends cPHP::ErrorList
     {
         $this->value = $value;
     }
-    
+
     /**
      * Returns the value that was validated
      *

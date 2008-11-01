@@ -41,12 +41,12 @@ namespace cPHP::Validator;
  */
 class MaxLength extends ::cPHP::Validator
 {
-    
+
     /**
      * The string length the value must be less than or equal to
      */
     protected $length;
-    
+
     /**
      * Constructor...
      *
@@ -68,10 +68,10 @@ class MaxLength extends ::cPHP::Validator
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
             $value = ::cPHP::strval($value);
-        
+
         if ( !is_string($value) )
             return "Must be a string";
-        
+
         if ( strlen($value) > $this->length ) {
             return ::cPHP::pluralize(
                     "Must not be longer than ". $this->length ." character",

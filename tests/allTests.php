@@ -39,7 +39,7 @@ require_once rtrim( __DIR__, "/" ) ."/classes/allTests.php";
  */
 class AllTests
 {
-    
+
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite('All commonPHP Tests');

@@ -37,7 +37,7 @@ namespace cPHP;
  */
 abstract class Filter implements ::cPHP::iface::Filter
 {
-    
+
     /**
      * Static method for creating a new filtering instance
      *
@@ -52,7 +52,7 @@ abstract class Filter implements ::cPHP::iface::Filter
     static public function __callStatic ( $filter, $args )
     {
         $filter = "cPHP::Filter::". trim( ::cPHP::strval($filter) );
-        
+
         if ( !class_exists($filter, true) ) {
             throw new ::cPHP::Exception::Argument(
                     0,
@@ -60,7 +60,7 @@ abstract class Filter implements ::cPHP::iface::Filter
                     "Filter could not be found in cPHP::Filter namespace"
                 );
         }
-        
+
         if ( count($args) <= 0 ) {
             return new $filter;
         }
@@ -71,7 +71,7 @@ abstract class Filter implements ::cPHP::iface::Filter
             $refl = new ReflectionClass( $filter );
             return $refl->newInstanceArgs( $args );
         }
-        
+
     }
 
     /**

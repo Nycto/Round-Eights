@@ -1,7 +1,7 @@
 <?php
 /**
  * Advanced querying linkwrap
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -33,17 +33,17 @@
 namespace cPHP::DB::LinkWrap;
 
 /**
- * Link wrapper to provide advanced 
+ * Link wrapper to provide advanced
  */
 class Querier extends ::cPHP::DB::LinkWrap
 {
-    
+
     /**
      * Query Flags
      */
     const SILENT = 1;
     const INSERT_IGNORE = 2;
-    
+
     /**
      * Runs a query and returns the result
      *
@@ -60,18 +60,18 @@ class Querier extends ::cPHP::DB::LinkWrap
             return $this->getLink()->query( $query, $flags );
         }
         catch (::cPHP::Exception::DB::Query $err) {
-            
+
             if ( !( $flags & self::SILENT) ) {
                 $err->shiftFault();
                 throw $err;
             }
-            
+
             return FALSE;
-        
+
         }
-        
+
     }
-    
+
     /**
      * Marks the start of a transaction
      *
@@ -82,7 +82,7 @@ class Querier extends ::cPHP::DB::LinkWrap
         $this->getLink()->query( "BEGIN" );
         return $this;
     }
-    
+
     /**
      * Commits a transaction
      *
@@ -93,7 +93,7 @@ class Querier extends ::cPHP::DB::LinkWrap
         $this->getLink()->query( "COMMIT" );
         return $this;
     }
-    
+
     /**
      * Rolls back the current transaction
      *
@@ -104,7 +104,7 @@ class Querier extends ::cPHP::DB::LinkWrap
         $this->getLink()->query( "ROLLBACK" );
         return $this;
     }
-    
+
     /**
      * Takes an array of fields and constructs a field list for a query
      *
@@ -116,7 +116,7 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         if ( !::cPHP::Ary::is($fields) )
             throw new ::cPHP::Exception::Argument(0, "Field List", "Must be an array or traversable");
-        
+
         $fields = ::cPHP::Ary::create($fields)->flatten();
 
         if (count($fields) <= 0)
@@ -128,7 +128,7 @@ class Querier extends ::cPHP::DB::LinkWrap
 
         return $fields->implode(", ");
     }
-    
+
     /**
      * Inserts a row in to a table
      *
@@ -154,10 +154,10 @@ class Querier extends ::cPHP::DB::LinkWrap
 
         if ( $result === FALSE )
             return FALSE;
-        
+
         return $result->getInsertID();
     }
-    
+
     /**
      * Updates a table with the given values
      *
@@ -177,17 +177,17 @@ class Querier extends ::cPHP::DB::LinkWrap
 
         if ( ::cPHP::is_empty($table) )
             throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
-        
+
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
-        
+
         $where = trim( ::cPHP::strval($where) );
-        
+
         if ( !::cPHP::is_empty($where) )
             $query .= " WHERE ". $where;
 
         return $this->query($query, $flags);
     }
-    
+
     /**
      * Runs a query and returns a specific row
      *
@@ -211,14 +211,14 @@ class Querier extends ::cPHP::DB::LinkWrap
 
         if ($result->count() <= 0)
             return FALSE;
-        
+
         $value = $result->seek( $row )->current();
-        
+
         $result->free();
-        
+
         return $value;
     }
-    
+
     /**
      * Runs a query and returns a specific field from a row
      *
@@ -232,29 +232,29 @@ class Querier extends ::cPHP::DB::LinkWrap
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
         $field = ::cPHP::strval( $field );
-        
+
         if ( ::cPHP::is_empty($field) )
             throw new ::cPHP::Exception::Argument( 0, "Field", "Must not be empty" );
-        
+
         $result = $this->getRow( $query, $row, $flags );
-        
+
         if ( !is_array($result) && !($result instanceof ArrayAccess) ) {
             $err = new ::cPHP::Exception::Interaction("Row was not an array or accessable as an array");
             $err->addData("Query", $query);
             $err->addData("Returned Row", ::cPHP::getDump($result));
             throw $err;
         }
-        
+
         if ( !isset($result[ $field ]) ) {
             $err = new ::cPHP::Exception::Argument( 0, "Field", "Field does not exist in row" );
             $err->addData("Query", $query);
             $err->addData("Returned Row", ::cPHP::getDump($result));
             throw $err;
         }
-        
+
         return $result[ $field ];
     }
-    
+
     /**
      * Counts the number of rows in a table
      *
@@ -272,17 +272,17 @@ class Querier extends ::cPHP::DB::LinkWrap
 
         if ( ::cPHP::is_empty($table) )
             throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
-        
+
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
-        
+
         $where = trim( ::cPHP::strval($where) );
-        
+
         if ( !::cPHP::is_empty($where) )
             $query .= " WHERE ". $where;
 
         return intval( $this->getField("cnt", $query, 0, $flags) );
     }
-    
+
 }
 
 ?>

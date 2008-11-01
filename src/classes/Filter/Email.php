@@ -37,14 +37,14 @@ namespace cPHP::Filter;
  */
 class Email extends cPHP::Filter
 {
-    
+
     /**
      * Cleans up a string in preparation for using it as an e-mail address
      *
      * Remove everything except letters, digits and !#$%&'*+-/=?^_`{|}~@.[]
      *
      * @param mixed $value The value to filter
-     * @return 
+     * @return
      */
     public function filter ( $value )
     {
@@ -53,7 +53,7 @@ class Email extends cPHP::Filter
                 FILTER_SANITIZE_EMAIL
             );
     }
-    
+
 }
 
 ?>

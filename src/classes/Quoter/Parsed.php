@@ -37,22 +37,22 @@ namespace cPHP::Quoter;
  */
 class Parsed
 {
-    
+
     /**
      * The sections represented by this instance
      */
     private $sections = array();
-    
+
     /**
      * Whether the iterator functionality should include the quoted objects
      */
     private $quoted = TRUE;
-    
+
     /**
      * Whether the iterator functionality should include the unquoted objects
      */
     private $unquoted = TRUE;
-    
+
     /**
      * Returns a list of all the sections in this instance
      *
@@ -62,7 +62,7 @@ class Parsed
     {
         return new ::cPHP::Ary( $this->sections );
     }
-    
+
     /**
      * Adds a new section to the end of this list
      *
@@ -74,7 +74,7 @@ class Parsed
         $this->sections[] = $section;
         return $this;
     }
-    
+
     /**
      * Converts all the contained sections to strings and concatenates them
      *
@@ -88,7 +88,7 @@ class Parsed
         }
         return $result;
     }
-    
+
     /**
      * Returns whether the quoted values will included in the advanced functionality
      *
@@ -98,7 +98,7 @@ class Parsed
     {
         return $this->quoted;
     }
-    
+
     /**
      * Sets whether the quoted values should be included in the advanced functionality
      *
@@ -109,7 +109,7 @@ class Parsed
         $this->quoted = $setting ? TRUE : FALSE;
         return $this;
     }
-    
+
     /**
      * Returns whether the unquoted values will included in the advanced functionality
      *
@@ -119,7 +119,7 @@ class Parsed
     {
         return $this->unquoted;
     }
-    
+
     /**
      * Sets whether the unquoted values should be included in the advanced functionality
      *
@@ -130,7 +130,7 @@ class Parsed
         $this->unquoted = $setting ? TRUE : FALSE;
         return $this;
     }
-    
+
     /**
      * Splits the string based on a separator and returns the resulting sections
      *
@@ -142,25 +142,25 @@ class Parsed
     public function explode ( $separator )
     {
         $result = new ::cPHP::Ary(array(""));
-        
+
         foreach ( $this->sections AS $section ) {
-            
+
             if ( ( $section->isQuoted() && $this->quoted ) || ( !$section->isQuoted() && $this->unquoted ) )
                 $exploded = explode( $separator, $section->__toString() );
             else
                 $exploded = array( $section->__toString() );
-            
+
             $result->push(
                     $result->pop( TRUE ) . array_shift( $exploded )
                 );
-            
+
             $result = $result->merge( $exploded );
-            
+
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Applies a filter to the selected sections
      *
@@ -171,22 +171,22 @@ class Parsed
     {
         if ( !$this->quoted && !$this->unquoted )
             return $this;
-        
+
         foreach ( $this->sections AS $section ) {
-            
+
             if ( ( $section->isQuoted() && $this->quoted ) || ( !$section->isQuoted() && $this->unquoted ) ) {
-                
+
                 $section->setContent(
                         $filter->filter( $section->getContent() )
                     );
-                
+
             }
-            
+
         }
-        
+
         return $this;
     }
-    
+
 }
 
 ?>

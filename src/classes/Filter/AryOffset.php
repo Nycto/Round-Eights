@@ -41,12 +41,12 @@ namespace cPHP::Filter;
  */
 class AryOffset extends cPHP::Filter
 {
-    
+
     /**
      * The filters to apply indexed by their matching offset
      */
     private $filters = array();
-    
+
     /**
      * Constructor...
      *
@@ -56,7 +56,7 @@ class AryOffset extends cPHP::Filter
     {
         $this->import( $filters );
     }
-    
+
     /**
      * Returns the list of filters loaded in this instance
      *
@@ -66,7 +66,7 @@ class AryOffset extends cPHP::Filter
     {
         return new ::cPHP::Ary( $this->filters );
     }
-    
+
     /**
      * Sets an index/filter pair in this instance
      *
@@ -82,7 +82,7 @@ class AryOffset extends cPHP::Filter
         $this->filters[ $index ] = $filter;
         return $this;
     }
-    
+
     /**
      * Imports a list of filters in to this instance
      *
@@ -93,16 +93,16 @@ class AryOffset extends cPHP::Filter
     {
         if ( !::cPHP::Ary::is( $filters) )
             throw new ::cPHP::Exception::Argument( 0, "Filter List", "Must be an array or a traversable object" );
-        
+
         $filters = new ::cPHP::Ary( $filters );
         foreach ( $filters AS $key => $value ) {
             if ( $value instanceof ::cPHP::iface::Filter )
                 $this->setFilter( $key, $value );
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Apply this filter to an array value
      *
@@ -113,18 +113,18 @@ class AryOffset extends cPHP::Filter
     {
         if ( !::cPHP::Ary::is( $value ) )
             return $value;
-        
+
         else if ( is_object($value) && ( !( $value instanceof ArrayAccess ) || !( $value instanceof Traversable ) ) )
             return $value;
-        
+
         foreach ( $this->filters AS $key => $filter ) {
             if ( isset($value[$key]) )
                 $value[$key] = $filter->filter( $value[$key] );
         }
-        
+
         return $value;
     }
-    
+
 }
 
 ?>

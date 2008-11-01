@@ -42,26 +42,26 @@ abstract class Curry implements cPHP::iface::Filter
      * Any arguments to pass to curry to the left
      */
     protected $leftArgs = array();
-    
+
     /**
      * Any arguments to pass to curry to the right
      */
     protected $rightArgs = array();
-    
+
     /**
      * For slicing the input arguments, this is the offset.
      *
      * See array_slice for details
      */
     protected $offset = 0;
-    
+
     /**
      * For slicing the input arguments, this is the length of the array to allow
      *
      * See array_slice for details
      */
     protected $length;
-    
+
     /**
      * Static method for in-line create
      *
@@ -72,18 +72,18 @@ abstract class Curry implements cPHP::iface::Filter
     static public function create ( $action )
     {
         $instance = new static( $action );
-        
+
         if ( func_num_args() > 1 ) {
-            
+
             $args = func_get_args();
             array_shift( $args );
             $instance->setRightByArray( $args );
-            
+
         }
-        
+
         return $instance;
     }
-    
+
     /**
      * Sets the leftward arguments
      *
@@ -96,7 +96,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->leftArgs = array_values( $args );
         return $this;
     }
-    
+
     /**
      * Sets the rightward arguments from an array
      *
@@ -108,7 +108,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->leftArgs = array_values( $args );
         return $this;
     }
-    
+
     /**
      * Returns the leftward argument list
      *
@@ -118,7 +118,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->leftArgs;
     }
-    
+
     /**
      * Removes any rightward arguments
      *
@@ -129,7 +129,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->leftArgs = array();
         return $this;
     }
-    
+
     /**
      * Sets the rightward arguments
      *
@@ -142,7 +142,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->rightArgs = array_values( $args );
         return $this;
     }
-    
+
     /**
      * Sets the rightward arguments from an array
      *
@@ -154,7 +154,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->rightArgs = array_values( $args );
         return $this;
     }
-    
+
     /**
      * Returns the rightward argument list
      *
@@ -164,7 +164,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->rightArgs;
     }
-    
+
     /**
      * Removes any rightward arguments
      *
@@ -175,7 +175,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->rightArgs = array();
         return $this;
     }
-    
+
     /**
      * Clears both the left and right arguments
      *
@@ -185,7 +185,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->clearRight()->clearLeft();
     }
-    
+
     /**
      * Set the start offset used to slice up the call arguments
      *
@@ -197,7 +197,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->offset = intval($offset);
         return $this;
     }
-    
+
     /**
      * Returns the argument slicing offset
      *
@@ -207,7 +207,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->offset;
     }
-    
+
     /**
      * Returns the argument slicing offset
      *
@@ -218,7 +218,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->offset = 0;
         return $this;
     }
-    
+
     /**
      * Set the length limit for slicing up the call arguments
      *
@@ -230,7 +230,7 @@ abstract class Curry implements cPHP::iface::Filter
         $this->limit = intval($limit);
         return $this;
     }
-    
+
     /**
      * Returns whether the argument slicing limit is set
      *
@@ -240,7 +240,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return isset($this->limit);
     }
-    
+
     /**
      * Returns the argument slicing limit
      *
@@ -253,7 +253,7 @@ abstract class Curry implements cPHP::iface::Filter
         else
             return $this->limit;
     }
-    
+
     /**
      * Clears the argument slicing limit
      *
@@ -264,7 +264,7 @@ abstract class Curry implements cPHP::iface::Filter
         unset( $this->limit );
         return $this;
     }
-    
+
     /**
      * Clears both the argument slicing limit and the offset
      *
@@ -274,17 +274,17 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->clearLimit()->clearOffset();
     }
-    
+
     /**
      * Clears all the settings from this instance
      *
-     * @return object Returns a self reference 
+     * @return object Returns a self reference
      */
     public function clear ()
     {
         return $this->clearArgs()->clearSlicing();
     }
-    
+
     /**
      * Applies the slicing and combines the given arguments with the left args and right args
      *
@@ -293,19 +293,19 @@ abstract class Curry implements cPHP::iface::Filter
      */
     public function collectArgs ( array $args )
     {
-        
+
         // Slicing is only needed if the offset is not 0, or they have inflicted a length limit
         if ( $this->offset != 0 || isset($this->limit) ) {
-            
+
             if ( isset($this->limit) )
                 $args = array_slice( $args, $this->offset, $this->limit );
             else
                 $args = array_slice( $args, $this->offset );
         }
-        
+
         return array_merge( $this->leftArgs, $args, $this->rightArgs );
     }
-    
+
     /**
      * Internal function that actually executs the currying.
      *
@@ -315,7 +315,7 @@ abstract class Curry implements cPHP::iface::Filter
      * @return mixed Returns the results of the function call
      */
     abstract protected function exec ( array $args = array() );
-    
+
     /**
      * Calls the method using the contents of an array as the arguments
      *
@@ -326,7 +326,7 @@ abstract class Curry implements cPHP::iface::Filter
     {
         return $this->exec( $this->collectArgs($args) );
     }
-    
+
     /**
      * Calls the contained function with the given arguments
      *
@@ -338,7 +338,7 @@ abstract class Curry implements cPHP::iface::Filter
         $args = func_get_args();
         return $this->exec( $this->collectArgs($args) );
     }
-    
+
     /**
      * Calls the contained function with the given arguments
      *
@@ -350,18 +350,18 @@ abstract class Curry implements cPHP::iface::Filter
         $args = func_get_args();
         return $this->exec( $this->collectArgs($args) );
     }
-    
+
     /**
      * Method for use with the filtering objects. Invokes the contained method with the given value
      *
      * @param $value mixed The value to be filtered
-     * @return mixed The result of the filtering 
+     * @return mixed The result of the filtering
      */
     public function filter ( $value )
     {
         return $this->exec( $this->collectArgs( array($value) ) );
     }
-    
+
 }
 
 ?>

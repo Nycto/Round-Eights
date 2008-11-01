@@ -37,12 +37,12 @@ namespace cPHP::DB;
  */
 abstract class Result
 {
-    
+
     /**
      * The query associated with these results
      */
     private $query;
-    
+
     /**
      * Constructor...
      *
@@ -52,7 +52,7 @@ abstract class Result
     {
         $this->query = ::cPHP::strval($query);
     }
-    
+
     /**
      * Returns the query associated with this result
      *

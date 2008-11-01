@@ -37,12 +37,12 @@ namespace cPHP;
  */
 class ErrorList
 {
-    
+
     /**
      * The list of errors in this instance
      */
     private $errors = array();
-    
+
     /**
      * Adds a new error to this instance
      *
@@ -52,16 +52,16 @@ class ErrorList
     public function addError ( $message )
     {
         $message = ::cPHP::strval($message);
-        
+
         if ( ::cPHP::is_empty($message) )
             throw new cPHP::Exception::Argument( 0, "Error Message", "Must Not Be Empty" );
-        
+
         if ( !in_array($message, $this->errors) )
             $this->errors[] = $message;
-        
+
         return $this;
     }
-    
+
     /**
      * Adds multiple errors at once
      *
@@ -81,7 +81,7 @@ class ErrorList
             ->each(array($this, "addError"));
         return $this;
     }
-    
+
     /**
      * Returns the errors contained in this instance
      *
@@ -113,7 +113,7 @@ class ErrorList
     {
         return $this->clearErrors()->addError( $message );
     }
-    
+
     /**
      * Returns whether or not this instance has any errors contained in it
      *
@@ -123,7 +123,7 @@ class ErrorList
     {
         return count( $this->errors ) > 0 ? TRUE : FALSE;
     }
-    
+
     /**
      * Returns the first error contained in this instance
      *
@@ -133,10 +133,10 @@ class ErrorList
     {
         if ( count($this->errors) == 0 )
             return NULL;
-        
+
         return reset( $this->errors );
     }
-    
+
 }
 
 ?>

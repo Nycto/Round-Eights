@@ -37,7 +37,7 @@ namespace cPHP::Filter;
  */
 class Boolean extends cPHP::Filter
 {
-    
+
     /**
      * Converts the given value to boolean
      *
@@ -49,35 +49,35 @@ class Boolean extends cPHP::Filter
         if ( is_bool($value) ) {
             return $value;
         }
-        
+
         else if ( is_int($value) || is_float($value) ) {
             return $value == 0 ? FALSE : TRUE;
         }
-        
+
         else if ( is_null($value) ) {
             return FALSE;
         }
-        
+
         else if ( is_string($value) ) {
-            
+
             $value = strtolower( ::cPHP::stripW( $value ) );
             if ( $value == "f" || $value == "false" || $value == "n" || $value == "no" || $value == "off" || ::cPHP::is_empty($value) )
                 return FALSE;
             else
                 return TRUE;
-            
+
         }
-        
+
         else if ( is_array($value) ) {
             return count($value) == 0 ? FALSE : TRUE;
         }
-        
+
         else {
             return $value ? TRUE : FALSE;
         }
-        
+
     }
-    
+
 }
 
 ?>

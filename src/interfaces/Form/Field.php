@@ -40,21 +40,21 @@ namespace cPHP::iface::Form;
  */
 interface Field
 {
-    
+
     /**
      * Returns the name of this field
      *
      * @return String
      */
     public function getName ();
-    
+
     /**
      * Returns the value of this field
      *
      * @return mixed The value of this field
      */
     public function getValue ();
-    
+
     /**
      * Sets the value for this field
      *
@@ -62,7 +62,7 @@ interface Field
      * @return Object Returns a self reference
      */
     public function setValue ( $value );
-    
+
 }
 
 ?>

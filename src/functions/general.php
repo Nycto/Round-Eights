@@ -1,7 +1,7 @@
 <?php
 /**
  * General functions
- * 
+ *
  * PHP version 5.3
  *
  * This source file is subject to version 2.0 of the Artistic License. A copy
@@ -215,7 +215,7 @@ function boolVal ($value)
  */
 function strVal ($value)
 {
-    
+
     // We use get_class_methods instead of method_exists to ensure that __toString is a public method
     if (is_object($value) && in_array("__toString", get_class_methods($value)))
         return ::strval( $value->__toString() );
@@ -238,26 +238,26 @@ function strVal ($value)
 function kindOf ( $value, $className )
 {
     $className = ltrim( trim( strval( $className ) ), ":" );
-    
+
     if ( is_object($value) )
         return ( $value instanceof $className ) ? TRUE : FALSE;
-    
+
     $value = trim( trim( strval( $value ) ), ":" );
-    
+
     if ( !class_exists($value) )
         return FALSE;
-    
+
     if ( strcasecmp($value, $className) == 0 )
         return TRUE;
-    
+
     if ( is_subclass_of($value, $className) )
         return TRUE;
-    
+
     return in_array(
             $value,
             array_map( "strtolower", class_implements( $value ) )
         );
-    
+
 }
 
 ?>

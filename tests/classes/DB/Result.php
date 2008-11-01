@@ -44,13 +44,13 @@ class classes_db_result extends PHPUnit_Framework_TestCase
                 array("rawFree"),
                 array("SELECT * FROM table")
             );
-        
+
         $this->assertSame(
                 "SELECT * FROM table",
                 $mock->getQuery()
             );
     }
-    
+
 }
 
 ?>

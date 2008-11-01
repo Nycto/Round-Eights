@@ -37,46 +37,46 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_validator_variable extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testNonStrings ()
     {
         $validator = new ::cPHP::Validator::Variable;
-        
+
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(10);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(1.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
@@ -84,37 +84,37 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
                 $result->getErrors()->get()
             );
     }
-    
+
     public function testValid ()
     {
         $validator = new ::cPHP::Validator::Variable;
-        
+
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("test1234")->isValid() );
-        
+
         // Get a list of extended range ascii characters
         $string = implode( "", array_map("chr", range(127, 255) ) );
         $this->assertTrue( $validator->validate($string)->isValid() );
     }
-    
+
     public function testInvalid ()
     {
         $validator = new ::cPHP::Validator::Variable;
-        
+
         $result = $validator->validate("123");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a valid PHP variable name"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate("test.period");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a valid PHP variable name"),
                 $result->getErrors()->get()
             );
-        
+
         $result = $validator->validate('$noDollar');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
@@ -122,7 +122,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
                 $result->getErrors()->get()
             );
     }
-    
+
 }
 
 ?>

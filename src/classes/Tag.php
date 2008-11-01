@@ -65,7 +65,7 @@ class Tag implements ArrayAccess
      * The content of this tag
      */
     protected $content;
-    
+
     /**
      * Allows a tag instance to be created by calling a method with the tag name.
      *
@@ -77,16 +77,16 @@ class Tag implements ArrayAccess
     static public function __callStatic ( $func, $args )
     {
         $tag = new static( $func );
-        
+
         if ( count($args) > 0 )
             $tag->setContent( array_shift($args) );
-        
+
         if ( count($args) > 0 )
             $tag->importAttrs( array_shift($args) );
-        
+
         return $tag;
     }
-    
+
     /**
      * Takes an HTML attribute and strips it down
      *
@@ -97,13 +97,13 @@ class Tag implements ArrayAccess
     static public function normalizeAttrName ( $attr )
     {
         $attr = strtolower( ::cPHP::stripW($attr) );
-        
+
         if ( empty($attr) )
             throw new ::cPHP::Exception::Argument( 0, "Attribute Name", "Must not be empty" );
-        
+
         return $attr;
     }
-    
+
     /**
      * Puts quotes around a string and prepares it to be used as the value of an HTML attribute
      *
@@ -114,7 +114,7 @@ class Tag implements ArrayAccess
     {
         return '"'. htmlspecialchars( ::cPHP::strval( $string ) ) .'"';
     }
-    
+
     /**
      * Constructor...
      *
@@ -129,7 +129,7 @@ class Tag implements ArrayAccess
         $this->setContent( $content );
         $this->importAttrs( $attrs );
     }
-    
+
     /**
      * Returns the tag held in this instance
      *
@@ -139,7 +139,7 @@ class Tag implements ArrayAccess
     {
         return $this->tag;
     }
-    
+
     /**
      * Sets the value of the tag in this instance
      *
@@ -157,7 +157,7 @@ class Tag implements ArrayAccess
 
         return $this;
     }
-    
+
     /**
      * Returns the content of this tag
      *
@@ -165,9 +165,9 @@ class Tag implements ArrayAccess
      */
     public function getContent ()
     {
-        return $this->content; 
+        return $this->content;
     }
-    
+
     /**
      * Sets the content of this instance
      *
@@ -180,7 +180,7 @@ class Tag implements ArrayAccess
         $this->content = empty($content) && $content !== "0" ? null : $content;
         return $this;
     }
-    
+
     /**
      * Adds content to the end of the existing content
      *
@@ -194,7 +194,7 @@ class Tag implements ArrayAccess
             $this->content .= $content;
         return $this;
     }
-    
+
     /**
      * Returns whether the current instance has any content
      *
@@ -204,7 +204,7 @@ class Tag implements ArrayAccess
     {
         return isset($this->content);
     }
-    
+
     /**
      * Unsets any content in this instance
      *
@@ -215,7 +215,7 @@ class Tag implements ArrayAccess
         $this->content = null;
         return $this;
     }
-    
+
     /**
      * Sets whether this instance should be rendered as empty
      *
@@ -227,7 +227,7 @@ class Tag implements ArrayAccess
         $this->empty = $setting ? TRUE : FALSE;
         return $this;
     }
-    
+
     /**
      * Clears the empty override and reverts to automatic detection
      *
@@ -238,7 +238,7 @@ class Tag implements ArrayAccess
         $this->empty = null;
         return $this;
     }
-    
+
     /**
      * Returns whether the current tag will be rendered as empty
      *
@@ -261,7 +261,7 @@ class Tag implements ArrayAccess
             );
 
     }
-    
+
     /**
      * Returns the list of attributes associated with this instance
      *
@@ -271,7 +271,7 @@ class Tag implements ArrayAccess
     {
         return new ::cPHP::Ary( $this->attrs );
     }
-    
+
     /**
      * Returns whether there are any attributes set
      *
@@ -281,7 +281,7 @@ class Tag implements ArrayAccess
     {
         return count( $this->attrs ) > 0 ? TRUE : FALSE;
     }
-    
+
     /**
      * Sets a specific HTML attribute
      *
@@ -296,7 +296,7 @@ class Tag implements ArrayAccess
         $this->attrs[ self::normalizeAttrName( $attr ) ] = ::cPHP::reduce($value);
         return $this;
     }
-    
+
     /**
      * Returns whether an attribute has been set
      *
@@ -307,7 +307,7 @@ class Tag implements ArrayAccess
     {
         return array_key_exists( self::normalizeAttrName( $attr ), $this->attrs );
     }
-    
+
     /**
      * Clears an attribute from being set
      *
@@ -320,7 +320,7 @@ class Tag implements ArrayAccess
         unset( $this->attrs[ $attr ] );
         return $this;
     }
-    
+
     /**
      * Sets a specific HTML attribute
      *
@@ -331,10 +331,10 @@ class Tag implements ArrayAccess
     {
         if ( !$this->attrExists($attr) )
             return null;
-        
+
         return $this->attrs[ self::normalizeAttrName( $attr ) ];
     }
-    
+
     /**
      * Imports a list of attributes in to this instance
      *
@@ -353,7 +353,7 @@ class Tag implements ArrayAccess
         }
         return $this;
     }
-    
+
     /**
      * Removes all attributes from this instance
      *
@@ -364,10 +364,10 @@ class Tag implements ArrayAccess
         $this->attrs = array();
         return $this;
     }
-    
+
     /**
      * Array access method... wraps attrExists
-     * 
+     *
      * @param String $attr The attribute to test
      * @return Boolean
      */
@@ -375,7 +375,7 @@ class Tag implements ArrayAccess
     {
         return $this->attrExists( $offset );
     }
-    
+
     /**
      * Array access method... wraps getAttr
      *
@@ -386,7 +386,7 @@ class Tag implements ArrayAccess
     {
         return $this->getAttr($offset);
     }
-    
+
     /**
      * Array access method... wraps setAttr
      *
@@ -398,7 +398,7 @@ class Tag implements ArrayAccess
     {
         $this->setAttr($offset, $value);
     }
-    
+
     /**
      * Array access method... wraps unsetAttr
      *
@@ -409,7 +409,7 @@ class Tag implements ArrayAccess
     {
         return $this->unsetAttr($offset);
     }
-    
+
     /**
      * Returns a string of the attributes in this instance
      *
@@ -419,20 +419,20 @@ class Tag implements ArrayAccess
     {
         $attrs = array();
         $flags = array();
-    
+
         foreach ( $this->attrs AS $label => $data) {
-    
+
             // If it equals TRUE, that means it's a flag
             if ( $data === TRUE )
                 $flags[] = $label;
-            else 
+            else
                 $attrs[] = $label ."=". self::quoteAttr($data);
-    
+
         }
-        
+
         return implode(" ", array_merge($attrs, $flags));
     }
-    
+
     /**
      * Returns a string representation of the open part of the tag
      *
@@ -444,19 +444,19 @@ class Tag implements ArrayAccess
     {
         return '<'. $this->tag . ( $this->hasAttrs() ? ' '. $this->getAttrString() : '') .'>';
     }
-    
+
     /**
      * Returns the html to close this tag
      *
      * This will return something like: </a>
-     * 
+     *
      * @return String A closing HTML tag
      */
     public function getCloseTag ()
     {
         return '</'. $this->tag .'>';
     }
-    
+
     /**
      * Returns an empty HTML tag
      *
@@ -468,7 +468,7 @@ class Tag implements ArrayAccess
     {
         return '<'. $this->tag . ( $this->hasAttrs() ? ' '. $this->getAttrString() : '') .' />';
     }
-    
+
     /**
      * Returns the HTML string represented by this instance
      *

@@ -42,12 +42,12 @@ class DB extends ::cPHP::Exception
      * Title of this exception
      */
     const TITLE = "Database Error";
-    
+
     /**
      * A brief description of this exception
      */
     const DESCRIPTION = "Database related errors";
-    
+
     /**
      * Constructor...
      *

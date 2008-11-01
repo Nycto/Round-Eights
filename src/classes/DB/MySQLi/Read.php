@@ -78,14 +78,14 @@ class Read extends ::cPHP::DB::Result::Read
     protected function rawFields ()
     {
         $fields = $this->getResult()->fetch_fields();
-        
+
         foreach ( $fields AS $key => $field ) {
             $fields[ $key ] = $field->name;
         }
-        
+
         return $fields;
     }
-    
+
     /**
      * Internal method to free the result resource
      *

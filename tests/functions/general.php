@@ -37,10 +37,10 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  */
 class functions_general extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testSwap ()
     {
-        
+
         $var1 = "test";
         $var2 = "other";
         cPHP::swap($var1, $var2);
@@ -48,7 +48,7 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertEquals("test", $var2);
         $this->assertEquals("other", $var1);
     }
-    
+
     public function testReduce ()
     {
         $this->assertFalse( cPHP::reduce( FALSE ) );
@@ -59,20 +59,20 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertEquals( 151.12, cPHP::reduce( array(151.12, 150) ) );
         $this->assertEquals( 151.12, cPHP::reduce( array( array(151.12, 150) ) ) );
     }
-    
+
     public function testDefineIf ()
     {
         $this->assertFalse( defined("testDefineIf_example") );
-        
+
         $this->assertTrue( cPHP::defineIf("testDefineIf_example", "value") );
-        
+
         $this->assertTrue( defined("testDefineIf_example") );
         $this->assertEquals( "value", testDefineIf_example );
-        
+
         $this->assertTrue( cPHP::defineIf("testDefineIf_example", "new value") );
-        
+
         $this->assertEquals( "value", testDefineIf_example );
-        
+
     }
 
     public function testIsEmpty ()
@@ -115,13 +115,13 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertFalse( cPHP::is_vague("1") );
         $this->assertFalse( cPHP::is_vague( array(1) ) );
     }
-    
+
     public function testArrayVal ()
     {
         $this->assertEquals( array(1, 2, 3), cPHP::arrayVal(array(1, 2, 3)) );
         $this->assertEquals( array(1), cPHP::arrayVal(1) );
     }
-    
+
     public function testNumVal ()
     {
         $this->assertEquals( 1, cPHP::numVal(1) );
@@ -129,7 +129,7 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertEquals( 1, cPHP::numVal("1") );
         $this->assertEquals( 1.5, cPHP::numVal("1.5") );
     }
-    
+
     public function testBoolVal ()
     {
         $this->assertEquals( TRUE, cPHP::boolVal(TRUE) );
@@ -137,73 +137,73 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertEquals( TRUE, cPHP::boolVal(1) );
         $this->assertEquals( FALSE, cPHP::boolVal(0) );
     }
-    
+
     public function testStrVal ()
     {
         $this->assertEquals( "string", ::cPHP::strVal("string") );
         $this->assertEquals( "5", cPHP::strVal(5) );
-        
+
         $toString = $this->getMock("stub_strval", array("__toString"));
         $toString->expects( $this->once() )
             ->method("__toString")
             ->will( $this->returnValue("String Version") );
-        
+
         $this->assertEquals( "String Version", ::cPHP::strVal( $toString ) );
     }
-    
+
     public function testKindOf ()
     {
         $filter = new cPHP::Filter::Chain;
-        
+
         $this->assertTrue( ::cPHP::kindOf( $filter, "cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "cPHP::iface::Filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( $filter, "cphp::filter::chain" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "cphp::filter" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "cphp::iface::filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( $filter, "::cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "::cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( $filter, "::cPHP::iface::Filter" ) );
-        
+
         $this->assertFalse( ::cPHP::kindOf( $filter, "cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( $filter, "cPHP::iface::Validator" ) );
-        
+
         $this->assertFalse( ::cPHP::kindOf( $filter, "::cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( $filter, "::cPHP::iface::Validator" ) );
-        
-        
+
+
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cPHP::iface::Filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cphp::filter::chain" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cphp::filter" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "cphp::iface::filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "cPHP::iface::Filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "::cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "::cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( "cPHP::Filter::Chain", "::cPHP::iface::Filter" ) );
-        
+
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "::cPHP::Filter::Chain" ) );
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "::cPHP::Filter" ) );
         $this->assertTrue( ::cPHP::kindOf( "::cPHP::Filter::Chain", "::cPHP::iface::Filter" ) );
-        
-        
+
+
         $this->assertFalse( ::cPHP::kindOf( "cPHP::Filter::Chain", "cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( "cPHP::Filter::Chain", "cPHP::iface::Validator" ) );
-        
+
         $this->assertFalse( ::cPHP::kindOf( "::cPHP::Filter::Chain", "cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( "::cPHP::Filter::Chain", "cPHP::iface::Validator" ) );
-        
+
         $this->assertFalse( ::cPHP::kindOf( "cPHP::Filter::Chain", "::cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( "cPHP::Filter::Chain", "::cPHP::iface::Validator" ) );
-        
+
         $this->assertFalse( ::cPHP::kindOf( "::cPHP::Filter::Chain", "::cPHP::Validator" ) );
         $this->assertFalse( ::cPHP::kindOf( "::cPHP::Filter::Chain", "::cPHP::iface::Validator" ) );
     }

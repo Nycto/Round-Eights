@@ -37,12 +37,12 @@ namespace cPHP::Exception;
  */
 class Argument extends ::cPHP::Exception
 {
-    
+
     /**
      * The title of this exception
      */
     const TITLE = "Argument Error";
-    
+
     /**
      * A brief description of this error type
      */
@@ -65,16 +65,16 @@ class Argument extends ::cPHP::Exception
     public function __construct($arg, $label = NULL, $message = NULL, $code = 0, $fault = 0)
     {
         $this->setFault($fault);
-        
+
         if ( !::cPHP::is_vague($label) )
             $this->addData("Arg Label", $label);
-            
+
         if ( !::cPHP::is_vague($message) )
             $this->message = $message;
-            
+
         if ( !::cPHP::is_vague( $code ) )
             $this->code = $code;
-            
+
         if (!::cPHP::is_vague($arg, ::cPHP::ALLOW_ZERO) && $this->getTraceCount() > 0)
             $this->setArg($arg);
     }
@@ -91,15 +91,15 @@ class Argument extends ::cPHP::Exception
         // If the fault isn't set, default to the end of the trace
         if ( !$this->issetFault())
             $this->setFault(0);
-        
+
         $fault = $this->getFault();
-        
+
         if ($fault === FALSE || !$fault->keyExists('args') || !is_array($fault['args']))
             trigger_error("Error fetching fault trace arguments", E_USER_ERROR);
 
         if (count($fault['args']) <= 0)
             return $this->unsetArg();
-        
+
         $fault['args'] = new ::cPHP::Ary($fault['args']);
 
         $offset = $fault['args']->calcOffset($offset, $wrapFlag);
@@ -121,7 +121,7 @@ class Argument extends ::cPHP::Exception
     {
         return isset($this->arg);
     }
-    
+
     /**
      * Unsets the argument pointer
      *
@@ -159,13 +159,13 @@ class Argument extends ::cPHP::Exception
 
         if (!::cPHP::is_vague($arg, ::cPHP::ALLOW_ZERO))
             $this->setArg( $arg );
-        
+
         else if ( $this->issetArg() )
             $this->setArg( $this->arg );
 
         return $this;
     }
-    
+
     /**
      * Unsets the fault
      *
@@ -186,11 +186,11 @@ class Argument extends ::cPHP::Exception
     {
         if ( !$this->issetArg() )
             return NULL;
-        
+
         $trace = $this->getFault();
         if (count($trace['args']) <= 0)
             return NULL;
-        
+
         return $trace['args'][ $this->getArgOffset() ];
     }
 
@@ -203,11 +203,11 @@ class Argument extends ::cPHP::Exception
     {
         if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        
+
         $data = array();
         foreach ( $this->data AS $key => $value )
             $data[] = $key .": ". $value;
-        
+
         return "Details:\n"
                 .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
                 .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
@@ -225,7 +225,7 @@ class Argument extends ::cPHP::Exception
     {
         if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
             return NULL;
-        
+
         $data = array();
         foreach ( $this->data AS $key => $value )
             $data[] = "<dt>". htmlspecialchars($key) ."</dt>"

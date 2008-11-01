@@ -37,54 +37,54 @@ namespace cPHP;
  */
 class Form implements Countable
 {
-    
+
     /**
      * Common submit methods
      */
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
-    
+
     /**
      * Common form encoding types
      */
     const ENCODING_URLENCODED = 'application/x-www-form-urlencoded';
     const ENCODING_MULTIPART = 'multipart/form-data';
-    
+
     /**
      * The URL this form will be submitted to
      *
      * The default value for this is the current URL, if there is one
      */
     private $action;
-    
+
     /**
      * The submit method
      *
      * This defaults to 'POST'
      */
     private $method = self::METHOD_POST;
-    
+
     /**
      * The form encoding
      */
     private $encoding = self::ENCODING_URLENCODED;
-    
+
     /**
      * The list of form fields
      */
     private $fields;
-    
+
     /**
      * Constructor... Sets the initial state of the instance
      */
     public function __construct ()
     {
         $this->fields = new ::cPHP::Ary;
-        
+
         // Set the default action URI to the current page
         $this->action = ::cPHP::Env::get()->uri;
     }
-    
+
     /**
      * Returns the action URL this form will be submitted to
      *
@@ -94,7 +94,7 @@ class Form implements Countable
     {
         return $this->action;
     }
-    
+
     /**
      * Sets the URI this form submits to
      *
@@ -104,15 +104,15 @@ class Form implements Countable
     public function setAction ( $url )
     {
         $url = ::cPHP::Filter::URL()->filter( $url );
-        
+
         if ( !::cPHP::Validator::URL( ::cPHP::Validator::URL::ALLOW_RELATIVE )->isValid( $url ) )
             throw new ::cPHP::Exception::Argument( 0, "Form Action", "Must be a valid URL" );
-        
+
         $this->action = $url;
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the method that this form will submit using
      *
@@ -122,7 +122,7 @@ class Form implements Countable
     {
         return $this->method;
     }
-    
+
     /**
      * Sets the method this for should submit using
      *
@@ -132,15 +132,15 @@ class Form implements Countable
     public function setMethod ( $method )
     {
         $method = ::cPHP::stripW( $method );
-        
+
         if ( ::cPHP::is_empty($method) )
             throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );
-        
+
         $this->method = $method;
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the encoding that this form will submit using
      *
@@ -150,7 +150,7 @@ class Form implements Countable
     {
         return $this->encoding;
     }
-    
+
     /**
      * Sets the encoding this for should use
      *
@@ -160,15 +160,15 @@ class Form implements Countable
     public function setEncoding ( $encoding )
     {
         $encoding = trim( ::cPHP::strval( $encoding ) );
-        
+
         if ( ::cPHP::is_empty($encoding) )
             throw new ::cPHP::Exception::Argument( 0, "Form Encoding", "Must not be empty" );
-        
+
         $this->encoding = $encoding;
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the list of fields registered in this form
      *
@@ -178,7 +178,7 @@ class Form implements Countable
     {
         return clone $this->fields;
     }
-    
+
     /**
      * Adds a field to this instance
      *
@@ -190,10 +190,10 @@ class Form implements Countable
         // ensure there aren't any duplicates
         if ( !$this->fields->contains($field) )
             $this->fields[] = $field;
-        
+
         return $this;
     }
-    
+
     /**
      * Removes all the fields from this instance
      *
@@ -204,7 +204,7 @@ class Form implements Countable
         $this->fields->clear();
         return $this;
     }
-    
+
     /**
      * Returns the number of fields in this instance
      *
@@ -214,7 +214,7 @@ class Form implements Countable
     {
         return $this->fields->count();
     }
-    
+
     /**
      * Returns the first field with the given name
      *
@@ -224,15 +224,15 @@ class Form implements Countable
     public function find ( $name )
     {
         $name = ::cPHP::Filter::Variable()->filter( $name );
-        
+
         if ( !::cPHP::Validator::Variable()->isValid( $name ) )
             throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
-        
+
         return $this->fields->find(function($field) use ( $name ) {
             return $field->getName() == $name ? TRUE : FALSE;
         });
     }
-    
+
 }
 
 ?>

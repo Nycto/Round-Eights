@@ -37,44 +37,44 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_filter_digits extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testValid ()
     {
         $filter = new cPHP::Filter::Digits;
-        
+
         $this->assertSame(
                 '1234567890',
                 $filter->filter('1234567890')
             );
-        
+
         $this->assertSame(
                 '0987654321',
                 $filter->filter('0987654321')
             );
-        
+
         $this->assertSame(
                 '1234',
                 $filter->filter(1234)
             );
     }
-    
+
     public function testInvalidChars ()
     {
         $filter = new cPHP::Filter::Digits;
-        
+
         $this->assertEquals("", $filter->filter('ABCDEFGHIJKLMNOPQRSTUVWXYZ'));
         $this->assertEquals("", $filter->filter('abcdefghijklmnopqrstuvwxyz'));
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~'));
-        
+
         $this->assertEquals(
                 "",
                 $filter->filter(
                         implode( "", array_map("chr", range(127, 255) ) )
                     )
             );
-        
+
     }
-    
+
 }
 
 ?>

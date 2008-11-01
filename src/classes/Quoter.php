@@ -37,7 +37,7 @@ namespace cPHP;
  */
 class Quoter
 {
-    
+
     /**
      * The escape string
      */
@@ -54,7 +54,7 @@ class Quoter
             "'" => array( "'" ),
             '"' => array( '"' )
         );
-    
+
     /**
      * Returns whether an offset is preceded by an unescaped escape string
      *
@@ -66,31 +66,31 @@ class Quoter
     static public function isEscaped ( $string, $offset, $escape = '\\' )
     {
         $escape = ::cPHP::strval( $escape );
-        
+
         // Something can't be escaped if there is no escape string
         if ( ::cPHP::is_empty( $escape, ALLOW_SPACES ) )
             return false;
-        
+
         $string = ::cPHP::strval( $string );
         $offset = intval( $offset );
-        
+
         if ( $offset > strlen( $string ) )
             return false;
-        
+
         $escapeLen = strlen( $escape );
-        
+
         // If there isn't enough room for the escape string, how could it be escaped?
         if ( $offset - $escapeLen < 0 )
             return false;
-        
+
         // If the preceding characters are not the escape string, then it is definitely not escaped
         if ( strcasecmp( substr($string, $offset - $escapeLen, $escapeLen), $escape ) != 0 )
             return false;
-        
+
         // Now, we need to determine whether the escape string is escaped
         return !self::isEscaped( $string, $offset - $escapeLen, $escape );
     }
-    
+
     /**
      * Returns the position of the next unescaped character in a string
      *
@@ -102,46 +102,46 @@ class Quoter
     {
         if ( count($needles) <= 0 )
             return array( false, false );
-        
+
         $resultOffset = false;
         $resultNeedle = false;
-        
+
         // Loop through each needle so we can figure out the one with the minimum offset
         foreach( $needles AS $needle ) {
-            
+
             $needle = ::cPHP::strval( $needle );
-            
+
             if ( ::cPHP::is_empty( $needle, ALLOW_SPACES ) )
                 throw new ::cPHP::Exception::Data($needle, "needle", "Needle must not be empty");
-            
+
             // Cache the length of the needle so it isn't continually calculated
             $needleLen = strlen( $needle );
-            
+
             // Give $pos an initial value because it is used by
             // stripos to determine where to start looking
             $pos = 0 - $needleLen;
-            
+
             do {
-                
+
                 $pos = stripos(
                         $string,
                         $needle,
-                        
+
                         // Since $pos represents the location of the last found needle,
                         // to avoid an infinite loops, we need to start search at the
                         // offset just after the last needle was found
                         $pos + $needleLen
                     );
-                
+
                 // If $pos is false, it means that the needle was not found in the string at all
                 // In this circumstance, we can immediately break out of this loop and
                 // continue with the next needle. Hence "continue 2"
                 if ( $pos === FALSE )
                     continue 2;
-                
+
             // Continue searching if this character is escaped
             } while ( self::isEscaped($string, $pos, $escape) );
-            
+
             // If we have not yet found any needles, or this needle appears
             // before any of the other ones we've found so far, then mark
             // it as the one that will be returned
@@ -149,13 +149,13 @@ class Quoter
                 $resultOffset = $pos;
                 $resultNeedle = $needle;
             }
-            
+
         }
-        
+
         return array( $resultOffset, $resultNeedle );
-        
+
     }
-    
+
     /**
      * Returns the list of quotes registered in this instance
      *
@@ -169,7 +169,7 @@ class Quoter
     {
         return new ::cPHP::Ary( $this->quotes );
     }
-    
+
     /**
      * Clears the list of quotes in this instance
      *
@@ -180,7 +180,7 @@ class Quoter
         $this->quotes = array();
         return $this;
     }
-    
+
     /**
      * Registers a set of quotes
      *
@@ -196,29 +196,29 @@ class Quoter
     public function setQuote ( $open, $close = FALSE )
     {
         $open = ::cPHP::strval( $open );
-        
+
         if ( ::cPHP::is_empty($open, ALLOW_SPACES) )
             throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Must not be empty" );
-        
+
         if ( ::cPHP::is_vague( $close, ALLOW_SPACES ) ) {
             $close = array( $open );
         }
         else {
-            
+
             $close = ::cPHP::Ary::create( $close )
                 ->flatten()
                 ->collect("cPHP::strval")
                 ->compact( ALLOW_SPACES )
                 ->unique()
                 ->get();
-            
+
         }
-        
+
         $this->quotes[ $open ] = $close;
-        
+
         return $this;
     }
-    
+
     /**
      * Returns a flat list of all the open and close quotes registered in this instance
      *
@@ -232,7 +232,7 @@ class Quoter
             ->unique()
             ->values();
     }
-    
+
     /**
      * Returns a list of all the opening quotes
      *
@@ -242,7 +242,7 @@ class Quoter
     {
         return new cPHP::Ary( array_keys( $this->quotes ) );
     }
-    
+
     /**
      * Returns whether a given quote is an opening quote
      *
@@ -254,7 +254,7 @@ class Quoter
         $quote = ::cPHP::strval( $quote );
         return array_key_exists( $quote, $this->quotes );
     }
-    
+
     /**
      * Returns a list of closing quotes for an opening quote
      *
@@ -264,13 +264,13 @@ class Quoter
     public function getCloseQuotesFor ( $quote )
     {
         $quote = ::cPHP::strval( $quote );
-        
+
         if ( !$this->isOpenQuote($quote) )
             throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Invalid open quote" );
-        
+
         return cPHP::Ary::create( $this->quotes[ $quote ] )->values();
     }
-    
+
     /**
      * Returns the escape string in this instance
      *
@@ -283,7 +283,7 @@ class Quoter
         else
             return $this->escape;
     }
-    
+
     /**
      * Sets the escape string
      *
@@ -298,7 +298,7 @@ class Quoter
         $this->escape = $escape;
         return $this;
     }
-    
+
     /**
      * Removes the escape string
      *
@@ -309,7 +309,7 @@ class Quoter
         $this->escape = null;
         return $this;
     }
-    
+
     /**
      * Returns whether there is an escape string in this instance
      *
@@ -319,7 +319,7 @@ class Quoter
     {
         return isset( $this->escape );
     }
-    
+
     /**
      * Breaks a string up according the settings in this instance
      *
@@ -329,33 +329,33 @@ class Quoter
     public function parse ( $string )
     {
         $string = ::cPHP::strval( $string );
-        
+
         $openQuotes = $this->getOpenQuotes()->get();
-        
+
         $result = new ::cPHP::Quoter::Parsed;
-        
+
         // As we walk through the string, this is updated as the offset
         // relative to the original string
         $totalOffset = 0;
-        
+
         do {
-        
+
             // Find the next open quote and it's offset
-            list( $openOffset, $openQuote ) = 
+            list( $openOffset, $openQuote ) =
                 self::findNext( $string, $openQuotes, $this->escape );
-            
+
             // If a quote couldn't be found, break out of the loop
             if ( $openOffset === FALSE ) {
-                
+
                 $result->addSection(
                         new ::cPHP::Quoter::Section::Unquoted( $totalOffset, $string )
                     );
-                
+
                 break;
             }
-            
+
             else if ( $openOffset > 0 ) {
-                
+
                 // Construct the unquoted section and add it to the result
                 $result->addSection(
                         new ::cPHP::Quoter::Section::Unquoted(
@@ -363,20 +363,20 @@ class Quoter
                                 substr( $string, 0, $openOffset )
                             )
                     );
-                
+
             }
-            
+
             $totalOffset += $openOffset + strlen( $openQuote );
-            
-            
+
+
             // Remove the unquoted section from the string
             $string = substr( $string, $openOffset + strlen( $openQuote ) );
-            
+
             // Look for the close quote
             list( $closeOffset, $closeQuote ) =
                 self::findNext( $string, $this->getCloseQuotesFor($openQuote)->get(), $this->escape );
-            
-            
+
+
             if ( $closeOffset === FALSE ) {
                 $quoted = $string;
             }
@@ -384,8 +384,8 @@ class Quoter
                 $quoted = substr( $string, 0, $closeOffset );
                 $string = substr( $string, $closeOffset + strlen( $closeQuote ) );
             }
-            
-            
+
+
             // Construct the quoted section and add it to the result
             $result->addSection(
                     new ::cPHP::Quoter::Section::Quoted(
@@ -395,15 +395,15 @@ class Quoter
                             $closeQuote
                         )
                 );
-            
+
             $totalOffset += $closeOffset + strlen( $closeQuote );
-        
+
         } while ( $closeOffset !== FALSE && $string !== FALSE );
-        
+
         return $result;
-    
+
     }
-    
+
 }
 
 ?>

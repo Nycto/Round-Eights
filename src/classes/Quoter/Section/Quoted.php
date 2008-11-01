@@ -37,17 +37,17 @@ namespace cPHP::Quoter::Section;
  */
 class Quoted extends ::cPHP::Quoter::Section
 {
-    
+
     /**
-     * The string quote that opened 
+     * The string quote that opened
      */
     protected $openQuote;
-    
+
     /**
      * The string that closed the section
      */
     protected $closeQuote;
-    
+
     /**
      * Constructor...
      *
@@ -59,11 +59,11 @@ class Quoted extends ::cPHP::Quoter::Section
     public function __construct( $offset, $content, $openQuote, $closeQuote )
     {
         parent::__construct( $offset, $content );
-        
+
         $this->setOpenQuote( $openQuote )
             ->setCloseQuote( $closeQuote );
     }
-    
+
     /**
      * Returns whether the current section is quoted
      *
@@ -73,7 +73,7 @@ class Quoted extends ::cPHP::Quoter::Section
     {
         return true;
     }
-    
+
     /**
      * Returns the open quote string
      *
@@ -83,7 +83,7 @@ class Quoted extends ::cPHP::Quoter::Section
     {
         return $this->openQuote;
     }
-    
+
     /**
      * Sets the open quote
      *
@@ -95,7 +95,7 @@ class Quoted extends ::cPHP::Quoter::Section
         $this->openQuote = is_null( $quote ) ? null : ::cPHP::strval( $quote );
         return $this;
     }
-    
+
     /**
      * Unsets the open quote from this instance
      *
@@ -106,7 +106,7 @@ class Quoted extends ::cPHP::Quoter::Section
         $this->openQuote = null;
         return $this;
     }
-    
+
     /**
      * Returns whether this instance has an open quote
      *
@@ -116,7 +116,7 @@ class Quoted extends ::cPHP::Quoter::Section
     {
         return isset($this->openQuote);
     }
-    
+
     /**
      * Returns the close quote string
      *
@@ -126,7 +126,7 @@ class Quoted extends ::cPHP::Quoter::Section
     {
         return $this->closeQuote;
     }
-    
+
     /**
      * Sets the close quote
      *
@@ -138,7 +138,7 @@ class Quoted extends ::cPHP::Quoter::Section
         $this->closeQuote = is_null( $quote ) ? null : ::cPHP::strval( $quote );
         return $this;
     }
-    
+
     /**
      * Unsets the close quote from this instance
      *
@@ -149,7 +149,7 @@ class Quoted extends ::cPHP::Quoter::Section
         $this->closeQuote = null;
         return $this;
     }
-    
+
     /**
      * Returns whether this instance has an close quote
      *
@@ -159,7 +159,7 @@ class Quoted extends ::cPHP::Quoter::Section
     {
         return isset($this->closeQuote);
     }
-    
+
     /**
      * Returns the value of this instance
      *

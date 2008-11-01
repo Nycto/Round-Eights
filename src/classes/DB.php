@@ -40,17 +40,17 @@ namespace cPHP;
  */
 class DB
 {
-    
+
     /**
      * This list of registered connections indexed by a shortcut
      */
     static protected $links = array();
-    
+
     /**
      * The default database connection
      */
     static protected $default;
-    
+
     /**
      * Returns the full list of database connections
      *
@@ -60,7 +60,7 @@ class DB
     {
         return self::$links;
     }
-    
+
     /**
      * Returns the default connection
      *
@@ -70,7 +70,7 @@ class DB
     {
         return self::$default;
     }
-    
+
     /**
      * Registers a new link
      *
@@ -84,16 +84,16 @@ class DB
     static public function setLink( $label, ::cPHP::iface::DB::Link $link )
     {
         $label = ::cPHP::strval( $label );
-        
+
         if ( ::cPHP::is_empty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
-        
+
         self::$links[ $label ] = $link;
-        
+
         if ( !isset(self::$default) )
             self::setDefault( $label );
     }
-    
+
     /**
      * Returns a registered link by it's label
      *
@@ -105,18 +105,18 @@ class DB
     {
         if ( !is_string($label) && ::cPHP::is_vague($label) )
             return self::getDefault();
-        
+
         $label = ::cPHP::strval( $label );
-        
+
         if ( ::cPHP::is_empty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
-        
+
         if ( !array_key_exists($label, self::$links) )
             throw new ::cPHP::Exception::Index("Connection Label", $label, "Connection does not exist");
-        
+
         return self::$links[$label];
     }
-    
+
     /**
      * Sets the default connection based on an already registered label
      *
@@ -126,13 +126,13 @@ class DB
     static public function setDefault ( $label )
     {
         $label = ::cPHP::strval( $label );
-        
+
         if ( ::cPHP::is_empty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
-        
+
         self::$default = self::get( $label );
     }
-    
+
 }
 
 ?>

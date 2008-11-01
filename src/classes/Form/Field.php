@@ -37,7 +37,7 @@ namespace cPHP::Form;
  */
 abstract class Field implements ::cPHP::iface::Form::Field
 {
-    
+
     /**
      * The name of this form field
      */
@@ -49,7 +49,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
      * The value stored here is unfiltered and unvalidated
      */
     protected $value;
-    
+
     /**
      * The filter to apply to any data that is fed in to this field
      */
@@ -59,9 +59,9 @@ abstract class Field implements ::cPHP::iface::Form::Field
      * The validator for this field
      */
     private $validator;
-    
+
     /**
-     * Constructor... 
+     * Constructor...
      *
      * @param String The name of this form field
      */
@@ -69,7 +69,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     {
         $this->setName( $name );
     }
-    
+
     /**
      * Returns the name of this field
      *
@@ -79,7 +79,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     {
         return $this->name;
     }
-    
+
     /**
      * Sets the name of this field
      *
@@ -89,15 +89,15 @@ abstract class Field implements ::cPHP::iface::Form::Field
     public function setName( $name )
     {
         $name = ::cPHP::Filter::Variable()->filter( $name );
-        
+
         if ( !::cPHP::Validator::Variable()->isValid( $name ) )
             throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
-        
+
         $this->name = $name;
-        
+
         return $this;
     }
-    
+
     /**
      * Returns the filter loaded in to this instance
      *
@@ -110,10 +110,10 @@ abstract class Field implements ::cPHP::iface::Form::Field
     {
         if ( !($this->filter instanceof ::cPHP::iface::Filter) )
             $this->filter = new ::cPHP::Filter::Chain;
-            
+
         return $this->filter;
     }
-    
+
     /**
      * Sets the filter for this instance
      *
@@ -125,7 +125,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
         $this->filter = $filter;
         return $this;
     }
-    
+
     /**
      * Returns the validator loaded in to this instance
      *
@@ -138,10 +138,10 @@ abstract class Field implements ::cPHP::iface::Form::Field
     {
         if ( !($this->validator instanceof ::cPHP::iface::Validator) )
             $this->validator = new ::cPHP::Validator::Collection::Any;
-            
+
         return $this->validator;
     }
-    
+
     /**
      * Sets the validator for this instance
      *
@@ -153,7 +153,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
         $this->validator = $validator;
         return $this;
     }
-    
+
     /**
      * Returns the unfiltered, unvalidated value that is contained in this instance
      *
@@ -163,7 +163,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     {
         return $this->value;
     }
-    
+
     /**
      * Sets the value for this field
      *
@@ -178,7 +178,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
         $this->value = ::cPHP::reduce( $value );
         return $this;
     }
-    
+
     /**
      * Applies the filter and returns the resultting value
      *
@@ -192,7 +192,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
         else
             return $this->getRawValue();
     }
-    
+
     /**
      * Returns a cPHP::Tag object that represents this instance
      *
@@ -209,17 +209,17 @@ abstract class Field implements ::cPHP::iface::Form::Field
                     )
             );
     }
-    
+
     /**
      * Converts this field to an HTML string
      *
-     * @return String 
+     * @return String
      */
     public function __toString()
     {
         return $this->getTag()->__toString();
     }
-    
+
 }
 
 ?>

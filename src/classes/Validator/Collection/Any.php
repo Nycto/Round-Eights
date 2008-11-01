@@ -46,25 +46,25 @@ class Any extends cPHP::Validator::Collection
     protected function process ( $value )
     {
         $errors = array();
-        
+
         foreach( $this->validators AS $valid ) {
-            
+
             $result = $valid->validate( $value );
-            
-            if ( !$result instanceof ::cPHP::Validator::Result ) 
+
+            if ( !$result instanceof ::cPHP::Validator::Result )
                 throw new ::cPHP::Exception::Data( $result, "Validator Result", "Must be an instance of cPHP::Validator::Result" );
-            
+
             // Break out once any of the validators returns positively
             if ( $result->isValid() )
                 return array();
-        
+
             $errors = array_merge( $errors, $result->getErrors()->get() );
-            
+
         }
-        
+
         return $errors;
     }
-    
+
 }
 
 ?>

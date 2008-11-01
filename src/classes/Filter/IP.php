@@ -39,12 +39,12 @@ namespace cPHP::Filter;
  */
 class IP extends cPHP::Filter
 {
-    
+
     /**
      * Cleans up a string in preparation for using it as an IP
      *
      * @param mixed $value The value to filter
-     * @return 
+     * @return
      */
     public function filter ( $value )
     {
@@ -54,7 +54,7 @@ class IP extends cPHP::Filter
                 ::cPHP::strval( $value )
             );
     }
-    
+
 }
 
 ?>

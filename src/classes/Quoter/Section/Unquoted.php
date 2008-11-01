@@ -37,7 +37,7 @@ namespace cPHP::Quoter::Section;
  */
 class Unquoted extends cPHP::Quoter::Section
 {
-    
+
     /**
      * Returns whether the current section is quoted
      *
@@ -47,7 +47,7 @@ class Unquoted extends cPHP::Quoter::Section
     {
         return false;
     }
-    
+
     /**
      * Returns the string value of this instance
      *
@@ -57,7 +57,7 @@ class Unquoted extends cPHP::Quoter::Section
     {
         return $this->getContent();
     }
-    
+
 }
 
 ?>

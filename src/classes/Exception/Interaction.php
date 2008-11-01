@@ -38,12 +38,12 @@ namespace cPHP::Exception;
  */
 class Interaction extends ::cPHP::Exception
 {
-    
+
     /**
      * The title of this exception
      */
     const TITLE = "Interaction Error";
-    
+
     /**
      * A brief description of this error type
      */

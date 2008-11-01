@@ -37,7 +37,7 @@ namespace cPHP::iface;
  */
 interface Validator
 {
-    
+
     /**
      * Takes a value, processes it, and returns an instance of Validator Results
      *
@@ -53,7 +53,7 @@ interface Validator
      * @return Boolean
      */
     public function isValid ( $value );
-   
+
 }
 
 ?>
