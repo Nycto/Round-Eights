@@ -205,6 +205,8 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertTrue( isset($env->host) );
         $this->assertSame( "www.example.com", $env->host );
         
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "www.example.com", $env->hostWithPort );
     }
     
     public function testSetHostInfo_withSubdomain ()
@@ -228,6 +230,29 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertTrue( isset($env->host) );
         $this->assertSame( "test.sub.example.com", $env->host );
         
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "test.sub.example.com", $env->hostWithPort );
+        
+    }
+    
+    public function testSetHostInfo_withPort ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.sub.example.com",
+                "SERVER_PORT" => "40"
+            ));
+        
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "test.sub.example.com:40", $env->hostWithPort );
+        
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.sub.example.com",
+                "SERVER_PORT" => "80"
+            ));
+        
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "test.sub.example.com", $env->hostWithPort );
     }
     
     public function testSetHostInfo_empty ()
@@ -248,16 +273,59 @@ class classes_env extends PHPUnit_Framework_TestCase
         
         $this->assertFalse( isset($env->host) );
         $this->assertNull( $env->host );
+        
+        $this->assertFalse( isset($env->hostWithPort) );
+        $this->assertNull( $env->hostWithPort );
     }
     
-    public function testSetUriInfo ()
+    public function testSetUriInfo_withHost ()
     {
-        $this->markTestIncomplete("To be written");
+        
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.example.com",
+                "SCRIPT_NAME" => "/path/to/file.php",
+                "SERVER_PORT" => "40"
+            ));
+        
+        $this->assertTrue( isset($env->uriPath) );
+        $this->assertSame( "/path/to/file.php", $env->uriPath );
+        
+        $this->assertTrue( isset($env->uriPath) );
+        $this->assertSame( "test.example.com:40/path/to/file.php", $env->absUriPath );
+        
+        $this->assertTrue( isset($env->uriDir) );
+        $this->assertSame( "/path/to/", $env->uriDir );
+        
+        $this->assertTrue( isset($env->absUriDir) );
+        $this->assertSame( "test.example.com:40/path/to/", $env->absUriDir );
+        
+        $this->markTestIncomplete("Need to add uri and absUri");
+    
     }
     
     public function testSetUriInfo_empty ()
     {
-        $this->markTestIncomplete("To be written");
+        $env = Stub_Env::fromArray(array());
+        
+        $this->assertFalse( isset($env->uriPath) );
+        $this->assertNull( $env->uriPath );
+        
+        $this->assertFalse( isset($env->uriDir) );
+        $this->assertNull( $env->uriDir );
+        
+        $this->assertFalse( isset($env->absUriPath) );
+        $this->assertNull( $env->absUriPath );
+        
+        $this->assertFalse( isset($env->absUriDir) );
+        $this->assertNull( $env->absUriDir );
+        
+        $this->assertFalse( isset($env->uri) );
+        $this->assertNull( $env->uri );
+        
+        $this->assertFalse( isset($env->absUri) );
+        $this->assertNull( $env->absUri );
+        
+        $this->markTestIncomplete("Need to add uri and absUri");
     }
     
 }

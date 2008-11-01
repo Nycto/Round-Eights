@@ -131,6 +131,13 @@ class Env
      * @public
      */
     protected $host;
+    
+    /**
+     * The host name with the port attached.
+     *
+     * This will only attach the port if it isn't port 80, and if it is set
+     */
+    protected $hostWithPort;
 
     /**
      * The top level domain of the requested URI
@@ -209,7 +216,7 @@ class Env
      *
      * @public
      */
-    protected $Uri;
+    protected $uri;
     
     /**
      * The absolute URI
@@ -416,7 +423,6 @@ class Env
         if ( !preg_match($regex, $server['HTTP_HOST'], $domain) )
             return;
         
-        
         if ( self::hasKey($domain, 1) )
             $this->subdomain = $domain[1];
         else
@@ -431,6 +437,11 @@ class Env
             $this->host = $this->domain;
         else
             $this->host = $this->subdomain .".". $this->domain;
+            
+        if ( !::cPHP::is_empty($this->port) && $this->port != 80 )
+            $this->hostWithPort = $this->host .":". $this->port;
+        else
+            $this->hostWithPort = $this->host;
     }
     
     /**
@@ -441,7 +452,20 @@ class Env
      */
     protected function setUriInfo ( array &$server )
     {
+        if ( !self::hasKey($server, 'SCRIPT_NAME') )
+            return;
         
+        // Replace an windows forward slashes
+        $this->uriPath = str_replace("\\", "/", $server['SCRIPT_NAME']);
+        
+        // Ensure it starts with a forward slash
+        $this->uriPath = ::cPHP::strHead($this->uriPath, "/");
+        
+        $this->absUriPath = ::cPHP::strWeld( $this->hostWithPort, $this->uriPath, "/");
+        
+        $this->uriDir = strTail( dirname( $this->uriPath), "/" );
+        
+        $this->absUriDir = ::cPHP::strWeld( $this->hostWithPort, $this->uriDir, "/");
     }
     
 }
