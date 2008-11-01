@@ -39,6 +39,11 @@ class Env
 {
     
     /**
+     * Contains the singleton instance of this class
+     */
+    static protected $instance;
+    
+    /**
      * Whether this script is being run locally, or was requested remotely
      *
      * @public
@@ -237,6 +242,19 @@ class Env
      * @public
      */
     protected $fauxDirs;
+    
+    /**
+     * Returns the global Env instance
+     *
+     * @return Object The singleton Env object
+     */
+    static public function get ()
+    {
+        if ( !( self::$instance instanceof static ) )
+            self::$instance = new static( $_SERVER );
+            
+        return self::$instance;
+    }
     
     /**
      * Returns whether a given array has key with a non-empty value
