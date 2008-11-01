@@ -51,6 +51,15 @@ class Stub_Env extends ::cPHP::Env
 class classes_env extends PHPUnit_Framework_TestCase
 {
     
+    public function testHasKey ()
+    {
+        $ary = array( "one" => "value", "two" => "" );
+        
+        $this->assertTrue( ::cPHP::Env::hasKey($ary, "one") );
+        $this->assertFalse( ::cPHP::Env::hasKey($ary, "two") );
+        $this->assertFalse( ::cPHP::Env::hasKey($ary, "three") );
+    }
+    
     public function testIsLocal ()
     {
         $env = Stub_Env::fromArray(array(
@@ -123,6 +132,132 @@ class classes_env extends PHPUnit_Framework_TestCase
         $env = Stub_Env::fromArray(array());
         $this->assertFalse( isset($env->scheme) );
         $this->assertNull( $env->scheme );
+    }
+    
+    public function testFileInfo ()
+    {
+        
+        $env = Stub_Env::fromArray(array(
+                "SCRIPT_FILENAME" => "/home/user/public_html/info.php"
+            ));
+        
+        $this->assertTrue( isset($env->path) );
+        $this->assertSame( "/home/user/public_html/info.php", $env->path );
+        
+        $this->assertTrue( isset($env->basename) );
+        $this->assertSame( "info.php", $env->basename );
+        
+        $this->assertTrue( isset($env->dir) );
+        $this->assertSame( "/home/user/public_html", $env->dir );
+        
+        $this->assertTrue( isset($env->filename) );
+        $this->assertSame( "info", $env->filename );
+        
+        $this->assertTrue( isset($env->extension) );
+        $this->assertSame( "php", $env->extension );
+        
+    }
+    
+    public function testFileInfo_empty ()
+    {
+        $env = Stub_Env::fromArray(array());
+        
+        $this->assertFalse( isset($env->path) );
+        $this->assertNull( $env->path );
+        
+        $this->assertFalse( isset($env->dir) );
+        $this->assertNull( $env->dir );
+        
+        $this->assertFalse( isset($env->basename) );
+        $this->assertNull( $env->basename );
+        
+        $this->assertFalse( isset($env->extension) );
+        $this->assertNull( $env->extension );
+    }
+    
+    public function testSetCWD ()
+    {
+        $env = Stub_Env::fromArray(array());
+        
+        $this->assertTrue( isset($env->cwd) );
+        $this->assertType( "string", $env->cwd );
+        $this->assertGreaterThan( 0, strlen($env->cwd) );
+    }
+    
+    public function testSetHostInfo_noSubdomain ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "example.com"
+            ));
+        
+        $this->assertTrue( isset($env->subdomain) );
+        $this->assertSame( "www", $env->subdomain );
+        
+        $this->assertTrue( isset($env->sld) );
+        $this->assertSame( "example", $env->sld);
+        
+        $this->assertTrue( isset($env->tld) );
+        $this->assertSame( "com", $env->tld );
+        
+        $this->assertTrue( isset($env->domain) );
+        $this->assertSame( "example.com", $env->domain );
+        
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "www.example.com", $env->host );
+        
+    }
+    
+    public function testSetHostInfo_withSubdomain ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.sub.example.com"
+            ));
+        
+        $this->assertTrue( isset($env->subdomain) );
+        $this->assertSame( "test.sub", $env->subdomain );
+        
+        $this->assertTrue( isset($env->sld) );
+        $this->assertSame( "example", $env->sld);
+        
+        $this->assertTrue( isset($env->tld) );
+        $this->assertSame( "com", $env->tld );
+        
+        $this->assertTrue( isset($env->domain) );
+        $this->assertSame( "example.com", $env->domain );
+        
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "test.sub.example.com", $env->host );
+        
+    }
+    
+    public function testSetHostInfo_empty ()
+    {
+        $env = Stub_Env::fromArray(array());
+        
+        $this->assertFalse( isset($env->subdomain) );
+        $this->assertNull( $env->subdomain );
+        
+        $this->assertFalse( isset($env->sld) );
+        $this->assertNull( $env->sld );
+        
+        $this->assertFalse( isset($env->tld) );
+        $this->assertNull( $env->tld );
+        
+        $this->assertFalse( isset($env->domain) );
+        $this->assertNull( $env->domain );
+        
+        $this->assertFalse( isset($env->host) );
+        $this->assertNull( $env->host );
+    }
+    
+    public function testSetUriInfo ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+    
+    public function testSetUriInfo_empty ()
+    {
+        $this->markTestIncomplete("To be written");
     }
     
 }

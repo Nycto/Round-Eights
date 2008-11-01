@@ -74,7 +74,21 @@ class Env
     protected $scheme;
     
     /**
-     * The basename of the request URL
+     * The filesystem path of the requested file
+     *
+     * @public public
+     */
+    protected $path;
+    
+    /**
+     * The filesystem directory of the requested file
+     *
+     * @public public
+     */
+    protected $dir;
+    
+    /**
+     * The basename of the request file
      *
      * This includes the filename and extension
      *
@@ -99,7 +113,7 @@ class Env
      * @public
      */
     protected $extension;
-    
+   
     /**
      * The current working directory
      *
@@ -164,23 +178,76 @@ class Env
     
     /**
      * The relative path of the requested URI
+     *
+     * @public
      */
-    protected $path;
+    protected $uriPath;
     
     /**
      * The relative directory of the requested URI
+     *
+     * @public
      */
-    protected $dir;
+    protected $uriDir;
     
     /**
      * The absolute path of the requested URI
+     *
+     * @public
      */
-    protected $absolutePath;
+    protected $absUriPath;
     
     /**
      * The absolute directory of the requested URI
+     *
+     * @public
      */
-    protected $absoluteDir;
+    protected $absUriDir;
+    
+    /**
+     * The relative URI
+     *
+     * @public
+     */
+    protected $Uri;
+    
+    /**
+     * The absolute URI
+     *
+     * @public
+     */
+    protected $absUri;
+    
+    /**
+     * Also known as the path info, this represents any directories listed
+     * after the filename of the path... for example, the following uri:
+     *
+     * http://www.example.com/file.php/faux/dir
+     *
+     * will execute the script "file.php" and "/faux/dir" will be stored in
+     * this property.
+     *
+     * @public
+     */
+    protected $fauxDirs;
+    
+    /**
+     * Returns whether a given array has key with a non-empty value
+     *
+     * @param Array $array The array to test
+     * @param String $key The key to test
+     * @return Boolean
+     */
+    static public function hasKey( array &$array, $key )
+    {
+        if ( !array_key_exists($key, $array) )
+            return FALSE;
+        
+        if ( ::cPHP::is_empty($array[$key]) )
+            return FALSE;
+        
+        return TRUE;
+    }
     
     /**
      * Protected to force the use of the static constructors
@@ -190,11 +257,17 @@ class Env
     protected function __construct( array $server )
     {
         $this->setLocal( $server );
+        $this->setCWD();
+        $this->setFileInfo( $server );
         
-        $this->setIP( $server );
-        $this->setQuery( $server );
-        $this->setPort( $server );
-        $this->setScheme( $server );
+        if ( !$this->local ) {
+            $this->setIP( $server );
+            $this->setQuery( $server );
+            $this->setPort( $server );
+            $this->setScheme( $server );
+            $this->setHostInfo( $server );
+            $this->setUriInfo( $server );
+        }
     }
     
     /**
@@ -233,20 +306,22 @@ class Env
      * Sets whether this script is being executed via command line or not
      *
      * @param Array $server The server info array
+     * @return null
      */
-    protected function setLocal ( array $server )
+    protected function setLocal ( array &$server )
     {
-        $this->local = isset($server['SHELL']) ? TRUE : FALSE;
+        $this->local = self::hasKey($server, "SHELL");
     }
     
     /**
      * Fills in the IP property
      *
      * @param Array $server The server info array
+     * @return null
      */
-    protected function setIP ( array $server )
+    protected function setIP ( array &$server )
     {
-        if ( array_key_exists("SERVER_ADDR", $server) )
+        if ( self::hasKey($server, "SERVER_ADDR") )
             $this->ip = $server['SERVER_ADDR'];
     }
     
@@ -254,10 +329,11 @@ class Env
      * Fills in the URL Query property
      *
      * @param Array $server The server info array
+     * @return null
      */
-    protected function setQuery ( array $server )
+    protected function setQuery ( array &$server )
     {
-        if ( array_key_exists("QUERY_STRING", $server) && !::cPHP::is_empty($server['QUERY_STRING']) )
+        if ( self::hasKey($server, "QUERY_STRING") )
             $this->query = $server['QUERY_STRING'];
     }
     
@@ -265,10 +341,11 @@ class Env
      * Fills in the request port property
      *
      * @param Array $server The server info array
+     * @return null
      */
-    protected function setPort ( array $server )
+    protected function setPort ( array &$server )
     {
-        if ( array_key_exists("SERVER_PORT", $server) && !::cPHP::is_empty($server['SERVER_PORT']) )
+        if ( self::hasKey($server, "SERVER_PORT") )
             $this->port = intval( $server['SERVER_PORT'] );
     }
     
@@ -276,11 +353,95 @@ class Env
      * Fills in the protocol property
      *
      * @param Array $server The server info array
+     * @return null
      */
-    protected function setScheme ( array $server )
+    protected function setScheme ( array &$server )
     {
-        if ( array_key_exists("SERVER_PROTOCOL", $server) && !::cPHP::is_empty($server['SERVER_PROTOCOL']) )
+        if ( self::hasKey($server, "SERVER_PROTOCOL") )
             $this->scheme = strtolower( strstr( $server['SERVER_PROTOCOL'], "/", TRUE ) );
+    }
+    
+    /**
+     * This sets the file name, basename, path and extension of the executed file
+     *
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setFileInfo ( array &$server )
+    {
+        if ( !self::hasKey($server, "SCRIPT_FILENAME") )
+            return;
+        
+        $this->path = $server['SCRIPT_FILENAME'];
+        
+        $this->basename = basename( $this->path );
+        $this->dir = dirname( $this->path );
+        
+        $info = pathinfo( $this->path );
+        
+        $this->filename = $info['filename'];
+        
+        if ( self::hasKey($info, "extension") )
+            $this->extension = $info['extension'];
+            
+    }
+    
+    /**
+     * Sets the current working directory
+     * 
+     * @return null
+     */
+    public function setCWD ()
+    {
+        $this->cwd = getcwd();
+    }
+    
+    /**
+     * Sets the host, domain, told, sld and subdomain
+     * 
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setHostInfo ( array &$server )
+    {
+        if ( !self::hasKey($server, 'HTTP_HOST') )
+            return;
+        
+        // Confirm that it isn't equal to the IP
+        if ( $this->ip == $server['HTTP_HOST'] )
+            return;
+        
+        $regex = "/^(?:(.*)\\.)?([^\\.\\:]+)\\.([^\\.\\:]+)(?:\\:([0-9]*))?$/";
+        
+        if ( !preg_match($regex, $server['HTTP_HOST'], $domain) )
+            return;
+        
+        
+        if ( self::hasKey($domain, 1) )
+            $this->subdomain = $domain[1];
+        else
+            $this->subdomain = 'www';
+        
+        $this->sld = $domain[2];
+        $this->tld = $domain[3];
+        
+        $this->domain = $this->sld .".". $this->tld;
+        
+        if ( ::cPHP::is_empty($this->subdomain) )
+            $this->host = $this->domain;
+        else
+            $this->host = $this->subdomain .".". $this->domain;
+    }
+    
+    /**
+     * Sets the relative and absolute URI properties
+     * 
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setUriInfo ( array &$server )
+    {
+        
     }
     
 }
