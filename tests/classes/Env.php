@@ -278,6 +278,21 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertNull( $env->hostWithPort );
     }
     
+    public function testSetFauxDir ()
+    {
+        $env = Stub_Env::fromArray(array());
+        
+        $this->assertFalse( isset($env->fauxDirs) );
+        $this->assertNull( $env->fauxDirs );
+        
+        $env = Stub_Env::fromArray(array(
+                "PATH_INFO" => "/test/faux/dirs"
+            ));
+        
+        $this->assertTrue( isset($env->fauxDirs) );
+        $this->assertSame( "/test/faux/dirs", $env->fauxDirs );
+    }
+    
     public function testSetUriInfo_withHost ()
     {
         

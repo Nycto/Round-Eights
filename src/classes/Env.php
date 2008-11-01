@@ -272,6 +272,7 @@ class Env
             $this->setQuery( $server );
             $this->setPort( $server );
             $this->setScheme( $server );
+            $this->setFauxDirs( $server );
             $this->setHostInfo( $server );
             $this->setUriInfo( $server );
         }
@@ -442,6 +443,20 @@ class Env
             $this->hostWithPort = $this->host .":". $this->port;
         else
             $this->hostWithPort = $this->host;
+    }
+    
+    /**
+     * Sets the faux directory property
+     * 
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setFauxDirs ( array &$server )
+    {
+        if ( !self::hasKey( $server, 'PATH_INFO' ) )
+            return;
+        
+        $this->fauxDirs = $server['PATH_INFO'];
     }
     
     /**
