@@ -194,8 +194,17 @@ class classes_form extends PHPUnit_Framework_TestCase
         
         $this->assertSame( $field1, $form->find("fldOne") );
         
-        $this->markTestIncomplete("Test exceptions");
-        $this->markTestIncomplete("Test field not found");
+        
+        $this->assertFalse( $form->find("No Field") );
+        
+        try {
+             $form->find("123");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must be a valid PHP variable name", $err->getMessage());
+        }
+        
     }
     
 }
