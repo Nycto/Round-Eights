@@ -137,6 +137,13 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
                 $result->getErrors()->get()
             );
         
+        $result = $validator->validate('/dir/test.php');
+        $this->assertFalse( $result->isValid() );
+        $this->assertSame(
+                array("URL is not valid"),
+                $result->getErrors()->get()
+            );
+        
     }
     
     public function testValid ()
@@ -179,6 +186,21 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
                 $validator->validate('foo://example.com:8042/over/there?name=ferret#nose')->isValid()
             );
         
+    }
+    
+    public function testValid_Relative ()
+    {
+        $validator = new ::cPHP::Validator::URL(
+                ::cPHP::Validator::URL::ALLOW_RELATIVE
+            );
+        
+        $this->assertTrue(
+                $validator->validate('/over/there?name=ferret#nose')->isValid()
+            );
+        
+        $this->assertTrue(
+                $validator->validate('foo://example.com:8042/over/there?name=ferret#nose')->isValid()
+            );
     }
     
 }
