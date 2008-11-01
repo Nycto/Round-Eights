@@ -46,6 +46,20 @@ class classes_form extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testSetAction ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $this->assertSame( $form, $form->setAction("/file.php") );
+        $this->assertSame( "/file.php", $form->getAction() );
+        
+        $this->assertSame( $form, $form->setAction("http://www.example.com/dir/file.php") );
+        $this->assertSame(
+                "http://www.example.com/dir/file.php",
+                $form->getAction()
+            );
+    }
+    
     public function testGetAddField ()
     {
         $form = new ::cPHP::Form;

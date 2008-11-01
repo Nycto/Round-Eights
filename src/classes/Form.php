@@ -42,12 +42,13 @@ class Form implements Countable
      * Common submit methods
      */
     const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST'; 
+    const METHOD_POST = 'POST';
     
     /**
-     * The list of form fields
+     * Common form encoding types
      */
-    private $fields;
+    const ENCODING_URLENCODED = 'application/x-www-form-urlencoded';
+    const ENCODING_MULTIPART = 'multipart/form-data';
     
     /**
      * The URL this form will be submitted to
@@ -66,7 +67,12 @@ class Form implements Countable
     /**
      * The form encoding
      */
-    private $encoding = 'multipart/form-data';
+    private $encoding = self::ENCODING_URLENCODED;
+    
+    /**
+     * The list of form fields
+     */
+    private $fields;
     
     /**
      * Constructor... Sets the initial state of the instance
@@ -74,6 +80,37 @@ class Form implements Countable
     public function __construct ()
     {
         $this->fields = new ::cPHP::Ary;
+        
+        // Set the default action URI to the current page
+        $this->action = ::cPHP::Env::get()->uri;
+    }
+    
+    /**
+     * Returns the action URL this form will be submitted to
+     *
+     * @return string;
+     */
+    public function getAction ()
+    {
+        return $this->action;
+    }
+    
+    /**
+     * Sets the URI this form submits to
+     *
+     * @param String $url The action of this form
+     * @return Object Returns a self reference
+     */
+    public function setAction ( $url )
+    {
+        $url = ::cPHP::Filter::URL()->filter( $url );
+        
+        if ( !::cPHP::Validator::URL( ::cPHP::Validator::URL::ALLOW_RELATIVE )->isValid( $url ) )
+            throw new ::cPHP::Exception::Argument( 0, "Form Action", "Must be a valid URL" );
+        
+        $this->action = $url;
+        
+        return $this;
     }
     
     /**
