@@ -114,6 +114,34 @@ class Form implements Countable
     }
     
     /**
+     * Returns the method that this function will submit using
+     *
+     * @return String
+     */
+    public function getMethod ()
+    {
+        return $this->method;
+    }
+    
+    /**
+     * Sets the method this for should submit using
+     *
+     * @param String $method
+     * @return Object Returns a self reference
+     */
+    public function setMethod ( $method )
+    {
+        $method = ::cPHP::stripW( $method );
+        
+        if ( ::cPHP::is_empty($method) )
+            throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );
+        
+        $this->method = $method;
+        
+        return $this;
+    }
+    
+    /**
      * Returns the list of fields registered in this form
      *
      * @return Object Returns a cPHP::Ary object

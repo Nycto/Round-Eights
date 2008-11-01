@@ -60,6 +60,24 @@ class classes_form extends PHPUnit_Framework_TestCase
             );
     }
     
+    public function testSetMethod()
+    {
+        $form = new ::cPHP::Form;
+        
+        $this->assertSame( "POST", $form->getMethod() );
+        
+        $this->assertSame( $form, $form->setMethod("GET") );
+        $this->assertSame( "GET", $form->getMethod() );
+        
+        try {
+            $form->setMethod("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+    }
+    
     public function testGetAddField ()
     {
         $form = new ::cPHP::Form;
