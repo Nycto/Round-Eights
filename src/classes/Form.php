@@ -114,7 +114,7 @@ class Form implements Countable
     }
     
     /**
-     * Returns the method that this function will submit using
+     * Returns the method that this form will submit using
      *
      * @return String
      */
@@ -137,6 +137,34 @@ class Form implements Countable
             throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );
         
         $this->method = $method;
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the encoding that this form will submit using
+     *
+     * @return String
+     */
+    public function getEncoding ()
+    {
+        return $this->encoding;
+    }
+    
+    /**
+     * Sets the encoding this for should use
+     *
+     * @param String $encoding
+     * @return Object Returns a self reference
+     */
+    public function setEncoding ( $encoding )
+    {
+        $encoding = trim( ::cPHP::strval( $encoding ) );
+        
+        if ( ::cPHP::is_empty($encoding) )
+            throw new ::cPHP::Exception::Argument( 0, "Form Encoding", "Must not be empty" );
+        
+        $this->encoding = $encoding;
         
         return $this;
     }

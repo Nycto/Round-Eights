@@ -78,6 +78,24 @@ class classes_form extends PHPUnit_Framework_TestCase
         }
     }
     
+    public function testSetEncoding ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $this->assertSame( "application/x-www-form-urlencoded", $form->getEncoding() );
+        
+        $this->assertSame( $form, $form->setEncoding("multipart/form-data") );
+        $this->assertSame( "multipart/form-data", $form->getEncoding() );
+        
+        try {
+            $form->setEncoding("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+    }
+    
     public function testGetAddField ()
     {
         $form = new ::cPHP::Form;
