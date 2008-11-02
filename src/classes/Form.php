@@ -232,7 +232,7 @@ class Form implements Countable
             return $field->getName() == $name ? TRUE : FALSE;
         });
     }
-    
+
     /**
      * Determines whether a traversable input contains any fields in this form
      *
@@ -243,19 +243,19 @@ class Form implements Countable
     {
         if ( !::cPHP::Ary::is($source) )
             throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
-        
+
         $source = new ::cPHP::Ary( $source );
-        
+
         foreach ( $this->fields AS $field ) {
-            
+
             if ( $source->keyExists( $field->getName() ) )
                 return TRUE;
-            
+
         }
-        
+
         return FALSE;
     }
-    
+
     /**
      * Takes an associative array of values and fills in the form field values where
      * the key of the input matches the name of the field
@@ -270,23 +270,23 @@ class Form implements Countable
     {
         if ( !::cPHP::Ary::is($source) )
             throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
-        
+
         $source = new ::cPHP::Ary( $source );
-        
+
         foreach ( $this->fields AS $field ) {
-            
+
             $name = $field->getName();
-            
+
             if ( $source->keyExists( $name ) )
                 $field->setValue( $source[$name] );
             else
                 $field->setValue( null );
-            
+
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Validates each field and returns whether the form is valid
      *

@@ -206,54 +206,54 @@ class classes_form extends PHPUnit_Framework_TestCase
         }
 
     }
-    
+
     public function testAnyIn ()
     {
         $form = new ::cPHP::Form;
-        
+
         $this->assertFalse(
                 $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
             );
-        
-        
+
+
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
             ->will( $this->returnValue("fldOne") );
         $form->addField( $field1 );
-        
+
         $this->assertTrue(
                 $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
             );
-        
+
         $this->assertFalse(
                 $form->anyIn(array( "fldTwo" => "value", "fldThree" => "other" ))
             );
-        
-        
+
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
             ->will( $this->returnValue("fldTwo") );
         $form->addField( $field2 );
-        
+
         $this->assertTrue(
                 $form->anyIn(array( "fldOne" => "value", "fldTwo" => "other" ))
             );
-        
+
         $this->assertTrue(
                 $form->anyIn( new ::cPHP::Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
             );
-        
+
         $this->assertTrue(
                 $form->anyIn( new ArrayIterator( array( "fldTwo" => "value", "fldThree" => "other" )) )
             );
-        
+
         $this->assertFalse(
                 $form->anyIn( new ArrayObject(array( "fldFour" => "value", "fldThree" => "other" )) )
             );
-        
-        
+
+
         try {
             $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
@@ -261,13 +261,13 @@ class classes_form extends PHPUnit_Framework_TestCase
         catch ( ::cPHP::Exception::Argument $err ) {
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
-        
+
     }
-    
+
     public function testFill_Error ()
     {
         $form = new ::cPHP::Form;
-        
+
         try {
             $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
@@ -276,11 +276,11 @@ class classes_form extends PHPUnit_Framework_TestCase
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
     }
-    
+
     public function testFill_array ()
     {
         $form = new ::cPHP::Form;
-        
+
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
@@ -289,7 +289,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo("Value One") );
         $form->addField( $field1 );
-        
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
@@ -298,7 +298,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(null) );
         $form->addField( $field2 );
-        
+
         $field3 = $this->getMockField();
         $field3->expects( $this->any() )
             ->method("getName")
@@ -307,18 +307,18 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(3) );
         $form->addField( $field3 );
-        
-        
+
+
         $this->assertSame(
                 $form,
                 $form->fill(array( "fldOne" => "Value One", "filler" => FALSE, "fldThree" => 3 ))
             );
     }
-    
+
     public function testFill_Ary ()
     {
         $form = new ::cPHP::Form;
-        
+
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
@@ -327,7 +327,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo("Value One") );
         $form->addField( $field1 );
-        
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
@@ -336,7 +336,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(null) );
         $form->addField( $field2 );
-        
+
         $field3 = $this->getMockField();
         $field3->expects( $this->any() )
             ->method("getName")
@@ -345,8 +345,8 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(null) );
         $form->addField( $field3 );
-        
-        
+
+
         $this->assertSame(
                 $form,
                 $form->fill(
@@ -356,11 +356,11 @@ class classes_form extends PHPUnit_Framework_TestCase
                     )
             );
     }
-    
+
     public function testFill_ArrayIterator ()
     {
         $form = new ::cPHP::Form;
-        
+
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
@@ -369,7 +369,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo("Value One") );
         $form->addField( $field1 );
-        
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
@@ -378,7 +378,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(FALSE) );
         $form->addField( $field2 );
-        
+
         $field3 = $this->getMockField();
         $field3->expects( $this->any() )
             ->method("getName")
@@ -387,8 +387,8 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(null) );
         $form->addField( $field3 );
-        
-        
+
+
         $this->assertSame(
                 $form,
                 $form->fill(
@@ -398,11 +398,11 @@ class classes_form extends PHPUnit_Framework_TestCase
                     )
             );
     }
-    
+
     public function testFill_ArrayObect ()
     {
         $form = new ::cPHP::Form;
-        
+
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
             ->method("getName")
@@ -411,7 +411,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(null) );
         $form->addField( $field1 );
-        
+
         $field2 = $this->getMockField();
         $field2->expects( $this->any() )
             ->method("getName")
@@ -420,7 +420,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->equalTo(10.5) );
         $form->addField( $field2 );
-        
+
         $field3 = $this->getMockField();
         $field3->expects( $this->any() )
             ->method("getName")
@@ -429,8 +429,8 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("setValue")
             ->with( $this->isInstanceOf("ArrayObject") );
         $form->addField( $field3 );
-        
-        
+
+
         $this->assertSame(
                 $form,
                 $form->fill(
@@ -440,53 +440,53 @@ class classes_form extends PHPUnit_Framework_TestCase
                     )
             );
     }
-    
+
     public function testIsValid ()
     {
         $form = new ::cPHP::Form;
-        
+
         $this->assertTrue( $form->isValid() );
-        
-        
+
+
         $field1 = $this->getMockField();
         $field1->expects( $this->exactly(4) )
             ->method("isValid")
             ->will( $this->returnValue(TRUE) );
-        
+
         $form->addField( $field1 );
-        
+
         $this->assertTrue( $form->isValid() );
-        
-        
+
+
         $field2 = $this->getMockField();
         $field2->expects( $this->exactly(3) )
             ->method("isValid")
             ->will( $this->returnValue(TRUE) );
-        
+
         $form->addField( $field2 );
-        
+
         $this->assertTrue( $form->isValid() );
-        
-        
+
+
         $field3 = $this->getMockField();
         $field3->expects( $this->exactly(2) )
             ->method("isValid")
             ->will( $this->returnValue(FALSE) );
-        
+
         $form->addField( $field3 );
-        
+
         $this->assertFalse( $form->isValid() );
-        
-        
+
+
         $field4 = $this->getMockField();
         $field4->expects( $this->never() )
             ->method("isValid")
             ->will( $this->returnValue(TRUE) );
-        
+
         $form->addField( $field4 );
-        
+
         $this->assertFalse( $form->isValid() );
-        
+
     }
 
     public function testGetTag ()
@@ -500,20 +500,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
         $this->assertSame( "form", $tag->getTag() );
-        
+
         $this->assertTrue( isset($tag['method']) );
         $this->assertSame( "get", $tag['method'] );
-        
+
         $this->assertTrue( isset($tag['encoding']) );
         $this->assertSame( "multipart/form-data", $tag['encoding'] );
-        
+
         $this->assertTrue( isset($tag['action']) );
         $this->assertSame( "/dir/file.php", $tag['action'] );
     }
 
     public function testToString ()
     {
-        
+
         $form = new ::cPHP::Form;
         $form->setMethod("get");
         $form->setEncoding('multipart/form-data');

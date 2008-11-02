@@ -135,31 +135,31 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame("NEW VALUE", $field->getValue());
         $this->assertSame("New Value", $field->getRawValue());
     }
-    
+
     public function testValidate ()
     {
         $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         $field->setValidator( new ::cPHP::Validator::NoSpaces );
-        
+
         $field->setValue("Some String 123");
         $result = $field->validate();
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
         $this->assertFalse( $result->isValid() );
-        
+
         $field->setValue("SomeString123");
         $result = $field->validate();
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
         $this->assertTrue( $result->isValid() );
     }
-    
+
     public function testIsValid ()
     {
         $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
         $field->setValidator( new ::cPHP::Validator::NoSpaces );
-        
+
         $field->setValue("Some String 123");
         $this->assertFalse( $field->isValid() );
-        
+
         $field->setValue("SomeString123");
         $this->assertTrue( $field->isValid() );
     }
