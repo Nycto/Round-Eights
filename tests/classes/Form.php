@@ -263,6 +263,183 @@ class classes_form extends PHPUnit_Framework_TestCase
         }
         
     }
+    
+    public function testFill_Error ()
+    {
+        $form = new ::cPHP::Form;
+        
+        try {
+            $form->anySubmitted( "not an iterator" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
+        }
+    }
+    
+    public function testFill_array ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldOne") );
+        $field1->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo("Value One") );
+        $form->addField( $field1 );
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldTwo") );
+        $field2->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(null) );
+        $form->addField( $field2 );
+        
+        $field3 = $this->getMockField();
+        $field3->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldThree") );
+        $field3->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(3) );
+        $form->addField( $field3 );
+        
+        
+        $this->assertSame(
+                $form,
+                $form->fill(array( "fldOne" => "Value One", "filler" => FALSE, "fldThree" => 3 ))
+            );
+    }
+    
+    public function testFill_Ary ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldOne") );
+        $field1->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo("Value One") );
+        $form->addField( $field1 );
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldTwo") );
+        $field2->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(null) );
+        $form->addField( $field2 );
+        
+        $field3 = $this->getMockField();
+        $field3->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldThree") );
+        $field3->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(null) );
+        $form->addField( $field3 );
+        
+        
+        $this->assertSame(
+                $form,
+                $form->fill(
+                        new ::cPHP::Ary(
+                                array( "fldOne" => "Value One", "filler" => FALSE, "fldThree" => null )
+                            )
+                    )
+            );
+    }
+    
+    public function testFill_ArrayIterator ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldOne") );
+        $field1->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo("Value One") );
+        $form->addField( $field1 );
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldTwo") );
+        $field2->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(FALSE) );
+        $form->addField( $field2 );
+        
+        $field3 = $this->getMockField();
+        $field3->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldThree") );
+        $field3->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(null) );
+        $form->addField( $field3 );
+        
+        
+        $this->assertSame(
+                $form,
+                $form->fill(
+                        new ArrayIterator(
+                                array( "fldOne" => "Value One", "filler" => FALSE, "fldTwo" => FALSE )
+                            )
+                    )
+            );
+    }
+    
+    public function testFill_ArrayObect ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldOne") );
+        $field1->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(null) );
+        $form->addField( $field1 );
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldTwo") );
+        $field2->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->equalTo(10.5) );
+        $form->addField( $field2 );
+        
+        $field3 = $this->getMockField();
+        $field3->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldThree") );
+        $field3->expects( $this->once() )
+            ->method("setValue")
+            ->with( $this->isInstanceOf("ArrayObject") );
+        $form->addField( $field3 );
+        
+        
+        $this->assertSame(
+                $form,
+                $form->fill(
+                        new ArrayObject(
+                                array( "fldTwo" => 10.5, "fldThree" => new ArrayObject )
+                            )
+                    )
+            );
+    }
 
 }
 

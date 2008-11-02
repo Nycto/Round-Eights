@@ -236,24 +236,55 @@ class Form implements Countable
     /**
      * Determines whether a traversable input contains any fields in this form
      *
-     * @param mixed $input An array or traversable object
+     * @param mixed $source An array or traversable object
      * @return Boolean
      */
-    public function anySubmitted ( $input )
+    public function anySubmitted ( $source )
     {
-        if ( !::cPHP::Ary::is($input) )
+        if ( !::cPHP::Ary::is($source) )
             throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
         
-        $input = new ::cPHP::Ary( $input );
+        $source = new ::cPHP::Ary( $source );
         
         foreach ( $this->fields AS $field ) {
             
-            if ( $input->keyExists( $field->getName() ) )
+            if ( $source->keyExists( $field->getName() ) )
                 return TRUE;
             
         }
         
         return FALSE;
+    }
+    
+    /**
+     * Takes an associative array of values and fills in the form field values where
+     * the key of the input matches the name of the field
+     *
+     * If the source does not have a value for a specific field, this will set
+     * the field value to null.
+     *
+     * @param mixed $source An array or traversable object
+     * @return object Returns a self reference
+     */
+    public function fill ( $source )
+    {
+        if ( !::cPHP::Ary::is($source) )
+            throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
+        
+        $source = new ::cPHP::Ary( $source );
+        
+        foreach ( $this->fields AS $field ) {
+            
+            $name = $field->getName();
+            
+            if ( $source->keyExists( $name ) )
+                $field->setValue( $source[$name] );
+            else
+                $field->setValue( null );
+            
+        }
+        
+        return $this;
     }
 
 }
