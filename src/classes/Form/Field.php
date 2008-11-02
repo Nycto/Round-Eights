@@ -194,6 +194,29 @@ abstract class Field implements ::cPHP::iface::Form::Field
     }
 
     /**
+     * Applies the validator to the value in this instance and returns an
+     * instance of Validator Results.
+     *
+     * This will apply the validator to the filtered value
+     *
+     * @result object An instance of validator results
+     */
+    public function validate ()
+    {
+        return $this->getValidator()->validate( $this->getValue() );
+    }
+
+    /**
+     * Runs the validation and returns whether the value passes or not
+     *
+     * @return Boolean
+     */
+    public function isValid ()
+    {
+        return $this->validate()->isValid();
+    }
+
+    /**
      * Returns a cPHP::Tag object that represents this instance
      *
      * @return Object A cPHP::Tag object
