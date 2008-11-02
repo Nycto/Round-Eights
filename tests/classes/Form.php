@@ -207,7 +207,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     }
     
-    public function testAnySubmitted ()
+    public function testAnyIn ()
     {
         $form = new ::cPHP::Form;
         
