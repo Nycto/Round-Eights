@@ -63,6 +63,21 @@ interface Field
      */
     public function setValue ( $value );
 
+    /**
+     * Applies the validator to the value in this instance and returns an
+     * instance of Validator Results.
+     *
+     * @result object An instance of validator results
+     */
+    public function validate ();
+
+    /**
+     * Runs the validation and returns whether the value passes or not
+     *
+     * @return Boolean
+     */
+    public function isValid ();
+
 }
 
 ?>
