@@ -52,7 +52,7 @@ class AlphaNum extends ::cPHP::Validator
             return "Must be a string";
 
         if ( !ctype_alnum($value) )
-            return "Must be a valid PHP variable name";
+            return "Must only contain letters and numbers";
     }
 
 }

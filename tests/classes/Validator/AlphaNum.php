@@ -110,14 +110,14 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
         $result = $validator->validate($string);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
-                array("Must be a valid PHP variable name"),
+                array("Must only contain letters and numbers"),
                 $result->getErrors()->get()
             );
 
         $result = $validator->validate('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
-                array("Must be a valid PHP variable name"),
+                array("Must only contain letters and numbers"),
                 $result->getErrors()->get()
             );
     }
