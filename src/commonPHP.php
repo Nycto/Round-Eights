@@ -84,7 +84,7 @@ function __autoload ( $class ) {
 set_exception_handler(function ( $exception ) {
 
     // If we are running in script mode, we don't need HTML
-    if (_LOCAL) {
+    if ( ::cPHP::Env::get()->local ) {
         echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
     }
     else {
