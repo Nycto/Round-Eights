@@ -489,6 +489,47 @@ class classes_form extends PHPUnit_Framework_TestCase
         
     }
 
+    public function testGetTag ()
+    {
+        $form = new ::cPHP::Form;
+        $form->setMethod("get");
+        $form->setEncoding('multipart/form-data');
+        $form->setAction('/dir/file.php');
+
+        $tag = $form->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "form", $tag->getTag() );
+        
+        $this->assertTrue( isset($tag['method']) );
+        $this->assertSame( "get", $tag['method'] );
+        
+        $this->assertTrue( isset($tag['encoding']) );
+        $this->assertSame( "multipart/form-data", $tag['encoding'] );
+        
+        $this->assertTrue( isset($tag['action']) );
+        $this->assertSame( "/dir/file.php", $tag['action'] );
+    }
+
+    public function testToString ()
+    {
+        
+        $form = new ::cPHP::Form;
+        $form->setMethod("get");
+        $form->setEncoding('multipart/form-data');
+        $form->setAction('/dir/file.php');
+
+        $this->assertSame(
+                '<form method="get" encoding="multipart/form-data" action="/dir/file.php">',
+                $form->__toString()
+            );
+
+        $this->assertSame(
+                '<form method="get" encoding="multipart/form-data" action="/dir/file.php">',
+                "$form"
+            );
+    }
+
 }
 
 ?>

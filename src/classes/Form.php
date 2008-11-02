@@ -301,6 +301,36 @@ class Form implements Countable
         return TRUE;
     }
 
+    /**
+     * Returns a cPHP::Tag object that represents this instance
+     *
+     * @return Object A cPHP::Tag object
+     */
+    public function getTag()
+    {
+        return new ::cPHP::Tag(
+                'form',
+                null,
+                array(
+                        "method" => $this->getMethod(),
+                        "encoding" => $this->getEncoding(),
+                        "action" => $this->getAction()
+                    )
+            );
+    }
+
+    /**
+     * Converts this field to an HTML string
+     *
+     * This will only return a string representation of the opening tag
+     *
+     * @return String
+     */
+    public function __toString()
+    {
+        return $this->getTag()->getOpenTag();
+    }
+
 }
 
 ?>
