@@ -212,7 +212,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form = new ::cPHP::Form;
         
         $this->assertFalse(
-                $form->anySubmitted(array( "fldOne" => "value", "fldThree" => "other" ))
+                $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
             );
         
         
@@ -223,11 +223,11 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form->addField( $field1 );
         
         $this->assertTrue(
-                $form->anySubmitted(array( "fldOne" => "value", "fldThree" => "other" ))
+                $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
             );
         
         $this->assertFalse(
-                $form->anySubmitted(array( "fldTwo" => "value", "fldThree" => "other" ))
+                $form->anyIn(array( "fldTwo" => "value", "fldThree" => "other" ))
             );
         
         
@@ -238,24 +238,24 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form->addField( $field2 );
         
         $this->assertTrue(
-                $form->anySubmitted(array( "fldOne" => "value", "fldTwo" => "other" ))
+                $form->anyIn(array( "fldOne" => "value", "fldTwo" => "other" ))
             );
         
         $this->assertTrue(
-                $form->anySubmitted( new ::cPHP::Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
+                $form->anyIn( new ::cPHP::Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
             );
         
         $this->assertTrue(
-                $form->anySubmitted( new ArrayIterator( array( "fldTwo" => "value", "fldThree" => "other" )) )
+                $form->anyIn( new ArrayIterator( array( "fldTwo" => "value", "fldThree" => "other" )) )
             );
         
         $this->assertFalse(
-                $form->anySubmitted( new ArrayObject(array( "fldFour" => "value", "fldThree" => "other" )) )
+                $form->anyIn( new ArrayObject(array( "fldFour" => "value", "fldThree" => "other" )) )
             );
         
         
         try {
-            $form->anySubmitted( "not an iterator" );
+            $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Argument $err ) {
@@ -269,7 +269,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form = new ::cPHP::Form;
         
         try {
-            $form->anySubmitted( "not an iterator" );
+            $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Argument $err ) {

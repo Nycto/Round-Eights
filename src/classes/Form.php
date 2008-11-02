@@ -239,7 +239,7 @@ class Form implements Countable
      * @param mixed $source An array or traversable object
      * @return Boolean
      */
-    public function anySubmitted ( $source )
+    public function anyIn ( $source )
     {
         if ( !::cPHP::Ary::is($source) )
             throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
