@@ -232,6 +232,29 @@ class Form implements Countable
             return $field->getName() == $name ? TRUE : FALSE;
         });
     }
+    
+    /**
+     * Determines whether a traversable input contains any fields in this form
+     *
+     * @param mixed $input An array or traversable object
+     * @return Boolean
+     */
+    public function anySubmitted ( $input )
+    {
+        if ( !::cPHP::Ary::is($input) )
+            throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
+        
+        $input = new ::cPHP::Ary( $input );
+        
+        foreach ( $this->fields AS $field ) {
+            
+            if ( $input->keyExists( $field->getName() ) )
+                return TRUE;
+            
+        }
+        
+        return FALSE;
+    }
 
 }
 

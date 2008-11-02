@@ -206,6 +206,63 @@ class classes_form extends PHPUnit_Framework_TestCase
         }
 
     }
+    
+    public function testAnySubmitted ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $this->assertFalse(
+                $form->anySubmitted(array( "fldOne" => "value", "fldThree" => "other" ))
+            );
+        
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldOne") );
+        $form->addField( $field1 );
+        
+        $this->assertTrue(
+                $form->anySubmitted(array( "fldOne" => "value", "fldThree" => "other" ))
+            );
+        
+        $this->assertFalse(
+                $form->anySubmitted(array( "fldTwo" => "value", "fldThree" => "other" ))
+            );
+        
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->any() )
+            ->method("getName")
+            ->will( $this->returnValue("fldTwo") );
+        $form->addField( $field2 );
+        
+        $this->assertTrue(
+                $form->anySubmitted(array( "fldOne" => "value", "fldTwo" => "other" ))
+            );
+        
+        $this->assertTrue(
+                $form->anySubmitted( new ::cPHP::Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
+            );
+        
+        $this->assertTrue(
+                $form->anySubmitted( new ArrayIterator( array( "fldTwo" => "value", "fldThree" => "other" )) )
+            );
+        
+        $this->assertFalse(
+                $form->anySubmitted( new ArrayObject(array( "fldFour" => "value", "fldThree" => "other" )) )
+            );
+        
+        
+        try {
+            $form->anySubmitted( "not an iterator" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
+        }
+        
+    }
 
 }
 
