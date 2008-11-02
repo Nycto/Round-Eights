@@ -50,6 +50,14 @@ if (!defined("dir_interfaces"))
     define("cPHP_dir_interfaces", cPHP_dir ."interfaces/");
 
 /**
+ * Include the function files
+ */
+require_once cPHP_dir_functions ."general.php";
+require_once cPHP_dir_functions ."numbers.php";
+require_once cPHP_dir_functions ."strings.php";
+require_once cPHP_dir_functions ."debug.php";
+
+/**
  * This is temporary,... auto loader
  */
 function __autoload ( $class ) {
@@ -111,15 +119,6 @@ define ("ALLOW_UNDERSCORES", 64);
 define ("ALLOW_NEWLINES", 128);
 define ("ALLOW_TABS", 256);
 define ("ALLOW_DASHES", 512);
-
-
-/**
- * Include the function files
- */
-require_once cPHP_dir_functions ."general.php";
-require_once cPHP_dir_functions ."numbers.php";
-require_once cPHP_dir_functions ."strings.php";
-require_once cPHP_dir_functions ."debug.php";
 
 /**
  * Take a snapshot of the environment
