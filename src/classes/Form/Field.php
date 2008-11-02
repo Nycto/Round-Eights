@@ -33,7 +33,7 @@
 namespace cPHP::Form;
 
 /**
- * The most basic form field
+ * The core class for HTML forms
  */
 abstract class Field implements ::cPHP::iface::Form::Field
 {
