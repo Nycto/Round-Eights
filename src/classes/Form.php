@@ -286,6 +286,20 @@ class Form implements Countable
         
         return $this;
     }
+    
+    /**
+     * Validates each field and returns whether the form is valid
+     *
+     * @return Boolean
+     */
+    public function isValid ()
+    {
+        foreach ( $this->fields AS $field ) {
+            if ( !$field->isValid() )
+                return FALSE;
+        }
+        return TRUE;
+    }
 
 }
 

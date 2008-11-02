@@ -42,7 +42,7 @@ class classes_form extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "cPHP::iface::Form::Field",
-                array("getName", "getValue", "setValue")
+                array("getName", "getValue", "setValue", "validate", "isValid")
             );
     }
 
@@ -439,6 +439,54 @@ class classes_form extends PHPUnit_Framework_TestCase
                             )
                     )
             );
+    }
+    
+    public function testIsValid ()
+    {
+        $form = new ::cPHP::Form;
+        
+        $this->assertTrue( $form->isValid() );
+        
+        
+        $field1 = $this->getMockField();
+        $field1->expects( $this->exactly(4) )
+            ->method("isValid")
+            ->will( $this->returnValue(TRUE) );
+        
+        $form->addField( $field1 );
+        
+        $this->assertTrue( $form->isValid() );
+        
+        
+        $field2 = $this->getMockField();
+        $field2->expects( $this->exactly(3) )
+            ->method("isValid")
+            ->will( $this->returnValue(TRUE) );
+        
+        $form->addField( $field2 );
+        
+        $this->assertTrue( $form->isValid() );
+        
+        
+        $field3 = $this->getMockField();
+        $field3->expects( $this->exactly(2) )
+            ->method("isValid")
+            ->will( $this->returnValue(FALSE) );
+        
+        $form->addField( $field3 );
+        
+        $this->assertFalse( $form->isValid() );
+        
+        
+        $field4 = $this->getMockField();
+        $field4->expects( $this->never() )
+            ->method("isValid")
+            ->will( $this->returnValue(TRUE) );
+        
+        $form->addField( $field4 );
+        
+        $this->assertFalse( $form->isValid() );
+        
     }
 
 }
