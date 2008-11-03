@@ -75,6 +75,19 @@ abstract class Options extends ::cPHP::Form::Field
     }
 
     /**
+     * Returns whether an option exists based on its value
+     *
+     * @param mixed $value The option value to test
+     * @return Boolean
+     */
+    public function hasOption ( $value )
+    {
+        $value = ::cPHP::reduce($value);
+
+        return array_key_exists( $value, $this->options );
+    }
+
+    /**
      * Removes an option from the list based on it's value
      *
      * @param mixed $value The option value to remove
@@ -84,7 +97,7 @@ abstract class Options extends ::cPHP::Form::Field
     {
         $value = ::cPHP::reduce($value);
 
-        if ( isset($this->options[ $value ]) )
+        if ( $this->hasOption( $value ) )
             unset($this->options[ $value ]);
 
         return $this;

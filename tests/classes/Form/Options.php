@@ -183,6 +183,20 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testHasOption ()
+    {
+        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock->addOption( 1, "one");
+        $mock->addOption( 2, "two");
+        $mock->addOption( 3, "three");
+
+        $this->assertTrue( $mock->hasOption(1) );
+        $this->assertTrue( $mock->hasOption(2) );
+        $this->assertTrue( $mock->hasOption(3) );
+
+        $this->assertFalse( $mock->hasOption(4) );
+    }
+
     public function testRemoveOption ()
     {
 
