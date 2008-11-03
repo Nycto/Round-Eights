@@ -74,6 +74,22 @@ abstract class Options extends ::cPHP::Form::Field
         return $this;
     }
 
+    /**
+     * Removes an option from the list based on it's value
+     *
+     * @param mixed $value The option value to remove
+     * @return Object Returns a self reference
+     */
+    public function removeOption ( $value )
+    {
+        $value = ::cPHP::reduce($value);
+
+        if ( isset($this->options[ $value ]) )
+            unset($this->options[ $value ]);
+
+        return $this;
+    }
+
 }
 
 ?>
