@@ -222,6 +222,29 @@ class classes_form_options extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testClearOptions ()
+    {
+
+        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock->addOption( 1, "one");
+        $mock->addOption( 2, "two");
+        $mock->addOption( 3, "three");
+
+        $opts = $mock->getOptions();
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(1 => 'one', 2 => 'two', 3 => 'three'),
+                $opts->get()
+            );
+
+        $this->assertSame( $mock, $mock->clearOptions() );
+
+        $opts = $mock->getOptions();
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array(), $opts->get() );
+
+    }
+
 }
 
 ?>

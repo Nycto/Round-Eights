@@ -103,6 +103,17 @@ abstract class Options extends ::cPHP::Form::Field
         return $this;
     }
 
+    /**
+     * Removes all the registered options from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearOptions ()
+    {
+        $this->options = array();
+        return $this;
+    }
+
 }
 
 ?>
