@@ -114,6 +114,24 @@ abstract class Options extends ::cPHP::Form::Field
         return $this;
     }
 
+    /**
+     * Imports a set of options from an array or traversable object
+     *
+     * @param mixed $source An array or a traversable object
+     * @return Object Returns a self reference
+     */
+    public function importOptions ( $source )
+    {
+        if ( !::cPHP::Ary::is($source) )
+            throw new ::cPHP::Exception::Argument(0, "Import Source", "Must be an array or a traversable object");
+
+        $source = new ::cPHP::Ary( $source );
+
+        $source->flatten()->each(array( $this, "addOption" ));
+
+        return $this;
+    }
+
 }
 
 ?>

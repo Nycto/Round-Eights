@@ -245,6 +245,11 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testImportOptions ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
