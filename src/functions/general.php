@@ -169,6 +169,21 @@ function is_vague ($value, $flags = 0)
 }
 
 /**
+ * Returns whether the value type is float, integer, string, boolean or null
+ *
+ * @param mixed $value The value being tested
+ * @return Boolean
+ */
+function is_basic ( $value )
+{
+    return is_bool($value)
+        || is_int($value)
+        || is_float($value)
+        || is_null($value)
+        || is_string($value);
+}
+
+/**
  * Forces an array to always be returned
  *
  * @param mixed $value The value to transform in to an array
