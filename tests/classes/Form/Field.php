@@ -100,6 +100,37 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $validator, $field->getValidator() );
     }
 
+    public function testAndValidator ()
+    {
+        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $validator = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $validator2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $validator3 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+
+        $field->setValidator( $validator );
+        $this->assertSame( $validator, $field->getValidator() );
+
+
+        $this->assertSame( $field, $field->andValidator( $validator2 ) );
+
+        $all = $field->getValidator();
+        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::Collection::All") );
+        $this->assertSame(
+                array( $validator, $validator2 ),
+                $all->getValidators()->get()
+            );
+
+
+        $this->assertSame( $field, $field->andValidator( $validator3 ) );
+
+        $all = $field->getValidator();
+        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::Collection::All") );
+        $this->assertSame(
+                array( $validator, $validator2, $validator3 ),
+                $all->getValidators()->get()
+            );
+    }
+
     public function testSetValue ()
     {
         $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));

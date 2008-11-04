@@ -155,6 +155,32 @@ abstract class Field implements ::cPHP::iface::Form::Field
     }
 
     /**
+     * Adds another validator to this instance
+     *
+     * This checks to see if the current validator is an "Collection::All" instance.
+     * If it is, then it adds the given validator on to the list. If it isn't,
+     * then it wraps the current validator and the validator in the instance in
+     * an All validator and sets it to the validator for this instance.
+     *
+     * @param Object $validator The validator to add to this instance
+     * @return Object Returns a self reference
+     */
+    public function andValidator ( ::cPHP::iface::Validator $validator )
+    {
+        if ( $this->validator instanceof ::cPHP::Validator::Collection::All ) {
+            $this->validator->add( $validator );
+        }
+        else {
+            $this->validator = new ::cPHP::Validator::Collection::All(
+                    $this->validator,
+                    $validator
+                );
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the unfiltered, unvalidated value that is contained in this instance
      *
      * @return mixed The raw value of this field
