@@ -530,6 +530,29 @@ class classes_form extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetHidden ()
+    {
+        $form = new ::cPHP::Form;
+
+        $hidden = $form->getHidden();
+        $this->assertThat( $hidden, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array(), $hidden->get() );
+
+
+        $field1 = new ::cPHP::Form::Field::Hidden("fld1");
+        $field2 = new ::cPHP::Form::Field::Text("fld2");
+        $field3 = new ::cPHP::Form::Field::Hidden("fld3");
+
+        $form->addField( $field1 )
+            ->addField( $field2 )
+            ->addField( $field3 );
+
+
+        $hidden = $form->getHidden();
+        $this->assertThat( $hidden, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array( 0 => $field1, 2 => $field3 ), $hidden->get() );
+    }
+
 }
 
 ?>

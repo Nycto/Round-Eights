@@ -331,6 +331,18 @@ class Form implements Countable
         return $this->getTag()->getOpenTag();
     }
 
+    /**
+     * Returns all the hidden fields registered in this instance
+     *
+     * @return Object Returns a cPHP::Ary object or hidden field objects
+     */
+    public function getHidden ()
+    {
+        return $this->fields->filter(function ( $field ) {
+            return ($field instanceof ::cPHP::Form::Field::Hidden);
+        });
+    }
+
 }
 
 ?>
