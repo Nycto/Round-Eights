@@ -247,7 +247,20 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testImportOptions ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+
+        $this->assertSame(
+                $mock,
+                $mock->importOptions(array(1 => 'one', 2 => 'two', 3 => 'three'))
+            );
+
+        $opts = $mock->getOptions();
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(1 => 'one', 2 => 'two', 3 => 'three'),
+                $opts->get()
+            );
+
     }
 
 }

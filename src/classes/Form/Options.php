@@ -127,7 +127,9 @@ abstract class Options extends ::cPHP::Form::Field
 
         $source = new ::cPHP::Ary( $source );
 
-        $source->flatten()->each(array( $this, "addOption" ));
+        $source->flatten()->each(function( $value, $key ) {
+            $this->addOption($key, $value);
+        });
 
         return $this;
     }
