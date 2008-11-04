@@ -263,6 +263,23 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testDefaultValidator ()
+    {
+        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
+
+        $this->assertThat(
+                $field->getValidator(),
+                $this->isInstanceOf("cPHP::Validator::OptionsField")
+            );
+
+        $field->setValue( "one" );
+        $this->assertTrue( $field->isValid() );
+
+        $field->setValue( 5 );
+        $this->assertFalse( $field->isValid() );
+    }
+
 }
 
 ?>

@@ -47,6 +47,22 @@ abstract class Options extends ::cPHP::Form::Field
     private $options = array();
 
     /**
+     * Constructor...
+     *
+     * Loads in the default validator
+     *
+     * @param String The name of this form field
+     */
+    public function __construct( $name )
+    {
+        parent::__construct($name);
+
+        $this->setValidator(
+                new ::cPHP::Validator::OptionsField( $this )
+            );
+    }
+
+    /**
      * Returns the list of registered options
      *
      * @return Object Returns a cPHP::Ary object
