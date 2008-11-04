@@ -63,6 +63,43 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetTag_noOptions ()
+    {
+        $field = new ::cPHP::Form::Field::Select("fld");
+        $field->setName("fldName");
+
+        $tag = $field->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "select", $tag->getTag() );
+
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fldName", $tag['name'] );
+
+        $this->assertNull($tag->getcontent());
+    }
+
+    public function testGetTag_withOptions ()
+    {
+        $field = new ::cPHP::Form::Field::Select("fld");
+        $field->setName("fldName");
+        $field->addOption("one", "Single");
+        $field->addOption("two", "Double");
+
+        $tag = $field->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "select", $tag->getTag() );
+
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fldName", $tag['name'] );
+
+        $this->assertSame(
+                "<option value='one'>Single</option><option value='two'>Double</option>",
+                $tag->getcontent()
+            );
+    }
+
 }
 
 ?>

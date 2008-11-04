@@ -55,6 +55,20 @@ class Select extends ::cPHP::Form::Options
         })->implode();
     }
 
+    /**
+     * Returns a cPHP::Tag object that represents this instance
+     *
+     * @return Object A cPHP::Tag object
+     */
+    public function getTag()
+    {
+        return new ::cPHP::Tag(
+                'select',
+                $this->getOptionList(),
+                array("name" => $this->getName())
+            );
+    }
+
 }
 
 ?>
