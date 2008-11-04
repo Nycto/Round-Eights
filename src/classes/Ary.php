@@ -919,11 +919,15 @@ class Ary implements Iterator, Countable, ArrayAccess
             foreach($array AS $key => $value) {
 
                 // If it isn't an array, just plop it on to the end of the output
-                if ( !is_array($array[$key]) && !($array[$key] instanceof cPHP::Ary ) ) {
-
+                if ( !is_array($array[$key]) && !($array[$key] instanceof cPHP::Ary) ) {
+                    
                     // There really is a good reason I do it like this... and that
-                    // is "because of the way array_merge handles conflicting keys"
-                    $output = array_merge( $output, array( $key => $value ) );
+                    // is "because of the way array_merge handles conflicting keys."
+                    if ( !isset($output[$key]) )
+                        $output[ $key ] = $value;
+                    else
+                        $output = array_merge( $output, array( $key => $value ) );
+
                 }
 
                 else if ($maxDepth <= 1) {

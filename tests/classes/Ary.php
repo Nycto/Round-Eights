@@ -602,6 +602,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testFlatten ()
     {
+
         $ary = cPHP::Ary::create( array(array(1,2,3)) )->flatten();
 
         $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
@@ -636,6 +637,20 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array(1,2,3,4,5,6,7,8),
                 $ary->get()
             );
+
+
+        $ary = cPHP::Ary::create( array( 1 => 'one', 2 => 'two' ) )->flatten();
+
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertEquals(
+                array( 1 => 'one', 2 => 'two' ),
+                $ary->get()
+            );
+
+    }
+
+    public function testFlatten_maxDepth ()
+    {
 
 
         $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,6,7,8)) )->flatten( 2 );
