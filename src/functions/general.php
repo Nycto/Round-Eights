@@ -239,6 +239,30 @@ function strVal ($value)
 }
 
 /**
+ * Prepares a value to be used as an array index
+ *
+ * This will reduce the value down to a basic type, the convert it to an integer
+ * or a string. The idea is to simulate what PHP does when it uses a non-standard
+ * value as an array index.
+ *
+ * @param mixed $value The value to convert
+ * @return String|Integer
+ */
+function indexVal ( $value )
+{
+    $value = ::cPHP::reduce( $value );
+
+    if ( is_string($value) || is_int($value) )
+        return $value;
+
+    else if ( is_float($value) || is_bool($value) )
+        return intval($value);
+
+    else
+        return ::cPHP::strval($value);
+}
+
+/**
  * Determines if an object or class name is an implementation of a class or interface
  *
  * This will return true if:

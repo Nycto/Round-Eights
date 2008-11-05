@@ -164,6 +164,22 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertEquals( "String Version", ::cPHP::strVal( $toString ) );
     }
 
+    public function testIndexVal ()
+    {
+        $this->assertSame( 0, cPHP::indexVal(FALSE) );
+        $this->assertSame( 1, cPHP::indexVal(TRUE) );
+        $this->assertSame( "", cPHP::indexVal("") );
+        $this->assertSame( 0, cPHP::indexVal(0) );
+        $this->assertSame( "", cPHP::indexVal(NULL) );
+        $this->assertSame( "", cPHP::indexVal( array() ) );
+        $this->assertSame( "  ", cPHP::indexVal( "  " ) );
+        $this->assertSame( "string", cPHP::indexVal("string") );
+        $this->assertSame( 1, cPHP::indexVal(1) );
+        $this->assertSame( "0", cPHP::indexVal("0") );
+        $this->assertSame( "1", cPHP::indexVal("1") );
+        $this->assertSame( 1, cPHP::indexVal( array(1) ) );
+    }
+
     public function testKindOf ()
     {
         $filter = new cPHP::Filter::Chain;
