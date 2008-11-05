@@ -553,6 +553,29 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( array( 0 => $field1, 2 => $field3 ), $hidden->get() );
     }
 
+    public function testGetHiddenHTML ()
+    {
+        $form = new ::cPHP::Form;
+
+        $this->assertSame( "", $form->getHiddenHTML() );
+
+
+        $field1 = new ::cPHP::Form::Field::Hidden("fld1");
+        $field2 = new ::cPHP::Form::Field::Text("fld2");
+        $field3 = new ::cPHP::Form::Field::Hidden("fld3");
+
+        $form->addField( $field1 )
+            ->addField( $field2 )
+            ->addField( $field3 );
+
+
+        $this->assertSame(
+                '<input value="" name="fld1" type="hidden" />'
+                .'<input value="" name="fld3" type="hidden" />',
+                $form->getHiddenHTML()
+            );
+    }
+
 }
 
 ?>
