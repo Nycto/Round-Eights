@@ -63,7 +63,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     /**
      * Constructor...
      *
-     * @param String The name of this form field
+     * @param String $name The name of this form field
      */
     public function __construct( $name )
     {
