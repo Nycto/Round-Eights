@@ -197,6 +197,30 @@ class classes_form_options extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mock->hasOption(4) );
     }
 
+    public function testGetOptionLabel ()
+    {
+        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock->addOption( 1, "one");
+        $mock->addOption( 2, "two");
+        $mock->addOption( 3, "three");
+
+        $this->assertSame( "one", $mock->getOptionLabel(1) );
+        $this->assertSame( "two", $mock->getOptionLabel(2) );
+        $this->assertSame( "three", $mock->getOptionLabel(3) );
+
+        $this->assertSame( "one", $mock->getOptionLabel("1") );
+        $this->assertSame( "two", $mock->getOptionLabel("2") );
+        $this->assertSame( "three", $mock->getOptionLabel("3") );
+
+        try {
+            $mock->getOptionLabel(4);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch( ::cPHP::Exception::Index $err ) {
+            $this->assertSame("Option does not exist in field", $err->getMessage());
+        }
+    }
+
     public function testRemoveOption ()
     {
 

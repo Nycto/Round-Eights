@@ -120,6 +120,22 @@ abstract class Options extends ::cPHP::Form::Field
     }
 
     /**
+     * Returns the label for an option based on it's value
+     *
+     * @param mixed $value The option value to look up
+     * @return String Returns the label for the given option
+     */
+    public function getOptionLabel ( $value )
+    {
+        $value = ::cPHP::reduce($value);
+
+        if ( !$this->hasOption( $value ) )
+            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+
+        return $this->options[ $value ];
+    }
+
+    /**
      * Removes all the registered options from this instance
      *
      * @return Object Returns a self reference
