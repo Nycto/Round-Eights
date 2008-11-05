@@ -346,7 +346,7 @@ class Form implements Countable
     /**
      * Returns all the hidden fields registered in this instance
      *
-     * @return Object Returns a cPHP::Ary object or hidden field objects
+     * @return String Returns a string of HTML
      */
     public function getHiddenHTML ()
     {
