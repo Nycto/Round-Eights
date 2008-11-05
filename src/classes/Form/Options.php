@@ -82,7 +82,7 @@ abstract class Options extends ::cPHP::Form::Field
      */
     public function addOption ( $value, $label )
     {
-        $value = ::cPHP::reduce($value);
+        $value = ::cPHP::indexVal($value);
         $label = ::cPHP::strval( $label );
 
         $this->options[ $value ] = $label;
@@ -98,7 +98,7 @@ abstract class Options extends ::cPHP::Form::Field
      */
     public function hasOption ( $value )
     {
-        $value = ::cPHP::reduce($value);
+        $value = ::cPHP::indexVal($value);
 
         return array_key_exists( $value, $this->options );
     }
@@ -111,7 +111,7 @@ abstract class Options extends ::cPHP::Form::Field
      */
     public function removeOption ( $value )
     {
-        $value = ::cPHP::reduce($value);
+        $value = ::cPHP::indexVal($value);
 
         if ( $this->hasOption( $value ) )
             unset($this->options[ $value ]);
@@ -127,7 +127,7 @@ abstract class Options extends ::cPHP::Form::Field
      */
     public function getOptionLabel ( $value )
     {
-        $value = ::cPHP::reduce($value);
+        $value = ::cPHP::indexVal($value);
 
         if ( !$this->hasOption( $value ) )
             throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
