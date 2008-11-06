@@ -56,6 +56,102 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetOptionRadioTag_unchecked ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+
+        $tag = $field->getOptionRadioTag(2);
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "input", $tag->getTag() );
+
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fld", $tag['name'] );
+
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( 2, $tag['value'] );
+
+        $this->assertTrue( isset($tag['type']) );
+        $this->assertSame( "radio", $tag['type'] );
+
+        $this->assertTrue( isset($tag['id']) );
+        $this->assertSame( "radio_fld_da4b9237ba", $tag['id'] );
+
+        $this->assertFalse( isset($tag['checked']) );
+
+        $this->assertNull($tag->getcontent());
+    }
+
+    public function testGetOptionRadioTag_checked ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+        $field->setValue( 2 ) ;
+
+        $tag = $field->getOptionRadioTag(2);
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "input", $tag->getTag() );
+
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fld", $tag['name'] );
+
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( 2, $tag['value'] );
+
+        $this->assertTrue( isset($tag['type']) );
+        $this->assertSame( "radio", $tag['type'] );
+
+        $this->assertTrue( isset($tag['id']) );
+        $this->assertSame( "radio_fld_da4b9237ba", $tag['id'] );
+
+        $this->assertTrue( isset($tag['checked']) );
+        $this->assertSame( "checked", $tag['checked'] );
+
+        $this->assertNull($tag->getcontent());
+    }
+
+    public function testGetOptionRadioTag_error ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+
+        try {
+            $field->getOptionRadioTag(4);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Index $err ) {
+            $this->assertSame("Option does not exist in field", $err->getMessage());
+        }
+    }
+
+    public function testGetOptionLabelTag ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+        $field->setValue( 2 ) ;
+
+        $tag = $field->getOptionLabelTag(2);
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "label", $tag->getTag() );
+
+        $this->assertTrue( isset($tag['for']) );
+        $this->assertSame( "radio_fld_da4b9237ba", $tag['for'] );
+
+        $this->assertSame( "Two", $tag->getcontent() );
+
+
+        try {
+            $field->getOptionLabelTag(4);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Index $err ) {
+            $this->assertSame("Option does not exist in field", $err->getMessage());
+        }
+    }
+
 }
 
 ?>

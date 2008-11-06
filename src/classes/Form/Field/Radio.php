@@ -59,6 +59,54 @@ class Radio extends ::cPHP::Form::Options
             .substr(sha1($value), 0, 10);
     }
 
+    /**
+     * Returns the an HTML tag that represents an individual option's radio button
+     *
+     * @param String|Integer $value The value of the option whose tag should be returned
+     * @return Object Returns a cPHP::Tag object
+     */
+    public function getOptionRadioTag ( $value )
+    {
+        $value = ::cPHP::indexVal( $value );
+
+        if ( !$this->hasOption($value) )
+            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+
+        $tag = new ::cPHP::Tag( 'input' );
+
+        $tag->importAttrs(array(
+                "name" => $this->getName(),
+                "value" => $value,
+                "type" => "radio",
+                "id" => $this->getRadioOptionID($value)
+            ));
+
+        if ( $value == $this->getValue())
+            $tag['checked'] = 'checked';
+
+        return $tag;
+    }
+
+    /**
+     * Returns the an HTML tag that represents an individual option's label
+     *
+     * @param String|Integer $value The value of the option whose label tag should be returned
+     * @return Object Returns a cPHP::Tag object
+     */
+    public function getOptionLabelTag ( $value )
+    {
+        $value = ::cPHP::indexVal( $value );
+
+        if ( !$this->hasOption($value) )
+            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+
+        return new ::cPHP::Tag(
+                'label',
+                $this->getOptionLabel( $value ),
+                array( "for" => $this->getRadioOptionID($value) )
+            );
+    }
+
 }
 
 ?>
