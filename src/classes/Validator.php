@@ -102,7 +102,7 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
 
         $output = new ::cPHP::Validator::Result( $value );
 
-        if ( !::cPHP::is_empty($result) ) {
+        if ( !::cPHP::isEmpty($result) ) {
 
             if ( $this->hasErrors() )
                 $output->addErrors( $this->getErrors() );

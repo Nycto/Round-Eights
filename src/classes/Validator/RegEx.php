@@ -58,7 +58,7 @@ class RegEx extends ::cPHP::Validator
     public function __construct( $regex )
     {
         $regex = ::cPHP::strVal( $regex );
-        if ( ::cPHP::is_empty($regex) )
+        if ( ::cPHP::isEmpty($regex) )
             throw new ::cPHP::Exception::Argument(0, "Regular Expression", "Must not be empty");
         $this->regex = $regex;
     }

@@ -85,7 +85,7 @@ class DB
     {
         $label = ::cPHP::strval( $label );
 
-        if ( ::cPHP::is_empty($label) )
+        if ( ::cPHP::isEmpty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
 
         self::$links[ $label ] = $link;
@@ -108,7 +108,7 @@ class DB
 
         $label = ::cPHP::strval( $label );
 
-        if ( ::cPHP::is_empty($label) )
+        if ( ::cPHP::isEmpty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
 
         if ( !array_key_exists($label, self::$links) )
@@ -127,7 +127,7 @@ class DB
     {
         $label = ::cPHP::strval( $label );
 
-        if ( ::cPHP::is_empty($label) )
+        if ( ::cPHP::isEmpty($label) )
             throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
 
         self::$default = self::get( $label );

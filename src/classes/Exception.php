@@ -147,7 +147,7 @@ class Exception extends ::Exception
      */
     public function issetMessage ()
     {
-        return !is_empty($this->getMessage());
+        return !isEmpty($this->getMessage());
     }
 
     /**
@@ -157,7 +157,7 @@ class Exception extends ::Exception
      */
     public function issetCode ()
     {
-        return !is_empty($this->getCode());
+        return !isEmpty($this->getCode());
     }
 
     /**

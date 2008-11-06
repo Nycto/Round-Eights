@@ -268,7 +268,7 @@ class Env
         if ( !array_key_exists($key, $array) )
             return FALSE;
 
-        if ( ::cPHP::is_empty($array[$key]) )
+        if ( ::cPHP::isEmpty($array[$key]) )
             return FALSE;
 
         return TRUE;
@@ -453,12 +453,12 @@ class Env
 
         $this->domain = $this->sld .".". $this->tld;
 
-        if ( ::cPHP::is_empty($this->subdomain) )
+        if ( ::cPHP::isEmpty($this->subdomain) )
             $this->host = $this->domain;
         else
             $this->host = $this->subdomain .".". $this->domain;
 
-        if ( !::cPHP::is_empty($this->port) && $this->port != 80 )
+        if ( !::cPHP::isEmpty($this->port) && $this->port != 80 )
             $this->hostWithPort = $this->host .":". $this->port;
         else
             $this->hostWithPort = $this->host;
@@ -512,21 +512,21 @@ class Env
     {
         $this->uri = null;
 
-        if ( !::cPHP::is_empty( $this->uriPath ) )
+        if ( !::cPHP::isEmpty( $this->uriPath ) )
             $this->uri = $this->uriPath . $this->fauxDirs;
 
-        if ( !::cPHP::is_empty( $this->query ) )
+        if ( !::cPHP::isEmpty( $this->query ) )
             $this->uri .= ::cPHP::strHead( $this->query, "?" );
 
         $this->absUri = null;
 
-        if ( !::cPHP::is_empty( $this->hostWithPort ) )
+        if ( !::cPHP::isEmpty( $this->hostWithPort ) )
             $this->absUri .= $this->hostWithPort;
 
-        if ( !::cPHP::is_empty( $this->scheme ) )
+        if ( !::cPHP::isEmpty( $this->scheme ) )
             $this->absUri = $this->scheme ."://" . $this->absUri;
 
-        if ( !::cPHP::is_empty( $this->uri ) ) {
+        if ( !::cPHP::isEmpty( $this->uri ) ) {
             $this->absUri = ::cPHP::strWeld(
                     $this->absUri,
                     $this->uri,

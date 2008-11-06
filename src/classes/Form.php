@@ -133,7 +133,7 @@ class Form implements Countable
     {
         $method = ::cPHP::stripW( $method );
 
-        if ( ::cPHP::is_empty($method) )
+        if ( ::cPHP::isEmpty($method) )
             throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );
 
         $this->method = $method;
@@ -161,7 +161,7 @@ class Form implements Countable
     {
         $encoding = trim( ::cPHP::strval( $encoding ) );
 
-        if ( ::cPHP::is_empty($encoding) )
+        if ( ::cPHP::isEmpty($encoding) )
             throw new ::cPHP::Exception::Argument( 0, "Form Encoding", "Must not be empty" );
 
         $this->encoding = $encoding;

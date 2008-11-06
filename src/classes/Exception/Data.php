@@ -64,7 +64,7 @@ class Data extends ::cPHP::Exception
         $label = ::cPHP::strval( $label );
 
         $this->addData(
-                ::cPHP::is_empty($label) ? "Value" : $label,
+                ::cPHP::isEmpty($label) ? "Value" : $label,
                 ::cPHP::getDump($value)
             );
     }

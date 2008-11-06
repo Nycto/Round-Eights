@@ -42,7 +42,7 @@ class StandardEmpty extends cPHP::Filter
 {
 
     /**
-     * Any flags to use while calling cPHP::is_empty
+     * Any flags to use while calling cPHP::isEmpty
      */
     protected $flags = 0;
 
@@ -55,7 +55,7 @@ class StandardEmpty extends cPHP::Filter
      * Constructor
      *
      * @param mixed $value The value to return when the filter input is empty
-     * @param Integer $flags Any flags to pass to is_empty
+     * @param Integer $flags Any flags to pass to isEmpty
      */
     public function __construct ( $value = NULL, $flags = 0 )
     {
@@ -132,7 +132,7 @@ class StandardEmpty extends cPHP::Filter
      */
     public function filter ( $value )
     {
-        if ( ::cPHP::is_empty( $value, $this->flags ) )
+        if ( ::cPHP::isEmpty( $value, $this->flags ) )
             return $this->value;
 
         return $value;

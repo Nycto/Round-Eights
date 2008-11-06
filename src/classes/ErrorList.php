@@ -53,7 +53,7 @@ class ErrorList
     {
         $message = ::cPHP::strval($message);
 
-        if ( ::cPHP::is_empty($message) )
+        if ( ::cPHP::isEmpty($message) )
             throw new cPHP::Exception::Argument( 0, "Error Message", "Must Not Be Empty" );
 
         if ( !in_array($message, $this->errors) )

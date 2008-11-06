@@ -237,7 +237,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function setUserName ( $username )
     {
         $username = ::cPHP::strval( $username );
-        $this->username = ::cPHP::is_empty( $username ) ? null : $username;
+        $this->username = ::cPHP::isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -281,7 +281,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function setPassword ( $password )
     {
         $password = ::cPHP::strval( $password );
-        $this->password = ::cPHP::is_empty($password) ? null : $password;
+        $this->password = ::cPHP::isEmpty($password) ? null : $password;
         return $this;
     }
 
@@ -325,7 +325,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function setHost ( $host )
     {
         $host = ::cPHP::strval( $host );
-        $this->host = ::cPHP::is_empty( $host ) ? null : $host;
+        $this->host = ::cPHP::isEmpty( $host ) ? null : $host;
         return $this;
     }
 
@@ -413,7 +413,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function setDatabase ( $database )
     {
         $database = ::cPHP::strval( $database );
-        $this->database = ::cPHP::is_empty( $database ) ? null : $database;
+        $this->database = ::cPHP::isEmpty( $database ) ? null : $database;
         return $this;
     }
 
@@ -590,7 +590,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         $query = ::cPHP::strval($query);
 
-        if ( ::cPHP::is_empty($query) )
+        if ( ::cPHP::isEmpty($query) )
             throw new ::cPHP::Exception::Argument(0, "Query", "Must not be empty");
 
         try {

@@ -32,7 +32,7 @@
 
 namespace cPHP;
 
-// Used by is_empty to define what is allowed
+// Used by isEmpty to define what is allowed
 const ALLOW_NULL = 1;
 const ALLOW_FALSE = 2;
 const ALLOW_ZERO = 4;
@@ -121,7 +121,7 @@ function defineIf ($constant, $value)
  * @param integer $flags Any flags to alter what is considered empty
  * @return Boolean
  */
-function is_empty ($value, $flags = 0)
+function isEmpty ($value, $flags = 0)
 {
 
     $flags = max(intval(reduce($flags)), 0);
@@ -160,12 +160,12 @@ function is_empty ($value, $flags = 0)
  * Returns true if the value is boolean or empty
  *
  * @param mixed $value The value being tested
- * @param Integer $flags Any is_empty() flags
+ * @param Integer $flags Any isEmpty() flags
  * @return Boolean
  */
 function is_vague ($value, $flags = 0)
 {
-    return (is_bool($value) || is_empty($value, $flags));
+    return (is_bool($value) || isEmpty($value, $flags));
 }
 
 /**

@@ -44,14 +44,14 @@ class URL extends ::cPHP::Validator
     const ALLOW_RELATIVE = 1;
 
     /**
-     * Any flags to pass to the is_empty function
+     * Any flags to pass to the isEmpty function
      */
     protected $flags = 0;
 
     /**
      * Constructor...
      *
-     * @param Integer $flags Any flags to pass to the is_empty function. For
+     * @param Integer $flags Any flags to pass to the isEmpty function. For
      *      more details, take a look at that function
      */
     public function __construct ( $flags = 0 )

@@ -61,7 +61,7 @@ class Boolean extends cPHP::Filter
         else if ( is_string($value) ) {
 
             $value = strtolower( ::cPHP::stripW( $value ) );
-            if ( $value == "f" || $value == "false" || $value == "n" || $value == "no" || $value == "off" || ::cPHP::is_empty($value) )
+            if ( $value == "f" || $value == "false" || $value == "n" || $value == "no" || $value == "off" || ::cPHP::isEmpty($value) )
                 return FALSE;
             else
                 return TRUE;

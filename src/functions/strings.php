@@ -203,7 +203,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote(strval($repeated), '/');
     }
 
-    if ( is_empty( $repeated ) )
+    if ( isEmpty( $repeated ) )
         throw new ::cPHP::Exception::Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
@@ -226,7 +226,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
     $string = strval($string);
-    if (is_empty($string))
+    if (isEmpty($string))
         return '';
 
     $glue = strval( $glue );
@@ -340,7 +340,7 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
     $string = strval($string);
     $head = strval($head);
 
-    // Not is_empty because it's okay if it is filled with spaces.
+    // Not isEmpty because it's okay if it is filled with spaces.
     // True is returned because all strings start with an empty character.
     if (empty($head))
         return TRUE;
@@ -365,7 +365,7 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
     $string = strval($string);
     $tail = strval($tail);
 
-    // not is_empty because it's okay if it is filled with spaces
+    // not isEmpty because it's okay if it is filled with spaces
     // all strings end with an empty character...
     if (empty($tail))
         return TRUE;
@@ -388,7 +388,7 @@ function strTail ($string, $tail, $ignoreCase = TRUE)
     $string = strval($string);
     $tail = strval($tail);
 
-    // not is_empty because it's okay if it is filled with spaces
+    // not isEmpty because it's okay if it is filled with spaces
     if (empty($tail))
         return $string;
 
@@ -408,7 +408,7 @@ function strStripTail ($string, $tail, $ignoreCase = TRUE)
     $string = strval($string);
     $tail = strval($tail);
 
-    // not is_empty because it's okay if it is filled with spaces
+    // not isEmpty because it's okay if it is filled with spaces
     if (empty($tail))
         return $string;
 
@@ -433,7 +433,7 @@ function strHead ($string, $head, $ignoreCase = TRUE)
     $string = strval($string);
     $head = strval($head);
 
-    // not is_empty because it's okay if it is filled with spaces
+    // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
         return $string;
 
@@ -453,7 +453,7 @@ function strStripHead ($string, $head, $ignoreCase = TRUE)
     $string = strval(reduce($string));
     $head = strval(reduce($head));
 
-    // not is_empty because it's okay if it is filled with spaces
+    // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
         return $string;
 
@@ -594,7 +594,7 @@ function pluralize ( $string, $count = 2 )
 {
     $string = strval($string);
 
-    if ( is_empty( trim($string) ) )
+    if ( isEmpty( trim($string) ) )
         throw new ::cPHP::Exception::Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )

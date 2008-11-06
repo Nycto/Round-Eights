@@ -145,7 +145,7 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         $table = ::cPHP::strval($table);
 
-        if ( ::cPHP::is_empty($table) )
+        if ( ::cPHP::isEmpty($table) )
             throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
 
         $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
@@ -175,14 +175,14 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         $table = ::cPHP::strval($table);
 
-        if ( ::cPHP::is_empty($table) )
+        if ( ::cPHP::isEmpty($table) )
             throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
 
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
 
         $where = trim( ::cPHP::strval($where) );
 
-        if ( !::cPHP::is_empty($where) )
+        if ( !::cPHP::isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return $this->query($query, $flags);
@@ -233,7 +233,7 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         $field = ::cPHP::strval( $field );
 
-        if ( ::cPHP::is_empty($field) )
+        if ( ::cPHP::isEmpty($field) )
             throw new ::cPHP::Exception::Argument( 0, "Field", "Must not be empty" );
 
         $result = $this->getRow( $query, $row, $flags );
@@ -270,14 +270,14 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         $table = ::cPHP::strval($table);
 
-        if ( ::cPHP::is_empty($table) )
+        if ( ::cPHP::isEmpty($table) )
             throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
 
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
 
         $where = trim( ::cPHP::strval($where) );
 
-        if ( !::cPHP::is_empty($where) )
+        if ( !::cPHP::isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return intval( $this->getField("cnt", $query, 0, $flags) );

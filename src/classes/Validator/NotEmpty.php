@@ -33,20 +33,20 @@
 namespace cPHP::Validator;
 
 /**
- * Validates that a value is not considered empty using the is_empty function
+ * Validates that a value is not considered empty using the isEmpty function
  */
 class NotEmpty extends ::cPHP::Validator
 {
 
     /**
-     * Any flags to pass to the is_empty function
+     * Any flags to pass to the isEmpty function
      */
     protected $flags = 0;
 
     /**
      * Constructor...
      *
-     * @param Integer $flags Any flags to pass to the is_empty function. For
+     * @param Integer $flags Any flags to pass to the isEmpty function. For
      *      more details, take a look at that function
      */
     public function __construct ( $flags = 0 )
@@ -62,7 +62,7 @@ class NotEmpty extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-        if ( ::cPHP::is_empty($value, $this->flags) )
+        if ( ::cPHP::isEmpty($value, $this->flags) )
             return "Must not be empty";
     }
 

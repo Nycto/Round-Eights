@@ -68,7 +68,7 @@ class Quoter
         $escape = ::cPHP::strval( $escape );
 
         // Something can't be escaped if there is no escape string
-        if ( ::cPHP::is_empty( $escape, ALLOW_SPACES ) )
+        if ( ::cPHP::isEmpty( $escape, ALLOW_SPACES ) )
             return false;
 
         $string = ::cPHP::strval( $string );
@@ -111,7 +111,7 @@ class Quoter
 
             $needle = ::cPHP::strval( $needle );
 
-            if ( ::cPHP::is_empty( $needle, ALLOW_SPACES ) )
+            if ( ::cPHP::isEmpty( $needle, ALLOW_SPACES ) )
                 throw new ::cPHP::Exception::Data($needle, "needle", "Needle must not be empty");
 
             // Cache the length of the needle so it isn't continually calculated
@@ -197,7 +197,7 @@ class Quoter
     {
         $open = ::cPHP::strval( $open );
 
-        if ( ::cPHP::is_empty($open, ALLOW_SPACES) )
+        if ( ::cPHP::isEmpty($open, ALLOW_SPACES) )
             throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Must not be empty" );
 
         if ( ::cPHP::is_vague( $close, ALLOW_SPACES ) ) {
@@ -293,7 +293,7 @@ class Quoter
     public function setEscape ( $escape )
     {
         $escape = ::cPHP::strval( $escape );
-        if ( ::cPHP::is_empty( $escape, ALLOW_SPACES ) )
+        if ( ::cPHP::isEmpty( $escape, ALLOW_SPACES ) )
             throw new ::cPHP::Exception::Argument( 0, "Escape String", "Must not be empty" );
         $this->escape = $escape;
         return $this;

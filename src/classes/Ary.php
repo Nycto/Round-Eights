@@ -973,7 +973,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Recursively removes all the empty values from an array
      *
-     * @param integer $flags Any valid is_empty flags to use to determine if a value is empty
+     * @param integer $flags Any valid isEmpty flags to use to determine if a value is empty
      * @return object Returns a compacted version of the current array
      */
     public function compact ( $flags = 0 )
@@ -992,7 +992,7 @@ class Ary implements Iterator, Countable, ArrayAccess
 
                         $value = $compact( $value->get(), $compact );
 
-                        if ( !is_empty($value, $flags) )
+                        if ( !isEmpty($value, $flags) )
                             $output[ $key ] = new cPHP::Ary($value);
 
                     }
@@ -1003,7 +1003,7 @@ class Ary implements Iterator, Countable, ArrayAccess
                     if ( is_array($value) && count($value) > 0 )
                         $value = $compact( $value, $compact );
 
-                    if ( !is_empty($value, $flags) )
+                    if ( !isEmpty($value, $flags) )
                         $output[ $key ] = $value;
 
                 }

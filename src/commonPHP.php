@@ -106,7 +106,7 @@ set_exception_handler(function ( $exception ) {
  * Function flags
  */
 
-// Used by is_empty to define what is allowed
+// Used by isEmpty to define what is allowed
 define ("ALLOW_NULL", 1);
 define ("ALLOW_FALSE", 2);
 define ("ALLOW_ZERO", 4);

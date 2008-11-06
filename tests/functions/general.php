@@ -77,26 +77,26 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $this->assertTrue( cPHP::is_empty("") );
-        $this->assertTrue( cPHP::is_empty(0) );
-        $this->assertTrue( cPHP::is_empty(NULL) );
-        $this->assertTrue( cPHP::is_empty(FALSE) );
-        $this->assertTrue( cPHP::is_empty( array() ) );
-        $this->assertTrue( cPHP::is_empty( "  " ) );
+        $this->assertTrue( cPHP::isEmpty("") );
+        $this->assertTrue( cPHP::isEmpty(0) );
+        $this->assertTrue( cPHP::isEmpty(NULL) );
+        $this->assertTrue( cPHP::isEmpty(FALSE) );
+        $this->assertTrue( cPHP::isEmpty( array() ) );
+        $this->assertTrue( cPHP::isEmpty( "  " ) );
 
-        $this->assertFalse( cPHP::is_empty("string") );
-        $this->assertFalse( cPHP::is_empty(1) );
-        $this->assertFalse( cPHP::is_empty("0") );
-        $this->assertFalse( cPHP::is_empty("1") );
-        $this->assertFalse( cPHP::is_empty(TRUE) );
-        $this->assertFalse( cPHP::is_empty( array(1) ) );
+        $this->assertFalse( cPHP::isEmpty("string") );
+        $this->assertFalse( cPHP::isEmpty(1) );
+        $this->assertFalse( cPHP::isEmpty("0") );
+        $this->assertFalse( cPHP::isEmpty("1") );
+        $this->assertFalse( cPHP::isEmpty(TRUE) );
+        $this->assertFalse( cPHP::isEmpty( array(1) ) );
 
-        $this->assertFalse( cPHP::is_empty("", cPHP::ALLOW_BLANK) );
-        $this->assertFalse( cPHP::is_empty(0, cPHP::ALLOW_ZERO) );
-        $this->assertFalse( cPHP::is_empty(NULL, cPHP::ALLOW_NULL) );
-        $this->assertFalse( cPHP::is_empty(FALSE, cPHP::ALLOW_FALSE) );
-        $this->assertFalse( cPHP::is_empty( array(), cPHP::ALLOW_EMPTY_ARRAYS ) );
-        $this->assertFalse( cPHP::is_empty( "  ", cPHP::ALLOW_SPACES ) );
+        $this->assertFalse( cPHP::isEmpty("", cPHP::ALLOW_BLANK) );
+        $this->assertFalse( cPHP::isEmpty(0, cPHP::ALLOW_ZERO) );
+        $this->assertFalse( cPHP::isEmpty(NULL, cPHP::ALLOW_NULL) );
+        $this->assertFalse( cPHP::isEmpty(FALSE, cPHP::ALLOW_FALSE) );
+        $this->assertFalse( cPHP::isEmpty( array(), cPHP::ALLOW_EMPTY_ARRAYS ) );
+        $this->assertFalse( cPHP::isEmpty( "  ", cPHP::ALLOW_SPACES ) );
     }
 
     public function testIsVague ()

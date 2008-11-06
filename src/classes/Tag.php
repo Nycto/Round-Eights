@@ -150,7 +150,7 @@ class Tag implements ArrayAccess
     {
         $tag = strtolower( ::cPHP::stripW($tag) );
 
-        if ( ::cPHP::is_empty($tag) )
+        if ( ::cPHP::isEmpty($tag) )
             throw new ::cPHP::Exception::Argument(0, "Tag", "Must not be empty");
 
         $this->tag = $tag;

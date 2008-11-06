@@ -117,12 +117,12 @@ abstract class Section
     /**
      * Returns whether the content in this instance could be considered empty
      *
-     * @param Integer $flags Any boolean flags to set. See cPHP::is_empty
+     * @param Integer $flags Any boolean flags to set. See cPHP::isEmpty
      * @return Boolean
      */
     public function isEmpty ( $flags = 0 )
     {
-        return ::cPHP::is_empty( $this->content, $flags );
+        return ::cPHP::isEmpty( $this->content, $flags );
     }
 
     /**
