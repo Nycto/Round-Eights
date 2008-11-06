@@ -30,7 +30,7 @@
  * @package Validators
  */
 
-namespace cPHP::Validator::Collection;
+namespace cPHP::Validator;
 
 /**
  * Validator that requires all of its contained validators to return positively

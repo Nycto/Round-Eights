@@ -114,7 +114,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $field, $field->andValidator( $validator2 ) );
 
         $all = $field->getValidator();
-        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::Collection::All") );
+        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::All") );
         $this->assertSame(
                 array( $validator, $validator2 ),
                 $all->getValidators()->get()
@@ -124,7 +124,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $field, $field->andValidator( $validator3 ) );
 
         $all = $field->getValidator();
-        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::Collection::All") );
+        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::All") );
         $this->assertSame(
                 array( $validator, $validator2, $validator3 ),
                 $all->getValidators()->get()

@@ -30,17 +30,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_validator_collection_all extends PHPUnit_Framework_TestCase
+class classes_validator_all extends PHPUnit_Framework_TestCase
 {
 
     public function testNoValidators ()
     {
-        $all = new ::cPHP::Validator::Collection::All;
+        $all = new ::cPHP::Validator::All;
 
         $result = $all->validate("example value");
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
@@ -56,7 +56,7 @@ class classes_validator_collection_all extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue("This is an invalid result") );
 
-        $all = new ::cPHP::Validator::Collection::All( $valid );
+        $all = new ::cPHP::Validator::All( $valid );
         $this->assertEquals( array($valid), $all->getValidators()->get() );
 
         try {
@@ -82,7 +82,7 @@ class classes_validator_collection_all extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( new ::cPHP::Validator::Result("example value") ) );
 
 
-        $all = new ::cPHP::Validator::Collection::All( $valid1, $valid2 );
+        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
@@ -104,7 +104,7 @@ class classes_validator_collection_all extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result1 ) );
 
 
-        $all = new ::cPHP::Validator::Collection::All( $valid1 );
+        $all = new ::cPHP::Validator::All( $valid1 );
 
         $result = $all->validate("example value");
 
@@ -140,7 +140,7 @@ class classes_validator_collection_all extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new ::cPHP::Validator::Collection::All( $valid1, $valid2 );
+        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
@@ -176,7 +176,7 @@ class classes_validator_collection_all extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new ::cPHP::Validator::Collection::All( $valid1, $valid2 );
+        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
