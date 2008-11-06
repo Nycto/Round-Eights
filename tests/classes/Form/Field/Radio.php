@@ -130,7 +130,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
     {
         $field = new ::cPHP::Form::Field::Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
-        $field->setValue( 2 ) ;
+
 
         $tag = $field->getOptionLabelTag(2);
 
@@ -145,6 +145,56 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
         try {
             $field->getOptionLabelTag(4);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Index $err ) {
+            $this->assertSame("Option does not exist in field", $err->getMessage());
+        }
+    }
+
+
+    public function testGetOptionTag_unchecked ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+
+        $tag = $field->getOptionTag(3);
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "li", $tag->getTag() );
+
+        $this->assertSame(
+                '<input name="fld" value="3" type="radio" id="radio_fld_77de68daec" /> '
+                .'<label for="radio_fld_77de68daec">Three</label>',
+                $tag->getcontent()
+            );
+    }
+
+    public function _testGetOptionTag_checked ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+        $field->setValue(3);
+
+        $tag = $field->getOptionTag(3);
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "li", $tag->getTag() );
+
+        $this->assertSame(
+                '<input name="fld" value="3" type="radio" id="radio_fld_77de68daec" checked="checked" /> '
+                .'<label for="radio_fld_77de68daec">Three</label>',
+                $tag->getcontent()
+            );
+    }
+
+    public function testGetOptionTag_error ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
+
+        try {
+            $field->getOptionTag(4);
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Index $err ) {
