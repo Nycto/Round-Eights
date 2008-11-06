@@ -118,15 +118,15 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testIsBasic ()
     {
-        $this->assertTrue( cPHP::is_basic(FALSE) );
-        $this->assertTrue( cPHP::is_basic(TRUE) );
-        $this->assertTrue( cPHP::is_basic("some string") );
-        $this->assertTrue( cPHP::is_basic(500) );
-        $this->assertTrue( cPHP::is_basic(2.78) );
-        $this->assertTrue( cPHP::is_basic(NULL) );
+        $this->assertTrue( cPHP::isBasic(FALSE) );
+        $this->assertTrue( cPHP::isBasic(TRUE) );
+        $this->assertTrue( cPHP::isBasic("some string") );
+        $this->assertTrue( cPHP::isBasic(500) );
+        $this->assertTrue( cPHP::isBasic(2.78) );
+        $this->assertTrue( cPHP::isBasic(NULL) );
 
-        $this->assertFalse( cPHP::is_basic( $this->getMock("object") ) );
-        $this->assertFalse( cPHP::is_basic( array() ) );
+        $this->assertFalse( cPHP::isBasic( $this->getMock("object") ) );
+        $this->assertFalse( cPHP::isBasic( array() ) );
     }
 
     public function testArrayVal ()

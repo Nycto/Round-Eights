@@ -174,7 +174,7 @@ function isVague ($value, $flags = 0)
  * @param mixed $value The value being tested
  * @return Boolean
  */
-function is_basic ( $value )
+function isBasic ( $value )
 {
     return is_bool($value)
         || is_int($value)
