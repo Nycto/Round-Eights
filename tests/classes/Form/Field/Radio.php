@@ -171,6 +171,40 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetTag_noOptions ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->setName("fldName");
+
+        $tag = $field->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "ul", $tag->getTag() );
+
+        $this->assertNull($tag->getcontent());
+    }
+
+    public function testGetTag_withOptions ()
+    {
+        $field = new ::cPHP::Form::Field::Radio("fld");
+        $field->setName("fldName");
+        $field->addOption("one", "Single");
+        $field->addOption("two", "Double");
+
+        $tag = $field->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertSame( "ul", $tag->getTag() );
+
+        $this->assertSame(
+                '<li><input name="fldName" value="one" type="radio" id="radio_fldName_fe05bcdcdc" /> '
+                .'<label for="radio_fldName_fe05bcdcdc">Single</label></li>'
+                .'<li><input name="fldName" value="two" type="radio" id="radio_fldName_ad782ecdac" /> '
+                .'<label for="radio_fldName_ad782ecdac">Double</label></li>',
+                $tag->getcontent()
+            );
+    }
+
 }
 
 ?>

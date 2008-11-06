@@ -123,6 +123,19 @@ class Radio extends ::cPHP::Form::Options
         })->implode();
     }
 
+    /**
+     * Returns a cPHP::Tag object that represents this instance
+     *
+     * @return Object A cPHP::Tag object
+     */
+    public function getTag()
+    {
+        return new ::cPHP::Tag(
+                'ul',
+                $this->getOptionList()
+            );
+    }
+
 }
 
 ?>
