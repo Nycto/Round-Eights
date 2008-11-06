@@ -108,23 +108,19 @@ class Radio extends ::cPHP::Form::Options
     }
 
     /**
-     * Returns the HTML for a single option, referenced by the option's value
+     * Returns a string representation of the option list
      *
-     * @param String|Integer $value The value of the option whose tag should be returned
-     * @return Object Returns a cPHP::Tag object
+     * @return String The list of radio buttons and their labels
      */
-    public function getOptionTag ( $value )
+    public function getOptionList ()
     {
-        $value = ::cPHP::indexVal( $value );
-
-        if ( !$this->hasOption($value) )
-            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
-
-        return new ::cPHP::Tag(
-                'li',
-                $this->getOptionRadioTag( $value ) ." ". $this->getOptionLabelTag( $value ),
-                array( "for" => $this->getRadioOptionID($value) )
-            );
+        return $this->getOptions()->collect(function ($value, $key) {
+            return "<li>"
+                .$this->getOptionRadioTag( $key )
+                ." "
+                .$this->getOptionLabelTag( $key )
+                ."</li>";
+        })->implode();
     }
 
 }
