@@ -33,9 +33,9 @@
 namespace cPHP::Form;
 
 /**
- * The core class for HTML forms
+ * The core class for HTML form fields that have multiple, distinct, options
  */
-abstract class Options extends ::cPHP::Form::Field
+abstract class Multi extends ::cPHP::Form::Field
 {
 
     /**
@@ -58,7 +58,7 @@ abstract class Options extends ::cPHP::Form::Field
         parent::__construct($name);
 
         $this->setValidator(
-                new ::cPHP::Validator::OptionsField( $this )
+                new ::cPHP::Validator::MultiField( $this )
             );
     }
 

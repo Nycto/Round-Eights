@@ -35,7 +35,7 @@ namespace cPHP::Form::Field;
 /**
  * An HTML radio button field list
  */
-class Radio extends ::cPHP::Form::Options
+class Radio extends ::cPHP::Form::Multi
 {
 
     /**

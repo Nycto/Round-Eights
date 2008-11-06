@@ -35,12 +35,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_form_options extends PHPUnit_Framework_TestCase
+class classes_form_multi extends PHPUnit_Framework_TestCase
 {
 
     public function testAddOption_strValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption("str", "lbl") );
 
@@ -52,7 +52,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testAddOption_intValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(50, "lbl") );
 
@@ -64,7 +64,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testAddOption_floatValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(1.5, "othr") );
 
@@ -79,7 +79,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testAddOption_boolValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(FALSE, "lbl") );
 
@@ -103,7 +103,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testAddOption_nullValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(null, "lbl") );
 
@@ -119,7 +119,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testAddOption_objValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( $this->getMock("stub"), "lbl") );
 
@@ -135,7 +135,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testAddOption_nonStringLabel ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( 1, 5) );
 
@@ -160,7 +160,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testAddOption_conflict ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( "val", "one") );
 
@@ -185,7 +185,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testHasOption ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -199,7 +199,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testGetOptionLabel ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -224,7 +224,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testRemoveOption ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -249,7 +249,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
     public function testClearOptions ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -271,7 +271,7 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testImportOptions ()
     {
-        $mock = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
 
         $this->assertSame(
                 $mock,
@@ -289,12 +289,12 @@ class classes_form_options extends PHPUnit_Framework_TestCase
 
     public function testDefaultValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $this->assertThat(
                 $field->getValidator(),
-                $this->isInstanceOf("cPHP::Validator::OptionsField")
+                $this->isInstanceOf("cPHP::Validator::MultiField")
             );
 
         $field->setValue( "one" );

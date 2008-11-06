@@ -33,10 +33,10 @@
 namespace cPHP::Validator;
 
 /**
- * Given a cPHP::Form::Options object, this determines whether the given value
+ * Given a cPHP::Form::Multi object, this determines whether the given value
  * is a valid selection
  */
-class OptionsField extends ::cPHP::Validator
+class MultiField extends ::cPHP::Validator
 {
 
     /**
@@ -47,9 +47,9 @@ class OptionsField extends ::cPHP::Validator
     /**
      * Constructor...
      *
-     * @param Object $field The cPHP::Form::Options field to compare the value to
+     * @param Object $field The cPHP::Form::Multi field to compare the value to
      */
-    public function __construct ( ::cPHP::Form::Options $field )
+    public function __construct ( ::cPHP::Form::Multi $field )
     {
         $this->field = $field;
     }
