@@ -35,13 +35,13 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_optionsfield extends PHPUnit_Framework_TestCase
+class classes_validator_multifield extends PHPUnit_Framework_TestCase
 {
 
     public function testNonBasics ()
     {
-        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
-        $valid = new ::cPHP::Validator::OptionsField( $field );
+        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $valid = new ::cPHP::Validator::MultiField( $field );
 
         $result = $valid->validate( array() );
         $this->assertFalse( $result->isValid() );
@@ -61,8 +61,8 @@ class classes_validator_optionsfield extends PHPUnit_Framework_TestCase
 
     public function testEmptyField ()
     {
-        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
-        $valid = new ::cPHP::Validator::OptionsField( $field );
+        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $valid = new ::cPHP::Validator::MultiField( $field );
 
         $result = $valid->validate( 50 );
         $this->assertFalse( $result->isValid() );
@@ -74,10 +74,10 @@ class classes_validator_optionsfield extends PHPUnit_Framework_TestCase
 
     public function testInvalidOption ()
     {
-        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
-        $valid = new ::cPHP::Validator::OptionsField( $field );
+        $valid = new ::cPHP::Validator::MultiField( $field );
 
         $result = $valid->validate( 4 );
         $this->assertFalse( $result->isValid() );
@@ -103,10 +103,10 @@ class classes_validator_optionsfield extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $field = $this->getMock("cPHP::Form::Options", array(), array("fld"));
+        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
-        $valid = new ::cPHP::Validator::OptionsField( $field );
+        $valid = new ::cPHP::Validator::MultiField( $field );
 
         $this->assertTrue( $valid->isValid( "one" ) );
         $this->assertTrue( $valid->isValid( 2 ) );

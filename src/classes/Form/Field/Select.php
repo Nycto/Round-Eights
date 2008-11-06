@@ -35,7 +35,7 @@ namespace cPHP::Form::Field;
 /**
  * An HTML select field
  */
-class Select extends ::cPHP::Form::Options
+class Select extends ::cPHP::Form::Multi
 {
 
     /**
