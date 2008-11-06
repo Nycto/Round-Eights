@@ -163,7 +163,7 @@ function isEmpty ($value, $flags = 0)
  * @param Integer $flags Any isEmpty() flags
  * @return Boolean
  */
-function is_vague ($value, $flags = 0)
+function isVague ($value, $flags = 0)
 {
     return (is_bool($value) || isEmpty($value, $flags));
 }

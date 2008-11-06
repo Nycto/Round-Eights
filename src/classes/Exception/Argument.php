@@ -66,16 +66,16 @@ class Argument extends ::cPHP::Exception
     {
         $this->setFault($fault);
 
-        if ( !::cPHP::is_vague($label) )
+        if ( !::cPHP::isVague($label) )
             $this->addData("Arg Label", $label);
 
-        if ( !::cPHP::is_vague($message) )
+        if ( !::cPHP::isVague($message) )
             $this->message = $message;
 
-        if ( !::cPHP::is_vague( $code ) )
+        if ( !::cPHP::isVague( $code ) )
             $this->code = $code;
 
-        if (!::cPHP::is_vague($arg, ::cPHP::ALLOW_ZERO) && $this->getTraceCount() > 0)
+        if (!::cPHP::isVague($arg, ::cPHP::ALLOW_ZERO) && $this->getTraceCount() > 0)
             $this->setArg($arg);
     }
 
@@ -157,7 +157,7 @@ class Argument extends ::cPHP::Exception
     {
         parent::setFault($offset);
 
-        if (!::cPHP::is_vague($arg, ::cPHP::ALLOW_ZERO))
+        if (!::cPHP::isVague($arg, ::cPHP::ALLOW_ZERO))
             $this->setArg( $arg );
 
         else if ( $this->issetArg() )

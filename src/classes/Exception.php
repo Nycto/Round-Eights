@@ -95,7 +95,7 @@ class Exception extends ::Exception
     {
         parent::__construct($message, $code);
 
-        if ( !::cPHP::is_vague($fault, ::cPHP::ALLOW_ZERO) )
+        if ( !::cPHP::isVague($fault, ::cPHP::ALLOW_ZERO) )
             $this->setFault($fault);
     }
 

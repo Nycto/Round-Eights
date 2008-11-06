@@ -103,7 +103,7 @@ class DB
      */
     static public function get ( $label = NULL )
     {
-        if ( !is_string($label) && ::cPHP::is_vague($label) )
+        if ( !is_string($label) && ::cPHP::isVague($label) )
             return self::getDefault();
 
         $label = ::cPHP::strval( $label );

@@ -173,7 +173,7 @@ class DateTime
      */
     public function __construct ( $input = NULL )
     {
-        if (func_num_args() > 0 && !::cPHP::is_vague($input) )
+        if (func_num_args() > 0 && !::cPHP::isVague($input) )
             $this->interpret( $input );
 
     }
@@ -382,7 +382,7 @@ class DateTime
         if ( !isset($this->time) )
             throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
 
-        if ( is_vague($format) )
+        if ( isVague($format) )
             $format = $this->getFormat();
         else
             $format = ::cPHP::strval( $format );

@@ -235,7 +235,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
     $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
-    if (is_vague($trimTo) || intval($trimTo) <= 0)
+    if (isVague($trimTo) || intval($trimTo) <= 0)
         $trimTo = ceil($maxLength * (2 / 3));
 
     // The trimTo length can't be greater than the max length
@@ -484,7 +484,7 @@ function strWeld ($string1, $string2, $glue, $ignoreCase = TRUE)
     $string2 = strval($string2);
     $glue = strval($glue);
 
-    if (is_vague($glue, ALLOW_SPACES))
+    if (isVague($glue, ALLOW_SPACES))
         return $string1 . $string2;
 
     return strStripTail($string1, $glue, $ignoreCase) . $glue . strStripHead($string2, $glue, $ignoreCase);

@@ -101,19 +101,19 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testIsVague ()
     {
-        $this->assertTrue( cPHP::is_vague(FALSE) );
-        $this->assertTrue( cPHP::is_vague(TRUE) );
-        $this->assertTrue( cPHP::is_vague("") );
-        $this->assertTrue( cPHP::is_vague(0) );
-        $this->assertTrue( cPHP::is_vague(NULL) );
-        $this->assertTrue( cPHP::is_vague( array() ) );
-        $this->assertTrue( cPHP::is_vague( "  " ) );
+        $this->assertTrue( cPHP::isVague(FALSE) );
+        $this->assertTrue( cPHP::isVague(TRUE) );
+        $this->assertTrue( cPHP::isVague("") );
+        $this->assertTrue( cPHP::isVague(0) );
+        $this->assertTrue( cPHP::isVague(NULL) );
+        $this->assertTrue( cPHP::isVague( array() ) );
+        $this->assertTrue( cPHP::isVague( "  " ) );
 
-        $this->assertFalse( cPHP::is_vague("string") );
-        $this->assertFalse( cPHP::is_vague(1) );
-        $this->assertFalse( cPHP::is_vague("0") );
-        $this->assertFalse( cPHP::is_vague("1") );
-        $this->assertFalse( cPHP::is_vague( array(1) ) );
+        $this->assertFalse( cPHP::isVague("string") );
+        $this->assertFalse( cPHP::isVague(1) );
+        $this->assertFalse( cPHP::isVague("0") );
+        $this->assertFalse( cPHP::isVague("1") );
+        $this->assertFalse( cPHP::isVague( array(1) ) );
     }
 
     public function testIsBasic ()

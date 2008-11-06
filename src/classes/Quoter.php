@@ -200,7 +200,7 @@ class Quoter
         if ( ::cPHP::isEmpty($open, ALLOW_SPACES) )
             throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Must not be empty" );
 
-        if ( ::cPHP::is_vague( $close, ALLOW_SPACES ) ) {
+        if ( ::cPHP::isVague( $close, ALLOW_SPACES ) ) {
             $close = array( $open );
         }
         else {

@@ -57,7 +57,7 @@ class Write extends ::cPHP::DB::Result
      */
     public function __construct ( $affected, $insertID, $query )
     {
-        if ( !::cPHP::is_vague($insertID) ) {
+        if ( !::cPHP::isVague($insertID) ) {
             $insertID = intval($insertID);
             $this->insertID = $insertID > 0 ? $insertID : NULL;
         }
