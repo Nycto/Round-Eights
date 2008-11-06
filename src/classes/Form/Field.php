@@ -137,7 +137,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     public function getValidator ()
     {
         if ( !($this->validator instanceof ::cPHP::iface::Validator) )
-            $this->validator = new ::cPHP::Validator::Collection::Any;
+            $this->validator = new ::cPHP::Validator::Any;
 
         return $this->validator;
     }

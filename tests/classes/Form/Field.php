@@ -84,7 +84,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
         $validator = $field->getValidator();
 
-        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Collection::Any") );
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Any") );
 
         $this->assertSame( $validator, $field->getValidator() );
     }
