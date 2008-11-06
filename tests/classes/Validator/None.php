@@ -30,17 +30,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_validator_collection_none extends PHPUnit_Framework_TestCase
+class classes_validator_none extends PHPUnit_Framework_TestCase
 {
 
     public function testNoValidators ()
     {
-        $all = new ::cPHP::Validator::Collection::None;
+        $all = new ::cPHP::Validator::None;
 
         $result = $all->validate("example value");
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
@@ -56,7 +56,7 @@ class classes_validator_collection_none extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue("This is an invalid result") );
 
-        $none = new ::cPHP::Validator::Collection::None( $valid );
+        $none = new ::cPHP::Validator::None( $valid );
         $this->assertEquals( array($valid), $none->getValidators()->get() );
 
         try {
@@ -86,7 +86,7 @@ class classes_validator_collection_none extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result2 ) );
 
 
-        $none = new ::cPHP::Validator::Collection::None( $valid1, $valid2 );
+        $none = new ::cPHP::Validator::None( $valid1, $valid2 );
 
         $result = $none->validate("example value");
 
@@ -106,7 +106,7 @@ class classes_validator_collection_none extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result1 ) );
 
 
-        $none = new ::cPHP::Validator::Collection::None( $valid1 );
+        $none = new ::cPHP::Validator::None( $valid1 );
 
         $result = $none->validate("example value");
 
@@ -134,7 +134,7 @@ class classes_validator_collection_none extends PHPUnit_Framework_TestCase
             ->method( "validate" );
 
 
-        $none = new ::cPHP::Validator::Collection::None( $valid1, $valid2 );
+        $none = new ::cPHP::Validator::None( $valid1, $valid2 );
 
         $result = $none->validate("example value");
 
@@ -166,7 +166,7 @@ class classes_validator_collection_none extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $result2 ) );
 
 
-        $none = new ::cPHP::Validator::Collection::None( $valid1, $valid2 );
+        $none = new ::cPHP::Validator::None( $valid1, $valid2 );
 
         $result = $none->validate("example value");
 
