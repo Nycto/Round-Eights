@@ -30,8 +30,8 @@
  * @package numeric
  */
 
-namespace cPHP;
- 
+namespace cPHP::num;
+
 /**
  * Offset wrapping flag. No wrapping will be perfomed. If the given offset falls outside of the
  * length, FALSE is returned. Negative offsets are allowed
@@ -105,13 +105,13 @@ function negate ($number)
  */
 function between ($value, $lower, $upper, $inclusive = TRUE)
 {
-    $value = numVal($value);
-    $lower = numVal($lower);
-    $upper = numVal($upper);
-    
-    $inclusive = boolVal($inclusive);
+    $value = ::cPHP::numVal($value);
+    $lower = ::cPHP::numVal($lower);
+    $upper = ::cPHP::numVal($upper);
+
+    $inclusive = ::cPHP::boolVal($inclusive);
     if ($upper < $lower)
-        swap($upper, $lower);
+        ::cPHP::swap($upper, $lower);
 
     if ($inclusive && ($value < $lower || $value > $upper))
         return FALSE;
@@ -136,14 +136,14 @@ function between ($value, $lower, $upper, $inclusive = TRUE)
  */
 function limit ($value, $low, $high)
 {
-    $value = numVal($value);
-    $low = numVal($low);
-    $high = numVal($high);
+    $value = ::cPHP::numVal($value);
+    $low = ::cPHP::numVal($low);
+    $high = ::cPHP::numVal($high);
 
     if ($low == $high)
         return $low;
     else if ($high < $low)
-        swap($high, $low);
+        ::cPHP::swap($high, $low);
 
     return max( min($value, $high), $low);
 }
@@ -164,17 +164,17 @@ function limit ($value, $low, $high)
  */
 function intWrap ($value, $lower, $upper)
 {
-    $value = intval(reduce($value));
-    $lower = intval(reduce($lower));
-    $upper = intval(reduce($upper));
+    $value = intval( ::cPHP::reduce($value) );
+    $lower = intval( ::cPHP::reduce($lower) );
+    $upper = intval( ::cPHP::reduce($upper) );
 
     if ($lower == $upper)
         return $lower;
 
     if ($upper < $lower)
-        swap ($upper, $lower);
+        ::cPHP::swap ($upper, $lower);
 
-    if (between($value, $lower, $upper))
+    if ( ::cPHP::num::between($value, $lower, $upper) )
         return $value;
 
     $delta = $upper - $lower + 1;
@@ -204,18 +204,18 @@ function intWrap ($value, $lower, $upper)
  */
 function numWrap ($value, $lower, $upper, $useLower = TRUE)
 {
-    $value = numVal($value);
-    $lower = numVal($lower);
-    $upper = numVal($upper);
-    $useLower = boolVal($useLower);
+    $value = ::cPHP::numVal($value);
+    $lower = ::cPHP::numVal($lower);
+    $upper = ::cPHP::numVal($upper);
+    $useLower = ::cPHP::boolVal($useLower);
 
     if ($lower == $upper)
         return $lower;
 
     if ($upper < $lower)
-        swap ($upper, $lower);
+        ::cPHP::swap ($upper, $lower);
 
-    if (between($value, $lower, $upper)) {
+    if ( ::cPHP::num::between($value, $lower, $upper) ) {
         $out = $value;
     }
     else {
@@ -263,41 +263,41 @@ function offsetWrap ($length, $offset, $wrapFlag)
 {
 
     $length = intval( $length );
-    
+
     if ( $length <= 0 )
         throw new ::cPHP::Exception::Argument(0, "Length", "Must be greater than zero");
 
-    $offset = intval( reduce($offset) );
-    
+    $offset = intval( ::cPHP::reduce($offset) );
+
     switch ($wrapFlag) {
-        
+
         default:
             throw new ::cPHP::Exception::Argument(2, "wrapFlag", "Invalid offset wrap flag");
-        
-        case cPHP::OFFSET_NONE:
-            if (!between($offset, 0 - $length, $length - 1))
+
+        case ::cPHP::num::OFFSET_NONE:
+            if ( !::cPHP::num::between($offset, 0 - $length, $length - 1) )
                 throw new ::cPHP::Exception::Argument(1, "Offset", "Offset is out of bounds");
-            
+
             else if ($offset >= 0)
                 return $offset;
-            
+
             else
                 return $length + $offset;
 
-        case cPHP::OFFSET_WRAP:
-            return intwrap($offset, 0, $length - 1);
+        case ::cPHP::num::OFFSET_WRAP:
+            return ::cPHP::num::intWrap($offset, 0, $length - 1);
 
         case FALSE:
-        case cPHP::OFFSET_RESTRICT:
-            $offset = limit($offset, 0 - $length, $length - 1);
+        case ::cPHP::num::OFFSET_RESTRICT:
+            $offset = ::cPHP::num::limit($offset, 0 - $length, $length - 1);
             if ($offset < 0)
                 $offset = $length + $offset;
             return $offset;
 
-        case cPHP::OFFSET_LIMIT:
-            return limit($offset, 0, $length - 1);
+        case ::cPHP::num::OFFSET_LIMIT:
+            return ::cPHP::num::limit($offset, 0, $length - 1);
     }
-    
+
 }
 
 ?>

@@ -1078,7 +1078,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         // Test a function name as a callback
         $ary = new cPHP::Ary( range(5, -5) );
-        $result = $ary->find("cPHP::negative");
+        $result = $ary->find("cPHP::num::negative");
         $this->assertSame( -1, $result );
 
 

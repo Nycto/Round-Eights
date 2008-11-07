@@ -44,7 +44,7 @@ function int2Ordinal ($integer)
 {
     $integer = strval(intval($integer));
 
-    if ( ::cPHP::between( abs( substr($integer, -2) ), 11, 13, TRUE))
+    if ( ::cPHP::num::between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
 
     switch( substr($integer, -1) ) {

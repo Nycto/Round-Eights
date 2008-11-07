@@ -117,15 +117,15 @@ class Exception extends ::Exception
      * @param integer $wrapFlag The offset wrapping mode to use
      * @return array A list of the backtrace details at the given offset
      */
-    public function getTraceByOffset ($offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
+    public function getTraceByOffset ($offset, $wrapFlag = ::cPHP::num::OFFSET_RESTRICT)
     {
         $trace = $this->getTrace();
         if (count($trace) <= 0)
             return FALSE;
 
-        $trace = new cPHP::Ary( $trace );
+        $trace = new ::cPHP::Ary( $trace );
 
-        return new cPHP::Ary(
+        return new ::cPHP::Ary(
                 $trace->offset($offset, $wrapFlag)
             );
     }
@@ -167,7 +167,7 @@ class Exception extends ::Exception
      * @param integer $wrapFlag The offset wrapping mode to use
      * @return object Returns a self reference
      */
-    public function setFault ( $offset, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT )
+    public function setFault ( $offset, $wrapFlag = ::cPHP::num::OFFSET_RESTRICT )
     {
         $trace = $this->getTrace();
 

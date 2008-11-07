@@ -308,9 +308,9 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
      * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
      * @return Object Returns a self reference
      */
-    public function seek ( $offset, $wrapFlag = ::cPHP::OFFSET_RESTRICT )
+    public function seek ( $offset, $wrapFlag = ::cPHP::num::OFFSET_RESTRICT )
     {
-        $offset = ::cPHP::offsetWrap(
+        $offset = ::cPHP::num::offsetWrap(
                 $this->count(),
                 $offset,
                 $wrapFlag

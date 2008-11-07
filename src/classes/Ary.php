@@ -48,24 +48,24 @@ class Ary implements Iterator, Countable, ArrayAccess
      * No wrapping will be perfomed. If the given offset falls outside of the
      * length, FALSE is returned. Negative offsets are allowed
      */
-    const OFFSET_NONE = cPHP::OFFSET_NONE;
+    const OFFSET_NONE = cPHP::num::OFFSET_NONE;
 
     /**
      * The offset will be wrapped until it fits within the length. Negative
      * offsets are allowed
      */
-    const OFFSET_WRAP = cPHP::OFFSET_WRAP;
+    const OFFSET_WRAP = cPHP::num::OFFSET_WRAP;
 
     /**
      * The offset will be wrapped once. Anything past the edge after this initial
      * wrap is cut down to the edge. Negative offsets are allowed
      */
-    const OFFSET_RESTRICT = cPHP::OFFSET_RESTRICT;
+    const OFFSET_RESTRICT = cPHP::num::OFFSET_RESTRICT;
 
     /**
      * The offset is forced to within the length. Negative offsets are NOT allowed
      */
-    const OFFSET_LIMIT = cPHP::OFFSET_LIMIT;
+    const OFFSET_LIMIT = cPHP::num::OFFSET_LIMIT;
 
     /**
      * The iterator being used in this instance
@@ -158,7 +158,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function calcOffset ($offset, $wrapFlag)
     {
-        return cPHP::offsetWrap(
+        return cPHP::num::offsetWrap(
                 count( $this->array ),
                 $offset,
                 $wrapFlag
