@@ -37,7 +37,20 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_validator_fileupload extends PHPUnit_Framework_TestCase
 {
-    
+
+    public function testInvalidFieldName ()
+    {
+        $valid = new ::cPHP::Validator::FileUpload;
+
+        try {
+            $valid->validate("1234");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
