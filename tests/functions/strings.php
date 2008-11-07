@@ -205,27 +205,27 @@ class functions_strings extends PHPUnit_Framework_TestCase
             );
         $this->assertEquals(
                 "  1 23 a bc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ALLOW_SPACES)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", cPHP::str::ALLOW_SPACES)
             );
         $this->assertEquals(
                 "  1_ 23 a bc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ALLOW_SPACES | ALLOW_UNDERSCORES)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", cPHP::str::ALLOW_SPACES | cPHP::str::ALLOW_UNDERSCORES)
             );
         $this->assertEquals(
                 "12\n3ab\rc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ALLOW_NEWLINES)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", cPHP::str::ALLOW_NEWLINES)
             );
         $this->assertEquals(
                 "12\n3ab\rc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ALLOW_NEWLINES)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", cPHP::str::ALLOW_NEWLINES)
             );
         $this->assertEquals(
                 "123\tabc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ALLOW_TABS)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", ::cPHP::str::ALLOW_TABS)
             );
         $this->assertEquals(
                 "123-abc",
-                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", ALLOW_DASHES)
+                cPHP::str::stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", ::cPHP::str::ALLOW_DASHES)
             );
     }
 

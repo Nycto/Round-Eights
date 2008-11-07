@@ -988,7 +988,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array( 1 => TRUE, 2 => NULL, 3 => "string", 4 => FALSE, 5 => 1, 7 => array(1.5), 9 => "0"),
-                $ary->compact( ALLOW_FALSE | ALLOW_NULL )->get()
+                $ary->compact( ::cPHP::ALLOW_FALSE | ::cPHP::ALLOW_NULL )->get()
             );
 
 

@@ -94,7 +94,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
         $section->setContent("  ");
         $this->assertTrue( $section->isEmpty() );
-        $this->assertFalse( $section->isEmpty( ALLOW_SPACES ) );
+        $this->assertFalse( $section->isEmpty( ::cPHP::ALLOW_SPACES ) );
 
         $section->setContent("Some piece of content");
         $this->assertFalse( $section->isEmpty() );

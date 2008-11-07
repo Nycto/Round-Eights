@@ -33,6 +33,17 @@
 namespace cPHP::str;
 
 /**
+ * Function constants
+ */
+const ALLOW_FALSE = 1;
+const ALLOW_BLANK = 2;
+const ALLOW_SPACES = 4;
+const ALLOW_UNDERSCORES = 8;
+const ALLOW_NEWLINES = 16;
+const ALLOW_TABS = 32;
+const ALLOW_DASHES = 64;
+
+/**
  * Translate a number to a string with a suffix
  *
  * For example, 1 becomes "1st", 2 becomes "2nd"
@@ -170,11 +181,11 @@ function stripW ($string, $flags = 0)
 
     return preg_replace(
             "/[^a-z0-9"
-            .($flags & ALLOW_TABS?"\t":"")
-            .($flags & ALLOW_NEWLINES?"\n\r":"")
-            .($flags & ALLOW_SPACES?" ":"")
-            .($flags & ALLOW_UNDERSCORES?"_":"")
-            .($flags & ALLOW_DASHES?'\-':"")
+            .($flags & ::cPHP::str::ALLOW_TABS?"\t":"")
+            .($flags & ::cPHP::str::ALLOW_NEWLINES?"\n\r":"")
+            .($flags & ::cPHP::str::ALLOW_SPACES?" ":"")
+            .($flags & ::cPHP::str::ALLOW_UNDERSCORES?"_":"")
+            .($flags & ::cPHP::str::ALLOW_DASHES?'\-':"")
             ."]/i",
             NULL,
             $string
@@ -484,7 +495,7 @@ function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
     $string2 = ::cPHP::strval($string2);
     $glue = ::cPHP::strval($glue);
 
-    if ( ::cPHP::isVague($glue, ALLOW_SPACES))
+    if ( ::cPHP::isVague($glue, ::cPHP::str::ALLOW_SPACES))
         return $string1 . $string2;
 
     return ::cPHP::str::stripTail($string1, $glue, $ignoreCase)

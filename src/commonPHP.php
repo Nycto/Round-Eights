@@ -103,24 +103,6 @@ set_exception_handler(function ( $exception ) {
 });
 
 /**
- * Function flags
- */
-
-// Used by isEmpty to define what is allowed
-define ("ALLOW_NULL", 1);
-define ("ALLOW_FALSE", 2);
-define ("ALLOW_ZERO", 4);
-define ("ALLOW_BLANK", 8);
-define ("ALLOW_SPACES", 16);
-define ("ALLOW_EMPTY_ARRAYS", 32);
-
-// Used by str::stripW to define what to keep
-define ("ALLOW_UNDERSCORES", 64);
-define ("ALLOW_NEWLINES", 128);
-define ("ALLOW_TABS", 256);
-define ("ALLOW_DASHES", 512);
-
-/**
  * Take a snapshot of the environment
  */
 ::cPHP::Env::get();

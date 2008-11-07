@@ -89,8 +89,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
     public function testInvalid_flags ()
     {
-
-        $validator = new ::cPHP::Validator::NotEmpty( ALLOW_BLANK );
+        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_BLANK );
         $this->assertTrue( $validator->isValid("") );
 
         $result = $validator->validate("    ");
@@ -101,7 +100,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new ::cPHP::Validator::NotEmpty( ALLOW_NULL );
+        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_NULL );
         $this->assertTrue( $validator->isValid(NULL) );
 
         $result = $validator->validate(0);
@@ -112,7 +111,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new ::cPHP::Validator::NotEmpty( ALLOW_FALSE );
+        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_FALSE );
         $this->assertTrue( $validator->isValid(FALSE) );
 
         $result = $validator->validate(array());
