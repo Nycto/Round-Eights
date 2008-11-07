@@ -30,7 +30,7 @@
  * @package strings
  */
 
-namespace cPHP;
+namespace cPHP::str;
 
 /**
  * Translate a number to a string with a suffix
@@ -44,7 +44,7 @@ function int2Ordinal ($integer)
 {
     $integer = strval(intval($integer));
 
-    if (between( abs( substr($integer, -2) ), 11, 13, TRUE))
+    if ( ::cPHP::between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
 
     switch( substr($integer, -1) ) {
@@ -67,7 +67,7 @@ function int2Ordinal ($integer)
  * @param Boolean $ignoreCase Whether the search should be case sensitive
  * @return Boolean Returns whether the needle exists in the haystack
  */
-function strContains($needle, $haystack, $ignoreCase = TRUE)
+function contains($needle, $haystack, $ignoreCase = TRUE)
 {
     if ($ignoreCase)
         return ( stripos( strVal($haystack), strVal($needle) ) === FALSE) ? FALSE : TRUE;
@@ -83,19 +83,19 @@ function strContains($needle, $haystack, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the search should be case sensitive
  * @return object Returns an array containing the found offsets. If the needle is not contained in the haystack, an empty array is returned
  */
-function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
+function offsets ($needle, $haystack, $ignoreCase = TRUE)
 {
-    $ignoreCase = boolVal($ignoreCase);
-    $needle = strVal($needle);
-    $haystack = strVal($haystack);
+    $ignoreCase = ::cPHP::boolVal($ignoreCase);
+    $needle = ::cPHP::strVal($needle);
+    $haystack = ::cPHP::strVal($haystack);
 
     if (empty($needle))
         throw new ::cPHP::Exception::Argument(0, 'needle', 'Must not be empty');
 
-    if (!strContains($needle, $haystack, $ignoreCase))
+    if (!::cPHP::str::contains($needle, $haystack, $ignoreCase))
         return new cPHP::Ary;
 
-    $count = $ignoreCase ? substr_icount($haystack, $needle) : substr_count($haystack, $needle);
+    $count = $ignoreCase ? ::cPHP::str::substr_icount($haystack, $needle) : substr_count($haystack, $needle);
 
     $found = array();
 
@@ -120,9 +120,9 @@ function strOffsets ($needle, $haystack, $ignoreCase = TRUE)
  * @param Integer $wrapFlag How to handle offset wrapping when the offset, per {@link calcWrapFlag()}.
  * @return Integer Returns the offsets, from 0, of the needle in the haystack
  */
-function strnpos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
+function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
 {
-    $found = strOffsets($needle, $haystack, $ignoreCase);
+    $found = ::cPHP::str::offsets($needle, $haystack, $ignoreCase);
 
     if (count($found) <= 0)
         return FALSE;
@@ -155,7 +155,7 @@ function unshout ($string)
  * named after the regular expression used
  *
  * @param String $string The value being processed
- * @param Integer $flags Allows you to adjust how stripW handles different characters. Allowed flags are:
+ * @param Integer $flags Allows you to adjust how str::stripW handles different characters. Allowed flags are:
  *  - ALLOW_TABS
  *  - ALLOW_NEWLINES
  *  - ALLOW_SPACES
@@ -166,7 +166,7 @@ function unshout ($string)
 function stripW ($string, $flags = 0)
 {
 
-    $flags = max( intval(reduce($flags)), 0 );
+    $flags = max( intval( ::cPHP::reduce($flags)), 0 );
 
     return preg_replace(
             "/[^a-z0-9"
@@ -203,7 +203,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote(strval($repeated), '/');
     }
 
-    if ( isEmpty( $repeated ) )
+    if ( ::cPHP::isEmpty( $repeated ) )
         throw new ::cPHP::Exception::Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
@@ -226,7 +226,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
     $string = strval($string);
-    if (isEmpty($string))
+    if ( ::cPHP::isEmpty($string) )
         return '';
 
     $glue = strval( $glue );
@@ -235,7 +235,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
     $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
-    if (isVague($trimTo) || intval($trimTo) <= 0)
+    if ( ::cPHP::isVague($trimTo) || intval($trimTo) <= 0 )
         $trimTo = ceil($maxLength * (2 / 3));
 
     // The trimTo length can't be greater than the max length
@@ -278,7 +278,7 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     $split = preg_split(
             '/(?<!\\\\)(?:\\\\\\\\)*('
-                . $quotes->collect( 
+                . $quotes->collect(
                         cPHP::Curry::Call::Create("preg_quote")->setRight("/")->setLimit(1)
                     )->implode("|")
                 .')/i',
@@ -347,7 +347,7 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
 
     $stringHead = substr($string, 0, strlen($head));
 
-    return strCompare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
+    return ::cPHP::str::compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 
@@ -372,7 +372,7 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
 
     $stringTail = substr($string, 0 - strlen($tail));
 
-    return strCompare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
+    return ::cPHP::str::compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 /**
@@ -383,7 +383,7 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @param String Returns the string with the new "suffix"
  */
-function strTail ($string, $tail, $ignoreCase = TRUE)
+function tail ($string, $tail, $ignoreCase = TRUE)
 {
     $string = strval($string);
     $tail = strval($tail);
@@ -392,7 +392,7 @@ function strTail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    return !endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
+    return !::cPHP::str::endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
 }
 
 /**
@@ -403,7 +403,7 @@ function strTail ($string, $tail, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @param String Returns the string without its tail
  */
-function strStripTail ($string, $tail, $ignoreCase = TRUE)
+function stripTail ($string, $tail, $ignoreCase = TRUE)
 {
     $string = strval($string);
     $tail = strval($tail);
@@ -412,7 +412,7 @@ function strStripTail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    if (endsWith($string, $tail, $ignoreCase))
+    if ( ::cPHP::str::endsWith($string, $tail, $ignoreCase))
         $string = substr($string, 0, 0 - strlen($tail));
 
     if ($string === FALSE)
@@ -428,7 +428,7 @@ function strStripTail ($string, $tail, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @return String Returns the string with its head on
  */
-function strHead ($string, $head, $ignoreCase = TRUE)
+function head ($string, $head, $ignoreCase = TRUE)
 {
     $string = strval($string);
     $head = strval($head);
@@ -437,7 +437,7 @@ function strHead ($string, $head, $ignoreCase = TRUE)
     if (empty($head))
         return $string;
 
-    return !startsWith($string, $head, $ignoreCase)?$head . $string:$string;
+    return !::cPHP::str::startsWith($string, $head, $ignoreCase)?$head . $string:$string;
 }
 
 /**
@@ -448,16 +448,16 @@ function strHead ($string, $head, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @return String Returns the decapitated string
  */
-function strStripHead ($string, $head, $ignoreCase = TRUE)
+function stripHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = strval(reduce($string));
-    $head = strval(reduce($head));
+    $string = ::cPHP::strval( ::cPHP::reduce($string) );
+    $head = ::cPHP::strval( ::cPHP::reduce($head) );
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
         return $string;
 
-    if (startsWith($string, $head, $ignoreCase))
+    if (::cPHP::str::startsWith($string, $head, $ignoreCase))
         $string = substr($string, strlen($head));
 
     if ($string === FALSE)
@@ -478,16 +478,18 @@ function strStripHead ($string, $head, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @return String Returns the strings combined, with the glue in the middle
  */
-function strWeld ($string1, $string2, $glue, $ignoreCase = TRUE)
+function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
 {
-    $string1 = strval($string1);
-    $string2 = strval($string2);
-    $glue = strval($glue);
+    $string1 = ::cPHP::strval($string1);
+    $string2 = ::cPHP::strval($string2);
+    $glue = ::cPHP::strval($glue);
 
-    if (isVague($glue, ALLOW_SPACES))
+    if ( ::cPHP::isVague($glue, ALLOW_SPACES))
         return $string1 . $string2;
 
-    return strStripTail($string1, $glue, $ignoreCase) . $glue . strStripHead($string2, $glue, $ignoreCase);
+    return ::cPHP::str::stripTail($string1, $glue, $ignoreCase)
+        .$glue
+        .::cPHP::str::stripHead($string2, $glue, $ignoreCase);
 
 }
 
@@ -500,9 +502,9 @@ function strWeld ($string1, $string2, $glue, $ignoreCase = TRUE)
  * @param Integer $offsets... The list of offsets where the string should be split
  * @return Array Returns an array of the segmented string
  */
-function strPartition ($string, $offsets)
+function partition ($string, $offsets)
 {
-    $string = strval($string);
+    $string = ::cPHP::strval($string);
 
     if (strlen($string) <= 0)
         return new cPHP::Ary;
@@ -534,11 +536,11 @@ function strPartition ($string, $offsets)
  * @param String $string The second string
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  */
-function strCompare ($string1, $string2, $ignoreCase = TRUE)
+function compare ($string1, $string2, $ignoreCase = TRUE)
 {
     return $ignoreCase ?
-        strcasecmp( strval($string1), strval($string2) ) :
-        strcmp( strval($string1), strval($string2) );
+        strcasecmp( ::cPHP::strval($string1), ::cPHP::strval($string2) ) :
+        strcmp( ::cPHP::strval($string1), ::cPHP::strval($string2) );
 }
 
 /**
@@ -549,9 +551,13 @@ function strCompare ($string1, $string2, $ignoreCase = TRUE)
  * @param Boolean $ignoreCase Whether the comparison should be case sensitive
  * @return String Returns the string with the head and tail on it
  */
-function strEnclose ($string, $enclose, $ignoreCase = TRUE)
+function enclose ($string, $enclose, $ignoreCase = TRUE)
 {
-    return strTail(strHead($string, $enclose, $ignoreCase), $enclose, $ignoreCase);
+    return ::cPHP::str::tail(
+            ::cPHP::str::head($string, $enclose, $ignoreCase),
+            $enclose,
+            $ignoreCase
+        );
 }
 
 /**
@@ -565,7 +571,7 @@ function strEnclose ($string, $enclose, $ignoreCase = TRUE)
  * @param String $delimiter The string to replace the center section with
  * @return String Returns the shortened version of the string
  */
-function strTruncate ($string, $maxLength, $delimiter = '...')
+function truncate ($string, $maxLength, $delimiter = '...')
 {
 
     $string = strval($string);
@@ -587,14 +593,14 @@ function strTruncate ($string, $maxLength, $delimiter = '...')
 /**
  * Makes the last word in a string plural
  *
- * @param String $string The value to pluralize
+ * @param String $string The value to str::pluralize
  * @param Integer $count If the pluralization should only be done based on a number, pass it here
  */
 function pluralize ( $string, $count = 2 )
 {
-    $string = strval($string);
+    $string = ::cPHP::strval($string);
 
-    if ( isEmpty( trim($string) ) )
+    if ( ::cPHP::isEmpty( trim($string) ) )
         throw new ::cPHP::Exception::Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )

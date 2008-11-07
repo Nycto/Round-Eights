@@ -114,7 +114,7 @@ define ("ALLOW_BLANK", 8);
 define ("ALLOW_SPACES", 16);
 define ("ALLOW_EMPTY_ARRAYS", 32);
 
-// Used by stripW to define what to keep
+// Used by str::stripW to define what to keep
 define ("ALLOW_UNDERSCORES", 64);
 define ("ALLOW_NEWLINES", 128);
 define ("ALLOW_TABS", 256);

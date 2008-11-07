@@ -54,13 +54,13 @@ class NoSpaces extends ::cPHP::Validator
         if ( !is_string($value) )
             return "Must be a string";
 
-        if ( ::cPHP::strContains(' ', $value) )
+        if ( ::cPHP::str::contains(' ', $value) )
             return "Must not contain any spaces";
 
-        if ( ::cPHP::strContains("\t", $value) )
+        if ( ::cPHP::str::contains("\t", $value) )
             return "Must not contain any tabs";
 
-        if ( ::cPHP::strContains("\n", $value) || ::cPHP::strContains("\r", $value) )
+        if ( ::cPHP::str::contains("\n", $value) || ::cPHP::str::contains("\r", $value) )
             return "Must not contain any new lines";
     }
 

@@ -305,7 +305,7 @@ class Env
      */
     public function __get ($variable)
     {
-        $variable = ::cPHP::stripW( $variable );
+        $variable = ::cPHP::str::stripW( $variable );
 
         if ( !property_exists($this, $variable) )
             throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
@@ -321,7 +321,7 @@ class Env
      */
     public function __isset ($variable)
     {
-        $variable = ::cPHP::stripW( $variable );
+        $variable = ::cPHP::str::stripW( $variable );
 
         if ( !property_exists($this, $variable) )
             throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
@@ -475,7 +475,7 @@ class Env
         if ( !self::hasKey( $server, 'PATH_INFO' ) )
             return;
 
-        $this->fauxDirs = ::cPHP::strHead( $server['PATH_INFO'], "/" );
+        $this->fauxDirs = ::cPHP::str::head( $server['PATH_INFO'], "/" );
     }
 
     /**
@@ -493,13 +493,13 @@ class Env
         $this->uriPath = str_replace("\\", "/", $server['SCRIPT_NAME']);
 
         // Ensure it starts with a forward slash
-        $this->uriPath = ::cPHP::strHead($this->uriPath, "/");
+        $this->uriPath = ::cPHP::str::head($this->uriPath, "/");
 
-        $this->absUriPath = ::cPHP::strWeld( $this->hostWithPort, $this->uriPath, "/");
+        $this->absUriPath = ::cPHP::str::weld( $this->hostWithPort, $this->uriPath, "/");
 
-        $this->uriDir = strTail( dirname( $this->uriPath), "/" );
+        $this->uriDir = ::cPHP::str::tail( dirname( $this->uriPath), "/" );
 
-        $this->absUriDir = ::cPHP::strWeld( $this->hostWithPort, $this->uriDir, "/");
+        $this->absUriDir = ::cPHP::str::weld( $this->hostWithPort, $this->uriDir, "/");
     }
 
     /**
@@ -516,7 +516,7 @@ class Env
             $this->uri = $this->uriPath . $this->fauxDirs;
 
         if ( !::cPHP::isEmpty( $this->query ) )
-            $this->uri .= ::cPHP::strHead( $this->query, "?" );
+            $this->uri .= ::cPHP::str::head( $this->query, "?" );
 
         $this->absUri = null;
 
@@ -527,7 +527,7 @@ class Env
             $this->absUri = $this->scheme ."://" . $this->absUri;
 
         if ( !::cPHP::isEmpty( $this->uri ) ) {
-            $this->absUri = ::cPHP::strWeld(
+            $this->absUri = ::cPHP::str::weld(
                     $this->absUri,
                     $this->uri,
                     "/"

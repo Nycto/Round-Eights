@@ -70,13 +70,13 @@ class URL extends ::cPHP::Validator
         if ( !is_string($value) )
             return "URL must be a string";
 
-        if ( ::cPHP::strContains(" ", $value) )
+        if ( ::cPHP::str::contains(" ", $value) )
             return "URL must not contain spaces";
 
-        if ( ::cPHP::strContains("\t", $value) )
+        if ( ::cPHP::str::contains("\t", $value) )
             return "URL must not contain tabs";
 
-        if ( ::cPHP::strContains("\n", $value) || ::cPHP::strContains("\r", $value) )
+        if ( ::cPHP::str::contains("\n", $value) || ::cPHP::str::contains("\r", $value) )
             return "URL must not contain line breaks";
 
         if ( preg_match('/[^a-z0-9'. preg_quote('$-_.+!*\'(),{}|\\^~[]`<>#%";/?:@&=', '/') .']/i', $value) )

@@ -96,7 +96,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     static public function isSelect ( $query )
     {
         $query = ::cPHP::strval($query);
-        $query = ::cPHP::stripQuoted($query, array("'", '"', "`"));
+        $query = ::cPHP::str::stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
         return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
@@ -450,7 +450,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
 
         foreach ( $array AS $key => $value ) {
 
-            $key = "set". strtolower( ::cPHP::stripW( $key ) );
+            $key = "set". strtolower( ::cPHP::str::stripW( $key ) );
             $value = ::cPHP::strval( $value );
 
             if ( method_exists( $this, $key ) )

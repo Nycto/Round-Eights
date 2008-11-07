@@ -131,7 +131,7 @@ class Form implements Countable
      */
     public function setMethod ( $method )
     {
-        $method = ::cPHP::stripW( $method );
+        $method = ::cPHP::str::stripW( $method );
 
         if ( ::cPHP::isEmpty($method) )
             throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );

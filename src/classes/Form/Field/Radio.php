@@ -54,7 +54,7 @@ class Radio extends ::cPHP::Form::Multi
             throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
 
         return "radio_"
-            .::cPHP::stripW( $this->getName() )
+            .::cPHP::str::stripW( $this->getName() )
             ."_"
             .substr(sha1($value), 0, 10);
     }

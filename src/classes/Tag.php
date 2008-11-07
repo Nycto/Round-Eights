@@ -96,7 +96,7 @@ class Tag implements ArrayAccess
      */
     static public function normalizeAttrName ( $attr )
     {
-        $attr = strtolower( ::cPHP::stripW($attr) );
+        $attr = strtolower( ::cPHP::str::stripW($attr) );
 
         if ( empty($attr) )
             throw new ::cPHP::Exception::Argument( 0, "Attribute Name", "Must not be empty" );
@@ -148,7 +148,7 @@ class Tag implements ArrayAccess
      */
     public function setTag ( $tag )
     {
-        $tag = strtolower( ::cPHP::stripW($tag) );
+        $tag = strtolower( ::cPHP::str::stripW($tag) );
 
         if ( ::cPHP::isEmpty($tag) )
             throw new ::cPHP::Exception::Argument(0, "Tag", "Must not be empty");

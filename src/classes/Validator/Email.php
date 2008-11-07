@@ -69,13 +69,13 @@ class Email extends ::cPHP::Validator
         if ( $atCount > 1 )
             return "Email Address must only contain one 'at' (@) symbol";
 
-        if ( ::cPHP::strContains(" ", $value) )
+        if ( ::cPHP::str::contains(" ", $value) )
             return "Email Address must not contain spaces";
 
-        if ( ::cPHP::strContains("\n", $value) || ::cPHP::strContains("\r", $value) )
+        if ( ::cPHP::str::contains("\n", $value) || ::cPHP::str::contains("\r", $value) )
             return "Email Address must not contain line breaks";
 
-        if ( ::cPHP::strContains("\t", $value) )
+        if ( ::cPHP::str::contains("\t", $value) )
             return "Email Address must not contain tabs";
 
         if ( preg_match('/\.\.+/', $value) )
@@ -84,17 +84,17 @@ class Email extends ::cPHP::Validator
         if ( preg_match('/[^a-z0-9'. preg_quote('!#$%&\'*+-/=?^_`{|}~@.[]', '/') .']/i', $value) )
             return "Email Address contains invalid characters";
 
-        if ( ::cPHP::endsWith($value, ".") )
+        if ( ::cPHP::str::endsWith($value, ".") )
             return "Email Address must not end with a period";
 
 
         list( $local, $domain ) = explode("@", $value);
 
-        if ( ::cPHP::startsWith($local, ".") )
+        if ( ::cPHP::str::startsWith($local, ".") )
             return "Email Address must not start with a period";
 
         // This is hard to describe to a user, so just give them a vague description
-        if ( ::cPHP::endsWith($local, ".") )
+        if ( ::cPHP::str::endsWith($local, ".") )
             return "Email Address is not valid";
 
         if ( strlen($local) > 64 || strlen($domain) > 255 )

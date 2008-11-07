@@ -41,7 +41,7 @@ namespace cPHP;
  */
 function dump ( $value )
 {
-    if ( _LOCAL ) {
+    if ( isset($_SERVER['SHELL']) ) {
         var_dump( $value );
     }
     else {
@@ -72,8 +72,15 @@ function getDump ($value)
     else if (is_float($value))
         return "float(". $value .")";
 
-    else if (is_string($value))
-        return "string('". str_replace( Array("\n", "\r", "\t"), Array('\n', '\r', '\t'), strTruncate( addslashes($value), 50, "'...'") ) ."')";
+    else if (is_string($value)) {
+        return "string('"
+            .str_replace(
+                    Array("\n", "\r", "\t"),
+                    Array('\n', '\r', '\t'),
+                    ::cPHP::str::truncate( addslashes($value), 50, "'...'")
+                )
+            ."')";
+    }
 
     else if (is_array($value)) {
 

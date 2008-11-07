@@ -102,8 +102,8 @@ class DateTime
     static public function normalizeUnit ( $unit )
     {
 
-        $unit = strtolower( ::cPHP::stripW( $unit ) );
-        $unit = ::cPHP::strStripTail( $unit, "s" );
+        $unit = strtolower( ::cPHP::str::stripW( $unit ) );
+        $unit = ::cPHP::str::stripTail( $unit, "s" );
 
         switch ( $unit ) {
             default:
@@ -274,7 +274,7 @@ class DateTime
      */
     public function setSQL ( $datetime )
     {
-        $datetime = ::cPHP::stripW($datetime);
+        $datetime = ::cPHP::str::stripW($datetime);
 
         if ( !self::isSQL($datetime) )
             throw new ::cPHP::Exception::Argument(0, "SQL Date/Time", "Invalid SQL date time");

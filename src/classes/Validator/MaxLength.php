@@ -73,7 +73,7 @@ class MaxLength extends ::cPHP::Validator
             return "Must be a string";
 
         if ( strlen($value) > $this->length ) {
-            return ::cPHP::pluralize(
+            return ::cPHP::str::pluralize(
                     "Must not be longer than ". $this->length ." character",
                     $this->length
                 );
