@@ -30,32 +30,32 @@
  */
 
 // Mark that commonPHP has been included
-define("cPHP_included", TRUE);
+define("cPHP_INCLUDED", TRUE);
 
 // mark the location of the commonPHP library
-if ( !defined("cPHP_dir") ) {
+if ( !defined("cPHP_DIR") ) {
     $commonPHPdir = str_replace("\\", "/", __DIR__);
     $commonPHPdir = rtrim( $commonPHPdir, "/" ) ."/";
-    define("cPHP_dir", $commonPHPdir);
+    define("cPHP_DIR", $commonPHPdir);
     unset($commonPHPdir);
 }
 
-if (!defined("cPHP_dir_functions"))
-    define("cPHP_dir_functions", cPHP_dir ."functions/");
+if (!defined("cPHP_DIR_FUNCTIONS"))
+    define("cPHP_DIR_FUNCTIONS", cPHP_DIR ."functions/");
 
-if (!defined("dir_classes"))
-    define("cPHP_dir_classes", cPHP_dir ."classes/");
+if (!defined("cPHP_DIR_CLASSES"))
+    define("cPHP_DIR_CLASSES", cPHP_DIR ."classes/");
 
-if (!defined("dir_interfaces"))
-    define("cPHP_dir_interfaces", cPHP_dir ."interfaces/");
+if (!defined("cPHP_DIR_INTERFACES"))
+    define("cPHP_DIR_INTERFACES", cPHP_DIR ."interfaces/");
 
 /**
  * Include the function files
  */
-require_once cPHP_dir_functions ."general.php";
-require_once cPHP_dir_functions ."numbers.php";
-require_once cPHP_dir_functions ."strings.php";
-require_once cPHP_dir_functions ."debug.php";
+require_once cPHP_DIR_FUNCTIONS ."general.php";
+require_once cPHP_DIR_FUNCTIONS ."numbers.php";
+require_once cPHP_DIR_FUNCTIONS ."strings.php";
+require_once cPHP_DIR_FUNCTIONS ."debug.php";
 
 /**
  * This is temporary,... auto loader
@@ -68,10 +68,10 @@ function __autoload ( $class ) {
     $first = reset( $class );
 
     if ( $first == "iface" )
-        $class = cPHP_dir_interfaces . implode( "/", array_slice( $class, 1 ) ) .".php";
+        $class = cPHP_DIR_INTERFACES . implode( "/", array_slice( $class, 1 ) ) .".php";
 
     else
-        $class = cPHP_dir_classes . implode( "/", $class ) .".php";
+        $class = cPHP_DIR_CLASSES . implode( "/", $class ) .".php";
 
     if ( file_exists( $class ) )
         require_once $class;
