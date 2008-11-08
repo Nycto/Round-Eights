@@ -35,9 +35,54 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_multifield extends PHPUnit_Framework_TestCase
+class classes_validator_in extends PHPUnit_Framework_TestCase
 {
-    
+
+    public function testConstruct ()
+    {
+        $valid = new ::cPHP::Validator::In(array("one", "two", "three"));
+
+        $list = $valid->getList();
+
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array("one", "two", "three"),
+                $list->get()
+            );
+
+
+        try {
+            new ::cPHP::Validator::In("invalid");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
+        }
+    }
+
+    public function testSetList ()
+    {
+        $valid = new ::cPHP::Validator::In(array());
+        $valid->setList(array("one", "two", "three"));
+
+        $list = $valid->getList();
+
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array("one", "two", "three"),
+                $list->get()
+            );
+
+
+        try {
+            $valid->setList("Invalid");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>

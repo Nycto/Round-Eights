@@ -62,7 +62,7 @@ class In extends ::cPHP::Validator
     public function setList ( $list )
     {
         if ( !::cPHP::Ary::is( $list ) )
-            throw new ::cPHP::Exception::Argument( 0, "Valid Value List", "List must be an array or a traversable object" );
+            throw new ::cPHP::Exception::Argument( 0, "Valid Value List", "Must be an array or a traversable object" );
 
         $this->list = new ::cPHP::Ary( $list );
 
@@ -76,7 +76,7 @@ class In extends ::cPHP::Validator
      */
     public function getList ()
     {
-        return clone $list;
+        return clone $this->list;
     }
 
     /**
