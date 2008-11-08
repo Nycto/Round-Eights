@@ -53,9 +53,25 @@ class FileUpload extends ::cPHP::Validator
     }
 
     /**
+     * Wrapper for the is_uploaded_file method
+     *
+     * This has been added to make it easier to unit test. By mocking this class
+     * and overwriting this method, you can make the rest of the methods think
+     * that a file was uploaded
+     *
+     * @return Array
+     */
+    protected function isUploadedFile ( $file )
+    {
+        return is_uploaded_file( $file );
+    }
+
+    /**
      * Validates an uploaded file based on the field name
      *
      * @param String $field The name of the file upload field being validated
+     *      This is NOT the name of the file. This is the index that appears
+     *      in the $_FILES global array
      * @return String Any errors encountered
      */
     protected function process ( $field )
@@ -67,6 +83,49 @@ class FileUpload extends ::cPHP::Validator
 
         $files = $this->getUploadedFiles();
 
+        if ( !isset($files[$field]) )
+            return "No file was uploaded";
+
+        // Handle any explicit errors that PHP gives us
+        switch ( $files[$field]['error']) {
+
+            case 0:
+                break;
+
+            case UPLOAD_ERR_INI_SIZE:
+                return "File exceeds the server's maximum allowed size";
+
+            case UPLOAD_ERR_FORM_SIZE:
+                return "File exceeds the maximum allowed size";
+
+            case UPLOAD_ERR_PARTIAL:
+                return "File was only partially uploaded";
+
+            case UPLOAD_ERR_NO_FILE:
+                return "No file was uploaded";
+
+            case UPLOAD_ERR_NO_TMP_DIR:
+                return "No temporary directory was defined on the server";
+
+            case UPLOAD_ERR_CANT_WRITE:
+                return "Unable to write the uploaded file to the server";
+
+            case UPLOAD_ERR_EXTENSION:
+                return "A PHP extension has restricted this upload";
+
+            default:
+                return "An unknown error occured";
+
+        }
+
+        if (!$this->isUploadedFile($files[$field]['tmp_name']))
+            return "File is restricted";
+
+        if ( filesize($files[$field]['tmp_name']) == 0 )
+            return "Uploaded file is empty";
+
+        if ( !is_readable($files[$field]['tmp_name']) )
+            return "Uploaded file is not readable";
     }
 
 }
