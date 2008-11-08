@@ -48,7 +48,7 @@ class In extends ::cPHP::Validator
      *
      * @param mixed $list The list of valid values
      */
-    public function __construct ( $list )
+    public function __construct ( $list = array() )
     {
         $this->setList( $list );
     }
@@ -77,6 +77,19 @@ class In extends ::cPHP::Validator
     public function getList ()
     {
         return clone $this->list;
+    }
+
+    /**
+     * Adds a value to the list of valid values
+     *
+     * @param mixed $value The value to add
+     */
+    public function addValue ( $value )
+    {
+        if ( !$this->list->contains($value) )
+            $this->list[] = $value;
+
+        return $this;
     }
 
     /**
