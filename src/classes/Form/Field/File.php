@@ -39,6 +39,48 @@ class File extends ::cPHP::Form::Field
 {
 
     /**
+     * Returns the value of the $_FILE variable
+     *
+     * This has been added to make it easier to unit test. By mocking this class
+     * and overwriting this method, you can make the rest of the methods think
+     * that a file was uploaded
+     *
+     * @return Array
+     */
+    protected function getUploadedFiles ()
+    {
+        return $_FILES;
+    }
+
+    /**
+     * Returns the temporary filename of the uploaded file
+     *
+     * @return mixed The raw value of this field
+     */
+    public function getRawValue ()
+    {
+        $files = $this->getUploadedFiles();
+
+        if ( isset($files[ $this->getName() ]) )
+            return $files[ $this->getName() ]['tmp_name'];
+
+        return null;
+    }
+
+    /**
+     * Applies the validator to the value in this instance and returns an
+     * instance of Validator Results.
+     *
+     * This will apply the validator to the filtered value
+     *
+     * @result object An instance of validator results
+     */
+    public function validate ()
+    {
+        return $this->getValidator()->validate( $this->getValue() );
+    }
+
+    /**
      * Returns a cPHP::Tag object that represents this instance
      *
      * @return Object A cPHP::Tag object

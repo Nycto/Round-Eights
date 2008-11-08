@@ -38,6 +38,30 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_form_field_file extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetRawValue_noFile ()
+    {
+        $field = $this->getMock("cPHP::Form::Field::File", array("getUploadedFiles"), array("fld"));
+
+        $field->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array()) );
+
+        $this->assertNull($field->getRawValue());
+    }
+
+    public function testGetRawValue_withFile ()
+    {
+        $field = $this->getMock("cPHP::Form::Field::File", array("getUploadedFiles"), array("fld"));
+
+        $field->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array("fld" => array(
+                    "tmp_name" => "/dir/to/file.txt"
+                ))) );
+
+        $this->assertSame("/dir/to/file.txt", $field->getRawValue());
+    }
+
     public function testGetTag ()
     {
         $field = new ::cPHP::Form::Field::File("fld");
