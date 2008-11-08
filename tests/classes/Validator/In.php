@@ -83,6 +83,20 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSetList_unique ()
+    {
+        $valid = new ::cPHP::Validator::In(array());
+        $valid->setList(array("one", "two", "three", "Three", "two"));
+
+        $list = $valid->getList();
+
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array("one", "two", "three", "Three"),
+                $list->get()
+            );
+    }
+
 }
 
 ?>

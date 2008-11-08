@@ -64,7 +64,7 @@ class In extends ::cPHP::Validator
         if ( !::cPHP::Ary::is( $list ) )
             throw new ::cPHP::Exception::Argument( 0, "Valid Value List", "Must be an array or a traversable object" );
 
-        $this->list = new ::cPHP::Ary( $list );
+        $this->list = ::cPHP::Ary::create( $list )->unique();
 
         return $this;
     }
