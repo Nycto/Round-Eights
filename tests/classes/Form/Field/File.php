@@ -98,6 +98,8 @@ class classes_form_field_file extends PHPUnit_Framework_TestCase
 
 
         $this->assertTrue( $field->isValid() );
+
+        @unlink( $file );
     }
 
     public function testValidate_invalidUpload ()
@@ -186,6 +188,8 @@ class classes_form_field_file extends PHPUnit_Framework_TestCase
         $field->setValidator( $otherValid );
 
         $this->assertSame( $result, $field->validate() );
+
+        @unlink( $file );
     }
 
     public function testGetTag ()
