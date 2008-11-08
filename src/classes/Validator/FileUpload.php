@@ -121,7 +121,7 @@ class FileUpload extends ::cPHP::Validator
         if (!$this->isUploadedFile($files[$field]['tmp_name']))
             return "File is restricted";
 
-        if ( filesize($files[$field]['tmp_name']) == 0 )
+        if ( @filesize($files[$field]['tmp_name']) == 0 )
             return "Uploaded file is empty";
 
         if ( !is_readable($files[$field]['tmp_name']) )
