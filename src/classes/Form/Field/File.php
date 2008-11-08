@@ -53,6 +53,20 @@ class File extends ::cPHP::Form::Field
     }
 
     /**
+     * Returns a new FileUpload validator
+     *
+     * This has been added to make it easier to unit test. By mocking this class
+     * and overwriting this method, you can make the rest of the methods think
+     * that a file was uploaded
+     *
+     * @return Object A FileUpload validator
+     */
+    protected function getFileUploadValidator ()
+    {
+        return new ::cPHP::Validator::FileUpload;
+    }
+
+    /**
      * Returns the temporary filename of the uploaded file
      *
      * @return mixed The raw value of this field
@@ -77,7 +91,14 @@ class File extends ::cPHP::Form::Field
      */
     public function validate ()
     {
-        return $this->getValidator()->validate( $this->getValue() );
+        // Apply the FileUpload validator before anything else
+        $result = $this->getFileUploadValidator()->validate( $this->getName() );
+
+        // If it fails, don't even give the other validators a chance
+        if ( !$result->isValid() )
+            return $result;
+
+        return parent::validate();
     }
 
     /**
