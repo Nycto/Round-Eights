@@ -1128,6 +1128,32 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( $ary->search("OTHER") );
     }
 
+    public function testWithout ()
+    {
+        $ary = new ::cPHP::Ary(array( 1, 2, 3, "four", "five", "six" ));
+
+        $result = $ary->without( 2 );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array( 0 => 1, 2 => 3, 3 => "four", 4 => "five", 5 => "six"),
+                $result->get()
+            );
+
+        $result = $ary->without( 2, "3" );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array( 0 => 1, 3 => "four", 4 => "five", 5 => "six"),
+                $result->get()
+            );
+
+        $result = $ary->without( 2, "3", "five", array("six") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array( 0 => 1, 3 => "four", 5 => "six"),
+                $result->get()
+            );
+    }
+
 }
 
 ?>

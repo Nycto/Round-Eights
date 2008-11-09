@@ -1145,6 +1145,20 @@ class Ary implements Iterator, Countable, ArrayAccess
         return array_search( $value, $this->array );
     }
 
+    /**
+     * Returns a copy of this array without a given value
+     *
+     * @param mixed $value... The value to remove
+     * @return Object Returns a new cPHP::Ary instance
+     */
+    public function without ( $value )
+    {
+        $value = func_get_args();
+        return new self(
+                array_diff( $this->array, $value )
+            );
+    }
+
 }
 
 ?>
