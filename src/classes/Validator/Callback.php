@@ -36,7 +36,16 @@ namespace cPHP::Validator;
  * Uses a given callback to validate a value
  *
  * The callback is invoked with one argument, which is the value being validated.
- * If
+ * The result of the callback will be used as the error message for the validator.
+ * Different types of return values will be treated different ways:
+ *
+ * Arrays and traversable objects will be converted to arrays, flattened, stringized
+ * and compacted. Anything left will be considered an error message. If it turns
+ * out empty, validation will pass
+ *
+ * Strings, Boolean, Null, False, Integers and Floats will be converted to strings.
+ * If they are considered empty according to the "isEmpty" standards, the value
+ * will pass validation. Otherwise, the string value will be used as the error message.
  */
 class Callback extends ::cPHP::Validator
 {
@@ -68,8 +77,7 @@ class Callback extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-
-
+        return call_user_func( $this->callback, $value );
     }
 
 }
