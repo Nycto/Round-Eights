@@ -80,15 +80,39 @@ class In extends ::cPHP::Validator
     }
 
     /**
+     * Tests whether a value is in the list of valid options
+     *
+     * @param mixed $value The value to test
+     * @return Boolean Returns whether a given value is in the list
+     */
+    public function valueExists ( $value )
+    {
+        return $this->list->contains($value);
+    }
+
+    /**
      * Adds a value to the list of valid values
      *
      * @param mixed $value The value to add
+     * @return Object Returns a self reference
      */
     public function addValue ( $value )
     {
-        if ( !$this->list->contains($value) )
+        if ( !$this->valueExists($value) )
             $this->list[] = $value;
 
+        return $this;
+    }
+
+    /**
+     * Removes a value to the list of valid options
+     *
+     * @param mixed $value The value to remove
+     * @return Object Returns a self reference
+     */
+    public function removeValue ( $value )
+    {
+        $this->list = $this->list->without( $value )->values();
         return $this;
     }
 
