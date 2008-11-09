@@ -33,6 +33,18 @@
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
+ * This is a stub function used to test the callback validator
+ *
+ * @param mixed $value The value being validated
+ * @return null|string
+ */
+function stub_validator_callback_func ( $value )
+{
+    if ( $value != "cheese" )
+        return "Value must be cheese";
+}
+
+/**
  * unit tests
  */
 class classes_validator_callback extends PHPUnit_Framework_TestCase
@@ -44,6 +56,20 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
             if ( $value != "cheese" )
                 return "Value must be cheese";
         });
+
+        $this->assertTrue( $valid->isValid("cheese") );
+
+        $result = $valid->validate("Crackers");
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Value must be cheese"),
+                $result->getErrors()->get()
+            );
+    }
+
+    public function testFunction ()
+    {
+        $valid = new ::cPHP::Validator::Callback("stub_validator_callback_func");
 
         $this->assertTrue( $valid->isValid("cheese") );
 
