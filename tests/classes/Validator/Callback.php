@@ -71,16 +71,16 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
     public function testClosure ()
     {
         $valid = new ::cPHP::Validator::Callback(function ($value) {
-            if ( $value != "cheese" )
-                return "Value must be cheese";
+            if ( $value != "tonic" )
+                return "Value must be tonic";
         });
 
-        $this->assertTrue( $valid->isValid("cheese") );
+        $this->assertTrue( $valid->isValid("tonic") );
 
-        $result = $valid->validate("Crackers");
+        $result = $valid->validate("gin");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
-                array("Value must be cheese"),
+                array("Value must be tonic"),
                 $result->getErrors()->get()
             );
     }
@@ -139,6 +139,46 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
                 array("Value must be sugar"),
                 $result->getErrors()->get()
             );
+    }
+
+    public function testArrayResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testAryResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testTraversableResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testStringResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testFloatResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testIntegerResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testNullResult ()
+    {
+        $this->markTestIncomplete("to be written");
+    }
+
+    public function testBoolResult ()
+    {
+        $this->markTestIncomplete("to be written");
     }
 
 }
