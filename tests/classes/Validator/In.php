@@ -98,37 +98,37 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testAddValue ()
+    public function testAdd ()
     {
         $valid = new ::cPHP::Validator::In;
 
-        $this->assertSame( $valid, $valid->addValue("one") );
+        $this->assertSame( $valid, $valid->add("one") );
 
         $list = $valid->getList();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array("one"), $list->get() );
 
 
-        $this->assertSame( $valid, $valid->addValue("two") );
+        $this->assertSame( $valid, $valid->add("two") );
 
         $list = $valid->getList();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array("one", "two"), $list->get() );
     }
 
-    public function testValueExists ()
+    public function testExists ()
     {
         $valid = new ::cPHP::Validator::In(array("one", "two", "three"));
 
-        $this->assertTrue( $valid->valueExists("one") );
-        $this->assertFalse( $valid->valueExists("four") );
+        $this->assertTrue( $valid->exists("one") );
+        $this->assertFalse( $valid->exists("four") );
     }
 
-    public function testRemoveValue ()
+    public function testRemove ()
     {
         $valid = new ::cPHP::Validator::In(array("one", "two", "three", "four"));
 
-        $this->assertSame( $valid, $valid->removeValue("two") );
+        $this->assertSame( $valid, $valid->remove("two") );
 
         $list = $valid->getList();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
@@ -138,7 +138,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
             );
 
 
-        $this->assertSame( $valid, $valid->removeValue("five") );
+        $this->assertSame( $valid, $valid->remove("five") );
 
         $list = $valid->getList();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
@@ -148,7 +148,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
             );
 
 
-        $this->assertSame( $valid, $valid->removeValue("FOUR") );
+        $this->assertSame( $valid, $valid->remove("FOUR") );
 
         $list = $valid->getList();
         $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );

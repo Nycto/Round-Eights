@@ -85,7 +85,7 @@ class In extends ::cPHP::Validator
      * @param mixed $value The value to test
      * @return Boolean Returns whether a given value is in the list
      */
-    public function valueExists ( $value )
+    public function exists ( $value )
     {
         return $this->list->contains($value);
     }
@@ -96,9 +96,9 @@ class In extends ::cPHP::Validator
      * @param mixed $value The value to add
      * @return Object Returns a self reference
      */
-    public function addValue ( $value )
+    public function add ( $value )
     {
-        if ( !$this->valueExists($value) )
+        if ( !$this->exists($value) )
             $this->list[] = $value;
 
         return $this;
@@ -110,7 +110,7 @@ class In extends ::cPHP::Validator
      * @param mixed $value The value to remove
      * @return Object Returns a self reference
      */
-    public function removeValue ( $value )
+    public function remove ( $value )
     {
         $this->list = $this->list->without( $value )->values();
         return $this;
