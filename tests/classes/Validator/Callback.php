@@ -38,6 +38,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_validator_callback extends PHPUnit_Framework_TestCase
 {
 
+    public function testClosure ()
+    {
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value != "cheese" )
+                return "Value must be cheese";
+        });
+
+        $this->assertTrue( $valid->isValid("cheese") );
+
+        $result = $valid->validate("Crackers");
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Value must be cheese"),
+                $result->getErrors()->get()
+            );
+    }
+
 }
 
 ?>
