@@ -47,6 +47,9 @@ class IPv4 extends ::cPHP::Validator
     protected function process ( $value )
     {
 
+        if (!filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+            return "IP address is not valid";
+
     }
 
 }

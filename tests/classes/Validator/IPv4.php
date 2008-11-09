@@ -38,6 +38,47 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
 {
 
+    public function testValid ()
+    {
+        $validator = new ::cPHP::Validator::IPv4;
+
+        $this->assertTrue( $validator->isValid("192.168.0.1") );
+        $this->assertTrue( $validator->isValid("255.255.255.0") );
+        $this->assertTrue( $validator->isValid("209.85.171.99") );
+        $this->assertTrue( $validator->isValid("0.0.0.0") );
+        $this->assertTrue( $validator->isValid("172.16.0.0") );
+        $this->assertTrue( $validator->isValid("169.254.0.0") );
+    }
+
+    public function testInvalid ()
+    {
+        $validator = new ::cPHP::Validator::IPv4;
+
+
+        $result = $validator->validate('example');
+        $this->assertFalse( $result->isValid() );
+        $this->assertSame(
+                array("IP address is not valid"),
+                $result->getErrors()->get()
+            );
+
+
+        $result = $validator->validate('0.0.0');
+        $this->assertFalse( $result->isValid() );
+        $this->assertSame(
+                array("IP address is not valid"),
+                $result->getErrors()->get()
+            );
+
+
+        $result = $validator->validate('2001:0db8:85a3:0000:0000:8a2e:0370:7334');
+        $this->assertFalse( $result->isValid() );
+        $this->assertSame(
+                array("IP address is not valid"),
+                $result->getErrors()->get()
+            );
+    }
+
 }
 
 ?>
