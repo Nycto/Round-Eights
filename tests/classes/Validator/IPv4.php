@@ -35,9 +35,9 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_ip extends PHPUnit_Framework_TestCase
+class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
 {
-    
+
 }
 
 ?>

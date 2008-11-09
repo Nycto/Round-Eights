@@ -33,46 +33,20 @@
 namespace cPHP::Validator;
 
 /**
- * Validates a URL
+ * Validates an IPv4 address
  */
-class IP extends ::cPHP::Validator
+class IPv4 extends ::cPHP::Validator
 {
 
     /**
-     * Flag to allow version 4 IPs to pass validation
-     */
-    const ALLOW_IP4 = 1;
-
-    /**
-     * Flag to allow version 6 IPs to pass validation
-     */
-    const ALLOW_IP6 = 2;
-
-    /**
-     * Any flags to use during validation
-     */
-    protected $flags = 0;
-
-    /**
-     * Constructor...
-     *
-     * @param Integer $flags Any flags to use during validation. By default,
-     *      This is set only to allow IPv4
-     */
-    public function __construct ( $flags = 1 )
-    {
-        $this->flags = max( intval($flags), 0 );
-    }
-
-    /**
-     * Validates an IP address
+     * Validates an IPv4 address
      *
      * @param mixed $value The value to validate
      * @return String Any errors encountered
      */
     protected function process ( $value )
     {
-        
+
     }
 
 }
