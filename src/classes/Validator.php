@@ -99,6 +99,9 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
         elseif ( $result instanceof ::cPHP::Validator::Result )
             $result = $result->getErrors();
 
+        elseif ( is_null($result) || is_bool($result) || $result === 0 || $result === 0.0 )
+            $result = null;
+            
         else
             $result = ::cPHP::strval( $result );
 

@@ -71,7 +71,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testNoErrors ()
+    public function testNullResult ()
     {
         $mock = $this->getMockValidator ( NULL );
 
@@ -79,6 +79,45 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
         $this->assertTrue( $result->isValid() );
+    }
+
+    public function testFloatResult ()
+    {
+        $mock = $this->getMockValidator ( 278.09 );
+
+        $result = $mock->validate("To Validate");
+
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals( array("278.09"), $result->getErrors()->get() );
+
+
+        $mock = $this->getMockValidator ( 0.0 );
+        $this->assertTrue( $mock->isValid("To Validate") );
+    }
+
+    public function testIntegerResult ()
+    {
+        $mock = $this->getMockValidator ( 278 );
+
+        $result = $mock->validate("To Validate");
+
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals( array("278"), $result->getErrors()->get() );
+
+
+        $mock = $this->getMockValidator ( 0 );
+        $this->assertTrue( $mock->isValid("To Validate") );
+    }
+
+    public function testBooleanResult ()
+    {
+        $mock = $this->getMockValidator ( TRUE );
+        $this->assertTrue( $mock->isValid("To Validate") );
+
+        $mock = $this->getMockValidator ( FALSE );
+        $this->assertTrue( $mock->isValid("To Validate") );
     }
 
     public function testStringError ()
