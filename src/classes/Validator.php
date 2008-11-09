@@ -89,9 +89,11 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
      */
     public function validate ( $value )
     {
+        // Invoke the internal validator
         $result = $this->process( $value );
 
-        if ( is_array($result) || $result instanceof ::cPHP::Ary )
+        // Normalize the results
+        if ( ::cPHP::Ary::is($result) )
             $result = ::cPHP::Ary::create( $result )->flatten()->collect("cPHP::strval")->compact()->get();
 
         elseif ( $result instanceof ::cPHP::Validator::Result )
@@ -100,10 +102,15 @@ abstract class Validator extends cPHP::ErrorList implements cPHP::iface::Validat
         else
             $result = ::cPHP::strval( $result );
 
+        // Boot up the results of the validation process
         $output = new ::cPHP::Validator::Result( $value );
 
+        // If the internal validator returned a non-empty value
+        // (either an array with values or a non-blank string)
         if ( !::cPHP::isEmpty($result) ) {
 
+            // If this validator is hooked up with a set of custom error messages,
+            // use them instead of what the result returned
             if ( $this->hasErrors() )
                 $output->addErrors( $this->getErrors() );
             else
