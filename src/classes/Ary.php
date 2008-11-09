@@ -920,7 +920,7 @@ class Ary implements Iterator, Countable, ArrayAccess
 
                 // If it isn't an array, just plop it on to the end of the output
                 if ( !is_array($array[$key]) && !($array[$key] instanceof cPHP::Ary) ) {
-                    
+
                     // There really is a good reason I do it like this... and that
                     // is "because of the way array_merge handles conflicting keys."
                     if ( !isset($output[$key]) )
@@ -1132,6 +1132,18 @@ class Ary implements Iterator, Countable, ArrayAccess
         return FALSE;
     }
 
+    /**
+     * Searches the array for a value and returns it's key
+     *
+     * If the value appears multiple times, only the first key will be returned
+     *
+     * @param mixed $value The value to search for
+     * @return mixed Returns the corresponding key, or FALSE if the key can't be found
+     */
+    public function search ( $value )
+    {
+        return array_search( $value, $this->array );
+    }
 
 }
 

@@ -1115,6 +1115,19 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testSearch ()
+    {
+        $ary = new ::cPHP::Ary(array( 0 => 4, 5 => 3, "key" => "other"));
+
+        $this->assertSame( 0, $ary->search(4) );
+        $this->assertSame( 0, $ary->search("4") );
+        $this->assertSame( 5, $ary->search(3) );
+        $this->assertSame( "key", $ary->search("other") );
+
+        $this->assertFalse( $ary->search("not in") );
+        $this->assertFalse( $ary->search("OTHER") );
+    }
+
 }
 
 ?>
