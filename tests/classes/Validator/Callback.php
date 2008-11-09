@@ -58,8 +58,14 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function instanceCallbackTest ( $value )
     {
-        if ( $value != "jelly" )
-            return "Value must be jelly";
+        if ( $value != "milk" )
+            return "Value must be milk";
+    }
+
+    public function __invoke ( $value )
+    {
+        if ( $value != "sugar" )
+            return "Value must be sugar";
     }
 
     public function testClosure ()
@@ -111,12 +117,26 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
     {
         $valid = new ::cPHP::Validator::Callback(array($this, "instanceCallbackTest"));
 
-        $this->assertTrue( $valid->isValid("jelly") );
+        $this->assertTrue( $valid->isValid("milk") );
 
-        $result = $valid->validate("peanut butter");
+        $result = $valid->validate("cookies");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
-                array("Value must be jelly"),
+                array("Value must be milk"),
+                $result->getErrors()->get()
+            );
+    }
+
+    public function testInvokableObject ()
+    {
+        $valid = new ::cPHP::Validator::Callback($this);
+
+        $this->assertTrue( $valid->isValid("sugar") );
+
+        $result = $valid->validate("cream");
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Value must be sugar"),
                 $result->getErrors()->get()
             );
     }
