@@ -124,8 +124,8 @@ class In extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-        if ( !::cPHP::isBasic($value) || !$this->field->getOptions()->keyExists($value) )
-            return "Value is not a valid selection";
+        if ( !$this->list->contains($value) )
+            return "Invalid option";
     }
 
 }

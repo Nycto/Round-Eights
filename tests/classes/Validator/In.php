@@ -126,9 +126,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testRemoveValue ()
     {
-        $valid = new ::cPHP::Validator::In;
-        $valid->setList(array("one", "two", "three", "four"));
-
+        $valid = new ::cPHP::Validator::In(array("one", "two", "three", "four"));
 
         $this->assertSame( $valid, $valid->removeValue("two") );
 
@@ -157,6 +155,31 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 array("one", "three", "four"),
                 $list->get()
+            );
+    }
+
+    public function testValid ()
+    {
+        $valid = new ::cPHP::Validator::In(array(1, 1.5, "two", TRUE, FALSE, NULL));
+
+        $this->assertTrue( $valid->isValid(1) );
+        $this->assertTrue( $valid->isValid("1") );
+        $this->assertTrue( $valid->isValid(1.5) );
+        $this->assertTrue( $valid->isValid("two") );
+        $this->assertTrue( $valid->isValid(TRUE) );
+        $this->assertTrue( $valid->isValid(FALSE) );
+        $this->assertTrue( $valid->isValid(NULL) );
+    }
+
+    public function testInalid ()
+    {
+        $valid = new ::cPHP::Validator::In(array(1, 1.5, "two", TRUE, FALSE, NULL));
+
+        $result = $valid->validate("123");
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Invalid option"),
+                $result->getErrors()->get()
             );
     }
 
