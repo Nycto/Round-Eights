@@ -143,42 +143,150 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testArrayResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return array("Must be <= 10", array("Greater than 10"));
+            return array("", NULL);
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Must be <= 10", "Greater than 10"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testAryResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return new ::cPHP::Ary(array("Must be <= 10", "Greater than 10"));
+            return new ::cPHP::Ary;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Must be <= 10", "Greater than 10"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testTraversableResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return new ArrayIterator(array("Must be <= 10", "Greater than 10"));
+            return new ArrayIterator;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Must be <= 10", "Greater than 10"),
+                $result->getErrors()->get()
+            );
+    }
+
+    public function testResultObjectResult ()
+    {
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            $result = new ::cPHP::Validator::Result($value);
+            if ( $value > 10 )
+                $result->addError("Error one")->addError("error two");
+            return $result;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Error one", "error two"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testStringResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return "Error";
+            return "   ";
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Error"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testFloatResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return 1.505;
+            return 0.0;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("1.505"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testIntegerResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return 99;
+            return 0;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+
+        $result = $valid->validate(20);
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("99"),
+                $result->getErrors()->get()
+            );
     }
 
     public function testNullResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            return null;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
     }
 
     public function testBoolResult ()
     {
-        $this->markTestIncomplete("to be written");
+        $valid = new ::cPHP::Validator::Callback(function ($value) {
+            if ( $value > 10 )
+                return TRUE;
+            return FALSE;
+        });
+
+        $this->assertTrue( $valid->isValid(5) );
+        $this->assertTrue( $valid->isValid(20) );
     }
 
 }
