@@ -1,6 +1,6 @@
 <?php
 /**
- * IP filtering class
+ * Unit Test File
  *
  * PHP version 5.3
  *
@@ -27,32 +27,42 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @author James Frasca <james@commonphp.com>
  * @license Artistic License 2.0 http://www.commonphp.com/license.php
- * @package Filters
+ * @package UnitTests
  */
 
-namespace cPHP::Filter;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Cleans up a string in preparation for using it as an IP
- *
- * Removes everything except numbers and periods
+ * unit tests
  */
-class IP extends cPHP::Filter
+class classes_filter_ipv4 extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Cleans up a string in preparation for using it as an IP
-     *
-     * @param mixed $value The value to filter
-     * @return
-     */
-    public function filter ( $value )
+    public function testValidChars ()
     {
-        return preg_replace(
-                '/[^0-9\.]/',
-                '',
-                ::cPHP::strval( $value )
+        $filter = new cPHP::Filter::IPv4;
+
+        $this->assertEquals(
+                "1234567890.",
+                $filter->filter("1234567890.")
             );
+
+    }
+
+    public function testInvalidChars ()
+    {
+        $filter = new cPHP::Filter::IPv4;
+
+        $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@'));
+        $this->assertEquals("", $filter->filter('ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`'));
+        $this->assertEquals("", $filter->filter('abcdefghijklmnopqrstuvwxyz{|}~'));
+        $this->assertEquals("", $filter->filter(''));
+        $this->assertEquals("", $filter->filter(''));
+        $this->assertEquals("", $filter->filter(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ'));
+        $this->assertEquals("", $filter->filter('¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ'));
+        $this->assertEquals("", $filter->filter('×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷'));
+        $this->assertEquals("", $filter->filter('øùúûüýþÿ'));
+
     }
 
 }

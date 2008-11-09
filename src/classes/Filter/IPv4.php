@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit Test File
+ * IP filtering class
  *
  * PHP version 5.3
  *
@@ -27,42 +27,32 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @author James Frasca <james@commonphp.com>
  * @license Artistic License 2.0 http://www.commonphp.com/license.php
- * @package UnitTests
+ * @package Filters
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace cPHP::Filter;
 
 /**
- * unit tests
+ * Cleans up a string in preparation for using it as an IP (version 4)
+ *
+ * Removes everything except numbers and periods
  */
-class classes_filter_ip extends PHPUnit_Framework_TestCase
+class IPv4 extends cPHP::Filter
 {
 
-    public function testValidChars ()
+    /**
+     * Cleans up a string in preparation for using it as an IP (version 4)
+     *
+     * @param mixed $value The value to filter
+     * @return
+     */
+    public function filter ( $value )
     {
-        $filter = new cPHP::Filter::IP;
-
-        $this->assertEquals(
-                "1234567890.",
-                $filter->filter("1234567890.")
+        return preg_replace(
+                '/[^0-9\.]/',
+                '',
+                ::cPHP::strval( $value )
             );
-
-    }
-
-    public function testInvalidChars ()
-    {
-        $filter = new cPHP::Filter::IP;
-
-        $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@'));
-        $this->assertEquals("", $filter->filter('ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`'));
-        $this->assertEquals("", $filter->filter('abcdefghijklmnopqrstuvwxyz{|}~'));
-        $this->assertEquals("", $filter->filter(''));
-        $this->assertEquals("", $filter->filter(''));
-        $this->assertEquals("", $filter->filter(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ'));
-        $this->assertEquals("", $filter->filter('¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ'));
-        $this->assertEquals("", $filter->filter('×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷'));
-        $this->assertEquals("", $filter->filter('øùúûüýþÿ'));
-
     }
 
 }
