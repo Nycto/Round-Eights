@@ -56,6 +56,12 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
             return "Value must be jelly";
     }
 
+    public function instanceCallbackTest ( $value )
+    {
+        if ( $value != "jelly" )
+            return "Value must be jelly";
+    }
+
     public function testClosure ()
     {
         $valid = new ::cPHP::Validator::Callback(function ($value) {
@@ -90,6 +96,20 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
     public function testStaticMethod ()
     {
         $valid = new ::cPHP::Validator::Callback(array(__CLASS__, "staticCallbackTest"));
+
+        $this->assertTrue( $valid->isValid("jelly") );
+
+        $result = $valid->validate("peanut butter");
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Value must be jelly"),
+                $result->getErrors()->get()
+            );
+    }
+
+    public function testInstanceMethod ()
+    {
+        $valid = new ::cPHP::Validator::Callback(array($this, "instanceCallbackTest"));
 
         $this->assertTrue( $valid->isValid("jelly") );
 
