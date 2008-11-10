@@ -33,19 +33,6 @@
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
- * Provides an interface to create multiple instances even though this is a singleton
- */
-class Stub_Env extends ::cPHP::Env
-{
-
-    static public function fromArray( array $data )
-    {
-        return new static( $data );
-    }
-
-}
-
-/**
  * unit tests
  */
 class classes_env extends PHPUnit_Framework_TestCase
