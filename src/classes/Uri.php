@@ -103,6 +103,63 @@ class Uri
      */
     private $fragment;
 
+    /**
+     * Returns the singelton Env instance
+     *
+     * This method exists strictly for unit testing purposes. By mocking this
+     * method you can feed a spoof environment to the rest of the instance
+     *
+     * @return Object Returns a ::cPHP::Env instance
+     */
+    protected function getEnv ()
+    {
+        return Env::get();
+    }
+
+    /**
+     * Returns the scheme for this instance
+     *
+     * If no specific scheme has been set, it will return the scheme useed to
+     * fetch the current page. Failing that (for example, running via the command
+     * line), the default is "http"
+     *
+     * @return String Returns the scheme for this link
+     */
+    public function getScheme ()
+    {
+
+        if ( isset($this->scheme) )
+            return $this->scheme;
+
+        // Pull the scheme from the environment
+        $env = $this->getEnv();
+
+        if ( isset( $env->scheme ) )
+            return $env->scheme;
+
+        else
+            return "http";
+
+    }
+
+    /**
+     * Sets the scheme for this instance
+     *
+     * @param String $scheme
+     * @return Object Returns a self reference
+     */
+    public function setScheme ( $scheme )
+    {
+        $scheme = strtolower( ::cPHP::str::stripW($scheme) );
+
+        if ( empty($scheme) )
+            throw new ::cPHP::Exception::Argument(0, "Uri Scheme", "Must not be empty");
+
+        $this->scheme = $scheme;
+        
+        return $this;
+    }
+
 }
 
 ?>

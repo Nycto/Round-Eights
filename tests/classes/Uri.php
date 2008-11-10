@@ -37,7 +37,52 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  */
 class classes_uri extends PHPUnit_Framework_TestCase
 {
-    
+
+    public function testGetScheme_fromEnv ()
+    {
+        $uri = $this->getMock("cPHP::Uri", array("getEnv"));
+        $uri->expects( $this->once() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "HTTT/1.1"))
+                ));
+
+        $this->assertSame( "httt", $uri->getScheme() );
+    }
+
+    public function testGetScheme_noEnv ()
+    {
+        $uri = $this->getMock("cPHP::Uri", array("getEnv"));
+        $uri->expects( $this->once() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertSame( "http", $uri->getScheme() );
+    }
+
+    public function testSetScheme ()
+    {
+        $uri = new cPHP::Uri;
+
+        $this->assertSame( $uri, $uri->setScheme("ftp") );
+        $this->assertSame( "ftp", $uri->getScheme() );
+
+        $this->assertSame( $uri, $uri->setScheme("  S F T P !@#$ 1") );
+        $this->assertSame( "sftp1", $uri->getScheme() );
+
+        try {
+            $uri->setScheme("!$#@!");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+
+        $this->assertSame( "sftp1", $uri->getScheme() );
+    }
+
 }
 
 ?>
