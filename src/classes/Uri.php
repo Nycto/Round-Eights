@@ -176,6 +176,49 @@ class Uri
         return isset($this->scheme);
     }
 
+    /**
+     * Returns the value of the username
+     *
+     * @return String|Null Returns null if the username isn't set
+     */
+    public function getUserName ()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Sets the username credential
+     *
+     * @param String $username The username to set
+     * @return Object Returns a self reference
+     */
+    public function setUserName ( $username )
+    {
+        $username = ::cPHP::strval( $username );
+        $this->username = ::cPHP::isEmpty( $username ) ? null : $username;
+        return $this;
+    }
+
+    /**
+     * Returns whether the username has been set
+     *
+     * @return Boolean
+     */
+    public function userNameExists ()
+    {
+        return isset( $this->username );
+    }
+
+    /**
+     * Unsets the currently set username
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearUserName ()
+    {
+        $this->username = null;
+        return $this;
+    }
 
 }
 

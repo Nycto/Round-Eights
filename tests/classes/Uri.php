@@ -83,6 +83,29 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->schemeExists() );
     }
 
+    public function testUserNameAccessors ()
+    {
+        $uri = new cPHP::Uri;
+        $this->assertFalse( $uri->userNameExists() );
+        $this->assertNull( $uri->getUserName() );
+
+        $this->assertSame( $uri, $uri->setUserName("uname") );
+        $this->assertTrue( $uri->userNameExists() );
+        $this->assertSame( "uname", $uri->getUserName() );
+
+        $this->assertSame( $uri, $uri->clearUserName() );
+        $this->assertFalse( $uri->userNameExists() );
+        $this->assertNull( $uri->getUserName() );
+
+        $this->assertSame( $uri, $uri->setUserName("uname") );
+        $this->assertTrue( $uri->userNameExists() );
+        $this->assertSame( "uname", $uri->getUserName() );
+
+        $this->assertSame( $uri, $uri->setUserName("  ") );
+        $this->assertFalse( $uri->userNameExists() );
+        $this->assertNull( $uri->getUserName() );
+    }
+
 }
 
 ?>
