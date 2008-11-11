@@ -151,12 +151,7 @@ class Uri
     public function setScheme ( $scheme )
     {
         $scheme = strtolower( ::cPHP::str::stripW($scheme) );
-
-        if ( empty($scheme) )
-            throw new ::cPHP::Exception::Argument(0, "Uri Scheme", "Must not be empty");
-
-        $this->scheme = $scheme;
-
+        $this->scheme = empty( $scheme ) ? null : $scheme;
         return $this;
     }
 
@@ -180,6 +175,7 @@ class Uri
     {
         return isset($this->scheme);
     }
+
 
 }
 

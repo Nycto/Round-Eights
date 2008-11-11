@@ -62,27 +62,6 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertSame( "http", $uri->getScheme() );
     }
 
-    public function testSetScheme ()
-    {
-        $uri = new cPHP::Uri;
-
-        $this->assertSame( $uri, $uri->setScheme("ftp") );
-        $this->assertSame( "ftp", $uri->getScheme() );
-
-        $this->assertSame( $uri, $uri->setScheme("  S F T P !@#$ 1") );
-        $this->assertSame( "sftp1", $uri->getScheme() );
-
-        try {
-            $uri->setScheme("!$#@!");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( ::cPHP::Exception::Argument $err ) {
-            $this->assertSame("Must not be empty", $err->getMessage());
-        }
-
-        $this->assertSame( "sftp1", $uri->getScheme() );
-    }
-
     public function testSchemeAccessors()
     {
         $uri = new cPHP::Uri;
@@ -91,6 +70,13 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $uri, $uri->setScheme("ftp") );
         $this->assertSame( "ftp", $uri->getScheme() );
+        $this->assertTrue( $uri->schemeExists() );
+
+        $this->assertSame( $uri, $uri->setScheme("") );
+        $this->assertFalse( $uri->schemeExists() );
+
+        $this->assertSame( $uri, $uri->setScheme("  S F T P !@#$ 1") );
+        $this->assertSame( "sftp1", $uri->getScheme() );
         $this->assertTrue( $uri->schemeExists() );
 
         $this->assertSame( $uri, $uri->clearScheme() );
