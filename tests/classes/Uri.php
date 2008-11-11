@@ -129,6 +129,33 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getPassword() );
     }
 
+    public function testSubdomainAccessors ()
+    {
+        $uri = new cPHP::Uri;
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
+
+        $this->assertSame( $uri, $uri->setSubdomain("sub") );
+        $this->assertTrue( $uri->subdomainExists() );
+        $this->assertSame( "sub", $uri->getSubdomain() );
+
+        $this->assertSame( $uri, $uri->clearSubdomain() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
+
+        $this->assertSame( $uri, $uri->setSubdomain("  sub  ") );
+        $this->assertTrue( $uri->subdomainExists() );
+        $this->assertSame( "sub", $uri->getSubdomain() );
+
+        $this->assertSame( $uri, $uri->setSubdomain("  ") );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
+
+        $this->assertSame( $uri, $uri->setSubdomain("..sub..") );
+        $this->assertTrue( $uri->subdomainExists() );
+        $this->assertSame( "sub", $uri->getSubdomain() );
+    }
+
 }
 
 ?>

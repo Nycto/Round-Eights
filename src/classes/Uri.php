@@ -264,6 +264,53 @@ class Uri
         return $this;
     }
 
+    /**
+     * Returns the value of the subdomain
+     *
+     * @return String|Null Returns null if the subdomain isn't set
+     */
+    public function getSubdomain ()
+    {
+        return $this->subdomain;
+    }
+
+    /**
+     * Sets the subdomain credential
+     *
+     * @param String $subdomain The subdomain to set
+     * @return Object Returns a self reference
+     */
+    public function setSubdomain ( $subdomain )
+    {
+        $subdomain = ::cPHP::strval( $subdomain );
+        $subdomain = trim( $subdomain, "." );
+        $subdomain = trim( $subdomain );
+
+        $this->subdomain = empty( $subdomain ) ? null : $subdomain;
+        return $this;
+    }
+
+    /**
+     * Returns whether the subdomain has been set
+     *
+     * @return Boolean
+     */
+    public function subdomainExists ()
+    {
+        return isset( $this->subdomain );
+    }
+
+    /**
+     * Unsets the currently set subdomain
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearSubdomain ()
+    {
+        $this->subdomain = null;
+        return $this;
+    }
+
 }
 
 ?>
