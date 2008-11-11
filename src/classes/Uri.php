@@ -220,6 +220,50 @@ class Uri
         return $this;
     }
 
+    /**
+     * Returns the value of the password
+     *
+     * @return String|Null Returns null if the password isn't set
+     */
+    public function getPassword ()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Sets the password credential
+     *
+     * @param String $password The password to set
+     * @return Object Returns a self reference
+     */
+    public function setPassword ( $password )
+    {
+        $password = ::cPHP::strval( $password );
+        $this->password = ::cPHP::isEmpty( $password ) ? null : $password;
+        return $this;
+    }
+
+    /**
+     * Returns whether the password has been set
+     *
+     * @return Boolean
+     */
+    public function passwordExists ()
+    {
+        return isset( $this->password );
+    }
+
+    /**
+     * Unsets the currently set password
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearPassword ()
+    {
+        $this->password = null;
+        return $this;
+    }
+
 }
 
 ?>

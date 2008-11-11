@@ -106,6 +106,29 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getUserName() );
     }
 
+    public function testPasswordAccessors ()
+    {
+        $uri = new cPHP::Uri;
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertNull( $uri->getPassword() );
+
+        $this->assertSame( $uri, $uri->setPassword("pword") );
+        $this->assertTrue( $uri->passwordExists() );
+        $this->assertSame( "pword", $uri->getPassword() );
+
+        $this->assertSame( $uri, $uri->clearPassword() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertNull( $uri->getPassword() );
+
+        $this->assertSame( $uri, $uri->setPassword("pword") );
+        $this->assertTrue( $uri->passwordExists() );
+        $this->assertSame( "pword", $uri->getPassword() );
+
+        $this->assertSame( $uri, $uri->setPassword("  ") );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertNull( $uri->getPassword() );
+    }
+
 }
 
 ?>
