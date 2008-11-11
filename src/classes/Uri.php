@@ -312,6 +312,50 @@ class Uri
     }
 
     /**
+     * Returns the value of the second level domain
+     *
+     * @return String|Null Returns null if the sld isn't set
+     */
+    public function getSld ()
+    {
+        return $this->sld;
+    }
+
+    /**
+     * Sets the second level domain
+     *
+     * @param String $sld The sld to set
+     * @return Object Returns a self reference
+     */
+    public function setSld ( $sld )
+    {
+        $sld = ::cPHP::str::stripW( $sld );
+        $this->sld = empty( $sld ) ? null : $sld;
+        return $this;
+    }
+
+    /**
+     * Returns whether the second level domain has been set
+     *
+     * @return Boolean
+     */
+    public function sldExists ()
+    {
+        return isset( $this->sld );
+    }
+
+    /**
+     * Unsets the current second level domain
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearSld ()
+    {
+        $this->sld = null;
+        return $this;
+    }
+
+    /**
      * Returns the value of the top level domain
      *
      * @return String|Null Returns null if the tld isn't set

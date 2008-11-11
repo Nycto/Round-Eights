@@ -156,6 +156,33 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertSame( "sub", $uri->getSubdomain() );
     }
 
+    public function testSldAccessors ()
+    {
+        $uri = new cPHP::Uri;
+        $this->assertFalse( $uri->sldExists() );
+        $this->assertNull( $uri->getSld() );
+
+        $this->assertSame( $uri, $uri->setSld("domain") );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertSame( "domain", $uri->getSld() );
+
+        $this->assertSame( $uri, $uri->clearSld() );
+        $this->assertFalse( $uri->sldExists() );
+        $this->assertNull( $uri->getSld() );
+
+        $this->assertSame( $uri, $uri->setSld("  example  ") );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertSame( "example", $uri->getSld() );
+
+        $this->assertSame( $uri, $uri->setSld("  ") );
+        $this->assertFalse( $uri->sldExists() );
+        $this->assertNull( $uri->getSld() );
+
+        $this->assertSame( $uri, $uri->setSld("!@#exam<>?ple..%^&*") );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertSame( "example", $uri->getSld() );
+    }
+
     public function testTldAccessors ()
     {
         $uri = new cPHP::Uri;
