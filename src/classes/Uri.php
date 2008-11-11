@@ -311,6 +311,50 @@ class Uri
         return $this;
     }
 
+    /**
+     * Returns the value of the top level domain
+     *
+     * @return String|Null Returns null if the tld isn't set
+     */
+    public function getTld ()
+    {
+        return $this->tld;
+    }
+
+    /**
+     * Sets the top level domain
+     *
+     * @param String $tld The tld to set
+     * @return Object Returns a self reference
+     */
+    public function setTld ( $tld )
+    {
+        $tld = ::cPHP::str::stripW( $tld );
+        $this->tld = empty( $tld ) ? null : $tld;
+        return $this;
+    }
+
+    /**
+     * Returns whether the top level domain has been set
+     *
+     * @return Boolean
+     */
+    public function tldExists ()
+    {
+        return isset( $this->tld );
+    }
+
+    /**
+     * Unsets the current top level domain
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearTld ()
+    {
+        $this->tld = null;
+        return $this;
+    }
+
 }
 
 ?>
