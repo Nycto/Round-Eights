@@ -156,8 +156,29 @@ class Uri
             throw new ::cPHP::Exception::Argument(0, "Uri Scheme", "Must not be empty");
 
         $this->scheme = $scheme;
-        
+
         return $this;
+    }
+
+    /**
+     * Removes the explicitly set scheme, causing the scheme to revert to the default
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearScheme ()
+    {
+        $this->scheme = null;
+        return $this;
+    }
+
+    /**
+     * Returns whether a scheme has been explicitly set
+     *
+     * @return Boolean
+     */
+    public function schemeExists ()
+    {
+        return isset($this->scheme);
     }
 
 }

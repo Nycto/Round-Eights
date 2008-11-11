@@ -83,6 +83,20 @@ class classes_uri extends PHPUnit_Framework_TestCase
         $this->assertSame( "sftp1", $uri->getScheme() );
     }
 
+    public function testSchemeAccessors()
+    {
+        $uri = new cPHP::Uri;
+
+        $this->assertFalse( $uri->schemeExists() );
+
+        $this->assertSame( $uri, $uri->setScheme("ftp") );
+        $this->assertSame( "ftp", $uri->getScheme() );
+        $this->assertTrue( $uri->schemeExists() );
+
+        $this->assertSame( $uri, $uri->clearScheme() );
+        $this->assertFalse( $uri->schemeExists() );
+    }
+
 }
 
 ?>
