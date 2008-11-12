@@ -438,7 +438,7 @@ class Env
         if ( $this->ip == $server['HTTP_HOST'] )
             return;
 
-        $regex = "/^(?:(.*)\\.)?([^\\.\\:]+)\\.([^\\.\\:]+)(?:\\:([0-9]*))?$/";
+        $regex = '/^(?:(.*)\.)?([^\.\:]+)\.([^\.\:]+)(?:\:([0-9]*))?$/';
 
         if ( !preg_match($regex, $server['HTTP_HOST'], $domain) )
             return;
