@@ -273,7 +273,7 @@ class URL
      *
      * The value this returns is urlencoded
      *
-     * @return String|Null Returns null if the neither the username or password is set
+     * @return String|Null Returns null if the neither the username isnt set
      */
     public function getUserInfo ()
     {
@@ -466,6 +466,93 @@ class URL
      */
     public function clearTld ()
     {
+        $this->tld = null;
+        return $this;
+    }
+
+    /**
+     * Returns the Domain for this link
+     *
+     * This is the top level domain combined with the second level domain. If no
+     * SLD is set, it will pull the SLD from the current environment. If there is
+     * no SLD in the environment (command line mode, for example), then the function
+     * will return null.
+     *
+     * The tld will also be pulled from the environment if one has not been
+     * explicitly set, and will then fall back on being ".com"
+     *
+     * @return String|Null
+     */
+    public function getDomain ()
+    {
+        $env = $this->getEnv();
+
+        if ( isset($this->sld) )
+            $sld = $this->sld;
+        else if ( isset($env->sld) )
+            $sld = $env->sld;
+        else
+            return null;
+
+        if ( isset($this->tld) )
+            $tld = $this->tld;
+        else if ( isset($env->tld) )
+            $tld = $env->tld;
+        else
+            $tld = "com";
+
+        return $sld .".". $tld;
+    }
+
+    /**
+     * Sets both the username and password in one swoop
+     *
+     * @param String $domain The credentials being set
+     * @return Object Returns a self reference
+     */
+    public function setDomain ( $domain )
+    {
+        $domain = preg_replace('/[^a-z0-9\.\-]/i', '', $domain);
+        $domain = trim($domain, ".");
+        $domain = ::cPHP::str::stripRepeats($domain, ".");
+
+        if ( empty($domain) ) {
+            $this->tld = NULL;
+            $this->sld = NULL;
+        }
+        else if ( !::cPHP::str::contains(".", $domain) ) {
+            $this->tld = NULL;
+            $this->sld = $domain;
+        }
+        else {
+            $domain = explode(".", $domain);
+            $this->tld = array_pop($domain);
+            $this->sld = array_pop($domain);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the userinfo has been set
+     *
+     * This will always return true if the username has been set
+     *
+     * @return Boolean
+     */
+    public function domainExists ()
+    {
+        return isset($this->sld) && isset($this->tld);
+    }
+
+    /**
+     * Unsets both the password and the username
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearDomain ()
+    {
+        $this->sld = null;
         $this->tld = null;
         return $this;
     }
