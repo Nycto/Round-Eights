@@ -129,6 +129,54 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getPassword() );
     }
 
+    public function testUserInfoAccessors ()
+    {
+        $uri = new cPHP::URL;
+        $this->assertFalse( $uri->userInfoExists() );
+        $this->assertNull( $uri->getUserInfo() );
+
+        $uri->setPassword("pword");
+        $this->assertFalse( $uri->userInfoExists() );
+        $this->assertNull( $uri->getUserInfo() );
+
+        $uri->setUserName("uname");
+        $this->assertTrue( $uri->userInfoExists() );
+        $this->assertSame("uname:pword", $uri->getUserInfo() );
+
+
+        $this->assertSame( $uri, $uri->setUserInfo("user%20name:pass%2Dword") );
+        $this->assertTrue( $uri->usernameExists() );
+        $this->assertTrue( $uri->passwordExists() );
+        $this->assertTrue( $uri->userInfoExists() );
+        $this->assertSame( "user name", $uri->getUsername() );
+        $this->assertSame( "pass-word", $uri->getPassword() );
+        $this->assertSame("user+name:pass-word", $uri->getUserInfo() );
+
+
+        $this->assertSame( $uri, $uri->setUserInfo("uname:pword@example.com") );
+        $this->assertTrue( $uri->usernameExists() );
+        $this->assertTrue( $uri->passwordExists() );
+        $this->assertTrue( $uri->userInfoExists() );
+        $this->assertSame( "uname", $uri->getUsername() );
+        $this->assertSame( "pword", $uri->getPassword() );
+        $this->assertSame("uname:pword", $uri->getUserInfo() );
+
+
+        $this->assertSame( $uri, $uri->setUserInfo("uname") );
+        $this->assertTrue( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertTrue( $uri->userInfoExists() );
+        $this->assertSame( "uname", $uri->getUsername() );
+        $this->assertSame("uname", $uri->getUserInfo() );
+
+
+        $this->assertSame( $uri, $uri->clearUserInfo() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertFalse( $uri->userInfoExists() );
+        $this->assertNull($uri->getUserInfo() );
+    }
+
     public function testSubdomainAccessors ()
     {
         $uri = new cPHP::URL;

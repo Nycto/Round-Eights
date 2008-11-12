@@ -265,6 +265,77 @@ class URL
     }
 
     /**
+     * Returns the UserInfo for this link
+     *
+     * The UserInfo is the username and password combined with a semicolon in between.
+     * If only the username is set, it will be returned. If only the password is
+     * set, nothing will be returned.
+     *
+     * The value this returns is urlencoded
+     *
+     * @return String|Null Returns null if the neither the username or password is set
+     */
+    public function getUserInfo ()
+    {
+        if ( !isset($this->username) )
+            return null;
+
+        if ( isset($this->password) )
+            return urlencode( $this->username ) .":". urlencode( $this->password );
+
+        return urlencode( $this->username );
+    }
+
+    /**
+     * Sets both the username and password in one swoop
+     *
+     * @param String $userInfo The credentials being set
+     * @return Object Returns a self reference
+     */
+    public function setUserInfo ( $userInfo )
+    {
+        $userInfo = ::cPHP::strVal( $userInfo );
+
+        if ( ::cPHP::str::contains("@", $userInfo))
+            $userInfo = strstr( $userInfo, "@", TRUE );
+
+        $userInfo = explode(":", $userInfo, 2);
+
+        $this->setUserName( urldecode($userInfo[0]) );
+
+        if ( isset($userInfo[1]) )
+            $this->setPassword( urldecode($userInfo[1]) );
+        else
+            $this->clearPassword();
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the userinfo has been set
+     *
+     * This will always return true if the username has been set
+     *
+     * @return Boolean
+     */
+    public function userInfoExists ()
+    {
+        return isset( $this->username );
+    }
+
+    /**
+     * Unsets both the password and the username
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearUserInfo ()
+    {
+        $this->username = null;
+        $this->password = null;
+        return $this;
+    }
+
+    /**
      * Returns the value of the subdomain
      *
      * @return String|Null Returns null if the subdomain isn't set
