@@ -327,6 +327,80 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getDomain() );
     }
 
+    public function testIsSameDomain_withEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array('HTTP_HOST' => 'sub.example.edu'))
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertTrue( $uri->isSameDomain() );
+
+        // sld: null, tld: com
+        $uri->setTld('com');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: null, tld: edu
+        $uri->setTld('edu');
+        $this->assertTrue( $uri->isSameDomain() );
+
+        // sld: notthedomain, tld: edu
+        $uri->setSld('notthedomain');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: example, tld: edu
+        $uri->setSld('example');
+        $this->assertTrue( $uri->isSameDomain() );
+
+        // sld: example, tld: com
+        $uri->setTld('com');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: example, tld: null
+        $uri->clearTld();
+        $this->assertTrue( $uri->isSameDomain() );
+
+        // sld: notthedomain, tld: null
+        $uri->setSld('notthedomain');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: null, tld: null
+        $uri->clearSld();
+        $this->assertTrue( $uri->isSameDomain() );
+    }
+
+    public function testIsSameDomain_noEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertTrue( $uri->isSameDomain() );
+
+        // sld: null, tld: com
+        $uri->setTld('com');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: example, tld: com
+        $uri->setSld('example');
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: example, tld: null
+        $uri->clearTld();
+        $this->assertFalse( $uri->isSameDomain() );
+
+        // sld: null, tld: null
+        $uri->clearSld();
+        $this->assertTrue( $uri->isSameDomain() );
+    }
+
 }
 
 ?>

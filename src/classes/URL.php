@@ -557,6 +557,30 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns whether the domain information in this instance is the same as
+     * the domain info in the environment
+     *
+     * Remember that if the TLD and SLD are not set for this instance, the default
+     * value is the current domain
+     *
+     * @return Boolean
+     */
+    public function isSameDomain ()
+    {
+        $env = $this->getEnv();
+
+        // If the tld is different
+        if ( isset($this->tld) && strcasecmp( $env->tld, $this->tld ) != 0 )
+            return FALSE;
+
+        // If the sld is different
+        if ( isset($this->sld) && strcasecmp( $env->sld, $this->sld ) != 0 )
+            return FALSE;
+
+        return TRUE;
+    }
+
 }
 
 ?>
