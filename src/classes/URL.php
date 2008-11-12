@@ -282,9 +282,9 @@ class URL
      */
     public function setSubdomain ( $subdomain )
     {
-        $subdomain = ::cPHP::strval( $subdomain );
-        $subdomain = trim( $subdomain, "." );
-        $subdomain = trim( $subdomain );
+        $subdomain = preg_replace('/[^a-z0-9\.\-]/i', '', $subdomain);
+        $subdomain = trim($subdomain, ".");
+        $subdomain = ::cPHP::str::stripRepeats($subdomain, ".");
 
         $this->subdomain = empty( $subdomain ) ? null : $subdomain;
         return $this;

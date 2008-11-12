@@ -143,17 +143,17 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->subdomainExists() );
         $this->assertNull( $uri->getSubdomain() );
 
-        $this->assertSame( $uri, $uri->setSubdomain("  sub  ") );
+        $this->assertSame( $uri, $uri->setSubdomain("!@#sub-12  ") );
         $this->assertTrue( $uri->subdomainExists() );
-        $this->assertSame( "sub", $uri->getSubdomain() );
+        $this->assertSame( "sub-12", $uri->getSubdomain() );
 
         $this->assertSame( $uri, $uri->setSubdomain("  ") );
         $this->assertFalse( $uri->subdomainExists() );
         $this->assertNull( $uri->getSubdomain() );
 
-        $this->assertSame( $uri, $uri->setSubdomain("..sub..") );
+        $this->assertSame( $uri, $uri->setSubdomain("..sub...sub..") );
         $this->assertTrue( $uri->subdomainExists() );
-        $this->assertSame( "sub", $uri->getSubdomain() );
+        $this->assertSame( "sub.sub", $uri->getSubdomain() );
     }
 
     public function testSldAccessors ()
