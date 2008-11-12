@@ -1,6 +1,6 @@
 <?php
 /**
- * URI object
+ * URL object
  *
  * PHP version 5.3
  *
@@ -33,9 +33,9 @@
 namespace cPHP;
 
 /**
- * Class for parsing, manipulating and outputting URIs
+ * Class for parsing, manipulating and outputting URLs
  */
-class Uri
+class URL
 {
 
     /**

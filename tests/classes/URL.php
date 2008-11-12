@@ -35,12 +35,12 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_uri extends PHPUnit_Framework_TestCase
+class classes_url extends PHPUnit_Framework_TestCase
 {
 
     public function testGetScheme_fromEnv ()
     {
-        $uri = $this->getMock("cPHP::Uri", array("getEnv"));
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
         $uri->expects( $this->once() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -52,7 +52,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testGetScheme_noEnv ()
     {
-        $uri = $this->getMock("cPHP::Uri", array("getEnv"));
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
         $uri->expects( $this->once() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -64,7 +64,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testSchemeAccessors()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
 
         $this->assertFalse( $uri->schemeExists() );
 
@@ -85,7 +85,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testUserNameAccessors ()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
         $this->assertFalse( $uri->userNameExists() );
         $this->assertNull( $uri->getUserName() );
 
@@ -108,7 +108,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testPasswordAccessors ()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
         $this->assertFalse( $uri->passwordExists() );
         $this->assertNull( $uri->getPassword() );
 
@@ -131,7 +131,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testSubdomainAccessors ()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
         $this->assertFalse( $uri->subdomainExists() );
         $this->assertNull( $uri->getSubdomain() );
 
@@ -158,7 +158,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testSldAccessors ()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
         $this->assertFalse( $uri->sldExists() );
         $this->assertNull( $uri->getSld() );
 
@@ -185,7 +185,7 @@ class classes_uri extends PHPUnit_Framework_TestCase
 
     public function testTldAccessors ()
     {
-        $uri = new cPHP::Uri;
+        $uri = new cPHP::URL;
         $this->assertFalse( $uri->tldExists() );
         $this->assertNull( $uri->getTld() );
 
