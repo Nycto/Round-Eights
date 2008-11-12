@@ -329,7 +329,7 @@ class URL
      */
     public function setSld ( $sld )
     {
-        $sld = ::cPHP::str::stripW( $sld );
+        $sld = ::cPHP::str::stripW( $sld, ::cPHP::str::ALLOW_DASHES );
         $this->sld = empty( $sld ) ? null : $sld;
         return $this;
     }

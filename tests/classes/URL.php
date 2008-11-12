@@ -178,9 +178,9 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->sldExists() );
         $this->assertNull( $uri->getSld() );
 
-        $this->assertSame( $uri, $uri->setSld("!@#exam<>?ple..%^&*") );
+        $this->assertSame( $uri, $uri->setSld("!@#exam<>?ple..-123%^&*") );
         $this->assertTrue( $uri->sldExists() );
-        $this->assertSame( "example", $uri->getSld() );
+        $this->assertSame( "example-123", $uri->getSld() );
     }
 
     public function testTldAccessors ()
@@ -205,7 +205,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->tldExists() );
         $this->assertNull( $uri->getTld() );
 
-        $this->assertSame( $uri, $uri->setTld("!@#ed<>?u..%^&*") );
+        $this->assertSame( $uri, $uri->setTld("!@#ed<>?u-..%^&*") );
         $this->assertTrue( $uri->tldExists() );
         $this->assertSame( "edu", $uri->getTld() );
     }
