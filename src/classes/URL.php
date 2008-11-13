@@ -559,12 +559,19 @@ class URL
     /**
      * Returns the Host for this link
      *
-     * This is a combination of the subdomain, sld and tld
+     * This is a combination of the subdomain, sld and tld.
      *
-     * @return String|Null
+     * @return String|Null Null will be returned if the domain has not been set
      */
     public function getHost ()
     {
+        if ( !$this->domainExists() )
+            return null;
+
+        if ( $this->subdomainExists() )
+            return $this->getSubdomain() .".". $this->getDomain();
+        else
+            return $this->getDomain();
     }
 
     /**
@@ -575,19 +582,32 @@ class URL
      */
     public function setHost ( $host )
     {
+        $host = ::cPHP::strval($host);
+
+        // If there is only one dot, then the subdomain isn't set
+        if ( substr_count($host, ".") <= 1 ) {
+            $this->subdomain = null;
+            $this->setDomain( $host );
+        }
+        else {
+            $pos = ::cPHP::str::npos(".", $host, -2);
+            $this->setSubdomain( substr($value, 0, $pos) );
+            $this->setDomain( substr($value, $pos + 1) );
+        }
+
         return $this;
     }
 
     /**
-     * Returns whether the userinfo has been set
+     * Returns whether the host has been set
      *
-     * This will always return true if the username has been set
+     * This only requires that the tld and sld be set
      *
      * @return Boolean
      */
     public function hostExists ()
     {
-        return isset($this->sld) && isset($this->tld);
+        return $this->domainExists();
     }
 
     /**
@@ -597,6 +617,7 @@ class URL
      */
     public function clearHost ()
     {
+        $this->subdomain = null;
         $this->sld = null;
         $this->tld = null;
         return $this;
@@ -610,7 +631,11 @@ class URL
      */
     public function isSameHost ()
     {
+        if ( !$this->isSameDomain() )
+            return FALSE;
+
         $env = $this->getEnv();
+
 
         return TRUE;
     }

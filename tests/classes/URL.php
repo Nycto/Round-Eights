@@ -374,6 +374,11 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $uri->isSameDomain() );
     }
 
+    public function testHostAccessors ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
