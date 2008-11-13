@@ -265,13 +265,13 @@ class URL
      */
     public function getUserInfo ()
     {
-        if ( !isset($this->username) )
+        if ( !$this->userNameExists() )
             return null;
 
-        if ( isset($this->password) )
-            return urlencode( $this->username ) .":". urlencode( $this->password );
+        if ( $this->passwordExists() )
+            return urlencode( $this->getUsername() ) .":". urlencode( $this->getPassword() );
 
-        return urlencode( $this->username );
+        return urlencode( $this->getUsername() );
     }
 
     /**
@@ -308,7 +308,7 @@ class URL
      */
     public function userInfoExists ()
     {
-        return isset( $this->username );
+        return $this->userNameExists();
     }
 
     /**
