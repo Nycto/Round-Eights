@@ -546,11 +546,11 @@ class URL
         $env = $this->getEnv();
 
         // If the tld is different
-        if ( isset($this->tld) && strcasecmp( $env->tld, $this->tld ) != 0 )
+        if ( strcasecmp( $env->tld, $this->tld ) != 0 )
             return FALSE;
 
         // If the sld is different
-        if ( isset($this->sld) && strcasecmp( $env->sld, $this->sld ) != 0 )
+        if ( strcasecmp( $env->sld, $this->sld ) != 0 )
             return FALSE;
 
         return TRUE;
