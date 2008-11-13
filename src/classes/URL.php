@@ -127,19 +127,7 @@ class URL
      */
     public function getScheme ()
     {
-
-        if ( isset($this->scheme) )
-            return $this->scheme;
-
-        // Pull the scheme from the environment
-        $env = $this->getEnv();
-
-        if ( isset( $env->scheme ) )
-            return $env->scheme;
-
-        else
-            return "http";
-
+        return $this->scheme;
     }
 
     /**
@@ -505,9 +493,9 @@ class URL
     }
 
     /**
-     * Sets both the username and password in one swoop
+     * Sets both the tld and sld in one swoop
      *
-     * @param String $domain The credentials being set
+     * @param String $domain The domain being set
      * @return Object Returns a self reference
      */
     public function setDomain ( $domain )
@@ -534,9 +522,9 @@ class URL
     }
 
     /**
-     * Returns whether the userinfo has been set
+     * Returns whether the domain has been set
      *
-     * This will always return true if the username has been set
+     * This returns true if both the sld and tld are set
      *
      * @return Boolean
      */
@@ -546,7 +534,7 @@ class URL
     }
 
     /**
-     * Unsets both the password and the username
+     * Unsets both the sld and the tld
      *
      * @return Object Returns a self reference
      */
@@ -577,6 +565,65 @@ class URL
         // If the sld is different
         if ( isset($this->sld) && strcasecmp( $env->sld, $this->sld ) != 0 )
             return FALSE;
+
+        return TRUE;
+    }
+
+    /**
+     * Returns the Host for this link
+     *
+     * This is a combination of the subdomain, sld and tld
+     *
+     * @return String|Null
+     */
+    public function getHost ()
+    {
+    }
+
+    /**
+     * Sets the subdomain, sld and tld
+     *
+     * @param String $host The host being set
+     * @return Object Returns a self reference
+     */
+    public function setHost ( $host )
+    {
+        return $this;
+    }
+
+    /**
+     * Returns whether the userinfo has been set
+     *
+     * This will always return true if the username has been set
+     *
+     * @return Boolean
+     */
+    public function hostExists ()
+    {
+        return isset($this->sld) && isset($this->tld);
+    }
+
+    /**
+     * Unsets the tld, sld and subdomain
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearHost ()
+    {
+        $this->sld = null;
+        $this->tld = null;
+        return $this;
+    }
+
+    /**
+     * Returns whether the host information in this instance is the same as
+     * the host info in the environment
+     *
+     * @return Boolean
+     */
+    public function isSameHost ()
+    {
+        $env = $this->getEnv();
 
         return TRUE;
     }

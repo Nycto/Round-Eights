@@ -38,34 +38,11 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_url extends PHPUnit_Framework_TestCase
 {
 
-    public function testGetScheme_fromEnv ()
-    {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->once() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "HTTT/1.1"))
-                ));
-
-        $this->assertSame( "httt", $uri->getScheme() );
-    }
-
-    public function testGetScheme_noEnv ()
-    {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->once() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
-                ));
-
-        $this->assertSame( "http", $uri->getScheme() );
-    }
-
     public function testSchemeAccessors()
     {
         $uri = new cPHP::URL;
 
+        $this->assertNull( $uri->getScheme() );
         $this->assertFalse( $uri->schemeExists() );
 
         $this->assertSame( $uri, $uri->setScheme("ftp") );
@@ -73,6 +50,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $uri->schemeExists() );
 
         $this->assertSame( $uri, $uri->setScheme("") );
+        $this->assertNull( $uri->getScheme() );
         $this->assertFalse( $uri->schemeExists() );
 
         $this->assertSame( $uri, $uri->setScheme("  S F T P !@#$ 1") );
@@ -80,6 +58,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $uri->schemeExists() );
 
         $this->assertSame( $uri, $uri->clearScheme() );
+        $this->assertNull( $uri->getScheme() );
         $this->assertFalse( $uri->schemeExists() );
     }
 
