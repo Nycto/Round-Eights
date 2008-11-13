@@ -240,69 +240,63 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testDomainAccessors ()
     {
         $uri = new cPHP::URL;
+
+        $this->assertNull( $uri->getDomain() );
         $this->assertFalse( $uri->domainExists() );
+
 
         $this->assertSame( $uri, $uri->setDomain("example") );
         $this->assertFalse( $uri->tldExists() );
         $this->assertTrue( $uri->sldExists() );
         $this->assertFalse( $uri->domainExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
         $this->assertSame( "example", $uri->getSld() );
+        $this->assertNull( $uri->getTld() );
+        $this->assertSame( "example", $uri->getDomain() );
+
 
         $this->assertSame( $uri, $uri->setDomain("example.com") );
         $this->assertTrue( $uri->tldExists() );
         $this->assertTrue( $uri->sldExists() );
         $this->assertTrue( $uri->domainExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
         $this->assertSame( "example", $uri->getSld() );
         $this->assertSame( "com", $uri->getTld() );
+        $this->assertSame( "example.com", $uri->getDomain() );
+
 
         $this->assertSame( $uri, $uri->setDomain("sub.test.unit.net") );
         $this->assertTrue( $uri->tldExists() );
         $this->assertTrue( $uri->sldExists() );
         $this->assertTrue( $uri->domainExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertNull( $uri->getSubdomain() );
         $this->assertSame( "unit", $uri->getSld() );
         $this->assertSame( "net", $uri->getTld() );
+        $this->assertSame( "unit.net", $uri->getDomain() );
+
 
         $this->assertSame( $uri, $uri->setDomain("..") );
         $this->assertFalse( $uri->tldExists() );
         $this->assertFalse( $uri->sldExists() );
+        $this->assertFalse( $uri->subdomainExists() );
         $this->assertFalse( $uri->domainExists() );
-    }
+        $this->assertNull( $uri->getSubdomain() );
+        $this->assertNull( $uri->getSld() );
+        $this->assertNull( $uri->getTld() );
+        $this->assertNull( $uri->getDomain() );
 
-    public function testGetDomain_fromInstance ()
-    {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->once() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
-                ));
 
-        $uri->setTld("com");
-        $uri->setSld("example");
-        $this->assertSame( "example.com", $uri->getDomain() );
-    }
-
-    public function testGetDomain_fromEnv ()
-    {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->once() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    Stub_Env::fromArray(array('HTTP_HOST' => 'example.edu'))
-                ));
-
-        $this->assertSame( "example.edu", $uri->getDomain() );
-    }
-
-    public function testGetDomain_noEnv ()
-    {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->once() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
-                ));
-
+        $uri->setTld( "com" );
+        $this->assertTrue( $uri->tldExists() );
+        $this->assertFalse( $uri->sldExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertFalse( $uri->domainExists() );
+        $this->assertNull( $uri->getSubdomain() );
+        $this->assertNull( $uri->getSld() );
+        $this->assertSame( "com", $uri->getTld() );
         $this->assertNull( $uri->getDomain() );
     }
 

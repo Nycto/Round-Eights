@@ -462,34 +462,21 @@ class URL
      * Returns the Domain for this link
      *
      * This is the top level domain combined with the second level domain. If no
-     * SLD is set, it will pull the SLD from the current environment. If there is
-     * no SLD in the environment (command line mode, for example), then the function
-     * will return null.
+     * SLD is set the function will return null.
      *
-     * The tld will also be pulled from the environment if one has not been
-     * explicitly set, and will then fall back on being ".com"
+     * If the tld isn't set, then the sld will be returned without one
      *
      * @return String|Null
      */
     public function getDomain ()
     {
-        $env = $this->getEnv();
-
-        if ( isset($this->sld) )
-            $sld = $this->sld;
-        else if ( isset($env->sld) )
-            $sld = $env->sld;
-        else
+        if ( !$this->sldExists() )
             return null;
 
-        if ( isset($this->tld) )
-            $tld = $this->tld;
-        else if ( isset($env->tld) )
-            $tld = $env->tld;
+        if ( $this->tldExists() )
+            return $this->getSld() .".". $this->getTld();
         else
-            $tld = "com";
-
-        return $sld .".". $tld;
+            return $this->getSld();
     }
 
     /**
