@@ -565,7 +565,7 @@ class URL
      */
     public function getHost ()
     {
-        if ( !$this->domainExists() )
+        if ( !$this->sldExists() )
             return null;
 
         if ( $this->subdomainExists() )
@@ -591,8 +591,8 @@ class URL
         }
         else {
             $pos = ::cPHP::str::npos(".", $host, -2);
-            $this->setSubdomain( substr($value, 0, $pos) );
-            $this->setDomain( substr($value, $pos + 1) );
+            $this->setSubdomain( substr($host, 0, $pos) );
+            $this->setDomain( substr($host, $pos + 1) );
         }
 
         return $this;

@@ -376,7 +376,63 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testHostAccessors ()
     {
-        $this->markTestIncomplete("To be written");
+        $uri = new cPHP::URL;
+
+        $this->assertNull( $uri->getHost() );
+        $this->assertFalse( $uri->hostExists() );
+
+
+        $uri->setTld( "com" );
+
+        $this->assertTrue( $uri->tldExists() );
+        $this->assertFalse( $uri->sldExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertFalse( $uri->hostExists() );
+
+        $this->assertNull( $uri->getSubdomain() );
+        $this->assertNull( $uri->getSld() );
+        $this->assertSame( "com", $uri->getTld() );
+        $this->assertNull( $uri->getHost() );
+
+
+        $uri->clearTld();
+        $uri->setSld( "test" );
+
+        $this->assertFalse( $uri->tldExists() );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertFalse( $uri->hostExists() );
+
+        $this->assertNull( $uri->getSubdomain() );
+        $this->assertSame( "test", $uri->getSld() );
+        $this->assertNull( $uri->getTld() );
+        $this->assertSame( "test", $uri->getHost() );
+
+
+        $this->assertSame( $uri, $uri->setHost("example.com") );
+
+        $this->assertTrue( $uri->tldExists() );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertFalse( $uri->subdomainExists() );
+        $this->assertTrue( $uri->hostExists() );
+
+        $this->assertNull( $uri->getSubdomain() );
+        $this->assertSame( "example", $uri->getSld() );
+        $this->assertSame( "com", $uri->getTld() );
+        $this->assertSame( "example.com", $uri->getHost() );
+
+
+        $this->assertSame( $uri, $uri->setHost("sub.sub.example.com") );
+
+        $this->assertTrue( $uri->tldExists() );
+        $this->assertTrue( $uri->sldExists() );
+        $this->assertTrue( $uri->subdomainExists() );
+        $this->assertTrue( $uri->hostExists() );
+
+        $this->assertSame( "sub.sub", $uri->getSubdomain() );
+        $this->assertSame( "example", $uri->getSld() );
+        $this->assertSame( "com", $uri->getTld() );
+        $this->assertSame( "sub.sub.example.com", $uri->getHost() );
     }
 
 }
