@@ -630,6 +630,8 @@ class URL
      * Returns whether the host information in this instance is the same as
      * the host info in the environment
      *
+     * A null value in the subdomain will be treated as the same as "www"
+     *
      * @return Boolean
      */
     public function isSameHost ()
@@ -639,8 +641,15 @@ class URL
 
         $env = $this->getEnv();
 
+        if ( strcasecmp($env->subdomain, $this->subdomain) == 0 )
+            return TRUE;
 
-        return TRUE;
+        if ( ( !isset($this->subdomain) || strcasecmp($this->subdomain, "www") == 0 )
+                && ( !isset($env->subdomain) || strcasecmp($env->subdomain, "www") == 0 ) ) {
+            return TRUE;
+        }
+
+        return FALSE;
     }
 
 }

@@ -435,6 +435,91 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "sub.sub.example.com", $uri->getHost() );
     }
 
+    public function testIsSameHost_withSub ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array('HTTP_HOST' => 'sub.example.edu'))
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setDomain("notTheDomain.com");
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setDomain("example.edu");
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setSubdomain("sub");
+        $this->assertTrue( $uri->isSameHost() );
+
+        $uri->setSubdomain("other");
+        $this->assertFalse( $uri->isSameHost() );
+    }
+
+    public function testIsSameHost_wwwSub ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array('HTTP_HOST' => 'www.example.edu'))
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setDomain("example.edu");
+        $this->assertTrue( $uri->isSameHost() );
+
+        $uri->setSubdomain("sub");
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setSubdomain("www");
+        $this->assertTrue( $uri->isSameHost() );
+    }
+
+    public function testIsSameHost_noSub ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array('HTTP_HOST' => 'example.edu'))
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setDomain("example.edu");
+        $this->assertTrue( $uri->isSameHost() );
+
+        $uri->setSubdomain("sub");
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setSubdomain("www");
+        $this->assertTrue( $uri->isSameHost() );
+    }
+
+    public function testIsSameHost_noEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        // Since neither the SLD or TLD are set, this defaults to the current domain
+        $this->assertFalse( $uri->isSameHost() );
+
+        $uri->setHost('sub.example.com');
+        $this->assertFalse( $uri->isSameHost() );
+    }
+
 }
 
 ?>
