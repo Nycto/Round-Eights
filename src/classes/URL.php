@@ -536,14 +536,17 @@ class URL
      * Returns whether the domain information in this instance is the same as
      * the domain info in the environment
      *
-     * Remember that if the TLD and SLD are not set for this instance, the default
-     * value is the current domain
+     * If the tld or sld are not set for the current environment, this will always
+     * return false
      *
      * @return Boolean
      */
     public function isSameDomain ()
     {
         $env = $this->getEnv();
+
+        if ( !isset($env->tld) || !isset($env->sld) )
+            return FALSE;
 
         // If the tld is different
         if ( strcasecmp( $env->tld, $this->tld ) != 0 )

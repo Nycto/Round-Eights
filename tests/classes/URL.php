@@ -355,7 +355,7 @@ class classes_url extends PHPUnit_Framework_TestCase
                 ));
 
         // Since neither the SLD or TLD are set, this defaults to the current domain
-        $this->assertTrue( $uri->isSameDomain() );
+        $this->assertFalse( $uri->isSameDomain() );
 
         // sld: null, tld: com
         $uri->setTld('com');
@@ -371,7 +371,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
         // sld: null, tld: null
         $uri->clearSld();
-        $this->assertTrue( $uri->isSameDomain() );
+        $this->assertFalse( $uri->isSameDomain() );
     }
 
     public function testHostAccessors ()
