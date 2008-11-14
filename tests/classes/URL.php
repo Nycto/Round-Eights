@@ -520,6 +520,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->isSameHost() );
     }
 
+    public function testPortAccessors()
+    {
+        $uri = new cPHP::URL;
+
+        $this->assertNull( $uri->getPort() );
+        $this->assertFalse( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setPort(80) );
+        $this->assertSame( 80, $uri->getPort() );
+        $this->assertTrue( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setPort("22") );
+        $this->assertSame( 22, $uri->getPort() );
+        $this->assertTrue( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setPort(0) );
+        $this->assertNull( $uri->getPort() );
+        $this->assertFalse( $uri->portExists() );
+        
+        $this->assertSame( $uri, $uri->clearPort() );
+        $this->assertNull( $uri->getPort() );
+        $this->assertFalse( $uri->portExists() );
+    }
+
 }
 
 ?>

@@ -652,6 +652,50 @@ class URL
         return FALSE;
     }
 
+    /**
+     * Returns the value of the port
+     *
+     * @return String|Null Returns null if the port isn't set
+     */
+    public function getPort ()
+    {
+        return $this->port;
+    }
+
+    /**
+     * Sets the Port
+     *
+     * @param String $port The port to set
+     * @return Object Returns a self reference
+     */
+    public function setPort ( $port )
+    {
+        $port = intval($port);
+        $this->port = $port <= 0 ? null : $port;
+        return $this;
+    }
+
+    /**
+     * Returns whether the port has been set
+     *
+     * @return Boolean
+     */
+    public function portExists ()
+    {
+        return isset( $this->port );
+    }
+
+    /**
+     * Unsets the current port
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearPort ()
+    {
+        $this->port = null;
+        return $this;
+    }
+
 }
 
 ?>
