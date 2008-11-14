@@ -54,22 +54,9 @@ class URL
     private $password;
 
     /**
-     * The subdomain for a link
+     * The host of this url
      */
-    private $subdomain;
-
-    /**
-     * The second level domain name for a link.
-     *
-     * This is the chunk just to the left of the TLD. For example, in
-     * "www.example.com", "example" is the sld.
-     */
-    private $sld;
-
-    /**
-     * The TLD (top level domain) for a link. For example: com, net, org, or gov.
-     */
-    private $tld;
+    private $host;
 
     /**
      * The port for a link.
@@ -324,261 +311,17 @@ class URL
     }
 
     /**
-     * Returns the value of the subdomain
-     *
-     * @return String|Null Returns null if the subdomain isn't set
-     */
-    public function getSubdomain ()
-    {
-        return $this->subdomain;
-    }
-
-    /**
-     * Sets the subdomain credential
-     *
-     * @param String $subdomain The subdomain to set
-     * @return Object Returns a self reference
-     */
-    public function setSubdomain ( $subdomain )
-    {
-        $subdomain = preg_replace('/[^a-z0-9\.\-]/i', '', $subdomain);
-        $subdomain = trim($subdomain, ".");
-        $subdomain = ::cPHP::str::stripRepeats($subdomain, ".");
-
-        $this->subdomain = empty( $subdomain ) ? null : $subdomain;
-        return $this;
-    }
-
-    /**
-     * Returns whether the subdomain has been set
-     *
-     * @return Boolean
-     */
-    public function subdomainExists ()
-    {
-        return isset( $this->subdomain );
-    }
-
-    /**
-     * Unsets the currently set subdomain
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearSubdomain ()
-    {
-        $this->subdomain = null;
-        return $this;
-    }
-
-    /**
-     * Returns the value of the second level domain
-     *
-     * @return String|Null Returns null if the sld isn't set
-     */
-    public function getSld ()
-    {
-        return $this->sld;
-    }
-
-    /**
-     * Sets the second level domain
-     *
-     * @param String $sld The sld to set
-     * @return Object Returns a self reference
-     */
-    public function setSld ( $sld )
-    {
-        $sld = ::cPHP::str::stripW( $sld, ::cPHP::str::ALLOW_DASHES );
-        $this->sld = empty( $sld ) ? null : $sld;
-        return $this;
-    }
-
-    /**
-     * Returns whether the second level domain has been set
-     *
-     * @return Boolean
-     */
-    public function sldExists ()
-    {
-        return isset( $this->sld );
-    }
-
-    /**
-     * Unsets the current second level domain
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearSld ()
-    {
-        $this->sld = null;
-        return $this;
-    }
-
-    /**
-     * Returns the value of the top level domain
-     *
-     * @return String|Null Returns null if the tld isn't set
-     */
-    public function getTld ()
-    {
-        return $this->tld;
-    }
-
-    /**
-     * Sets the top level domain
-     *
-     * @param String $tld The tld to set
-     * @return Object Returns a self reference
-     */
-    public function setTld ( $tld )
-    {
-        $tld = ::cPHP::str::stripW( $tld );
-        $this->tld = empty( $tld ) ? null : $tld;
-        return $this;
-    }
-
-    /**
-     * Returns whether the top level domain has been set
-     *
-     * @return Boolean
-     */
-    public function tldExists ()
-    {
-        return isset( $this->tld );
-    }
-
-    /**
-     * Unsets the current top level domain
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearTld ()
-    {
-        $this->tld = null;
-        return $this;
-    }
-
-    /**
-     * Returns the Domain for this link
-     *
-     * This is the top level domain combined with the second level domain. If no
-     * SLD is set the function will return null.
-     *
-     * If the tld isn't set, then the sld will be returned without one
-     *
-     * @return String|Null
-     */
-    public function getDomain ()
-    {
-        if ( !$this->sldExists() )
-            return null;
-
-        if ( $this->tldExists() )
-            return $this->getSld() .".". $this->getTld();
-        else
-            return $this->getSld();
-    }
-
-    /**
-     * Sets both the tld and sld in one swoop
-     *
-     * @param String $domain The domain being set
-     * @return Object Returns a self reference
-     */
-    public function setDomain ( $domain )
-    {
-        $domain = preg_replace('/[^a-z0-9\.\-]/i', '', $domain);
-        $domain = trim($domain, ".");
-        $domain = ::cPHP::str::stripRepeats($domain, ".");
-
-        if ( empty($domain) ) {
-            $this->tld = NULL;
-            $this->sld = NULL;
-        }
-        else if ( !::cPHP::str::contains(".", $domain) ) {
-            $this->tld = NULL;
-            $this->sld = $domain;
-        }
-        else {
-            $domain = explode(".", $domain);
-            $this->tld = array_pop($domain);
-            $this->sld = array_pop($domain);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Returns whether the domain has been set
-     *
-     * This returns true if both the sld and tld are set
-     *
-     * @return Boolean
-     */
-    public function domainExists ()
-    {
-        return isset($this->sld) && isset($this->tld);
-    }
-
-    /**
-     * Unsets both the sld and the tld
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearDomain ()
-    {
-        $this->sld = null;
-        $this->tld = null;
-        return $this;
-    }
-
-    /**
-     * Returns whether the domain information in this instance is the same as
-     * the domain info in the environment
-     *
-     * If the tld or sld are not set for the current environment, this will always
-     * return false
-     *
-     * @return Boolean
-     */
-    public function isSameDomain ()
-    {
-        $env = $this->getEnv();
-
-        if ( !isset($env->tld) || !isset($env->sld) )
-            return FALSE;
-
-        // If the tld is different
-        if ( strcasecmp( $env->tld, $this->tld ) != 0 )
-            return FALSE;
-
-        // If the sld is different
-        if ( strcasecmp( $env->sld, $this->sld ) != 0 )
-            return FALSE;
-
-        return TRUE;
-    }
-
-    /**
      * Returns the Host for this link
-     *
-     * This is a combination of the subdomain, sld and tld.
      *
      * @return String|Null Null will be returned if the domain has not been set
      */
     public function getHost ()
     {
-        if ( !$this->sldExists() )
-            return null;
-
-        if ( $this->subdomainExists() )
-            return $this->getSubdomain() .".". $this->getDomain();
-        else
-            return $this->getDomain();
+        return $this->host;
     }
 
     /**
-     * Sets the subdomain, sld and tld
+     * Sets the Host
      *
      * @param String $host The host being set
      * @return Object Returns a self reference
@@ -587,16 +330,12 @@ class URL
     {
         $host = ::cPHP::strval($host);
 
-        // If there is only one dot, then the subdomain isn't set
-        if ( substr_count($host, ".") <= 1 ) {
-            $this->subdomain = null;
-            $this->setDomain( $host );
-        }
-        else {
-            $pos = ::cPHP::str::npos(".", $host, -2);
-            $this->setSubdomain( substr($host, 0, $pos) );
-            $this->setDomain( substr($host, $pos + 1) );
-        }
+        $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
+
+        $host = ::cPHP::str::stripRepeats($host, ".");
+        $host = trim($host, ".");
+
+        $this->host = empty($host) ? null : $host;
 
         return $this;
     }
@@ -610,7 +349,7 @@ class URL
      */
     public function hostExists ()
     {
-        return $this->domainExists();
+        return isset( $this->host );
     }
 
     /**
@@ -620,9 +359,7 @@ class URL
      */
     public function clearHost ()
     {
-        $this->subdomain = null;
-        $this->sld = null;
-        $this->tld = null;
+        $this->host = null;
         return $this;
     }
 
@@ -636,20 +373,21 @@ class URL
      */
     public function isSameHost ()
     {
-        if ( !$this->isSameDomain() )
+        if ( !$this->hostExists() )
             return FALSE;
 
         $env = $this->getEnv();
 
-        if ( strcasecmp($env->subdomain, $this->subdomain) == 0 )
-            return TRUE;
+        if ( !isset($env->host) )
+            return FALSE;
 
-        if ( ( !isset($this->subdomain) || strcasecmp($this->subdomain, "www") == 0 )
-                && ( !isset($env->subdomain) || strcasecmp($env->subdomain, "www") == 0 ) ) {
-            return TRUE;
-        }
+        $localHost = ::cPHP::str::stripHead( $this->getHost(), "www." );
+        $envHost = ::cPHP::str::stripHead( $env->host, "www." );
 
-        return FALSE;
+        if ( strcasecmp($localHost, $envHost) == 0 )
+            return TRUE;
+        else
+            return FALSE;
     }
 
     /**
@@ -695,6 +433,8 @@ class URL
         $this->port = null;
         return $this;
     }
+
+
 
 }
 
