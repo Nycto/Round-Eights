@@ -318,6 +318,40 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->portExists() );
     }
 
+    public function testGetBase ()
+    {
+        $uri = new cPHP::URL;
+
+        $this->assertNull( $uri->getBase() );
+
+        $uri->setPort(21);
+        $this->assertNull( $uri->getBase() );
+
+        $uri->setScheme("ftp");
+        $this->assertNull( $uri->getBase() );
+
+        $uri->setUserInfo("uname:pword");
+        $this->assertNull( $uri->getBase() );
+
+        $uri->setHost("example.com");
+        $this->assertSame("ftp://uname:pword@example.com:21", $uri->getBase());
+
+        $uri->clearPort();
+        $this->assertSame("ftp://uname:pword@example.com", $uri->getBase());
+
+        $uri->clearPassword();
+        $this->assertSame("ftp://uname@example.com", $uri->getBase());
+
+        $uri->clearUsername();
+        $this->assertSame("ftp://example.com", $uri->getBase());
+
+        $uri->clearScheme();
+        $this->assertSame("example.com", $uri->getBase());
+
+        $uri->clearHost();
+        $this->assertNull( $uri->getBase() );
+    }
+
 }
 
 ?>

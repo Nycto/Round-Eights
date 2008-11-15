@@ -472,6 +472,28 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the scheme, the userinfo, the host and the port ine one formatted string
+     *
+     * @return String|NULL Returns the base of the URL. This will return null
+     *      if the host isn't set.
+     */
+    public function getBase ()
+    {
+        if ( !$this->hostExists() )
+            return null;
+
+        $result = $this->getHostAndPort();
+
+        if ( $this->userInfoExists() )
+            $result = $this->getUserInfo() ."@". $result;
+
+        if ( $this->schemeExists() )
+            $result = $this->getScheme() ."://". $result;
+
+        return $result;
+    }
+
 }
 
 ?>
