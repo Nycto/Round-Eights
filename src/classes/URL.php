@@ -562,6 +562,18 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns whether the Scheme, host and port are the same as the current environment
+     *
+     * Note that this method ignores the userinfo.
+     *
+     * @return Boolean
+     */
+    public function isSameBase ()
+    {
+        return $this->isSameHost() && $this->isSameScheme() && $this->isSamePort();
+    }
+
 }
 
 ?>

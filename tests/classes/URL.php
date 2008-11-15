@@ -500,6 +500,46 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( 8080, $uri->getPort() );
     }
 
+    public function testIsSameBase_noEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $uri->isSameBase() );
+    }
+
+    public function isSameBase_WithEnvPort80 ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array(
+                            "SERVER_PROTOCOL" => "HTTP/1.1",
+                            'HTTP_HOST' => 'example.edu',
+                            "SERVER_PORT" => "80"
+                        ))
+                ));
+
+        $this->assertFalse( $uri->isSameBase() );
+
+        $uri->setScheme("http");
+        $this->assertFalse( $uri->isSameBase() );
+
+        $uri->setPort(80);
+        $this->assertFalse( $uri->isSameBase() );
+
+        $uri->setScheme("example.edu");
+        $this->assertTrue( $uri->isSameBase() );
+
+        $uri->clearPort();
+        $this->assertTrue( $uri->isSameBase() );
+    }
+
 }
 
 ?>
