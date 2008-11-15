@@ -434,7 +434,21 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the host and the port in one string
+     *
+     * @return String|Null This will return null the host isn't set
+     */
+    public function getHostAndPort ()
+    {
+        if ( !$this->hostExists() )
+            return null;
 
+        if ( $this->portExists() )
+            return $this->host .":". $this->port;
+        else
+            return $this->host;
+    }
 
 }
 
