@@ -305,6 +305,19 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getHostAndPort() );
     }
 
+    public function testSetHostAndPort ()
+    {
+        $uri = new cPHP::URL;
+
+        $this->assertSame( $uri, $uri->setHostAndPort( "sub.example.com:2020" ) );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertSame( 2020, $uri->getPort() );
+
+        $this->assertSame( $uri, $uri->setHostAndPort( "sub.example.com" ) );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertFalse( $uri->portExists() );
+    }
+
 }
 
 ?>

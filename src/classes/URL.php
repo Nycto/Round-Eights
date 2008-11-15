@@ -450,6 +450,28 @@ class URL
             return $this->host;
     }
 
+    /**
+     * Sets the host and the port in one swoop
+     *
+     * @param String $hostAndPort The host and port string
+     * @return Object Returns a self reference
+     */
+    public function setHostAndPort ( $hostAndPort )
+    {
+        $hostAndPort = ::cPHP::strval( $hostAndPort );
+
+        if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
+            $this->setHost( $matches[1] );
+            $this->setPort( $matches[2] );
+        }
+        else {
+            $this->setHost( $hostAndPort );
+            $this->clearPort();
+        }
+
+        return $this;
+    }
+
 }
 
 ?>
