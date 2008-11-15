@@ -152,6 +152,27 @@ class URL
     }
 
     /**
+     * Returns whether the current scheme is the same as the current environment
+     *
+     * This will return false if the scheme hasn't been set in either the environment
+     * or this instance
+     *
+     * @return Boolean
+     */
+    public function isSameScheme ()
+    {
+        if ( !isset($this->scheme) )
+            return FALSE;
+
+        $env = $this->getEnv();
+
+        if ( !isset($env->scheme) )
+            return FALSE;
+
+        return strcasecmp( $env->scheme, $this->scheme ) == 0 ? TRUE : FALSE;
+    }
+
+    /**
      * Returns the value of the username
      *
      * @return String|Null Returns null if the username isn't set

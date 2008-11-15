@@ -62,6 +62,39 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->schemeExists() );
     }
 
+    public function isSameScheme_NoEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $uri->isSameScheme() );
+
+        $uri->setScheme("http");
+        $this->assertFalse( $uri->isSameScheme() );
+    }
+
+    public function isSameScheme_WithEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "HTTP/1.1"))
+                ));
+
+        $this->assertFalse( $uri->isSameScheme() );
+
+        $uri->setScheme("http");
+        $this->assertTrue( $uri->isSameScheme() );
+
+        $uri->setScheme("ftp");
+        $this->assertFalse( $uri->isSameScheme() );
+    }
+
     public function testUserNameAccessors ()
     {
         $uri = new cPHP::URL;
