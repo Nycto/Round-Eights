@@ -352,6 +352,67 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $uri->getBase() );
     }
 
+    public function testSetBase ()
+    {
+        $uri = new cPHP::URL;
+
+        $this->assertSame( $uri, $uri->setBase("sftp://uname:pword@sub.example.com:8080") );
+        $this->assertSame( "sftp", $uri->getScheme() );
+        $this->assertSame( "uname", $uri->getUsername() );
+        $this->assertSame( "pword", $uri->getPassword() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertSame( 8080, $uri->getPort() );
+
+        $this->assertSame( $uri, $uri->setBase("test.net") );
+        $this->assertFalse( $uri->schemeExists() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "test.net", $uri->getHost() );
+        $this->assertFalse( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setBase("sftp://uname@sub.example.com:8080") );
+        $this->assertSame( "sftp", $uri->getScheme() );
+        $this->assertSame( "uname", $uri->getUsername() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertSame( 8080, $uri->getPort() );
+
+        $this->assertSame( $uri, $uri->setBase("sftp://sub.example.com:8080") );
+        $this->assertSame( "sftp", $uri->getScheme() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertSame( 8080, $uri->getPort() );
+
+        $this->assertSame( $uri, $uri->setBase("sftp://sub.example.com") );
+        $this->assertSame( "sftp", $uri->getScheme() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertFalse( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setBase("sub.example.com") );
+        $this->assertFalse( $uri->schemeExists() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertFalse( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setBase("uname:pword@sub.example.com") );
+        $this->assertFalse( $uri->schemeExists() );
+        $this->assertSame( "uname", $uri->getUsername() );
+        $this->assertSame( "pword", $uri->getPassword() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertFalse( $uri->portExists() );
+
+        $this->assertSame( $uri, $uri->setBase("sub.example.com:8080") );
+        $this->assertFalse( $uri->schemeExists() );
+        $this->assertFalse( $uri->usernameExists() );
+        $this->assertFalse( $uri->passwordExists() );
+        $this->assertSame( "sub.example.com", $uri->getHost() );
+        $this->assertSame( 8080, $uri->getPort() );
+    }
+
 }
 
 ?>

@@ -473,7 +473,7 @@ class URL
     }
 
     /**
-     * Returns the scheme, the userinfo, the host and the port ine one formatted string
+     * Returns the scheme, the userinfo, the host and the port in one formatted string
      *
      * @return String|NULL Returns the base of the URL. This will return null
      *      if the host isn't set.
@@ -492,6 +492,37 @@ class URL
             $result = $this->getScheme() ."://". $result;
 
         return $result;
+    }
+
+    /**
+     * Parses a string into the scheme, userinfo, host and port
+     *
+     * @param String $base The base of the url
+     * @return Object Returns a self reference
+     */
+    public function setBase ( $base )
+    {
+        $base = ::cPHP::strval( $base );
+
+        if ( cPHP::str::contains("://", $base) ) {
+            $this->setScheme( strstr($base, "://", TRUE) );
+            $base = substr( strstr($base, "://", FALSE), 3 );
+        }
+        else {
+            $this->clearScheme();
+        }
+
+        if ( cPHP::str::contains("@", $base) ) {
+            $this->setUserInfo( strstr($base, "@", TRUE) );
+            $base = substr( strstr($base, "@", FALSE), 1 );
+        }
+        else {
+            $this->clearUserInfo();
+        }
+
+        $this->setHostAndPort( $base );
+
+        return $this;
     }
 
 }
