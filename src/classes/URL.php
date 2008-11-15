@@ -456,6 +456,22 @@ class URL
     }
 
     /**
+     * Returns whether the port in this instance is the same as the port in the environment
+     *
+     * If the port in the instance isn't set, it will be treated as port 80
+     *
+     * @return Boolean
+     */
+    public function isSamePort ()
+    {
+        $port = isset($this->port) ? $this->port : 80;
+
+        $env = $this->getEnv();
+
+        return $env->port == $port ? TRUE : FALSE;
+    }
+
+    /**
      * Returns the host and the port in one string
      *
      * @return String|Null This will return null the host isn't set

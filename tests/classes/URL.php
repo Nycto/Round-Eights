@@ -319,6 +319,60 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->portExists() );
     }
 
+    public function isSamePort_NoEnv ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $uri->isSamePort() );
+
+        $uri->setPort(2020);
+        $this->assertFalse( $uri->isSamePort() );
+
+        $uri->setPort(80);
+        $this->assertFalse( $uri->isSamePort() );
+    }
+
+    public function isSamePort_WithEnvPort40 ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array("SERVER_PORT" => "40"))
+                ));
+
+        $this->assertFalse( $uri->isSamePort() );
+
+        $uri->setPort(2020);
+        $this->assertFalse( $uri->isSamePort() );
+
+        $uri->setPort(40);
+        $this->assertTrue( $uri->isSamePort() );
+    }
+
+    public function isSamePort_WithEnvPort80 ()
+    {
+        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array("SERVER_PORT" => "80"))
+                ));
+
+        $this->assertTrue( $uri->isSamePort() );
+
+        $uri->setPort(2020);
+        $this->assertFalse( $uri->isSamePort() );
+
+        $uri->setPort(80);
+        $this->assertTrue( $uri->isSamePort() );
+    }
+
     public function testGetHostAndPort ()
     {
         $uri = new cPHP::URL;
