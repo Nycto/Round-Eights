@@ -90,6 +90,25 @@ abstract class FileSystem
         return is_file( $this->getPath() );
     }
 
+    /**
+     * Returns when a file was created
+     *
+     * @return Object Returns a date/time object
+     */
+    public function getCTime ()
+    {
+        if ( !$this->exists() ) {
+            throw new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Path does not exist"
+                );
+        }
+
+        return new ::cPHP::DateTime(
+                filectime( $this->getPath() )
+            );
+    }
+
 }
 
 ?>

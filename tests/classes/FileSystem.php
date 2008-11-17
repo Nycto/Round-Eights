@@ -82,6 +82,43 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mock->isFile() );
     }
 
+    public function testGetCTime_missing ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( FALSE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        try {
+            $mock->getCTime();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testGetCTime ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        $cTime = $mock->getCTime();
+
+        $this->assertThat( $cTime, $this->isInstanceOf("cPHP::DateTime") );
+        $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
+    }
+
 }
 
 ?>
