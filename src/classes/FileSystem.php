@@ -64,6 +64,13 @@ abstract class FileSystem
     abstract public function setPath ( $path );
 
     /**
+     * Returns whether this file system item exists
+     *
+     * @return boolean
+     */
+    abstract public function exists ();
+
+    /**
      * Returns whether this item is an existing directory
      *
      * @return Boolean

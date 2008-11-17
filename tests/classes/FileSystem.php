@@ -42,7 +42,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "cPHP::FileSystem",
-                array("getPath", "setPath")
+                array("getPath", "setPath", "exists")
             );
     }
 
