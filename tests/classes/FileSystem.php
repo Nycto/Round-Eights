@@ -38,6 +38,50 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_filesystem extends PHPUnit_Framework_TestCase
 {
 
+    public function getTestObject ()
+    {
+        return $this->getMock(
+                "cPHP::FileSystem",
+                array("getPath", "setPath")
+            );
+    }
+
+    public function testIsDir ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $this->assertFalse( $mock->isDir() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        $this->assertTrue( $mock->isDir() );
+    }
+
+    public function testIsFile ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $this->assertTrue( $mock->isFile() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        $this->assertFalse( $mock->isFile() );
+    }
+
 }
 
 ?>

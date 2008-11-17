@@ -33,10 +33,55 @@
 namespace cPHP;
 
 /**
- *
+ * The base filesystem class
  */
 abstract class FileSystem
 {
+
+    /**
+     * Constructor...
+     *
+     * @param String $path The File System path represented by this instance
+     */
+    public function __construct ( $path = null )
+    {
+        $this->setPath( $path );
+    }
+
+    /**
+     * Returns the path represented by this instance
+     *
+     * @return String The full path
+     */
+    abstract public function getPath ();
+
+    /**
+     * Sets the path that this instance represents
+     *
+     * @param String $path The new path
+     * @return Object Returns a self reference
+     */
+    abstract public function setPath ( $path );
+
+    /**
+     * Returns whether this item is an existing directory
+     *
+     * @return Boolean
+     */
+    public function isDir ()
+    {
+        return is_dir( $this->getPath() );
+    }
+
+    /**
+     * Returns whether this item is an existing file
+     *
+     * @return Boolean
+     */
+    public function isFile ()
+    {
+        return is_file( $this->getPath() );
+    }
 
 }
 
