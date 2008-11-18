@@ -128,6 +128,16 @@ abstract class FileSystem
     }
 
     /**
+     * Returns whether this item is writable
+     *
+     * @return Boolean
+     */
+    public function isWritable ()
+    {
+        return is_writable( $this->getPath() );
+    }
+
+    /**
      * Returns when a file was created
      *
      * @return Object Returns a date/time object
