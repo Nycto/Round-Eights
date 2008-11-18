@@ -82,6 +82,11 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mock->isFile() );
     }
 
+    public function testIsLink ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testGetCTime_missing ()
     {
         $mock = $this->getTestObject();
@@ -117,6 +122,46 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $cTime, $this->isInstanceOf("cPHP::DateTime") );
         $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
+    }
+
+    public function testGetATime ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetMTime ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetGroupID ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetOwnerID ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testIsReadable()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testIsWritable()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testIsExecutable ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetPerms ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
 }
