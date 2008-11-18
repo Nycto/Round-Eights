@@ -181,9 +181,9 @@ abstract class FileSystem
     }
 
     /**
-     * Returns the last modified time of a file
+     * Returns the group ID for this path
      *
-     * @return Object Returns a date/time object
+     * @return Integer
      */
     public function getGroupID ()
     {
@@ -199,6 +199,27 @@ abstract class FileSystem
         }
 
         return $group;
+    }
+
+    /**
+     * Returns the owner ID for this path
+     *
+     * @return Integer
+     */
+    public function getOwnerID ()
+    {
+        $this->requirePath();
+
+        $owner = @fileowner( $this->getPath() );
+
+        if ( $owner === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to resolve owner id"
+                );
+        }
+
+        return $owner;
     }
 
 }
