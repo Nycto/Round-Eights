@@ -114,9 +114,42 @@ abstract class FileSystem
                 );
         }
 
-        return new ::cPHP::DateTime(
-                filectime( $this->getPath() )
-            );
+        $time = filectime( $this->getPath() );
+
+        if ( $time === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to resolve creation time"
+                );
+        }
+
+        return new ::cPHP::DateTime( $time );
+    }
+
+    /**
+     * Returns the last access time of a file
+     *
+     * @return Object Returns a date/time object
+     */
+    public function getATime ()
+    {
+        if ( !$this->exists() ) {
+            throw new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Path does not exist"
+                );
+        }
+
+        $time = fileatime( $this->getPath() );
+
+        if ( $time === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to resolve access time"
+                );
+        }
+
+        return new ::cPHP::DateTime( $time );
     }
 
 }
