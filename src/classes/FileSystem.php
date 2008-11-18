@@ -180,6 +180,27 @@ abstract class FileSystem
         return new ::cPHP::DateTime( $time );
     }
 
+    /**
+     * Returns the last modified time of a file
+     *
+     * @return Object Returns a date/time object
+     */
+    public function getGroupID ()
+    {
+        $this->requirePath();
+
+        $group = @filegroup( $this->getPath() );
+
+        if ( $group === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to resolve group id"
+                );
+        }
+
+        return $group;
+    }
+
 }
 
 ?>
