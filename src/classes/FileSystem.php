@@ -118,6 +118,16 @@ abstract class FileSystem
     }
 
     /**
+     * Returns whether this item is readable
+     *
+     * @return Boolean
+     */
+    public function isReadable ()
+    {
+        return is_readable( $this->getPath() );
+    }
+
+    /**
      * Returns when a file was created
      *
      * @return Object Returns a date/time object

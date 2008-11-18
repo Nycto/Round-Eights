@@ -101,7 +101,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
 
         $this->assertFalse( $mock->isFile() );
     }
@@ -119,9 +119,27 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
 
         $this->assertFalse( $mock->isLink() );
+    }
+
+    public function testIsReadable ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $this->assertType( 'boolean', $mock->isReadable() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __DIR__ ) );
+
+        $this->assertType( 'boolean', $mock->isReadable() );
     }
 
     public function testGetCTime_missing ()
@@ -380,11 +398,6 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $this->assertType( "integer", $owner );
         $this->assertGreaterThan( 0, $owner );
-    }
-
-    public function testIsReadable()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
     public function testIsWritable()
