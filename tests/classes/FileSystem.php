@@ -83,7 +83,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
 
         $this->assertTrue( $mock->isDir() );
     }
@@ -131,10 +131,6 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             ->method("exists")
             ->will( $this->returnValue( FALSE ) );
 
-        $mock->expects( $this->once() )
-            ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
-
         try {
             $mock->getCTime();
             $this->fail("An expected exception was not thrown");
@@ -144,7 +140,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetCTime ()
+    public function testGetCTime_dir ()
     {
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
@@ -153,7 +149,24 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
+
+        $cTime = $mock->getCTime();
+
+        $this->assertThat( $cTime, $this->isInstanceOf("cPHP::DateTime") );
+        $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
+    }
+
+    public function testGetCTime_file ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
 
         $cTime = $mock->getCTime();
 
@@ -168,10 +181,6 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             ->method("exists")
             ->will( $this->returnValue( FALSE ) );
 
-        $mock->expects( $this->once() )
-            ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
-
         try {
             $mock->getATime();
             $this->fail("An expected exception was not thrown");
@@ -181,7 +190,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetATime ()
+    public function testGetATime_dir ()
     {
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
@@ -190,7 +199,24 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
+
+        $time = $mock->getATime();
+
+        $this->assertThat( $time, $this->isInstanceOf("cPHP::DateTime") );
+        $this->assertGreaterThan( 0, $time->getTimeStamp() );
+    }
+
+    public function testGetATime_file ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
 
         $time = $mock->getATime();
 
@@ -205,10 +231,6 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             ->method("exists")
             ->will( $this->returnValue( FALSE ) );
 
-        $mock->expects( $this->once() )
-            ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
-
         try {
             $mock->getMTime();
             $this->fail("An expected exception was not thrown");
@@ -218,7 +240,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetMTime ()
+    public function testGetMTime_dir ()
     {
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
@@ -227,7 +249,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $mock->expects( $this->once() )
             ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
+            ->will( $this->returnValue( __DIR__ ) );
 
         $time = $mock->getMTime();
 
@@ -235,7 +257,7 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
-    public function testGetGroupID_file ()
+    public function testGetMTime_file ()
     {
         $mock = $this->getTestObject();
         $mock->expects( $this->once() )
@@ -246,27 +268,10 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             ->method("getPath")
             ->will( $this->returnValue( __FILE__ ) );
 
-        $group = $mock->getGroupID();
+        $time = $mock->getMTime();
 
-        $this->assertType( "integer", $group );
-        $this->assertGreaterThan( 0, $group );
-    }
-
-    public function testGetGroupID_dir ()
-    {
-        $mock = $this->getTestObject();
-        $mock->expects( $this->once() )
-            ->method("exists")
-            ->will( $this->returnValue( TRUE ) );
-
-        $mock->expects( $this->once() )
-            ->method("getPath")
-            ->will( $this->returnValue( dirname(__FILE__) ) );
-
-        $group = $mock->getGroupID();
-
-        $this->assertType( "integer", $group );
-        $this->assertGreaterThan( 0, $group );
+        $this->assertThat( $time, $this->isInstanceOf("cPHP::DateTime") );
+        $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
     public function testGetGroupID_missing ()
@@ -289,9 +294,38 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetOwnerID ()
+    public function testGetGroupID_dir ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        $group = $mock->getGroupID();
+
+        $this->assertType( "integer", $group );
+        $this->assertGreaterThan( 0, $group );
+    }
+
+    public function testGetGroupID_file ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $group = $mock->getGroupID();
+
+        $this->assertType( "integer", $group );
+        $this->assertGreaterThan( 0, $group );
     }
 
     public function testIsReadable()
