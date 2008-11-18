@@ -84,7 +84,20 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
     public function testIsLink ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $this->assertFalse( $mock->isLink() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( dirname(__FILE__) ) );
+
+        $this->assertFalse( $mock->isLink() );
     }
 
     public function testGetCTime_missing ()

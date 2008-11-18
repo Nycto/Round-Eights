@@ -91,6 +91,16 @@ abstract class FileSystem
     }
 
     /**
+     * Returns whether this item is a sym link
+     *
+     * @return Boolean
+     */
+    public function isLink ()
+    {
+        return is_link( $this->getPath() );
+    }
+
+    /**
      * Returns when a file was created
      *
      * @return Object Returns a date/time object
