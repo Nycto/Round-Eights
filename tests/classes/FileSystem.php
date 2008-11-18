@@ -46,6 +46,30 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testRequirePath ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( TRUE ) );
+
+        $this->assertSame( $mock, $mock->requirePath() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("exists")
+            ->will( $this->returnValue( FALSE ) );
+
+        try {
+            $mock->requirePath();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+    }
+
     public function testIsDir ()
     {
         $mock = $this->getTestObject();

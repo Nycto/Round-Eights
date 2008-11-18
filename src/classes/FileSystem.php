@@ -71,6 +71,23 @@ abstract class FileSystem
     abstract public function exists ();
 
     /**
+     * Checks to see if the path exists and throws an exception if it doesn't
+     *
+     * @return Object Returns a self reference
+     */
+    public function requirePath ()
+    {
+        if ( !$this->exists() ) {
+            throw new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Path does not exist"
+                );
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns whether this item is an existing directory
      *
      * @return Boolean
@@ -107,12 +124,7 @@ abstract class FileSystem
      */
     public function getCTime ()
     {
-        if ( !$this->exists() ) {
-            throw new ::cPHP::Exception::FileSystem::Missing(
-                    $this->getPath(),
-                    "Path does not exist"
-                );
-        }
+        $this->requirePath();
 
         $time = filectime( $this->getPath() );
 
@@ -133,12 +145,7 @@ abstract class FileSystem
      */
     public function getATime ()
     {
-        if ( !$this->exists() ) {
-            throw new ::cPHP::Exception::FileSystem::Missing(
-                    $this->getPath(),
-                    "Path does not exist"
-                );
-        }
+        $this->requirePath();
 
         $time = fileatime( $this->getPath() );
 
@@ -159,12 +166,7 @@ abstract class FileSystem
      */
     public function getMTime ()
     {
-        if ( !$this->exists() ) {
-            throw new ::cPHP::Exception::FileSystem::Missing(
-                    $this->getPath(),
-                    "Path does not exist"
-                );
-        }
+        $this->requirePath();
 
         $time = filemtime( $this->getPath() );
 
