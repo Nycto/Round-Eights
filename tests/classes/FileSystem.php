@@ -514,6 +514,106 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertSame( 'D:/', ::cPHP::FileSystem::resolvePath('D:\\') );
     }
 
+    public function getResolveTest ( $original, $resolved, $cwd = "/" )
+    {
+        $mock = $this->getMock(
+                "cPHP::FileSystem",
+                array("getPath", "setPath", "exists", "getCWD")
+            );
+
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( $original ) );
+
+        $mock->expects( $this->any() )
+            ->method("getCWD")
+            ->will( $this->returnValue( $cwd ) );
+
+        $mock->expects( $this->once() )
+            ->method("setPath")
+            ->with( $this->equalTo($resolved) );
+
+        return $mock;
+    }
+
+    public function testResolve_cwd ()
+    {
+        $resolve = $this->getResolveTest("test.php", "/dir/to/test.php", "/dir/to/");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("test.php", "/dir/to/test.php", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("test.php", "c:/dir/to/test.php", "c:\\dir\\to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("/test/sub", "/test/sub", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("c:\\test\\sub", "c:/test/sub", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("../../test/", "/test/", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("./../test", "/dir/test", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest(".////.//.///test/added/dirs", "/dir/to/test/added/dirs", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve() );
+
+        $resolve = $this->getResolveTest("./.././../test", "/dir/to/test", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve(null, TRUE) );
+
+        $resolve = $this->getResolveTest("/test/another/../../", "/dir/to/", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve(null, TRUE) );
+
+        $resolve = $this->getResolveTest("c:\\test\\", "/dir/to/test/", "/dir/to");
+        $this->assertSame( $resolve, $resolve->resolve(null, TRUE) );
+    }
+
+    public function testResolve_base ()
+    {
+        $resolve = $this->getResolveTest("test.php", "/dir/to/test.php" );
+        $this->assertSame( $resolve, $resolve->resolve( "/dir/to/" ) );
+
+        $resolve = $this->getResolveTest("test.php", "/dir/to/test.php" );
+        $this->assertSame( $resolve, $resolve->resolve( "/dir/to" ) );
+
+        $resolve = $this->getResolveTest("test.php", "c:/dir/to/test.php" );
+        $this->assertSame( $resolve, $resolve->resolve("c:\\dir\\to") );
+
+        $resolve = $this->getResolveTest("/test/sub", "/test/sub" );
+        $this->assertSame( $resolve, $resolve->resolve( "/dir/to" ) );
+
+        $resolve = $this->getResolveTest("c:\\test\\sub", "c:/test/sub" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to") );
+
+        $resolve = $this->getResolveTest("../../test/", "/test/" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to") );
+
+        $resolve = $this->getResolveTest("./../test", "/dir/test" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to") );
+
+        $resolve = $this->getResolveTest("../../orig", "/cur/orig", "/cur/work/" );
+        $this->assertSame( $resolve, $resolve->resolve("base") );
+
+        $resolve = $this->getResolveTest(".////.//.///test/added/dirs", "/dir/to/test/added/dirs" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to") );
+
+        $resolve = $this->getResolveTest("./.././../test", "/dir/to/test" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to", TRUE) );
+
+        $resolve = $this->getResolveTest("/test/another/../../", "/dir/to/" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to", TRUE) );
+
+        $resolve = $this->getResolveTest("c:\\test\\", "/dir/to/test/" );
+        $this->assertSame( $resolve, $resolve->resolve("/dir/to", TRUE) );
+
+        $resolve = $this->getResolveTest("c:\\test\\", "/cwd/dir/to/test/", "/cwd" );
+        $this->assertSame( $resolve, $resolve->resolve("dir/to", TRUE) );
+    }
+
 }
 
 ?>

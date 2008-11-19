@@ -51,7 +51,7 @@ abstract class FileSystem
      */
     static public function resolvePath ( $path )
     {
-        $path = ::cPHP::strval($path);
+        $path = trim( ::cPHP::strval($path) );
         $path = str_replace( '\\', '/', $path );
 
         // Pull the root value off of the path
@@ -321,6 +321,77 @@ abstract class FileSystem
         }
 
         return $perms;
+    }
+
+    /**
+     * Internal method to return the current working directory
+     *
+     * This method exists strictly for unit testing purposes. Overriding this
+     * method allows you to spoof what the current working directory is
+     *
+     * @return String
+     */
+    protected function getCWD()
+    {
+        return getcwd();
+    }
+
+    /**
+     * Expands any dots in the path to resolve the absolute pathname
+     *
+     * Resolve differs from realpath in that realpath fails if it is given
+     * a path that does not exist. Resolve will still return a value.
+     *
+     * The path resolution is done in-place, that is to say, the internal path
+     * value will be update (rather than returning a new object).
+     *
+     * @param string $base The base directory the path should stem from
+     * @param boolean $strict Whether or not the path can dip in to the base dir
+     * @return Object Returns a self reference
+     */
+    public function resolve ( $base = null, $strict = FALSE )
+    {
+        if ( cPHP::isVague($base) )
+            $base = $this->getCWD();
+
+        $base = self::resolvePath( $base );
+
+        // If the base doesn't start with a root of some sort, attach the cwd
+        if ( !preg_match('/^(?:[a-z]+:)?\//i', $base ) )
+            $base = ::cPHP::str::weld( $this->getCWD(), $base, "/" );
+
+        $path = $this->getPath();
+        $path = str_replace('\\', '/', $path);
+
+        // Pull the root value off of the path
+        if ( preg_match('/^((?:[a-z]+:)?\/)(.*)/i', $path, $pathRootReg) ) {
+            $root = $pathRootReg[1];
+            $path = $pathRootReg[2];
+        }
+        else {
+            $root = FALSE;
+        }
+
+        // If we are in strict mode, we always ignore the root and instead use the base
+        if ( $strict ) {
+            $path = self::resolvePath( $path );
+            $path = ::cPHP::str::weld( $base, $path, "/" );
+        }
+
+        else {
+
+            // If they didn't give us a root, use the base, but let them dip in to it
+            if ( $root === FALSE )
+                $path = ::cPHP::str::weld( $base, $path, "/" );
+            else
+                $path = $root . $path;
+
+            $path = self::resolvePath( $path );
+        }
+
+        $this->setPath( $path );
+
+        return $this;
     }
 
 }
