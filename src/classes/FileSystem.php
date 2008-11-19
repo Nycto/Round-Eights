@@ -252,6 +252,27 @@ abstract class FileSystem
         return $owner;
     }
 
+    /**
+     * Returns the permissions for this path
+     *
+     * @return Integer
+     */
+    public function getPerms ()
+    {
+        $this->requirePath();
+
+        $perms = @fileperms( $this->getPath() );
+
+        if ( $perms === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to resolve permissions"
+                );
+        }
+
+        return $perms;
+    }
+
 }
 
 ?>
