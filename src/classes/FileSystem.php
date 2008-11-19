@@ -39,6 +39,56 @@ abstract class FileSystem
 {
 
     /**
+     * Basic path resolution method that operates on a string. This will take
+     * a string and resolve any repeated slashes (//), dots (.) or double dots (..).
+     *
+     * This does nothing to try and resolve relative paths.
+     *
+     * The path that this method returns will only contain forward slashes
+     *
+     * @param String $path The path to resolve
+     * @return String Returns the resolved path
+     */
+    static public function resolvePath ( $path )
+    {
+        $path = ::cPHP::strval($path);
+        $path = str_replace( '\\', '/', $path );
+
+        // Pull the root value off of the path
+        if ( preg_match('/^((?:[a-z]+:)?\/)(.*)/i', $path, $pathRootReg) ) {
+            $root = $pathRootReg[1];
+            $path = $pathRootReg[2];
+        }
+        else {
+            $root = "";
+        }
+
+        // Record whether the path we are resolving ends with a "/"... this will
+        // be used to re-attach the trailing slash later
+        $hasTail = ::cPHP::str::endsWith($path, "/");
+
+        $pathStack = explode("/", $path);
+
+        $out = array();
+
+        foreach ($pathStack AS $pathElem) {
+
+            if ( !empty($pathElem) ) {
+
+                if ($pathElem == "..")
+                    @array_pop($out);
+
+                else if ($pathElem != ".")
+                    $out[] = $pathElem;
+
+            }
+
+        }
+
+        return $root . implode("/", $out) . ( $hasTail ? "/" : "" );
+    }
+
+    /**
      * Constructor...
      *
      * @param String $path The File System path represented by this instance

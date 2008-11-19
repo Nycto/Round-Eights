@@ -490,6 +490,30 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan( 0, $perms );
     }
 
+    public function testResolvePath ()
+    {
+        $this->assertSame( 'test.php', ::cPHP::FileSystem::resolvePath('test.php') );
+        $this->assertSame( 'dir/test.php', ::cPHP::FileSystem::resolvePath('dir/test.php') );
+        $this->assertSame( '/test.php', ::cPHP::FileSystem::resolvePath('/test.php') );
+        $this->assertSame( 'c:/test.php', ::cPHP::FileSystem::resolvePath('c:/test.php') );
+        $this->assertSame( 'c:/dir/test.php', ::cPHP::FileSystem::resolvePath('c:\\dir\\test.php') );
+
+        $this->assertSame( 'test.php', ::cPHP::FileSystem::resolvePath('../test.php') );
+        $this->assertSame( '/test.php', ::cPHP::FileSystem::resolvePath('///////test.php') );
+        $this->assertSame( 'test.php', ::cPHP::FileSystem::resolvePath('./test.php') );
+        $this->assertSame( 'dir/test.php', ::cPHP::FileSystem::resolvePath('dir/./test.php') );
+        $this->assertSame( 'dir/test.php', ::cPHP::FileSystem::resolvePath('dir/sub/../test.php') );
+
+        $this->assertSame( '/test', ::cPHP::FileSystem::resolvePath('/../test') );
+        $this->assertSame( '/test/', ::cPHP::FileSystem::resolvePath('/../.././../test/') );
+        $this->assertSame( '/1/2', ::cPHP::FileSystem::resolvePath('/1/2/3/4/5/6/../../../..') );
+
+        $this->assertSame( '', ::cPHP::FileSystem::resolvePath('') );
+        $this->assertSame( '/', ::cPHP::FileSystem::resolvePath('/') );
+        $this->assertSame( 'c:/', ::cPHP::FileSystem::resolvePath('c:/') );
+        $this->assertSame( 'D:/', ::cPHP::FileSystem::resolvePath('D:\\') );
+    }
+
 }
 
 ?>
