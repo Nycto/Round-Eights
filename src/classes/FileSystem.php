@@ -39,6 +39,11 @@ abstract class FileSystem
 {
 
     /**
+     * The directory of the current path
+     */
+    protected $dir;
+
+    /**
      * Basic path resolution method that operates on a string. This will take
      * a string and resolve any repeated slashes (//), dots (.) or double dots (..).
      *
@@ -119,6 +124,64 @@ abstract class FileSystem
      * @return boolean
      */
     abstract public function exists ();
+
+    /**
+     * Returns the directory as a string
+     *
+     * @return String|Null Null will be returned if no directory has been set
+     */
+    public function getRawDir ()
+    {
+        return $this->dir;
+    }
+
+    /**
+     * Sets the directory
+     *
+     * @param String $dir The new directory
+     * @return Object Returns a self reference
+     */
+    public function setDir ( $dir )
+    {
+        $dir = ::cPHP::strval( $dir );
+
+        if ( ::cPHP::isEmpty($dir, ::cPHP::str::ALLOW_BLANK) ) {
+            $this->dir = null;
+        }
+        else {
+            $dir = str_replace('\\', '/', $dir);
+            $dir = ::cPHP::str::stripRepeats($dir, "/");
+            $dir = ::cPHP::str::tail($dir, "/");
+            $this->dir = $dir;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a directory has been set in this instance
+     *
+     * This does NOT return whether the directory exists on the filesystem! While
+     * this may be confusing, it sticks to the accessor method naming conventions
+     * used in all the other classes.
+     *
+     * @return Boolean
+     */
+    public function dirExists ()
+    {
+        return isset( $this->dir );
+    }
+
+    /**
+     * Unsets the directory value from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearDir ()
+    {
+        $this->dir = null;
+        return $this;
+    }
 
     /**
      * Checks to see if the path exists and throws an exception if it doesn't

@@ -46,6 +46,30 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testDirAccessors ()
+    {
+        $mock = $this->getTestObject();
+
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertFalse( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setDir("/path/to/dir") );
+        $this->assertSame( "/path/to/dir/", $mock->getRawDir() );
+        $this->assertTrue( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setDir("") );
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertFalse( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setDir("c:\\path\\to\\\\dir\\\\") );
+        $this->assertSame( "c:/path/to/dir/", $mock->getRawDir() );
+        $this->assertTrue( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->clearDir() );
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertFalse( $mock->dirExists() );
+    }
+
     public function testRequirePath ()
     {
         $mock = $this->getTestObject();
