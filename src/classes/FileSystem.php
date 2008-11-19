@@ -138,6 +138,16 @@ abstract class FileSystem
     }
 
     /**
+     * Returns whether this item is writable
+     *
+     * @return Boolean
+     */
+    public function isExecutable ()
+    {
+        return is_executable( $this->getPath() );
+    }
+
+    /**
      * Returns when a file was created
      *
      * @return Object Returns a date/time object

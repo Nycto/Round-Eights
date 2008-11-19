@@ -160,6 +160,24 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
         $this->assertType( 'boolean', $mock->isWritable() );
     }
 
+    public function testIsExecutable ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $this->assertType( 'boolean', $mock->isExecutable() );
+
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->once() )
+            ->method("getPath")
+            ->will( $this->returnValue( __DIR__ ) );
+
+        $this->assertType( 'boolean', $mock->isExecutable() );
+    }
+
     public function testGetCTime_missing ()
     {
         $mock = $this->getTestObject();
@@ -416,11 +434,6 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
         $this->assertType( "integer", $owner );
         $this->assertGreaterThan( 0, $owner );
-    }
-
-    public function testIsExecutable ()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
     public function testGetPerms ()
