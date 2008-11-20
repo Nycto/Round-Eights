@@ -126,6 +126,16 @@ abstract class FileSystem
     abstract public function exists ();
 
     /**
+     * Returns the path as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return strval( $this->getPath() );
+    }
+
+    /**
      * Returns the directory as a string
      *
      * @return String|Null Null will be returned if no directory has been set

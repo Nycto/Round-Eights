@@ -46,6 +46,25 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToString ()
+    {
+        $mock = $this->getTestObject();
+        $mock->expects( $this->exactly(2) )
+            ->method("getPath")
+            ->will( $this->returnValue("/path/to/file.txt") );
+
+        $this->assertSame( "/path/to/file.txt", $mock->__toString() );
+        $this->assertSame( "/path/to/file.txt", "$mock" );
+
+        $mock = $this->getTestObject();
+        $mock->expects( $this->exactly(2) )
+            ->method("getPath")
+            ->will( $this->returnValue( null ) );
+
+        $this->assertSame( "", $mock->__toString() );
+        $this->assertSame( "", "$mock" );
+    }
+
     public function testDirAccessors ()
     {
         $mock = $this->getTestObject();
