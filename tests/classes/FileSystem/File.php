@@ -33,25 +33,31 @@
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * unit tests
+ * Unit test for running both filesystem test suites
  */
-class classes_filesystem_file extends PHPUnit_Framework_TestCase
+class classes_filesystem_file
 {
 
-    protected $file;
-
-    public function setUp ()
+    public static function suite()
     {
-        $this->file = tempnam( sys_get_temp_dir(), "cPHP_unitTest_" );
-
-        if ( $this->file === FALSE )
-            $this->markTestSkipped("Unable to create temporary file");
+        $suite = new cPHP_Base_TestSuite;
+        $suite->addTestSuite( 'classes_filesystem_file_noFile' );
+        $suite->addTestSuite( 'classes_filesystem_file_withFile' );
+        return $suite;
     }
 
-    public function tearDown ()
-    {
-        @unlink( $this->file );
-    }
+}
+
+/**
+ * unit tests
+ */
+class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
+{
+
+}
+
+class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCase
+{
 
 }
 
