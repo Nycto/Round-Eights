@@ -123,12 +123,11 @@ class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
 /**
  * Base test suite for a MySQL connection test
  */
-class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     *
+     * Ensures that all the prerequisites exist for connecting via mysqli
      */
-
     public function setUp ()
     {
         if ( !extension_loaded("mysqli") )
@@ -173,6 +172,9 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Returns the data in the config.php file as a URI
+     */
     public function getURI ()
     {
         return "db://"
@@ -181,6 +183,12 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
             ."/". MYSQLI_DATABASE;
     }
 
+    /**
+     * Returns and maintains a cPHP::DB::MySQLi Link
+     *
+     * This will also create a table and fill it with data, according to the
+     * settings in the config.php file
+     */
     public function getLink ()
     {
         static $link;
@@ -229,6 +237,43 @@ class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestCase
 
 
         return $link;
+    }
+
+}
+
+/**
+ * Base test class for tests that require a temporary file
+ */
+abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_Framework_TestCase
+{
+
+    /**
+     * The name of the temporary file
+     */
+    protected $file;
+
+    /**
+     * Setup creates the file
+     */
+    public function setUp ()
+    {
+        $this->file = tempnam( sys_get_temp_dir(), "cPHP_unitTest_" );
+
+        if ( $this->file === FALSE )
+            $this->markTestSkipped("Unable to create temporary file");
+
+        file_put_contents(
+                "This is a string\nof data that is put\nin the test file",
+                $this->file
+            );
+    }
+
+    /**
+     * Teardown will automatically remove the file
+     */
+    public function tearDown ()
+    {
+        @unlink( $this->file );
     }
 
 }
