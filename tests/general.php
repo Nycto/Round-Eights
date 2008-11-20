@@ -268,6 +268,8 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
      */
     public function tearDown ()
     {
+        // Fix the permissions so we can delete it
+        @chmod($this->file, 0600);
         @unlink( $this->file );
     }
 
@@ -295,7 +297,7 @@ abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_EmptyFile_Fra
             $this->markTestSkipped("Unable to write data to test file");
             @unlink( $this->file );
         }
-        
+
     }
 
 }

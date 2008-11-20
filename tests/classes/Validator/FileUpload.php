@@ -33,9 +33,26 @@
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
+ * File Upload unit test suite
+ */
+class classes_validator_fileupload
+{
+
+    public static function suite()
+    {
+        $suite = new cPHP_Base_TestSuite;
+        $suite->addTestSuite( 'classes_validator_fileupload_noFile' );
+        $suite->addTestSuite( 'classes_validator_fileupload_emptyFile' );
+        $suite->addTestSuite( 'classes_validator_fileupload_withFile' );
+        return $suite;
+    }
+
+}
+
+/**
  * unit tests
  */
-class classes_validator_fileupload extends PHPUnit_Framework_TestCase
+class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 {
 
     public function testInvalidFieldName ()
@@ -201,10 +218,13 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
             );
     }
 
+}
+
+class classes_validator_fileupload_emptyFile extends PHPUnit_EmptyFile_Framework_TestCase
+{
+
     public function testEmptyFile ()
     {
-        $file = tempnam( sys_get_temp_dir(), "cPHP_" );
-
         $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
@@ -215,7 +235,7 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array(
                     "error" => 0,
-                    "tmp_name" => $file
+                    "tmp_name" => $this->file
                 ))) );
 
         $result = $valid->validate("fld");
@@ -224,15 +244,16 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
                 array("Uploaded file is empty"),
                 $result->getErrors()->get()
             );
-
-        @unlink( $file );
     }
+
+}
+
+class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_TestCase
+{
 
     public function testUnreadable ()
     {
-        $file = tempnam( sys_get_temp_dir(), "cPHP_" );
-        file_put_contents($file, "data");
-        chmod($file, 0200);
+        chmod($this->file, 0200);
 
         $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
@@ -244,7 +265,7 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array(
                     "error" => 0,
-                    "tmp_name" => $file
+                    "tmp_name" => $this->file
                 ))) );
 
         $result = $valid->validate("fld");
@@ -253,16 +274,10 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
                 array("Uploaded file is not readable"),
                 $result->getErrors()->get()
             );
-
-        chmod($file, 0600);
-        @unlink( $file );
     }
 
     public function testValid()
     {
-        $file = tempnam( sys_get_temp_dir(), "cPHP_" );
-        file_put_contents($file, "data");
-
         $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
@@ -273,12 +288,10 @@ class classes_validator_fileupload extends PHPUnit_Framework_TestCase
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array(
                     "error" => 0,
-                    "tmp_name" => $file
+                    "tmp_name" => $this->file
                 ))) );
 
         $this->assertTrue( $valid->isValid("fld") );
-
-        @unlink( $file );
     }
 
 }
