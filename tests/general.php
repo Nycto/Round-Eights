@@ -242,9 +242,9 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
 }
 
 /**
- * Base test class for tests that require a temporary file
+ * Base test class for tests that require an empty temporary file
  */
-abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -261,11 +261,6 @@ abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_Framework_Tes
 
         if ( $this->file === FALSE )
             $this->markTestSkipped("Unable to create temporary file");
-
-        file_put_contents(
-                "This is a string\nof data that is put\nin the test file",
-                $this->file
-            );
     }
 
     /**
@@ -274,6 +269,33 @@ abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_Framework_Tes
     public function tearDown ()
     {
         @unlink( $this->file );
+    }
+
+}
+
+/**
+ * Base test class for tests that require a temporary file that has content
+ */
+abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_EmptyFile_Framework_TestCase
+{
+
+    /**
+     * Setup creates the file
+     */
+    public function setUp ()
+    {
+        parent::setUp();
+
+        $wrote = file_put_contents(
+                $this->file,
+                "This is a string\nof data that is put\nin the test file"
+            );
+
+        if ( $wrote == 0 ) {
+            $this->markTestSkipped("Unable to write data to test file");
+            @unlink( $this->file );
+        }
+        
     }
 
 }
