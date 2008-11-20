@@ -33,10 +33,203 @@
 namespace cPHP::FileSystem;
 
 /**
- *
+ * Filesystem File class
  */
-class File extends ::cPHP::File
+class File extends ::cPHP::FileSystem
 {
+
+    /**
+     * The extension of this file
+     */
+    private $extension;
+
+    /**
+     * The filename name of this file
+     */
+    private $filename;
+
+    /**
+     * Returns the path represented by this instance
+     *
+     * @return String The full path
+     */
+    public function getPath ()
+    {
+
+    }
+
+    /**
+     * Sets the path that this instance represents
+     *
+     * @param String $path The new path
+     * @return Object Returns a self reference
+     */
+    public function setPath ( $path )
+    {
+
+    }
+
+    /**
+     * Returns whether this file exists
+     *
+     * @return boolean
+     */
+    public function exists ()
+    {
+        return $this->isFile();
+    }
+
+    /**
+     * Returns the extension, if there is one, for this file
+     *
+     * The extension will be returned without a leading period
+     *
+     * @return String|Null Returns null if no extension has been set
+     */
+    public function getExt ()
+    {
+
+    }
+
+    /**
+     * Sets the extension for this file
+     *
+     * @param String $extension The new extension
+     * @return Object Returns a self reference
+     */
+    public function setExt ( $extension )
+    {
+
+    }
+
+    /**
+     * Returns whether this file has an extension
+     *
+     * @return Boolean
+     */
+    public function extExists ()
+    {
+
+    }
+
+    /**
+     * Clears the extension from this file
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearExists ()
+    {
+
+    }
+
+    /**
+     * Returns the filename, if there is one, for this file
+     *
+     * @return String|Null Returns null if no filename has been set
+     */
+    public function getFilename ()
+    {
+
+    }
+
+    /**
+     * Sets the filename for this file
+     *
+     * @param String $filename The new filename
+     * @return Object Returns a self reference
+     */
+    public function setFilename ( $filename )
+    {
+
+    }
+
+    /**
+     * Returns whether this file has an filename
+     *
+     * @return Boolean
+     */
+    public function filenameExists ()
+    {
+
+    }
+
+    /**
+     * Clears the filename from this file
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFilename ()
+    {
+
+    }
+
+    /**
+     * Returns the basename for this file
+     *
+     * The basename is the combined filename and extension. If no filename
+     * has been set, this will always return null.
+     *
+     * @return String|Null Returns null if no filename has been set
+     */
+    public function getBasename ()
+    {
+
+    }
+
+    /**
+     * Sets the basename for this file
+     *
+     * This sets the extension and filename at once
+     *
+     * @param String $basename The new basename
+     * @return Object Returns a self reference
+     */
+    public function setBasename ( $basename )
+    {
+
+    }
+
+    /**
+     * Returns the content from this file
+     *
+     * @return String
+     */
+    public function get ()
+    {
+
+    }
+
+    /**
+     * Sets the content in this file
+     *
+     * @param String $content The content to set
+     * @return Object Returns a self reference
+     */
+    public function set ( $content )
+    {
+
+    }
+
+    /**
+     * Returns the content of this file as an array, where each line is an element
+     * of the array
+     *
+     * @return Array
+     */
+    public function toArray ()
+    {
+
+    }
+
+    /**
+     * Returns the size of this file
+     *
+     * @return Integer
+     */
+    public function getSize ()
+    {
+    
+    }
 
 }
 

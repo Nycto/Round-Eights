@@ -38,6 +38,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_filesystem_file extends PHPUnit_Framework_TestCase
 {
 
+    protected $file;
+
+    public function setUp ()
+    {
+        $this->file = tempnam( sys_get_temp_dir(), "cPHP_unitTest_" );
+
+        if ( $this->file === FALSE )
+            $this->markTestSkipped("Unable to create temporary file");
+    }
+
+    public function tearDown ()
+    {
+        @unlink( $this->file );
+    }
+
 }
 
 ?>
