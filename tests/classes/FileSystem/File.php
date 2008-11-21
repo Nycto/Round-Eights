@@ -127,6 +127,11 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetBasename ()
     {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetBasename ()
+    {
         $mock = new ::cPHP::FileSystem::File;
         $this->assertNull( $mock->getBasename() );
 
@@ -141,11 +146,6 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
         $mock->clearFilename();
         $this->assertNull( $mock->getBasename() );
-    }
-
-    public function testGetBasename ()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
 }
