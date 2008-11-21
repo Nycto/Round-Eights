@@ -49,15 +49,73 @@ class classes_filesystem_file
 }
 
 /**
- * unit tests
+ * unit tests that don't require a temporary file
  */
 class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 {
 
+    public function testSetPath ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetPath ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testExists ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testExtAccessors ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testFilenameAccessors ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testSetBasename ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetBasename ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
+/**
+ * Unit Tests that use a temporary file
+ */
 class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCase
 {
+
+    public function testGet ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testSet ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testToArray ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetSize ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
 
 }
 
