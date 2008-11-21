@@ -33,9 +33,25 @@
 require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * unit tests
+ * Unit test for running both filesystem test suites
  */
-class classes_form_field_file extends PHPUnit_Framework_TestCase
+class classes_form_field_file
+{
+
+    public static function suite()
+    {
+        $suite = new cPHP_Base_TestSuite;
+        $suite->addTestSuite( 'classes_form_field_file_noFile' );
+        $suite->addTestSuite( 'classes_form_field_file_withFile' );
+        return $suite;
+    }
+
+}
+
+/**
+ * unit tests that don't require a temporary file
+ */
+class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 {
 
     public function testGetRawValue_noFile ()
@@ -60,46 +76,6 @@ class classes_form_field_file extends PHPUnit_Framework_TestCase
                 ))) );
 
         $this->assertSame("/dir/to/file.txt", $field->getRawValue());
-    }
-
-    public function testValidate_valid ()
-    {
-        $file = tempnam( sys_get_temp_dir(), "cPHP_" );
-        file_put_contents($file, "data");
-
-
-        // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $file
-                ))) );
-
-
-        // Set up file upload field to use the mock validator and mock $_FILES
-        $field = $this->getMock("cPHP::Form::Field::File", array("getUploadedFiles", "getFileUploadValidator"), array("fld"));
-
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "tmp_name" => $file
-                ))) );
-
-        $field->expects( $this->once() )
-            ->method("getFileUploadValidator")
-            ->will( $this->returnValue( $valid ) );
-
-
-        $this->assertTrue( $field->isValid() );
-
-        @unlink( $file );
     }
 
     public function testValidate_invalidUpload ()
@@ -135,63 +111,6 @@ class classes_form_field_file extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testValidate_otherValidator ()
-    {
-        $file = tempnam( sys_get_temp_dir(), "cPHP_" );
-        file_put_contents($file, "data");
-
-
-        // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $file
-                ))) );
-
-
-        // This result will be returned by the second validator
-        $result = new ::cPHP::Validator::Result( $file );
-
-        // Set up another validator that should receive the filename
-        $otherValid = $this->getMock("cPHP::iface::Validator", array("isValid", "validate"));
-        $otherValid->expects( $this->once() )
-            ->method("validate")
-            ->with( $this->equalTo($file) )
-            ->will( $this->returnValue( $result ) );
-
-
-        // Set up the mock field to use the FileUpload validator and mock $_FILES
-        $field = $this->getMock(
-                "cPHP::Form::Field::File",
-                array("getUploadedFiles", "getFileUploadValidator"),
-                array("fld")
-            );
-
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "tmp_name" => $file
-                ))) );
-
-        $field->expects( $this->once() )
-            ->method("getFileUploadValidator")
-            ->will( $this->returnValue( $valid ) );
-
-
-        $field->setValidator( $otherValid );
-
-        $this->assertSame( $result, $field->validate() );
-
-        @unlink( $file );
-    }
-
     public function testGetTag ()
     {
         $field = new ::cPHP::Form::Field::File("fld");
@@ -209,6 +128,100 @@ class classes_form_field_file extends PHPUnit_Framework_TestCase
 
         $this->assertTrue( isset($tag['type']) );
         $this->assertSame( "file", $tag['type'] );
+    }
+
+}
+
+/**
+ * Unit tests the need an actual file
+ */
+class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCase
+{
+
+    public function testValidate_valid ()
+    {
+
+        // Set up the FileUpload validator to return a valid uploaded file
+        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
+
+        $valid->expects( $this->once() )
+            ->method("isUploadedFile")
+            ->will( $this->returnValue( TRUE ) );
+
+        $valid->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array("fld" => array(
+                    "error" => 0,
+                    "tmp_name" => $this->file
+                ))) );
+
+
+        // Set up file upload field to use the mock validator and mock $_FILES
+        $field = $this->getMock("cPHP::Form::Field::File", array("getUploadedFiles", "getFileUploadValidator"), array("fld"));
+
+        $field->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array("fld" => array(
+                    "tmp_name" => $this->file
+                ))) );
+
+        $field->expects( $this->once() )
+            ->method("getFileUploadValidator")
+            ->will( $this->returnValue( $valid ) );
+
+
+        $this->assertTrue( $field->isValid() );
+    }
+
+    public function testValidate_otherValidator ()
+    {
+        // Set up the FileUpload validator to return a valid uploaded file
+        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
+
+        $valid->expects( $this->once() )
+            ->method("isUploadedFile")
+            ->will( $this->returnValue( TRUE ) );
+
+        $valid->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array("fld" => array(
+                    "error" => 0,
+                    "tmp_name" => $this->file
+                ))) );
+
+
+        // This result will be returned by the second validator
+        $result = new ::cPHP::Validator::Result( $this->file );
+
+        // Set up another validator that should receive the filename
+        $otherValid = $this->getMock("cPHP::iface::Validator", array("isValid", "validate"));
+        $otherValid->expects( $this->once() )
+            ->method("validate")
+            ->with( $this->equalTo($this->file) )
+            ->will( $this->returnValue( $result ) );
+
+
+        // Set up the mock field to use the FileUpload validator and mock $_FILES
+        $field = $this->getMock(
+                "cPHP::Form::Field::File",
+                array("getUploadedFiles", "getFileUploadValidator"),
+                array("fld")
+            );
+
+        $field->expects( $this->once() )
+            ->method("getUploadedFiles")
+            ->will( $this->returnValue(array("fld" => array(
+                    "tmp_name" => $this->file
+                ))) );
+
+        $field->expects( $this->once() )
+            ->method("getFileUploadValidator")
+            ->will( $this->returnValue( $valid ) );
+
+
+        $field->setValidator( $otherValid );
+
+        $this->assertSame( $result, $field->validate() );
     }
 
 }
