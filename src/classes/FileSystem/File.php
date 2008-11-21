@@ -181,7 +181,17 @@ class File extends ::cPHP::FileSystem
      */
     public function getBasename ()
     {
+        if ( !$this->filenameExists() )
+            return null;
 
+        if ( !$this->extExists() )
+            return $this->getFilename();
+
+        return ::cPHP::str::weld(
+                $this->getFilename(),
+                $this->getExt(),
+                "."
+            );
     }
 
     /**
