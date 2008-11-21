@@ -88,7 +88,7 @@ class File extends ::cPHP::FileSystem
      */
     public function getExt ()
     {
-
+        return $this->extension;
     }
 
     /**
@@ -99,7 +99,10 @@ class File extends ::cPHP::FileSystem
      */
     public function setExt ( $extension )
     {
-
+        $extension = trim(::cPHP::strval( $extension ));
+        $extension = ltrim( $extension, "." );
+        $this->extension = ::cPHP::isEmpty( $extension ) ? null : $extension;
+        return $this;
     }
 
     /**
@@ -109,7 +112,7 @@ class File extends ::cPHP::FileSystem
      */
     public function extExists ()
     {
-
+        return isset( $this->extension );
     }
 
     /**
@@ -117,9 +120,10 @@ class File extends ::cPHP::FileSystem
      *
      * @return Object Returns a self reference
      */
-    public function clearExists ()
+    public function clearExt ()
     {
-
+        $this->extension = null;
+        return $this;
     }
 
     /**
@@ -228,7 +232,7 @@ class File extends ::cPHP::FileSystem
      */
     public function getSize ()
     {
-    
+
     }
 
 }

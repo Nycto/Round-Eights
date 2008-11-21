@@ -71,7 +71,30 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testExtAccessors ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File;
+
+        $this->assertNull( $mock->getExt() );
+        $this->assertFalse( $mock->extExists() );
+
+        $this->assertSame( $mock, $mock->setExt(".ext") );
+        $this->assertSame( "ext", $mock->getExt() );
+        $this->assertTrue( $mock->extExists() );
+
+        $this->assertSame( $mock, $mock->setExt(".") );
+        $this->assertNull( $mock->getExt() );
+        $this->assertFalse( $mock->extExists() );
+
+        $this->assertSame( $mock, $mock->setExt("") );
+        $this->assertNull( $mock->getExt() );
+        $this->assertFalse( $mock->extExists() );
+
+        $this->assertSame( $mock, $mock->setExt("php.BAK") );
+        $this->assertSame( "php.BAK", $mock->getExt() );
+        $this->assertTrue( $mock->extExists() );
+
+        $this->assertSame( $mock, $mock->clearExt() );
+        $this->assertNull( $mock->getExt() );
+        $this->assertFalse( $mock->extExists() );
     }
 
     public function testFilenameAccessors ()
