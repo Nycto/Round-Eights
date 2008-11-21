@@ -99,7 +99,30 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testFilenameAccessors ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File;
+
+        $this->assertNull( $mock->getFilename() );
+        $this->assertFalse( $mock->filenameExists() );
+
+        $this->assertSame( $mock, $mock->setFilename("filename.") );
+        $this->assertSame( "filename", $mock->getFilename() );
+        $this->assertTrue( $mock->filenameExists() );
+
+        $this->assertSame( $mock, $mock->setFilename(".") );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertFalse( $mock->filenameExists() );
+
+        $this->assertSame( $mock, $mock->setFilename("") );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertFalse( $mock->filenameExists() );
+
+        $this->assertSame( $mock, $mock->setFilename("Filename.2008") );
+        $this->assertSame( "Filename.2008", $mock->getFilename() );
+        $this->assertTrue( $mock->filenameExists() );
+
+        $this->assertSame( $mock, $mock->clearFilename() );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertFalse( $mock->filenameExists() );
     }
 
     public function testSetBasename ()

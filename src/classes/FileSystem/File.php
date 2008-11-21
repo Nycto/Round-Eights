@@ -133,7 +133,7 @@ class File extends ::cPHP::FileSystem
      */
     public function getFilename ()
     {
-
+        return $this->filename;
     }
 
     /**
@@ -144,7 +144,10 @@ class File extends ::cPHP::FileSystem
      */
     public function setFilename ( $filename )
     {
-
+        $filename = trim(::cPHP::strval( $filename ));
+        $filename = rtrim( $filename, "." );
+        $this->filename = ::cPHP::isEmpty( $filename ) ? null : $filename;
+        return $this;
     }
 
     /**
@@ -154,7 +157,7 @@ class File extends ::cPHP::FileSystem
      */
     public function filenameExists ()
     {
-
+        return isset( $this->filename );
     }
 
     /**
@@ -164,7 +167,8 @@ class File extends ::cPHP::FileSystem
      */
     public function clearFilename ()
     {
-
+        $this->filename = null;
+        return $this;
     }
 
     /**
