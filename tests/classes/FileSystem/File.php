@@ -91,7 +91,33 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetPath ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File;
+
+        $this->assertNull( $mock->getPath() );
+
+        $mock->setDir("dir/to");
+        $this->assertSame( "dir/to/", $mock->getPath() );
+
+        $mock->setDir("/dir/to/");
+        $this->assertSame( "/dir/to/", $mock->getPath() );
+
+        $mock->setExt("php");
+        $this->assertSame( "/dir/to/", $mock->getPath() );
+
+        $mock->setFilename("Example");
+        $this->assertSame( "/dir/to/Example.php", $mock->getPath() );
+
+        $mock->clearExt();
+        $this->assertSame( "/dir/to/Example", $mock->getPath() );
+
+        $mock->clearDir();
+        $this->assertSame( "Example", $mock->getPath() );
+
+        $mock->setExt("php");
+        $this->assertSame( "Example.php", $mock->getPath() );
+
+        $mock->clearFilename()->clearExt();
+        $this->assertNull( $mock->getPath() );
     }
 
     public function testExtAccessors ()

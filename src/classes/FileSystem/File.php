@@ -55,7 +55,12 @@ class File extends ::cPHP::FileSystem
      */
     public function getPath ()
     {
+        if ( !$this->dirExists() && !$this->filenameExists() )
+            return null;
 
+        return
+            ( $this->dirExists() ? $this->getRawDir() : "" )
+            .$this->getBasename();
     }
 
     /**
