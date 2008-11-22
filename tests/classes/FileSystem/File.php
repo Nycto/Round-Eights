@@ -305,7 +305,19 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetSize ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertType( 'integer', $mock->getSize() );
+        $this->assertGreaterThan( 0, $mock->getSize() );
+
+
+        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        try {
+            $mock->getSize();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
     }
 
 }

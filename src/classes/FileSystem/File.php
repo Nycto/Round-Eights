@@ -291,7 +291,8 @@ class File extends ::cPHP::FileSystem
      */
     public function getSize ()
     {
-
+        $this->requirePath();
+        return filesize( $this->getPath() );
     }
 
 }
