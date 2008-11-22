@@ -229,7 +229,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testExists ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertTrue( $mock->exists() );
+
+        $mock = new ::cPHP::FileSystem::File( __DIR__ );
+        $this->assertFalse( $mock->exists() );
+
+        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $this->assertFalse( $mock->exists() );
     }
 
     public function testGet ()
