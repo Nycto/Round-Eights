@@ -286,6 +286,27 @@ class File extends ::cPHP::FileSystem
     }
 
     /**
+     * Appends a chunk of content to this file
+     *
+     * @param String $content The content to append
+     * @return Object Returns a self reference
+     */
+    public function append ( $content )
+    {
+        $result = @file_put_contents( $this->getPath(), $content, FILE_APPEND );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Unable write data to file"
+                );
+            throw $err;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the content of this file as an array, where each line is an element
      * of the array
      *

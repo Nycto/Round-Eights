@@ -291,6 +291,39 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
     }
 
+    public function testAppend ()
+    {
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( $mock, $mock->append("\nnew data") );
+        $this->assertSame(
+                "This is a string\n"
+                ."of data that is put\n"
+                ."in the test file\n"
+                ."new data",
+                $mock->get()
+            );
+
+        $this->assertSame( $mock, $mock->append("\nAnother snippet") );
+        $this->assertSame(
+                "This is a string\n"
+                ."of data that is put\n"
+                ."in the test file\n"
+                ."new data\n"
+                ."Another snippet",
+                $mock->get()
+            );
+
+        chmod( $this->file, 0400 );
+
+        try {
+            $mock->append( "data" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable write data to file", $err->getMessage() );
+        }
+    }
+
     public function testToArray ()
     {
         $mock = new ::cPHP::FileSystem::File( $this->file );
