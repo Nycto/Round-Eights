@@ -280,7 +280,8 @@ class File extends ::cPHP::FileSystem
      */
     public function toArray ()
     {
-
+        $this->requirePath();
+        return file( $this->getPath() );
     }
 
     /**
