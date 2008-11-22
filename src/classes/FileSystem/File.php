@@ -262,7 +262,14 @@ class File extends ::cPHP::FileSystem
      */
     public function set ( $content )
     {
+        if ( @file_put_contents( $this->getPath(), $content ) === FALSE ) {
+            throw new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Unable write data to file"
+                );
+        }
 
+        return $this;
     }
 
     /**
