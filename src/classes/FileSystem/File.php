@@ -66,7 +66,25 @@ class File extends ::cPHP::FileSystem
      */
     public function setPath ( $path )
     {
+        $path = trim(::cPHP::strval( $path ));
+        $path = pathinfo( $path );
 
+        if ( isset($path['dirname']) )
+            $this->setDir($path['dirname']);
+        else
+            $this->clearDir();
+
+        if ( isset($path['filename']) )
+            $this->setFilename($path['filename']);
+        else
+            $this->clearFilename();
+
+        if ( isset($path['extension']) )
+            $this->setExt($path['extension']);
+        else
+            $this->clearExt();
+
+        return $this;
     }
 
     /**

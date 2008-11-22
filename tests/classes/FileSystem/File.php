@@ -56,15 +56,40 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetPath ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File;
+
+        $this->assertSame( $mock, $mock->setPath("/dir/to/example.php") );
+        $this->assertSame( "/dir/to/", $mock->getRawDir() );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertSame( "php", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setPath("/dir/to/example.php.BAK") );
+        $this->assertSame( "/dir/to/", $mock->getRawDir() );
+        $this->assertSame( "example.php", $mock->getFilename() );
+        $this->assertSame( "BAK", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setPath("dir/to/example") );
+        $this->assertSame( "dir/to/", $mock->getRawDir() );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertNull( $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setPath("example.php") );
+        $this->assertSame( "./", $mock->getRawDir() );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertSame( "php", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setPath("example") );
+        $this->assertSame( "./", $mock->getRawDir() );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertNull( $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setPath("") );
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertNull( $mock->getExt() );
     }
 
     public function testGetPath ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
-    public function testExists ()
     {
         $this->markTestIncomplete("To be written");
     }
@@ -175,6 +200,11 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
  */
 class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCase
 {
+
+    public function testExists ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
 
     public function testGet ()
     {
