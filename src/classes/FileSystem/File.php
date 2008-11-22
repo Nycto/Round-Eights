@@ -204,7 +204,20 @@ class File extends ::cPHP::FileSystem
      */
     public function setBasename ( $basename )
     {
+        $basename = trim(::cPHP::strval( $basename ));
+        $basename = pathinfo( $basename );
 
+        if ( isset($basename['filename']) )
+            $this->setFilename($basename['filename']);
+        else
+            $this->clearFilename();
+
+        if ( isset($basename['extension']) )
+            $this->setExt($basename['extension']);
+        else
+            $this->clearExt();
+
+        return $this;
     }
 
     /**

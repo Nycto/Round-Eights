@@ -127,7 +127,27 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetBasename ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File;
+
+        $this->assertSame( $mock, $mock->setBasename("example.php") );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertSame( "php", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setBasename("example") );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertNull( $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setBasename(".php") );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertSame( "php", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setBasename("dir/to/example.php") );
+        $this->assertSame( "example", $mock->getFilename() );
+        $this->assertSame( "php", $mock->getExt() );
+
+        $this->assertSame( $mock, $mock->setBasename("") );
+        $this->assertNull( $mock->getFilename() );
+        $this->assertNull( $mock->getExt() );
     }
 
     public function testGetBasename ()
