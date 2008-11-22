@@ -250,6 +250,17 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             );
 
 
+        chmod( $this->file, 0000 );
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        try {
+            $mock->get();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Unable read data from file", $err->getMessage() );
+        }
+
+
         $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
             $mock->get();
@@ -291,6 +302,16 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
                     ),
                 $mock->toArray()
             );
+
+        chmod( $this->file, 0000 );
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        try {
+            $mock->toArray();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Unable read data from file", $err->getMessage() );
+        }
 
 
         $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );

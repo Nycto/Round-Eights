@@ -251,7 +251,17 @@ class File extends ::cPHP::FileSystem
     public function get ()
     {
         $this->requirePath();
-        return file_get_contents( $this->getPath() );
+        $result = @file_get_contents( $this->getPath() );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Unable read data from file"
+                );
+            throw $err;
+        }
+
+        return $result;
     }
 
     /**
@@ -262,11 +272,14 @@ class File extends ::cPHP::FileSystem
      */
     public function set ( $content )
     {
-        if ( @file_put_contents( $this->getPath(), $content ) === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem::Missing(
+        $result = @file_put_contents( $this->getPath(), $content );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem::Missing(
                     $this->getPath(),
                     "Unable write data to file"
                 );
+            throw $err;
         }
 
         return $this;
@@ -281,7 +294,17 @@ class File extends ::cPHP::FileSystem
     public function toArray ()
     {
         $this->requirePath();
-        return file( $this->getPath() );
+        $result = @file( $this->getPath() );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem::Missing(
+                    $this->getPath(),
+                    "Unable read data from file"
+                );
+            throw $err;
+        }
+
+        return $result;
     }
 
     /**
