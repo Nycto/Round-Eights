@@ -241,7 +241,22 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGet ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame(
+                "This is a string\n"
+                ."of data that is put\n"
+                ."in the test file",
+                $mock->get()
+            );
+
+
+        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        try {
+            $mock->get();
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
     }
 
     public function testSet ()

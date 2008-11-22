@@ -250,7 +250,8 @@ class File extends ::cPHP::FileSystem
      */
     public function get ()
     {
-
+        $this->requirePath();
+        return file_get_contents( $this->getPath() );
     }
 
     /**
