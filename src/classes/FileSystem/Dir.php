@@ -35,7 +35,7 @@ namespace cPHP::FileSystem;
 /**
  * Filesystem Directory class
  */
-class Dir extends ::cPHP::FileSystem
+class Dir extends ::cPHP::FileSystem implements RecursiveIterator
 {
 
     /**
@@ -67,6 +67,73 @@ class Dir extends ::cPHP::FileSystem
     public function exists ()
     {
         return $this->isDir();
+    }
+
+    /**
+     * Used for iteration, this returns the current file
+     *
+     * @return mixed
+     */
+    public function current ()
+    {
+    }
+
+    /**
+     * Used for iteration, this returns the key of the current file
+     *
+     * @return Integer
+     */
+    public function key ()
+    {
+    }
+
+    /**
+     * Used for iteration, this moves the internal iteration pointer on to the next
+     * element in the directory
+     *
+     * @return Object Returns a self reference
+     */
+    public function next ()
+    {
+        return $this;
+    }
+
+    /**
+     * Used for iteration, this resets to the beginning of the directory
+     *
+     * @return Object Returns a self reference
+     */
+    public function rewind ()
+    {
+        return $this;
+    }
+
+    /**
+     * Used for iteration, this returns whether the iterator has reached the last element
+     *
+     * @return Boolean
+     */
+    public function valid ()
+    {
+    }
+
+    /**
+     * Used for recursive iteration, this returns whether the current element
+     * has any children that can be iterated over.
+     *
+     * @return Boolean
+     */
+    public function hasChildren ()
+    {
+    }
+
+    /**
+     * Used for recursive iteration, this returns the iterator for the current element
+     *
+     * @return Object Returns a cPHP::FileSystem::Dir object
+     */
+    public function getChildren ()
+    {
     }
 
 }
