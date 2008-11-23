@@ -33,10 +33,41 @@
 namespace cPHP::FileSystem;
 
 /**
- *
+ * Filesystem Directory class
  */
-class Dir extends ::cPHP::File
+class Dir extends ::cPHP::FileSystem
 {
+
+    /**
+     * Returns the path represented by this instance
+     *
+     * @return String The full path
+     */
+    public function getPath ()
+    {
+        return $this->getRawDir();
+    }
+
+    /**
+     * Sets the path that this instance represents
+     *
+     * @param String $path The new path
+     * @return Object Returns a self reference
+     */
+    public function setPath ( $path )
+    {
+        return $this->setDir( $path );
+    }
+
+    /**
+     * Returns whether this file exists
+     *
+     * @return boolean
+     */
+    public function exists ()
+    {
+        return $this->isDir();
+    }
 
 }
 

@@ -38,6 +38,43 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_filesystem_dir extends PHPUnit_Framework_TestCase
 {
 
+    public function testSetGetPath ()
+    {
+        $mock = new ::cPHP::FileSystem::Dir;
+
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertFalse( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setPath("/path/to/dir") );
+        $this->assertSame( "/path/to/dir/", $mock->getRawDir() );
+        $this->assertSame( "/path/to/dir/", $mock->getPath() );
+        $this->assertTrue( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setPath("") );
+        $this->assertNull( $mock->getRawDir() );
+        $this->assertNull( $mock->getPath() );
+        $this->assertFalse( $mock->dirExists() );
+
+        $this->assertSame( $mock, $mock->setPath("c:\\path\\to\\\\dir\\\\") );
+        $this->assertSame( "c:/path/to/dir/", $mock->getRawDir() );
+        $this->assertSame( "c:/path/to/dir/", $mock->getPath() );
+        $this->assertTrue( $mock->dirExists() );
+    }
+
+    public function testExists ()
+    {
+        $mock = new ::cPHP::FileSystem::Dir;
+
+        $mock->setPath( __DIR__ );
+        $this->assertTrue( $mock->exists() );
+
+        $mock->setPath( __FILE__ );
+        $this->assertFalse( $mock->exists() );
+
+        $mock->setPath( "/this/is/not/a/real/path" );
+        $this->assertFalse( $mock->exists() );
+    }
+
 }
 
 ?>
