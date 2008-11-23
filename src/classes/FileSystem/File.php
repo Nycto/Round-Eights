@@ -254,7 +254,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_get_contents( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem::Missing(
+            $err = new ::cPHP::Exception::FileSystem(
                     $this->getPath(),
                     "Unable read data from file"
                 );
@@ -275,7 +275,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_put_contents( $this->getPath(), $content );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem::Missing(
+            $err = new ::cPHP::Exception::FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -296,7 +296,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_put_contents( $this->getPath(), $content, FILE_APPEND );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem::Missing(
+            $err = new ::cPHP::Exception::FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -318,7 +318,7 @@ class File extends ::cPHP::FileSystem
         $result = @file( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem::Missing(
+            $err = new ::cPHP::Exception::FileSystem(
                     $this->getPath(),
                     "Unable read data from file"
                 );
