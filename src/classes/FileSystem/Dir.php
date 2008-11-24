@@ -39,6 +39,32 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
 {
 
     /**
+     * For iteration, this is the directory resource
+     */
+    private $resource;
+
+    /**
+     * For iteration, this is the integer offset of the current element
+     */
+    private $pointer;
+
+    /**
+     * Used for iteration, this is the value of the current directory item
+     */
+    private $current;
+
+    /**
+     * Destructor...
+     *
+     * Ensures that the directory iteration resource is properly closed
+     */
+    public function __destruct ()
+    {
+        if ( $this->hasResource() )
+            @closedir( $this->resource );
+    }
+
+    /**
      * Returns the path represented by this instance
      *
      * @return String The full path
@@ -70,21 +96,62 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
-     * Used for iteration, this returns the current file
+     * Returns the basename of this directory
      *
-     * @return mixed
+     * @return String
      */
-    public function current ()
+    public function getBasename ()
     {
+        if ( $this->dirExists() )
+            return basename( $this->getRawDir() );
+        else
+            return null;
     }
 
     /**
-     * Used for iteration, this returns the key of the current file
+     * Returns whether there is a valid directory iteration resource in this instance
      *
-     * @return Integer
+     * @return boolean
      */
-    public function key ()
+    protected function hasResource ()
     {
+        return is_resource($this->resource) && get_resource_type($this->resource) == "stream";
+    }
+
+    /**
+     * Used for iteration, this resets to the beginning of the directory
+     *
+     * @return Object Returns a self reference
+     */
+    public function rewind ()
+    {
+        // If the directory is already open, then just rewind it
+        if ( $this->hasResource() ) {
+            rewinddir( $this->resource );
+            return $this;
+        }
+
+        $this->requirePath();
+
+        $resource = @opendir( $this->getPath() );
+
+        if ( $resource === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to open directory for iteration"
+                );
+            throw $err;
+        }
+
+        $this->resource = $resource;
+
+        // Reset the internal pointer offset
+        $this->pointer = -1;
+
+        // Grab the first item from the directory
+        $this->next();
+
+        return $this;
     }
 
     /**
@@ -95,16 +162,8 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function next ()
     {
-        return $this;
-    }
-
-    /**
-     * Used for iteration, this resets to the beginning of the directory
-     *
-     * @return Object Returns a self reference
-     */
-    public function rewind ()
-    {
+        $this->pointer++;
+        $this->current = readdir( $this->resource );
         return $this;
     }
 
@@ -115,6 +174,50 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function valid ()
     {
+        if ( !$this->hasResource() )
+            return FALSE;
+
+        // If we have reached the end of the directory content, then automaticaly close the resource
+        if ( $this->current === FALSE ) {
+
+            @closedir( $this->resource );
+            $this->resource = null;
+
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Used for iteration, this returns the current file
+     *
+     * @return mixed
+     */
+    public function current ()
+    {
+        if ( !$this->hasResource() )
+            return FALSE;
+
+        $current = $this->getRawDir() . $this->current;
+
+        if ( is_dir( $current ) )
+            return new ::cPHP::FileSystem::Dir( $current );
+        else
+            return new ::cPHP::FileSystem::File( $current );
+    }
+
+    /**
+     * Used for iteration, this returns the key of the current file
+     *
+     * @return Integer
+     */
+    public function key ()
+    {
+        if ( !$this->hasResource() )
+            $this->rewind();
+
+        return $this->pointer;
     }
 
     /**
@@ -125,6 +228,13 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function hasChildren ()
     {
+        if ( !$this->hasResource() )
+            return FALSE;
+
+        if ( $this->current == ".." || $this->current == "." )
+            return FALSE;
+
+        return is_dir( $this->getRawDir() . $this->current );
     }
 
     /**
@@ -134,6 +244,10 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function getChildren ()
     {
+        if ( !$this->hasChildren() )
+            throw new ::cPHP::Exception::Interaction("Current value does not have children");
+
+        return $this->current();
     }
 
 }
