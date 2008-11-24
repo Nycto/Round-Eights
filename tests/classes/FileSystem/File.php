@@ -33,7 +33,7 @@
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Unit test for running both filesystem test suites
+ * Unit test for running both file test suites
  */
 class classes_filesystem_file
 {
