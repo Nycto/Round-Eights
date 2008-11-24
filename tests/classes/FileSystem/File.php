@@ -374,6 +374,21 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
     }
 
+    public function testTruncate ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testDelete ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function getMimeType ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>

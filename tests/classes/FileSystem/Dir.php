@@ -407,6 +407,31 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertSame( 10, count($files) );
     }
 
+    public function testMake ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testPurge ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testDelete ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testTemp ()
+    {
+        $this->markTestIncomplete("To be written: Static method to create a new instance of the system temp dir");
+    }
+
+    public function getUniqueFile ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
