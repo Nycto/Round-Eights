@@ -606,7 +606,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertSame( 10, count($files) );
     }
 
-    public function toArray ()
+    public function testToArray ()
     {
         $this->markTestIncomplete("To be written");
     }
@@ -626,7 +626,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->markTestIncomplete("To be written");
     }
 
-    public function getUniqueFile ()
+    public function testGetUniqueFile ()
     {
         $this->markTestIncomplete("To be written");
     }
