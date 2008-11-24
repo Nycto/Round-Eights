@@ -185,6 +185,17 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testTemp ()
+    {
+        $dir = ::cPHP::FileSystem::Dir::getTemp();
+
+        $this->assertThat( $dir, $this->isInstanceOf("cPHP::FileSystem::Dir") );
+        $this->assertSame(
+                rtrim( sys_get_temp_dir(), "/" ),
+                rtrim( $dir->getPath(), "/" )
+            );
+    }
+
 }
 
 /**
@@ -613,11 +624,6 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
     public function testDelete ()
     {
         $this->markTestIncomplete("To be written");
-    }
-
-    public function testTemp ()
-    {
-        $this->markTestIncomplete("To be written: Static method to create a new instance of the system temp dir");
     }
 
     public function getUniqueFile ()

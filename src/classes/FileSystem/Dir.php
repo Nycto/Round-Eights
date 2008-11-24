@@ -59,6 +59,16 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     private $includeDots = TRUE;
 
     /**
+     * Returns a Dir instance representing the system's temporary directory
+     *
+     * @return Object A cPHP::FileSystem::Dir instance
+     */
+    static public function getTemp ()
+    {
+        return new self( sys_get_temp_dir() );
+    }
+
+    /**
      * Destructor...
      *
      * Ensures that the directory iteration resource is properly closed
