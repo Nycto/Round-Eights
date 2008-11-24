@@ -56,80 +56,80 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testSetGetPath ()
     {
-        $mock = new ::cPHP::FileSystem::Dir;
+        $dir = new ::cPHP::FileSystem::Dir;
 
-        $this->assertNull( $mock->getRawDir() );
-        $this->assertFalse( $mock->dirExists() );
+        $this->assertNull( $dir->getRawDir() );
+        $this->assertFalse( $dir->dirExists() );
 
-        $this->assertSame( $mock, $mock->setPath("/path/to/dir") );
-        $this->assertSame( "/path/to/dir/", $mock->getRawDir() );
-        $this->assertSame( "/path/to/dir/", $mock->getPath() );
-        $this->assertTrue( $mock->dirExists() );
+        $this->assertSame( $dir, $dir->setPath("/path/to/dir") );
+        $this->assertSame( "/path/to/dir/", $dir->getRawDir() );
+        $this->assertSame( "/path/to/dir/", $dir->getPath() );
+        $this->assertTrue( $dir->dirExists() );
 
-        $this->assertSame( $mock, $mock->setPath("") );
-        $this->assertNull( $mock->getRawDir() );
-        $this->assertNull( $mock->getPath() );
-        $this->assertFalse( $mock->dirExists() );
+        $this->assertSame( $dir, $dir->setPath("") );
+        $this->assertNull( $dir->getRawDir() );
+        $this->assertNull( $dir->getPath() );
+        $this->assertFalse( $dir->dirExists() );
 
-        $this->assertSame( $mock, $mock->setPath("c:\\path\\to\\\\dir\\\\") );
-        $this->assertSame( "c:/path/to/dir/", $mock->getRawDir() );
-        $this->assertSame( "c:/path/to/dir/", $mock->getPath() );
-        $this->assertTrue( $mock->dirExists() );
+        $this->assertSame( $dir, $dir->setPath("c:\\path\\to\\\\dir\\\\") );
+        $this->assertSame( "c:/path/to/dir/", $dir->getRawDir() );
+        $this->assertSame( "c:/path/to/dir/", $dir->getPath() );
+        $this->assertTrue( $dir->dirExists() );
     }
 
     public function testExists ()
     {
-        $mock = new ::cPHP::FileSystem::Dir;
+        $dir = new ::cPHP::FileSystem::Dir;
 
-        $mock->setPath( __DIR__ );
-        $this->assertTrue( $mock->exists() );
+        $dir->setPath( __DIR__ );
+        $this->assertTrue( $dir->exists() );
 
-        $mock->setPath( __FILE__ );
-        $this->assertFalse( $mock->exists() );
+        $dir->setPath( __FILE__ );
+        $this->assertFalse( $dir->exists() );
 
-        $mock->setPath( "/this/is/not/a/real/path" );
-        $this->assertFalse( $mock->exists() );
+        $dir->setPath( "/this/is/not/a/real/path" );
+        $this->assertFalse( $dir->exists() );
     }
 
     public function testGetBasename ()
     {
-        $mock = new ::cPHP::FileSystem::Dir;
-        $this->assertNull( $mock->getBasename() );
+        $dir = new ::cPHP::FileSystem::Dir;
+        $this->assertNull( $dir->getBasename() );
 
-        $mock->setPath( "/dir/to/path" );
-        $this->assertSame( "path", $mock->getBasename() );
+        $dir->setPath( "/dir/to/path" );
+        $this->assertSame( "path", $dir->getBasename() );
 
-        $mock->setDir( "/This/is/aPath/" );
-        $this->assertSame( "aPath", $mock->getBasename() );
+        $dir->setDir( "/This/is/aPath/" );
+        $this->assertSame( "aPath", $dir->getBasename() );
 
-        $mock->clearDir();
-        $this->assertNull( $mock->getBasename() );
+        $dir->clearDir();
+        $this->assertNull( $dir->getBasename() );
     }
 
     public function testIncludeDotsAccessors ()
     {
-        $mock = new ::cPHP::FileSystem::Dir;
-        $this->assertTrue( $mock->getIncludeDots() );
+        $dir = new ::cPHP::FileSystem::Dir;
+        $this->assertTrue( $dir->getIncludeDots() );
 
-        $this->assertSame( $mock, $mock->setIncludeDots(FALSE) );
-        $this->assertFalse( $mock->getIncludeDots() );
+        $this->assertSame( $dir, $dir->setIncludeDots(FALSE) );
+        $this->assertFalse( $dir->getIncludeDots() );
 
-        $this->assertSame( $mock, $mock->setIncludeDots(TRUE) );
-        $this->assertTrue( $mock->getIncludeDots() );
+        $this->assertSame( $dir, $dir->setIncludeDots(TRUE) );
+        $this->assertTrue( $dir->getIncludeDots() );
 
-        $this->assertSame( $mock, $mock->setIncludeDots(null) );
-        $this->assertFalse( $mock->getIncludeDots() );
+        $this->assertSame( $dir, $dir->setIncludeDots(null) );
+        $this->assertFalse( $dir->getIncludeDots() );
 
-        $this->assertSame( $mock, $mock->setIncludeDots("string") );
-        $this->assertTrue( $mock->getIncludeDots() );
+        $this->assertSame( $dir, $dir->setIncludeDots("string") );
+        $this->assertTrue( $dir->getIncludeDots() );
     }
 
     public function testIteration_missing ()
     {
-        $mock = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
 
         try {
-            foreach( $mock AS $item ) {}
+            foreach( $dir AS $item ) {}
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
@@ -139,28 +139,20 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testIteration_noRewind ()
     {
-        $mock = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
 
         try {
-            $mock->current();
+            $dir->current();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
-        $this->assertFalse( $mock->valid() );
+        $this->assertFalse( $dir->valid() );
 
         try {
-            $mock->current();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( ::cPHP::Exception::Interaction $err ) {
-            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
-        }
-
-        try {
-            $mock->key();
+            $dir->current();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Interaction $err ) {
@@ -168,7 +160,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
         }
 
         try {
-            $mock->hasChildren();
+            $dir->key();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Interaction $err ) {
@@ -176,7 +168,15 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
         }
 
         try {
-            $mock->getChildren();
+            $dir->hasChildren();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+        try {
+            $dir->getChildren();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::Interaction $err ) {
