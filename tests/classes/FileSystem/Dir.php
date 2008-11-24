@@ -124,6 +124,67 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
         $this->assertTrue( $mock->getIncludeDots() );
     }
 
+    public function testIteration_missing ()
+    {
+        $mock = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
+
+        try {
+            foreach( $mock AS $item ) {}
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testIteration_noRewind ()
+    {
+        $mock = new ::cPHP::FileSystem::Dir("/path/to/a/dir/that/isnt/real");
+
+        try {
+            $mock->current();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+        $this->assertFalse( $mock->valid() );
+
+        try {
+            $mock->current();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+        try {
+            $mock->key();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+        try {
+            $mock->hasChildren();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+        try {
+            $mock->getChildren();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Interaction $err ) {
+            $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
+        }
+
+    }
+
 }
 
 /**
@@ -250,10 +311,123 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
             else if ( $item instanceof ::cPHP::FileSystem::File)
                 $files[] = $item->getBasename();
 
-            if ( $i >= 9 )
+            $i++;
+            if ( $i >= 10 )
                 $this->fail("Maximum iterations reached");
 
+        }
+
+        $this->assertSame(
+                array(0, 1, 2, 3, 4, 5, 6, 7, 8),
+                $keys
+            );
+
+        // I do it like this because there is no guarantee of the order in which
+        // the directories will appear in
+        $this->assertContains("first", $dirs);
+        $this->assertContains("second", $dirs);
+        $this->assertContains("third", $dirs);
+        $this->assertContains(".", $dirs);
+        $this->assertContains("..", $dirs);
+        $this->assertSame( 5, count($dirs) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertSame( 4, count($files) );
+    }
+
+    public function testIteration_twice ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+
+        // Iterate through it once
+        $i = 0;
+        foreach ( $dir AS $key => $item ) {
             $i++;
+            if ( $i >= 10 )
+                $this->fail("Maximum iterations reached");
+        }
+
+        $this->assertSame( 9, $i );
+
+
+        // Ensure we can do it again
+        $files = array();
+        $dirs = array();
+        $keys = array();
+        $i = 0;
+
+        foreach ( $dir AS $key => $item ) {
+
+            $keys[] = $key;
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+            $i++;
+            if ( $i >= 10 )
+                $this->fail("Maximum iterations reached");
+
+        }
+
+        $this->assertSame(
+                array(0, 1, 2, 3, 4, 5, 6, 7, 8),
+                $keys
+            );
+
+        // I do it like this because there is no guarantee of the order in which
+        // the directories will appear in
+        $this->assertContains("first", $dirs);
+        $this->assertContains("second", $dirs);
+        $this->assertContains("third", $dirs);
+        $this->assertContains(".", $dirs);
+        $this->assertContains("..", $dirs);
+        $this->assertSame( 5, count($dirs) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertSame( 4, count($files) );
+    }
+
+
+    public function testIteration_break ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+
+        // Iterate through it once and break before iteration completes
+        $i = 0;
+        foreach ( $dir AS $key => $item ) {
+            $i++;
+            if ( $i >= 3 )
+                break;
+        }
+
+
+        // Ensure we can do it again
+        $files = array();
+        $dirs = array();
+        $keys = array();
+        $i = 0;
+
+        foreach ( $dir AS $key => $item ) {
+
+            $keys[] = $key;
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+            $i++;
+            if ( $i >= 10 )
+                $this->fail("Maximum iterations reached");
+
         }
 
         $this->assertSame(
@@ -296,10 +470,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
             else if ( $item instanceof ::cPHP::FileSystem::File)
                 $files[] = $item->getBasename();
 
-            if ( $i >= 7 )
+            $i++;
+            if ( $i >= 8 )
                 $this->fail("Maximum iterations reached");
 
-            $i++;
         }
 
         $this->assertSame(
@@ -321,6 +495,20 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertSame( 4, count($files) );
     }
 
+    public function testIteration_NoPerms ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        chmod( $dir, 0000 );
+
+        try {
+            foreach( $dir AS $item ) {}
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to open directory for iteration", $err->getMessage() );
+        }
+    }
+
     public function testRecursiveIteration ()
     {
         $dir = new ::cPHP::FileSystem::Dir( $this->dir );
@@ -339,10 +527,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
             else if ( $item instanceof ::cPHP::FileSystem::File)
                 $files[] = $item->getBasename();
 
-            if ( $i >= 30 )
+            $i++;
+            if ( $i >= 21 )
                 $this->fail("Maximum iterations reached");
 
-            $i++;
 
         }
 
@@ -385,10 +573,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
             else if ( $item instanceof ::cPHP::FileSystem::File)
                 $files[] = $item->getBasename();
 
-            if ( $i >= 30 )
+            $i++;
+            if ( $i >= 21 )
                 $this->fail("Maximum iterations reached");
 
-            $i++;
 
         }
 
@@ -405,6 +593,11 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertContains("fourth-one", $files);
         $this->assertContains("fourth-two", $files);
         $this->assertSame( 10, count($files) );
+    }
+
+    public function toArray ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testMake ()

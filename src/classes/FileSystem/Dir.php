@@ -157,22 +157,25 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
         // If the directory is already open, then just rewind it
         if ( $this->hasResource() ) {
             rewinddir( $this->resource );
-            return $this;
         }
 
-        $this->requirePath();
+        // Otherwise, open a new resource
+        else {
 
-        $resource = @opendir( $this->getPath() );
+            $this->requirePath();
 
-        if ( $resource === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
-                    $this->getPath(),
-                    "Unable to open directory for iteration"
-                );
-            throw $err;
+            $resource = @opendir( $this->getPath() );
+
+            if ( $resource === FALSE ) {
+                $err = new ::cPHP::Exception::FileSystem(
+                        $this->getPath(),
+                        "Unable to open directory for iteration"
+                    );
+                throw $err;
+            }
+
+            $this->resource = $resource;
         }
-
-        $this->resource = $resource;
 
         // Reset the internal pointer offset
         $this->pointer = -1;
@@ -191,6 +194,9 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function next ()
     {
+        if ( !$this->hasResource() )
+            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+
         $this->pointer++;
 
         // Continue looping if we are excluding dots and the current resource IS a dot
@@ -231,7 +237,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function current ()
     {
         if ( !$this->hasResource() )
-            return FALSE;
+            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
 
         $current = $this->getRawDir() . $this->current;
 
@@ -249,7 +255,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function key ()
     {
         if ( !$this->hasResource() )
-            $this->rewind();
+            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
 
         return $this->pointer;
     }
@@ -263,7 +269,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function hasChildren ()
     {
         if ( !$this->hasResource() )
-            return FALSE;
+            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
 
         if ( $this->current == ".." || $this->current == "." )
             return FALSE;
@@ -278,6 +284,9 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function getChildren ()
     {
+        if ( !$this->hasResource() )
+            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+
         if ( !$this->hasChildren() )
             throw new ::cPHP::Exception::Interaction("Current value does not have children");
 
