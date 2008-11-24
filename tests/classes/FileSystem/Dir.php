@@ -106,6 +106,24 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
         $this->assertNull( $mock->getBasename() );
     }
 
+    public function testIncludeDotsAccessors ()
+    {
+        $mock = new ::cPHP::FileSystem::Dir;
+        $this->assertTrue( $mock->getIncludeDots() );
+
+        $this->assertSame( $mock, $mock->setIncludeDots(FALSE) );
+        $this->assertFalse( $mock->getIncludeDots() );
+
+        $this->assertSame( $mock, $mock->setIncludeDots(TRUE) );
+        $this->assertTrue( $mock->getIncludeDots() );
+
+        $this->assertSame( $mock, $mock->setIncludeDots(null) );
+        $this->assertFalse( $mock->getIncludeDots() );
+
+        $this->assertSame( $mock, $mock->setIncludeDots("string") );
+        $this->assertTrue( $mock->getIncludeDots() );
+    }
+
 }
 
 /**
@@ -259,6 +277,50 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertSame( 4, count($files) );
     }
 
+    public function testIteration_NoDots ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        $dir->setIncludeDots( FALSE );
+
+        $files = array();
+        $dirs = array();
+        $keys = array();
+        $i = 0;
+
+        foreach ( $dir AS $key => $item ) {
+
+            $keys[] = $key;
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+            if ( $i >= 7 )
+                $this->fail("Maximum iterations reached");
+
+            $i++;
+        }
+
+        $this->assertSame(
+                array(0, 1, 2, 3, 4, 5, 6),
+                $keys
+            );
+
+        // I do it like this because there is no guarantee of the order in which
+        // the directories will appear in
+        $this->assertContains("first", $dirs);
+        $this->assertContains("second", $dirs);
+        $this->assertContains("third", $dirs);
+        $this->assertSame( 3, count($dirs) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertSame( 4, count($files) );
+    }
+
     public function testRecursiveIteration ()
     {
         $dir = new ::cPHP::FileSystem::Dir( $this->dir );
@@ -290,6 +352,47 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertContains("..", $dirs);
         $this->assertSame( 10, count($dirs) );
         $this->assertSame( 2, count( array_unique($dirs) ) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertContains("second-one", $files);
+        $this->assertContains("third-one", $files);
+        $this->assertContains("third-two", $files);
+        $this->assertContains("third-three", $files);
+        $this->assertContains("fourth-one", $files);
+        $this->assertContains("fourth-two", $files);
+        $this->assertSame( 10, count($files) );
+    }
+
+    public function testRecursiveIteration_noDots ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        $dir->setIncludeDots( FALSE );
+
+        $files = array();
+        $dirs = array();
+        $keys = array();
+        $i = 0;
+
+        foreach ( new RecursiveIteratorIterator($dir) AS $key => $item ) {
+
+            $keys[] = $key;
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+            if ( $i >= 30 )
+                $this->fail("Maximum iterations reached");
+
+            $i++;
+
+        }
+
+        $this->assertSame( 0, count($dirs) );
 
         $this->assertContains("one", $files);
         $this->assertContains("two", $files);

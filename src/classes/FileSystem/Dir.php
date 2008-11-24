@@ -54,6 +54,11 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     private $current;
 
     /**
+     * Whether or not to include ".." and "." when iterating
+     */
+    private $includeDots = TRUE;
+
+    /**
      * Destructor...
      *
      * Ensures that the directory iteration resource is properly closed
@@ -106,6 +111,30 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
             return basename( $this->getRawDir() );
         else
             return null;
+    }
+
+    /**
+     * Returns whether "." and ".." will be included during iteration.
+     *
+     * This defaults to true
+     *
+     * @return Boolean
+     */
+    public function getIncludeDots ()
+    {
+        return $this->includeDots;
+    }
+
+    /**
+     * Sets whether "." and ".." will be included during iteration.
+     *
+     * @param Boolean $include Whether to include the dots
+     * @return Object Returns a self reference
+     */
+    public function setIncludeDots ( $include )
+    {
+        $this->includeDots = $include ? TRUE : FALSE;
+        return $this;
     }
 
     /**
@@ -163,7 +192,12 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function next ()
     {
         $this->pointer++;
-        $this->current = readdir( $this->resource );
+
+        // Continue looping if we are excluding dots and the current resource IS a dot
+        do {
+            $this->current = readdir( $this->resource );
+        } while ( !$this->includeDots && ( $this->current == "." || $this->current == ".." ) );
+
         return $this;
     }
 
@@ -247,7 +281,13 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
         if ( !$this->hasChildren() )
             throw new ::cPHP::Exception::Interaction("Current value does not have children");
 
-        return $this->current();
+        // Grab the current item as a cPHP::FileSystem::Dir object
+        $current = $this->current();
+
+        // Import the 'includeDots' setting
+        $current->setIncludeDots( $this->includeDots );
+
+        return $current;
     }
 
 }
