@@ -253,13 +253,25 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
     protected $file;
 
     /**
+     * Returns the name of a temporary file
+     *
+     * This does not create the file, it mearly returns a unique, temporary path
+     *
+     * @return string
+     */
+    public function getTempFileName ()
+    {
+        return rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_unitTest_". uniqid();
+    }
+
+    /**
      * Setup creates the file
      */
     public function setUp ()
     {
-        $this->file = tempnam( sys_get_temp_dir(), "cPHP_unitTest_" );
+        $this->file = $this->getTempFileName();
 
-        if ( $this->file === FALSE )
+        if ( !@touch( $this->file ) )
             $this->markTestSkipped("Unable to create temporary file");
     }
 
