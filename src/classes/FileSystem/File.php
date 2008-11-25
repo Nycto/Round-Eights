@@ -320,7 +320,7 @@ class File extends ::cPHP::FileSystem
         if ( $result === FALSE ) {
             $err = new ::cPHP::Exception::FileSystem(
                     $this->getPath(),
-                    "Unable read data from file"
+                    "Unable to read data from file"
                 );
             throw $err;
         }
@@ -390,6 +390,32 @@ class File extends ::cPHP::FileSystem
             $result = strstr( $result, " ", TRUE );
 
         return $result;
+    }
+
+    /**
+     * Copies this file to a new location
+     *
+     * @param String $destination The new location for the file
+     * @return Object Returns a new instance of cPHP::FileSystem::File with the
+     *      path pointing to the new file
+     */
+    public function copy ( $destination )
+    {
+        $this->requirePath();
+
+        $destination = ::cPHP::strval($destination);
+
+        $result = @copy( $this->getPath(), $destination );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to copy file"
+                );
+            throw $err;
+        }
+
+        return new self( $destination );
     }
 
 }

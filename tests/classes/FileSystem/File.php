@@ -343,7 +343,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
-            $this->assertSame( "Unable read data from file", $err->getMessage() );
+            $this->assertSame( "Unable to read data from file", $err->getMessage() );
         }
 
 
@@ -421,7 +421,57 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testCopy ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $newPath = $this->getTempFileName();
+
+        $copied = $mock->copy( $newPath );
+
+        $this->assertThat( $copied, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertNotSame( $mock, $copied );
+
+        $this->assertSame( $newPath, $copied->getPath() );
+
+        $this->assertTrue( is_file( $this->file ) );
+        $this->assertTrue( is_file( $newPath ) );
+
+        $this->assertSame(
+                "This is a string\nof data that is put\nin the test file",
+                file_get_contents( $this->file )
+            );
+
+        $this->assertSame(
+                "This is a string\nof data that is put\nin the test file",
+                file_get_contents( $newPath )
+            );
+    }
+
+    public function testCopy_missing ()
+    {
+
+        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        try {
+            $mock->copy( "/some/new/location" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testCopy_noPerms ()
+    {
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+
+        chmod( $this->file, 0000 );
+
+        try {
+            $mock->copy( $this->getTempFileName() );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to copy file", $err->getMessage() );
+        }
+        
     }
 
     public function testMove ()
