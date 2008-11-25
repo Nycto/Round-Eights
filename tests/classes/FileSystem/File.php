@@ -471,12 +471,37 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         catch ( ::cPHP::Exception::FileSystem $err ) {
             $this->assertSame( "Unable to copy file", $err->getMessage() );
         }
-        
+
     }
 
     public function testMove ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $newPath = $this->getTempFileName();
+
+        $this->assertSame( $mock, $mock->move( $newPath ) );
+
+        $this->assertSame( $newPath, $mock->getPath() );
+
+        $this->assertFalse( is_file( $this->file ) );
+        $this->assertTrue( is_file( $newPath ) );
+
+        $this->assertSame(
+                "This is a string\nof data that is put\nin the test file",
+                file_get_contents( $newPath )
+            );
+    }
+
+    public function testMove_missing ()
+    {
+        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        try {
+            $mock->move( $this->getTempFileName() );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
     }
 
 }

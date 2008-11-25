@@ -418,6 +418,35 @@ class File extends ::cPHP::FileSystem
         return new self( $destination );
     }
 
+    /**
+     * Moves this file to a new location
+     *
+     * On success, this will automatically update the path in this instance
+     *
+     * @param String $destination The new location for the file
+     * @return Object Returns a self reference
+     */
+    public function move ( $destination )
+    {
+        $this->requirePath();
+
+        $destination = ::cPHP::strval($destination);
+
+        $result = @rename( $this->getPath(), $destination );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to move file"
+                );
+            throw $err;
+        }
+
+        $this->setPath( $destination );
+
+        return $this;
+    }
+
 }
 
 ?>
