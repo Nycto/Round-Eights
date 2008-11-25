@@ -388,7 +388,18 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetMimeType ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $mock = new ::cPHP::FileSystem::File;
+
+        try {
+            $mock->getMimeType();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+
+        $mock->setPath( $this->file );
+
         $this->assertSame( "text/plain", $mock->getMimeType() );
 
         // Copy the contents of a gif in to the file
