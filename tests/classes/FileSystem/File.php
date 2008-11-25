@@ -376,7 +376,9 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testTruncate ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( $mock, $mock->truncate() );
+        $this->assertSame( "", file_get_contents($this->file) );
     }
 
     public function testDelete ()

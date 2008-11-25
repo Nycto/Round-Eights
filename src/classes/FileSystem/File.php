@@ -339,6 +339,16 @@ class File extends ::cPHP::FileSystem
         return filesize( $this->getPath() );
     }
 
+    /**
+     * Removes all the content from a file
+     *
+     * @return Object Returns a self reference
+     */
+    public function truncate ()
+    {
+        return $this->set("");
+    }
+
 }
 
 ?>
