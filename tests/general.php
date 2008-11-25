@@ -248,6 +248,12 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
 {
 
     /**
+     * This is a list of all the files created with getTempFileName. They will
+     * automatically be removed on teardown
+     */
+    private $cleanup = array();
+
+    /**
      * The name of the temporary file
      */
     protected $file;
@@ -261,7 +267,9 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
      */
     public function getTempFileName ()
     {
-        return rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_unitTest_". uniqid();
+        $result = rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_unitTest_". uniqid();
+        $this->cleanup[] = $result;
+        return $result;
     }
 
     /**
@@ -280,9 +288,18 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
      */
     public function tearDown ()
     {
-        // Fix the permissions so we can delete it
-        @chmod($this->file, 0600);
-        @unlink( $this->file );
+        foreach ( $this->cleanup AS $file ) {
+
+            if ( file_exists($file) ) {
+
+                // Fix the permissions so we can delete it
+                if ( !is_writable($file) )
+                    @chmod($file, 0600);
+
+                @unlink( $file );
+
+            }
+        }
     }
 
 }
