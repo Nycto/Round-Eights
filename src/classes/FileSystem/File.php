@@ -349,6 +349,30 @@ class File extends ::cPHP::FileSystem
         return $this->set("");
     }
 
+    /**
+     * Returns the mime type of this file
+     *
+     * @return String
+     */
+    public function getMimeType ()
+    {
+        $this->requirePath();
+
+        $finfo = finfo_open(FILEINFO_MIME);
+
+        if ( $finfo === FALSE )
+            throw new ::cPHP::Exception::Extension( "Unable to open finfo database" );
+
+        $result = finfo_file( $finfo, $this->getPath() );
+
+        finfo_close( $finfo );
+
+        if ( ::cPHP::str::contains(" ", $result) )
+            $result = strstr( $result, " ", TRUE );
+
+        return $result;
+    }
+
 }
 
 ?>

@@ -386,9 +386,20 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         $this->markTestIncomplete("To be written");
     }
 
-    public function getMimeType ()
+    public function testGetMimeType ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( "text/plain", $mock->getMimeType() );
+
+        // Copy the contents of a gif in to the file
+        file_put_contents(
+                $this->file,
+                base64_decode("R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="),
+                FILE_BINARY
+            );
+
+        $this->assertSame( "image/gif", $mock->getMimeType() );
+
     }
 
 }
