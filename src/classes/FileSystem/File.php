@@ -350,6 +350,25 @@ class File extends ::cPHP::FileSystem
     }
 
     /**
+     * Deletes this file from the filesystem
+     *
+     * @return Object Returns a self reference
+     */
+    public function delete ()
+    {
+        // We don't need to delete it if it doesn't exist
+        if ( !$this->exists() )
+            return $this;
+
+        if ( !@unlink( $this->getPath() ) ) {
+            $err = new ::cPHP::Exception::FileSystem( $this->getPath(), "Unable to delete file" );
+            throw $err;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the mime type of this file
      *
      * @return String

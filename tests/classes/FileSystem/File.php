@@ -383,7 +383,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testDelete ()
     {
-        $this->markTestIncomplete("To be written");
+        $mock = new ::cPHP::FileSystem::File( $this->file );
+
+        $this->assertSame( $mock, $mock->delete() );
+
+        if ( file_exists($this->file) )
+            $this->fail("File deletion failed");
+
+        $this->assertSame( $mock, $mock->delete() );
     }
 
     public function testGetMimeType ()
@@ -394,7 +401,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             $mock->getMimeType();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
 
