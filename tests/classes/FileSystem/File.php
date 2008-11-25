@@ -417,7 +417,16 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             );
 
         $this->assertSame( "image/gif", $mock->getMimeType() );
+    }
 
+    public function testCopy ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testMove ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
 }
