@@ -473,7 +473,28 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testDelete ()
     {
-        $this->markTestIncomplete("To be written");
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir ."/first" );
+
+        $this->assertSame( $dir, $dir->delete() );
+        $this->assertFalse( is_dir($dir) );
+
+        $this->assertSame( $dir, $dir->delete() );
+        $this->assertFalse( is_dir($dir) );
+    }
+
+    public function testDelete_filled ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+
+        try {
+            $dir->delete();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to delete directory", $err->getMessage() );
+        }
+
+        $this->assertTrue( is_dir($dir) );
     }
 
     public function testGetUniqueFile ()

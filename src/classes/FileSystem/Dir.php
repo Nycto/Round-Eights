@@ -247,6 +247,36 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
+     * Deletes this directory
+     *
+     * This will NOT delete a directory if it contains any files or subdirectories.
+     * This is a safety feature to help you avoid blowing off your foot. If you
+     * want to delete a full directory, you can chain together this method
+     * with the "purge()" method.
+     *
+     * @return Object Returns a self reference
+     */
+    public function delete ()
+    {
+        $path = $this->getRawDir();
+
+        if ( !is_dir( $path ) )
+            return $this;
+
+        $result = @rmdir( $path );
+
+        if ( $result === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $path,
+                    "Unable to delete directory"
+                );
+            throw $err;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true
