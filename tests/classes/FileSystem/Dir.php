@@ -424,7 +424,51 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testPurge ()
     {
-        $this->markTestIncomplete("To be written");
+        $dir = new ::cPHP::FileSystem::Dir;
+
+        try {
+            $dir->purge();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+            $this->assertSame( "Path does not exist", $err->getMessage() );
+        }
+
+        $dir->setDir( $this->dir );
+
+        $this->assertSame( $dir, $dir->purge() );
+        $this->assertTrue( is_dir( $this->dir) );
+
+        $content = glob( $this->dir ."/*" );
+        $this->assertSame( array(), $content );
+    }
+
+    public function testPurge_cantOpenDir ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        chmod( $this->dir, 0000 );
+
+        try {
+            $dir->purge();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to open directory", $err->getMessage() );
+        }
+    }
+
+    public function testPurge_cantDeleteDir ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        chmod( $this->dir ."/second", 4440 );
+
+        try {
+            $dir->purge();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to delete path", $err->getMessage() );
+        }
     }
 
     public function testDelete ()

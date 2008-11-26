@@ -194,6 +194,59 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
+     * Deletes all the files from in a directory
+     *
+     * @return Object Returns a self reference
+     */
+    public function purge ()
+    {
+        $this->requirePath();
+
+        // Create a lambda method that will be called recursively to delete subdirectories
+        $callback = function ( $dir, $callback ) {
+
+            $dir = rtrim( $dir, "/" ) ."/";
+
+            $resource = @opendir( $dir );
+
+            if ( $resource === FALSE ) {
+                $err = new ::cPHP::Exception::FileSystem( $dir, "Unable to open directory" );
+                throw $err;
+            }
+
+            // Loop through everything in this directory
+            while ( ($item = readdir($resource)) !== FALSE ) {
+
+                if ( $item == "." || $item == "..")
+                    continue;
+
+                // If this is a dir, then delete everything from in it
+                if ( is_dir($dir . $item) ) {
+                    $callback( $dir . $item, $callback );
+                    $result = @rmdir( $dir . $item );
+                }
+
+                else {
+                    $result = @unlink($dir . $item);
+                }
+
+                if ( $result === FALSE ) {
+                    $err = new ::cPHP::Exception::FileSystem( $dir . $item, "Unable to delete path" );
+                    throw $err;
+                }
+
+            }
+
+            closedir( $resource );
+
+        };
+
+        $callback( $this->getPath(), $callback );
+
+        return $this;
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true
