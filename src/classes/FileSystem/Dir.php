@@ -277,6 +277,46 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
+     * Returns the name of a file that doesn't yet exist in this directory
+     *
+     * Without a prefix or extension, this will create a filename 15 characters
+     * long. If you change the $moreEntropy flag to true, the result will be
+     * 25 characters
+     *
+     * @param String $prefix A prefix to attach to the file name
+     * @param String $extension The extension the file should have
+     * @param Boolean $moreEntropy Increases the length of the generated filename
+     * @return Object Returns a cPHP::FileSystem::File object
+     */
+    public function getUniqueFile ( $prefix = null, $extension = null, $moreEntropy = FALSE )
+    {
+        if ( !$this->dirExists() )
+            throw new ::cPHP::Exception::Variable("Dir", "No directory has been set for this instance");
+
+        $file = new ::cPHP::FileSystem::File;
+        $file->setDir( $this->getRawDir() );
+
+        if ( !::cPHP::isVague($extension) )
+            $file->setExt( $extension );
+
+        $prefix = ::cPHP::isVague($prefix) ? null : ::cPHP::strval( $prefix );
+        $moreEntropy = ::cPHP::boolVal( $moreEntropy );
+
+        do {
+
+            if ( $moreEntropy )
+                $uniq = md5( uniqid(null, true) );
+            else
+                $uniq = substr( md5( uniqid() ), 0, 15 );
+
+            $file->setFileName( $prefix . $uniq );
+
+        } while ( $file->exists() );
+
+        return $file;
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true

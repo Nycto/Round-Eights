@@ -106,6 +106,71 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
         $this->assertNull( $dir->getBasename() );
     }
 
+    public function testGetUniqueFile ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( sys_get_temp_dir() );
+
+        // No settings
+        $file = $dir->getUniqueFile();
+
+        $this->assertThat( $file, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
+        $this->assertFalse( $file->extExists() );
+
+        $this->assertSame( 15, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^[a-z0-9]{15}$/i', $file->getFileName() );
+
+        $this->assertFalse( $file->exists() );
+    }
+
+    public function testGetUniqueFile_prefix ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( sys_get_temp_dir() );
+
+        $file = $dir->getUniqueFile("cPHP_");
+
+        $this->assertThat( $file, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
+        $this->assertFalse( $file->extExists() );
+
+        $this->assertSame( 20, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^cPHP_[a-z0-9]{15}$/i', $file->getFileName() );
+
+        $this->assertFalse( $file->exists() );
+    }
+
+    public function testGetUniqueFile_ext ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( sys_get_temp_dir() );
+
+        $file = $dir->getUniqueFile( null, "php" );
+
+        $this->assertThat( $file, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
+        $this->assertSame( "php", $file->getExt() );
+
+        $this->assertSame( 15, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^[a-z0-9]{15}$/i', $file->getFileName() );
+
+        $this->assertFalse( $file->exists() );
+    }
+
+    public function testGetUniqueFile_moreEntropy ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( sys_get_temp_dir() );
+
+        $file = $dir->getUniqueFile( "cPHP_", "php", TRUE );
+
+        $this->assertThat( $file, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
+        $this->assertSame( "php", $file->getExt() );
+
+        $this->assertSame( 37, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^cPHP_[a-z0-9]{32}$/i', $file->getFileName() );
+
+        $this->assertFalse( $file->exists() );
+    }
+
     public function testIncludeDotsAccessors ()
     {
         $dir = new ::cPHP::FileSystem::Dir;
@@ -495,11 +560,6 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue( is_dir($dir) );
-    }
-
-    public function testGetUniqueFile ()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
     public function testIteration ()
