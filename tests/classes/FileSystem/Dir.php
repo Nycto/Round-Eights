@@ -389,7 +389,27 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testMake ()
     {
-        $this->markTestIncomplete("To be written");
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir ."/this/is/a/new/dir" );
+
+        $this->assertSame( $dir, $dir->make() );
+        $this->assertTrue( is_dir($this->dir ."/this/is/a/new/dir") );
+
+        $this->assertSame( $dir, $dir->make() );
+        $this->assertTrue( is_dir($this->dir ."/this/is/a/new/dir") );
+    }
+
+    public function testMake_noPerms ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir ."/this/is/a/new/dir" );
+        chmod( $this->dir, 0000 );
+
+        try {
+            $dir->make();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::FileSystem $err ) {
+            $this->assertSame( "Unable to create directory", $err->getMessage() );
+        }
     }
 
     public function testPurge ()

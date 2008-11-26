@@ -168,6 +168,29 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
+     * Creates the current directory recursively
+     *
+     * @return Object Returns a self reference
+     */
+    public function make ()
+    {
+        $path = $this->getPath();
+
+        if ( is_dir($path) )
+            return $this;
+
+        if ( @mkdir( $this->getPath(), 0777, TRUE ) === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to create directory"
+                );
+            throw $err;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true
