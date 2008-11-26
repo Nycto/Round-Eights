@@ -124,6 +124,50 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     }
 
     /**
+     * Returns an array of the contents of this directory
+     *
+     * @return Object Returns a cPHP::Ary object
+     */
+    public function toArray ()
+    {
+        $this->requirePath();
+
+        $resource = @opendir( $this->getPath() );
+
+        if ( $resource === FALSE ) {
+            $err = new ::cPHP::Exception::FileSystem(
+                    $this->getPath(),
+                    "Unable to open directory"
+                );
+            throw $err;
+        }
+
+        $path = $this->getPath();
+
+        $result = new ::cPHP::Ary;
+
+        while ( ($item = readdir($resource)) !== FALSE ) {
+
+            // Respect the include Dots option
+            if ( !$this->includeDots && ( $item == "." || $item == "..") )
+                continue;
+
+            $item = $path . $item;
+
+            if ( is_dir( $item ) )
+                $result[] = new ::cPHP::FileSystem::Dir( $item );
+            else
+                $result[] = new ::cPHP::FileSystem::File( $item );
+
+        }
+
+        closedir( $resource );
+
+        return $result;
+
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true

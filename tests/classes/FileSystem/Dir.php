@@ -304,6 +304,109 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->delete( $this->dir );
     }
 
+    public function testToArray ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+
+        $list = $dir->toArray();
+
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(0, 1, 2, 3, 4, 5, 6, 7, 8),
+                $list->keys()->get()
+            );
+
+
+        $files = array();
+        $dirs = array();
+
+        foreach ( $list AS $item ) {
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+        }
+
+        // I do it like this because there is no guarantee of the order in which
+        // the directories will appear in
+        $this->assertContains("first", $dirs);
+        $this->assertContains("second", $dirs);
+        $this->assertContains("third", $dirs);
+        $this->assertContains(".", $dirs);
+        $this->assertContains("..", $dirs);
+        $this->assertSame( 5, count($dirs) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertSame( 4, count($files) );
+    }
+
+    public function testToArray_noDots ()
+    {
+        $dir = new ::cPHP::FileSystem::Dir( $this->dir );
+        $dir->setIncludeDots(FALSE);
+
+        $list = $dir->toArray();
+
+        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(0, 1, 2, 3, 4, 5, 6),
+                $list->keys()->get()
+            );
+
+
+        $files = array();
+        $dirs = array();
+
+        foreach ( $list AS $item ) {
+
+            if ( $item instanceof ::cPHP::FileSystem::Dir)
+                $dirs[] = $item->getBasename();
+
+            else if ( $item instanceof ::cPHP::FileSystem::File)
+                $files[] = $item->getBasename();
+
+        }
+
+        // I do it like this because there is no guarantee of the order in which
+        // the directories will appear in
+        $this->assertContains("first", $dirs);
+        $this->assertContains("second", $dirs);
+        $this->assertContains("third", $dirs);
+        $this->assertSame( 3, count($dirs) );
+
+        $this->assertContains("one", $files);
+        $this->assertContains("two", $files);
+        $this->assertContains("three", $files);
+        $this->assertContains("four", $files);
+        $this->assertSame( 4, count($files) );
+    }
+
+    public function testMake ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testPurge ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testDelete ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetUniqueFile ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testIteration ()
     {
         $dir = new ::cPHP::FileSystem::Dir( $this->dir );
@@ -604,31 +707,6 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
         $this->assertContains("fourth-one", $files);
         $this->assertContains("fourth-two", $files);
         $this->assertSame( 10, count($files) );
-    }
-
-    public function testToArray ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
-    public function testMake ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
-    public function testPurge ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
-    public function testDelete ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
-    public function testGetUniqueFile ()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
 }
