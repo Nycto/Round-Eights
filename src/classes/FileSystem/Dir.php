@@ -174,14 +174,17 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      */
     public function make ()
     {
-        $path = $this->getPath();
+        if ( !$this->dirExists() )
+            throw new ::cPHP::Exception::Variable("Path", "No Path has been set");
+
+        $path = $this->getRawDir();
 
         if ( is_dir($path) )
             return $this;
 
-        if ( @mkdir( $this->getPath(), 0777, TRUE ) === FALSE ) {
+        if ( @mkdir( $path, 0777, TRUE ) === FALSE ) {
             $err = new ::cPHP::Exception::FileSystem(
-                    $this->getPath(),
+                    $path,
                     "Unable to create directory"
                 );
             throw $err;

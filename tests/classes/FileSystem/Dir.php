@@ -389,7 +389,17 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testMake ()
     {
-        $dir = new ::cPHP::FileSystem::Dir( $this->dir ."/this/is/a/new/dir" );
+        $dir = new ::cPHP::FileSystem::Dir;
+
+        try {
+            $dir->make();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( ::cPHP::Exception::Variable $err ) {
+            $this->assertSame( "No Path has been set", $err->getMessage() );
+        }
+
+        $dir->setDir( $this->dir ."/this/is/a/new/dir" );
 
         $this->assertSame( $dir, $dir->make() );
         $this->assertTrue( is_dir($this->dir ."/this/is/a/new/dir") );
