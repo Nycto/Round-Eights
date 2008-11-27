@@ -562,6 +562,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->dirExists() );
         $this->assertNull( $uri->getDir() );
     }
+
+    public function testFilenameAccessors ()
+    {
+        $uri = new cPHP::URL;
+        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertNull( $uri->getFilename() );
+
+        $this->assertSame( $uri, $uri->setFilename("filenm") );
+        $this->assertTrue( $uri->FilenameExists() );
+        $this->assertSame( "filenm", $uri->getFilename() );
+
+        $this->assertSame( $uri, $uri->clearFilename() );
+        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertNull( $uri->getFilename() );
+
+        $this->assertSame( $uri, $uri->setFilename("Filename.2008") );
+        $this->assertTrue( $uri->FilenameExists() );
+        $this->assertSame( "Filename.2008", $uri->getFilename() );
+
+        $this->assertSame( $uri, $uri->setFilename("  ") );
+        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertNull( $uri->getFilename() );
+    }
+
 }
 
 ?>

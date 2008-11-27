@@ -627,6 +627,51 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the filename, if there is one
+     *
+     * @return String|Null Returns null if no filename has been set
+     */
+    public function getFilename ()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Sets the filename
+     *
+     * @param String $filename The new filename
+     * @return Object Returns a self reference
+     */
+    public function setFilename ( $filename )
+    {
+        $filename = trim(::cPHP::strval( $filename ));
+        $filename = rtrim( $filename, "." );
+        $this->filename = ::cPHP::isEmpty( $filename ) ? null : $filename;
+        return $this;
+    }
+
+    /**
+     * Returns whether a filename has been set
+     *
+     * @return Boolean
+     */
+    public function filenameExists ()
+    {
+        return isset( $this->filename );
+    }
+
+    /**
+     * Clears the filename
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFilename ()
+    {
+        $this->filename = null;
+        return $this;
+    }
+
 }
 
 ?>
