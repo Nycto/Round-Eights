@@ -766,6 +766,50 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the path represented by this instance
+     *
+     * @return String The full path
+     */
+    public function getPath ()
+    {
+        if ( !$this->dirExists() && !$this->filenameExists() )
+            return null;
+
+        return
+            ( $this->dirExists() ? $this->getDir() : "" )
+            .$this->getBasename();
+    }
+
+    /**
+     * Sets the path that this instance represents
+     *
+     * @param String $path The new path
+     * @return Object Returns a self reference
+     */
+    public function setPath ( $path )
+    {
+        $path = trim(::cPHP::strval( $path ));
+        $path = pathinfo( $path );
+
+        if ( isset($path['dirname']) )
+            $this->setDir($path['dirname']);
+        else
+            $this->clearDir();
+
+        if ( isset($path['filename']) )
+            $this->setFilename($path['filename']);
+        else
+            $this->clearFilename();
+
+        if ( isset($path['extension']) )
+            $this->setExt($path['extension']);
+        else
+            $this->clearExt();
+
+        return $this;
+    }
+
 }
 
 ?>

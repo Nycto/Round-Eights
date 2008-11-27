@@ -608,7 +608,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->extExists() );
         $this->assertNull( $uri->getExt() );
     }
-    
+
     public function testSetBasename ()
     {
         $url = new ::cPHP::URL;
@@ -650,6 +650,72 @@ class classes_url extends PHPUnit_Framework_TestCase
 
         $url->clearFilename();
         $this->assertNull( $url->getBasename() );
+    }
+
+    public function testSetPath ()
+    {
+        $url = new ::cPHP::URL;
+
+        $this->assertSame( $url, $url->setPath("/dir/to/example.php") );
+        $this->assertSame( "/dir/to/", $url->getDir() );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+
+        $this->assertSame( $url, $url->setPath("/dir/to/example.php.BAK") );
+        $this->assertSame( "/dir/to/", $url->getDir() );
+        $this->assertSame( "example.php", $url->getFilename() );
+        $this->assertSame( "BAK", $url->getExt() );
+
+        $this->assertSame( $url, $url->setPath("dir/to/example") );
+        $this->assertSame( "/dir/to/", $url->getDir() );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertNull( $url->getExt() );
+
+        $this->assertSame( $url, $url->setPath("example.php") );
+        $this->assertSame( "/", $url->getDir() );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+
+        $this->assertSame( $url, $url->setPath("example") );
+        $this->assertSame( "/", $url->getDir() );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertNull( $url->getExt() );
+
+        $this->assertSame( $url, $url->setPath("") );
+        $this->assertNull( $url->getDir() );
+        $this->assertNull( $url->getFilename() );
+        $this->assertNull( $url->getExt() );
+    }
+
+    public function testGetPath ()
+    {
+        $url = new ::cPHP::URL;
+
+        $this->assertNull( $url->getPath() );
+
+        $url->setDir("dir/to");
+        $this->assertSame( "/dir/to/", $url->getPath() );
+
+        $url->setDir("/dir/to/");
+        $this->assertSame( "/dir/to/", $url->getPath() );
+
+        $url->setExt("php");
+        $this->assertSame( "/dir/to/", $url->getPath() );
+
+        $url->setFilename("Example");
+        $this->assertSame( "/dir/to/Example.php", $url->getPath() );
+
+        $url->clearExt();
+        $this->assertSame( "/dir/to/Example", $url->getPath() );
+
+        $url->clearDir();
+        $this->assertSame( "Example", $url->getPath() );
+
+        $url->setExt("php");
+        $this->assertSame( "Example.php", $url->getPath() );
+
+        $url->clearFilename()->clearExt();
+        $this->assertNull( $url->getPath() );
     }
 
 }
