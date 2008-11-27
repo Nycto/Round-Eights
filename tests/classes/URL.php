@@ -540,6 +540,28 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $uri->isSameBase() );
     }
 
+    public function testDirAccessors ()
+    {
+        $uri = new cPHP::URL;
+        $this->assertFalse( $uri->dirExists() );
+        $this->assertNull( $uri->getDir() );
+
+        $this->assertSame( $uri, $uri->setDir("/dir/path") );
+        $this->assertTrue( $uri->dirExists() );
+        $this->assertSame( "/dir/path/", $uri->getDir() );
+
+        $this->assertSame( $uri, $uri->clearDir() );
+        $this->assertFalse( $uri->dirExists() );
+        $this->assertNull( $uri->getDir() );
+
+        $this->assertSame( $uri, $uri->setDir("dir/path/") );
+        $this->assertTrue( $uri->dirExists() );
+        $this->assertSame( "/dir/path/", $uri->getDir() );
+
+        $this->assertSame( $uri, $uri->setDir("  ") );
+        $this->assertFalse( $uri->dirExists() );
+        $this->assertNull( $uri->getDir() );
+    }
 }
 
 ?>

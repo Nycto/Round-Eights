@@ -574,6 +574,59 @@ class URL
         return $this->isSameHost() && $this->isSameScheme() && $this->isSamePort();
     }
 
+    /**
+     * Returns the value of the directory
+     *
+     * @return String|Null Returns null if the directory isn't set
+     */
+    public function getDir ()
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Sets the directory
+     *
+     * @param String $directory The directory to set
+     * @return Object Returns a self reference
+     */
+    public function setDir ( $directory )
+    {
+        $directory = ::cPHP::strval( $directory );
+
+        if ( ::cPHP::isEmpty( $directory ) ) {
+            $this->directory = null;
+        }
+        else {
+            $directory = ::cPHP::FileSystem::resolvePath( $directory );
+            $directory = ::cPHP::str::enclose( $directory, "/" );
+            $this->directory = $directory;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the directory has been set
+     *
+     * @return Boolean
+     */
+    public function dirExists ()
+    {
+        return isset( $this->directory );
+    }
+
+    /**
+     * Unsets the currently set directory
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearDir ()
+    {
+        $this->directory = null;
+        return $this;
+    }
+
 }
 
 ?>
