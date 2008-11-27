@@ -38,6 +38,83 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_url extends PHPUnit_Framework_TestCase
 {
 
+    public function testParseQuery_flat ()
+    {
+
+        $result = cPHP::URL::parseQuery( "key=value" );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array ( "key" => "value" ), $result->get() );
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" => "value2", "key3" => "value3" ),
+                ::cPHP::URL::parseQuery( "?key=value?key2=value2&?&key3=value3?" )->get()
+            );
+
+        $this->assertSame(
+                array ( "key" => "value", "key3" => "value3" ),
+                ::cPHP::URL::parseQuery( "?key=value&=value2&key3=value3" )->get()
+            );
+
+        $this->assertSame(
+                array ( "key" => "value2" ),
+                ::cPHP::URL::parseQuery( "key=value&key=value2" )->get()
+            );
+
+        $this->assertSame(
+                array ( "key more" => "value for decoding" ),
+                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding" )->get()
+            );
+
+    }
+
+    public function testParseQuery_encodedFlags ()
+    {
+
+        $this->assertSame(
+                array ( "key%20more" => "value for decoding" ),
+                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_KEYS )->get()
+            );
+
+        $this->assertSame(
+                array ( "key more" => "value%20for%20decoding" ),
+                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_VALUES )->get()
+            );
+
+        $this->assertSame(
+                array ( "key%20more" => "value%20for%20decoding" ),
+                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_KEYS | ::cPHP::URL::ENCODED_VALUES )->get()
+            );
+
+    }
+
+    public function testParseQuery_recurse ()
+    {
+
+        $this->markTestIncomplete("To be written");
+
+        $this->assertSame(
+                array( "key" => array( 1 => "value" ) ),
+                ::cPHP::URL::parseQuery( "key[1]=value" )->get()
+            );
+
+        // Test the recursive parsing
+        $this->assertSame(
+                array( "key" => array( 1 => "value" ) ),
+                ::cPHP::URL::parseQuery( "key[1]  =value" )->get()
+            );
+
+        $this->assertSame(
+                array( "key" => array( 1 => "value" ) ),
+                ::cPHP::URL::parseQuery( "key[1]  =value" )->get()
+            );
+
+        $this->assertSame(
+                array( "key" => array( "index" => array( 1 => "value3", 2 => "value2" ), "other" => "value4" ) ),
+                ::cPHP::URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" )->get()
+            );
+
+    }
+
     public function testSchemeAccessors()
     {
         $uri = new cPHP::URL;
