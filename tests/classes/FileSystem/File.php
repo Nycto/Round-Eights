@@ -56,167 +56,167 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetPath ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
-        $this->assertSame( $mock, $mock->setPath("/dir/to/example.php") );
-        $this->assertSame( "/dir/to/", $mock->getRawDir() );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertSame( "php", $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("/dir/to/example.php") );
+        $this->assertSame( "/dir/to/", $file->getRawDir() );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setPath("/dir/to/example.php.BAK") );
-        $this->assertSame( "/dir/to/", $mock->getRawDir() );
-        $this->assertSame( "example.php", $mock->getFilename() );
-        $this->assertSame( "BAK", $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("/dir/to/example.php.BAK") );
+        $this->assertSame( "/dir/to/", $file->getRawDir() );
+        $this->assertSame( "example.php", $file->getFilename() );
+        $this->assertSame( "BAK", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setPath("dir/to/example") );
-        $this->assertSame( "dir/to/", $mock->getRawDir() );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertNull( $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("dir/to/example") );
+        $this->assertSame( "dir/to/", $file->getRawDir() );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertNull( $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setPath("example.php") );
-        $this->assertSame( "./", $mock->getRawDir() );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertSame( "php", $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("example.php") );
+        $this->assertSame( "./", $file->getRawDir() );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setPath("example") );
-        $this->assertSame( "./", $mock->getRawDir() );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertNull( $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("example") );
+        $this->assertSame( "./", $file->getRawDir() );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertNull( $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setPath("") );
-        $this->assertNull( $mock->getRawDir() );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertNull( $mock->getExt() );
+        $this->assertSame( $file, $file->setPath("") );
+        $this->assertNull( $file->getRawDir() );
+        $this->assertNull( $file->getFilename() );
+        $this->assertNull( $file->getExt() );
     }
 
     public function testGetPath ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
-        $this->assertNull( $mock->getPath() );
+        $this->assertNull( $file->getPath() );
 
-        $mock->setDir("dir/to");
-        $this->assertSame( "dir/to/", $mock->getPath() );
+        $file->setDir("dir/to");
+        $this->assertSame( "dir/to/", $file->getPath() );
 
-        $mock->setDir("/dir/to/");
-        $this->assertSame( "/dir/to/", $mock->getPath() );
+        $file->setDir("/dir/to/");
+        $this->assertSame( "/dir/to/", $file->getPath() );
 
-        $mock->setExt("php");
-        $this->assertSame( "/dir/to/", $mock->getPath() );
+        $file->setExt("php");
+        $this->assertSame( "/dir/to/", $file->getPath() );
 
-        $mock->setFilename("Example");
-        $this->assertSame( "/dir/to/Example.php", $mock->getPath() );
+        $file->setFilename("Example");
+        $this->assertSame( "/dir/to/Example.php", $file->getPath() );
 
-        $mock->clearExt();
-        $this->assertSame( "/dir/to/Example", $mock->getPath() );
+        $file->clearExt();
+        $this->assertSame( "/dir/to/Example", $file->getPath() );
 
-        $mock->clearDir();
-        $this->assertSame( "Example", $mock->getPath() );
+        $file->clearDir();
+        $this->assertSame( "Example", $file->getPath() );
 
-        $mock->setExt("php");
-        $this->assertSame( "Example.php", $mock->getPath() );
+        $file->setExt("php");
+        $this->assertSame( "Example.php", $file->getPath() );
 
-        $mock->clearFilename()->clearExt();
-        $this->assertNull( $mock->getPath() );
+        $file->clearFilename()->clearExt();
+        $this->assertNull( $file->getPath() );
     }
 
     public function testExtAccessors ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
-        $this->assertNull( $mock->getExt() );
-        $this->assertFalse( $mock->extExists() );
+        $this->assertNull( $file->getExt() );
+        $this->assertFalse( $file->extExists() );
 
-        $this->assertSame( $mock, $mock->setExt(".ext") );
-        $this->assertSame( "ext", $mock->getExt() );
-        $this->assertTrue( $mock->extExists() );
+        $this->assertSame( $file, $file->setExt(".ext") );
+        $this->assertSame( "ext", $file->getExt() );
+        $this->assertTrue( $file->extExists() );
 
-        $this->assertSame( $mock, $mock->setExt(".") );
-        $this->assertNull( $mock->getExt() );
-        $this->assertFalse( $mock->extExists() );
+        $this->assertSame( $file, $file->setExt(".") );
+        $this->assertNull( $file->getExt() );
+        $this->assertFalse( $file->extExists() );
 
-        $this->assertSame( $mock, $mock->setExt("") );
-        $this->assertNull( $mock->getExt() );
-        $this->assertFalse( $mock->extExists() );
+        $this->assertSame( $file, $file->setExt("") );
+        $this->assertNull( $file->getExt() );
+        $this->assertFalse( $file->extExists() );
 
-        $this->assertSame( $mock, $mock->setExt("php.BAK") );
-        $this->assertSame( "php.BAK", $mock->getExt() );
-        $this->assertTrue( $mock->extExists() );
+        $this->assertSame( $file, $file->setExt("php.BAK") );
+        $this->assertSame( "php.BAK", $file->getExt() );
+        $this->assertTrue( $file->extExists() );
 
-        $this->assertSame( $mock, $mock->clearExt() );
-        $this->assertNull( $mock->getExt() );
-        $this->assertFalse( $mock->extExists() );
+        $this->assertSame( $file, $file->clearExt() );
+        $this->assertNull( $file->getExt() );
+        $this->assertFalse( $file->extExists() );
     }
 
     public function testFilenameAccessors ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
-        $this->assertNull( $mock->getFilename() );
-        $this->assertFalse( $mock->filenameExists() );
+        $this->assertNull( $file->getFilename() );
+        $this->assertFalse( $file->filenameExists() );
 
-        $this->assertSame( $mock, $mock->setFilename("filename.") );
-        $this->assertSame( "filename", $mock->getFilename() );
-        $this->assertTrue( $mock->filenameExists() );
+        $this->assertSame( $file, $file->setFilename("filename.") );
+        $this->assertSame( "filename", $file->getFilename() );
+        $this->assertTrue( $file->filenameExists() );
 
-        $this->assertSame( $mock, $mock->setFilename(".") );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertFalse( $mock->filenameExists() );
+        $this->assertSame( $file, $file->setFilename(".") );
+        $this->assertNull( $file->getFilename() );
+        $this->assertFalse( $file->filenameExists() );
 
-        $this->assertSame( $mock, $mock->setFilename("") );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertFalse( $mock->filenameExists() );
+        $this->assertSame( $file, $file->setFilename("") );
+        $this->assertNull( $file->getFilename() );
+        $this->assertFalse( $file->filenameExists() );
 
-        $this->assertSame( $mock, $mock->setFilename("Filename.2008") );
-        $this->assertSame( "Filename.2008", $mock->getFilename() );
-        $this->assertTrue( $mock->filenameExists() );
+        $this->assertSame( $file, $file->setFilename("Filename.2008") );
+        $this->assertSame( "Filename.2008", $file->getFilename() );
+        $this->assertTrue( $file->filenameExists() );
 
-        $this->assertSame( $mock, $mock->clearFilename() );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertFalse( $mock->filenameExists() );
+        $this->assertSame( $file, $file->clearFilename() );
+        $this->assertNull( $file->getFilename() );
+        $this->assertFalse( $file->filenameExists() );
     }
 
     public function testSetBasename ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
-        $this->assertSame( $mock, $mock->setBasename("example.php") );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertSame( "php", $mock->getExt() );
+        $this->assertSame( $file, $file->setBasename("example.php") );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setBasename("example") );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertNull( $mock->getExt() );
+        $this->assertSame( $file, $file->setBasename("example") );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertNull( $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setBasename(".php") );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertSame( "php", $mock->getExt() );
+        $this->assertSame( $file, $file->setBasename(".php") );
+        $this->assertNull( $file->getFilename() );
+        $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setBasename("dir/to/example.php") );
-        $this->assertSame( "example", $mock->getFilename() );
-        $this->assertSame( "php", $mock->getExt() );
+        $this->assertSame( $file, $file->setBasename("dir/to/example.php") );
+        $this->assertSame( "example", $file->getFilename() );
+        $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( $mock, $mock->setBasename("") );
-        $this->assertNull( $mock->getFilename() );
-        $this->assertNull( $mock->getExt() );
+        $this->assertSame( $file, $file->setBasename("") );
+        $this->assertNull( $file->getFilename() );
+        $this->assertNull( $file->getExt() );
     }
 
     public function testGetBasename ()
     {
-        $mock = new ::cPHP::FileSystem::File;
-        $this->assertNull( $mock->getBasename() );
+        $file = new ::cPHP::FileSystem::File;
+        $this->assertNull( $file->getBasename() );
 
-        $mock->setExt("php");
-        $this->assertNull( $mock->getBasename() );
+        $file->setExt("php");
+        $this->assertNull( $file->getBasename() );
 
-        $mock->setFilename("example");
-        $this->assertSame( "example.php", $mock->getBasename() );
+        $file->setFilename("example");
+        $this->assertSame( "example.php", $file->getBasename() );
 
-        $mock->clearExt();
-        $this->assertSame( "example", $mock->getBasename() );
+        $file->clearExt();
+        $this->assertSame( "example", $file->getBasename() );
 
-        $mock->clearFilename();
-        $this->assertNull( $mock->getBasename() );
+        $file->clearFilename();
+        $this->assertNull( $file->getBasename() );
     }
 
 }
@@ -229,31 +229,31 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testExists ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
-        $this->assertTrue( $mock->exists() );
+        $file = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertTrue( $file->exists() );
 
-        $mock = new ::cPHP::FileSystem::File( __DIR__ );
-        $this->assertFalse( $mock->exists() );
+        $file = new ::cPHP::FileSystem::File( __DIR__ );
+        $this->assertFalse( $file->exists() );
 
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
-        $this->assertFalse( $mock->exists() );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $this->assertFalse( $file->exists() );
     }
 
     public function testGet ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         $this->assertSame(
                 "This is a string\n"
                 ."of data that is put\n"
                 ."in the test file",
-                $mock->get()
+                $file->get()
             );
 
 
         chmod( $this->file, 0000 );
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         try {
-            $mock->get();
+            $file->get();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
@@ -261,9 +261,9 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
 
 
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
-            $mock->get();
+            $file->get();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
@@ -273,17 +273,17 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testSet ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
-        $this->assertSame( $mock, $mock->set("This is a new chunk of info") );
+        $file = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( $file, $file->set("This is a new chunk of info") );
         $this->assertSame(
                 "This is a new chunk of info",
-                $mock->get()
+                $file->get()
             );
 
         chmod( $this->file, 0400 );
 
         try {
-            $mock->set( "data" );
+            $file->set( "data" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
@@ -293,30 +293,30 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testAppend ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
-        $this->assertSame( $mock, $mock->append("\nnew data") );
+        $file = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( $file, $file->append("\nnew data") );
         $this->assertSame(
                 "This is a string\n"
                 ."of data that is put\n"
                 ."in the test file\n"
                 ."new data",
-                $mock->get()
+                $file->get()
             );
 
-        $this->assertSame( $mock, $mock->append("\nAnother snippet") );
+        $this->assertSame( $file, $file->append("\nAnother snippet") );
         $this->assertSame(
                 "This is a string\n"
                 ."of data that is put\n"
                 ."in the test file\n"
                 ."new data\n"
                 ."Another snippet",
-                $mock->get()
+                $file->get()
             );
 
         chmod( $this->file, 0400 );
 
         try {
-            $mock->append( "data" );
+            $file->append( "data" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
@@ -326,20 +326,20 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testToArray ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         $this->assertSame(
                 array(
                         "This is a string\n",
                         "of data that is put\n",
                         "in the test file"
                     ),
-                $mock->toArray()
+                $file->toArray()
             );
 
         chmod( $this->file, 0000 );
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         try {
-            $mock->toArray();
+            $file->toArray();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
@@ -347,9 +347,9 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
 
 
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
-            $mock->toArray();
+            $file->toArray();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
@@ -359,14 +359,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetSize ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
-        $this->assertType( 'integer', $mock->getSize() );
-        $this->assertGreaterThan( 0, $mock->getSize() );
+        $file = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertType( 'integer', $file->getSize() );
+        $this->assertGreaterThan( 0, $file->getSize() );
 
 
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
-            $mock->getSize();
+            $file->getSize();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
@@ -376,38 +376,38 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testTruncate ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
-        $this->assertSame( $mock, $mock->truncate() );
+        $file = new ::cPHP::FileSystem::File( $this->file );
+        $this->assertSame( $file, $file->truncate() );
         $this->assertSame( "", file_get_contents($this->file) );
     }
 
     public function testDelete ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
 
-        $this->assertSame( $mock, $mock->delete() );
+        $this->assertSame( $file, $file->delete() );
 
         if ( file_exists($this->file) )
             $this->fail("File deletion failed");
 
-        $this->assertSame( $mock, $mock->delete() );
+        $this->assertSame( $file, $file->delete() );
     }
 
     public function testGetMimeType ()
     {
-        $mock = new ::cPHP::FileSystem::File;
+        $file = new ::cPHP::FileSystem::File;
 
         try {
-            $mock->getMimeType();
+            $file->getMimeType();
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
 
-        $mock->setPath( $this->file );
+        $file->setPath( $this->file );
 
-        $this->assertSame( "text/plain", $mock->getMimeType() );
+        $this->assertSame( "text/plain", $file->getMimeType() );
 
         // Copy the contents of a gif in to the file
         file_put_contents(
@@ -416,18 +416,18 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
                 FILE_BINARY
             );
 
-        $this->assertSame( "image/gif", $mock->getMimeType() );
+        $this->assertSame( "image/gif", $file->getMimeType() );
     }
 
     public function testCopy ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         $newPath = $this->getTempFileName();
 
-        $copied = $mock->copy( $newPath );
+        $copied = $file->copy( $newPath );
 
         $this->assertThat( $copied, $this->isInstanceOf("cPHP::FileSystem::File") );
-        $this->assertNotSame( $mock, $copied );
+        $this->assertNotSame( $file, $copied );
 
         $this->assertSame( $newPath, $copied->getPath() );
 
@@ -448,9 +448,9 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
     public function testCopy_missing ()
     {
 
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
-            $mock->copy( "/some/new/location" );
+            $file->copy( "/some/new/location" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
@@ -460,12 +460,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testCopy_noPerms ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
 
         chmod( $this->file, 0000 );
 
         try {
-            $mock->copy( $this->getTempFileName() );
+            $file->copy( $this->getTempFileName() );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem $err ) {
@@ -476,12 +476,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove ()
     {
-        $mock = new ::cPHP::FileSystem::File( $this->file );
+        $file = new ::cPHP::FileSystem::File( $this->file );
         $newPath = $this->getTempFileName();
 
-        $this->assertSame( $mock, $mock->move( $newPath ) );
+        $this->assertSame( $file, $file->move( $newPath ) );
 
-        $this->assertSame( $newPath, $mock->getPath() );
+        $this->assertSame( $newPath, $file->getPath() );
 
         $this->assertFalse( is_file( $this->file ) );
         $this->assertTrue( is_file( $newPath ) );
@@ -494,9 +494,9 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove_missing ()
     {
-        $mock = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
         try {
-            $mock->move( $this->getTempFileName() );
+            $file->move( $this->getTempFileName() );
             $this->fail("An expected exception was not thrown");
         }
         catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
