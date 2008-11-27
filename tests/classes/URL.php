@@ -608,6 +608,49 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $uri->extExists() );
         $this->assertNull( $uri->getExt() );
     }
+    
+    public function testSetBasename ()
+    {
+        $url = new ::cPHP::URL;
+
+        $this->assertSame( $url, $url->setBasename("example.php") );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+
+        $this->assertSame( $url, $url->setBasename("example") );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertNull( $url->getExt() );
+
+        $this->assertSame( $url, $url->setBasename(".php") );
+        $this->assertNull( $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+
+        $this->assertSame( $url, $url->setBasename("dir/to/example.php") );
+        $this->assertSame( "example", $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+
+        $this->assertSame( $url, $url->setBasename("") );
+        $this->assertNull( $url->getFilename() );
+        $this->assertNull( $url->getExt() );
+    }
+
+    public function testGetBasename ()
+    {
+        $url = new ::cPHP::URL;
+        $this->assertNull( $url->getBasename() );
+
+        $url->setExt("php");
+        $this->assertNull( $url->getBasename() );
+
+        $url->setFilename("example");
+        $this->assertSame( "example.php", $url->getBasename() );
+
+        $url->clearExt();
+        $this->assertSame( "example", $url->getBasename() );
+
+        $url->clearFilename();
+        $this->assertNull( $url->getBasename() );
+    }
 
 }
 

@@ -719,6 +719,53 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the basename
+     *
+     * The basename is the combined filename and extension. If no filename
+     * has been set, this will always return null.
+     *
+     * @return String|Null Returns null if no filename has been set
+     */
+    public function getBasename ()
+    {
+        if ( !$this->filenameExists() )
+            return null;
+
+        if ( !$this->extExists() )
+            return $this->getFilename();
+
+        return ::cPHP::str::weld(
+                $this->getFilename(),
+                $this->getExt(),
+                "."
+            );
+    }
+
+    /**
+     * Sets the basename, which is the filename and extension
+     *
+     * @param String $basename The new basename
+     * @return Object Returns a self reference
+     */
+    public function setBasename ( $basename )
+    {
+        $basename = trim(::cPHP::strval( $basename ));
+        $basename = pathinfo( $basename );
+
+        if ( isset($basename['filename']) )
+            $this->setFilename($basename['filename']);
+        else
+            $this->clearFilename();
+
+        if ( isset($basename['extension']) )
+            $this->setExt($basename['extension']);
+        else
+            $this->clearExt();
+
+        return $this;
+    }
+
 }
 
 ?>
