@@ -73,10 +73,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     protected $array = array();
 
     /**
-     * Class functions
-     */
-
-    /**
      * Class method for creating a new instance
      *
      * @param mixed The array to use for this instance
@@ -104,6 +100,13 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
+     *
+     */
+    static public function explode ()
+    {
+    }
+
+    /**
      * Returns whether a value is an array or a traversable object
      *
      * @param mixed $value The value to test
@@ -113,10 +116,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return is_array( $value ) || $value instanceof Traversable;
     }
-
-    /**
-     * Member functions
-     */
 
     /**
      * Constructor
@@ -174,10 +173,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return count( $this->array );
     }
-
-    /**
-     * Navigation Methods
-     */
 
     /**
      * Returns the value of the element at the current pointer
@@ -322,10 +317,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Array Accessor methods
-     */
-
-    /**
      * Returns whether a specific index exists in this array
      *
      * @param mixed $index The index being tested
@@ -383,10 +374,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Offset methods
-     */
-
-    /**
      * Returns the offset of a given key
      *
      * This will throw an exception if the key is not found in the array
@@ -437,10 +424,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Key functions
-     */
-
-    /**
      * Returns whether a key exists in this array
      *
      * @param mixed $key
@@ -450,10 +433,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return array_key_exists( $key, $this->array );
     }
-
-    /**
-     * List manipulation functions
-     */
 
     /**
      * Appends a value to the end of this array
@@ -510,10 +489,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     *
-     */
-
-    /**
      * Returns the raw array contained in this instance
      *
      * @return Array
@@ -565,11 +540,6 @@ class Ary implements Iterator, Countable, ArrayAccess
         return in_array( $value, $this->array );
     }
 
-
-    /**
-     * Sorting Methods
-     */
-
     /**
      * Sorts the array in this instance
      *
@@ -578,7 +548,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *      SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING
      * @return Object Returns a self reference
      */
-    public function sort( $reverse = FALSE, $type = SORT_REGULAR )
+    public function sort ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
             throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
@@ -599,7 +569,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *      SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING
      * @return Object Returns a self reference
      */
-    public function sortByKey( $reverse = FALSE, $type = SORT_REGULAR )
+    public function sortByKey ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
             throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
@@ -770,10 +740,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     *
-     */
-
-    /**
      * Joins the elements in this array together using a string
      *
      * @param string $glue The string to put
@@ -783,10 +749,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
        return implode( $glue, $this->array );
     }
-
-    /**
-     *
-     */
 
     /**
      * Given a callback, determines if the key should be sent.
@@ -1074,10 +1036,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return new self( $this->array + self::create( $array )->get() );
     }
-
-    /**
-     *
-     */
 
     /**
      *

@@ -170,6 +170,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testExplode ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testIs ()
     {
         $this->assertTrue( ::cPHP::Ary::is(array()) );
@@ -489,6 +494,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertEquals(8, $ary->offset(7) );
     }
 
+    public function testFirst ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testLast ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testKeyExists ()
     {
         $this->assertTrue( cPHP::Ary::range(1, 15)->keyExists(0) );
@@ -598,6 +613,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         $this->assertEquals( array(), $ary->get() );
+    }
+
+    public function testContains ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testFlatten ()
@@ -739,6 +759,36 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $this->fail('An expected exception has not been raised.');
         }
         catch ( ::cPHP::Exception::Argument $err ) {}
+    }
+
+    public function testSortyByKey ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testNaturalSort ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testCustomSort ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testReverse ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testShuffle ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testBubbleKeys ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testHone ()
@@ -976,6 +1026,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testInject ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testCompact ()
     {
 
@@ -1018,6 +1073,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testPluck ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testInvoke ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testUnique ()
     {
         $ary = new cPHP::Ary(array(1, 2, 4, 2, 9, 1, 6 ));
@@ -1055,6 +1120,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array( 1, 2, 3, "con" => 4 ),
                 $merged->get()
             );
+    }
+
+    public function testAny ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testAll ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testFind ()
@@ -1152,6 +1227,41 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array( 0 => 1, 3 => "four", 5 => "six"),
                 $result->get()
             );
+    }
+
+    public function testWithoutKeys ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testSetBranch ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetBranch ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testBranchExists ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testStringize ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testIntegerize ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testCase ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
 }
