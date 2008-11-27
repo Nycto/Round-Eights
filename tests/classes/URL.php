@@ -566,24 +566,47 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testFilenameAccessors ()
     {
         $uri = new cPHP::URL;
-        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertFalse( $uri->filenameExists() );
         $this->assertNull( $uri->getFilename() );
 
         $this->assertSame( $uri, $uri->setFilename("filenm") );
-        $this->assertTrue( $uri->FilenameExists() );
+        $this->assertTrue( $uri->filenameExists() );
         $this->assertSame( "filenm", $uri->getFilename() );
 
         $this->assertSame( $uri, $uri->clearFilename() );
-        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertFalse( $uri->filenameExists() );
         $this->assertNull( $uri->getFilename() );
 
         $this->assertSame( $uri, $uri->setFilename("Filename.2008") );
-        $this->assertTrue( $uri->FilenameExists() );
+        $this->assertTrue( $uri->filenameExists() );
         $this->assertSame( "Filename.2008", $uri->getFilename() );
 
         $this->assertSame( $uri, $uri->setFilename("  ") );
-        $this->assertFalse( $uri->FilenameExists() );
+        $this->assertFalse( $uri->filenameExists() );
         $this->assertNull( $uri->getFilename() );
+    }
+
+    public function testExtAccessors ()
+    {
+        $uri = new cPHP::URL;
+        $this->assertFalse( $uri->extExists() );
+        $this->assertNull( $uri->getExt() );
+
+        $this->assertSame( $uri, $uri->setExt("html") );
+        $this->assertTrue( $uri->extExists() );
+        $this->assertSame( "html", $uri->getExt() );
+
+        $this->assertSame( $uri, $uri->clearExt() );
+        $this->assertFalse( $uri->extExists() );
+        $this->assertNull( $uri->getExt() );
+
+        $this->assertSame( $uri, $uri->setExt(".CSS") );
+        $this->assertTrue( $uri->extExists() );
+        $this->assertSame( "CSS", $uri->getExt() );
+
+        $this->assertSame( $uri, $uri->setExt("  ") );
+        $this->assertFalse( $uri->extExists() );
+        $this->assertNull( $uri->getExt() );
     }
 
 }

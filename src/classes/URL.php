@@ -672,6 +672,53 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the extension, if there is one,
+     *
+     * The extension will be returned without a leading period
+     *
+     * @return String|Null Returns null if no extension has been set
+     */
+    public function getExt ()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * Sets the extension
+     *
+     * @param String $extension The new extension
+     * @return Object Returns a self reference
+     */
+    public function setExt ( $extension )
+    {
+        $extension = trim(::cPHP::strval( $extension ));
+        $extension = ltrim( $extension, "." );
+        $this->extension = ::cPHP::isEmpty( $extension ) ? null : $extension;
+        return $this;
+    }
+
+    /**
+     * Returns whether an extension has been set
+     *
+     * @return Boolean
+     */
+    public function extExists ()
+    {
+        return isset( $this->extension );
+    }
+
+    /**
+     * Clears the extension
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearExt ()
+    {
+        $this->extension = null;
+        return $this;
+    }
+
 }
 
 ?>
