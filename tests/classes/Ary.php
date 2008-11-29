@@ -189,6 +189,35 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( ::cPHP::Ary::is(NULL) );
     }
 
+    public function testGet_noRef ()
+    {
+        $ary = new ::cPHP::Ary;
+
+        $ref = $ary->get();
+
+        $this->assertType("array", $ref);
+
+        $ref["new"] = "value";
+
+        $this->assertSame( array(), $ary->get() );
+    }
+
+    public function testGet_byRef ()
+    {
+        $ary = new ::cPHP::Ary;
+
+        $ref =& $ary->get();
+
+        $this->assertType("array", $ref);
+
+        $ref["new"] = "value";
+
+        $this->assertSame(
+                array( "new" => "value" ),
+                $ary->get()
+            );
+    }
+
     public function testIteration ()
     {
 
@@ -1234,9 +1263,146 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->markTestIncomplete("To be written");
     }
 
-    public function testSetBranch ()
+    public function testSetBranch_basic ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two'),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+    }
+
+    public function testSetBranch_flatten ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", array( array("one") ), "two", array( "three", "four" ) ) );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two'),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+    }
+
+    public function testSetBranch_pushLastKey ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", null) );
+        $this->assertSame(
+                array('new'),
+                $ary->get()
+            );
+
+        $this->assertSame( $ary, $ary->branch("another", null) );
+        $this->assertSame(
+                array('new', 'another'),
+                $ary->get()
+            );
+
+
+        $this->assertSame( $ary, $ary->branch("leaf", 'push', null) );
+        $this->assertSame(
+                array(0, 1, 'push'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['push'], $this->isInstanceOf("cPHP::Ary") );
+
+        $this->assertSame(
+                array ('leaf'),
+                $ary['push']->get()
+            );
+    }
+
+    public function testSetBranch_pushMidKey ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", "one", null, "two") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(0),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'][0], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two' => 'new'),
+                $ary['one'][0]->get()
+            );
+    }
+
+    public function testSetBranch_add ()
+    {
+        $ary = new cPHP::Ary( array( "one" => array( "two" => "value" ) ) );
+
+        $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertType( "array", $ary['one'] );
+        $this->assertSame(
+                array('two'),
+                array_keys( $ary['one'] )
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+
     }
 
     public function testGetBranch ()

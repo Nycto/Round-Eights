@@ -518,9 +518,14 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Returns the raw array contained in this instance
      *
-     * @return Array
+     * While this may return a reference, remember how PHP treats them... you only
+     * get a reference if you ask for one, like this:
+     *
+     * $ary =& $object->get();
+     *
+     * @return Array The return value is a reference to the internal array.
      */
-    public function get()
+    public function &get()
     {
         return $this->array;
     }
@@ -1142,6 +1147,69 @@ class Ary implements Iterator, Countable, ArrayAccess
         return new self(
                 array_diff( $this->array, $value )
             );
+    }
+
+    /**
+     * Adds a branch and value to an array tree
+     *
+     * @param mixed $value The value being pushed on to the tree
+     * @param mixed $keys... The list of keys leading down to the value
+     *      A Null key will cause that node to be pushed on to the array
+     * @return Object Returns a self reference
+     */
+    public function branch ($value, $keys)
+    {
+
+        // Get the list of keys as a flattened array
+        $keys = func_get_args();
+        $keys = self::create( $keys )->flatten()->shift();
+
+        $current = &$this->array;
+
+        // Grab the last key from the list and remove it. It can't be treated
+        // like the rest of them
+        $lastKey = $keys->pop( TRUE );
+
+        // Loop through the list of keys and create the branch
+        foreach($keys AS $index) {
+
+            // For null keys, just push a new array on the end
+            if ( is_null($index) ) {
+
+                $new = new cPHP::Ary;
+
+                // Add the new value on the end
+                $current[] =& $new;
+
+                // Then switch the current leaf to pointing at the new array
+                $current =& $new->get();
+
+            }
+
+            else {
+
+                // If the key doesn't exist or it isn't an array, then overwrite it with an array
+                if ( !isset($current[ $index ]) || ( !is_array($current[$index]) && !($current[$index] instanceof self) ) )
+                    $current[$index] = new cPHP::Ary;
+
+                // We need a reference to the contained array
+                if ( $current[$index] instanceof self )
+                    $current =& $current[$index]->get();
+                else
+                    $current =& $current[$index];
+
+            }
+
+        }
+
+        // Finally, push the value on to the end of the branch
+        if ( is_null($lastKey) )
+            $current[] = $value;
+        else
+            $current[ $lastKey ] = $value;
+
+        return $this;
+
     }
 
     /**
