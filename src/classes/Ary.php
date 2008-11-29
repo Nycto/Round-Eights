@@ -1117,6 +1117,17 @@ class Ary implements Iterator, Countable, ArrayAccess
             );
     }
 
+    /**
+     * Converts all the values in the array to a string
+     *
+     * @return Object Returns a self reference
+     */
+    public function stringize ()
+    {
+        $this->array = array_map( "cPHP::strval", $this->array );
+        return $this;
+    }
+
 }
 
 ?>

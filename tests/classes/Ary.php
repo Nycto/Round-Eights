@@ -1251,7 +1251,14 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testStringize ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+
+        $this->assertSame( $ary, $ary->stringize() );
+
+        $this->assertSame(
+                array( "0", "4.5", "string", "1.5" ),
+                $ary->get()
+            );
     }
 
     public function testIntegerize ()
