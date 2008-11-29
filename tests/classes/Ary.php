@@ -1263,7 +1263,14 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testIntegerize ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+
+        $this->assertSame( $ary, $ary->integerize() );
+
+        $this->assertSame(
+                array( 0, 1, 0, 1 ),
+                $ary->get()
+            );
     }
 
     public function testCase ()

@@ -1128,6 +1128,17 @@ class Ary implements Iterator, Countable, ArrayAccess
         return $this;
     }
 
+    /**
+     * Converts all the values in the array to an integer
+     *
+     * @return Object Returns a self reference
+     */
+    public function integerize ()
+    {
+        $this->array = array_map( "intval", $this->array );
+        return $this;
+    }
+
 }
 
 ?>
