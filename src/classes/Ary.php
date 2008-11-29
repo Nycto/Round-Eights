@@ -68,6 +68,33 @@ class Ary implements Iterator, Countable, ArrayAccess
     const OFFSET_LIMIT = cPHP::num::OFFSET_LIMIT;
 
     /**
+     * For the changeCase method, flag for setting the case to lower case
+     */
+    const CASE_LOWER = CASE_LOWER;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper case
+     */
+    const CASE_UPPER = CASE_UPPER;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper on the first letter
+     */
+    const CASE_UCFIRST = 2;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper on the first
+     * letter of every world
+     */
+    const CASE_UCWORDS = 3;
+
+    /**
+     * For the changeCase method, flag for setting the case to properly case any
+     * all upper case words
+     */
+    const CASE_NOSHOUT = 4;
+
+    /**
      * The iterator being used in this instance
      */
     protected $array = array();
@@ -1136,6 +1163,49 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function integerize ()
     {
         $this->array = array_map( "intval", $this->array );
+        return $this;
+    }
+
+    /**
+     * Changes the case of all the values in this array
+     *
+     * @param Integer $caseFlag The string case to apply. Valid flags are:
+     *      CASE_UPPER, CASE_LOWER, CASE_UCFIRST, CASE_UCWORDS, CASE_NOSHOUT
+     * @return Object Returns a self reference
+     */
+    public function changeCase ( $caseFlag )
+    {
+        $this->array = array_map("cPHP::strval", $this->array);
+
+        if ( !is_int($caseFlag) )
+            throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+
+        switch( $caseFlag ) {
+
+            default:
+                throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+
+            case self::CASE_LOWER:
+                $this->array = array_map("strtolower", $this->array);
+                break;
+
+            case self::CASE_UPPER:
+                $this->array = array_map("strtoupper", $this->array);
+                break;
+
+            case self::CASE_UCFIRST:
+                $this->array = array_map("ucfirst", $this->array);
+                break;
+
+            case self::CASE_UCWORDS:
+                $this->array = array_map("ucwords", $this->array);
+                break;
+
+            case self::CASE_NOSHOUT:
+                $this->array = array_map("cPHP::str::unshout", $this->array);
+                break;
+        }
+
         return $this;
     }
 

@@ -1273,9 +1273,79 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testCase ()
+    public function testChangeCase ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_LOWER ) );
+        $this->assertSame(
+                array( "lower", "first", "last", "shout", "small phrase", "other phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UPPER ) );
+        $this->assertSame(
+                array( "LOWER", "FIRST", "LAST", "SHOUT", "SMALL PHRASE", "OTHER PHRASE" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCFIRST ) );
+        $this->assertSame(
+                array( "Lower", "First", "LasT", "SHOUT", "Small phrase", "Other Phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCWORDS ) );
+        $this->assertSame(
+                array( "Lower", "First", "LasT", "SHOUT", "Small Phrase", "Other Phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_NOSHOUT ) );
+        $this->assertSame(
+                $array = array( "lower", "First", "last", "Shout", "Small phrase", "other Phrase" ),
+                $ary->get()
+            );
+
+
+        try {
+            $ary->changeCase( "Invalid flag" );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Invalid Case Flag", $err->getMessage());
+        }
+
+
+        try {
+            $ary->changeCase( 10000 );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Invalid Case Flag", $err->getMessage());
+        }
     }
 
 }
