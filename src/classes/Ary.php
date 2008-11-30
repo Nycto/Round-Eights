@@ -68,13 +68,36 @@ class Ary implements Iterator, Countable, ArrayAccess
     const OFFSET_LIMIT = cPHP::num::OFFSET_LIMIT;
 
     /**
+     * For the changeCase method, flag for setting the case to lower case
+     */
+    const CASE_LOWER = CASE_LOWER;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper case
+     */
+    const CASE_UPPER = CASE_UPPER;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper on the first letter
+     */
+    const CASE_UCFIRST = 2;
+
+    /**
+     * For the changeCase method, flag for setting the case to upper on the first
+     * letter of every world
+     */
+    const CASE_UCWORDS = 3;
+
+    /**
+     * For the changeCase method, flag for setting the case to properly case any
+     * all upper case words
+     */
+    const CASE_NOSHOUT = 4;
+
+    /**
      * The iterator being used in this instance
      */
     protected $array = array();
-
-    /**
-     * Class functions
-     */
 
     /**
      * Class method for creating a new instance
@@ -104,6 +127,13 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
+     *
+     */
+    static public function explode ()
+    {
+    }
+
+    /**
      * Returns whether a value is an array or a traversable object
      *
      * @param mixed $value The value to test
@@ -113,10 +143,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return is_array( $value ) || $value instanceof Traversable;
     }
-
-    /**
-     * Member functions
-     */
 
     /**
      * Constructor
@@ -174,10 +200,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return count( $this->array );
     }
-
-    /**
-     * Navigation Methods
-     */
 
     /**
      * Returns the value of the element at the current pointer
@@ -322,10 +344,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Array Accessor methods
-     */
-
-    /**
      * Returns whether a specific index exists in this array
      *
      * @param mixed $index The index being tested
@@ -383,10 +401,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Offset methods
-     */
-
-    /**
      * Returns the offset of a given key
      *
      * This will throw an exception if the key is not found in the array
@@ -437,10 +451,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     * Key functions
-     */
-
-    /**
      * Returns whether a key exists in this array
      *
      * @param mixed $key
@@ -450,10 +460,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         return array_key_exists( $key, $this->array );
     }
-
-    /**
-     * List manipulation functions
-     */
 
     /**
      * Appends a value to the end of this array
@@ -510,15 +516,16 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     *
-     */
-
-    /**
      * Returns the raw array contained in this instance
      *
-     * @return Array
+     * While this may return a reference, remember how PHP treats them... you only
+     * get a reference if you ask for one, like this:
+     *
+     * $ary =& $object->get();
+     *
+     * @return Array The return value is a reference to the internal array.
      */
-    public function get()
+    public function &get()
     {
         return $this->array;
     }
@@ -565,11 +572,6 @@ class Ary implements Iterator, Countable, ArrayAccess
         return in_array( $value, $this->array );
     }
 
-
-    /**
-     * Sorting Methods
-     */
-
     /**
      * Sorts the array in this instance
      *
@@ -578,7 +580,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *      SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING
      * @return Object Returns a self reference
      */
-    public function sort( $reverse = FALSE, $type = SORT_REGULAR )
+    public function sort ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
             throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
@@ -599,7 +601,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *      SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING
      * @return Object Returns a self reference
      */
-    public function sortByKey( $reverse = FALSE, $type = SORT_REGULAR )
+    public function sortByKey ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
             throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
@@ -770,10 +772,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     }
 
     /**
-     *
-     */
-
-    /**
      * Joins the elements in this array together using a string
      *
      * @param string $glue The string to put
@@ -783,10 +781,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
        return implode( $glue, $this->array );
     }
-
-    /**
-     *
-     */
 
     /**
      * Given a callback, determines if the key should be sent.
@@ -1078,10 +1072,6 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      *
      */
-
-    /**
-     *
-     */
     public function any ()
     {
 
@@ -1157,6 +1147,134 @@ class Ary implements Iterator, Countable, ArrayAccess
         return new self(
                 array_diff( $this->array, $value )
             );
+    }
+
+    /**
+     * Adds a branch and value to an array tree
+     *
+     * @param mixed $value The value being pushed on to the tree
+     * @param mixed $keys... The list of keys leading down to the value
+     *      A Null key will cause that node to be pushed on to the array
+     * @return Object Returns a self reference
+     */
+    public function branch ($value, $keys)
+    {
+
+        // Get the list of keys as a flattened array
+        $keys = func_get_args();
+        $keys = self::create( $keys )->flatten()->shift();
+
+        $current = &$this->array;
+
+        // Grab the last key from the list and remove it. It can't be treated
+        // like the rest of them
+        $lastKey = $keys->pop( TRUE );
+
+        // Loop through the list of keys and create the branch
+        foreach($keys AS $index) {
+
+            // For null keys, just push a new array on the end
+            if ( is_null($index) ) {
+
+                $new = new cPHP::Ary;
+
+                // Add the new value on the end
+                $current[] =& $new;
+
+                // Then switch the current leaf to pointing at the new array
+                $current =& $new->get();
+
+            }
+
+            else {
+
+                // If the key doesn't exist or it isn't an array, then overwrite it with an array
+                if ( !isset($current[ $index ]) || ( !is_array($current[$index]) && !($current[$index] instanceof self) ) )
+                    $current[$index] = new cPHP::Ary;
+
+                // We need a reference to the contained array
+                if ( $current[$index] instanceof self )
+                    $current =& $current[$index]->get();
+                else
+                    $current =& $current[$index];
+
+            }
+
+        }
+
+        // Finally, push the value on to the end of the branch
+        if ( is_null($lastKey) )
+            $current[] = $value;
+        else
+            $current[ $lastKey ] = $value;
+
+        return $this;
+
+    }
+
+    /**
+     * Converts all the values in the array to a string
+     *
+     * @return Object Returns a self reference
+     */
+    public function stringize ()
+    {
+        $this->array = array_map( "cPHP::strval", $this->array );
+        return $this;
+    }
+
+    /**
+     * Converts all the values in the array to an integer
+     *
+     * @return Object Returns a self reference
+     */
+    public function integerize ()
+    {
+        $this->array = array_map( "intval", $this->array );
+        return $this;
+    }
+
+    /**
+     * Changes the case of all the values in this array
+     *
+     * @param Integer $caseFlag The string case to apply. Valid flags are:
+     *      CASE_UPPER, CASE_LOWER, CASE_UCFIRST, CASE_UCWORDS, CASE_NOSHOUT
+     * @return Object Returns a self reference
+     */
+    public function changeCase ( $caseFlag )
+    {
+        $this->array = array_map("cPHP::strval", $this->array);
+
+        if ( !is_int($caseFlag) )
+            throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+
+        switch( $caseFlag ) {
+
+            default:
+                throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+
+            case self::CASE_LOWER:
+                $this->array = array_map("strtolower", $this->array);
+                break;
+
+            case self::CASE_UPPER:
+                $this->array = array_map("strtoupper", $this->array);
+                break;
+
+            case self::CASE_UCFIRST:
+                $this->array = array_map("ucfirst", $this->array);
+                break;
+
+            case self::CASE_UCWORDS:
+                $this->array = array_map("ucwords", $this->array);
+                break;
+
+            case self::CASE_NOSHOUT:
+                $this->array = array_map("cPHP::str::unshout", $this->array);
+                break;
+        }
+
+        return $this;
     }
 
 }

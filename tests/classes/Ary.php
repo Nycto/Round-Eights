@@ -170,6 +170,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testExplode ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testIs ()
     {
         $this->assertTrue( ::cPHP::Ary::is(array()) );
@@ -182,6 +187,35 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( ::cPHP::Ary::is(FALSE) );
         $this->assertFalse( ::cPHP::Ary::is(TRUE) );
         $this->assertFalse( ::cPHP::Ary::is(NULL) );
+    }
+
+    public function testGet_noRef ()
+    {
+        $ary = new ::cPHP::Ary;
+
+        $ref = $ary->get();
+
+        $this->assertType("array", $ref);
+
+        $ref["new"] = "value";
+
+        $this->assertSame( array(), $ary->get() );
+    }
+
+    public function testGet_byRef ()
+    {
+        $ary = new ::cPHP::Ary;
+
+        $ref =& $ary->get();
+
+        $this->assertType("array", $ref);
+
+        $ref["new"] = "value";
+
+        $this->assertSame(
+                array( "new" => "value" ),
+                $ary->get()
+            );
     }
 
     public function testIteration ()
@@ -489,6 +523,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertEquals(8, $ary->offset(7) );
     }
 
+    public function testFirst ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testLast ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testKeyExists ()
     {
         $this->assertTrue( cPHP::Ary::range(1, 15)->keyExists(0) );
@@ -598,6 +642,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         $this->assertEquals( array(), $ary->get() );
+    }
+
+    public function testContains ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testFlatten ()
@@ -739,6 +788,36 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $this->fail('An expected exception has not been raised.');
         }
         catch ( ::cPHP::Exception::Argument $err ) {}
+    }
+
+    public function testSortyByKey ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testNaturalSort ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testCustomSort ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testReverse ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testShuffle ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testBubbleKeys ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testHone ()
@@ -976,6 +1055,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testInject ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testCompact ()
     {
 
@@ -1018,6 +1102,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testPluck ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testInvoke ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testUnique ()
     {
         $ary = new cPHP::Ary(array(1, 2, 4, 2, 9, 1, 6 ));
@@ -1055,6 +1149,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array( 1, 2, 3, "con" => 4 ),
                 $merged->get()
             );
+    }
+
+    public function testAny ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testAll ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testFind ()
@@ -1152,6 +1256,262 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array( 0 => 1, 3 => "four", 5 => "six"),
                 $result->get()
             );
+    }
+
+    public function testWithoutKeys ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testSetBranch_basic ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two'),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+    }
+
+    public function testSetBranch_flatten ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", array( array("one") ), "two", array( "three", "four" ) ) );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two'),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+    }
+
+    public function testSetBranch_pushLastKey ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", null) );
+        $this->assertSame(
+                array('new'),
+                $ary->get()
+            );
+
+        $this->assertSame( $ary, $ary->branch("another", null) );
+        $this->assertSame(
+                array('new', 'another'),
+                $ary->get()
+            );
+
+
+        $this->assertSame( $ary, $ary->branch("leaf", 'push', null) );
+        $this->assertSame(
+                array(0, 1, 'push'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['push'], $this->isInstanceOf("cPHP::Ary") );
+
+        $this->assertSame(
+                array ('leaf'),
+                $ary['push']->get()
+            );
+    }
+
+    public function testSetBranch_pushMidKey ()
+    {
+        $ary = new cPHP::Ary;
+
+        $this->assertSame( $ary, $ary->branch("new", "one", null, "two") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array(0),
+                $ary['one']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one'][0], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('two' => 'new'),
+                $ary['one'][0]->get()
+            );
+    }
+
+    public function testSetBranch_add ()
+    {
+        $ary = new cPHP::Ary( array( "one" => array( "two" => "value" ) ) );
+
+        $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
+        $this->assertSame(
+                array('one'),
+                $ary->keys()->get()
+            );
+
+        $this->assertType( "array", $ary['one'] );
+        $this->assertSame(
+                array('two'),
+                array_keys( $ary['one'] )
+            );
+
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('three'),
+                $ary['one']['two']->keys()->get()
+            );
+
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array('four' => 'new'),
+                $ary['one']['two']['three']->get()
+            );
+
+    }
+
+    public function testGetBranch ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testBranchExists ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testStringize ()
+    {
+        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+
+        $this->assertSame( $ary, $ary->stringize() );
+
+        $this->assertSame(
+                array( "0", "4.5", "string", "1.5" ),
+                $ary->get()
+            );
+    }
+
+    public function testIntegerize ()
+    {
+        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+
+        $this->assertSame( $ary, $ary->integerize() );
+
+        $this->assertSame(
+                array( 0, 1, 0, 1 ),
+                $ary->get()
+            );
+    }
+
+    public function testChangeCase ()
+    {
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_LOWER ) );
+        $this->assertSame(
+                array( "lower", "first", "last", "shout", "small phrase", "other phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UPPER ) );
+        $this->assertSame(
+                array( "LOWER", "FIRST", "LAST", "SHOUT", "SMALL PHRASE", "OTHER PHRASE" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCFIRST ) );
+        $this->assertSame(
+                array( "Lower", "First", "LasT", "SHOUT", "Small phrase", "Other Phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCWORDS ) );
+        $this->assertSame(
+                array( "Lower", "First", "LasT", "SHOUT", "Small Phrase", "Other Phrase" ),
+                $ary->get()
+            );
+
+
+        $ary = new ::cPHP::Ary(
+                array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
+            );
+
+        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_NOSHOUT ) );
+        $this->assertSame(
+                $array = array( "lower", "First", "last", "Shout", "Small phrase", "other Phrase" ),
+                $ary->get()
+            );
+
+
+        try {
+            $ary->changeCase( "Invalid flag" );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Invalid Case Flag", $err->getMessage());
+        }
+
+
+        try {
+            $ary->changeCase( 10000 );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( ::cPHP::Exception::Argument $err ) {
+            $this->assertSame("Invalid Case Flag", $err->getMessage());
+        }
     }
 
 }
