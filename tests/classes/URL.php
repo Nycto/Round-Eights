@@ -90,29 +90,54 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testParseQuery_recurse ()
     {
 
-        $this->markTestIncomplete("To be written");
+        $qry = ::cPHP::URL::parseQuery( "key[1]=value" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertSame(
-                array( "key" => array( 1 => "value" ) ),
-                ::cPHP::URL::parseQuery( "key[1]=value" )->get()
-            );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
 
-        // Test the recursive parsing
-        $this->assertSame(
-                array( "key" => array( 1 => "value" ) ),
-                ::cPHP::URL::parseQuery( "key[1]  =value" )->get()
-            );
 
-        $this->assertSame(
-                array( "key" => array( 1 => "value" ) ),
-                ::cPHP::URL::parseQuery( "key[1]  =value" )->get()
-            );
+        $qry = ::cPHP::URL::parseQuery( "key[1]   =value" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertSame(
-                array( "key" => array( "index" => array( 1 => "value3", 2 => "value2" ), "other" => "value4" ) ),
-                ::cPHP::URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" )->get()
-            );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
 
+
+        $qry = ::cPHP::URL::parseQuery( "key[]=value&key[]=another&key[  ]=again" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('key'), $qry->keys()->get() );
+
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array( "value", "another", "again" ), $qry['key']->get() );
+
+
+        $qry = ::cPHP::URL::parseQuery( "first=one&second[]=two&second[]=two2&third[key]=three" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('first', 'second', 'third'), $qry->keys()->get() );
+
+        $this->assertSame( 'one', $qry['first'] );
+
+        $this->assertThat( $qry['second'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('two', 'two2'), $qry['second']->get() );
+
+        $this->assertThat( $qry['third'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('key' => 'three'), $qry['third']->get() );
+
+
+        $qry = ::cPHP::URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('key'), $qry->keys()->get() );
+
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array('index', 'other'), $qry['key']->keys()->get() );
+
+        $this->assertThat( $qry['key']['index'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array( 1 => "value3", 2 => "value2" ), $qry['key']['index']->get() );
+
+        $this->assertSame( 'value4', $qry['key']['other'] );
     }
 
     public function testSchemeAccessors()

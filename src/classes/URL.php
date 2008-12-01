@@ -148,7 +148,24 @@ class URL
             if ( !($flags & self::ENCODED_VALUES) )
                 $value = urldecode( $value );
 
-            $out->offsetSet( $key, $value );
+            // Handle multi dimensional values
+            if ( ::cPHP::str::contains("[", $key) && ::cPHP::str::endsWith( rtrim($key), "]" ) ) {
+
+                $key = new ::cPHP::Ary( explode("[", $key) );
+
+                $primary = $key->shift( TRUE );
+
+                $key = $key->collect(function( $index ) {
+                    $index = ::cPHP::str::stripTail( rtrim( $index ), "]" );
+                    return  ::cPHP::isEmpty($index) ? null : $index;
+                });
+
+                $out->branch( $value, $primary, $key );
+
+            }
+            else {
+                $out->offsetSet( $key, $value );
+            }
 
         }
 
