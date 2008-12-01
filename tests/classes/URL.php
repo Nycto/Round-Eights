@@ -65,6 +65,11 @@ class classes_url extends PHPUnit_Framework_TestCase
                 ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding" )->get()
             );
 
+        $this->assertSame(
+                array ( "key.with" => "a.period" ),
+                ::cPHP::URL::parseQuery( "key.with=a.period" )->get()
+            );
+
     }
 
     public function testParseQuery_encodedFlags ()
