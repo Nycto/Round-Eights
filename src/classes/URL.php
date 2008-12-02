@@ -93,7 +93,7 @@ class URL
     /**
      * Query variables for this link
      */
-    private $query = Array();
+    private $query;
 
     /**
      * Fragment for this link

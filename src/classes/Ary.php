@@ -1277,6 +1277,60 @@ class Ary implements Iterator, Countable, ArrayAccess
         return $this;
     }
 
+    /**
+     * Returns a URL query string representation of this array
+     *
+     * This differs from http_build_query in two important ways:
+     * - This will traverse iterators
+     * - It will include blank variables
+     *
+     * @param $delim The delimiter that should be used to separate each expression
+     *      If left empty, this will pull its value from that arg_separator.output
+     *      value in your php.ini file
+     * @return String
+     */
+    public function toQuery ( $delim = NULL )
+    {
+
+        if ( ::cPHP::isVague($delim) )
+            $delim = ini_get("arg_separator.output");
+        else
+            $delim = ::cPHP::strval( $delim );
+
+        // Why not use http_build_query? Because it doesn't handle iterable objects.
+        $callback = function ( $callback, $values, $variable = NULL ) use ( $delim ) {
+
+            $result = array();
+
+            foreach ( $values as $key => $val ) {
+
+                $key = urlencode($key);
+
+                // If we are create a multidimensional value, then stack the key on
+                if ( !empty($variable) || $variable == "0" )
+                    $key = $variable ."%5B". $key ."%5D";
+
+                if ( is_object($val) || is_array($val) ) {
+
+                    // For non-traversable objects, grab their visible properties
+                    if ( is_object($val) && !($val instanceof Traversable) )
+                        $val = get_object_vars( $val );
+
+                    $result[] =  $callback( $callback, $val, $key );
+
+                }
+                else {
+                    $result[] =  $key ."=". urlencode( ::cPHP::strval($val) );
+                }
+
+            }
+
+            return implode($delim, $result);
+        };
+
+        return $callback( $callback, $this->array );
+    }
+
 }
 
 ?>

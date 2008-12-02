@@ -1514,6 +1514,109 @@ class classes_ary extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testToQuery_flat ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $ary = new ::cPHP::Ary(array( "var" => "val", "other" => "something" ));
+        $this->assertSame( "var=val&other=something", $ary->toQuery() );
+
+        $ary = new ::cPHP::Ary(array( "var" => "", "other" => "   " ));
+        $this->assertSame( "var=&other=+++", $ary->toQuery() );
+    }
+
+    public function testToQuery_delim ()
+    {
+        $this->iniSet("arg_separator.output", "--");
+
+
+        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $this->assertSame( "one=1--two=2--three=3", $ary->toQuery() );
+
+
+        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( FALSE ) );
+
+
+        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( TRUE ) );
+
+
+        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( NULL ) );
+
+
+        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $this->assertSame( "one=1!-!two=2!-!three=3", $ary->toQuery( "!-!" ) );
+    }
+
+    public function testToQuery_multi ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $ary = new ::cPHP::Ary(array(
+            "var" => array( "one", "two" ),
+        ));
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
+
+
+        $ary = new ::cPHP::Ary(array(
+            "0" => array( "one", "two" ),
+        ));
+        $this->assertSame( "0%5B0%5D=one&0%5B1%5D=two", $ary->toQuery() );
+
+
+        $ary = new ::cPHP::Ary(array(
+            "var" => array( "one", "two" => array(
+                    "double" => "depth"
+                )),
+        ));
+        $this->assertSame( "var%5B0%5D=one&var%5Btwo%5D%5Bdouble%5D=depth", $ary->toQuery() );
+
+    }
+
+    public function testToQuery_encoding ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $ary = new ::cPHP::Ary(array( "var[]" => "encode" ));
+        $this->assertSame( "var%5B%5D=encode", $ary->toQuery() );
+
+
+        $ary = new ::cPHP::Ary(array( "!@#" => "%^&" ));
+        $this->assertSame( "%21%40%23=%25%5E%26", $ary->toQuery() );
+    }
+
+    public function testToQuery_iterators ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $ary = new ::cPHP::Ary(array(
+            "var" => new ::cPHP::Ary(array( "one", "two" )),
+        ));
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
+
+
+        $ary = new ::cPHP::Ary(array(
+            "var" => new ArrayIterator(array( "one", "two" )),
+        ));
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
+
+    }
+
+    public function testToQuery_object ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $obj = new stdClass;
+        $obj->one = 1;
+        $obj->two = "2";
+        $ary = new ::cPHP::Ary(array(
+            "var" => $obj
+        ));
+        $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $ary->toQuery() );
+    }
+
 }
 
 ?>
