@@ -892,6 +892,56 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the query, if there is one
+     *
+     * @return String|Null Returns null if no query has been set
+     */
+    public function getQuery ()
+    {
+        return $this->query;
+    }
+
+    /**
+     * Sets the query
+     *
+     * @param mixed $query The new query. If given a string, this will set the
+     *      query to that string without encoding it or changing it in any way. If
+     *      given an array or an iterable object, it will be collapsed in to a query
+     *      string.
+     * @return Object Returns a self reference
+     */
+    public function setQuery ( $query )
+    {
+        if ( ::cPHP::Ary::is($query) )
+            $query = ::cPHP::Ary::create( $query )->toQuery();
+
+        $this->query = ::cPHP::strval( $query );
+
+        return $this;
+    }
+
+    /**
+     * Returns whether an query has been set
+     *
+     * @return Boolean
+     */
+    public function queryExists ()
+    {
+        return isset( $this->query );
+    }
+
+    /**
+     * Clears the query
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearQuery ()
+    {
+        $this->query = null;
+        return $this;
+    }
+
 }
 
 ?>

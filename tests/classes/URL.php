@@ -825,6 +825,84 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $url->getPath() );
     }
 
+    public function testQueryAccessors ()
+    {
+        $uri = new cPHP::URL;
+        $this->assertFalse( $uri->queryExists() );
+        $this->assertNull( $uri->getQuery() );
+
+        $this->assertSame( $uri, $uri->setQuery("var=val") );
+        $this->assertTrue( $uri->queryExists() );
+        $this->assertSame( "var=val", $uri->getQuery() );
+
+        $this->assertSame( $uri, $uri->clearQuery() );
+        $this->assertFalse( $uri->queryExists() );
+        $this->assertNull( $uri->getQuery() );
+
+        $this->assertSame( $uri, $uri->setQuery("one=once&two=twice") );
+        $this->assertTrue( $uri->queryExists() );
+        $this->assertSame( "one=once&two=twice", $uri->getQuery() );
+
+        $this->assertSame( $uri, $uri->setQuery("  ") );
+        $this->assertTrue( $uri->queryExists() );
+        $this->assertSame( "  ", $uri->getQuery() );
+    }
+
+    public function testSetQuery_array ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $uri = new cPHP::URL;
+
+        $this->assertSame(
+                $uri,
+                $uri->setQuery(array( "var" => "val", "other" => "something" ))
+            );
+        $this->assertSame( "var=val&other=something", $uri->getQuery() );
+
+        $this->assertSame(
+                $uri,
+                $uri->setQuery(array( "var" => "", "other" => "   " ))
+            );
+        $this->assertSame( "var=&other=+++", $uri->getQuery() );
+    }
+
+    public function testSetQuery_iterators ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $uri = new cPHP::URL;
+
+        $this->assertSame(
+                $uri,
+                $uri->setQuery(array( "var" => new ::cPHP::Ary(array( "one", "two" )) ))
+            );
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $uri->getQuery() );
+
+        $this->assertSame(
+                $uri,
+                $uri->setQuery(array( "var" => new ArrayIterator(array( "one", "two" )) ))
+            );
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $uri->getQuery() );
+    }
+
+    public function testSetQuery_object ()
+    {
+        $this->iniSet("arg_separator.output", "&");
+
+        $uri = new cPHP::URL;
+
+        $obj = new stdClass;
+        $obj->one = 1;
+        $obj->two = "2";
+
+        $this->assertSame(
+                $uri,
+                $uri->setQuery(array( "var" => $obj ))
+            );
+        $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $uri->getQuery() );
+    }
+
 }
 
 ?>
