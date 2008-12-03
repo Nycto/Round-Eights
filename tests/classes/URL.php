@@ -147,482 +147,482 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSchemeAccessors()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertNull( $uri->getScheme() );
-        $this->assertFalse( $uri->schemeExists() );
+        $this->assertNull( $url->getScheme() );
+        $this->assertFalse( $url->schemeExists() );
 
-        $this->assertSame( $uri, $uri->setScheme("ftp") );
-        $this->assertSame( "ftp", $uri->getScheme() );
-        $this->assertTrue( $uri->schemeExists() );
+        $this->assertSame( $url, $url->setScheme("ftp") );
+        $this->assertSame( "ftp", $url->getScheme() );
+        $this->assertTrue( $url->schemeExists() );
 
-        $this->assertSame( $uri, $uri->setScheme("") );
-        $this->assertNull( $uri->getScheme() );
-        $this->assertFalse( $uri->schemeExists() );
+        $this->assertSame( $url, $url->setScheme("") );
+        $this->assertNull( $url->getScheme() );
+        $this->assertFalse( $url->schemeExists() );
 
-        $this->assertSame( $uri, $uri->setScheme("  S F T P !@#$ 1") );
-        $this->assertSame( "sftp1", $uri->getScheme() );
-        $this->assertTrue( $uri->schemeExists() );
+        $this->assertSame( $url, $url->setScheme("  S F T P !@#$ 1") );
+        $this->assertSame( "sftp1", $url->getScheme() );
+        $this->assertTrue( $url->schemeExists() );
 
-        $this->assertSame( $uri, $uri->clearScheme() );
-        $this->assertNull( $uri->getScheme() );
-        $this->assertFalse( $uri->schemeExists() );
+        $this->assertSame( $url, $url->clearScheme() );
+        $this->assertNull( $url->getScheme() );
+        $this->assertFalse( $url->schemeExists() );
     }
 
     public function isSameScheme_NoEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array())
                 ));
 
-        $this->assertFalse( $uri->isSameScheme() );
+        $this->assertFalse( $url->isSameScheme() );
 
-        $uri->setScheme("http");
-        $this->assertFalse( $uri->isSameScheme() );
+        $url->setScheme("http");
+        $this->assertFalse( $url->isSameScheme() );
     }
 
     public function isSameScheme_WithEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array("SERVER_PROTOCOL" => "HTTP/1.1"))
                 ));
 
-        $this->assertFalse( $uri->isSameScheme() );
+        $this->assertFalse( $url->isSameScheme() );
 
-        $uri->setScheme("http");
-        $this->assertTrue( $uri->isSameScheme() );
+        $url->setScheme("http");
+        $this->assertTrue( $url->isSameScheme() );
 
-        $uri->setScheme("ftp");
-        $this->assertFalse( $uri->isSameScheme() );
+        $url->setScheme("ftp");
+        $this->assertFalse( $url->isSameScheme() );
     }
 
     public function testUserNameAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->userNameExists() );
-        $this->assertNull( $uri->getUserName() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertNull( $url->getUserName() );
 
-        $this->assertSame( $uri, $uri->setUserName("uname") );
-        $this->assertTrue( $uri->userNameExists() );
-        $this->assertSame( "uname", $uri->getUserName() );
+        $this->assertSame( $url, $url->setUserName("uname") );
+        $this->assertTrue( $url->userNameExists() );
+        $this->assertSame( "uname", $url->getUserName() );
 
-        $this->assertSame( $uri, $uri->clearUserName() );
-        $this->assertFalse( $uri->userNameExists() );
-        $this->assertNull( $uri->getUserName() );
+        $this->assertSame( $url, $url->clearUserName() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertNull( $url->getUserName() );
 
-        $this->assertSame( $uri, $uri->setUserName("uname") );
-        $this->assertTrue( $uri->userNameExists() );
-        $this->assertSame( "uname", $uri->getUserName() );
+        $this->assertSame( $url, $url->setUserName("uname") );
+        $this->assertTrue( $url->userNameExists() );
+        $this->assertSame( "uname", $url->getUserName() );
 
-        $this->assertSame( $uri, $uri->setUserName("  ") );
-        $this->assertFalse( $uri->userNameExists() );
-        $this->assertNull( $uri->getUserName() );
+        $this->assertSame( $url, $url->setUserName("  ") );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertNull( $url->getUserName() );
     }
 
     public function testPasswordAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertNull( $uri->getPassword() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertNull( $url->getPassword() );
 
-        $this->assertSame( $uri, $uri->setPassword("pword") );
-        $this->assertTrue( $uri->passwordExists() );
-        $this->assertSame( "pword", $uri->getPassword() );
+        $this->assertSame( $url, $url->setPassword("pword") );
+        $this->assertTrue( $url->passwordExists() );
+        $this->assertSame( "pword", $url->getPassword() );
 
-        $this->assertSame( $uri, $uri->clearPassword() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertNull( $uri->getPassword() );
+        $this->assertSame( $url, $url->clearPassword() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertNull( $url->getPassword() );
 
-        $this->assertSame( $uri, $uri->setPassword("pword") );
-        $this->assertTrue( $uri->passwordExists() );
-        $this->assertSame( "pword", $uri->getPassword() );
+        $this->assertSame( $url, $url->setPassword("pword") );
+        $this->assertTrue( $url->passwordExists() );
+        $this->assertSame( "pword", $url->getPassword() );
 
-        $this->assertSame( $uri, $uri->setPassword("  ") );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertNull( $uri->getPassword() );
+        $this->assertSame( $url, $url->setPassword("  ") );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertNull( $url->getPassword() );
     }
 
     public function testUserInfoAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->userInfoExists() );
-        $this->assertNull( $uri->getUserInfo() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->userInfoExists() );
+        $this->assertNull( $url->getUserInfo() );
 
-        $uri->setPassword("pword");
-        $this->assertFalse( $uri->userInfoExists() );
-        $this->assertNull( $uri->getUserInfo() );
+        $url->setPassword("pword");
+        $this->assertFalse( $url->userInfoExists() );
+        $this->assertNull( $url->getUserInfo() );
 
-        $uri->setUserName("uname");
-        $this->assertTrue( $uri->userInfoExists() );
-        $this->assertSame("uname:pword", $uri->getUserInfo() );
-
-
-        $this->assertSame( $uri, $uri->setUserInfo("user%20name:pass%2Dword") );
-        $this->assertTrue( $uri->usernameExists() );
-        $this->assertTrue( $uri->passwordExists() );
-        $this->assertTrue( $uri->userInfoExists() );
-        $this->assertSame( "user name", $uri->getUsername() );
-        $this->assertSame( "pass-word", $uri->getPassword() );
-        $this->assertSame("user+name:pass-word", $uri->getUserInfo() );
+        $url->setUserName("uname");
+        $this->assertTrue( $url->userInfoExists() );
+        $this->assertSame("uname:pword", $url->getUserInfo() );
 
 
-        $this->assertSame( $uri, $uri->setUserInfo("uname:pword@example.com") );
-        $this->assertTrue( $uri->usernameExists() );
-        $this->assertTrue( $uri->passwordExists() );
-        $this->assertTrue( $uri->userInfoExists() );
-        $this->assertSame( "uname", $uri->getUsername() );
-        $this->assertSame( "pword", $uri->getPassword() );
-        $this->assertSame("uname:pword", $uri->getUserInfo() );
+        $this->assertSame( $url, $url->setUserInfo("user%20name:pass%2Dword") );
+        $this->assertTrue( $url->usernameExists() );
+        $this->assertTrue( $url->passwordExists() );
+        $this->assertTrue( $url->userInfoExists() );
+        $this->assertSame( "user name", $url->getUsername() );
+        $this->assertSame( "pass-word", $url->getPassword() );
+        $this->assertSame("user+name:pass-word", $url->getUserInfo() );
 
 
-        $this->assertSame( $uri, $uri->setUserInfo("uname") );
-        $this->assertTrue( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertTrue( $uri->userInfoExists() );
-        $this->assertSame( "uname", $uri->getUsername() );
-        $this->assertSame("uname", $uri->getUserInfo() );
+        $this->assertSame( $url, $url->setUserInfo("uname:pword@example.com") );
+        $this->assertTrue( $url->usernameExists() );
+        $this->assertTrue( $url->passwordExists() );
+        $this->assertTrue( $url->userInfoExists() );
+        $this->assertSame( "uname", $url->getUsername() );
+        $this->assertSame( "pword", $url->getPassword() );
+        $this->assertSame("uname:pword", $url->getUserInfo() );
 
 
-        $this->assertSame( $uri, $uri->clearUserInfo() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertFalse( $uri->userInfoExists() );
-        $this->assertNull($uri->getUserInfo() );
+        $this->assertSame( $url, $url->setUserInfo("uname") );
+        $this->assertTrue( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertTrue( $url->userInfoExists() );
+        $this->assertSame( "uname", $url->getUsername() );
+        $this->assertSame("uname", $url->getUserInfo() );
+
+
+        $this->assertSame( $url, $url->clearUserInfo() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->userInfoExists() );
+        $this->assertNull($url->getUserInfo() );
     }
 
     public function testHostAccessors ()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertNull( $uri->getHost() );
-        $this->assertFalse( $uri->hostExists() );
+        $this->assertNull( $url->getHost() );
+        $this->assertFalse( $url->hostExists() );
 
-        $this->assertSame( $uri, $uri->setHost("example.com") );
-        $this->assertSame( "example.com", $uri->getHost() );
-        $this->assertTrue( $uri->hostExists() );
+        $this->assertSame( $url, $url->setHost("example.com") );
+        $this->assertSame( "example.com", $url->getHost() );
+        $this->assertTrue( $url->hostExists() );
 
-        $this->assertSame( $uri, $uri->setHost("") );
-        $this->assertNull( $uri->getHost() );
-        $this->assertFalse( $uri->hostExists() );
+        $this->assertSame( $url, $url->setHost("") );
+        $this->assertNull( $url->getHost() );
+        $this->assertFalse( $url->hostExists() );
 
-        $this->assertSame( $uri, $uri->setHost(".. s ub. . exam!@#ple-domain.com....   ") );
-        $this->assertSame( "sub.example-domain.com", $uri->getHost() );
-        $this->assertTrue( $uri->hostExists() );
+        $this->assertSame( $url, $url->setHost(".. s ub. . exam!@#ple-domain.com....   ") );
+        $this->assertSame( "sub.example-domain.com", $url->getHost() );
+        $this->assertTrue( $url->hostExists() );
 
-        $this->assertSame( $uri, $uri->clearHost() );
-        $this->assertNull( $uri->getHost() );
-        $this->assertFalse( $uri->hostExists() );
+        $this->assertSame( $url, $url->clearHost() );
+        $this->assertNull( $url->getHost() );
+        $this->assertFalse( $url->hostExists() );
     }
 
     public function testIsSameHost_withSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array('HTTP_HOST' => 'sub.example.edu'))
                 ));
 
-        $this->assertFalse( $uri->isSameHost() );
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost("notTheDomain.com");
-        $this->assertFalse( $uri->isSameHost() );
+        $url->setHost("notTheDomain.com");
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost("example.edu");
-        $this->assertFalse( $uri->isSameHost() );
+        $url->setHost("example.edu");
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost("sub.example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("sub.example.edu");
+        $this->assertTrue( $url->isSameHost() );
 
-        $uri->setHost("www.sub.example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("www.sub.example.edu");
+        $this->assertTrue( $url->isSameHost() );
     }
 
     public function testIsSameHost_wwwSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array('HTTP_HOST' => 'www.example.edu'))
                 ));
 
-        $this->assertFalse( $uri->isSameHost() );
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost("example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("example.edu");
+        $this->assertTrue( $url->isSameHost() );
 
-        $uri->setHost("www.example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("www.example.edu");
+        $this->assertTrue( $url->isSameHost() );
 
-        $uri->setHost("test.com");
-        $this->assertFalse( $uri->isSameHost() );
+        $url->setHost("test.com");
+        $this->assertFalse( $url->isSameHost() );
     }
 
     public function testIsSameHost_noSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array('HTTP_HOST' => 'example.edu'))
                 ));
 
-        $this->assertFalse( $uri->isSameHost() );
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost("example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("example.edu");
+        $this->assertTrue( $url->isSameHost() );
 
-        $uri->setHost("www.example.edu");
-        $this->assertTrue( $uri->isSameHost() );
+        $url->setHost("www.example.edu");
+        $this->assertTrue( $url->isSameHost() );
 
-        $uri->setHost("test.com");
-        $this->assertFalse( $uri->isSameHost() );
+        $url->setHost("test.com");
+        $this->assertFalse( $url->isSameHost() );
     }
 
     public function testIsSameHost_noEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array())
                 ));
 
         // Since neither the SLD or TLD are set, this defaults to the current domain
-        $this->assertFalse( $uri->isSameHost() );
+        $this->assertFalse( $url->isSameHost() );
 
-        $uri->setHost('sub.example.com');
-        $this->assertFalse( $uri->isSameHost() );
+        $url->setHost('sub.example.com');
+        $this->assertFalse( $url->isSameHost() );
     }
 
     public function testPortAccessors()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertNull( $uri->getPort() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertNull( $url->getPort() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setPort(80) );
-        $this->assertSame( 80, $uri->getPort() );
-        $this->assertTrue( $uri->portExists() );
+        $this->assertSame( $url, $url->setPort(80) );
+        $this->assertSame( 80, $url->getPort() );
+        $this->assertTrue( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setPort("22") );
-        $this->assertSame( 22, $uri->getPort() );
-        $this->assertTrue( $uri->portExists() );
+        $this->assertSame( $url, $url->setPort("22") );
+        $this->assertSame( 22, $url->getPort() );
+        $this->assertTrue( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setPort(0) );
-        $this->assertNull( $uri->getPort() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setPort(0) );
+        $this->assertNull( $url->getPort() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->clearPort() );
-        $this->assertNull( $uri->getPort() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->clearPort() );
+        $this->assertNull( $url->getPort() );
+        $this->assertFalse( $url->portExists() );
     }
 
     public function isSamePort_NoEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array())
                 ));
 
-        $this->assertFalse( $uri->isSamePort() );
+        $this->assertFalse( $url->isSamePort() );
 
-        $uri->setPort(2020);
-        $this->assertFalse( $uri->isSamePort() );
+        $url->setPort(2020);
+        $this->assertFalse( $url->isSamePort() );
 
-        $uri->setPort(80);
-        $this->assertFalse( $uri->isSamePort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isSamePort() );
     }
 
     public function isSamePort_WithEnvPort40 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array("SERVER_PORT" => "40"))
                 ));
 
-        $this->assertFalse( $uri->isSamePort() );
+        $this->assertFalse( $url->isSamePort() );
 
-        $uri->setPort(2020);
-        $this->assertFalse( $uri->isSamePort() );
+        $url->setPort(2020);
+        $this->assertFalse( $url->isSamePort() );
 
-        $uri->setPort(40);
-        $this->assertTrue( $uri->isSamePort() );
+        $url->setPort(40);
+        $this->assertTrue( $url->isSamePort() );
     }
 
     public function isSamePort_WithEnvPort80 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array("SERVER_PORT" => "80"))
                 ));
 
-        $this->assertTrue( $uri->isSamePort() );
+        $this->assertTrue( $url->isSamePort() );
 
-        $uri->setPort(2020);
-        $this->assertFalse( $uri->isSamePort() );
+        $url->setPort(2020);
+        $this->assertFalse( $url->isSamePort() );
 
-        $uri->setPort(80);
-        $this->assertTrue( $uri->isSamePort() );
+        $url->setPort(80);
+        $this->assertTrue( $url->isSamePort() );
     }
 
     public function testGetHostAndPort ()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertNull( $uri->getHostAndPort() );
+        $this->assertNull( $url->getHostAndPort() );
 
-        $uri->setPort(90);
-        $this->assertNull( $uri->getHostAndPort() );
+        $url->setPort(90);
+        $this->assertNull( $url->getHostAndPort() );
 
-        $uri->setHost("example.com");
-        $this->assertSame( "example.com:90", $uri->getHostAndPort() );
+        $url->setHost("example.com");
+        $this->assertSame( "example.com:90", $url->getHostAndPort() );
 
-        $uri->clearPort();
-        $this->assertSame( "example.com", $uri->getHostAndPort() );
+        $url->clearPort();
+        $this->assertSame( "example.com", $url->getHostAndPort() );
 
-        $uri->clearHost();
-        $this->assertNull( $uri->getHostAndPort() );
+        $url->clearHost();
+        $this->assertNull( $url->getHostAndPort() );
     }
 
     public function testSetHostAndPort ()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertSame( $uri, $uri->setHostAndPort( "sub.example.com:2020" ) );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertSame( 2020, $uri->getPort() );
+        $this->assertSame( $url, $url->setHostAndPort( "sub.example.com:2020" ) );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertSame( 2020, $url->getPort() );
 
-        $this->assertSame( $uri, $uri->setHostAndPort( "sub.example.com" ) );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setHostAndPort( "sub.example.com" ) );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertFalse( $url->portExists() );
     }
 
     public function testGetBase ()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertNull( $uri->getBase() );
+        $this->assertNull( $url->getBase() );
 
-        $uri->setPort(21);
-        $this->assertNull( $uri->getBase() );
+        $url->setPort(21);
+        $this->assertNull( $url->getBase() );
 
-        $uri->setScheme("ftp");
-        $this->assertNull( $uri->getBase() );
+        $url->setScheme("ftp");
+        $this->assertNull( $url->getBase() );
 
-        $uri->setUserInfo("uname:pword");
-        $this->assertNull( $uri->getBase() );
+        $url->setUserInfo("uname:pword");
+        $this->assertNull( $url->getBase() );
 
-        $uri->setHost("example.com");
-        $this->assertSame("ftp://uname:pword@example.com:21", $uri->getBase());
+        $url->setHost("example.com");
+        $this->assertSame("ftp://uname:pword@example.com:21", $url->getBase());
 
-        $uri->clearPort();
-        $this->assertSame("ftp://uname:pword@example.com", $uri->getBase());
+        $url->clearPort();
+        $this->assertSame("ftp://uname:pword@example.com", $url->getBase());
 
-        $uri->clearPassword();
-        $this->assertSame("ftp://uname@example.com", $uri->getBase());
+        $url->clearPassword();
+        $this->assertSame("ftp://uname@example.com", $url->getBase());
 
-        $uri->clearUsername();
-        $this->assertSame("ftp://example.com", $uri->getBase());
+        $url->clearUsername();
+        $this->assertSame("ftp://example.com", $url->getBase());
 
-        $uri->clearScheme();
-        $this->assertSame("example.com", $uri->getBase());
+        $url->clearScheme();
+        $this->assertSame("example.com", $url->getBase());
 
-        $uri->clearHost();
-        $this->assertNull( $uri->getBase() );
+        $url->clearHost();
+        $this->assertNull( $url->getBase() );
     }
 
     public function testSetBase ()
     {
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
-        $this->assertSame( $uri, $uri->setBase("sftp://uname:pword@sub.example.com:8080") );
-        $this->assertSame( "sftp", $uri->getScheme() );
-        $this->assertSame( "uname", $uri->getUsername() );
-        $this->assertSame( "pword", $uri->getPassword() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertSame( 8080, $uri->getPort() );
+        $this->assertSame( $url, $url->setBase("sftp://uname:pword@sub.example.com:8080") );
+        $this->assertSame( "sftp", $url->getScheme() );
+        $this->assertSame( "uname", $url->getUsername() );
+        $this->assertSame( "pword", $url->getPassword() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertSame( 8080, $url->getPort() );
 
-        $this->assertSame( $uri, $uri->setBase("test.net") );
-        $this->assertFalse( $uri->schemeExists() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "test.net", $uri->getHost() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setBase("test.net") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "test.net", $url->getHost() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setBase("sftp://uname@sub.example.com:8080") );
-        $this->assertSame( "sftp", $uri->getScheme() );
-        $this->assertSame( "uname", $uri->getUsername() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertSame( 8080, $uri->getPort() );
+        $this->assertSame( $url, $url->setBase("sftp://uname@sub.example.com:8080") );
+        $this->assertSame( "sftp", $url->getScheme() );
+        $this->assertSame( "uname", $url->getUsername() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertSame( 8080, $url->getPort() );
 
-        $this->assertSame( $uri, $uri->setBase("sftp://sub.example.com:8080") );
-        $this->assertSame( "sftp", $uri->getScheme() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertSame( 8080, $uri->getPort() );
+        $this->assertSame( $url, $url->setBase("sftp://sub.example.com:8080") );
+        $this->assertSame( "sftp", $url->getScheme() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertSame( 8080, $url->getPort() );
 
-        $this->assertSame( $uri, $uri->setBase("sftp://sub.example.com") );
-        $this->assertSame( "sftp", $uri->getScheme() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setBase("sftp://sub.example.com") );
+        $this->assertSame( "sftp", $url->getScheme() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setBase("sub.example.com") );
-        $this->assertFalse( $uri->schemeExists() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setBase("sub.example.com") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setBase("uname:pword@sub.example.com") );
-        $this->assertFalse( $uri->schemeExists() );
-        $this->assertSame( "uname", $uri->getUsername() );
-        $this->assertSame( "pword", $uri->getPassword() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertFalse( $uri->portExists() );
+        $this->assertSame( $url, $url->setBase("uname:pword@sub.example.com") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertSame( "uname", $url->getUsername() );
+        $this->assertSame( "pword", $url->getPassword() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertFalse( $url->portExists() );
 
-        $this->assertSame( $uri, $uri->setBase("sub.example.com:8080") );
-        $this->assertFalse( $uri->schemeExists() );
-        $this->assertFalse( $uri->usernameExists() );
-        $this->assertFalse( $uri->passwordExists() );
-        $this->assertSame( "sub.example.com", $uri->getHost() );
-        $this->assertSame( 8080, $uri->getPort() );
+        $this->assertSame( $url, $url->setBase("sub.example.com:8080") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->usernameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "sub.example.com", $url->getHost() );
+        $this->assertSame( 8080, $url->getPort() );
     }
 
     public function testIsSameBase_noEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array())
                 ));
 
-        $this->assertFalse( $uri->isSameBase() );
+        $this->assertFalse( $url->isSameBase() );
     }
 
     public function isSameBase_WithEnvPort80 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
-        $uri->expects( $this->any() )
+        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
                     Stub_Env::fromArray(array(
@@ -632,88 +632,88 @@ class classes_url extends PHPUnit_Framework_TestCase
                         ))
                 ));
 
-        $this->assertFalse( $uri->isSameBase() );
+        $this->assertFalse( $url->isSameBase() );
 
-        $uri->setScheme("http");
-        $this->assertFalse( $uri->isSameBase() );
+        $url->setScheme("http");
+        $this->assertFalse( $url->isSameBase() );
 
-        $uri->setPort(80);
-        $this->assertFalse( $uri->isSameBase() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isSameBase() );
 
-        $uri->setScheme("example.edu");
-        $this->assertTrue( $uri->isSameBase() );
+        $url->setScheme("example.edu");
+        $this->assertTrue( $url->isSameBase() );
 
-        $uri->clearPort();
-        $this->assertTrue( $uri->isSameBase() );
+        $url->clearPort();
+        $this->assertTrue( $url->isSameBase() );
     }
 
     public function testDirAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->dirExists() );
-        $this->assertNull( $uri->getDir() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->dirExists() );
+        $this->assertNull( $url->getDir() );
 
-        $this->assertSame( $uri, $uri->setDir("/dir/path") );
-        $this->assertTrue( $uri->dirExists() );
-        $this->assertSame( "/dir/path/", $uri->getDir() );
+        $this->assertSame( $url, $url->setDir("/dir/path") );
+        $this->assertTrue( $url->dirExists() );
+        $this->assertSame( "/dir/path/", $url->getDir() );
 
-        $this->assertSame( $uri, $uri->clearDir() );
-        $this->assertFalse( $uri->dirExists() );
-        $this->assertNull( $uri->getDir() );
+        $this->assertSame( $url, $url->clearDir() );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertNull( $url->getDir() );
 
-        $this->assertSame( $uri, $uri->setDir("dir/path/") );
-        $this->assertTrue( $uri->dirExists() );
-        $this->assertSame( "/dir/path/", $uri->getDir() );
+        $this->assertSame( $url, $url->setDir("dir/path/") );
+        $this->assertTrue( $url->dirExists() );
+        $this->assertSame( "/dir/path/", $url->getDir() );
 
-        $this->assertSame( $uri, $uri->setDir("  ") );
-        $this->assertFalse( $uri->dirExists() );
-        $this->assertNull( $uri->getDir() );
+        $this->assertSame( $url, $url->setDir("  ") );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertNull( $url->getDir() );
     }
 
     public function testFilenameAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->filenameExists() );
-        $this->assertNull( $uri->getFilename() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertNull( $url->getFilename() );
 
-        $this->assertSame( $uri, $uri->setFilename("filenm") );
-        $this->assertTrue( $uri->filenameExists() );
-        $this->assertSame( "filenm", $uri->getFilename() );
+        $this->assertSame( $url, $url->setFilename("filenm") );
+        $this->assertTrue( $url->filenameExists() );
+        $this->assertSame( "filenm", $url->getFilename() );
 
-        $this->assertSame( $uri, $uri->clearFilename() );
-        $this->assertFalse( $uri->filenameExists() );
-        $this->assertNull( $uri->getFilename() );
+        $this->assertSame( $url, $url->clearFilename() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertNull( $url->getFilename() );
 
-        $this->assertSame( $uri, $uri->setFilename("Filename.2008") );
-        $this->assertTrue( $uri->filenameExists() );
-        $this->assertSame( "Filename.2008", $uri->getFilename() );
+        $this->assertSame( $url, $url->setFilename("Filename.2008") );
+        $this->assertTrue( $url->filenameExists() );
+        $this->assertSame( "Filename.2008", $url->getFilename() );
 
-        $this->assertSame( $uri, $uri->setFilename("  ") );
-        $this->assertFalse( $uri->filenameExists() );
-        $this->assertNull( $uri->getFilename() );
+        $this->assertSame( $url, $url->setFilename("  ") );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertNull( $url->getFilename() );
     }
 
     public function testExtAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->extExists() );
-        $this->assertNull( $uri->getExt() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->extExists() );
+        $this->assertNull( $url->getExt() );
 
-        $this->assertSame( $uri, $uri->setExt("html") );
-        $this->assertTrue( $uri->extExists() );
-        $this->assertSame( "html", $uri->getExt() );
+        $this->assertSame( $url, $url->setExt("html") );
+        $this->assertTrue( $url->extExists() );
+        $this->assertSame( "html", $url->getExt() );
 
-        $this->assertSame( $uri, $uri->clearExt() );
-        $this->assertFalse( $uri->extExists() );
-        $this->assertNull( $uri->getExt() );
+        $this->assertSame( $url, $url->clearExt() );
+        $this->assertFalse( $url->extExists() );
+        $this->assertNull( $url->getExt() );
 
-        $this->assertSame( $uri, $uri->setExt(".CSS") );
-        $this->assertTrue( $uri->extExists() );
-        $this->assertSame( "CSS", $uri->getExt() );
+        $this->assertSame( $url, $url->setExt(".CSS") );
+        $this->assertTrue( $url->extExists() );
+        $this->assertSame( "CSS", $url->getExt() );
 
-        $this->assertSame( $uri, $uri->setExt("  ") );
-        $this->assertFalse( $uri->extExists() );
-        $this->assertNull( $uri->getExt() );
+        $this->assertSame( $url, $url->setExt("  ") );
+        $this->assertFalse( $url->extExists() );
+        $this->assertNull( $url->getExt() );
     }
 
     public function testSetBasename ()
@@ -827,99 +827,99 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testQueryAccessors ()
     {
-        $uri = new cPHP::URL;
-        $this->assertFalse( $uri->queryExists() );
-        $this->assertNull( $uri->getQuery() );
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->queryExists() );
+        $this->assertNull( $url->getQuery() );
 
-        $this->assertSame( $uri, $uri->setQuery("var=val") );
-        $this->assertTrue( $uri->queryExists() );
-        $this->assertSame( "var=val", $uri->getQuery() );
+        $this->assertSame( $url, $url->setQuery("var=val") );
+        $this->assertTrue( $url->queryExists() );
+        $this->assertSame( "var=val", $url->getQuery() );
 
-        $this->assertSame( $uri, $uri->clearQuery() );
-        $this->assertFalse( $uri->queryExists() );
-        $this->assertNull( $uri->getQuery() );
+        $this->assertSame( $url, $url->clearQuery() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertNull( $url->getQuery() );
 
-        $this->assertSame( $uri, $uri->setQuery("one=once&two=twice") );
-        $this->assertTrue( $uri->queryExists() );
-        $this->assertSame( "one=once&two=twice", $uri->getQuery() );
+        $this->assertSame( $url, $url->setQuery("one=once&two=twice") );
+        $this->assertTrue( $url->queryExists() );
+        $this->assertSame( "one=once&two=twice", $url->getQuery() );
 
-        $this->assertSame( $uri, $uri->setQuery("  ") );
-        $this->assertTrue( $uri->queryExists() );
-        $this->assertSame( "  ", $uri->getQuery() );
+        $this->assertSame( $url, $url->setQuery("  ") );
+        $this->assertTrue( $url->queryExists() );
+        $this->assertSame( "  ", $url->getQuery() );
     }
 
     public function testSetQuery_array ()
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
         $this->assertSame(
-                $uri,
-                $uri->setQuery(array( "var" => "val", "other" => "something" ))
+                $url,
+                $url->setQuery(array( "var" => "val", "other" => "something" ))
             );
-        $this->assertSame( "var=val&other=something", $uri->getQuery() );
+        $this->assertSame( "var=val&other=something", $url->getQuery() );
 
         $this->assertSame(
-                $uri,
-                $uri->setQuery(array( "var" => "", "other" => "   " ))
+                $url,
+                $url->setQuery(array( "var" => "", "other" => "   " ))
             );
-        $this->assertSame( "var=&other=+++", $uri->getQuery() );
+        $this->assertSame( "var=&other=+++", $url->getQuery() );
     }
 
     public function testSetQuery_iterators ()
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
         $this->assertSame(
-                $uri,
-                $uri->setQuery(array( "var" => new ::cPHP::Ary(array( "one", "two" )) ))
+                $url,
+                $url->setQuery(array( "var" => new ::cPHP::Ary(array( "one", "two" )) ))
             );
-        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $uri->getQuery() );
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $url->getQuery() );
 
         $this->assertSame(
-                $uri,
-                $uri->setQuery(array( "var" => new ArrayIterator(array( "one", "two" )) ))
+                $url,
+                $url->setQuery(array( "var" => new ArrayIterator(array( "one", "two" )) ))
             );
-        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $uri->getQuery() );
+        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $url->getQuery() );
     }
 
     public function testSetQuery_object ()
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $uri = new cPHP::URL;
+        $url = new cPHP::URL;
 
         $obj = new stdClass;
         $obj->one = 1;
         $obj->two = "2";
 
         $this->assertSame(
-                $uri,
-                $uri->setQuery(array( "var" => $obj ))
+                $url,
+                $url->setQuery(array( "var" => $obj ))
             );
-        $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $uri->getQuery() );
+        $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $url->getQuery() );
     }
 
     public function testGetParsedQuery ()
     {
-        $uri = new cPHP::URL;
-        $query = $uri->getParsedQuery();
+        $url = new cPHP::URL;
+        $query = $url->getParsedQuery();
         $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame( array(), $query->get() );
 
-        $uri->setQuery("var=val&other=something");
-        $query = $uri->getParsedQuery();
+        $url->setQuery("var=val&other=something");
+        $query = $url->getParsedQuery();
         $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame(
                 array( "var" => "val", "other" => "something" ),
                 $query->get()
             );
 
-        $uri->setQuery("var%5Bone%5D=1&var%5Btwo%5D=2");
-        $query = $uri->getParsedQuery();
+        $url->setQuery("var%5Bone%5D=1&var%5Btwo%5D=2");
+        $query = $url->getParsedQuery();
         $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
         $this->assertSame(
                 array( "var" => array( "one" => "1", "two" => "2" ) ),
