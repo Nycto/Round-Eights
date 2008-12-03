@@ -903,6 +903,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $uri->getQuery() );
     }
 
+    public function testGetParsedQuery ()
+    {
+        $uri = new cPHP::URL;
+        $query = $uri->getParsedQuery();
+        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame( array(), $query->get() );
+
+        $uri->setQuery("var=val&other=something");
+        $query = $uri->getParsedQuery();
+        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array( "var" => "val", "other" => "something" ),
+                $query->get()
+            );
+
+        $uri->setQuery("var%5Bone%5D=1&var%5Btwo%5D=2");
+        $query = $uri->getParsedQuery();
+        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertSame(
+                array( "var" => array( "one" => "1", "two" => "2" ) ),
+                $query->get()
+            );
+    }
+
 }
 
 ?>

@@ -903,6 +903,18 @@ class URL
     }
 
     /**
+     * Returns the query parsed in to an array
+     *
+     * @return Object Returns a cPHP::Ary object
+     */
+    public function getParsedQuery ()
+    {
+        $result = null;
+        parse_str( $this->query, $result );
+        return new ::cPHP::Ary( $result );
+    }
+
+    /**
      * Sets the query
      *
      * @param mixed $query The new query. If given a string, this will set the
