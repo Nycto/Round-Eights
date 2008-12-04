@@ -927,6 +927,25 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testFragmentAccessors ()
+    {
+        $url = new cPHP::URL;
+        $this->assertFalse( $url->fragmentExists() );
+        $this->assertNull( $url->getFragment() );
+
+        $this->assertSame( $url, $url->setFragment("frag") );
+        $this->assertTrue( $url->fragmentExists() );
+        $this->assertSame( "frag", $url->getFragment() );
+
+        $this->assertSame( $url, $url->clearFragment() );
+        $this->assertFalse( $url->fragmentExists() );
+        $this->assertNull( $url->getFragment() );
+
+        $this->assertSame( $url, $url->setFragment("  ") );
+        $this->assertTrue( $url->fragmentExists() );
+        $this->assertSame( "  ", $url->getFragment() );
+    }
+
 }
 
 ?>

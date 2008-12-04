@@ -954,6 +954,50 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns the fragment, if there is one
+     *
+     * @return String|Null Returns null if no fragment has been set
+     */
+    public function getFragment ()
+    {
+        return $this->fragment;
+    }
+
+    /**
+     * Sets the fragment
+     *
+     * @param String $fragment The new fragment
+     * @return Object Returns a self reference
+     */
+    public function setFragment ( $fragment )
+    {
+        $fragment = ::cPHP::strval( $fragment );
+        $this->fragment = ::cPHP::isEmpty( $fragment, ::cPHP::ALLOW_SPACES ) ? null : $fragment;
+        return $this;
+    }
+
+    /**
+     * Returns whether a fragment has been set
+     *
+     * @return Boolean
+     */
+    public function fragmentExists ()
+    {
+        return isset( $this->fragment );
+    }
+
+    /**
+     * Clears the fragment
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFragment ()
+    {
+        $this->fragment = null;
+        return $this;
+    }
+
 }
 
 ?>
