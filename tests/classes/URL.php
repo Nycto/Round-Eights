@@ -825,6 +825,19 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $url->getPath() );
     }
 
+    public function testClearPath ()
+    {
+        $url = new ::cPHP::URL;
+
+        $url->setPath("/dir/to/example.php");
+
+        $this->assertSame( $url, $url->clearPath() );
+
+        $this->assertFalse( $url->dirExists() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertFalse( $url->extExists() );
+    }
+
     public function testQueryAccessors ()
     {
         $url = new cPHP::URL;
@@ -944,6 +957,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( $url, $url->setFragment("  ") );
         $this->assertTrue( $url->fragmentExists() );
         $this->assertSame( "  ", $url->getFragment() );
+    }
+
+    public function testGetRelative ()
+    {
+        $url = new cPHP::URL;
+        $this->assertNull( $url->getRelative() );
+
+        $url->setPath("/path/to/file.php");
+        $this->assertSame( "/path/to/file.php", $url->getRelative() );
+
+        $url->setQuery("one=single");
+        $this->assertSame( "/path/to/file.php?one=single", $url->getRelative() );
+
+        $url->setFragment("top");
+        $this->assertSame( "/path/to/file.php?one=single#top", $url->getRelative() );
+
+        $url->clearQuery();
+        $this->assertSame( "/path/to/file.php#top", $url->getRelative() );
+
+        $url->clearPath();
+        $this->assertSame( "#top", $url->getRelative() );
+
+        $url->setQuery("one=single");
+        $this->assertSame( "?one=single#top", $url->getRelative() );
     }
 
 }

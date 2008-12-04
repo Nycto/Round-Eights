@@ -893,6 +893,19 @@ class URL
     }
 
     /**
+     * Clears the directory, filename and extension at once
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearPath ()
+    {
+        $this->directory = null;
+        $this->filename = null;
+        $this->extension = null;
+        return $this;
+    }
+
+    /**
      * Returns the query, if there is one
      *
      * @return String|Null Returns null if no query has been set
@@ -996,6 +1009,24 @@ class URL
     {
         $this->fragment = null;
         return $this;
+    }
+
+    /**
+     * Returns a relative URL
+     *
+     * This is a combination of the path, query and fragment
+     */
+    public function getRelative ()
+    {
+        $result = $this->getPath();
+
+        if ( $this->queryExists() )
+            $result .= "?". $this->getQuery();
+
+        if ( $this->fragmentExists() )
+            $result .= "#". $this->getFragment();
+
+        return ::cPHP::isEmpty( $result, cPHP::ALLOW_SPACES ) ? null : $result;
     }
 
 }
