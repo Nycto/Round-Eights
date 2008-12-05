@@ -39,7 +39,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 {
     public function testConstruct ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(15, "snip", '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(15, "snip", '"', "'");
         $this->assertSame( 15, $section->getOffset() );
         $this->assertSame( "snip", $section->getContent() );
         $this->assertSame( '"', $section->getOpenQuote() );
@@ -48,14 +48,14 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testIsQuoted ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertTrue( $section->isQuoted() );
     }
 
     public function testSetOpenQuote ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertEquals( '"', $section->getOpenQuote() );
 
@@ -70,7 +70,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testClearOpenQuote ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertEquals( '"', $section->getOpenQuote() );
 
@@ -81,7 +81,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testOpenQuoteExists ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertTrue( $section->openQuoteExists() );
 
@@ -96,7 +96,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testSetCloseQuote ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertEquals( "'", $section->getCloseQuote() );
 
@@ -111,7 +111,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testClearCloseQuote ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertEquals( "'", $section->getCloseQuote() );
 
@@ -122,7 +122,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testCloseQuoteExists ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, null, '"', "'");
+        $section = new \cPHP\Quoter\Section\Quoted(0, null, '"', "'");
 
         $this->assertTrue( $section->closeQuoteExists() );
 
@@ -137,7 +137,7 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $section = new ::cPHP::Quoter::Section::Quoted(0, "snip", "(", ")");
+        $section = new \cPHP\Quoter\Section\Quoted(0, "snip", "(", ")");
 
         $this->assertSame( "(snip)", $section->__toString() );
         $this->assertSame( "(snip)", "$section" );

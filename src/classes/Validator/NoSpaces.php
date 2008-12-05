@@ -30,14 +30,14 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates that a given value does not contain spaces, tabs, or newlines
  *
  * This will return positive for Boolean, Integers, Floats and Null
  */
-class NoSpaces extends ::cPHP::Validator
+class NoSpaces extends \cPHP\Validator
 {
 
     /**
@@ -54,13 +54,13 @@ class NoSpaces extends ::cPHP::Validator
         if ( !is_string($value) )
             return "Must be a string";
 
-        if ( ::cPHP::str::contains(' ', $value) )
+        if ( \cPHP\str\contains(' ', $value) )
             return "Must not contain any spaces";
 
-        if ( ::cPHP::str::contains("\t", $value) )
+        if ( \cPHP\str\contains("\t", $value) )
             return "Must not contain any tabs";
 
-        if ( ::cPHP::str::contains("\n", $value) || ::cPHP::str::contains("\r", $value) )
+        if ( \cPHP\str\contains("\n", $value) || \cPHP\str\contains("\r", $value) )
             return "Must not contain any new lines";
     }
 

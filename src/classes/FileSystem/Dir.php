@@ -30,12 +30,12 @@
  * @package FileSystem
  */
 
-namespace cPHP::FileSystem;
+namespace cPHP\FileSystem;
 
 /**
  * Filesystem Directory class
  */
-class Dir extends ::cPHP::FileSystem implements RecursiveIterator
+class Dir extends \cPHP\FileSystem implements \RecursiveIterator
 {
 
     /**
@@ -61,7 +61,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     /**
      * Returns a Dir instance representing the system's temporary directory
      *
-     * @return Object A cPHP::FileSystem::Dir instance
+     * @return Object A \cPHP\FileSystem\Dir instance
      */
     static public function getTemp ()
     {
@@ -126,7 +126,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     /**
      * Returns an array of the contents of this directory
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function toArray ()
     {
@@ -135,7 +135,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
         $resource = @opendir( $this->getPath() );
 
         if ( $resource === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to open directory"
                 );
@@ -144,7 +144,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
 
         $path = $this->getPath();
 
-        $result = new ::cPHP::Ary;
+        $result = new \cPHP\Ary;
 
         while ( ($item = readdir($resource)) !== FALSE ) {
 
@@ -155,9 +155,9 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
             $item = $path . $item;
 
             if ( is_dir( $item ) )
-                $result[] = new ::cPHP::FileSystem::Dir( $item );
+                $result[] = new \cPHP\FileSystem\Dir( $item );
             else
-                $result[] = new ::cPHP::FileSystem::File( $item );
+                $result[] = new \cPHP\FileSystem\File( $item );
 
         }
 
@@ -175,7 +175,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function make ()
     {
         if ( !$this->dirExists() )
-            throw new ::cPHP::Exception::Variable("Path", "No Path has been set");
+            throw new \cPHP\Exception\Variable("Path", "No Path has been set");
 
         $path = $this->getRawDir();
 
@@ -183,7 +183,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
             return $this;
 
         if ( @mkdir( $path, 0777, TRUE ) === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $path,
                     "Unable to create directory"
                 );
@@ -210,7 +210,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
             $resource = @opendir( $dir );
 
             if ( $resource === FALSE ) {
-                $err = new ::cPHP::Exception::FileSystem( $dir, "Unable to open directory" );
+                $err = new \cPHP\Exception\FileSystem( $dir, "Unable to open directory" );
                 throw $err;
             }
 
@@ -231,7 +231,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
                 }
 
                 if ( $result === FALSE ) {
-                    $err = new ::cPHP::Exception::FileSystem( $dir . $item, "Unable to delete path" );
+                    $err = new \cPHP\Exception\FileSystem( $dir . $item, "Unable to delete path" );
                     throw $err;
                 }
 
@@ -266,7 +266,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
         $result = @rmdir( $path );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $path,
                     "Unable to delete directory"
                 );
@@ -286,21 +286,21 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
      * @param String $prefix A prefix to attach to the file name
      * @param String $extension The extension the file should have
      * @param Boolean $moreEntropy Increases the length of the generated filename
-     * @return Object Returns a cPHP::FileSystem::File object
+     * @return Object Returns a \cPHP\FileSystem\File object
      */
     public function getUniqueFile ( $prefix = null, $extension = null, $moreEntropy = FALSE )
     {
         if ( !$this->dirExists() )
-            throw new ::cPHP::Exception::Variable("Dir", "No directory has been set for this instance");
+            throw new \cPHP\Exception\Variable("Dir", "No directory has been set for this instance");
 
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
         $file->setDir( $this->getRawDir() );
 
-        if ( !::cPHP::isVague($extension) )
+        if ( !\cPHP\isVague($extension) )
             $file->setExt( $extension );
 
-        $prefix = ::cPHP::isVague($prefix) ? null : ::cPHP::strval( $prefix );
-        $moreEntropy = ::cPHP::boolVal( $moreEntropy );
+        $prefix = \cPHP\isVague($prefix) ? null : \cPHP\strval( $prefix );
+        $moreEntropy = \cPHP\boolVal( $moreEntropy );
 
         do {
 
@@ -370,7 +370,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
             $resource = @opendir( $this->getPath() );
 
             if ( $resource === FALSE ) {
-                $err = new ::cPHP::Exception::FileSystem(
+                $err = new \cPHP\Exception\FileSystem(
                         $this->getPath(),
                         "Unable to open directory for iteration"
                     );
@@ -398,7 +398,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function next ()
     {
         if ( !$this->hasResource() )
-            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+            throw new \cPHP\Exception\Interaction("Iteration has not been rewound");
 
         $this->pointer++;
 
@@ -440,14 +440,14 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function current ()
     {
         if ( !$this->hasResource() )
-            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+            throw new \cPHP\Exception\Interaction("Iteration has not been rewound");
 
         $current = $this->getRawDir() . $this->current;
 
         if ( is_dir( $current ) )
-            return new ::cPHP::FileSystem::Dir( $current );
+            return new \cPHP\FileSystem\Dir( $current );
         else
-            return new ::cPHP::FileSystem::File( $current );
+            return new \cPHP\FileSystem\File( $current );
     }
 
     /**
@@ -458,7 +458,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function key ()
     {
         if ( !$this->hasResource() )
-            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+            throw new \cPHP\Exception\Interaction("Iteration has not been rewound");
 
         return $this->pointer;
     }
@@ -472,7 +472,7 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     public function hasChildren ()
     {
         if ( !$this->hasResource() )
-            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+            throw new \cPHP\Exception\Interaction("Iteration has not been rewound");
 
         if ( $this->current == ".." || $this->current == "." )
             return FALSE;
@@ -483,17 +483,17 @@ class Dir extends ::cPHP::FileSystem implements RecursiveIterator
     /**
      * Used for recursive iteration, this returns the iterator for the current element
      *
-     * @return Object Returns a cPHP::FileSystem::Dir object
+     * @return Object Returns a \cPHP\FileSystem\Dir object
      */
     public function getChildren ()
     {
         if ( !$this->hasResource() )
-            throw new ::cPHP::Exception::Interaction("Iteration has not been rewound");
+            throw new \cPHP\Exception\Interaction("Iteration has not been rewound");
 
         if ( !$this->hasChildren() )
-            throw new ::cPHP::Exception::Interaction("Current value does not have children");
+            throw new \cPHP\Exception\Interaction("Current value does not have children");
 
-        // Grab the current item as a cPHP::FileSystem::Dir object
+        // Grab the current item as a \cPHP\FileSystem\Dir object
         $current = $this->current();
 
         // Import the 'includeDots' setting

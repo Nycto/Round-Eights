@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates an IPv4 address
  */
-class IPv4 extends ::cPHP::Validator
+class IPv4 extends \cPHP\Validator
 {
 
     /**

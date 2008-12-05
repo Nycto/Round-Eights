@@ -40,7 +40,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testSetContent ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
+        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
 
         $this->assertNull( $section->getContent() );
 
@@ -51,7 +51,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testClearContent ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
+        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
 
         $this->assertNull( $section->getContent() );
 
@@ -66,7 +66,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testContentExists ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
+        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
 
         $this->assertFalse( $section->contentExists() );
 
@@ -85,7 +85,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(0, null));
+        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
 
         $this->assertTrue( $section->isEmpty() );
 
@@ -94,7 +94,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
         $section->setContent("  ");
         $this->assertTrue( $section->isEmpty() );
-        $this->assertFalse( $section->isEmpty( ::cPHP::ALLOW_SPACES ) );
+        $this->assertFalse( $section->isEmpty( \cPHP\ALLOW_SPACES ) );
 
         $section->setContent("Some piece of content");
         $this->assertFalse( $section->isEmpty() );
@@ -105,15 +105,15 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(10, "data"));
+        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(10, "data"));
         $this->assertSame( 10, $section->getOffset() );
         $this->assertSame( "data", $section->getContent() );
 
         try {
-            $section = $this->getMock("cPHP::Quoter::Section", array("isQuoted", "__toString"), array(-5, "data"));
+            $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(-5, "data"));
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must not be less than zero", $err->getMessage() );
         }
     }

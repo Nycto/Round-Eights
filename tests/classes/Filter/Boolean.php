@@ -40,14 +40,14 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testBoolean ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
         $this->assertTrue( $filter->filter(TRUE) );
         $this->assertFalse( $filter->filter(FALSE) );
     }
 
     public function testInteger ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
         $this->assertTrue( $filter->filter(1) );
         $this->assertTrue( $filter->filter(20) );
         $this->assertTrue( $filter->filter(-10) );
@@ -56,7 +56,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testFloat ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
         $this->assertTrue( $filter->filter(1.0) );
         $this->assertTrue( $filter->filter(.5) );
         $this->assertTrue( $filter->filter(20.5) );
@@ -66,14 +66,14 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testNull ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
 
         $this->assertFalse( $filter->filter(NULL) );
     }
 
     public function testString ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
 
         $this->assertTrue( $filter->filter("t") );
         $this->assertTrue( $filter->filter("T") );
@@ -109,7 +109,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testArray ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
 
         $this->assertTrue( $filter->filter( array(50) ) );
         $this->assertFalse( $filter->filter( array() ) );
@@ -117,7 +117,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testOther ()
     {
-        $filter = new cPHP::Filter::Boolean;
+        $filter = new \cPHP\Filter\Boolean;
 
         $this->assertTrue( $filter->filter( $this->getMock("stub_spoof") ) );
     }

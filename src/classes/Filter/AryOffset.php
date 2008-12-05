@@ -30,7 +30,7 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Allows you to register filters that will be run against specific array offsets
@@ -39,7 +39,7 @@ namespace cPHP::Filter;
  * them as they are. It will also ignore registered filters that don't have
  * corresponding offsets in the array being filtered.
  */
-class AryOffset extends cPHP::Filter
+class AryOffset extends \cPHP\Filter
 {
 
     /**
@@ -60,11 +60,11 @@ class AryOffset extends cPHP::Filter
     /**
      * Returns the list of filters loaded in this instance
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getFilters ()
     {
-        return new ::cPHP::Ary( $this->filters );
+        return new \cPHP\Ary( $this->filters );
     }
 
     /**
@@ -76,9 +76,9 @@ class AryOffset extends cPHP::Filter
      * @param Object $filter The filter to apply to the given index
      * @return Object Returns a self reference
      */
-    public function setFilter ( $index, ::cPHP::iface::Filter $filter )
+    public function setFilter ( $index, \cPHP\iface\Filter $filter )
     {
-        $index = ::cPHP::reduce( $index );
+        $index = \cPHP\reduce( $index );
         $this->filters[ $index ] = $filter;
         return $this;
     }
@@ -91,12 +91,12 @@ class AryOffset extends cPHP::Filter
      */
     public function import ( $filters )
     {
-        if ( !::cPHP::Ary::is( $filters) )
-            throw new ::cPHP::Exception::Argument( 0, "Filter List", "Must be an array or a traversable object" );
+        if ( !\cPHP\Ary::is( $filters) )
+            throw new \cPHP\Exception\Argument( 0, "Filter List", "Must be an array or a traversable object" );
 
-        $filters = new ::cPHP::Ary( $filters );
+        $filters = new \cPHP\Ary( $filters );
         foreach ( $filters AS $key => $value ) {
-            if ( $value instanceof ::cPHP::iface::Filter )
+            if ( $value instanceof \cPHP\iface\Filter )
                 $this->setFilter( $key, $value );
         }
 
@@ -111,7 +111,7 @@ class AryOffset extends cPHP::Filter
      */
     public function filter ( $value )
     {
-        if ( !::cPHP::Ary::is( $value ) )
+        if ( !\cPHP\Ary::is( $value ) )
             return $value;
 
         else if ( is_object($value) && ( !( $value instanceof ArrayAccess ) || !( $value instanceof Traversable ) ) )

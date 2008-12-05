@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::FileSystem;
+namespace cPHP\Exception\FileSystem;
 
 /**
  * Exception class for Missing Files and Directories
  */
-class Missing extends ::cPHP::Exception::FileSystem
+class Missing extends \cPHP\Exception\FileSystem
 {
 
     /**

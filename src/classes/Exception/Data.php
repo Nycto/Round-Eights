@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * Exception class for data that is not what it should be
  */
-class Data extends ::cPHP::Exception
+class Data extends \cPHP\Exception
 {
 
     /**
@@ -61,11 +61,11 @@ class Data extends ::cPHP::Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $label = ::cPHP::strval( $label );
+        $label = \cPHP\strval( $label );
 
         $this->addData(
-                ::cPHP::isEmpty($label) ? "Value" : $label,
-                ::cPHP::getDump($value)
+                \cPHP\isEmpty($label) ? "Value" : $label,
+                \cPHP\getDump($value)
             );
     }
 }

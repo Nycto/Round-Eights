@@ -30,12 +30,12 @@
  * @package Forms
  */
 
-namespace cPHP::Form;
+namespace cPHP\Form;
 
 /**
  * The core class for HTML forms
  */
-abstract class Field implements ::cPHP::iface::Form::Field
+abstract class Field implements \cPHP\iface\Form\Field
 {
 
     /**
@@ -88,10 +88,10 @@ abstract class Field implements ::cPHP::iface::Form::Field
      */
     public function setName( $name )
     {
-        $name = ::cPHP::Filter::Variable()->filter( $name );
+        $name = \cPHP\Filter::Variable()->filter( $name );
 
-        if ( !::cPHP::Validator::Variable()->isValid( $name ) )
-            throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\cPHP\Validator::Variable()->isValid( $name ) )
+            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         $this->name = $name;
 
@@ -108,8 +108,8 @@ abstract class Field implements ::cPHP::iface::Form::Field
      */
     public function getFilter ()
     {
-        if ( !($this->filter instanceof ::cPHP::iface::Filter) )
-            $this->filter = new ::cPHP::Filter::Chain;
+        if ( !($this->filter instanceof \cPHP\iface\Filter) )
+            $this->filter = new \cPHP\Filter\Chain;
 
         return $this->filter;
     }
@@ -117,10 +117,10 @@ abstract class Field implements ::cPHP::iface::Form::Field
     /**
      * Sets the filter for this instance
      *
-     * @param Object An object that implements the cPHP::iface::Filter interface
+     * @param Object An object that implements the \cPHP\iface\Filter interface
      * @return Object Returns a self reference
      */
-    public function setFilter( ::cPHP::iface::Filter $filter )
+    public function setFilter( \cPHP\iface\Filter $filter )
     {
         $this->filter = $filter;
         return $this;
@@ -136,8 +136,8 @@ abstract class Field implements ::cPHP::iface::Form::Field
      */
     public function getValidator ()
     {
-        if ( !($this->validator instanceof ::cPHP::iface::Validator) )
-            $this->validator = new ::cPHP::Validator::Any;
+        if ( !($this->validator instanceof \cPHP\iface\Validator) )
+            $this->validator = new \cPHP\Validator\Any;
 
         return $this->validator;
     }
@@ -148,7 +148,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
      * @param Object A validator object
      * @return Object Returns a self reference
      */
-    public function setValidator( ::cPHP::iface::Validator $validator )
+    public function setValidator( \cPHP\iface\Validator $validator )
     {
         $this->validator = $validator;
         return $this;
@@ -157,7 +157,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     /**
      * Adds another validator to this instance
      *
-     * This checks to see if the current validator is an "Collection::All" instance.
+     * This checks to see if the current validator is an "Collection\All" instance.
      * If it is, then it adds the given validator on to the list. If it isn't,
      * then it wraps the current validator and the validator in the instance in
      * an All validator and sets it to the validator for this instance.
@@ -165,13 +165,13 @@ abstract class Field implements ::cPHP::iface::Form::Field
      * @param Object $validator The validator to add to this instance
      * @return Object Returns a self reference
      */
-    public function andValidator ( ::cPHP::iface::Validator $validator )
+    public function andValidator ( \cPHP\iface\Validator $validator )
     {
-        if ( $this->validator instanceof ::cPHP::Validator::All ) {
+        if ( $this->validator instanceof \cPHP\Validator\All ) {
             $this->validator->add( $validator );
         }
         else {
-            $this->validator = new ::cPHP::Validator::All(
+            $this->validator = new \cPHP\Validator\All(
                     $this->validator,
                     $validator
                 );
@@ -194,14 +194,14 @@ abstract class Field implements ::cPHP::iface::Form::Field
      * Sets the value for this field
      *
      * This does not apply the filter when saving, however it will convert any
-     * objects or arrays using the ::cPHP::reduce function
+     * objects or arrays using the \cPHP\reduce function
      *
      * @param mixed $value The value of this field
      * @return Object Returns a self reference
      */
     public function setValue ( $value )
     {
-        $this->value = ::cPHP::reduce( $value );
+        $this->value = \cPHP\reduce( $value );
         return $this;
     }
 
@@ -213,7 +213,7 @@ abstract class Field implements ::cPHP::iface::Form::Field
     public function getValue ()
     {
         // Only apply the filter if there is one
-        if ( $this->filter instanceof cPHP::iface::Filter )
+        if ( $this->filter instanceof \cPHP\iface\Filter )
             return $this->filter->filter( $this->getRawValue() );
         else
             return $this->getRawValue();
@@ -243,13 +243,13 @@ abstract class Field implements ::cPHP::iface::Form::Field
     }
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'input',
                 null,
                 array(

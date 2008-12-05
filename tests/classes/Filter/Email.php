@@ -40,7 +40,7 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
 
     public function testValidChars ()
     {
-        $filter = new cPHP::Filter::Email;
+        $filter = new \cPHP\Filter\Email;
 
         $this->assertEquals(
                 "abcdefghijklmnopqrstuvwxyz",
@@ -65,7 +65,7 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::Email;
+        $filter = new \cPHP\Filter\Email;
 
         $this->assertEquals("", $filter->filter('"():;<>\'));
         $this->assertEquals("", $filter->filter(''));
@@ -76,7 +76,7 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
 
     public function testMixedChars ()
     {
-        $filter = new cPHP::Filter::Email;
+        $filter = new \cPHP\Filter\Email;
 
         $this->assertEquals('ab12!@#$asd%?D{}', $filter->filter('ab12!@#$asd%<>?D{}'));
     }

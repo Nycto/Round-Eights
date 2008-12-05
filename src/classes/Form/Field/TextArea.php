@@ -30,22 +30,22 @@
  * @package Forms
  */
 
-namespace cPHP::Form::Field;
+namespace cPHP\Form\Field;
 
 /**
  * Text Area form fields
  */
-class TextArea extends ::cPHP::Form::Field
+class TextArea extends \cPHP\Form\Field
 {
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'textarea',
                 $this->getValue(),
                 array( "name" => $this->getName() )

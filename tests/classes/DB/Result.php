@@ -40,7 +40,7 @@ class classes_db_result extends PHPUnit_Framework_TestCase
     public function testGetQuery ()
     {
         $mock = $this->getMock(
-                "cPHP::DB::Result",
+                "\cPHP\DB\Result",
                 array("rawFree"),
                 array("SELECT * FROM table")
             );

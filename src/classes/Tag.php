@@ -39,7 +39,7 @@ namespace cPHP;
  * as a supplement. Sometimes, DOMXML is overkill. The goal for this class
  * is to contain a single tag.
  */
-class Tag implements ArrayAccess
+class Tag implements \ArrayAccess
 {
 
     /**
@@ -72,7 +72,7 @@ class Tag implements ArrayAccess
      * @param string $func The function called statically, which will be used as the tag name
      * @param array $args Any args passed to the function call.
      *      Offset 0 will be used as the content, offset 1 as the attributes
-     * @return Object Returns a new cPHP::Tag object
+     * @return Object Returns a new \cPHP\Tag object
      */
     static public function __callStatic ( $func, $args )
     {
@@ -90,16 +90,16 @@ class Tag implements ArrayAccess
     /**
      * Takes an HTML attribute and strips it down
      *
-     * @throws cPHP::Exception::Argument Thrown when the attribute name is empty
+     * @throws \cPHP\Exception\Argument Thrown when the attribute name is empty
      * @param String $attr The name of the attribute
      * @return String The normalized version of the attribute name
      */
     static public function normalizeAttrName ( $attr )
     {
-        $attr = strtolower( ::cPHP::str::stripW($attr) );
+        $attr = strtolower( \cPHP\str\stripW($attr) );
 
         if ( empty($attr) )
-            throw new ::cPHP::Exception::Argument( 0, "Attribute Name", "Must not be empty" );
+            throw new \cPHP\Exception\Argument( 0, "Attribute Name", "Must not be empty" );
 
         return $attr;
     }
@@ -112,7 +112,7 @@ class Tag implements ArrayAccess
      */
     static public function quoteAttr ($string)
     {
-        return '"'. htmlspecialchars( ::cPHP::strval( $string ) ) .'"';
+        return '"'. htmlspecialchars( \cPHP\strval( $string ) ) .'"';
     }
 
     /**
@@ -148,10 +148,10 @@ class Tag implements ArrayAccess
      */
     public function setTag ( $tag )
     {
-        $tag = strtolower( ::cPHP::str::stripW($tag) );
+        $tag = strtolower( \cPHP\str\stripW($tag) );
 
-        if ( ::cPHP::isEmpty($tag) )
-            throw new ::cPHP::Exception::Argument(0, "Tag", "Must not be empty");
+        if ( \cPHP\isEmpty($tag) )
+            throw new \cPHP\Exception\Argument(0, "Tag", "Must not be empty");
 
         $this->tag = $tag;
 
@@ -176,7 +176,7 @@ class Tag implements ArrayAccess
      */
     public function setContent ( $content )
     {
-        $content = ::cPHP::strval($content);
+        $content = \cPHP\strval($content);
         $this->content = empty($content) && $content !== "0" ? null : $content;
         return $this;
     }
@@ -189,7 +189,7 @@ class Tag implements ArrayAccess
      */
     public function appendContent ( $content )
     {
-        $content = ::cPHP::strval($content);
+        $content = \cPHP\strval($content);
         if ( !empty($content) || $content === "0" )
             $this->content .= $content;
         return $this;
@@ -269,7 +269,7 @@ class Tag implements ArrayAccess
      */
     public function getAttrs ()
     {
-        return new ::cPHP::Ary( $this->attrs );
+        return new \cPHP\Ary( $this->attrs );
     }
 
     /**
@@ -293,7 +293,7 @@ class Tag implements ArrayAccess
      */
     public function setAttr ( $attr, $value = TRUE )
     {
-        $this->attrs[ self::normalizeAttrName( $attr ) ] = ::cPHP::reduce($value);
+        $this->attrs[ self::normalizeAttrName( $attr ) ] = \cPHP\reduce($value);
         return $this;
     }
 
@@ -344,9 +344,9 @@ class Tag implements ArrayAccess
     public function importAttrs ( $attrs )
     {
         if ( is_array($attrs) )
-            $attrs = ::cPHP::Ary::create( $attrs );
+            $attrs = \cPHP\Ary::create( $attrs );
         else if ( !( $attrs instanceof Traversable ) )
-            throw new ::cPHP::Exception::Argument( 0, "Attribute List", "Must be an array or a traversable object" );
+            throw new \cPHP\Exception\Argument( 0, "Attribute List", "Must be an array or a traversable object" );
 
         foreach ( $attrs AS $key => $value ) {
             $this->setAttr( $key, $value );

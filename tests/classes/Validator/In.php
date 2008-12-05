@@ -40,11 +40,11 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $valid = new ::cPHP::Validator::In(array("one", "two", "three"));
+        $valid = new \cPHP\Validator\In(array("one", "two", "three"));
 
         $list = $valid->getList();
 
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three"),
                 $list->get()
@@ -52,23 +52,23 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
 
         try {
-            new ::cPHP::Validator::In("invalid");
+            new \cPHP\Validator\In("invalid");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
     }
 
     public function testSetList ()
     {
-        $valid = new ::cPHP::Validator::In;
+        $valid = new \cPHP\Validator\In;
 
         $this->assertSame( $valid, $valid->setList(array("one", "two", "three")) );
 
         $list = $valid->getList();
 
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three"),
                 $list->get()
@@ -79,19 +79,19 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
             $valid->setList("Invalid");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
     }
 
     public function testSetList_unique ()
     {
-        $valid = new ::cPHP::Validator::In;
+        $valid = new \cPHP\Validator\In;
         $valid->setList(array("one", "two", "three", "Three", "two"));
 
         $list = $valid->getList();
 
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three", "Three"),
                 $list->get()
@@ -100,25 +100,25 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testAdd ()
     {
-        $valid = new ::cPHP::Validator::In;
+        $valid = new \cPHP\Validator\In;
 
         $this->assertSame( $valid, $valid->add("one") );
 
         $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array("one"), $list->get() );
 
 
         $this->assertSame( $valid, $valid->add("two") );
 
         $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array("one", "two"), $list->get() );
     }
 
     public function testExists ()
     {
-        $valid = new ::cPHP::Validator::In(array("one", "two", "three"));
+        $valid = new \cPHP\Validator\In(array("one", "two", "three"));
 
         $this->assertTrue( $valid->exists("one") );
         $this->assertFalse( $valid->exists("four") );
@@ -126,12 +126,12 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testRemove ()
     {
-        $valid = new ::cPHP::Validator::In(array("one", "two", "three", "four"));
+        $valid = new \cPHP\Validator\In(array("one", "two", "three", "four"));
 
         $this->assertSame( $valid, $valid->remove("two") );
 
         $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
                 $list->get()
@@ -141,7 +141,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $this->assertSame( $valid, $valid->remove("five") );
 
         $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
                 $list->get()
@@ -151,7 +151,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $this->assertSame( $valid, $valid->remove("FOUR") );
 
         $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
                 $list->get()
@@ -160,7 +160,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $valid = new ::cPHP::Validator::In(array(1, 1.5, "two", TRUE, FALSE, NULL));
+        $valid = new \cPHP\Validator\In(array(1, 1.5, "two", TRUE, FALSE, NULL));
 
         $this->assertTrue( $valid->isValid(1) );
         $this->assertTrue( $valid->isValid("1") );
@@ -173,7 +173,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
     public function testInalid ()
     {
-        $valid = new ::cPHP::Validator::In(array(1, 1.5, "two", TRUE, FALSE, NULL));
+        $valid = new \cPHP\Validator\In(array(1, 1.5, "two", TRUE, FALSE, NULL));
 
         $result = $valid->validate("123");
         $this->assertFalse( $result->isValid() );

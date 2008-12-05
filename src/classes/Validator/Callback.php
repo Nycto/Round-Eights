@@ -30,7 +30,7 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Uses a given callback to validate a value
@@ -47,7 +47,7 @@ namespace cPHP::Validator;
  * If they are considered empty according to the "isEmpty" standards, the value
  * will pass validation. Otherwise, the string value will be used as the error message.
  */
-class Callback extends ::cPHP::Validator
+class Callback extends \cPHP\Validator
 {
 
     /**
@@ -64,7 +64,7 @@ class Callback extends ::cPHP::Validator
     {
 
         if ( !is_callable($callback) )
-            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
         $this->callback = $callback;
     }

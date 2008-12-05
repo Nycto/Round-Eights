@@ -51,10 +51,10 @@ class ErrorList
      */
     public function addError ( $message )
     {
-        $message = ::cPHP::strval($message);
+        $message = \cPHP\strval($message);
 
-        if ( ::cPHP::isEmpty($message) )
-            throw new cPHP::Exception::Argument( 0, "Error Message", "Must Not Be Empty" );
+        if ( \cPHP\isEmpty($message) )
+            throw new \cPHP\Exception\Argument( 0, "Error Message", "Must Not Be Empty" );
 
         if ( !in_array($message, $this->errors) )
             $this->errors[] = $message;
@@ -74,7 +74,7 @@ class ErrorList
     public function addErrors ( $errors )
     {
         $errors = func_get_args();
-        cPHP::Ary::create( $errors )
+        \cPHP\Ary::create( $errors )
             ->flatten()
             ->compact()
             ->unique()
@@ -89,7 +89,7 @@ class ErrorList
      */
     public function getErrors ()
     {
-        return new ::cPHP::Ary( $this->errors );
+        return new \cPHP\Ary( $this->errors );
     }
 
     /**

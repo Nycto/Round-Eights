@@ -40,36 +40,36 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_strValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption("str", "lbl") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array("str" => "lbl"), $opts->get() );
 
     }
 
     public function testAddOption_intValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(50, "lbl") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array(50 => "lbl"), $opts->get() );
 
     }
 
     public function testAddOption_floatValue ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(1.5, "othr") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => "othr"),
                 $opts->get()
@@ -79,12 +79,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_boolValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(FALSE, "lbl") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(0 => "lbl"),
                 $opts->get()
@@ -93,7 +93,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
         $this->assertSame( $mock, $mock->addOption(TRUE, "lbl2") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(0 => "lbl", 1 => "lbl2"),
                 $opts->get()
@@ -103,12 +103,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_nullValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(null, "lbl") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("" => "lbl"),
                 $opts->get()
@@ -119,12 +119,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_objValue ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( $this->getMock("stub"), "lbl") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("" => "lbl"),
                 $opts->get()
@@ -135,12 +135,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_nonStringLabel ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( 1, 5) );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => "5"),
                 $opts->get()
@@ -149,7 +149,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
         $this->assertSame( $mock, $mock->addOption( 2, 27.8) );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => "5", 2 => "27.8"),
                 $opts->get()
@@ -160,12 +160,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_conflict ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( "val", "one") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("val" => "one"),
                 $opts->get()
@@ -175,7 +175,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
         $this->assertSame( $mock, $mock->addOption( "val", "two") );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("val" => "two"),
                 $opts->get()
@@ -185,7 +185,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testHasOption ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -199,7 +199,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testGetOptionLabel ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -216,7 +216,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
             $mock->getOptionLabel(4);
             $this->fail("An expected exception was not thrown");
         }
-        catch( ::cPHP::Exception::Index $err ) {
+        catch( \cPHP\Exception\Index $err ) {
             $this->assertSame("Option does not exist in field", $err->getMessage());
         }
     }
@@ -224,13 +224,13 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testRemoveOption ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => 'one', 2 => 'two', 3 => 'three'),
                 $opts->get()
@@ -239,7 +239,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
         $this->assertSame( $mock, $mock->removeOption(2) );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => 'one', 3 => 'three'),
                 $opts->get()
@@ -249,13 +249,13 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testClearOptions ()
     {
 
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => 'one', 2 => 'two', 3 => 'three'),
                 $opts->get()
@@ -264,14 +264,14 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
         $this->assertSame( $mock, $mock->clearOptions() );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array(), $opts->get() );
 
     }
 
     public function testImportOptions ()
     {
-        $mock = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $mock = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
 
         $this->assertSame(
                 $mock,
@@ -279,7 +279,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
             );
 
         $opts = $mock->getOptions();
-        $this->assertThat( $opts, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $opts, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(1 => 'one', 2 => 'two', 3 => 'three'),
                 $opts->get()
@@ -289,12 +289,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testDefaultValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Multi", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Multi", array(), array("fld"));
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $this->assertThat(
                 $field->getValidator(),
-                $this->isInstanceOf("cPHP::Validator::MultiField")
+                $this->isInstanceOf("cPHP\Validator\MultiField")
             );
 
         $field->setValue( "one" );

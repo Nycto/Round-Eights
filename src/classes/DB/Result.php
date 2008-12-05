@@ -30,7 +30,7 @@
  * @package Database
  */
 
-namespace cPHP::DB;
+namespace cPHP\DB;
 
 /**
  * Database Query Result
@@ -50,7 +50,7 @@ abstract class Result
      */
     public function __construct ( $query )
     {
-        $this->query = ::cPHP::strval($query);
+        $this->query = \cPHP\strval($query);
     }
 
     /**

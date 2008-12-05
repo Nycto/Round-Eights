@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Takes a comparison operator and a value and validates the given value against it
  */
-class Compare extends ::cPHP::Validator
+class Compare extends \cPHP\Validator
 {
 
     /**
@@ -57,10 +57,10 @@ class Compare extends ::cPHP::Validator
     public function __construct( $operator, $versus )
     {
 
-        $operator = trim( ::cPHP::strval($operator) );
+        $operator = trim( \cPHP\strval($operator) );
 
         if ( !preg_match( '/^(?:<=?|>=?|={1,3}|<>|!={1,2})$/', $operator ) )
-            throw new ::cPHP::Exception::Argument( 0, "Comparison Operator", "Unsupported comparison operator" );
+            throw new \cPHP\Exception\Argument( 0, "Comparison Operator", "Unsupported comparison operator" );
 
         $this->operator = $operator;
 

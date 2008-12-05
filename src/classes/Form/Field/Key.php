@@ -30,7 +30,7 @@
  * @package Forms
  */
 
-namespace cPHP::Form::Field;
+namespace cPHP\Form\Field;
 
 /**
  * A specialized hidden field used to help prevent XSRF attacks
@@ -41,7 +41,7 @@ namespace cPHP::Form::Field;
  *
  * The key generated is 20 characters long
  */
-class Key extends ::cPHP::Form::Field::Hidden
+class Key extends \cPHP\Form\Field\Hidden
 {
 
     /**
@@ -55,15 +55,15 @@ class Key extends ::cPHP::Form::Field::Hidden
     {
         $this->setName( $name );
 
-        $seed = ::cPHP::reduce($seed);
+        $seed = \cPHP\reduce($seed);
         if ( empty($seed) )
-            throw new ::cPHP::Exception::Argument( 1, "Key Seed", "Must not be empty" );
+            throw new \cPHP\Exception\Argument( 1, "Key Seed", "Must not be empty" );
 
         $key = substr( sha1( $seed . session_id() ), 0, 20 );
 
         $this->setValue( $key );
 
-        $validator = new ::cPHP::Validator::Compare( "==", $key );
+        $validator = new \cPHP\Validator\Compare( "==", $key );
         $validator->addError("This form has expired");
 
         $this->setValidator( $validator );

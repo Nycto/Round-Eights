@@ -81,12 +81,12 @@ class DB
      * @param Object $link The actual database connection
      * @return Null
      */
-    static public function setLink( $label, ::cPHP::iface::DB::Link $link )
+    static public function setLink( $label, \cPHP\iface\DB\Link $link )
     {
-        $label = ::cPHP::strval( $label );
+        $label = \cPHP\strval( $label );
 
-        if ( ::cPHP::isEmpty($label) )
-            throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
+        if ( \cPHP\isEmpty($label) )
+            throw new \cPHP\Exception\Argument( 0, "Connection Label", "Must not be empty" );
 
         self::$links[ $label ] = $link;
 
@@ -103,16 +103,16 @@ class DB
      */
     static public function get ( $label = NULL )
     {
-        if ( !is_string($label) && ::cPHP::isVague($label) )
+        if ( !is_string($label) && \cPHP\isVague($label) )
             return self::getDefault();
 
-        $label = ::cPHP::strval( $label );
+        $label = \cPHP\strval( $label );
 
-        if ( ::cPHP::isEmpty($label) )
-            throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
+        if ( \cPHP\isEmpty($label) )
+            throw new \cPHP\Exception\Argument( 0, "Connection Label", "Must not be empty" );
 
         if ( !array_key_exists($label, self::$links) )
-            throw new ::cPHP::Exception::Index("Connection Label", $label, "Connection does not exist");
+            throw new \cPHP\Exception\Index("Connection Label", $label, "Connection does not exist");
 
         return self::$links[$label];
     }
@@ -125,10 +125,10 @@ class DB
      */
     static public function setDefault ( $label )
     {
-        $label = ::cPHP::strval( $label );
+        $label = \cPHP\strval( $label );
 
-        if ( ::cPHP::isEmpty($label) )
-            throw new ::cPHP::Exception::Argument( 0, "Connection Label", "Must not be empty" );
+        if ( \cPHP\isEmpty($label) )
+            throw new \cPHP\Exception\Argument( 0, "Connection Label", "Must not be empty" );
 
         self::$default = self::get( $label );
     }

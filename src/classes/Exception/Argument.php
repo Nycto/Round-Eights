@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * Exception class to handle bad arguments
  */
-class Argument extends ::cPHP::Exception
+class Argument extends \cPHP\Exception
 {
 
     /**
@@ -66,16 +66,16 @@ class Argument extends ::cPHP::Exception
     {
         $this->setFault($fault);
 
-        if ( !::cPHP::isVague($label) )
+        if ( !\cPHP\isVague($label) )
             $this->addData("Arg Label", $label);
 
-        if ( !::cPHP::isVague($message) )
+        if ( !\cPHP\isVague($message) )
             $this->message = $message;
 
-        if ( !::cPHP::isVague( $code ) )
+        if ( !\cPHP\isVague( $code ) )
             $this->code = $code;
 
-        if (!::cPHP::isVague($arg, ::cPHP::ALLOW_ZERO) && $this->getTraceCount() > 0)
+        if (!\cPHP\isVague($arg, \cPHP\ALLOW_ZERO) && $this->getTraceCount() > 0)
             $this->setArg($arg);
     }
 
@@ -86,7 +86,7 @@ class Argument extends ::cPHP::Exception
      * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function setArg ( $offset, $wrapFlag = ::cPHP::Ary::OFFSET_RESTRICT )
+    public function setArg ( $offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT )
     {
         // If the fault isn't set, default to the end of the trace
         if ( !$this->issetFault())
@@ -100,7 +100,7 @@ class Argument extends ::cPHP::Exception
         if (count($fault['args']) <= 0)
             return $this->unsetArg();
 
-        $fault['args'] = new ::cPHP::Ary($fault['args']);
+        $fault['args'] = new \cPHP\Ary($fault['args']);
 
         $offset = $fault['args']->calcOffset($offset, $wrapFlag);
 
@@ -157,7 +157,7 @@ class Argument extends ::cPHP::Exception
     {
         parent::setFault($offset);
 
-        if (!::cPHP::isVague($arg, ::cPHP::ALLOW_ZERO))
+        if (!\cPHP\isVague($arg, \cPHP\ALLOW_ZERO))
             $this->setArg( $arg );
 
         else if ( $this->issetArg() )
@@ -212,7 +212,7 @@ class Argument extends ::cPHP::Exception
                 .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
                 .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
                 .( $this->issetArg() ? "  Arg Offset: ". $this->getArgOffset() ."\n" : "" )
-                .( $this->issetArg() ? "  Arg Value: ". ::cPHP::getDump( $this->getArgData() ) ."\n" : "" )
+                .( $this->issetArg() ? "  Arg Value: ". \cPHP\getDump( $this->getArgData() ) ."\n" : "" )
                 .( count($data) > 0 ? "  ". implode("\n  ", $data) ."\n" : "" );
     }
 
@@ -238,7 +238,7 @@ class Argument extends ::cPHP::Exception
             .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
             .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>\n":"")
             .( $this->issetArg() ? "<dt>Arg Offset</dt><dd>". $this->getArgOffset() ."</dd>\n" : "" )
-            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". ::cPHP::getDump( $this->getArgData() ) ."</dd>\n" : "" )
+            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". \cPHP\getDump( $this->getArgData() ) ."</dd>\n" : "" )
             .( count($data) > 0 ? implode("\n", $data) ."\n" : "" )
             ."</dl>\n"
             ."</div>\n";

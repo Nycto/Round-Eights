@@ -30,12 +30,12 @@
  * @package Quoter
  */
 
-namespace cPHP::Quoter::Section;
+namespace cPHP\Quoter\Section;
 
 /**
  * Representation of a quoted section of the parsed string
  */
-class Quoted extends ::cPHP::Quoter::Section
+class Quoted extends \cPHP\Quoter\Section
 {
 
     /**
@@ -92,7 +92,7 @@ class Quoted extends ::cPHP::Quoter::Section
      */
     public function setOpenQuote ( $quote )
     {
-        $this->openQuote = is_null( $quote ) ? null : ::cPHP::strval( $quote );
+        $this->openQuote = is_null( $quote ) ? null : \cPHP\strval( $quote );
         return $this;
     }
 
@@ -135,7 +135,7 @@ class Quoted extends ::cPHP::Quoter::Section
      */
     public function setCloseQuote ( $quote )
     {
-        $this->closeQuote = is_null( $quote ) ? null : ::cPHP::strval( $quote );
+        $this->closeQuote = is_null( $quote ) ? null : \cPHP\strval( $quote );
         return $this;
     }
 

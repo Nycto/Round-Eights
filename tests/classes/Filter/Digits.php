@@ -40,7 +40,7 @@ class classes_filter_digits extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $filter = new cPHP::Filter::Digits;
+        $filter = new \cPHP\Filter\Digits;
 
         $this->assertSame(
                 '1234567890',
@@ -60,7 +60,7 @@ class classes_filter_digits extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::Digits;
+        $filter = new \cPHP\Filter\Digits;
 
         $this->assertEquals("", $filter->filter('ABCDEFGHIJKLMNOPQRSTUVWXYZ'));
         $this->assertEquals("", $filter->filter('abcdefghijklmnopqrstuvwxyz'));

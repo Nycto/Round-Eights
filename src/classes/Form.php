@@ -35,7 +35,7 @@ namespace cPHP;
 /**
  * Collects a list of form fields and allows them to be manipulated as a group
  */
-class Form implements Countable
+class Form implements \Countable
 {
 
     /**
@@ -79,10 +79,10 @@ class Form implements Countable
      */
     public function __construct ()
     {
-        $this->fields = new ::cPHP::Ary;
+        $this->fields = new \cPHP\Ary;
 
         // Set the default action URI to the current page
-        $this->action = ::cPHP::Env::get()->uri;
+        $this->action = \cPHP\Env::get()->uri;
     }
 
     /**
@@ -103,10 +103,10 @@ class Form implements Countable
      */
     public function setAction ( $url )
     {
-        $url = ::cPHP::Filter::URL()->filter( $url );
+        $url = \cPHP\Filter::URL()->filter( $url );
 
-        if ( !::cPHP::Validator::URL( ::cPHP::Validator::URL::ALLOW_RELATIVE )->isValid( $url ) )
-            throw new ::cPHP::Exception::Argument( 0, "Form Action", "Must be a valid URL" );
+        if ( !\cPHP\Validator::URL( \cPHP\Validator\URL::ALLOW_RELATIVE )->isValid( $url ) )
+            throw new \cPHP\Exception\Argument( 0, "Form Action", "Must be a valid URL" );
 
         $this->action = $url;
 
@@ -131,10 +131,10 @@ class Form implements Countable
      */
     public function setMethod ( $method )
     {
-        $method = ::cPHP::str::stripW( $method );
+        $method = \cPHP\str\stripW( $method );
 
-        if ( ::cPHP::isEmpty($method) )
-            throw new ::cPHP::Exception::Argument( 0, "Submit Method", "Must not be empty" );
+        if ( \cPHP\isEmpty($method) )
+            throw new \cPHP\Exception\Argument( 0, "Submit Method", "Must not be empty" );
 
         $this->method = $method;
 
@@ -159,10 +159,10 @@ class Form implements Countable
      */
     public function setEncoding ( $encoding )
     {
-        $encoding = trim( ::cPHP::strval( $encoding ) );
+        $encoding = trim( \cPHP\strval( $encoding ) );
 
-        if ( ::cPHP::isEmpty($encoding) )
-            throw new ::cPHP::Exception::Argument( 0, "Form Encoding", "Must not be empty" );
+        if ( \cPHP\isEmpty($encoding) )
+            throw new \cPHP\Exception\Argument( 0, "Form Encoding", "Must not be empty" );
 
         $this->encoding = $encoding;
 
@@ -172,7 +172,7 @@ class Form implements Countable
     /**
      * Returns the list of fields registered in this form
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getFields ()
     {
@@ -185,7 +185,7 @@ class Form implements Countable
      * @param Object $field The field being added
      * @return Object Returns a self reference
      */
-    public function addField ( ::cPHP::iface::Form::Field $field )
+    public function addField ( \cPHP\iface\Form\Field $field )
     {
         // ensure there aren't any duplicates
         if ( !$this->fields->contains($field) )
@@ -223,10 +223,10 @@ class Form implements Countable
      */
     public function find ( $name )
     {
-        $name = ::cPHP::Filter::Variable()->filter( $name );
+        $name = \cPHP\Filter::Variable()->filter( $name );
 
-        if ( !::cPHP::Validator::Variable()->isValid( $name ) )
-            throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\cPHP\Validator::Variable()->isValid( $name ) )
+            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         return $this->fields->find(function($field) use ( $name ) {
             return $field->getName() == $name ? TRUE : FALSE;
@@ -241,10 +241,10 @@ class Form implements Countable
      */
     public function anyIn ( $source )
     {
-        if ( !::cPHP::Ary::is($source) )
-            throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
+        if ( !\cPHP\Ary::is($source) )
+            throw new \cPHP\Exception\Argument( 0, "Input", "Must be an array or a traversable object" );
 
-        $source = new ::cPHP::Ary( $source );
+        $source = new \cPHP\Ary( $source );
 
         foreach ( $this->fields AS $field ) {
 
@@ -268,10 +268,10 @@ class Form implements Countable
      */
     public function fill ( $source )
     {
-        if ( !::cPHP::Ary::is($source) )
-            throw new ::cPHP::Exception::Argument( 0, "Input", "Must be an array or a traversable object" );
+        if ( !\cPHP\Ary::is($source) )
+            throw new \cPHP\Exception\Argument( 0, "Input", "Must be an array or a traversable object" );
 
-        $source = new ::cPHP::Ary( $source );
+        $source = new \cPHP\Ary( $source );
 
         foreach ( $this->fields AS $field ) {
 
@@ -302,13 +302,13 @@ class Form implements Countable
     }
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'form',
                 null,
                 array(
@@ -334,12 +334,12 @@ class Form implements Countable
     /**
      * Returns all the hidden fields registered in this instance
      *
-     * @return Object Returns a cPHP::Ary object or hidden field objects
+     * @return Object Returns a \cPHP\Ary object or hidden field objects
      */
     public function getHidden ()
     {
         return $this->fields->filter(function ( $field ) {
-            return ($field instanceof ::cPHP::Form::Field::Hidden);
+            return ($field instanceof \cPHP\Form\Field\Hidden);
         });
     }
 

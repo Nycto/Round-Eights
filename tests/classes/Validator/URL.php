@@ -40,7 +40,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new ::cPHP::Validator::URL;
+        $validator = new \cPHP\Validator\URL;
 
         $result = $validator->validate(5);
         $this->assertFalse( $result->isValid() );
@@ -73,7 +73,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::URL;
+        $validator = new \cPHP\Validator\URL;
 
         // Spaces
         $result = $validator->validate("http:// www.example.com");
@@ -148,7 +148,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::URL;
+        $validator = new \cPHP\Validator\URL;
 
         $this->assertTrue(
                 $validator->validate('http://example.com')->isValid()
@@ -190,8 +190,8 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
 
     public function testValid_Relative ()
     {
-        $validator = new ::cPHP::Validator::URL(
-                ::cPHP::Validator::URL::ALLOW_RELATIVE
+        $validator = new \cPHP\Validator\URL(
+                \cPHP\Validator\URL::ALLOW_RELATIVE
             );
 
         $this->assertTrue(

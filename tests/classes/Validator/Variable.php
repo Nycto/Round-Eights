@@ -40,7 +40,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new ::cPHP::Validator::Variable;
+        $validator = new \cPHP\Validator\Variable;
 
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
@@ -87,7 +87,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::Variable;
+        $validator = new \cPHP\Validator\Variable;
 
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("test1234")->isValid() );
@@ -99,7 +99,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::Variable;
+        $validator = new \cPHP\Validator\Variable;
 
         $result = $validator->validate("123");
         $this->assertFalse( $result->isValid() );

@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * Exception class for File System errors
  */
-class FileSystem extends ::cPHP::Exception
+class FileSystem extends \cPHP\Exception
 {
 
     /**
@@ -60,7 +60,7 @@ class FileSystem extends ::cPHP::Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $path = trim( ::cPHP::strval( $path ) );
+        $path = trim( \cPHP\strval( $path ) );
 
         if ( !empty($path) )
             $this->addData( "Path", $path );

@@ -30,12 +30,12 @@
  * @package Forms
  */
 
-namespace cPHP::Form::Field;
+namespace cPHP\Form\Field;
 
 /**
  * An HTML select field
  */
-class Select extends ::cPHP::Form::Multi
+class Select extends \cPHP\Form\Multi
 {
 
     /**
@@ -56,13 +56,13 @@ class Select extends ::cPHP::Form::Multi
     }
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'select',
                 $this->getOptionList(),
                 array("name" => $this->getName())

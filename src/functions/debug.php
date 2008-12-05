@@ -77,7 +77,7 @@ function getDump ($value)
             .str_replace(
                     Array("\n", "\r", "\t"),
                     Array('\n', '\r', '\t'),
-                    ::cPHP::str::truncate( addslashes($value), 50, "'...'")
+                    \cPHP\str\truncate( addslashes($value), 50, "'...'")
                 )
             ."')";
     }

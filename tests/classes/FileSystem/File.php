@@ -56,7 +56,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetPath ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         $this->assertSame( $file, $file->setPath("/dir/to/example.php") );
         $this->assertSame( "/dir/to/", $file->getRawDir() );
@@ -91,7 +91,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetPath ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         $this->assertNull( $file->getPath() );
 
@@ -122,7 +122,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testExtAccessors ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         $this->assertNull( $file->getExt() );
         $this->assertFalse( $file->extExists() );
@@ -150,7 +150,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testFilenameAccessors ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         $this->assertNull( $file->getFilename() );
         $this->assertFalse( $file->filenameExists() );
@@ -178,7 +178,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetBasename ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         $this->assertSame( $file, $file->setBasename("example.php") );
         $this->assertSame( "example", $file->getFilename() );
@@ -203,7 +203,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetBasename ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
         $this->assertNull( $file->getBasename() );
 
         $file->setExt("php");
@@ -229,19 +229,19 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testExists ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertTrue( $file->exists() );
 
-        $file = new ::cPHP::FileSystem::File( __DIR__ );
+        $file = new \cPHP\FileSystem\File( __DIR__ );
         $this->assertFalse( $file->exists() );
 
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         $this->assertFalse( $file->exists() );
     }
 
     public function testGet ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertSame(
                 "This is a string\n"
                 ."of data that is put\n"
@@ -251,29 +251,29 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
 
         chmod( $this->file, 0000 );
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         try {
             $file->get();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( \cPHP\Exception\FileSystem $err ) {
             $this->assertSame( "Unable read data from file", $err->getMessage() );
         }
 
 
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         try {
             $file->get();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
 
     public function testSet ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertSame( $file, $file->set("This is a new chunk of info") );
         $this->assertSame(
                 "This is a new chunk of info",
@@ -286,14 +286,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             $file->set( "data" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( \cPHP\Exception\FileSystem $err ) {
             $this->assertSame( "Unable write data to file", $err->getMessage() );
         }
     }
 
     public function testAppend ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertSame( $file, $file->append("\nnew data") );
         $this->assertSame(
                 "This is a string\n"
@@ -319,14 +319,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             $file->append( "data" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( \cPHP\Exception\FileSystem $err ) {
             $this->assertSame( "Unable write data to file", $err->getMessage() );
         }
     }
 
     public function testToArray ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertSame(
                 array(
                         "This is a string\n",
@@ -337,53 +337,53 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             );
 
         chmod( $this->file, 0000 );
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         try {
             $file->toArray();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( \cPHP\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to read data from file", $err->getMessage() );
         }
 
 
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         try {
             $file->toArray();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
 
     public function testGetSize ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertType( 'integer', $file->getSize() );
         $this->assertGreaterThan( 0, $file->getSize() );
 
 
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         try {
             $file->getSize();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
 
     public function testTruncate ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $this->assertSame( $file, $file->truncate() );
         $this->assertSame( "", file_get_contents($this->file) );
     }
 
     public function testDelete ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
 
         $this->assertSame( $file, $file->delete() );
 
@@ -395,13 +395,13 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetMimeType ()
     {
-        $file = new ::cPHP::FileSystem::File;
+        $file = new \cPHP\FileSystem\File;
 
         try {
             $file->getMimeType();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
 
@@ -421,12 +421,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testCopy ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $newPath = $this->getTempFileName();
 
         $copied = $file->copy( $newPath );
 
-        $this->assertThat( $copied, $this->isInstanceOf("cPHP::FileSystem::File") );
+        $this->assertThat( $copied, $this->isInstanceOf("cPHP\FileSystem\File") );
         $this->assertNotSame( $file, $copied );
 
         $this->assertSame( $newPath, $copied->getPath() );
@@ -448,19 +448,19 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
     public function testCopy_missing ()
     {
 
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         try {
             $file->copy( "/some/new/location" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
 
     public function testCopy_noPerms ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
 
         chmod( $this->file, 0000 );
 
@@ -468,7 +468,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             $file->copy( $this->getTempFileName() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem $err ) {
+        catch ( \cPHP\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to copy file", $err->getMessage() );
         }
 
@@ -476,7 +476,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove ()
     {
-        $file = new ::cPHP::FileSystem::File( $this->file );
+        $file = new \cPHP\FileSystem\File( $this->file );
         $newPath = $this->getTempFileName();
 
         $this->assertSame( $file, $file->move( $newPath ) );
@@ -494,12 +494,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove_missing ()
     {
-        $file = new ::cPHP::FileSystem::File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
         try {
             $file->move( $this->getTempFileName() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::FileSystem::Missing $err ) {
+        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }

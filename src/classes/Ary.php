@@ -41,41 +41,41 @@ namespace cPHP;
  * Why call it Ary? Because "Array" is a reserved word in PHP and something
  * short was needed
  */
-class Ary implements Iterator, Countable, ArrayAccess
+class Ary implements \Iterator, \Countable, \ArrayAccess
 {
 
     /**
      * No wrapping will be perfomed. If the given offset falls outside of the
      * length, FALSE is returned. Negative offsets are allowed
      */
-    const OFFSET_NONE = cPHP::num::OFFSET_NONE;
+    const OFFSET_NONE = \cPHP\num\OFFSET_NONE;
 
     /**
      * The offset will be wrapped until it fits within the length. Negative
      * offsets are allowed
      */
-    const OFFSET_WRAP = cPHP::num::OFFSET_WRAP;
+    const OFFSET_WRAP = \cPHP\num\OFFSET_WRAP;
 
     /**
      * The offset will be wrapped once. Anything past the edge after this initial
      * wrap is cut down to the edge. Negative offsets are allowed
      */
-    const OFFSET_RESTRICT = cPHP::num::OFFSET_RESTRICT;
+    const OFFSET_RESTRICT = \cPHP\num\OFFSET_RESTRICT;
 
     /**
      * The offset is forced to within the length. Negative offsets are NOT allowed
      */
-    const OFFSET_LIMIT = cPHP::num::OFFSET_LIMIT;
+    const OFFSET_LIMIT = \cPHP\num\OFFSET_LIMIT;
 
     /**
      * For the changeCase method, flag for setting the case to lower case
      */
-    const CASE_LOWER = CASE_LOWER;
+    const CASE_LOWER = \CASE_LOWER;
 
     /**
      * For the changeCase method, flag for setting the case to upper case
      */
-    const CASE_UPPER = CASE_UPPER;
+    const CASE_UPPER = \CASE_UPPER;
 
     /**
      * For the changeCase method, flag for setting the case to upper on the first letter
@@ -141,7 +141,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     static public function is ( $value )
     {
-        return is_array( $value ) || $value instanceof Traversable;
+        return is_array( $value ) || $value instanceof \Traversable;
     }
 
     /**
@@ -149,7 +149,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      *
      * @param mixed The data to load in to this instance
      *      If an array is given, it will be copied in to this value
-     *      If a cPHP::Ary is given, it's value will be extracted and imported
+     *      If a \cPHP\Ary is given, it's value will be extracted and imported
      *      If an instance of Traversable is given, it will be converted to an array
      *      If any other value is given, it will be wrapped in an array and imported
      */
@@ -161,7 +161,7 @@ class Ary implements Iterator, Countable, ArrayAccess
         else if ( $array instanceof self )
             $this->array = $array->get();
 
-        else if ( $array instanceof Traversable )
+        else if ( $array instanceof \Traversable )
             $this->array = iterator_to_array( $array );
 
         else
@@ -176,15 +176,15 @@ class Ary implements Iterator, Countable, ArrayAccess
      * @param Integer $offset The offset being wrapped
      * @param Integer $wrapFlag How to handle offsets that fall outside of the
      *      length of the list. Allowed values are:
-     *          - cPHP::Ary::OFFSET_NONE
-     *          - cPHP::Ary::OFFSET_WRAP
-     *          - cPHP::Ary::OFFSET_RESTRICT
-     *          - cPHP::Ary::OFFSET_LIMIT
+     *          - \cPHP\Ary::OFFSET_NONE
+     *          - \cPHP\Ary::OFFSET_WRAP
+     *          - \cPHP\Ary::OFFSET_RESTRICT
+     *          - \cPHP\Ary::OFFSET_LIMIT
      * @return Integer Returns the wrapped offset
      */
     public function calcOffset ($offset, $wrapFlag)
     {
-        return cPHP::num::offsetWrap(
+        return \cPHP\num\offsetWrap(
                 count( $this->array ),
                 $offset,
                 $wrapFlag
@@ -411,7 +411,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
         $key = reduce($key);
         if ( !array_key_exists($key, $this->array) )
-            throw new ::cPHP::Exception::Argument(0, "Key", "Key does not exist in the given Array");
+            throw new \cPHP\Exception\Argument(0, "Key", "Key does not exist in the given Array");
 
         $keyList = array_keys( $this->array );
 
@@ -533,7 +533,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Returns an array of the keys in this instance
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function keys ()
     {
@@ -543,7 +543,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     /**
      * Returns an array of the values in this instance
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function values ()
     {
@@ -583,7 +583,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function sort ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
-            throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
+            throw new \cPHP\Exception\Argument(1, "Sort Type", "Invalid Sort Type");
 
         if ( $reverse )
             arsort( $this->array, $type );
@@ -604,7 +604,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function sortByKey ( $reverse = FALSE, $type = SORT_REGULAR )
     {
         if ( !in_array($type, array( SORT_REGULAR, SORT_NUMERIC, SORT_STRING, SORT_LOCALE_STRING ), TRUE) )
-            throw new ::cPHP::Exception::Argument(1, "Sort Type", "Invalid Sort Type");
+            throw new \cPHP\Exception\Argument(1, "Sort Type", "Invalid Sort Type");
 
         if ( $reverse )
             ksort( $this->array, $type );
@@ -640,7 +640,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function customSort ( $callback, $assoc = TRUE )
     {
         if ( !is_callable($callback) )
-            throw new ::cPHP::Exception::Argument(0, "callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "callback", "Must be callable");
 
         if ( $assoc )
             usort( $this->array, $callback );
@@ -689,7 +689,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      * If a key isn't set in the original array, it fills the array by offset.
      *
      * @param mixed $keys... The keys being filtered
-     * @return object Returns a cPHP::Ary object
+     * @return object Returns a \cPHP\Ary object
      */
     public function hone ($keys)
     {
@@ -699,7 +699,7 @@ class Ary implements Iterator, Countable, ArrayAccess
         // get values in the array that do not have the required keys
         $no_keys = array_diff_key( $this->array, array_flip($keys) );
 
-        $out = new ::cPHP::Ary;
+        $out = new \cPHP\Ary;
 
         // Rather than using internal functions, we are looping in order to
         // preserve the order of the keys
@@ -720,17 +720,17 @@ class Ary implements Iterator, Countable, ArrayAccess
      * Changes the keys in this array from one value to another using an associative array
      *
      * @param Array $map The lookup map to use for translation
-     * @return object Returns a cPHP::Ary object
+     * @return object Returns a \cPHP\Ary object
      */
     public function translateKeys ( $map )
     {
-        if ( !is_array($map) && !($map instanceof ::cPHP::Ary) )
-            throw new ::cPHP::Exception::Argument(0, "Translation Map", "Must be an array or a cPHP::Ary object");
+        if ( !is_array($map) && !($map instanceof \cPHP\Ary) )
+            throw new \cPHP\Exception\Argument(0, "Translation Map", "Must be an array or a \cPHP\Ary object");
 
-        if ( $map instanceof ::cPHP::Ary )
+        if ( $map instanceof \cPHP\Ary )
             $map = $map->get();
 
-        $output = new ::cPHP::Ary;
+        $output = new \cPHP\Ary;
 
         foreach ( $this->array AS $key => $value ) {
 
@@ -738,8 +738,8 @@ class Ary implements Iterator, Countable, ArrayAccess
 
                 // Ensure the new key is valid
                 if ( is_object( $map[$key] ) || is_null( $map[$key] ) ) {
-                    $err = new ::cPHP::Exception::Data($map[$key], "New Key Value", "Invalid key value");
-                    $err->addData("Existing Key Value", ::cPHP::getDump($key) );
+                    $err = new \cPHP\Exception\Data($map[$key], "New Key Value", "Invalid key value");
+                    $err->addData("Existing Key Value", \cPHP\getDump($key) );
                     throw $err;
                 }
 
@@ -766,9 +766,9 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function changeKeyCase ( $case = CASE_LOWER )
     {
         if ( $case != CASE_LOWER && $case != CASE_UPPER )
-            throw new ::cPHP::Exception::Argument( 0, "Case Flag", "Must be CASE_LOWER or CASE_UPPER" );
+            throw new \cPHP\Exception\Argument( 0, "Case Flag", "Must be CASE_LOWER or CASE_UPPER" );
 
-        return new ::cPHP::Ary( array_change_key_case( $this->array, $case ) );
+        return new \cPHP\Ary( array_change_key_case( $this->array, $case ) );
     }
 
     /**
@@ -791,7 +791,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     protected function sendKey ( $callback )
     {
         if ( is_string($callback) ) {
-            $refl = new ReflectionFunction($callback);
+            $refl = new \ReflectionFunction($callback);
 
             // We dont send the key to internal functions... this causes errors
             return !$refl->isInternal();
@@ -811,7 +811,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
 
         if (!is_callable($callback))
-            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
         $sendKey = $this->sendKey( $callback );
 
@@ -846,7 +846,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
 
         if (!is_callable($callback))
-            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
         $sendKey = $this->sendKey( $callback );
 
@@ -881,7 +881,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     public function each ( $callback )
     {
         if (!is_callable($callback))
-            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
         $sendKey = $this->sendKey( $callback );
 
@@ -913,7 +913,7 @@ class Ary implements Iterator, Countable, ArrayAccess
             foreach($array AS $key => $value) {
 
                 // If it isn't an array, just plop it on to the end of the output
-                if ( !is_array($array[$key]) && !($array[$key] instanceof cPHP::Ary) ) {
+                if ( !is_array($array[$key]) && !($array[$key] instanceof \cPHP\Ary) ) {
 
                     // There really is a good reason I do it like this... and that
                     // is "because of the way array_merge handles conflicting keys."
@@ -926,7 +926,7 @@ class Ary implements Iterator, Countable, ArrayAccess
 
                 else if ($maxDepth <= 1) {
 
-                    if ( $array[$key] instanceof cPHP::Ary )
+                    if ( $array[$key] instanceof \cPHP\Ary )
                         $flat = $flatten($array[$key]->get(), 1, $flatten);
                     else
                         $flat = $flatten($array[$key], 1, $flatten);
@@ -936,7 +936,7 @@ class Ary implements Iterator, Countable, ArrayAccess
                 }
 
                 // If we have not yet reached the maximum depth, maintain this key
-                else if ( $array[$key] instanceof cPHP::Ary ) {
+                else if ( $array[$key] instanceof \cPHP\Ary ) {
                     $output[$key] = $array[$key]->flatten($maxDepth - 1);
                 }
 
@@ -980,14 +980,14 @@ class Ary implements Iterator, Countable, ArrayAccess
 
             foreach ( $array AS $key => $value ) {
 
-                if ( $value instanceof cPHP::Ary ) {
+                if ( $value instanceof \cPHP\Ary ) {
 
                     if ( count($value) > 0 ) {
 
                         $value = $compact( $value->get(), $compact );
 
                         if ( !isEmpty($value, $flags) )
-                            $output[ $key ] = new cPHP::Ary($value);
+                            $output[ $key ] = new \cPHP\Ary($value);
 
                     }
 
@@ -1008,7 +1008,7 @@ class Ary implements Iterator, Countable, ArrayAccess
 
         };
 
-        return new cPHP::Ary( $compact( $this->array, $compact ) );
+        return new \cPHP\Ary( $compact( $this->array, $compact ) );
 
     }
 
@@ -1035,7 +1035,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function unique ()
     {
-        return new cPHP::Ary( array_unique($this->array) );
+        return new \cPHP\Ary( array_unique($this->array) );
     }
 
     /**
@@ -1095,7 +1095,7 @@ class Ary implements Iterator, Countable, ArrayAccess
     {
 
         if (!is_callable($callback))
-            throw new ::cPHP::Exception::Argument(0, "Callback", "Must be callable");
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
         $sendKey = $this->sendKey( $callback );
 
@@ -1139,7 +1139,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      * Returns a copy of this array without a given value
      *
      * @param mixed $value... The value to remove
-     * @return Object Returns a new cPHP::Ary instance
+     * @return Object Returns a new \cPHP\Ary instance
      */
     public function without ( $value )
     {
@@ -1176,7 +1176,7 @@ class Ary implements Iterator, Countable, ArrayAccess
             // For null keys, just push a new array on the end
             if ( is_null($index) ) {
 
-                $new = new cPHP::Ary;
+                $new = new \cPHP\Ary;
 
                 // Add the new value on the end
                 $current[] =& $new;
@@ -1190,7 +1190,7 @@ class Ary implements Iterator, Countable, ArrayAccess
 
                 // If the key doesn't exist or it isn't an array, then overwrite it with an array
                 if ( !isset($current[ $index ]) || ( !is_array($current[$index]) && !($current[$index] instanceof self) ) )
-                    $current[$index] = new cPHP::Ary;
+                    $current[$index] = new \cPHP\Ary;
 
                 // We need a reference to the contained array
                 if ( $current[$index] instanceof self )
@@ -1219,7 +1219,7 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function stringize ()
     {
-        $this->array = array_map( "cPHP::strval", $this->array );
+        $this->array = array_map( "\cPHP\strval", $this->array );
         return $this;
     }
 
@@ -1243,15 +1243,15 @@ class Ary implements Iterator, Countable, ArrayAccess
      */
     public function changeCase ( $caseFlag )
     {
-        $this->array = array_map("cPHP::strval", $this->array);
+        $this->array = array_map("\cPHP\strval", $this->array);
 
         if ( !is_int($caseFlag) )
-            throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+            throw new \cPHP\Exception\Argument(0, "Case Flag", "Invalid Case Flag");
 
         switch( $caseFlag ) {
 
             default:
-                throw new ::cPHP::Exception::Argument(0, "Case Flag", "Invalid Case Flag");
+                throw new \cPHP\Exception\Argument(0, "Case Flag", "Invalid Case Flag");
 
             case self::CASE_LOWER:
                 $this->array = array_map("strtolower", $this->array);
@@ -1270,7 +1270,7 @@ class Ary implements Iterator, Countable, ArrayAccess
                 break;
 
             case self::CASE_NOSHOUT:
-                $this->array = array_map("cPHP::str::unshout", $this->array);
+                $this->array = array_map("\cPHP\str\unshout", $this->array);
                 break;
         }
 

@@ -42,12 +42,12 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
     {
 
         $link = $this->getMock(
-                "cPHP::iface::DB::Link",
+                "\cPHP\iface\DB\Link",
                 array("query", "quote", "escape")
             );
 
         $mock = $this->getMock(
-                "cPHP::DB::LinkWrap",
+                "\cPHP\DB\LinkWrap",
                 array(),
                 array( $link )
             );
@@ -58,12 +58,12 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
     public function testQuery ()
     {
         $link = $this->getMock(
-                "cPHP::iface::DB::Link",
+                "\cPHP\iface\DB\Link",
                 array("query", "quote", "escape")
             );
 
         $mock = $this->getMock(
-                "cPHP::DB::LinkWrap",
+                "\cPHP\DB\LinkWrap",
                 array(),
                 array( $link )
             );
@@ -79,12 +79,12 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
     public function testQuote ()
     {
         $link = $this->getMock(
-                "cPHP::iface::DB::Link",
+                "\cPHP\iface\DB\Link",
                 array("query", "quote", "escape")
             );
 
         $mock = $this->getMock(
-                "cPHP::DB::LinkWrap",
+                "\cPHP\DB\LinkWrap",
                 array(),
                 array( $link )
             );
@@ -107,12 +107,12 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
     public function testEscape()
     {
         $link = $this->getMock(
-                "cPHP::iface::DB::Link",
+                "\cPHP\iface\DB\Link",
                 array("query", "quote", "escape")
             );
 
         $mock = $this->getMock(
-                "cPHP::DB::LinkWrap",
+                "\cPHP\DB\LinkWrap",
                 array(),
                 array( $link )
             );

@@ -96,7 +96,7 @@ class URL
      * This method exists strictly for unit testing purposes. By mocking this
      * method you can feed a spoof environment to the rest of the instance
      *
-     * @return Object Returns a ::cPHP::Env instance
+     * @return Object Returns a \cPHP\Env instance
      */
     protected function getEnv ()
     {
@@ -125,7 +125,7 @@ class URL
      */
     public function setScheme ( $scheme )
     {
-        $scheme = strtolower( ::cPHP::str::stripW($scheme) );
+        $scheme = strtolower( \cPHP\str\stripW($scheme) );
         $this->scheme = empty( $scheme ) ? null : $scheme;
         return $this;
     }
@@ -190,8 +190,8 @@ class URL
      */
     public function setUserName ( $username )
     {
-        $username = ::cPHP::strval( $username );
-        $this->username = ::cPHP::isEmpty( $username ) ? null : $username;
+        $username = \cPHP\strval( $username );
+        $this->username = \cPHP\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -234,8 +234,8 @@ class URL
      */
     public function setPassword ( $password )
     {
-        $password = ::cPHP::strval( $password );
-        $this->password = ::cPHP::isEmpty( $password ) ? null : $password;
+        $password = \cPHP\strval( $password );
+        $this->password = \cPHP\isEmpty( $password ) ? null : $password;
         return $this;
     }
 
@@ -290,9 +290,9 @@ class URL
      */
     public function setUserInfo ( $userInfo )
     {
-        $userInfo = ::cPHP::strVal( $userInfo );
+        $userInfo = \cPHP\strVal( $userInfo );
 
-        if ( ::cPHP::str::contains("@", $userInfo))
+        if ( \cPHP\str\contains("@", $userInfo))
             $userInfo = strstr( $userInfo, "@", TRUE );
 
         $userInfo = explode(":", $userInfo, 2);
@@ -349,11 +349,11 @@ class URL
      */
     public function setHost ( $host )
     {
-        $host = ::cPHP::strval($host);
+        $host = \cPHP\strval($host);
 
         $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
 
-        $host = ::cPHP::str::stripRepeats($host, ".");
+        $host = \cPHP\str\stripRepeats($host, ".");
         $host = trim($host, ".");
 
         $this->host = empty($host) ? null : $host;
@@ -402,8 +402,8 @@ class URL
         if ( !isset($env->host) )
             return FALSE;
 
-        $localHost = ::cPHP::str::stripHead( $this->getHost(), "www." );
-        $envHost = ::cPHP::str::stripHead( $env->host, "www." );
+        $localHost = \cPHP\str\stripHead( $this->getHost(), "www." );
+        $envHost = \cPHP\str\stripHead( $env->host, "www." );
 
         if ( strcasecmp($localHost, $envHost) == 0 )
             return TRUE;
@@ -495,7 +495,7 @@ class URL
      */
     public function setHostAndPort ( $hostAndPort )
     {
-        $hostAndPort = ::cPHP::strval( $hostAndPort );
+        $hostAndPort = \cPHP\strval( $hostAndPort );
 
         if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
             $this->setHost( $matches[1] );
@@ -539,9 +539,9 @@ class URL
      */
     public function setBase ( $base )
     {
-        $base = ::cPHP::strval( $base );
+        $base = \cPHP\strval( $base );
 
-        if ( cPHP::str::contains("://", $base) ) {
+        if ( \cPHP\str\contains("://", $base) ) {
             $this->setScheme( strstr($base, "://", TRUE) );
             $base = substr( strstr($base, "://", FALSE), 3 );
         }
@@ -549,7 +549,7 @@ class URL
             $this->clearScheme();
         }
 
-        if ( cPHP::str::contains("@", $base) ) {
+        if ( \cPHP\str\contains("@", $base) ) {
             $this->setUserInfo( strstr($base, "@", TRUE) );
             $base = substr( strstr($base, "@", FALSE), 1 );
         }

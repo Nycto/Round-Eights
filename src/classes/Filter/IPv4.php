@@ -30,14 +30,14 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Cleans up a string in preparation for using it as an IP (version 4)
  *
  * Removes everything except numbers and periods
  */
-class IPv4 extends cPHP::Filter
+class IPv4 extends \cPHP\Filter
 {
 
     /**
@@ -51,7 +51,7 @@ class IPv4 extends cPHP::Filter
         return preg_replace(
                 '/[^0-9\.]/',
                 '',
-                ::cPHP::strval( $value )
+                \cPHP\strval( $value )
             );
     }
 

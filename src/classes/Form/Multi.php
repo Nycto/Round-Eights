@@ -30,12 +30,12 @@
  * @package Forms
  */
 
-namespace cPHP::Form;
+namespace cPHP\Form;
 
 /**
  * The core class for HTML form fields that have multiple, distinct, options
  */
-abstract class Multi extends ::cPHP::Form::Field
+abstract class Multi extends \cPHP\Form\Field
 {
 
     /**
@@ -58,18 +58,18 @@ abstract class Multi extends ::cPHP::Form::Field
         parent::__construct($name);
 
         $this->setValidator(
-                new ::cPHP::Validator::MultiField( $this )
+                new \cPHP\Validator\MultiField( $this )
             );
     }
 
     /**
      * Returns the list of registered options
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getOptions ()
     {
-        return new ::cPHP::Ary( $this->options );
+        return new \cPHP\Ary( $this->options );
     }
 
     /**
@@ -82,8 +82,8 @@ abstract class Multi extends ::cPHP::Form::Field
      */
     public function addOption ( $value, $label )
     {
-        $value = ::cPHP::indexVal($value);
-        $label = ::cPHP::strval( $label );
+        $value = \cPHP\indexVal($value);
+        $label = \cPHP\strval( $label );
 
         $this->options[ $value ] = $label;
 
@@ -98,7 +98,7 @@ abstract class Multi extends ::cPHP::Form::Field
      */
     public function hasOption ( $value )
     {
-        $value = ::cPHP::indexVal($value);
+        $value = \cPHP\indexVal($value);
 
         return array_key_exists( $value, $this->options );
     }
@@ -111,7 +111,7 @@ abstract class Multi extends ::cPHP::Form::Field
      */
     public function removeOption ( $value )
     {
-        $value = ::cPHP::indexVal($value);
+        $value = \cPHP\indexVal($value);
 
         if ( $this->hasOption( $value ) )
             unset($this->options[ $value ]);
@@ -127,10 +127,10 @@ abstract class Multi extends ::cPHP::Form::Field
      */
     public function getOptionLabel ( $value )
     {
-        $value = ::cPHP::indexVal($value);
+        $value = \cPHP\indexVal($value);
 
         if ( !$this->hasOption( $value ) )
-            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
 
         return $this->options[ $value ];
     }
@@ -154,10 +154,10 @@ abstract class Multi extends ::cPHP::Form::Field
      */
     public function importOptions ( $source )
     {
-        if ( !::cPHP::Ary::is($source) )
-            throw new ::cPHP::Exception::Argument(0, "Import Source", "Must be an array or a traversable object");
+        if ( !\cPHP\Ary::is($source) )
+            throw new \cPHP\Exception\Argument(0, "Import Source", "Must be an array or a traversable object");
 
-        $source = new ::cPHP::Ary( $source );
+        $source = new \cPHP\Ary( $source );
 
         $source->flatten()->each(function( $value, $key ) {
             $this->addOption($key, $value);

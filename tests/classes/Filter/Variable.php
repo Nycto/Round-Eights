@@ -40,7 +40,7 @@ class classes_filter_variable extends PHPUnit_Framework_TestCase
 
     public function testValidChars ()
     {
-        $filter = new cPHP::Filter::Variable;
+        $filter = new \cPHP\Filter\Variable;
 
         $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'abcdefghijklmnopqrstuvwxyz'
@@ -60,7 +60,7 @@ class classes_filter_variable extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::Variable;
+        $filter = new \cPHP\Filter\Variable;
 
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@'));
         $this->assertEquals("", $filter->filter('[\]^`{|}~'));

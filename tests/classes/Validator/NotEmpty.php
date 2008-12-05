@@ -41,7 +41,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
     public function testInvalid_noFlags ()
     {
 
-        $validator = new ::cPHP::Validator::NotEmpty;
+        $validator = new \cPHP\Validator\NotEmpty;
 
         $result = $validator->validate("");
         $this->assertFalse( $result->isValid() );
@@ -89,7 +89,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
     public function testInvalid_flags ()
     {
-        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_BLANK );
+        $validator = new \cPHP\Validator\NotEmpty( \cPHP\ALLOW_BLANK );
         $this->assertTrue( $validator->isValid("") );
 
         $result = $validator->validate("    ");
@@ -100,7 +100,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_NULL );
+        $validator = new \cPHP\Validator\NotEmpty( \cPHP\ALLOW_NULL );
         $this->assertTrue( $validator->isValid(NULL) );
 
         $result = $validator->validate(0);
@@ -111,7 +111,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new ::cPHP::Validator::NotEmpty( ::cPHP::ALLOW_FALSE );
+        $validator = new \cPHP\Validator\NotEmpty( \cPHP\ALLOW_FALSE );
         $this->assertTrue( $validator->isValid(FALSE) );
 
         $result = $validator->validate(array());
@@ -125,7 +125,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::NotEmpty;
+        $validator = new \cPHP\Validator\NotEmpty;
 
         $this->assertTrue( $validator->isValid("0") );
         $this->assertTrue( $validator->isValid("this is not empty") );

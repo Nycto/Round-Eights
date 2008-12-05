@@ -30,12 +30,12 @@
  * @package FileSystem
  */
 
-namespace cPHP::FileSystem;
+namespace cPHP\FileSystem;
 
 /**
  * Filesystem File class
  */
-class File extends ::cPHP::FileSystem
+class File extends \cPHP\FileSystem
 {
 
     /**
@@ -71,7 +71,7 @@ class File extends ::cPHP::FileSystem
      */
     public function setPath ( $path )
     {
-        $path = trim(::cPHP::strval( $path ));
+        $path = trim(\cPHP\strval( $path ));
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -122,9 +122,9 @@ class File extends ::cPHP::FileSystem
      */
     public function setExt ( $extension )
     {
-        $extension = trim(::cPHP::strval( $extension ));
+        $extension = trim(\cPHP\strval( $extension ));
         $extension = ltrim( $extension, "." );
-        $this->extension = ::cPHP::isEmpty( $extension ) ? null : $extension;
+        $this->extension = \cPHP\isEmpty( $extension ) ? null : $extension;
         return $this;
     }
 
@@ -167,9 +167,9 @@ class File extends ::cPHP::FileSystem
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(::cPHP::strval( $filename ));
+        $filename = trim(\cPHP\strval( $filename ));
         $filename = rtrim( $filename, "." );
-        $this->filename = ::cPHP::isEmpty( $filename ) ? null : $filename;
+        $this->filename = \cPHP\isEmpty( $filename ) ? null : $filename;
         return $this;
     }
 
@@ -210,7 +210,7 @@ class File extends ::cPHP::FileSystem
         if ( !$this->extExists() )
             return $this->getFilename();
 
-        return ::cPHP::str::weld(
+        return \cPHP\str\weld(
                 $this->getFilename(),
                 $this->getExt(),
                 "."
@@ -227,7 +227,7 @@ class File extends ::cPHP::FileSystem
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(::cPHP::strval( $basename ));
+        $basename = trim(\cPHP\strval( $basename ));
         $basename = pathinfo( $basename );
 
         if ( isset($basename['filename']) )
@@ -254,7 +254,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_get_contents( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable read data from file"
                 );
@@ -275,7 +275,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_put_contents( $this->getPath(), $content );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -296,7 +296,7 @@ class File extends ::cPHP::FileSystem
         $result = @file_put_contents( $this->getPath(), $content, FILE_APPEND );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -318,7 +318,7 @@ class File extends ::cPHP::FileSystem
         $result = @file( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to read data from file"
                 );
@@ -361,7 +361,7 @@ class File extends ::cPHP::FileSystem
             return $this;
 
         if ( !@unlink( $this->getPath() ) ) {
-            $err = new ::cPHP::Exception::FileSystem( $this->getPath(), "Unable to delete file" );
+            $err = new \cPHP\Exception\FileSystem( $this->getPath(), "Unable to delete file" );
             throw $err;
         }
 
@@ -380,13 +380,13 @@ class File extends ::cPHP::FileSystem
         $finfo = finfo_open(FILEINFO_MIME);
 
         if ( $finfo === FALSE )
-            throw new ::cPHP::Exception::Extension( "Unable to open finfo database" );
+            throw new \cPHP\Exception\Extension( "Unable to open finfo database" );
 
         $result = finfo_file( $finfo, $this->getPath() );
 
         finfo_close( $finfo );
 
-        if ( ::cPHP::str::contains(" ", $result) )
+        if ( \cPHP\str\contains(" ", $result) )
             $result = strstr( $result, " ", TRUE );
 
         return $result;
@@ -396,19 +396,19 @@ class File extends ::cPHP::FileSystem
      * Copies this file to a new location
      *
      * @param String $destination The new location for the file
-     * @return Object Returns a new instance of cPHP::FileSystem::File with the
+     * @return Object Returns a new instance of \cPHP\FileSystem\File with the
      *      path pointing to the new file
      */
     public function copy ( $destination )
     {
         $this->requirePath();
 
-        $destination = ::cPHP::strval($destination);
+        $destination = \cPHP\strval($destination);
 
         $result = @copy( $this->getPath(), $destination );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to copy file"
                 );
@@ -430,12 +430,12 @@ class File extends ::cPHP::FileSystem
     {
         $this->requirePath();
 
-        $destination = ::cPHP::strval($destination);
+        $destination = \cPHP\strval($destination);
 
         $result = @rename( $this->getPath(), $destination );
 
         if ( $result === FALSE ) {
-            $err = new ::cPHP::Exception::FileSystem(
+            $err = new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to move file"
                 );

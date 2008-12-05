@@ -40,13 +40,13 @@ class classes_form_field_text extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = new ::cPHP::Form::Field::Text("fld");
+        $field = new \cPHP\Form\Field\Text("fld");
         $field->setValue("New Value")
             ->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "input", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );

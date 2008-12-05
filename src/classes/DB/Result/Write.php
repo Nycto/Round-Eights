@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB::Result;
+namespace cPHP\DB\Result;
 
 /**
  * Database Read Query Results
  */
-class Write extends ::cPHP::DB::Result
+class Write extends \cPHP\DB\Result
 {
 
     /**
@@ -57,7 +57,7 @@ class Write extends ::cPHP::DB::Result
      */
     public function __construct ( $affected, $insertID, $query )
     {
-        if ( !::cPHP::isVague($insertID) ) {
+        if ( !\cPHP\isVague($insertID) ) {
             $insertID = intval($insertID);
             $this->insertID = $insertID > 0 ? $insertID : NULL;
         }

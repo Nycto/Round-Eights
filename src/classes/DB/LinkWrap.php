@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB;
+namespace cPHP\DB;
 
 /**
  * Base wrapper for increasing the functionality of a database Link
  */
-abstract class LinkWrap implements ::cPHP::iface::DB::Link
+abstract class LinkWrap implements \cPHP\iface\DB\Link
 {
 
     /**
@@ -48,7 +48,7 @@ abstract class LinkWrap implements ::cPHP::iface::DB::Link
      *
      * @param Object $link The database Link this instance wraps around
      */
-    public function __construct ( ::cPHP::iface::DB::Link $link )
+    public function __construct ( \cPHP\iface\DB\Link $link )
     {
         $this->link = $link;
     }

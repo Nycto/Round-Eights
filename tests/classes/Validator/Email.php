@@ -40,7 +40,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
 
     public function testValidAddresses ()
     {
-        $validator = new cPHP::Validator::Email;
+        $validator = new \cPHP\Validator\Email;
 
         $this->assertTrue( $validator->isValid('abc@example.com') );
         $this->assertTrue( $validator->isValid('Abc@example.com') );
@@ -61,7 +61,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
 
     public function testInvalidAddresses ()
     {
-        $validator = new cPHP::Validator::Email;
+        $validator = new \cPHP\Validator\Email;
 
         // Missing an @ symbol
         $result = $validator->validate('Abc.example.com');

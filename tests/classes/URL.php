@@ -40,7 +40,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSchemeAccessors()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertNull( $uri->getScheme() );
         $this->assertFalse( $uri->schemeExists() );
@@ -64,7 +64,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameScheme_NoEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -79,7 +79,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameScheme_WithEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -97,7 +97,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testUserNameAccessors ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
         $this->assertFalse( $uri->userNameExists() );
         $this->assertNull( $uri->getUserName() );
 
@@ -120,7 +120,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testPasswordAccessors ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
         $this->assertFalse( $uri->passwordExists() );
         $this->assertNull( $uri->getPassword() );
 
@@ -143,7 +143,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testUserInfoAccessors ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
         $this->assertFalse( $uri->userInfoExists() );
         $this->assertNull( $uri->getUserInfo() );
 
@@ -191,7 +191,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testHostAccessors ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertNull( $uri->getHost() );
         $this->assertFalse( $uri->hostExists() );
@@ -215,7 +215,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_withSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -239,7 +239,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_wwwSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -260,7 +260,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_noSub ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -281,7 +281,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_noEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -297,7 +297,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testPortAccessors()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertNull( $uri->getPort() );
         $this->assertFalse( $uri->portExists() );
@@ -321,7 +321,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_NoEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -339,7 +339,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_WithEnvPort40 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -357,7 +357,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_WithEnvPort80 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -375,7 +375,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetHostAndPort ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertNull( $uri->getHostAndPort() );
 
@@ -394,7 +394,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetHostAndPort ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertSame( $uri, $uri->setHostAndPort( "sub.example.com:2020" ) );
         $this->assertSame( "sub.example.com", $uri->getHost() );
@@ -407,7 +407,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetBase ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertNull( $uri->getBase() );
 
@@ -441,7 +441,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetBase ()
     {
-        $uri = new cPHP::URL;
+        $uri = new \cPHP\URL;
 
         $this->assertSame( $uri, $uri->setBase("sftp://uname:pword@sub.example.com:8080") );
         $this->assertSame( "sftp", $uri->getScheme() );
@@ -502,7 +502,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameBase_noEnv ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -514,7 +514,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameBase_WithEnvPort80 ()
     {
-        $uri = $this->getMock("cPHP::URL", array("getEnv"));
+        $uri = $this->getMock("cPHP\URL", array("getEnv"));
         $uri->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(

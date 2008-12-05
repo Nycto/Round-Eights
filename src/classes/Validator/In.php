@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Returns whether the validated value is in a preset list
  */
-class In extends ::cPHP::Validator
+class In extends \cPHP\Validator
 {
 
     /**
@@ -61,10 +61,10 @@ class In extends ::cPHP::Validator
      */
     public function setList ( $list )
     {
-        if ( !::cPHP::Ary::is( $list ) )
-            throw new ::cPHP::Exception::Argument( 0, "Valid Value List", "Must be an array or a traversable object" );
+        if ( !\cPHP\Ary::is( $list ) )
+            throw new \cPHP\Exception\Argument( 0, "Valid Value List", "Must be an array or a traversable object" );
 
-        $this->list = ::cPHP::Ary::create( $list )->unique();
+        $this->list = \cPHP\Ary::create( $list )->unique();
 
         return $this;
     }
@@ -72,7 +72,7 @@ class In extends ::cPHP::Validator
     /**
      * Returns the list of valid objects
      *
-     * @return Object Returns a cPHP::Ary object of the valid values
+     * @return Object Returns a \cPHP\Ary object of the valid values
      */
     public function getList ()
     {

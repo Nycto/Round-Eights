@@ -57,20 +57,20 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testInvalidFieldName ()
     {
-        $valid = new ::cPHP::Validator::FileUpload;
+        $valid = new \cPHP\Validator\FileUpload;
 
         try {
             $valid->validate("1234");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
 
     public function testNoUploads()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
 
         $result = $valid->validate("fld");
         $this->assertFalse( $result->isValid() );
@@ -82,7 +82,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_iniSize ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_INI_SIZE ))) );
@@ -97,7 +97,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_formSize ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_FORM_SIZE ))) );
@@ -112,7 +112,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_partial ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_PARTIAL ))) );
@@ -127,7 +127,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_noFile ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_FILE ))) );
@@ -142,7 +142,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_noTmp ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_TMP_DIR ))) );
@@ -157,7 +157,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_cantWrite ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_CANT_WRITE ))) );
@@ -172,7 +172,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_extension ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_EXTENSION ))) );
@@ -187,7 +187,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_other ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => 9999 ))) );
@@ -202,7 +202,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testRestrictedFile ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array(
@@ -225,7 +225,7 @@ class classes_validator_fileupload_emptyFile extends PHPUnit_EmptyFile_Framework
 
     public function testEmptyFile ()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -255,7 +255,7 @@ class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_T
     {
         chmod($this->file, 0200);
 
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -278,7 +278,7 @@ class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_T
 
     public function testValid()
     {
-        $valid = $this->getMock("cPHP::Validator::FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")

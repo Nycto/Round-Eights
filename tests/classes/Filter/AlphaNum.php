@@ -40,7 +40,7 @@ class classes_filter_alphanum extends PHPUnit_Framework_TestCase
 
     public function testValidChars ()
     {
-        $filter = new cPHP::Filter::AlphaNum;
+        $filter = new \cPHP\Filter\AlphaNum;
 
         $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'abcdefghijklmnopqrstuvwxyz'
@@ -55,7 +55,7 @@ class classes_filter_alphanum extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::AlphaNum;
+        $filter = new \cPHP\Filter\AlphaNum;
 
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~'));
 

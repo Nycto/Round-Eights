@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Converts a value to an integer
  */
-class Integer extends cPHP::Filter
+class Integer extends \cPHP\Filter
 {
 
     /**
@@ -51,7 +51,7 @@ class Integer extends cPHP::Filter
             if ( count($value) == 0 )
                 return 0;
             else
-                $value = ::cPHP::reduce($value);
+                $value = \cPHP\reduce($value);
 
         }
 

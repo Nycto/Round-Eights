@@ -40,11 +40,11 @@ class classes_form_field_checkbox extends PHPUnit_Framework_TestCase
 
     public function testDefaults ()
     {
-        $field = new ::cPHP::Form::Field::Checkbox("fld");
+        $field = new \cPHP\Form\Field\Checkbox("fld");
 
         $this->assertThat(
                 $field->getFilter(),
-                $this->isInstanceOf("cPHP::Filter::Boolean")
+                $this->isInstanceOf("cPHP\Filter\Boolean")
             );
 
         $this->assertFalse( $field->getValue() );
@@ -52,12 +52,12 @@ class classes_form_field_checkbox extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = new ::cPHP::Form::Field::Checkbox("fld");
+        $field = new \cPHP\Form\Field\Checkbox("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "input", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );

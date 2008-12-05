@@ -78,7 +78,7 @@ class DateTime
      */
     static public function setDefaultFormat ($format)
     {
-        self::$defaultFormat = ::cPHP::strval($format);
+        self::$defaultFormat = \cPHP\strval($format);
     }
 
     /**
@@ -102,12 +102,12 @@ class DateTime
     static public function normalizeUnit ( $unit )
     {
 
-        $unit = strtolower( ::cPHP::str::stripW( $unit ) );
-        $unit = ::cPHP::str::stripTail( $unit, "s" );
+        $unit = strtolower( \cPHP\str\stripW( $unit ) );
+        $unit = \cPHP\str\stripTail( $unit, "s" );
 
         switch ( $unit ) {
             default:
-                throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
+                throw new \cPHP\Exception\Argument(1, "Units", "Invalid time unit");
 
             case "second":
             case "minute":
@@ -144,7 +144,7 @@ class DateTime
      */
     static public function isSQL ( $datetime )
     {
-        $datetime = ::cPHP::strval( $datetime );
+        $datetime = \cPHP\strval( $datetime );
 
         $year = '(?:[1-9][0-9]{3})';
         $month = '(?:0[0-9]|1[0-2])';
@@ -173,7 +173,7 @@ class DateTime
      */
     public function __construct ( $input = NULL )
     {
-        if (func_num_args() > 0 && !::cPHP::isVague($input) )
+        if (func_num_args() > 0 && !\cPHP\isVague($input) )
             $this->interpret( $input );
 
     }
@@ -217,7 +217,7 @@ class DateTime
     public function setArray ( $time )
     {
 
-        $time = new ::cPHP::Ary( $time );
+        $time = new \cPHP\Ary( $time );
 
         $time = $time->changeKeyCase()
             ->translateKeys(array(
@@ -253,14 +253,14 @@ class DateTime
      *
      * The returned value is per the getdate() array format.
      *
-     * Note that this will throw a cPHP::Exception::Variable if this instance doesn't contain a time
+     * Note that this will throw a \cPHP\Exception\Variable if this instance doesn't contain a time
      *
      * @return Array Returns an array as "getdate()" would
      */
     public function getArray ()
     {
         if ( !isset($this->time) )
-            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+            throw new \cPHP\Exception\Variable('time', 'No time has been set for this instance');
         return getdate( $this->time );
     }
 
@@ -274,10 +274,10 @@ class DateTime
      */
     public function setSQL ( $datetime )
     {
-        $datetime = ::cPHP::str::stripW($datetime);
+        $datetime = \cPHP\str\stripW($datetime);
 
         if ( !self::isSQL($datetime) )
-            throw new ::cPHP::Exception::Argument(0, "SQL Date/Time", "Invalid SQL date time");
+            throw new \cPHP\Exception\Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
         $result = preg_match(
                 '/^'
@@ -327,9 +327,9 @@ class DateTime
      */
     public function setString ( $string )
     {
-        $string = strtotime( ::cPHP::strval( $string ) );
+        $string = strtotime( \cPHP\strval( $string ) );
         if ($string === FALSE)
-            throw new ::cPHP::Exception::Argument(0, "Date/Time String", "Unable to parse string to a valid time");
+            throw new \cPHP\Exception\Argument(0, "Date/Time String", "Unable to parse string to a valid time");
         return $this->setTimeStamp( $string );
     }
 
@@ -356,7 +356,7 @@ class DateTime
      */
     public function setFormat( $format )
     {
-        $this->format = ::cPHP::strval( $format );
+        $this->format = \cPHP\strval( $format );
         return $this;
     }
 
@@ -380,12 +380,12 @@ class DateTime
     public function getFormatted ($format = FALSE)
     {
         if ( !isset($this->time) )
-            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+            throw new \cPHP\Exception\Variable('time', 'No time has been set for this instance');
 
         if ( isVague($format) )
             $format = $this->getFormat();
         else
-            $format = ::cPHP::strval( $format );
+            $format = \cPHP\strval( $format );
 
         return date( $format, $this->time );
     }
@@ -402,7 +402,7 @@ class DateTime
         }
         // This will be thrown if no time is currently set in this instance.
         // We catch it because toString isn't allowed to throw exceptions
-        catch ( ::cPHP::Exception::Variable $err ) {
+        catch ( \cPHP\Exception\Variable $err ) {
             return "";
         }
     }
@@ -440,7 +440,7 @@ class DateTime
 
         else {
 
-            $input = ::cPHP::strval( $input );
+            $input = \cPHP\strval( $input );
 
             if ( self::isSQL( $input ) )
                 $this->setSQL( $input );
@@ -466,11 +466,11 @@ class DateTime
     public function add ( $value, $unit )
     {
         if ( !isset($this->time) )
-            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+            throw new \cPHP\Exception\Variable('time', 'No time has been set for this instance');
 
-        $value = ::cPHP::numval( $value );
+        $value = \cPHP\numval( $value );
 
-        $unit = ::cPHP::DateTime::normalizeUnit($unit);
+        $unit = \cPHP\DateTime::normalizeUnit($unit);
 
         if ( $value == 0 )
             return $this;
@@ -478,7 +478,7 @@ class DateTime
         switch ( $unit ) {
 
             default:
-                throw new ::cPHP::Exception::Argument(1, "Units", "Invalid time unit");
+                throw new \cPHP\Exception\Argument(1, "Units", "Invalid time unit");
 
             case self::UNIT_MONTHS:
                 $unit = "mon";
@@ -548,18 +548,18 @@ class DateTime
     public function get ( $unit )
     {
         if ( !isset($this->time) )
-            throw new ::cPHP::Exception::Variable('time', 'No time has been set for this instance');
+            throw new \cPHP\Exception\Variable('time', 'No time has been set for this instance');
 
         try {
             $unit = self::normalizeUnit( $unit );
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
         $ary = $this->getArray();
 
         switch ( $unit ) {
             default:
-                throw new ::cPHP::Exception::Argument(0, "Unit", "Invalid time unit");
+                throw new \cPHP\Exception\Argument(0, "Unit", "Invalid time unit");
             case "second":
                 return $ary['seconds'];
             case "minute":
@@ -595,7 +595,7 @@ class DateTime
         switch ( self::normalizeUnit( $unit ) ) {
 
             default:
-                throw new ::cPHP::Exception::Argument(0, "Unit", "Invalid time unit");
+                throw new \cPHP\Exception\Argument(0, "Unit", "Invalid time unit");
 
             case "second":
                 return $this->setArray( array('seconds' => $value) );

@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * Exception class for errors caused by variables, but not necissarily their data
  */
-class Variable extends ::cPHP::Exception
+class Variable extends \cPHP\Exception
 {
 
     /**
@@ -62,7 +62,7 @@ class Variable extends ::cPHP::Exception
 
         $this->addData(
                 "Variable Name",
-                ::cPHP::strval( $variable )
+                \cPHP\strval( $variable )
             );
     }
 

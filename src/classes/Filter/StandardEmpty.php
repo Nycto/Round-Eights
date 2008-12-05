@@ -30,7 +30,7 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * This funnels the multiple incarnations of "empty" in to a standard value
@@ -38,11 +38,11 @@ namespace cPHP::Filter;
  * If the value passed in ISN'T empty, it will return the value. Otherwise,
  * it returns the defined "standard" value
  */
-class StandardEmpty extends cPHP::Filter
+class StandardEmpty extends \cPHP\Filter
 {
 
     /**
-     * Any flags to use while calling cPHP::isEmpty
+     * Any flags to use while calling \cPHP\isEmpty
      */
     protected $flags = 0;
 
@@ -132,7 +132,7 @@ class StandardEmpty extends cPHP::Filter
      */
     public function filter ( $value )
     {
-        if ( ::cPHP::isEmpty( $value, $this->flags ) )
+        if ( \cPHP\isEmpty( $value, $this->flags ) )
             return $this->value;
 
         return $value;

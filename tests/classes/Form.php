@@ -41,14 +41,14 @@ class classes_form extends PHPUnit_Framework_TestCase
     public function getMockField ()
     {
         return $this->getMock(
-                "cPHP::iface::Form::Field",
+                "\cPHP\iface\Form\Field",
                 array("getName", "getValue", "setValue", "validate", "isValid")
             );
     }
 
     public function testSetAction ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertSame( $form, $form->setAction("/file.php") );
         $this->assertSame( "/file.php", $form->getAction() );
@@ -62,7 +62,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testSetMethod()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertSame( "POST", $form->getMethod() );
 
@@ -73,14 +73,14 @@ class classes_form extends PHPUnit_Framework_TestCase
             $form->setMethod("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
 
     public function testSetEncoding ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertSame( "application/x-www-form-urlencoded", $form->getEncoding() );
 
@@ -91,17 +91,17 @@ class classes_form extends PHPUnit_Framework_TestCase
             $form->setEncoding("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
 
     public function testGetAddField ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array(), $fields->get() );
 
 
@@ -110,7 +110,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $form->addField($field1) );
 
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array($field1), $fields->get() );
 
 
@@ -118,7 +118,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $form->addField($field1) );
 
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array($field1), $fields->get() );
 
 
@@ -127,13 +127,13 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $form->addField($field2) );
 
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array($field1, $field2), $fields->get() );
     }
 
     public function testClearFields ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $field1 = $this->getMockField();
         $form->addField($field1);
@@ -143,20 +143,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
         // Make sure the two fields were properly added
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array($field1, $field2), $fields->get() );
 
 
         $this->assertSame( $form, $form->clearFields() );
 
         $fields = $form->getFields();
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array(), $fields->get() );
     }
 
     public function testCount ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
         $this->assertSame( 0, $form->count() );
         $this->assertSame( 0, count($form) );
 
@@ -189,7 +189,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("getName")
             ->will( $this->returnValue("fldTwo") );
 
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
         $form->addField( $field1 )->addField( $field2 );
 
         $this->assertSame( $field1, $form->find("fldOne") );
@@ -201,7 +201,7 @@ class classes_form extends PHPUnit_Framework_TestCase
              $form->find("123");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must be a valid PHP variable name", $err->getMessage());
         }
 
@@ -209,7 +209,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testAnyIn ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertFalse(
                 $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
@@ -242,7 +242,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             );
 
         $this->assertTrue(
-                $form->anyIn( new ::cPHP::Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
+                $form->anyIn( new \cPHP\Ary(array( "fldThree" => "value", "fldOne" => "other" )) )
             );
 
         $this->assertTrue(
@@ -258,7 +258,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
 
@@ -266,20 +266,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_Error ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         try {
             $form->anyIn( "not an iterator" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
         }
     }
 
     public function testFill_array ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -317,7 +317,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_Ary ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -350,7 +350,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 $form,
                 $form->fill(
-                        new ::cPHP::Ary(
+                        new \cPHP\Ary(
                                 array( "fldOne" => "Value One", "filler" => FALSE, "fldThree" => null )
                             )
                     )
@@ -359,7 +359,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_ArrayIterator ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -401,7 +401,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_ArrayObect ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -443,7 +443,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testIsValid ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertTrue( $form->isValid() );
 
@@ -491,14 +491,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
         $form->setMethod("get");
         $form->setEncoding('multipart/form-data');
         $form->setAction('/dir/file.php');
 
         $tag = $form->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "form", $tag->getTag() );
 
         $this->assertTrue( isset($tag['method']) );
@@ -514,7 +514,7 @@ class classes_form extends PHPUnit_Framework_TestCase
     public function testToString ()
     {
 
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
         $form->setMethod("get");
         $form->setEncoding('multipart/form-data');
         $form->setAction('/dir/file.php');
@@ -532,16 +532,16 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetHidden ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $hidden = $form->getHidden();
-        $this->assertThat( $hidden, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $hidden, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array(), $hidden->get() );
 
 
-        $field1 = new ::cPHP::Form::Field::Hidden("fld1");
-        $field2 = new ::cPHP::Form::Field::Text("fld2");
-        $field3 = new ::cPHP::Form::Field::Hidden("fld3");
+        $field1 = new \cPHP\Form\Field\Hidden("fld1");
+        $field2 = new \cPHP\Form\Field\Text("fld2");
+        $field3 = new \cPHP\Form\Field\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )
@@ -549,20 +549,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
 
         $hidden = $form->getHidden();
-        $this->assertThat( $hidden, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $hidden, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame( array( 0 => $field1, 2 => $field3 ), $hidden->get() );
     }
 
     public function testGetHiddenHTML ()
     {
-        $form = new ::cPHP::Form;
+        $form = new \cPHP\Form;
 
         $this->assertSame( "", $form->getHiddenHTML() );
 
 
-        $field1 = new ::cPHP::Form::Field::Hidden("fld1");
-        $field2 = new ::cPHP::Form::Field::Text("fld2");
-        $field3 = new ::cPHP::Form::Field::Hidden("fld3");
+        $field1 = new \cPHP\Form\Field\Hidden("fld1");
+        $field2 = new \cPHP\Form\Field\Text("fld2");
+        $field3 = new \cPHP\Form\Field\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )

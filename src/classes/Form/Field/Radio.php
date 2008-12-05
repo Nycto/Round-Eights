@@ -30,12 +30,12 @@
  * @package Forms
  */
 
-namespace cPHP::Form::Field;
+namespace cPHP\Form\Field;
 
 /**
  * An HTML radio button field list
  */
-class Radio extends ::cPHP::Form::Multi
+class Radio extends \cPHP\Form\Multi
 {
 
     /**
@@ -48,13 +48,13 @@ class Radio extends ::cPHP::Form::Multi
      */
     public function getRadioOptionID ( $value )
     {
-        $value = ::cPHP::indexVal( $value );
+        $value = \cPHP\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
 
         return "radio_"
-            .::cPHP::str::stripW( $this->getName() )
+            .\cPHP\str\stripW( $this->getName() )
             ."_"
             .substr(sha1($value), 0, 10);
     }
@@ -63,16 +63,16 @@ class Radio extends ::cPHP::Form::Multi
      * Returns the an HTML tag that represents an individual option's radio button
      *
      * @param String|Integer $value The value of the option whose tag should be returned
-     * @return Object Returns a cPHP::Tag object
+     * @return Object Returns a \cPHP\Tag object
      */
     public function getOptionRadioTag ( $value )
     {
-        $value = ::cPHP::indexVal( $value );
+        $value = \cPHP\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        $tag = new ::cPHP::Tag( 'input' );
+        $tag = new \cPHP\Tag( 'input' );
 
         $tag->importAttrs(array(
                 "name" => $this->getName(),
@@ -91,16 +91,16 @@ class Radio extends ::cPHP::Form::Multi
      * Returns the an HTML tag that represents an individual option's label
      *
      * @param String|Integer $value The value of the option whose label tag should be returned
-     * @return Object Returns a cPHP::Tag object
+     * @return Object Returns a \cPHP\Tag object
      */
     public function getOptionLabelTag ( $value )
     {
-        $value = ::cPHP::indexVal( $value );
+        $value = \cPHP\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new ::cPHP::Exception::Index($value, "Option Value", "Option does not exist in field");
+            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'label',
                 $this->getOptionLabel( $value ),
                 array( "for" => $this->getRadioOptionID($value) )
@@ -124,13 +124,13 @@ class Radio extends ::cPHP::Form::Multi
     }
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {
-        return new ::cPHP::Tag(
+        return new \cPHP\Tag(
                 'ul',
                 $this->getOptionList()
             );

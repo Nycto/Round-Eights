@@ -40,7 +40,7 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::IPv4;
+        $validator = new \cPHP\Validator\IPv4;
 
         $this->assertTrue( $validator->isValid("192.168.0.1") );
         $this->assertTrue( $validator->isValid("255.255.255.0") );
@@ -52,7 +52,7 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::IPv4;
+        $validator = new \cPHP\Validator\IPv4;
 
 
         $result = $validator->validate('example');

@@ -40,7 +40,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
 
     public function testGetAffected ()
     {
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 5,
                 null,
                 "UPDATE table SET field = 'new' LIMIT 5"
@@ -49,7 +49,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
         $this->assertSame( 5, $write->getAffected() );
 
 
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 null,
                 null,
                 "UPDATE table SET field = 'new' LIMIT 5"
@@ -58,7 +58,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
         $this->assertSame( 0, $write->getAffected() );
 
 
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 -5,
                 null,
                 "UPDATE table SET field = 'new' LIMIT 5"
@@ -69,7 +69,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
 
     public function testGetInsertID ()
     {
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 5,
                 null,
                 "UPDATE table SET field = 'new' LIMIT 5"
@@ -78,7 +78,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
         $this->assertNull( $write->getInsertID() );
 
 
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 5,
                 FALSE,
                 "UPDATE table SET field = 'new' LIMIT 5"
@@ -87,7 +87,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
         $this->assertNull( $write->getInsertID() );
 
 
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 1,
                 50,
                 "INSERT INTO table SET field = 'new'"
@@ -96,7 +96,7 @@ class classes_db_result_write extends PHPUnit_Framework_TestCase
         $this->assertSame( 50, $write->getInsertID() );
 
 
-        $write = new ::cPHP::DB::Result::Write(
+        $write = new \cPHP\DB\Result\Write(
                 1,
                 -10,
                 "INSERT INTO table SET field = 'new'"

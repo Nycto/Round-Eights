@@ -35,7 +35,7 @@ namespace cPHP;
 /**
  * Base class for Argument Currying classes
  */
-abstract class Curry implements cPHP::iface::Filter
+abstract class Curry implements \cPHP\iface\Filter
 {
 
     /**
