@@ -345,7 +345,7 @@ class Tag implements \ArrayAccess
     {
         if ( is_array($attrs) )
             $attrs = \cPHP\Ary::create( $attrs );
-        else if ( !( $attrs instanceof Traversable ) )
+        else if ( !( $attrs instanceof \Traversable ) )
             throw new \cPHP\Exception\Argument( 0, "Attribute List", "Must be an array or a traversable object" );
 
         foreach ( $attrs AS $key => $value ) {

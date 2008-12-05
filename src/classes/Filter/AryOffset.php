@@ -114,7 +114,7 @@ class AryOffset extends \cPHP\Filter
         if ( !\cPHP\Ary::is( $value ) )
             return $value;
 
-        else if ( is_object($value) && ( !( $value instanceof ArrayAccess ) || !( $value instanceof Traversable ) ) )
+        else if ( is_object($value) && ( !( $value instanceof \ArrayAccess ) || !( $value instanceof \Traversable ) ) )
             return $value;
 
         foreach ( $this->filters AS $key => $filter ) {

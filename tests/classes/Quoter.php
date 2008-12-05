@@ -371,7 +371,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("string ", "'with'", " quotes"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 
@@ -415,7 +415,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("string ", "'with'"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 
@@ -449,7 +449,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("This is a string"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 
@@ -472,7 +472,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("'This is a string'"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 
@@ -497,7 +497,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("'This is'", "'a string'"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 
@@ -535,7 +535,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("<({This isEND OF QUOTE", " a string ", "<({with stuff))", " in it"),
-                $result->getSections()->collect("\cPHP\strval")->get()
+                $result->getSections()->collect('cPHP\strval')->get()
             );
 
 

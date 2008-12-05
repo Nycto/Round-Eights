@@ -48,7 +48,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\LinkWrap",
-                array(),
+                array("_mock"),
                 array( $link )
             );
 
@@ -64,7 +64,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\LinkWrap",
-                array(),
+                array("_mock"),
                 array( $link )
             );
 
@@ -85,7 +85,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\LinkWrap",
-                array(),
+                array("_mock"),
                 array( $link )
             );
 
@@ -113,7 +113,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\LinkWrap",
-                array(),
+                array("_mock"),
                 array( $link )
             );
 

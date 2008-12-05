@@ -377,7 +377,7 @@ class File extends \cPHP\FileSystem
     {
         $this->requirePath();
 
-        $finfo = finfo_open(FILEINFO_MIME);
+        $finfo = finfo_open(\FILEINFO_MIME);
 
         if ( $finfo === FALSE )
             throw new \cPHP\Exception\Extension( "Unable to open finfo database" );
@@ -388,6 +388,8 @@ class File extends \cPHP\FileSystem
 
         if ( \cPHP\str\contains(" ", $result) )
             $result = strstr( $result, " ", TRUE );
+
+        $result = rtrim($result, ";");
 
         return $result;
     }

@@ -207,7 +207,7 @@ class Quoter
 
             $close = \cPHP\Ary::create( $close )
                 ->flatten()
-                ->collect("\cPHP\strval")
+                ->collect('cPHP\strval')
                 ->compact( ALLOW_SPACES )
                 ->unique()
                 ->get();

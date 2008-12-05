@@ -80,7 +80,7 @@ class Link extends \cPHP\DB\Link
      */
     protected function rawIsConnected ( $connection )
     {
-        if ( !($connection instanceof mysqli) )
+        if ( !($connection instanceof \mysqli) )
             return FALSE;
 
         if ( @$connection->ping() !== TRUE )

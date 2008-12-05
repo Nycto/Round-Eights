@@ -1219,7 +1219,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      */
     public function stringize ()
     {
-        $this->array = array_map( "\cPHP\strval", $this->array );
+        $this->array = array_map( 'cPHP\strval', $this->array );
         return $this;
     }
 
@@ -1243,7 +1243,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      */
     public function changeCase ( $caseFlag )
     {
-        $this->array = array_map("\cPHP\strval", $this->array);
+        $this->array = array_map('cPHP\strval', $this->array);
 
         if ( !is_int($caseFlag) )
             throw new \cPHP\Exception\Argument(0, "Case Flag", "Invalid Case Flag");
