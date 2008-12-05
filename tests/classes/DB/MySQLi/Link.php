@@ -40,7 +40,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testConnection_error ()
     {
-        $link = new ::cPHP::DB::MySQLi::Link(
+        $link = new \cPHP\DB\MySQLi\Link(
                 "db://notMyUsername:SonOfA@". MYSQLI_HOST ."/databasethatisntreal"
             );
 
@@ -48,7 +48,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
             $link->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Link $err ) {
+        catch ( \cPHP\Exception\DB\Link $err ) {
             $this->assertContains(
                     "Access denied for user",
                     $err->getMessage()
@@ -58,7 +58,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testConnection ()
     {
-        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
         $this->assertThat( $link->getLink(), $this->isInstanceOf("mysqli") );
         $this->assertTrue( $link->isConnected() );
     }
@@ -82,7 +82,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
         $result = $link->query("SELECT 50 + 10");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::MySQLi::Read") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\DB\MySQLi\Read") );
 
         $this->assertSame( "SELECT 50 + 10", $result->getQuery() );
     }
@@ -93,7 +93,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
         $result = $link->query("UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::DB::Result::Write") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\DB\Result\Write") );
 
         $this->assertSame(
                 "UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1",
@@ -103,7 +103,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testDisconnect ()
     {
-        $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
         $link->getLink();
 
         $this->assertTrue( $link->isConnected() );

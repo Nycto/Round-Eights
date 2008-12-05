@@ -30,7 +30,7 @@
  * @package Database
  */
 
-namespace cPHP::DB;
+namespace cPHP\DB;
 
 /**
  * Core Database Connection
@@ -39,7 +39,7 @@ namespace cPHP::DB;
  * setting up the link, performing actions against the resource and
  * automatically disconnecting
  */
-abstract class Link implements ::cPHP::iface::DB::Link
+abstract class Link implements \cPHP\iface\DB\Link
 {
 
     /**
@@ -95,8 +95,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     static public function isSelect ( $query )
     {
-        $query = ::cPHP::strval($query);
-        $query = ::cPHP::str::stripQuoted($query, array("'", '"', "`"));
+        $query = \cPHP\strval($query);
+        $query = \cPHP\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
         return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
@@ -111,7 +111,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     {
         // Ensure that the required extension is loaded
         if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
-            throw new ::cPHP::Exception::Extension(
+            throw new \cPHP\Exception\Extension(
                     static::PHP_EXTENSION,
                     "Extension is not loaded"
                 );
@@ -153,7 +153,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return Object Returns a cPHP::DB::Result object
+     * @return Object Returns a \cPHP\DB\Result object
      */
     abstract protected function rawQuery ( $query );
 
@@ -190,7 +190,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setPersistent ( $setting )
     {
-        $this->persistent = ::cPHP::Filter::Boolean()->filter($setting);
+        $this->persistent = \cPHP\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -214,7 +214,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setForceNew ( $setting )
     {
-        $this->forceNew = ::cPHP::Filter::Boolean()->filter($setting);
+        $this->forceNew = \cPHP\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -236,8 +236,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setUserName ( $username )
     {
-        $username = ::cPHP::strval( $username );
-        $this->username = ::cPHP::isEmpty( $username ) ? null : $username;
+        $username = \cPHP\strval( $username );
+        $this->username = \cPHP\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -280,8 +280,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setPassword ( $password )
     {
-        $password = ::cPHP::strval( $password );
-        $this->password = ::cPHP::isEmpty($password) ? null : $password;
+        $password = \cPHP\strval( $password );
+        $this->password = \cPHP\isEmpty($password) ? null : $password;
         return $this;
     }
 
@@ -324,8 +324,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setHost ( $host )
     {
-        $host = ::cPHP::strval( $host );
-        $this->host = ::cPHP::isEmpty( $host ) ? null : $host;
+        $host = \cPHP\strval( $host );
+        $this->host = \cPHP\isEmpty( $host ) ? null : $host;
         return $this;
     }
 
@@ -368,7 +368,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setPort ( $port )
     {
-        $port = intval( ::cPHP::reduce( $port ) );
+        $port = intval( \cPHP\reduce( $port ) );
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }
@@ -412,8 +412,8 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function setDatabase ( $database )
     {
-        $database = ::cPHP::strval( $database );
-        $this->database = ::cPHP::isEmpty( $database ) ? null : $database;
+        $database = \cPHP\strval( $database );
+        $this->database = \cPHP\isEmpty( $database ) ? null : $database;
         return $this;
     }
 
@@ -446,12 +446,12 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function fromArray ( $array )
     {
-        $array = new ::cPHP::Ary( $array );
+        $array = new \cPHP\Ary( $array );
 
         foreach ( $array AS $key => $value ) {
 
-            $key = "set". strtolower( ::cPHP::str::stripW( $key ) );
-            $value = ::cPHP::strval( $value );
+            $key = "set". strtolower( \cPHP\str\stripW( $key ) );
+            $value = \cPHP\strval( $value );
 
             if ( method_exists( $this, $key ) )
                 $this->$key( $value );
@@ -469,13 +469,13 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function fromURI ( $uri )
     {
-        $uri = ::cPHP::strval( $uri );
-        $result = ::cPHP::Validator::URL()->validate( $uri );
+        $uri = \cPHP\strval( $uri );
+        $result = \cPHP\Validator::URL()->validate( $uri );
 
         if ( !$result->isValid() )
-            throw new ::cPHP::Exception::Argument( 0, "Settings URI", $result->getFirstError() );
+            throw new \cPHP\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
 
-        $uri = new ::cPHP::Ary( parse_url( $uri ) );
+        $uri = new \cPHP\Ary( parse_url( $uri ) );
         $uri = $uri->translateKeys(array(
                 "user" => "username",
                 "pass" => "password"
@@ -498,20 +498,20 @@ abstract class Link implements ::cPHP::iface::DB::Link
     /**
      * Validates the log-in credentials in preparation to connect
      *
-     * @throws cPHP::Exception::DB::Link
+     * @throws \cPHP\Exception\DB\Link
      *      This will be thrown if any of the required credentials are not set
      * @return Object Returns a self reference
      */
     public function validateCredentials ()
     {
         if ( !$this->userNameExists() )
-            throw new ::cPHP::Exception::DB::Link("UserName must be set", 0, $this);
+            throw new \cPHP\Exception\DB\Link("UserName must be set", 0, $this);
 
         if ( !$this->hostExists() )
-            throw new ::cPHP::Exception::DB::Link("Host must be set", 0, $this);
+            throw new \cPHP\Exception\DB\Link("Host must be set", 0, $this);
 
         if ( !$this->databaseExists() )
-            throw new ::cPHP::Exception::DB::Link("Database name must be set", 0, $this);
+            throw new \cPHP\Exception\DB\Link("Database name must be set", 0, $this);
 
         return $this;
     }
@@ -524,7 +524,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
     public function getHostWithPort ()
     {
         if ( !$this->hostExists() )
-            throw new ::cPHP::Exception::Interaction("Host must be set");
+            throw new \cPHP\Exception\Interaction("Host must be set");
 
         if ( $this->portExists() )
             return $this->host .":". $this->port;
@@ -566,7 +566,7 @@ abstract class Link implements ::cPHP::iface::DB::Link
             $result = $this->rawConnect();
 
             if ( !is_resource($result) && !is_object($result) ) {
-                throw new cPHP::Exception::DB::Link(
+                throw new \cPHP\Exception\DB\Link(
                         "Database connector did not return a resource or an object",
                         0,
                         $this
@@ -588,23 +588,23 @@ abstract class Link implements ::cPHP::iface::DB::Link
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = ::cPHP::strval($query);
+        $query = \cPHP\strval($query);
 
-        if ( ::cPHP::isEmpty($query) )
-            throw new ::cPHP::Exception::Argument(0, "Query", "Must not be empty");
+        if ( \cPHP\isEmpty($query) )
+            throw new \cPHP\Exception\Argument(0, "Query", "Must not be empty");
 
         try {
             $result = $this->rawQuery( $query );
         }
-        catch (::cPHP::Exception::DB::Query $err) {
+        catch (\cPHP\Exception\DB\Query $err) {
             $err->shiftFault();
             throw $err;
         }
 
-        if ( !( $result instanceof ::cPHP::DB::Result ) ) {
-            throw new ::cPHP::Exception::DB::Query(
+        if ( !( $result instanceof \cPHP\DB\Result ) ) {
+            throw new \cPHP\Exception\DB\Query(
                     $query,
-                    "Query did not return a cPHP::DB::Result object",
+                    "Query did not return a \cPHP\DB\Result object",
                     0,
                     $this
                 );
@@ -638,21 +638,21 @@ abstract class Link implements ::cPHP::iface::DB::Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow
-     * @return String|Object Returns the escaped string, or a cPHP::Ary object
+     * @return String|Object Returns the escaped string, or a \cPHP\Ary object
      */
     public function quote ( $value, $allowNull = TRUE )
     {
 
-        if ( ::cPHP::Ary::is( $value ) )
-            return ::cPHP::Ary::create( $value )->collect( array($this, "quote") );
+        if ( \cPHP\Ary::is( $value ) )
+            return \cPHP\Ary::create( $value )->collect( array($this, "quote") );
 
-        $value = ::cPHP::reduce($value);
+        $value = \cPHP\reduce($value);
 
         if (is_bool($value))
             return $value ? "1" : "0";
 
         else if ( is_int($value) || is_float($value) )
-            return ::strval( $value );
+            return \strval( $value );
 
         else if ( is_null($value) )
             return $allowNull ? "NULL" : "''";
@@ -676,21 +676,21 @@ abstract class Link implements ::cPHP::iface::DB::Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow
-     * @return String|Object Returns the escaped string, or a cPHP::Ary object
+     * @return String|Object Returns the escaped string, or a \cPHP\Ary object
      */
     public function escape ( $value, $allowNull = TRUE )
     {
 
-        if ( ::cPHP::Ary::is( $value ) )
-            return ::cPHP::Ary::create( $value )->collect( array($this, "escape") );
+        if ( \cPHP\Ary::is( $value ) )
+            return \cPHP\Ary::create( $value )->collect( array($this, "escape") );
 
-        $value = ::cPHP::reduce($value);
+        $value = \cPHP\reduce($value);
 
         if (is_bool($value))
             return $value ? "1" : "0";
 
         else if ( is_int($value) || is_float($value) )
-            return ::strval( $value );
+            return \strval( $value );
 
         else if ( is_null($value) )
             return $allowNull ? "NULL" : "";

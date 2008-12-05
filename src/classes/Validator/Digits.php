@@ -30,14 +30,14 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates that a given string only contains numeric characters
  *
  * This will fail for any data type that is not a string
  */
-class Digits extends ::cPHP::Validator
+class Digits extends \cPHP\Validator
 {
 
     /**

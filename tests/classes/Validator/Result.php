@@ -41,14 +41,14 @@ class classes_validator_result extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $result = new cPHP::Validator::Result("Wakka");
+        $result = new \cPHP\Validator\Result("Wakka");
 
         $this->assertEquals("Wakka", $result->getValue());
     }
 
     public function testIsValid ()
     {
-        $result = new cPHP::Validator::Result("Wakka");
+        $result = new \cPHP\Validator\Result("Wakka");
 
         $this->assertTrue( $result->isValid() );
 

@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates that a value is not considered empty using the isEmpty function
  */
-class NotEmpty extends ::cPHP::Validator
+class NotEmpty extends \cPHP\Validator
 {
 
     /**
@@ -62,7 +62,7 @@ class NotEmpty extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-        if ( ::cPHP::isEmpty($value, $this->flags) )
+        if ( \cPHP\isEmpty($value, $this->flags) )
             return "Must not be empty";
     }
 

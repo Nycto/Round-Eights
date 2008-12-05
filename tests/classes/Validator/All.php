@@ -40,53 +40,53 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
 
     public function testNoValidators ()
     {
-        $all = new ::cPHP::Validator::All;
+        $all = new \cPHP\Validator\All;
 
         $result = $all->validate("example value");
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
 
     public function testInvalidResult ()
     {
-        $valid = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue("This is an invalid result") );
 
-        $all = new ::cPHP::Validator::All( $valid );
+        $all = new \cPHP\Validator\All( $valid );
         $this->assertEquals( array($valid), $all->getValidators()->get() );
 
         try {
             $all->validate("example value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data $err ) {}
+        catch ( \cPHP\Exception\Data $err ) {}
     }
 
     public function testValid ()
     {
 
-        $valid1 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
-            ->will( $this->returnValue( new ::cPHP::Validator::Result("example value") ) );
+            ->will( $this->returnValue( new \cPHP\Validator\Result("example value") ) );
 
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
-            ->will( $this->returnValue( new ::cPHP::Validator::Result("example value") ) );
+            ->will( $this->returnValue( new \cPHP\Validator\Result("example value") ) );
 
 
-        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
+        $all = new \cPHP\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
@@ -94,21 +94,21 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testOneInvalid ()
     {
 
-        $result1 = new ::cPHP::Validator::Result("example value");
+        $result1 = new \cPHP\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $all = new ::cPHP::Validator::All( $valid1 );
+        $all = new \cPHP\Validator\All( $valid1 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),
@@ -120,31 +120,31 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testMultipleInvalid ()
     {
 
-        $result1 = new ::cPHP::Validator::Result("example value");
+        $result1 = new \cPHP\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $result2 = new ::cPHP::Validator::Result("example value");
+        $result2 = new \cPHP\Validator\Result("example value");
         $result2->addError("This is another Error");
 
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
+        $all = new \cPHP\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error", "This is another Error"),
@@ -156,31 +156,31 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testDuplicateErrors ()
     {
 
-        $result1 = new ::cPHP::Validator::Result("example value");
+        $result1 = new \cPHP\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $result2 = new ::cPHP::Validator::Result("example value");
+        $result2 = new \cPHP\Validator\Result("example value");
         $result2->addError("This is an Error");
 
-        $valid2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new ::cPHP::Validator::All( $valid1, $valid2 );
+        $all = new \cPHP\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),

@@ -65,13 +65,13 @@ class Quoter
      */
     static public function isEscaped ( $string, $offset, $escape = '\\' )
     {
-        $escape = ::cPHP::strval( $escape );
+        $escape = \cPHP\strval( $escape );
 
         // Something can't be escaped if there is no escape string
-        if ( ::cPHP::isEmpty( $escape, ALLOW_SPACES ) )
+        if ( \cPHP\isEmpty( $escape, ALLOW_SPACES ) )
             return false;
 
-        $string = ::cPHP::strval( $string );
+        $string = \cPHP\strval( $string );
         $offset = intval( $offset );
 
         if ( $offset > strlen( $string ) )
@@ -109,10 +109,10 @@ class Quoter
         // Loop through each needle so we can figure out the one with the minimum offset
         foreach( $needles AS $needle ) {
 
-            $needle = ::cPHP::strval( $needle );
+            $needle = \cPHP\strval( $needle );
 
-            if ( ::cPHP::isEmpty( $needle, ALLOW_SPACES ) )
-                throw new ::cPHP::Exception::Data($needle, "needle", "Needle must not be empty");
+            if ( \cPHP\isEmpty( $needle, ALLOW_SPACES ) )
+                throw new \cPHP\Exception\Data($needle, "needle", "Needle must not be empty");
 
             // Cache the length of the needle so it isn't continually calculated
             $needleLen = strlen( $needle );
@@ -163,11 +163,11 @@ class Quoter
      * is the opening quote character. The second dimension is a list of characters
      * that are allowed to close the opening quote
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getQuotes ()
     {
-        return new ::cPHP::Ary( $this->quotes );
+        return new \cPHP\Ary( $this->quotes );
     }
 
     /**
@@ -195,19 +195,19 @@ class Quoter
      */
     public function setQuote ( $open, $close = FALSE )
     {
-        $open = ::cPHP::strval( $open );
+        $open = \cPHP\strval( $open );
 
-        if ( ::cPHP::isEmpty($open, ALLOW_SPACES) )
-            throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Must not be empty" );
+        if ( \cPHP\isEmpty($open, ALLOW_SPACES) )
+            throw new \cPHP\Exception\Argument( 0, "Open Quote", "Must not be empty" );
 
-        if ( ::cPHP::isVague( $close, ALLOW_SPACES ) ) {
+        if ( \cPHP\isVague( $close, ALLOW_SPACES ) ) {
             $close = array( $open );
         }
         else {
 
-            $close = ::cPHP::Ary::create( $close )
+            $close = \cPHP\Ary::create( $close )
                 ->flatten()
-                ->collect("cPHP::strval")
+                ->collect('cPHP\strval')
                 ->compact( ALLOW_SPACES )
                 ->unique()
                 ->get();
@@ -222,11 +222,11 @@ class Quoter
     /**
      * Returns a flat list of all the open and close quotes registered in this instance
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getAllQuotes ()
     {
-        return cPHP::Ary::create( array_values( $this->quotes ) )
+        return \cPHP\Ary::create( array_values( $this->quotes ) )
             ->flatten()
             ->merge( array_keys( $this->quotes ) )
             ->unique()
@@ -236,11 +236,11 @@ class Quoter
     /**
      * Returns a list of all the opening quotes
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getOpenQuotes ()
     {
-        return new cPHP::Ary( array_keys( $this->quotes ) );
+        return new \cPHP\Ary( array_keys( $this->quotes ) );
     }
 
     /**
@@ -251,7 +251,7 @@ class Quoter
      */
     public function isOpenQuote ( $quote )
     {
-        $quote = ::cPHP::strval( $quote );
+        $quote = \cPHP\strval( $quote );
         return array_key_exists( $quote, $this->quotes );
     }
 
@@ -259,16 +259,16 @@ class Quoter
      * Returns a list of closing quotes for an opening quote
      *
      * @param String $quote The opening quote
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getCloseQuotesFor ( $quote )
     {
-        $quote = ::cPHP::strval( $quote );
+        $quote = \cPHP\strval( $quote );
 
         if ( !$this->isOpenQuote($quote) )
-            throw new ::cPHP::Exception::Argument( 0, "Open Quote", "Invalid open quote" );
+            throw new \cPHP\Exception\Argument( 0, "Open Quote", "Invalid open quote" );
 
-        return cPHP::Ary::create( $this->quotes[ $quote ] )->values();
+        return \cPHP\Ary::create( $this->quotes[ $quote ] )->values();
     }
 
     /**
@@ -292,9 +292,9 @@ class Quoter
      */
     public function setEscape ( $escape )
     {
-        $escape = ::cPHP::strval( $escape );
-        if ( ::cPHP::isEmpty( $escape, ALLOW_SPACES ) )
-            throw new ::cPHP::Exception::Argument( 0, "Escape String", "Must not be empty" );
+        $escape = \cPHP\strval( $escape );
+        if ( \cPHP\isEmpty( $escape, ALLOW_SPACES ) )
+            throw new \cPHP\Exception\Argument( 0, "Escape String", "Must not be empty" );
         $this->escape = $escape;
         return $this;
     }
@@ -324,15 +324,15 @@ class Quoter
      * Breaks a string up according the settings in this instance
      *
      * @param String $string The string to parse
-     * @return Object Returns a ::cPHP::Quoter::Parsed object
+     * @return Object Returns a \cPHP\Quoter\Parsed object
      */
     public function parse ( $string )
     {
-        $string = ::cPHP::strval( $string );
+        $string = \cPHP\strval( $string );
 
         $openQuotes = $this->getOpenQuotes()->get();
 
-        $result = new ::cPHP::Quoter::Parsed;
+        $result = new \cPHP\Quoter\Parsed;
 
         // As we walk through the string, this is updated as the offset
         // relative to the original string
@@ -348,7 +348,7 @@ class Quoter
             if ( $openOffset === FALSE ) {
 
                 $result->addSection(
-                        new ::cPHP::Quoter::Section::Unquoted( $totalOffset, $string )
+                        new \cPHP\Quoter\Section\Unquoted( $totalOffset, $string )
                     );
 
                 break;
@@ -358,7 +358,7 @@ class Quoter
 
                 // Construct the unquoted section and add it to the result
                 $result->addSection(
-                        new ::cPHP::Quoter::Section::Unquoted(
+                        new \cPHP\Quoter\Section\Unquoted(
                                 $totalOffset,
                                 substr( $string, 0, $openOffset )
                             )
@@ -388,7 +388,7 @@ class Quoter
 
             // Construct the quoted section and add it to the result
             $result->addSection(
-                    new ::cPHP::Quoter::Section::Quoted(
+                    new \cPHP\Quoter\Section\Quoted(
                             $totalOffset,
                             $quoted,
                             $openQuote,

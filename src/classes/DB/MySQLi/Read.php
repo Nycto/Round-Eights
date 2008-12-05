@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB::MySQLi;
+namespace cPHP\DB\MySQLi;
 
 /**
  * MySQLi Database read result
  */
-class Read extends ::cPHP::DB::Result::Read
+class Read extends \cPHP\DB\Result\Read
 {
 
     /**

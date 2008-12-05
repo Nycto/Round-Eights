@@ -119,27 +119,27 @@ class URL
      */
     static public function parseQuery ( $query, $flags = 0 )
     {
-        $query = ::cPHP::strval($query);
+        $query = \cPHP\strval($query);
 
         // translate any question marks to ampersands
         $query = str_replace( "?", "&", $query );
 
         $query = explode("&", $query);
 
-        $out = new ::cPHP::Ary;
+        $out = new \cPHP\Ary;
 
         foreach ($query AS $pair) {
 
-            if ( ::cPHP::isEmpty($pair) )
+            if ( \cPHP\isEmpty($pair) )
                 continue;
 
-            if ( ::cPHP::str::contains("=", $pair) )
+            if ( \cPHP\str\contains("=", $pair) )
                 list( $key, $value ) = explode("=", $pair, 2);
             else
                 list( $key, $value ) = array( $pair, "" );
 
             // if the key is empty, do nothing with it
-            if ( ::cPHP::isEmpty( $key, ::cPHP::str::ALLOW_SPACES ) )
+            if ( \cPHP\isEmpty( $key, \cPHP\str\ALLOW_SPACES ) )
                 continue;
 
             if ( !($flags & self::ENCODED_KEYS) )
@@ -149,15 +149,15 @@ class URL
                 $value = urldecode( $value );
 
             // Handle multi dimensional values
-            if ( ::cPHP::str::contains("[", $key) && ::cPHP::str::endsWith( rtrim($key), "]" ) ) {
+            if ( \cPHP\str\contains("[", $key) && \cPHP\str\endsWith( rtrim($key), "]" ) ) {
 
-                $key = new ::cPHP::Ary( explode("[", $key) );
+                $key = new \cPHP\Ary( explode("[", $key) );
 
                 $primary = $key->shift( TRUE );
 
                 $key = $key->collect(function( $index ) {
-                    $index = ::cPHP::str::stripTail( rtrim( $index ), "]" );
-                    return  ::cPHP::isEmpty($index) ? null : $index;
+                    $index = \cPHP\str\stripTail( rtrim( $index ), "]" );
+                    return  \cPHP\isEmpty($index) ? null : $index;
                 });
 
                 $out->branch( $value, $primary, $key );
@@ -178,7 +178,7 @@ class URL
      * This method exists strictly for unit testing purposes. By mocking this
      * method you can feed a spoof environment to the rest of the instance
      *
-     * @return Object Returns a ::cPHP::Env instance
+     * @return Object Returns a \cPHP\Env instance
      */
     protected function getEnv ()
     {
@@ -207,7 +207,7 @@ class URL
      */
     public function setScheme ( $scheme )
     {
-        $scheme = strtolower( ::cPHP::str::stripW($scheme) );
+        $scheme = strtolower( \cPHP\str\stripW($scheme) );
         $this->scheme = empty( $scheme ) ? null : $scheme;
         return $this;
     }
@@ -272,8 +272,8 @@ class URL
      */
     public function setUserName ( $username )
     {
-        $username = ::cPHP::strval( $username );
-        $this->username = ::cPHP::isEmpty( $username ) ? null : $username;
+        $username = \cPHP\strval( $username );
+        $this->username = \cPHP\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -316,8 +316,8 @@ class URL
      */
     public function setPassword ( $password )
     {
-        $password = ::cPHP::strval( $password );
-        $this->password = ::cPHP::isEmpty( $password ) ? null : $password;
+        $password = \cPHP\strval( $password );
+        $this->password = \cPHP\isEmpty( $password ) ? null : $password;
         return $this;
     }
 
@@ -372,9 +372,9 @@ class URL
      */
     public function setUserInfo ( $userInfo )
     {
-        $userInfo = ::cPHP::strVal( $userInfo );
+        $userInfo = \cPHP\strVal( $userInfo );
 
-        if ( ::cPHP::str::contains("@", $userInfo))
+        if ( \cPHP\str\contains("@", $userInfo))
             $userInfo = strstr( $userInfo, "@", TRUE );
 
         $userInfo = explode(":", $userInfo, 2);
@@ -431,11 +431,11 @@ class URL
      */
     public function setHost ( $host )
     {
-        $host = ::cPHP::strval($host);
+        $host = \cPHP\strval($host);
 
         $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
 
-        $host = ::cPHP::str::stripRepeats($host, ".");
+        $host = \cPHP\str\stripRepeats($host, ".");
         $host = trim($host, ".");
 
         $this->host = empty($host) ? null : $host;
@@ -484,8 +484,8 @@ class URL
         if ( !isset($env->host) )
             return FALSE;
 
-        $localHost = ::cPHP::str::stripHead( $this->getHost(), "www." );
-        $envHost = ::cPHP::str::stripHead( $env->host, "www." );
+        $localHost = \cPHP\str\stripHead( $this->getHost(), "www." );
+        $envHost = \cPHP\str\stripHead( $env->host, "www." );
 
         if ( strcasecmp($localHost, $envHost) == 0 )
             return TRUE;
@@ -577,7 +577,7 @@ class URL
      */
     public function setHostAndPort ( $hostAndPort )
     {
-        $hostAndPort = ::cPHP::strval( $hostAndPort );
+        $hostAndPort = \cPHP\strval( $hostAndPort );
 
         if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
             $this->setHost( $matches[1] );
@@ -621,9 +621,9 @@ class URL
      */
     public function setBase ( $base )
     {
-        $base = ::cPHP::strval( $base );
+        $base = \cPHP\strval( $base );
 
-        if ( cPHP::str::contains("://", $base) ) {
+        if ( \cPHP\str\contains("://", $base) ) {
             $this->setScheme( strstr($base, "://", TRUE) );
             $base = substr( strstr($base, "://", FALSE), 3 );
         }
@@ -631,7 +631,7 @@ class URL
             $this->clearScheme();
         }
 
-        if ( cPHP::str::contains("@", $base) ) {
+        if ( \cPHP\str\contains("@", $base) ) {
             $this->setUserInfo( strstr($base, "@", TRUE) );
             $base = substr( strstr($base, "@", FALSE), 1 );
         }
@@ -674,14 +674,14 @@ class URL
      */
     public function setDir ( $directory )
     {
-        $directory = ::cPHP::strval( $directory );
+        $directory = \cPHP\strval( $directory );
 
-        if ( ::cPHP::isEmpty( $directory ) ) {
+        if ( \cPHP\isEmpty( $directory ) ) {
             $this->directory = null;
         }
         else {
-            $directory = ::cPHP::FileSystem::resolvePath( $directory );
-            $directory = ::cPHP::str::enclose( $directory, "/" );
+            $directory = \cPHP\FileSystem::resolvePath( $directory );
+            $directory = \cPHP\str\enclose( $directory, "/" );
             $this->directory = $directory;
         }
 
@@ -727,9 +727,9 @@ class URL
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(::cPHP::strval( $filename ));
+        $filename = trim(\cPHP\strval( $filename ));
         $filename = rtrim( $filename, "." );
-        $this->filename = ::cPHP::isEmpty( $filename ) ? null : $filename;
+        $this->filename = \cPHP\isEmpty( $filename ) ? null : $filename;
         return $this;
     }
 
@@ -774,9 +774,9 @@ class URL
      */
     public function setExt ( $extension )
     {
-        $extension = trim(::cPHP::strval( $extension ));
+        $extension = trim(\cPHP\strval( $extension ));
         $extension = ltrim( $extension, "." );
-        $this->extension = ::cPHP::isEmpty( $extension ) ? null : $extension;
+        $this->extension = \cPHP\isEmpty( $extension ) ? null : $extension;
         return $this;
     }
 
@@ -817,7 +817,7 @@ class URL
         if ( !$this->extExists() )
             return $this->getFilename();
 
-        return ::cPHP::str::weld(
+        return \cPHP\str\weld(
                 $this->getFilename(),
                 $this->getExt(),
                 "."
@@ -832,7 +832,7 @@ class URL
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(::cPHP::strval( $basename ));
+        $basename = trim(\cPHP\strval( $basename ));
         $basename = pathinfo( $basename );
 
         if ( isset($basename['filename']) )
@@ -871,7 +871,7 @@ class URL
      */
     public function setPath ( $path )
     {
-        $path = trim(::cPHP::strval( $path ));
+        $path = trim(\cPHP\strval( $path ));
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -924,7 +924,7 @@ class URL
     {
         $result = null;
         parse_str( $this->query, $result );
-        return new ::cPHP::Ary( $result );
+        return new \cPHP\Ary( $result );
     }
 
     /**
@@ -938,10 +938,10 @@ class URL
      */
     public function setQuery ( $query )
     {
-        if ( ::cPHP::Ary::is($query) )
-            $query = ::cPHP::Ary::create( $query )->toQuery();
+        if ( \cPHP\Ary::is($query) )
+            $query = \cPHP\Ary::create( $query )->toQuery();
 
-        $this->query = ::cPHP::strval( $query );
+        $this->query = \cPHP\strval( $query );
 
         return $this;
     }
@@ -985,8 +985,8 @@ class URL
      */
     public function setFragment ( $fragment )
     {
-        $fragment = ::cPHP::strval( $fragment );
-        $this->fragment = ::cPHP::isEmpty( $fragment, ::cPHP::ALLOW_SPACES ) ? null : $fragment;
+        $fragment = \cPHP\strval( $fragment );
+        $this->fragment = \cPHP\isEmpty( $fragment, \cPHP\ALLOW_SPACES ) ? null : $fragment;
         return $this;
     }
 
@@ -1026,7 +1026,7 @@ class URL
         if ( $this->fragmentExists() )
             $result .= "#". $this->getFragment();
 
-        return ::cPHP::isEmpty( $result, cPHP::ALLOW_SPACES ) ? null : $result;
+        return \cPHP\isEmpty( $result, \cPHP\ALLOW_SPACES ) ? null : $result;
     }
 
 }

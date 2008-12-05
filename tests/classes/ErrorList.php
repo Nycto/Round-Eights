@@ -40,14 +40,14 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddError ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
 
 
         $errors = $result->getErrors();
 
-        $this->assertThat( $errors, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $errors, $this->isInstanceOf("cPHP\Ary") );
 
         $this->assertEquals(
                 array("This is an error message"),
@@ -66,12 +66,12 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
             $result->addError("");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
     }
 
     public function testAddErrors ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $this->assertSame( $result, $result->addErrors("Error Message") );
         $this->assertEquals(
@@ -94,7 +94,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddDuplicateError ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
         $this->assertSame( $result, $result->addError("This is an error message") );
@@ -107,7 +107,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testClearErrors ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -123,7 +123,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testSetErrors ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -142,7 +142,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testHasErrors ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $this->assertFalse( $result->hasErrors() );
 
@@ -157,7 +157,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testGetFirstError ()
     {
-        $result = new cPHP::ErrorList;
+        $result = new \cPHP\ErrorList;
 
         $this->assertNull( $result->getFirstError() );
 

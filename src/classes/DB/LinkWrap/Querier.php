@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB::LinkWrap;
+namespace cPHP\DB\LinkWrap;
 
 /**
  * Link wrapper to provide advanced
  */
-class Querier extends ::cPHP::DB::LinkWrap
+class Querier extends \cPHP\DB\LinkWrap
 {
 
     /**
@@ -54,12 +54,12 @@ class Querier extends ::cPHP::DB::LinkWrap
     public function query ( $query, $flags = 0 )
     {
         $flags = intval( $flags );
-        $query = ::cPHP::strval($query);
+        $query = \cPHP\strval($query);
 
         try {
             return $this->getLink()->query( $query, $flags );
         }
-        catch (::cPHP::Exception::DB::Query $err) {
+        catch (\cPHP\Exception\DB\Query $err) {
 
             if ( !( $flags & self::SILENT) ) {
                 $err->shiftFault();
@@ -114,13 +114,13 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function getFieldList ($fields)
     {
-        if ( !::cPHP::Ary::is($fields) )
-            throw new ::cPHP::Exception::Argument(0, "Field List", "Must be an array or traversable");
+        if ( !\cPHP\Ary::is($fields) )
+            throw new \cPHP\Exception\Argument(0, "Field List", "Must be an array or traversable");
 
-        $fields = ::cPHP::Ary::create($fields)->flatten();
+        $fields = \cPHP\Ary::create($fields)->flatten();
 
         if (count($fields) <= 0)
-            throw new ::cPHP::Exception::Argument(0, "Field List", "Must not be empty");
+            throw new \cPHP\Exception\Argument(0, "Field List", "Must not be empty");
 
         foreach ($fields AS $name => $value) {
             $fields[$name] = "`". $name ."` = ". $this->quote($value);
@@ -143,10 +143,10 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function insert ( $table, $fields, $flags = 0 )
     {
-        $table = ::cPHP::strval($table);
+        $table = \cPHP\strval($table);
 
-        if ( ::cPHP::isEmpty($table) )
-            throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
+        if ( \cPHP\isEmpty($table) )
+            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
 
@@ -173,16 +173,16 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function update ($table, $where, $fields, $flags = 0)
     {
-        $table = ::cPHP::strval($table);
+        $table = \cPHP\strval($table);
 
-        if ( ::cPHP::isEmpty($table) )
-            throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
+        if ( \cPHP\isEmpty($table) )
+            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
 
-        $where = trim( ::cPHP::strval($where) );
+        $where = trim( \cPHP\strval($where) );
 
-        if ( !::cPHP::isEmpty($where) )
+        if ( !\cPHP\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return $this->query($query, $flags);
@@ -202,10 +202,10 @@ class Querier extends ::cPHP::DB::LinkWrap
     {
         $result = $this->query($query, $flags);
 
-        if ( !($result instanceof ::cPHP::DB::Result::Read) ) {
-            $err = new ::cPHP::Exception::Interaction("Query did not a valid Read result object");
+        if ( !($result instanceof \cPHP\DB\Result\Read) ) {
+            $err = new \cPHP\Exception\Interaction("Query did not a valid Read result object");
             $err->addData("Query", $query);
-            $err->addData("Returned Result", ::cPHP::getDump($result));
+            $err->addData("Returned Result", \cPHP\getDump($result));
             throw $err;
         }
 
@@ -231,24 +231,24 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
-        $field = ::cPHP::strval( $field );
+        $field = \cPHP\strval( $field );
 
-        if ( ::cPHP::isEmpty($field) )
-            throw new ::cPHP::Exception::Argument( 0, "Field", "Must not be empty" );
+        if ( \cPHP\isEmpty($field) )
+            throw new \cPHP\Exception\Argument( 0, "Field", "Must not be empty" );
 
         $result = $this->getRow( $query, $row, $flags );
 
-        if ( !is_array($result) && !($result instanceof ArrayAccess) ) {
-            $err = new ::cPHP::Exception::Interaction("Row was not an array or accessable as an array");
+        if ( !is_array($result) && !($result instanceof \ArrayAccess) ) {
+            $err = new \cPHP\Exception\Interaction("Row was not an array or accessable as an array");
             $err->addData("Query", $query);
-            $err->addData("Returned Row", ::cPHP::getDump($result));
+            $err->addData("Returned Row", \cPHP\getDump($result));
             throw $err;
         }
 
         if ( !isset($result[ $field ]) ) {
-            $err = new ::cPHP::Exception::Argument( 0, "Field", "Field does not exist in row" );
+            $err = new \cPHP\Exception\Argument( 0, "Field", "Field does not exist in row" );
             $err->addData("Query", $query);
-            $err->addData("Returned Row", ::cPHP::getDump($result));
+            $err->addData("Returned Row", \cPHP\getDump($result));
             throw $err;
         }
 
@@ -268,16 +268,16 @@ class Querier extends ::cPHP::DB::LinkWrap
      */
     public function count ($table, $where = FALSE, $flags = 0)
     {
-        $table = ::cPHP::strval($table);
+        $table = \cPHP\strval($table);
 
-        if ( ::cPHP::isEmpty($table) )
-            throw new ::cPHP::Exception::Argument(0, "Table Name", "Must not be empty");
+        if ( \cPHP\isEmpty($table) )
+            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
 
-        $where = trim( ::cPHP::strval($where) );
+        $where = trim( \cPHP\strval($where) );
 
-        if ( !::cPHP::isEmpty($where) )
+        if ( !\cPHP\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return intval( $this->getField("cnt", $query, 0, $flags) );

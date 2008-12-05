@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates an uploaded file based on the field name
  */
-class FileUpload extends ::cPHP::Validator
+class FileUpload extends \cPHP\Validator
 {
 
     /**
@@ -76,10 +76,10 @@ class FileUpload extends ::cPHP::Validator
      */
     protected function process ( $field )
     {
-        $field = ::cPHP::Filter::Variable()->filter( $field );
+        $field = \cPHP\Filter::Variable()->filter( $field );
 
-        if ( !::cPHP::Validator::Variable()->isValid( $field ) )
-            throw new ::cPHP::Exception::Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\cPHP\Validator::Variable()->isValid( $field ) )
+            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         $files = $this->getUploadedFiles();
 

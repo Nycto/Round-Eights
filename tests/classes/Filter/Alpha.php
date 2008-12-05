@@ -40,7 +40,7 @@ class classes_filter_alpha extends PHPUnit_Framework_TestCase
 
     public function testValidChars ()
     {
-        $filter = new cPHP::Filter::Alpha;
+        $filter = new \cPHP\Filter\Alpha;
 
         $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
             .'abcdefghijklmnopqrstuvwxyz';
@@ -54,7 +54,7 @@ class classes_filter_alpha extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::Alpha;
+        $filter = new \cPHP\Filter\Alpha;
 
         $this->assertEquals("", $filter->filter('1234567890'));
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~'));

@@ -40,7 +40,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function getMockValidator ( $return )
     {
-        $mock = $this->getMock("cPHP::Validator", array("process"));
+        $mock = $this->getMock("cPHP\Validator", array("process"));
         $mock->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo("To Validate") )
@@ -51,23 +51,23 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $validator = cPHP::Validator::Email();
-        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Email") );
+        $validator = \cPHP\Validator::Email();
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP\Validator\Email") );
 
         try {
-            cPHP::Validator::ThisIsNotAValidator();
+            \cPHP\Validator::ThisIsNotAValidator();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( cPHP::Exception::Argument $err ) {
-            $this->assertSame( "Validator could not be found in cPHP::Validator namespace", $err->getMessage() );
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Validator could not be found in \cPHP\Validator namespace", $err->getMessage() );
         }
 
         try {
-            cPHP::Validator::Result();
+            \cPHP\Validator::Result();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( cPHP::Exception::Argument $err ) {
-            $this->assertSame( "Class does not implement cPHP::iface::Validator", $err->getMessage() );
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Class does not implement \cPHP\iface\Validator", $err->getMessage() );
         }
     }
 
@@ -77,7 +77,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
     }
 
@@ -87,7 +87,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("278.09"), $result->getErrors()->get() );
 
@@ -102,7 +102,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("278"), $result->getErrors()->get() );
 
@@ -126,7 +126,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("This is an Error"), $result->getErrors()->get() );
     }
@@ -137,7 +137,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
 
@@ -147,7 +147,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
     }
@@ -158,7 +158,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
 
@@ -167,20 +167,20 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
     }
 
     public function testResultError ()
     {
 
-        $return = new ::cPHP::Validator::Result("To Validate");
+        $return = new \cPHP\Validator\Result("To Validate");
         $return->addErrors("First Error", "Second Error");
         $mock = $this->getMockValidator( $return );
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
 
@@ -189,12 +189,12 @@ class classes_validator extends PHPUnit_Framework_TestCase
     public function testEmptyResultError ()
     {
 
-        $return = new ::cPHP::Validator::Result("To Validate");
+        $return = new \cPHP\Validator\Result("To Validate");
         $mock = $this->getMockValidator( $return );
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
@@ -207,7 +207,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("Custom Error Message"), $result->getErrors()->get() );
 

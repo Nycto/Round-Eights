@@ -30,7 +30,7 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates that a given value is the same or longer than a given length
@@ -39,7 +39,7 @@ namespace cPHP::Validator;
  * processing them. Anything else that isn't a string will cause validation to
  * return negative
  */
-class MinLength extends ::cPHP::Validator
+class MinLength extends \cPHP\Validator
 {
 
     /**
@@ -67,13 +67,13 @@ class MinLength extends ::cPHP::Validator
     protected function process ( $value )
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
-            $value = ::cPHP::strval($value);
+            $value = \cPHP\strval($value);
 
         if ( !is_string($value) )
             return "Must be a string";
 
         if ( strlen($value) < $this->length ) {
-            return ::cPHP::str::pluralize(
+            return \cPHP\str\pluralize(
                     "Must not be shorter than ". $this->length ." character",
                     $this->length
                 );

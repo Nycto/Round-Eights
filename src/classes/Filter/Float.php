@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Converts a value to a float
  */
-class Float extends cPHP::Filter
+class Float extends \cPHP\Filter
 {
 
     /**
@@ -51,7 +51,7 @@ class Float extends cPHP::Filter
             if ( count($value) == 0 )
                 return 0.0;
             else
-                $value = ::cPHP::reduce($value);
+                $value = \cPHP\reduce($value);
 
         }
 

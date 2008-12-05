@@ -30,7 +30,7 @@
  * @package Forms
  */
 
-namespace cPHP::iface::Form;
+namespace cPHP\iface\Form;
 
 /**
  * Form field definition

@@ -41,7 +41,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     public function getMockLink ( $args = array() )
     {
         return $this->getMock(
-                "cPHP::DB::Link",
+                "\cPHP\DB\Link",
                 array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected"),
                 $args
             );
@@ -64,47 +64,47 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     public function testIsSelect ()
     {
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("SELECT * FROM table")
+                \cPHP\DB\Link::isSelect("SELECT * FROM table")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("    SELECT * FROM table")
+                \cPHP\DB\Link::isSelect("    SELECT * FROM table")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect(" \r \n \t  SELECT * FROM table")
+                \cPHP\DB\Link::isSelect(" \r \n \t  SELECT * FROM table")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("  (  SELECT * FROM table )")
+                \cPHP\DB\Link::isSelect("  (  SELECT * FROM table )")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("(((SELECT * FROM table)))")
+                \cPHP\DB\Link::isSelect("(((SELECT * FROM table)))")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect(" (  ( ( SELECT * FROM table)))")
+                \cPHP\DB\Link::isSelect(" (  ( ( SELECT * FROM table)))")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("EXPLAIN SELECT * FROM table")
+                \cPHP\DB\Link::isSelect("EXPLAIN SELECT * FROM table")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("( (EXPLAIN SELECT * FROM table))")
+                \cPHP\DB\Link::isSelect("( (EXPLAIN SELECT * FROM table))")
             );
 
         $this->assertTrue(
-                ::cPHP::DB::Link::isSelect("( ( EXPLAIN   \n \t SELECT * FROM table))")
+                \cPHP\DB\Link::isSelect("( ( EXPLAIN   \n \t SELECT * FROM table))")
             );
 
         $this->assertFalse(
-                ::cPHP::DB::Link::isSelect("UPDATE table SET field = 1")
+                \cPHP\DB\Link::isSelect("UPDATE table SET field = 1")
             );
 
         $this->assertFalse(
-                ::cPHP::DB::Link::isSelect("INSERT INTO table SET field = 1")
+                \cPHP\DB\Link::isSelect("INSERT INTO table SET field = 1")
             );
     }
 
@@ -276,7 +276,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Link $err ) {
+        catch ( \cPHP\Exception\DB\Link $err ) {
             $this->assertSame( "UserName must be set", $err->getMessage() );
         }
 
@@ -286,7 +286,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Link $err ) {
+        catch ( \cPHP\Exception\DB\Link $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
 
@@ -296,7 +296,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Link $err ) {
+        catch ( \cPHP\Exception\DB\Link $err ) {
             $this->assertSame( "Database name must be set", $err->getMessage() );
         }
 
@@ -314,7 +314,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->getHostWithPort();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Interaction $err ) {
+        catch ( \cPHP\Exception\Interaction $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
 
@@ -352,7 +352,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->fromURI("wakka.com");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "URL is not valid", $err->getMessage() );
         }
 
@@ -389,7 +389,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Link $err ) {
+        catch ( \cPHP\Exception\DB\Link $err ) {
             $this->assertSame( "Database connector did not return a resource or an object", $err->getMessage() );
         }
     }
@@ -404,7 +404,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
 
         $mock = $this->getMock(
-                "cPHP::DB::Link",
+                "\cPHP\DB\Link",
                 array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
@@ -422,7 +422,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
 
         $mock = $this->getMock(
-                "cPHP::DB::Link",
+                "\cPHP\DB\Link",
                 array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
@@ -446,7 +446,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument  $err ) {
+        catch ( \cPHP\Exception\Argument  $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
@@ -454,7 +454,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("    ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument  $err ) {
+        catch ( \cPHP\Exception\Argument  $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
@@ -471,8 +471,8 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Query  $err ) {
-            $this->assertSame( "Query did not return a cPHP::DB::Result object", $err->getMessage() );
+        catch ( \cPHP\Exception\DB\Query  $err ) {
+            $this->assertSame( "Query did not return a \cPHP\DB\Result object", $err->getMessage() );
         }
     }
 
@@ -484,7 +484,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("SELECT * FROM table") )
             ->will(
                     $this->throwException(
-                            new ::cPHP::Exception::DB::Query(
+                            new \cPHP\Exception\DB\Query(
                                     "SELECT * FROM table",
                                     "Example Exception"
                                 )
@@ -495,7 +495,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::DB::Query  $err ) {
+        catch ( \cPHP\Exception\DB\Query  $err ) {
             $this->assertSame( "Example Exception", $err->getMessage() );
         }
     }
@@ -544,7 +544,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $this->assertThat(
                 $mock->quote(array(5, 5.5)),
-                $this->isInstanceOf("cPHP::Ary")
+                $this->isInstanceOf("cPHP\Ary")
             );
         $this->assertSame(
                 array("5", "5.5"),
@@ -610,7 +610,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $this->assertThat(
                 $mock->quote(array(5, 5.5)),
-                $this->isInstanceOf("cPHP::Ary")
+                $this->isInstanceOf("cPHP\Ary")
             );
         $this->assertSame(
                 array("5", "5.5"),

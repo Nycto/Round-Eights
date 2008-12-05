@@ -56,7 +56,7 @@ abstract class FileSystem
      */
     static public function resolvePath ( $path )
     {
-        $path = trim( ::cPHP::strval($path) );
+        $path = trim( \cPHP\strval($path) );
         $path = str_replace( '\\', '/', $path );
 
         // Pull the root value off of the path
@@ -70,7 +70,7 @@ abstract class FileSystem
 
         // Record whether the path we are resolving ends with a "/"... this will
         // be used to re-attach the trailing slash later
-        $hasTail = ::cPHP::str::endsWith($path, "/");
+        $hasTail = \cPHP\str\endsWith($path, "/");
 
         $pathStack = explode("/", $path);
 
@@ -153,15 +153,15 @@ abstract class FileSystem
      */
     public function setDir ( $dir )
     {
-        $dir = ::cPHP::strval( $dir );
+        $dir = \cPHP\strval( $dir );
 
-        if ( ::cPHP::isEmpty($dir, ::cPHP::str::ALLOW_BLANK) ) {
+        if ( \cPHP\isEmpty($dir, \cPHP\str\ALLOW_BLANK) ) {
             $this->dir = null;
         }
         else {
             $dir = str_replace('\\', '/', $dir);
-            $dir = ::cPHP::str::stripRepeats($dir, "/");
-            $dir = ::cPHP::str::tail($dir, "/");
+            $dir = \cPHP\str\stripRepeats($dir, "/");
+            $dir = \cPHP\str\tail($dir, "/");
             $this->dir = $dir;
         }
 
@@ -201,7 +201,7 @@ abstract class FileSystem
     public function requirePath ()
     {
         if ( !$this->exists() ) {
-            throw new ::cPHP::Exception::FileSystem::Missing(
+            throw new \cPHP\Exception\FileSystem\Missing(
                     $this->getPath(),
                     "Path does not exist"
                 );
@@ -282,13 +282,13 @@ abstract class FileSystem
         $time = filectime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve creation time"
                 );
         }
 
-        return new ::cPHP::DateTime( $time );
+        return new \cPHP\DateTime( $time );
     }
 
     /**
@@ -303,13 +303,13 @@ abstract class FileSystem
         $time = fileatime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve access time"
                 );
         }
 
-        return new ::cPHP::DateTime( $time );
+        return new \cPHP\DateTime( $time );
     }
 
     /**
@@ -324,13 +324,13 @@ abstract class FileSystem
         $time = filemtime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve last modified time"
                 );
         }
 
-        return new ::cPHP::DateTime( $time );
+        return new \cPHP\DateTime( $time );
     }
 
     /**
@@ -345,7 +345,7 @@ abstract class FileSystem
         $group = @filegroup( $this->getPath() );
 
         if ( $group === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve group id"
                 );
@@ -366,7 +366,7 @@ abstract class FileSystem
         $owner = @fileowner( $this->getPath() );
 
         if ( $owner === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve owner id"
                 );
@@ -387,7 +387,7 @@ abstract class FileSystem
         $perms = @fileperms( $this->getPath() );
 
         if ( $perms === FALSE ) {
-            throw new ::cPHP::Exception::FileSystem(
+            throw new \cPHP\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve permissions"
                 );
@@ -424,14 +424,14 @@ abstract class FileSystem
      */
     public function resolve ( $base = null, $strict = FALSE )
     {
-        if ( cPHP::isVague($base) )
+        if ( \cPHP\isVague($base) )
             $base = $this->getCWD();
 
         $base = self::resolvePath( $base );
 
         // If the base doesn't start with a root of some sort, attach the cwd
         if ( !preg_match('/^(?:[a-z]+:)?\//i', $base ) )
-            $base = ::cPHP::str::weld( $this->getCWD(), $base, "/" );
+            $base = \cPHP\str\weld( $this->getCWD(), $base, "/" );
 
         $path = $this->getPath();
         $path = str_replace('\\', '/', $path);
@@ -448,14 +448,14 @@ abstract class FileSystem
         // If we are in strict mode, we always ignore the root and instead use the base
         if ( $strict ) {
             $path = self::resolvePath( $path );
-            $path = ::cPHP::str::weld( $base, $path, "/" );
+            $path = \cPHP\str\weld( $base, $path, "/" );
         }
 
         else {
 
             // If they didn't give us a root, use the base, but let them dip in to it
             if ( $root === FALSE )
-                $path = ::cPHP::str::weld( $base, $path, "/" );
+                $path = \cPHP\str\weld( $base, $path, "/" );
             else
                 $path = $root . $path;
 

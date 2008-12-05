@@ -41,33 +41,33 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testParseQuery_flat ()
     {
 
-        $result = cPHP::URL::parseQuery( "key=value" );
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $result = \cPHP\URL::parseQuery( "key=value" );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array ( "key" => "value" ), $result->get() );
 
         $this->assertSame(
                 array ( "key" => "value", "key2" => "value2", "key3" => "value3" ),
-                ::cPHP::URL::parseQuery( "?key=value?key2=value2&?&key3=value3?" )->get()
+                \cPHP\URL::parseQuery( "?key=value?key2=value2&?&key3=value3?" )->get()
             );
 
         $this->assertSame(
                 array ( "key" => "value", "key3" => "value3" ),
-                ::cPHP::URL::parseQuery( "?key=value&=value2&key3=value3" )->get()
+                \cPHP\URL::parseQuery( "?key=value&=value2&key3=value3" )->get()
             );
 
         $this->assertSame(
                 array ( "key" => "value2" ),
-                ::cPHP::URL::parseQuery( "key=value&key=value2" )->get()
+                \cPHP\URL::parseQuery( "key=value&key=value2" )->get()
             );
 
         $this->assertSame(
                 array ( "key more" => "value for decoding" ),
-                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding" )->get()
+                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding" )->get()
             );
 
         $this->assertSame(
                 array ( "key.with" => "a.period" ),
-                ::cPHP::URL::parseQuery( "key.with=a.period" )->get()
+                \cPHP\URL::parseQuery( "key.with=a.period" )->get()
             );
 
     }
@@ -77,17 +77,17 @@ class classes_url extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array ( "key%20more" => "value for decoding" ),
-                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_KEYS )->get()
+                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_KEYS )->get()
             );
 
         $this->assertSame(
                 array ( "key more" => "value%20for%20decoding" ),
-                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_VALUES )->get()
+                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_VALUES )->get()
             );
 
         $this->assertSame(
                 array ( "key%20more" => "value%20for%20decoding" ),
-                ::cPHP::URL::parseQuery( "key%20more=value%20for%20decoding", ::cPHP::URL::ENCODED_KEYS | ::cPHP::URL::ENCODED_VALUES )->get()
+                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_KEYS | \cPHP\URL::ENCODED_VALUES )->get()
             );
 
     }
@@ -95,51 +95,51 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testParseQuery_recurse ()
     {
 
-        $qry = ::cPHP::URL::parseQuery( "key[1]=value" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $qry = \cPHP\URL::parseQuery( "key[1]=value" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
 
 
-        $qry = ::cPHP::URL::parseQuery( "key[1]   =value" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $qry = \cPHP\URL::parseQuery( "key[1]   =value" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
 
 
-        $qry = ::cPHP::URL::parseQuery( "key[]=value&key[]=another&key[  ]=again" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $qry = \cPHP\URL::parseQuery( "key[]=value&key[]=another&key[  ]=again" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array( "value", "another", "again" ), $qry['key']->get() );
 
 
-        $qry = ::cPHP::URL::parseQuery( "first=one&second[]=two&second[]=two2&third[key]=three" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $qry = \cPHP\URL::parseQuery( "first=one&second[]=two&second[]=two2&third[key]=three" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('first', 'second', 'third'), $qry->keys()->get() );
 
         $this->assertSame( 'one', $qry['first'] );
 
-        $this->assertThat( $qry['second'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['second'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('two', 'two2'), $qry['second']->get() );
 
-        $this->assertThat( $qry['third'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['third'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('key' => 'three'), $qry['third']->get() );
 
 
-        $qry = ::cPHP::URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP::Ary") );
+        $qry = \cPHP\URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" );
+        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('key'), $qry->keys()->get() );
 
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array('index', 'other'), $qry['key']->keys()->get() );
 
-        $this->assertThat( $qry['key']['index'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $qry['key']['index'], $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array( 1 => "value3", 2 => "value2" ), $qry['key']['index']->get() );
 
         $this->assertSame( 'value4', $qry['key']['other'] );
@@ -147,7 +147,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSchemeAccessors()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getScheme() );
         $this->assertFalse( $url->schemeExists() );
@@ -171,7 +171,8 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameScheme_NoEnv ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock('cPHP\\URL', array("getEnv"));
+
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -186,7 +187,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameScheme_WithEnv ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -204,9 +205,10 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testUserNameAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->userNameExists() );
         $this->assertNull( $url->getUserName() );
+
 
         $this->assertSame( $url, $url->setUserName("uname") );
         $this->assertTrue( $url->userNameExists() );
@@ -227,7 +229,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testPasswordAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->passwordExists() );
         $this->assertNull( $url->getPassword() );
 
@@ -250,7 +252,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testUserInfoAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->userInfoExists() );
         $this->assertNull( $url->getUserInfo() );
 
@@ -294,11 +296,12 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->passwordExists() );
         $this->assertFalse( $url->userInfoExists() );
         $this->assertNull($url->getUserInfo() );
+
     }
 
     public function testHostAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getHost() );
         $this->assertFalse( $url->hostExists() );
@@ -322,7 +325,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_withSub ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -346,7 +349,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_wwwSub ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -367,7 +370,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_noSub ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -388,7 +391,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_noEnv ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -404,7 +407,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testPortAccessors()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getPort() );
         $this->assertFalse( $url->portExists() );
@@ -428,7 +431,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_NoEnv ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -446,7 +449,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_WithEnvPort40 ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -464,7 +467,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSamePort_WithEnvPort80 ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -482,7 +485,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetHostAndPort ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getHostAndPort() );
 
@@ -501,7 +504,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetHostAndPort ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame( $url, $url->setHostAndPort( "sub.example.com:2020" ) );
         $this->assertSame( "sub.example.com", $url->getHost() );
@@ -514,7 +517,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetBase ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getBase() );
 
@@ -548,7 +551,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetBase ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame( $url, $url->setBase("sftp://uname:pword@sub.example.com:8080") );
         $this->assertSame( "sftp", $url->getScheme() );
@@ -609,7 +612,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameBase_noEnv ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -621,7 +624,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function isSameBase_WithEnvPort80 ()
     {
-        $url = $this->getMock("cPHP::URL", array("getEnv"));
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
@@ -649,7 +652,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testDirAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->dirExists() );
         $this->assertNull( $url->getDir() );
 
@@ -672,7 +675,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testFilenameAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->filenameExists() );
         $this->assertNull( $url->getFilename() );
 
@@ -695,7 +698,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testExtAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->extExists() );
         $this->assertNull( $url->getExt() );
 
@@ -718,7 +721,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetBasename ()
     {
-        $url = new ::cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame( $url, $url->setBasename("example.php") );
         $this->assertSame( "example", $url->getFilename() );
@@ -743,7 +746,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetBasename ()
     {
-        $url = new ::cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertNull( $url->getBasename() );
 
         $url->setExt("php");
@@ -761,7 +764,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testSetPath ()
     {
-        $url = new ::cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame( $url, $url->setPath("/dir/to/example.php") );
         $this->assertSame( "/dir/to/", $url->getDir() );
@@ -796,7 +799,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetPath ()
     {
-        $url = new ::cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertNull( $url->getPath() );
 
@@ -827,7 +830,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testClearPath ()
     {
-        $url = new ::cPHP::URL;
+        $url = new \cPHP\URL;
 
         $url->setPath("/dir/to/example.php");
 
@@ -840,7 +843,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testQueryAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->queryExists() );
         $this->assertNull( $url->getQuery() );
 
@@ -865,7 +868,7 @@ class classes_url extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame(
                 $url,
@@ -884,11 +887,11 @@ class classes_url extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $this->assertSame(
                 $url,
-                $url->setQuery(array( "var" => new ::cPHP::Ary(array( "one", "two" )) ))
+                $url->setQuery(array( "var" => new \cPHP\Ary(array( "one", "two" )) ))
             );
         $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $url->getQuery() );
 
@@ -903,7 +906,7 @@ class classes_url extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
 
         $obj = new stdClass;
         $obj->one = 1;
@@ -918,14 +921,14 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetParsedQuery ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame( array(), $query->get() );
 
         $url->setQuery("var=val&other=something");
         $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame(
                 array( "var" => "val", "other" => "something" ),
                 $query->get()
@@ -933,7 +936,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
         $url->setQuery("var%5Bone%5D=1&var%5Btwo%5D=2");
         $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame(
                 array( "var" => array( "one" => "1", "two" => "2" ) ),
                 $query->get()
@@ -942,7 +945,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testFragmentAccessors ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertFalse( $url->fragmentExists() );
         $this->assertNull( $url->getFragment() );
 
@@ -961,7 +964,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testGetRelative ()
     {
-        $url = new cPHP::URL;
+        $url = new \cPHP\URL;
         $this->assertNull( $url->getRelative() );
 
         $url->setPath("/path/to/file.php");

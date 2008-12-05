@@ -30,18 +30,18 @@
  * @package Forms
  */
 
-namespace cPHP::Form::Field;
+namespace cPHP\Form\Field;
 
 /**
  * The most basic form field
  */
-class Text extends ::cPHP::Form::Field
+class Text extends \cPHP\Form\Field
 {
 
     /**
-     * Returns a cPHP::Tag object that represents this instance
+     * Returns a \cPHP\Tag object that represents this instance
      *
-     * @return Object A cPHP::Tag object
+     * @return Object A \cPHP\Tag object
      */
     public function getTag()
     {

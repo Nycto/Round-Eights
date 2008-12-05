@@ -40,7 +40,7 @@ class classes_filter_integer extends PHPUnit_Framework_TestCase
 
     public function testInteger ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
         $this->assertSame( 1, $filter->filter(1) );
         $this->assertSame( 20, $filter->filter(20) );
         $this->assertSame( -10, $filter->filter(-10) );
@@ -49,14 +49,14 @@ class classes_filter_integer extends PHPUnit_Framework_TestCase
 
     public function testBoolean ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
         $this->assertSame( 1, $filter->filter(TRUE) );
         $this->assertSame( 0, $filter->filter(FALSE) );
     }
 
     public function testFloat ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
         $this->assertSame( 1, $filter->filter(1.0) );
         $this->assertSame( 0, $filter->filter(.5) );
         $this->assertSame( 20, $filter->filter(20.25) );
@@ -66,14 +66,14 @@ class classes_filter_integer extends PHPUnit_Framework_TestCase
 
     public function testNull ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
 
         $this->assertSame( 0, $filter->filter(NULL) );
     }
 
     public function testString ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
 
         $this->assertSame( 0, $filter->filter("Some String") );
         $this->assertSame( 20, $filter->filter("20") );
@@ -90,7 +90,7 @@ class classes_filter_integer extends PHPUnit_Framework_TestCase
 
     public function testArray ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
 
         $this->assertSame( 50, $filter->filter( array(50) ) );
         $this->assertSame( 0, $filter->filter( array() ) );
@@ -98,7 +98,7 @@ class classes_filter_integer extends PHPUnit_Framework_TestCase
 
     public function testObject ()
     {
-        $filter = new cPHP::Filter::Integer;
+        $filter = new \cPHP\Filter\Integer;
 
         $this->assertSame( 1, $filter->filter( $this->getMock("stub_random_obj") ) );
 

@@ -40,7 +40,7 @@ class classes_validator_alpha extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new ::cPHP::Validator::Alpha;
+        $validator = new \cPHP\Validator\Alpha;
 
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
@@ -87,7 +87,7 @@ class classes_validator_alpha extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::Alpha;
+        $validator = new \cPHP\Validator\Alpha;
 
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("abcXYZ")->isValid() );
@@ -100,7 +100,7 @@ class classes_validator_alpha extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::Alpha;
+        $validator = new \cPHP\Validator\Alpha;
 
         $result = $validator->validate('1234567890');
         $this->assertFalse( $result->isValid() );

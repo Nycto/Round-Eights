@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Cleans up a EMail address string
  */
-class Email extends cPHP::Filter
+class Email extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class Email extends cPHP::Filter
     public function filter ( $value )
     {
         return filter_var(
-                ::cPHP::strval( $value ),
+                \cPHP\strval( $value ),
                 FILTER_SANITIZE_EMAIL
             );
     }

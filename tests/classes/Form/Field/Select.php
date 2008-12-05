@@ -40,7 +40,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetOptionList ()
     {
-        $field = new ::cPHP::Form::Field::Select("fld");
+        $field = new \cPHP\Form\Field\Select("fld");
 
         $this->assertSame("", $field->getOptionList());
 
@@ -65,12 +65,12 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_noOptions ()
     {
-        $field = new ::cPHP::Form::Field::Select("fld");
+        $field = new \cPHP\Form\Field\Select("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -81,14 +81,14 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_withOptions ()
     {
-        $field = new ::cPHP::Form::Field::Select("fld");
+        $field = new \cPHP\Form\Field\Select("fld");
         $field->setName("fldName");
         $field->addOption("one", "Single");
         $field->addOption("two", "Double");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );

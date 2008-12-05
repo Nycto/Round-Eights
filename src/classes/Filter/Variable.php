@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Removes any characters that are not valid in a PHP variable name
  */
-class Variable extends cPHP::Filter
+class Variable extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class Variable extends cPHP::Filter
         return preg_replace(
                 '/[^a-zA-Z0-9_\x7f-\xff]/',
                 '',
-                ::cPHP::strval( $value )
+                \cPHP\strval( $value )
             );
     }
 

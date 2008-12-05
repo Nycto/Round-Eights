@@ -30,7 +30,7 @@
  * @package Quoter
  */
 
-namespace cPHP::Quoter;
+namespace cPHP\Quoter;
 
 /**
  * Representation of each section of the parsed string
@@ -59,7 +59,7 @@ abstract class Section
     {
         $offset = intval($offset);
         if ( $offset < 0 )
-            throw new ::cPHP::Exception::Argument( 0, "Offset", "Must not be less than zero");
+            throw new \cPHP\Exception\Argument( 0, "Offset", "Must not be less than zero");
         $this->offset = $offset;
         $this->setContent( $content );
     }
@@ -89,7 +89,7 @@ abstract class Section
      */
     public function setContent ( $content )
     {
-        $this->content = is_null($content) ? null : ::cPHP::strval( $content );
+        $this->content = is_null($content) ? null : \cPHP\strval( $content );
         return $this;
     }
 
@@ -117,12 +117,12 @@ abstract class Section
     /**
      * Returns whether the content in this instance could be considered empty
      *
-     * @param Integer $flags Any boolean flags to set. See cPHP::isEmpty
+     * @param Integer $flags Any boolean flags to set. See \cPHP\isEmpty
      * @return Boolean
      */
     public function isEmpty ( $flags = 0 )
     {
-        return ::cPHP::isEmpty( $this->content, $flags );
+        return \cPHP\isEmpty( $this->content, $flags );
     }
 
     /**

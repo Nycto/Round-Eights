@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Converts a value to a string and removes any non-alpha numeric characters
  */
-class AlphaNum extends cPHP::Filter
+class AlphaNum extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class AlphaNum extends cPHP::Filter
         return preg_replace(
                 '/[^a-zA-Z0-9]/',
                 '',
-                ::cPHP::strval( $value )
+                \cPHP\strval( $value )
             );
     }
 

@@ -42,9 +42,9 @@ class classes_env extends PHPUnit_Framework_TestCase
     {
         $ary = array( "one" => "value", "two" => "" );
 
-        $this->assertTrue( ::cPHP::Env::hasKey($ary, "one") );
-        $this->assertFalse( ::cPHP::Env::hasKey($ary, "two") );
-        $this->assertFalse( ::cPHP::Env::hasKey($ary, "three") );
+        $this->assertTrue( \cPHP\Env::hasKey($ary, "one") );
+        $this->assertFalse( \cPHP\Env::hasKey($ary, "two") );
+        $this->assertFalse( \cPHP\Env::hasKey($ary, "three") );
     }
 
     public function testIsLocal ()

@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::DB;
+namespace cPHP\Exception\DB;
 
 /**
  * Exception class for database queries
  */
-class Query extends ::cPHP::Exception::DB
+class Query extends \cPHP\Exception\DB
 {
 
     /**

@@ -30,14 +30,14 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Collects a list of filters into a single filter
  *
  * This will feed the result of each filter in to the next
  */
-class Chain extends cPHP::Filter
+class Chain extends \cPHP\Filter
 {
 
     /**
@@ -55,7 +55,7 @@ class Chain extends cPHP::Filter
         if ( func_num_args() > 0 ) {
             $args = func_get_args();
             foreach ( $args AS $filter ) {
-                if ( $filter instanceof cPHP::iface::Filter )
+                if ( $filter instanceof \cPHP\iface\Filter )
                     $this->add( $filter );
             }
         }
@@ -78,7 +78,7 @@ class Chain extends cPHP::Filter
      * @param object $filter The filter to add
      * @return object Returns a self reference
      */
-    public function add ( cPHP::iface::Filter $filter )
+    public function add ( \cPHP\iface\Filter $filter )
     {
         $this->filters[] = $filter;
         return $this;
@@ -91,7 +91,7 @@ class Chain extends cPHP::Filter
      */
     public function get ()
     {
-        return new cPHP::Ary( $this->filters );
+        return new \cPHP\Ary( $this->filters );
     }
 
     /**

@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB::MySQLi;
+namespace cPHP\DB\MySQLi;
 
 /**
  * MySQL Database Link
  */
-class Link extends ::cPHP::DB::Link
+class Link extends \cPHP\DB\Link
 {
 
     /**
@@ -60,7 +60,7 @@ class Link extends ::cPHP::DB::Link
 
         if ( !$link ) {
 
-            throw new ::cPHP::Exception::DB::Link(
+            throw new \cPHP\Exception\DB\Link(
                     mysqli_connect_error(),
                     mysqli_connect_errno(),
                     $this
@@ -80,7 +80,7 @@ class Link extends ::cPHP::DB::Link
      */
     protected function rawIsConnected ( $connection )
     {
-        if ( !($connection instanceof mysqli) )
+        if ( !($connection instanceof \mysqli) )
             return FALSE;
 
         if ( @$connection->ping() !== TRUE )
@@ -108,7 +108,7 @@ class Link extends ::cPHP::DB::Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return Object Returns a cPHP::DB::Result object
+     * @return Object Returns a \cPHP\DB\Result object
      */
     protected function rawQuery ( $query )
     {
@@ -117,12 +117,12 @@ class Link extends ::cPHP::DB::Link
         $result = $link->query( $query );
 
         if ( $result === FALSE )
-            throw new ::cPHP::Exception::DB::Query( $query, $link->error, $link->errno );
+            throw new \cPHP\Exception\DB\Query( $query, $link->error, $link->errno );
 
         if ( self::isSelect($query) )
-            return new ::cPHP::DB::MySQLi::Read( $result, $query );
+            return new \cPHP\DB\MySQLi\Read( $result, $query );
         else
-            return new ::cPHP::DB::Result::Write( $link->affected_rows, $link->insert_id, $query );
+            return new \cPHP\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
     }
 
     /**

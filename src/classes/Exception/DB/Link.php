@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception::DB;
+namespace cPHP\Exception\DB;
 
 /**
  * Exception class for database connection errors
  */
-class Link extends ::cPHP::Exception::DB
+class Link extends \cPHP\Exception\DB
 {
 
     /**

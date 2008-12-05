@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates a URL
  */
-class URL extends ::cPHP::Validator
+class URL extends \cPHP\Validator
 {
 
     /**
@@ -70,13 +70,13 @@ class URL extends ::cPHP::Validator
         if ( !is_string($value) )
             return "URL must be a string";
 
-        if ( ::cPHP::str::contains(" ", $value) )
+        if ( \cPHP\str\contains(" ", $value) )
             return "URL must not contain spaces";
 
-        if ( ::cPHP::str::contains("\t", $value) )
+        if ( \cPHP\str\contains("\t", $value) )
             return "URL must not contain tabs";
 
-        if ( ::cPHP::str::contains("\n", $value) || ::cPHP::str::contains("\r", $value) )
+        if ( \cPHP\str\contains("\n", $value) || \cPHP\str\contains("\r", $value) )
             return "URL must not contain line breaks";
 
         if ( preg_match('/[^a-z0-9'. preg_quote('$-_.+!*\'(),{}|\\^~[]`<>#%";/?:@&=', '/') .']/i', $value) )

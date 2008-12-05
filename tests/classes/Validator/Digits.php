@@ -40,7 +40,7 @@ class classes_validator_digits extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new ::cPHP::Validator::Digits;
+        $validator = new \cPHP\Validator\Digits;
 
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
@@ -87,13 +87,13 @@ class classes_validator_digits extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::Digits;
+        $validator = new \cPHP\Validator\Digits;
         $this->assertTrue( $validator->validate('1234567890')->isValid() );
     }
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::Digits;
+        $validator = new \cPHP\Validator\Digits;
 
         $result = $validator->validate('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
         $this->assertFalse( $result->isValid() );

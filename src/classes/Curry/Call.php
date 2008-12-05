@@ -30,12 +30,12 @@
  * @package curry
  */
 
-namespace cPHP::Curry;
+namespace cPHP\Curry;
 
 /**
  * The most basic curry class. Invokes a defined callback
  */
-class Call extends cPHP::Curry
+class Call extends \cPHP\Curry
 {
 
     /**
@@ -52,7 +52,7 @@ class Call extends cPHP::Curry
     public function __construct ( $callback )
     {
         if ( !is_callable($callback) )
-            throw new cPHP::Exception::Argument( 0, "Callback", "Must be Callable" );
+            throw new \cPHP\Exception\Argument( 0, "Callback", "Must be Callable" );
 
         $this->callback = $callback;
     }

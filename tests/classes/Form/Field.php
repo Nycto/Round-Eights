@@ -40,7 +40,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testSetGetName ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
         $this->assertSame("fld", $field->getName());
 
@@ -51,27 +51,27 @@ class classes_form_field extends PHPUnit_Framework_TestCase
             $field->setName("123");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
 
     public function testGetFilter ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
         $filter = $field->getFilter();
 
-        $this->assertThat( $filter, $this->isInstanceOf("cPHP::Filter::Chain") );
+        $this->assertThat( $filter, $this->isInstanceOf("cPHP\Filter\Chain") );
 
         $this->assertSame( $filter, $field->getFilter() );
     }
 
     public function testSetFilter ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
-        $filter = $this->getMock("cPHP::iface::Filter", array("filter"));
+        $filter = $this->getMock("cPHP\iface\Filter", array("filter"));
 
         $this->assertSame( $field, $field->setFilter($filter) );
 
@@ -80,20 +80,20 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testGetValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
         $validator = $field->getValidator();
 
-        $this->assertThat( $validator, $this->isInstanceOf("cPHP::Validator::Any") );
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP\Validator\Any") );
 
         $this->assertSame( $validator, $field->getValidator() );
     }
 
     public function testSetValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
-        $validator = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
 
         $this->assertSame( $field, $field->setValidator($validator) );
 
@@ -102,10 +102,10 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testAndValidator ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
-        $validator = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
-        $validator2 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
-        $validator3 = $this->getMock("cPHP::iface::Validator", array("validate", "isValid"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator2 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator3 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
 
         $field->setValidator( $validator );
         $this->assertSame( $validator, $field->getValidator() );
@@ -114,7 +114,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $field, $field->andValidator( $validator2 ) );
 
         $all = $field->getValidator();
-        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::All") );
+        $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2 ),
                 $all->getValidators()->get()
@@ -124,7 +124,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $field, $field->andValidator( $validator3 ) );
 
         $all = $field->getValidator();
-        $this->assertThat( $all, $this->isInstanceOf("cPHP::Validator::All") );
+        $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2, $validator3 ),
                 $all->getValidators()->get()
@@ -133,7 +133,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testSetValue ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
         $this->assertNull( $field->getRawValue() );
 
@@ -155,13 +155,13 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testGetValue ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
 
         $field->setValue("New Value");
 
         $this->assertSame("New Value", $field->getValue());
 
-        $field->setFilter( new ::cPHP::Curry::Call("strtoupper") );
+        $field->setFilter( new \cPHP\Curry\Call("strtoupper") );
 
         $this->assertSame("NEW VALUE", $field->getValue());
         $this->assertSame("New Value", $field->getRawValue());
@@ -169,24 +169,24 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testValidate ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
-        $field->setValidator( new ::cPHP::Validator::NoSpaces );
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+        $field->setValidator( new \cPHP\Validator\NoSpaces );
 
         $field->setValue("Some String 123");
         $result = $field->validate();
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
 
         $field->setValue("SomeString123");
         $result = $field->validate();
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Validator::Result") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertTrue( $result->isValid() );
     }
 
     public function testIsValid ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
-        $field->setValidator( new ::cPHP::Validator::NoSpaces );
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+        $field->setValidator( new \cPHP\Validator\NoSpaces );
 
         $field->setValue("Some String 123");
         $this->assertFalse( $field->isValid() );
@@ -197,13 +197,13 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
         $field->setValue("New Value")
             ->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP::Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame( "input", $tag->getTag() );
         $this->assertTrue( isset($tag['name']) );
         $this->assertSame( "fldName", $tag['name'] );
@@ -213,7 +213,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $field = $this->getMock("cPHP::Form::Field", array(), array("fld"));
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
         $field->setValue("New Value")
             ->setName("fldName");
 

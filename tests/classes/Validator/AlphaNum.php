@@ -40,7 +40,7 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new ::cPHP::Validator::AlphaNum;
+        $validator = new \cPHP\Validator\AlphaNum;
 
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
@@ -87,7 +87,7 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new ::cPHP::Validator::AlphaNum;
+        $validator = new \cPHP\Validator\AlphaNum;
 
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("test1234")->isValid() );
@@ -103,7 +103,7 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new ::cPHP::Validator::AlphaNum;
+        $validator = new \cPHP\Validator\AlphaNum;
 
         // Get a list of extended range ascii characters
         $string = implode( "", array_map("chr", range(127, 255) ) );

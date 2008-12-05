@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validator that requires none of its contained validators to return positively
  */
-class None extends ::cPHP::Validator::Collection
+class None extends \cPHP\Validator\Collection
 {
 
     /**
@@ -50,8 +50,8 @@ class None extends ::cPHP::Validator::Collection
 
             $result = $valid->validate( $value );
 
-            if ( !$result instanceof ::cPHP::Validator::Result )
-                throw new ::cPHP::Exception::Data( $result, "Validator Result", "Must be an instance of cPHP::Validator::Result" );
+            if ( !$result instanceof \cPHP\Validator\Result )
+                throw new \cPHP\Exception\Data( $result, "Validator Result", "Must be an instance of \cPHP\Validator\Result" );
 
             if ( $result->isValid() )
                 return "Value is not valid";

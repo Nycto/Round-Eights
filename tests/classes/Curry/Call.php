@@ -46,7 +46,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
 
     public function testCallInternal ()
     {
-        $callback = new cPHP::Curry::Call("trim");
+        $callback = new \cPHP\Curry\Call("trim");
 
         $this->assertEquals( "trimmed", $callback("  trimmed  ") );
 
@@ -54,7 +54,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
 
     public function testCallClosure ()
     {
-        $callback = new cPHP::Curry::Call(function ( $value ) {
+        $callback = new \cPHP\Curry\Call(function ( $value ) {
             return trim($value);
         });
 
@@ -70,7 +70,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
             ->method('toCall')
             ->with( $this->equalTo('argument') );
 
-        $callback = new cPHP::Curry::Call( array($hasMethod, "toCall") );
+        $callback = new \cPHP\Curry\Call( array($hasMethod, "toCall") );
 
         $callback("argument");
     }
@@ -84,7 +84,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
             ->method('__invoke')
             ->with( $this->equalTo('argument') );
 
-        $callback = new cPHP::Curry::Call($invokable);
+        $callback = new \cPHP\Curry\Call($invokable);
 
         $callback("argument");
 
@@ -92,15 +92,15 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $callback = new cPHP::Curry::Call( array(__CLASS__, "staticMethod") );
+        $callback = new \cPHP\Curry\Call( array(__CLASS__, "staticMethod") );
 
         $this->assertEquals( "called", $callback("argument") );
     }
 
     public function testInstantiateException ()
     {
-        $this->setExpectedException('::cPHP::Exception::Argument');
-        $callback = new cPHP::Curry::Call( "ThisIsUnUncallableValue" );
+        $this->setExpectedException('\cPHP\Exception\Argument');
+        $callback = new \cPHP\Curry\Call( "ThisIsUnUncallableValue" );
     }
 
 }

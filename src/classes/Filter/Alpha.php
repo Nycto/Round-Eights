@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Converts a value to a string and removes anything that isn't a letter
  */
-class Alpha extends cPHP::Filter
+class Alpha extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class Alpha extends cPHP::Filter
         return preg_replace(
                 '/[^a-zA-Z]/',
                 '',
-                ::cPHP::strval( $value )
+                \cPHP\strval( $value )
             );
     }
 

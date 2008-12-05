@@ -40,7 +40,7 @@ class classes_filter_ipv4 extends PHPUnit_Framework_TestCase
 
     public function testValidChars ()
     {
-        $filter = new cPHP::Filter::IPv4;
+        $filter = new \cPHP\Filter\IPv4;
 
         $this->assertEquals(
                 "1234567890.",
@@ -51,7 +51,7 @@ class classes_filter_ipv4 extends PHPUnit_Framework_TestCase
 
     public function testInvalidChars ()
     {
-        $filter = new cPHP::Filter::IPv4;
+        $filter = new \cPHP\Filter\IPv4;
 
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@'));
         $this->assertEquals("", $filter->filter('ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`'));

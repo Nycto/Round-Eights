@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Applies a given filter to every value in an array, non-recursively
  */
-class Ary extends cPHP::Filter
+class Ary extends \cPHP\Filter
 {
 
     /**
@@ -48,7 +48,7 @@ class Ary extends cPHP::Filter
      *
      * @param Object The filter to apply to each value in the array
      */
-    public function __construct( ::cPHP::iface::Filter $filter )
+    public function __construct( \cPHP\iface\Filter $filter )
     {
         $this->setFilter( $filter );
     }
@@ -69,7 +69,7 @@ class Ary extends cPHP::Filter
      * @param Object The filter to load in to this instance
      * @return Object Returns a self reference
      */
-    public function setFilter ( ::cPHP::iface::Filter $filter )
+    public function setFilter ( \cPHP\iface\Filter $filter )
     {
         $this->filter = $filter;
         return $this;
@@ -83,7 +83,7 @@ class Ary extends cPHP::Filter
      */
     public function filter ( $value )
     {
-        if ( !::cPHP::Ary::is($value) || ( is_object($value) && !( $value instanceof ArrayAccess) ) )
+        if ( !\cPHP\Ary::is($value) || ( is_object($value) && !( $value instanceof \ArrayAccess) ) )
             $value = array($value);
 
         foreach( $value AS $key => $val ) {

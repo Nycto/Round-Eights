@@ -41,17 +41,17 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
     public function testBadOperator ()
     {
         try {
-            $compare = new ::cPHP::Validator::Compare("bad", "value");
+            $compare = new \cPHP\Validator\Compare("bad", "value");
             $this->fail("An expected exception was not thrown");
         }
-        catch( ::cPHP::Exception::Argument $err ) {
+        catch( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Unsupported comparison operator", $err->getMessage());
         }
     }
 
     public function testLessThan ()
     {
-        $valid = new ::cPHP::Validator::Compare( "<", 20 );
+        $valid = new \cPHP\Validator\Compare( "<", 20 );
 
         $this->assertFalse( $valid->validate( 25 )->isValid() );
         $this->assertFalse( $valid->validate( 20 )->isValid() );
@@ -60,7 +60,7 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testGreaterThan ()
     {
-        $valid = new ::cPHP::Validator::Compare( ">", 20 );
+        $valid = new \cPHP\Validator\Compare( ">", 20 );
 
         $this->assertTrue( $valid->validate( 25 )->isValid() );
         $this->assertFalse( $valid->validate( 20 )->isValid() );
@@ -69,7 +69,7 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testLessThanEquals ()
     {
-        $valid = new ::cPHP::Validator::Compare( "<=", 20 );
+        $valid = new \cPHP\Validator\Compare( "<=", 20 );
 
         $this->assertFalse( $valid->validate( 25 )->isValid() );
         $this->assertTrue( $valid->validate( 20 )->isValid() );
@@ -78,7 +78,7 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testGreaterThanEquals ()
     {
-        $valid = new ::cPHP::Validator::Compare( ">=", 20 );
+        $valid = new \cPHP\Validator\Compare( ">=", 20 );
 
         $this->assertTrue( $valid->validate( 25 )->isValid() );
         $this->assertTrue( $valid->validate( 20 )->isValid() );
@@ -87,7 +87,7 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testSame ()
     {
-        $valid = new ::cPHP::Validator::Compare( "===", 20 );
+        $valid = new \cPHP\Validator\Compare( "===", 20 );
 
         $this->assertTrue(  $valid->validate( 20 )->isValid() );
         $this->assertFalse( $valid->validate( 25 )->isValid() );
@@ -96,14 +96,14 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testEquals ()
     {
-        $valid = new ::cPHP::Validator::Compare( "==", 20 );
+        $valid = new \cPHP\Validator\Compare( "==", 20 );
 
         $this->assertTrue(  $valid->validate( 20 )->isValid() );
         $this->assertTrue( $valid->validate( "20" )->isValid() );
         $this->assertFalse( $valid->validate( 25 )->isValid() );
 
 
-        $valid = new ::cPHP::Validator::Compare( "=", 20 );
+        $valid = new \cPHP\Validator\Compare( "=", 20 );
 
         $this->assertTrue(  $valid->validate( 20 )->isValid() );
         $this->assertTrue( $valid->validate( "20" )->isValid() );
@@ -112,7 +112,7 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testNotSame ()
     {
-        $valid = new ::cPHP::Validator::Compare( "!==", 20 );
+        $valid = new \cPHP\Validator\Compare( "!==", 20 );
 
         $this->assertFalse( $valid->validate( 20 )->isValid() );
         $this->assertTrue(  $valid->validate( 25 )->isValid() );
@@ -121,14 +121,14 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
     public function testNotEquals ()
     {
-        $valid = new ::cPHP::Validator::Compare( "!=", 20 );
+        $valid = new \cPHP\Validator\Compare( "!=", 20 );
 
         $this->assertFalse( $valid->validate( 20 )->isValid() );
         $this->assertTrue(  $valid->validate( 25 )->isValid() );
         $this->assertFalse( $valid->validate( "20" )->isValid() );
 
 
-        $valid = new ::cPHP::Validator::Compare( "<>", 20 );
+        $valid = new \cPHP\Validator\Compare( "<>", 20 );
 
         $this->assertFalse( $valid->validate( 20 )->isValid() );
         $this->assertTrue(  $valid->validate( 25 )->isValid() );

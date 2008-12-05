@@ -30,7 +30,7 @@
  * @package Filters
  */
 
-namespace cPHP::iface;
+namespace cPHP\iface;
 
 /**
  * Basic filter definition

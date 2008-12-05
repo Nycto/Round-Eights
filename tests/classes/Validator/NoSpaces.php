@@ -40,7 +40,7 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
 
     public function testValidNonStrings()
     {
-        $validator = new ::cPHP::Validator::NoSpaces;
+        $validator = new \cPHP\Validator\NoSpaces;
 
         $this->assertTrue( $validator->isValid(TRUE) );
         $this->assertTrue( $validator->isValid(FALSE) );
@@ -53,7 +53,7 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
 
     public function testValidStrings()
     {
-        $validator = new ::cPHP::Validator::NoSpaces;
+        $validator = new \cPHP\Validator\NoSpaces;
 
         $this->assertTrue( $validator->isValid("NoSpaces") );
         $this->assertTrue( $validator->isValid("!@$^$@$#{}:<>?") );
@@ -62,7 +62,7 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
 
     public function testInvalidNonStrings()
     {
-        $validator = new ::cPHP::Validator::NoSpaces;
+        $validator = new \cPHP\Validator\NoSpaces;
 
         $result = $validator->validate($this->getMock("NoSpaces"));
         $this->assertFalse( $result->isValid() );
@@ -74,7 +74,7 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
 
     public function testInvalidStrings()
     {
-        $validator = new ::cPHP::Validator::NoSpaces;
+        $validator = new \cPHP\Validator\NoSpaces;
 
         $result = $validator->validate("   ");
         $this->assertFalse( $result->isValid() );

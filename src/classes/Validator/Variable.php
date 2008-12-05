@@ -30,7 +30,7 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validates that a given string is a valid php variable name
@@ -41,7 +41,7 @@ namespace cPHP::Validator;
  *
  * This will fail for any data type that is not a string
  */
-class Variable extends ::cPHP::Validator
+class Variable extends \cPHP\Validator
 {
 
     /**

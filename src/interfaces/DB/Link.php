@@ -30,7 +30,7 @@
  * @package Filters
  */
 
-namespace cPHP::iface::DB;
+namespace cPHP\iface\DB;
 
 /**
  * Database Link interface

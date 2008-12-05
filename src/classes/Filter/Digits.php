@@ -30,12 +30,12 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Converts a value to a string and removes anything that isn't a digit
  */
-class Digits extends cPHP::Filter
+class Digits extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class Digits extends cPHP::Filter
         return preg_replace(
                 '/[^0-9]/',
                 '',
-                ::cPHP::strval( $value )
+                \cPHP\strval( $value )
             );
     }
 

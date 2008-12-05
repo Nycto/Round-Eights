@@ -30,12 +30,12 @@
  * @package Database
  */
 
-namespace cPHP::DB::Result;
+namespace cPHP\DB\Result;
 
 /**
  * Database Read Query Results
  */
-abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIterator
+abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIterator
 {
 
     /**
@@ -150,7 +150,7 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
     /**
      * Returns a list of field names returned by the query
      *
-     * @return Object Returns a cPHP::Ary Object
+     * @return Object Returns a \cPHP\Ary Object
      */
     public function getFields ()
     {
@@ -162,7 +162,7 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
                 $this->fields = array();
         }
 
-        return new ::cPHP::Ary( $this->fields );
+        return new \cPHP\Ary( $this->fields );
     }
 
     /**
@@ -173,7 +173,7 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
      */
     public function isField ( $field )
     {
-        return $this->getFields()->contains( ::cPHP::strval($field) );
+        return $this->getFields()->contains( \cPHP\strval($field) );
     }
 
     /**
@@ -308,9 +308,9 @@ abstract class Read extends ::cPHP::DB::Result implements Countable, SeekableIte
      * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
      * @return Object Returns a self reference
      */
-    public function seek ( $offset, $wrapFlag = ::cPHP::num::OFFSET_RESTRICT )
+    public function seek ( $offset, $wrapFlag = \cPHP\num\OFFSET_RESTRICT )
     {
-        $offset = ::cPHP::num::offsetWrap(
+        $offset = \cPHP\num\offsetWrap(
                 $this->count(),
                 $offset,
                 $wrapFlag

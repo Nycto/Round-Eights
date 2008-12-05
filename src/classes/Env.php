@@ -268,7 +268,7 @@ class Env
         if ( !array_key_exists($key, $array) )
             return FALSE;
 
-        if ( ::cPHP::isEmpty($array[$key]) )
+        if ( \cPHP\isEmpty($array[$key]) )
             return FALSE;
 
         return TRUE;
@@ -305,10 +305,10 @@ class Env
      */
     public function __get ($variable)
     {
-        $variable = ::cPHP::str::stripW( $variable );
+        $variable = \cPHP\str\stripW( $variable );
 
         if ( !property_exists($this, $variable) )
-            throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
+            throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
 
         return $this->$variable;
     }
@@ -321,10 +321,10 @@ class Env
      */
     public function __isset ($variable)
     {
-        $variable = ::cPHP::str::stripW( $variable );
+        $variable = \cPHP\str\stripW( $variable );
 
         if ( !property_exists($this, $variable) )
-            throw new ::cPHP::Exception::Argument(0, "Variable Name", "Variable does not exist");
+            throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
 
         return isset( $this->$variable );
     }
@@ -453,12 +453,12 @@ class Env
 
         $this->domain = $this->sld .".". $this->tld;
 
-        if ( ::cPHP::isEmpty($this->subdomain) )
+        if ( \cPHP\isEmpty($this->subdomain) )
             $this->host = $this->domain;
         else
             $this->host = $this->subdomain .".". $this->domain;
 
-        if ( !::cPHP::isEmpty($this->port) && $this->port != 80 )
+        if ( !\cPHP\isEmpty($this->port) && $this->port != 80 )
             $this->hostWithPort = $this->host .":". $this->port;
         else
             $this->hostWithPort = $this->host;
@@ -475,7 +475,7 @@ class Env
         if ( !self::hasKey( $server, 'PATH_INFO' ) )
             return;
 
-        $this->fauxDirs = ::cPHP::str::head( $server['PATH_INFO'], "/" );
+        $this->fauxDirs = \cPHP\str\head( $server['PATH_INFO'], "/" );
     }
 
     /**
@@ -493,13 +493,13 @@ class Env
         $this->uriPath = str_replace("\\", "/", $server['SCRIPT_NAME']);
 
         // Ensure it starts with a forward slash
-        $this->uriPath = ::cPHP::str::head($this->uriPath, "/");
+        $this->uriPath = \cPHP\str\head($this->uriPath, "/");
 
-        $this->absUriPath = ::cPHP::str::weld( $this->hostWithPort, $this->uriPath, "/");
+        $this->absUriPath = \cPHP\str\weld( $this->hostWithPort, $this->uriPath, "/");
 
-        $this->uriDir = ::cPHP::str::tail( dirname( $this->uriPath), "/" );
+        $this->uriDir = \cPHP\str\tail( dirname( $this->uriPath), "/" );
 
-        $this->absUriDir = ::cPHP::str::weld( $this->hostWithPort, $this->uriDir, "/");
+        $this->absUriDir = \cPHP\str\weld( $this->hostWithPort, $this->uriDir, "/");
     }
 
     /**
@@ -512,22 +512,22 @@ class Env
     {
         $this->uri = null;
 
-        if ( !::cPHP::isEmpty( $this->uriPath ) )
+        if ( !\cPHP\isEmpty( $this->uriPath ) )
             $this->uri = $this->uriPath . $this->fauxDirs;
 
-        if ( !::cPHP::isEmpty( $this->query ) )
-            $this->uri .= ::cPHP::str::head( $this->query, "?" );
+        if ( !\cPHP\isEmpty( $this->query ) )
+            $this->uri .= \cPHP\str\head( $this->query, "?" );
 
         $this->absUri = null;
 
-        if ( !::cPHP::isEmpty( $this->hostWithPort ) )
+        if ( !\cPHP\isEmpty( $this->hostWithPort ) )
             $this->absUri .= $this->hostWithPort;
 
-        if ( !::cPHP::isEmpty( $this->scheme ) )
+        if ( !\cPHP\isEmpty( $this->scheme ) )
             $this->absUri = $this->scheme ."://" . $this->absUri;
 
-        if ( !::cPHP::isEmpty( $this->uri ) ) {
-            $this->absUri = ::cPHP::str::weld(
+        if ( !\cPHP\isEmpty( $this->uri ) ) {
+            $this->absUri = \cPHP\str\weld(
                     $this->absUri,
                     $this->uri,
                     "/"

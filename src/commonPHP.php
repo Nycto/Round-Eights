@@ -62,7 +62,8 @@ require_once cPHP_DIR_FUNCTIONS ."debug.php";
  */
 function __autoload ( $class ) {
 
-    $class = explode("::", $class);
+    $class = explode("\\", $class);
+    $class = array_filter( $class );
     array_shift( $class );
 
     $first = reset( $class );
@@ -84,7 +85,7 @@ function __autoload ( $class ) {
 set_exception_handler(function ( $exception ) {
 
     // If we are running in script mode, we don't need HTML
-    if ( ::cPHP::Env::get()->local ) {
+    if ( \cPHP\Env::get()->local ) {
         echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
     }
     else {
@@ -105,6 +106,6 @@ set_exception_handler(function ( $exception ) {
 /**
  * Take a snapshot of the environment
  */
-::cPHP::Env::get();
+\cPHP\Env::get();
 
 ?>

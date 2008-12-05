@@ -40,29 +40,29 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testMessage ()
     {
-        $err = new cPHP::Exception();
+        $err = new \cPHP\Exception();
         $this->assertFalse( $err->issetMessage() );
 
-        $err = new cPHP::Exception("This is a message");
+        $err = new \cPHP\Exception("This is a message");
         $this->assertTrue( $err->issetMessage() );
         $this->assertEquals( "This is a message", $err->getMessage() );
     }
 
     public function testCode ()
     {
-        $err = new cPHP::Exception();
+        $err = new \cPHP\Exception();
         $this->assertFalse( $err->issetCode() );
 
-        $err = new cPHP::Exception("This is a message", 543);
+        $err = new \cPHP\Exception("This is a message", 543);
         $this->assertTrue( $err->issetCode() );
         $this->assertEquals( 543, $err->getCode() );
     }
 
     public function testGetTraceByOffset ()
     {
-        $err = new cPHP::Exception();
+        $err = new \cPHP\Exception();
 
-        $this->assertThat( $err->getTraceByOffset(0), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $err->getTraceByOffset(0), $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 __FUNCTION__,
                 $err->getTraceByOffset(0)->offsetGet("function")
@@ -71,7 +71,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testGetTraceCount ()
     {
-        $err = new cPHP::Exception();
+        $err = new \cPHP\Exception();
 
         $this->assertThat( $err->getTraceCount(0), $this->isType("int") );
         $this->assertThat( $err->getTraceCount(0), $this->greaterThan(0) );
@@ -79,7 +79,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testFault ()
     {
-        $err = new cPHP::Exception();
+        $err = new \cPHP\Exception();
 
         // test whether setFault and issetFault work
         $this->assertFalse( $err->issetFault() );
@@ -93,7 +93,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
         $this->assertEquals( 1, $err->getFaultOffset() );
 
         // Make sure getFault returns an array
-        $this->assertThat( $err->getFault(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $err->getFault(), $this->isInstanceOf("cPHP\Ary") );
 
         // test unsetFault
         $this->assertSame( $err, $err->unsetFault() );
@@ -108,10 +108,10 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testData ()
     {
-        $err = new cPHP::Exception;
+        $err = new \cPHP\Exception;
 
         $this->assertSame( $err, $err->addData("Data Label", 20) );
-        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals( array("Data Label" => 20), $err->getData()->get() );
         $this->assertEquals( 20, $err->getDataValue("Data Label") );
 
@@ -119,8 +119,8 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testThrowing ()
     {
-        $this->setExpectedException('cPHP::Exception');
-        throw new cPHP::Exception;
+        $this->setExpectedException('\cPHP\Exception');
+        throw new \cPHP\Exception;
     }
 
 }

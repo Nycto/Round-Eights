@@ -40,18 +40,18 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $filter = new cPHP::Filter::StandardEmpty();
+        $filter = new \cPHP\Filter\StandardEmpty();
         $this->assertEquals( 0, $filter->getFlags() );
         $this->assertEquals( NULL, $filter->getValue() );
 
-        $filter = new cPHP::Filter::StandardEmpty( "Empty Value", 5 );
+        $filter = new \cPHP\Filter\StandardEmpty( "Empty Value", 5 );
         $this->assertEquals( 5, $filter->getFlags() );
         $this->assertEquals( "Empty Value", $filter->getValue() );
     }
 
     public function testSetValue ()
     {
-        $filter = new cPHP::Filter::StandardEmpty();
+        $filter = new \cPHP\Filter\StandardEmpty();
 
         $this->assertEquals( NULL, $filter->getValue() );
 
@@ -62,7 +62,7 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testSetFlags ()
     {
-        $filter = new cPHP::Filter::StandardEmpty();
+        $filter = new \cPHP\Filter\StandardEmpty();
 
         $this->assertEquals( 0, $filter->getFlags() );
 
@@ -73,7 +73,7 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testAddFlags ()
     {
-        $filter = new cPHP::Filter::StandardEmpty();
+        $filter = new \cPHP\Filter\StandardEmpty();
 
         $this->assertEquals( 0, $filter->getFlags() );
 
@@ -92,7 +92,7 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testInteger ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
         $this->assertSame( NULL, $filter->filter(0) );
         $this->assertSame( 1, $filter->filter(1) );
         $this->assertSame( 20, $filter->filter(20) );
@@ -101,14 +101,14 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testBoolean ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
         $this->assertSame( NULL, $filter->filter(FALSE) );
         $this->assertSame( TRUE, $filter->filter(TRUE) );
     }
 
     public function testFloat ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
 
         $this->assertSame( NULL, $filter->filter(0.0) );
         $this->assertSame( 20.25, $filter->filter(20.25) );
@@ -116,14 +116,14 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testNull ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
 
         $this->assertSame( NULL, $filter->filter(NULL) );
     }
 
     public function testString ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
 
         $this->assertSame( NULL, $filter->filter("") );
         $this->assertSame( NULL, $filter->filter("    ") );
@@ -132,7 +132,7 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testArray ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
 
         $this->assertSame( array(50), $filter->filter( array(50) ) );
         $this->assertSame( NULL, $filter->filter( array() ) );
@@ -140,7 +140,7 @@ class classes_filter_standardempty extends PHPUnit_Framework_TestCase
 
     public function testObject ()
     {
-        $filter = new cPHP::Filter::StandardEmpty;
+        $filter = new \cPHP\Filter\StandardEmpty;
 
         $mock = $this->getMock("stub_random_obj");
 

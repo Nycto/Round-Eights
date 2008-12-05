@@ -30,12 +30,12 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * Exception class for data that is not what it should be
  */
-class Index extends ::cPHP::Exception
+class Index extends \cPHP\Exception
 {
 
     /**
@@ -61,8 +61,8 @@ class Index extends ::cPHP::Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $this->addData( "Index Label", ::cPHP::strval( $label ) );
-        $this->addData( "Value", ::cPHP::getDump($value) );
+        $this->addData( "Index Label", \cPHP\strval( $label ) );
+        $this->addData( "Value", \cPHP\getDump($value) );
     }
 }
 

@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * Validator that requires all of its contained validators to return positively
  */
-class All extends ::cPHP::Validator::Collection
+class All extends \cPHP\Validator\Collection
 {
 
     /**
@@ -51,8 +51,8 @@ class All extends ::cPHP::Validator::Collection
 
             $result = $valid->validate( $value );
 
-            if ( !$result instanceof ::cPHP::Validator::Result )
-                throw new ::cPHP::Exception::Data( $result, "Validator Result", "Must be an instance of cPHP::Validator::Result" );
+            if ( !$result instanceof \cPHP\Validator\Result )
+                throw new \cPHP\Exception\Data( $result, "Validator Result", "Must be an instance of \cPHP\Validator\Result" );
 
             $errors = array_merge( $errors, $result->getErrors()->get() );
 

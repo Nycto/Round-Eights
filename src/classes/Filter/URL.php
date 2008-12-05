@@ -30,14 +30,14 @@
  * @package Filters
  */
 
-namespace cPHP::Filter;
+namespace cPHP\Filter;
 
 /**
  * Cleans up a string in preparation for using it as an e-mail address
  *
  * Remove everything except letters, digits and $-_.+!*'(),{}|\\^~[]`<>#%";/?:@&=
  */
-class URL extends cPHP::Filter
+class URL extends \cPHP\Filter
 {
 
     /**
@@ -49,7 +49,7 @@ class URL extends cPHP::Filter
     public function filter ( $value )
     {
         return filter_var(
-            ::cPHP::strval($value),
+            \cPHP\strval($value),
             FILTER_SANITIZE_URL
         );
     }

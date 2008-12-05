@@ -30,12 +30,12 @@
  * @package Quoter
  */
 
-namespace cPHP::Quoter::Section;
+namespace cPHP\Quoter\Section;
 
 /**
  * Representation of an unquoted section of a string
  */
-class Unquoted extends cPHP::Quoter::Section
+class Unquoted extends \cPHP\Quoter\Section
 {
 
     /**

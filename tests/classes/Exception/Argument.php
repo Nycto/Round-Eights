@@ -43,11 +43,11 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
     {
         try {
             $throw = function ( $arg1, $arg2 ) {
-                throw new ::cPHP::Exception::Argument(0, "test", "From our sponsors", 505, 0);
+                throw new \cPHP\Exception\Argument(0, "test", "From our sponsors", 505, 0);
             };
             $throw("arg value", "other arg");
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             return $err;
         }
     }
@@ -60,7 +60,7 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
         $this->assertEquals( "From our sponsors", $err->getMessage() );
         $this->assertEquals( 505, $err->getCode() );
 
-        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals( array("Arg Label" => "test"), $err->getData()->get() );
 
         $this->assertEquals( 0, $err->getFaultOffset() );

@@ -30,12 +30,12 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
  * An interface for grouping a set of validators in to one object
  */
-abstract class Collection extends cPHP::Validator
+abstract class Collection extends \cPHP\Validator
 {
 
     /**
@@ -68,18 +68,18 @@ abstract class Collection extends cPHP::Validator
     {
         if ( is_object($validator) ) {
 
-            if ( !$validator instanceof cPHP::iface::Validator )
-                throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+            if ( !$validator instanceof \cPHP\iface\Validator )
+                throw new \cPHP\Exception\Argument( 0, "Validator", "Must be an instance of \cPHP\iface\Validator" );
 
         }
         else {
-            $validator = ::cPHP::strval( $validator );
+            $validator = \cPHP\strval( $validator );
 
-            if ( !is_subclass_of($validator, "cPHP::iface::Validator") ) {
+            if ( !is_subclass_of($validator, "\cPHP\iface\Validator") ) {
 
-                $refl = new ReflectionClass( $validator );
-                if ( !$refl->implementsInterface( "cPHP::iface::Validator" ) )
-                    throw new cPHP::Exception::Argument( 0, "Validator", "Must be an instance of cPHP::iface::Validator" );
+                $refl = new \ReflectionClass( $validator );
+                if ( !$refl->implementsInterface( "\cPHP\iface\Validator" ) )
+                    throw new \cPHP\Exception\Argument( 0, "Validator", "Must be an instance of \cPHP\iface\Validator" );
 
             }
 
@@ -93,11 +93,11 @@ abstract class Collection extends cPHP::Validator
     /**
      * Returns the list of validators contained in this instance
      *
-     * @return object Returns a cPHP::Ary object
+     * @return object Returns a \cPHP\Ary object
      */
     public function getValidators ()
     {
-        return new ::cPHP::Ary( $this->validators );
+        return new \cPHP\Ary( $this->validators );
     }
 
     /**
@@ -109,10 +109,10 @@ abstract class Collection extends cPHP::Validator
     public function addMany ( $validators )
     {
         $validators = func_get_args();
-        ::cPHP::Ary::create( $validators )
+        \cPHP\Ary::create( $validators )
             ->flatten()
             ->filter(function($validator) {
-                return $validator instanceof ::cPHP::iface::Validator;
+                return $validator instanceof \cPHP\iface\Validator;
             })
             ->each(array($this, "add"));
         return $this;

@@ -35,29 +35,29 @@ namespace cPHP;
 /**
  * Base Filtering class
  */
-abstract class Filter implements ::cPHP::iface::Filter
+abstract class Filter implements \cPHP\iface\Filter
 {
 
     /**
      * Static method for creating a new filtering instance
      *
      * This takes the called function and looks for a class under
-     * the cPHP::Filter namespace.
+     * the \cPHP\Filter namespace.
      *
-     * @throws cPHP::Exception::Argument Thrown if the filter class can't be found
+     * @throws \cPHP\Exception\Argument Thrown if the filter class can't be found
      * @param String $filter The filter class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new cPHP::Filter subclass
+     * @return Object Returns a new \cPHP\Filter subclass
      */
     static public function __callStatic ( $filter, $args )
     {
-        $filter = "cPHP::Filter::". trim( ::cPHP::strval($filter) );
+        $filter = "\cPHP\\Filter\\". trim( \cPHP\strval($filter) );
 
         if ( !class_exists($filter, true) ) {
-            throw new ::cPHP::Exception::Argument(
+            throw new \cPHP\Exception\Argument(
                     0,
                     "Filter Class Name",
-                    "Filter could not be found in cPHP::Filter namespace"
+                    "Filter could not be found in \cPHP\Filter namespace"
                 );
         }
 
@@ -68,7 +68,7 @@ abstract class Filter implements ::cPHP::iface::Filter
             return new $filter( reset($args) );
         }
         else {
-            $refl = new ReflectionClass( $filter );
+            $refl = new \ReflectionClass( $filter );
             return $refl->newInstanceArgs( $args );
         }
 

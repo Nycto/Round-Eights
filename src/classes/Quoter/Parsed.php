@@ -30,7 +30,7 @@
  * @package Quoter
  */
 
-namespace cPHP::Quoter;
+namespace cPHP\Quoter;
 
 /**
  * Representation a collection of parsed string sections
@@ -56,11 +56,11 @@ class Parsed
     /**
      * Returns a list of all the sections in this instance
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return Object Returns a \cPHP\Ary object
      */
     public function getSections ()
     {
-        return new ::cPHP::Ary( $this->sections );
+        return new \cPHP\Ary( $this->sections );
     }
 
     /**
@@ -69,7 +69,7 @@ class Parsed
      * @param Object $section The section being added
      * @return Object Returns a self reference
      */
-    public function addSection( cPHP::Quoter::Section $section )
+    public function addSection( \cPHP\Quoter\Section $section )
     {
         $this->sections[] = $section;
         return $this;
@@ -137,11 +137,11 @@ class Parsed
      * This will only explode on the separators found in the selected section.
      *
      * @param String $separator The separator to split the string on
-     * @return Object Returns a cPHP::Ary object containing the string sections
+     * @return Object Returns a \cPHP\Ary object containing the string sections
      */
     public function explode ( $separator )
     {
-        $result = new ::cPHP::Ary(array(""));
+        $result = new \cPHP\Ary(array(""));
 
         foreach ( $this->sections AS $section ) {
 
@@ -167,7 +167,7 @@ class Parsed
      * @param Object $filter The filter to apply
      * @return Object Returns a self reference
      */
-    public function filter ( ::cPHP::iface::Filter $filter )
+    public function filter ( \cPHP\iface\Filter $filter )
     {
         if ( !$this->quoted && !$this->unquoted )
             return $this;

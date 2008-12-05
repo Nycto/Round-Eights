@@ -30,13 +30,13 @@
  * @package Exception
  */
 
-namespace cPHP::Exception;
+namespace cPHP\Exception;
 
 /**
  * An exception class to describe errors caused when code incorrectly
  * interfaces with other code
  */
-class Interaction extends ::cPHP::Exception
+class Interaction extends \cPHP\Exception
 {
 
     /**

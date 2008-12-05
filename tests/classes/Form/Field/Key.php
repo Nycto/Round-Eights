@@ -40,7 +40,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testValue ()
     {
-        $field = new ::cPHP::Form::Field::Key("fld", "Unit Test");
+        $field = new \cPHP\Form\Field\Key("fld", "Unit Test");
 
         $this->assertThat( $field->getValue(), $this->isType("string") );
         $this->assertSame( 20, strlen( $field->getValue() ) );
@@ -49,17 +49,17 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testValidator ()
     {
-        $field = new ::cPHP::Form::Field::Key("fld", "Unit Test");
+        $field = new \cPHP\Form\Field\Key("fld", "Unit Test");
 
         $this->assertThat(
                 $field->getValidator(),
-                $this->isInstanceOf("cPHP::Validator::Compare")
+                $this->isInstanceOf("cPHP\Validator\Compare")
             );
     }
 
     public function testValid ()
     {
-        $field = new ::cPHP::Form::Field::Key("fld", "Unit Test");
+        $field = new \cPHP\Form\Field\Key("fld", "Unit Test");
 
         $this->assertThat( $field->getValue(), $this->isType("string") );
         $this->assertSame( 20, strlen( $field->getValue() ) );
@@ -69,7 +69,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $field = new ::cPHP::Form::Field::Key("fld", "Unit Test");
+        $field = new \cPHP\Form\Field\Key("fld", "Unit Test");
         $field->setValue("This isn't it");
 
         $this->assertFalse( $field->isValid() );

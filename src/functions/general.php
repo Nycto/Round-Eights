@@ -133,24 +133,24 @@ function isEmpty ($value, $flags = 0)
         return empty($value);
 
     if (is_null($value)) {
-        return ($flags & cPHP::ALLOW_NULL)?FALSE:TRUE;
+        return ($flags & \cPHP\ALLOW_NULL)?FALSE:TRUE;
     }
     else if ($value === FALSE) {
-        return ($flags & cPHP::ALLOW_FALSE)?FALSE:TRUE;
+        return ($flags & \cPHP\ALLOW_FALSE)?FALSE:TRUE;
     }
     else if (is_string($value)) {
 
         if ($value == "")
-            return ($flags & cPHP::ALLOW_BLANK)?FALSE:TRUE;
+            return ($flags & \cPHP\ALLOW_BLANK)?FALSE:TRUE;
         else if (trim($value) == "")
-            return ($flags & cPHP::ALLOW_SPACES)?FALSE:TRUE;
+            return ($flags & \cPHP\ALLOW_SPACES)?FALSE:TRUE;
 
     }
     else if (is_numeric($value) && $value == 0) {
-        return ($flags & cPHP::ALLOW_ZERO)?FALSE:TRUE;
+        return ($flags & \cPHP\ALLOW_ZERO)?FALSE:TRUE;
     }
     else if (is_array($value) && count($value) <= 0) {
-        return ($flags & cPHP::ALLOW_EMPTY_ARRAYS)?FALSE:TRUE;
+        return ($flags & \cPHP\ALLOW_EMPTY_ARRAYS)?FALSE:TRUE;
     }
 
     return FALSE;
@@ -233,9 +233,9 @@ function strVal ($value)
 
     // We use get_class_methods instead of method_exists to ensure that __toString is a public method
     if (is_object($value) && in_array("__toString", get_class_methods($value)))
-        return ::strval( $value->__toString() );
+        return \strval( $value->__toString() );
     else
-        return ::strval( reduce($value) );
+        return \strval( reduce($value) );
 }
 
 /**
@@ -250,7 +250,7 @@ function strVal ($value)
  */
 function indexVal ( $value )
 {
-    $value = ::cPHP::reduce( $value );
+    $value = \cPHP\reduce( $value );
 
     if ( is_string($value) || is_int($value) )
         return $value;
@@ -259,7 +259,7 @@ function indexVal ( $value )
         return intval($value);
 
     else
-        return ::cPHP::strval($value);
+        return \cPHP\strval($value);
 }
 
 /**
@@ -276,12 +276,12 @@ function indexVal ( $value )
  */
 function kindOf ( $value, $className )
 {
-    $className = ltrim( trim( strval( $className ) ), ":" );
+    $className = ltrim( trim( strval( $className ) ), "\\" );
 
     if ( is_object($value) )
         return ( $value instanceof $className ) ? TRUE : FALSE;
 
-    $value = trim( trim( strval( $value ) ), ":" );
+    $value = trim( trim( strval( $value ) ), "\\" );
 
     if ( !class_exists($value) )
         return FALSE;

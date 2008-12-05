@@ -41,7 +41,7 @@ class stub_classes_ary_boolCallbacks
     static public function callbackStatic ( $value, $key )
     {
         if ( func_num_args() != 2 ) {
-            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err = new \cPHP\Exception\Interaction("Number of arguments was not '2'");
             $err->setData("Number of Args", func_num_args());
             throw $err;
         }
@@ -52,7 +52,7 @@ class stub_classes_ary_boolCallbacks
     public function callbackObject ( $value, $key )
     {
         if ( func_num_args() != 2 ) {
-            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err = new \cPHP\Exception\Interaction("Number of arguments was not '2'");
             $err->setData("Number of Args", func_num_args());
             throw $err;
         }
@@ -63,7 +63,7 @@ class stub_classes_ary_boolCallbacks
     public function __invoke ( $value, $key )
     {
         if ( func_num_args() != 2 ) {
-            $err = new ::cPHP::Exception::Interaction("Number of arguments was not '2'");
+            $err = new \cPHP\Exception\Interaction("Number of arguments was not '2'");
             $err->setData("Number of Args", func_num_args());
             throw $err;
         }
@@ -99,14 +99,14 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $ary = new cPHP::Ary(array( 4, 3, "other"));
+        $ary = new \cPHP\Ary( array( 4, 3, "other") );
         $this->assertEquals(
                 array( 4, 3, "other"),
                 $ary->get()
             );
 
 
-        $newAry = new cPHP::Ary( $ary );
+        $newAry = new \cPHP\Ary( $ary );
         $this->assertNotSame( $ary, $newAry );
         $this->assertEquals(
                 array( 4, 3, "other" ),
@@ -120,7 +120,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             ->with()
             ->will( $this->returnValue( new ArrayObject( array( 4, 3, "other" ) ) ) );
 
-        $ary = new cPHP::Ary( $iterAggr );
+        $ary = new \cPHP\Ary( $iterAggr );
         $this->assertEquals(
                 array( 4, 3, "other" ),
                 $ary->get()
@@ -128,21 +128,21 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         $iter = new ArrayIterator( array( 4, 3, "other" ) );
-        $ary = new cPHP::Ary( $iter );
+        $ary = new \cPHP\Ary( $iter );
         $this->assertEquals(
                 array( 4, 3, "other" ),
                 $ary->get()
             );
 
 
-        $ary = new cPHP::Ary( "string" );
+        $ary = new \cPHP\Ary( "string" );
         $this->assertEquals(
                 array( "string" ),
                 $ary->get()
             );
 
 
-        $ary = new cPHP::Ary( 1 );
+        $ary = new \cPHP\Ary( 1 );
         $this->assertEquals(
                 array( 1 ),
                 $ary->get()
@@ -152,7 +152,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testCreate ()
     {
-        $ary = cPHP::Ary::create(array( 4, 3, "other"));
+        $ary = \cPHP\Ary::create(array( 4, 3, "other"));
 
         $this->assertEquals(
                 array( 4, 3, "other"),
@@ -162,7 +162,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testRange ()
     {
-        $ary = cPHP::Ary::range(5, 8);
+        $ary = \cPHP\Ary::range(5, 8);
 
         $this->assertEquals(
                 array(5, 6, 7, 8),
@@ -177,21 +177,21 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testIs ()
     {
-        $this->assertTrue( ::cPHP::Ary::is(array()) );
-        $this->assertTrue( ::cPHP::Ary::is( new ::cPHP::Ary ) );
-        $this->assertTrue( ::cPHP::Ary::is( new ArrayObject ) );
+        $this->assertTrue( \cPHP\Ary::is(array()) );
+        $this->assertTrue( \cPHP\Ary::is( new \cPHP\Ary ) );
+        $this->assertTrue( \cPHP\Ary::is( new ArrayObject ) );
 
-        $this->assertFalse( ::cPHP::Ary::is(5) );
-        $this->assertFalse( ::cPHP::Ary::is(5.0) );
-        $this->assertFalse( ::cPHP::Ary::is("string") );
-        $this->assertFalse( ::cPHP::Ary::is(FALSE) );
-        $this->assertFalse( ::cPHP::Ary::is(TRUE) );
-        $this->assertFalse( ::cPHP::Ary::is(NULL) );
+        $this->assertFalse( \cPHP\Ary::is(5) );
+        $this->assertFalse( \cPHP\Ary::is(5.0) );
+        $this->assertFalse( \cPHP\Ary::is("string") );
+        $this->assertFalse( \cPHP\Ary::is(FALSE) );
+        $this->assertFalse( \cPHP\Ary::is(TRUE) );
+        $this->assertFalse( \cPHP\Ary::is(NULL) );
     }
 
     public function testGet_noRef ()
     {
-        $ary = new ::cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $ref = $ary->get();
 
@@ -204,7 +204,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testGet_byRef ()
     {
-        $ary = new ::cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $ref =& $ary->get();
 
@@ -221,7 +221,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
     public function testIteration ()
     {
 
-        $ary = new cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
                 1 => 1,
                 0 => 0,
                 NULL => NULL,
@@ -253,13 +253,13 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testCount ()
     {
-        $ary = new cPHP::Ary( array(3 => 1, 2 => 2, 1 => 3) );
+        $ary = new \cPHP\Ary( array(3 => 1, 2 => 2, 1 => 3) );
         $this->assertEquals( 3, count($ary) );
     }
 
     public function testAccess ()
     {
-        $ary = new cPHP::Ary( array(3 => 1, 2 => 2, 1 => 3) );
+        $ary = new \cPHP\Ary( array(3 => 1, 2 => 2, 1 => 3) );
 
         $this->assertEquals( 2, $ary[2] );
 
@@ -287,73 +287,73 @@ class classes_ary extends PHPUnit_Framework_TestCase
     public function testCalcOffset ()
     {
         try {
-            cPHP::Ary::create(array())->calcOffset(2, "invalid offset value");
+            \cPHP\Ary::create(array())->calcOffset(2, "invalid offset value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
 
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_NONE) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_NONE) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_NONE) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_NONE) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_NONE) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_NONE) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-5, \cPHP\Ary::OFFSET_NONE) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(-2, \cPHP\Ary::OFFSET_NONE) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(-1, \cPHP\Ary::OFFSET_NONE) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(0, \cPHP\Ary::OFFSET_NONE) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(3, \cPHP\Ary::OFFSET_NONE) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(4, \cPHP\Ary::OFFSET_NONE) );
 
         try {
-            cPHP::Ary::create(array())->calcOffset(2, cPHP::Ary::OFFSET_NONE);
+            \cPHP\Ary::create(array())->calcOffset(2, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
         try {
-            cPHP::Ary::range(1, 5)->calcOffset(5, cPHP::Ary::OFFSET_NONE);
+            \cPHP\Ary::range(1, 5)->calcOffset(5, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
         try {
-            cPHP::Ary::range(1, 5)->calcOffset(-6, cPHP::Ary::OFFSET_NONE);
+            \cPHP\Ary::range(1, 5)->calcOffset(-6, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
 
-        $this->assertEquals(1, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(2, cPHP::Ary::range(1, 5)->calcOffset(-8, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_WRAP) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_WRAP) );
+        $this->assertEquals(1, \cPHP\Ary::range(1, 5)->calcOffset(-14, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(2, \cPHP\Ary::range(1, 5)->calcOffset(-8, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-5, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(-2, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(-1, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(0, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(3, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(4, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(8, \cPHP\Ary::OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(15, \cPHP\Ary::OFFSET_WRAP) );
 
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-14, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-8, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-5, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_RESTRICT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-14, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-8, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-5, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(-2, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(-1, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(0, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(3, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(4, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(8, \cPHP\Ary::OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(15, \cPHP\Ary::OFFSET_RESTRICT) );
 
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-2, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(-1, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(0, cPHP::Ary::range(1, 5)->calcOffset(0, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(3, cPHP::Ary::range(1, 5)->calcOffset(3, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(4, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(8, cPHP::Ary::OFFSET_LIMIT) );
-        $this->assertEquals(4, cPHP::Ary::range(1, 5)->calcOffset(15, cPHP::Ary::OFFSET_LIMIT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-2, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-1, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(0, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(3, \cPHP\Ary::range(1, 5)->calcOffset(3, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(4, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(8, \cPHP\Ary::OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\Ary::range(1, 5)->calcOffset(15, \cPHP\Ary::OFFSET_LIMIT) );
 
     }
 
     public function testPushPop ()
     {
-        $ary = new cPHP::Ary( array(3 => 1, 1 => 3) );
+        $ary = new \cPHP\Ary( array(3 => 1, 1 => 3) );
 
         $this->assertSame(
                 $ary,
@@ -397,7 +397,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testShiftUnshift ()
     {
-        $ary = new cPHP::Ary( array(3 => 1, 1 => 3) );
+        $ary = new \cPHP\Ary( array(3 => 1, 1 => 3) );
 
         $this->assertSame(
                 $ary,
@@ -442,7 +442,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testEnd ()
     {
-        $ary = cPHP::Ary::range(0, 19);
+        $ary = \cPHP\Ary::range(0, 19);
 
         $this->assertSame(
                 $ary,
@@ -457,7 +457,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testPrev ()
     {
-        $ary = cPHP::Ary::range(0, 19);
+        $ary = \cPHP\Ary::range(0, 19);
 
         $this->assertSame(
                 $ary,
@@ -484,7 +484,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testKeyOffset ()
     {
-        $ary = new cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( 4 => "zero", 2 => "one", 8 => "two", 32 => "three", 16 => "four", 64 => "five"  )
             );
 
@@ -493,15 +493,15 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertEquals( 3, $ary->keyOffset( 32 ) );
 
         try {
-            cPHP::Ary::range(1, 5)->keyOffset(60);
+            \cPHP\Ary::range(1, 5)->keyOffset(60);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
     }
 
     public function testPointer ()
     {
-        $ary = cPHP::Ary::range(0, 19);
+        $ary = \cPHP\Ary::range(0, 19);
 
         $this->assertEquals( 0, $ary->pointer() );
 
@@ -516,7 +516,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testOffset ()
     {
-        $ary = cPHP::Ary::range(1, 15);
+        $ary = \cPHP\Ary::range(1, 15);
 
         $this->assertEquals(1, $ary->offset(0) );
         $this->assertEquals(15, $ary->offset(-1) );
@@ -535,16 +535,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testKeyExists ()
     {
-        $this->assertTrue( cPHP::Ary::range(1, 15)->keyExists(0) );
-        $this->assertFalse( cPHP::Ary::range(1, 15)->keyExists(15) );
+        $this->assertTrue( \cPHP\Ary::range(1, 15)->keyExists(0) );
+        $this->assertFalse( \cPHP\Ary::range(1, 15)->keyExists(15) );
 
-        $this->assertFalse( cPHP::Ary::create(array("key" => "value"))->keyExists(14) );
-        $this->assertTrue( cPHP::Ary::create(array("key" => "value"))->keyExists("key") );
+        $this->assertFalse( \cPHP\Ary::create(array("key" => "value"))->keyExists(14) );
+        $this->assertTrue( \cPHP\Ary::create(array("key" => "value"))->keyExists("key") );
     }
 
     public function testSeek ()
     {
-        $ary = cPHP::Ary::range(0, 19);
+        $ary = \cPHP\Ary::range(0, 19);
 
         // Test setting the pointer to the end of the array
         $this->assertSame(
@@ -606,29 +606,29 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testKeys ()
     {
-        $ary = new cPHP::Ary( array(3 => 10, 1 => 9, 5 => 8, 10 => 7 ) );
+        $ary = new \cPHP\Ary( array(3 => 10, 1 => 9, 5 => 8, 10 => 7 ) );
 
         $keys = $ary->keys();
 
-        $this->assertThat( $keys, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $keys, $this->isInstanceOf("cPHP\Ary") );
 
         $this->assertEquals(array(3, 1, 5, 10), $keys->get());
     }
 
     public function testValues ()
     {
-        $ary = new cPHP::Ary( array(3 => 10, 1 => 9, 5 => 8, 10 => 7 ) );
+        $ary = new \cPHP\Ary( array(3 => 10, 1 => 9, 5 => 8, 10 => 7 ) );
 
         $keys = $ary->values();
 
-        $this->assertThat( $keys, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $keys, $this->isInstanceOf("cPHP\Ary") );
 
         $this->assertEquals(array(10, 9, 8, 7), $keys->get());
     }
 
     public function testClear ()
     {
-        $ary = new cPHP::Ary(array( 4, 3, "other"));
+        $ary = new \cPHP\Ary(array( 4, 3, "other"));
 
         $this->assertEquals(
                 array( 4, 3, "other"),
@@ -652,45 +652,45 @@ class classes_ary extends PHPUnit_Framework_TestCase
     public function testFlatten ()
     {
 
-        $ary = cPHP::Ary::create( array(array(1,2,3)) )->flatten();
+        $ary = \cPHP\Ary::create( array(array(1,2,3)) )->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,6)) )->flatten();
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,6)) )->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3,4,5,6),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten();
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3,4,5,6,7,8),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten();
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3,4,5,6,7,8),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array( 1 => 'one', 2 => 'two' ) )->flatten();
+        $ary = \cPHP\Ary::create( array( 1 => 'one', 2 => 'two' ) )->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array( 1 => 'one', 2 => 'two' ),
                 $ary->get()
@@ -702,27 +702,27 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,6,7,8)) )->flatten( 2 );
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,6,7,8)) )->flatten( 2 );
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(array(1,2,3),array(4,5,6,7,8)),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten( 3 );
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten( 3 );
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(array(1,2,3),array(4,5,array(6,7,8))),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten( 4 );
+        $ary = \cPHP\Ary::create( array(array(1,2,3),array(4,5,array(6,7,8))) )->flatten( 4 );
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(array(1,2,3),array(4,5,array(6,7,8))),
                 $ary->get()
@@ -731,24 +731,24 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
 
-        $ary = cPHP::Ary::create(array(
-                new cPHP::Ary(array(1,2,3)),
-                array(4,5, new cPHP::Ary(array(6,7,8)) )
+        $ary = \cPHP\Ary::create(array(
+                new \cPHP\Ary(array(1,2,3)),
+                array(4,5, new \cPHP\Ary(array(6,7,8)) )
             ))->flatten();
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3,4,5,6,7,8),
                 $ary->get()
             );
 
 
-        $ary = cPHP::Ary::create(array(
-                new cPHP::Ary(array(1,2,3)),
-                array(4,5, new cPHP::Ary(array(6,7,8)) )
+        $ary = \cPHP\Ary::create(array(
+                new \cPHP\Ary(array(1,2,3)),
+                array(4,5, new \cPHP\Ary(array(6,7,8)) )
             ))->flatten( 3 );
 
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(1,2,3),
                 $ary->offsetGet(0)->get()
@@ -765,7 +765,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSort ()
     {
-        $ary = cPHP::Ary::create(array( 3 => "d", 5 => "b", 6 => "a", 1 => "f", 4 => "c", 2 => "e" ));
+        $ary = \cPHP\Ary::create(array( 3 => "d", 5 => "b", 6 => "a", 1 => "f", 4 => "c", 2 => "e" ));
 
         $this->assertSame( $ary, $ary->sort() );
         $this->assertEquals(
@@ -774,7 +774,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
 
 
-        $ary = cPHP::Ary::create(array( 3 => "d", 5 => "b", 6 => "a", 1 => "f", 4 => "c", 2 => "e" ));
+        $ary = \cPHP\Ary::create(array( 3 => "d", 5 => "b", 6 => "a", 1 => "f", 4 => "c", 2 => "e" ));
 
         $this->assertSame( $ary, $ary->sort( TRUE ) );
         $this->assertEquals(
@@ -787,7 +787,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->sort( TRUE, "Invalid sort type" );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
     }
 
     public function testSortyByKey ()
@@ -822,10 +822,10 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testHone ()
     {
-        $ary = new ::cPHP::Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
+        $ary = new \cPHP\Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
 
         $result = $ary->hone('five', 'three', 'six');
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
 
         // Make sure the original array remains unchanged
         $this->assertNotSame( $ary, $result );
@@ -841,7 +841,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         $result = $ary->hone( array('ten', 'eleven'), 'twelve');
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array ( 'ten' => 1, 'eleven' => 2, 'twelve' => 3 ),
                 $result->get()
@@ -849,7 +849,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         $result = $ary->hone( array('seven', 'six'), 'five', array(array('four')));
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array ( 'seven' => 1, 'six' => 2, 'five' => 5, 'four' => 4 ),
                 $result->get()
@@ -858,10 +858,10 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testTranslateKeys ()
     {
-        $ary = new ::cPHP::Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
+        $ary = new \cPHP\Ary(array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 ));
 
         $result = $ary->translateKeys(array('one' => 'eno', 'three' => 'eerht', 'four' => 'ruof'));
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
 
         // Make sure the original array remains unchanged
         $this->assertNotSame( $ary, $result );
@@ -886,8 +886,8 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->translateKeys("This is not a valid key map");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
-            $this->assertEquals("Must be an array or a cPHP::Ary object", $err->getMessage());
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertEquals("Must be an array or a \cPHP\Ary object", $err->getMessage());
         }
 
 
@@ -895,7 +895,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->translateKeys(array("five" => NULL) );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data $err ) {
+        catch ( \cPHP\Exception\Data $err ) {
             $this->assertEquals("Invalid key value", $err->getMessage());
         }
 
@@ -904,20 +904,20 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->translateKeys(array("five" => $this->getMock("stub_translateKeys")) );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Data $err ) {
+        catch ( \cPHP\Exception\Data $err ) {
             $this->assertEquals("Invalid key value", $err->getMessage());
         }
     }
 
     public function testChangeKeyCase ()
     {
-        $ary = new ::cPHP::Ary(array( 'One' => 1, 'Two' => 2, 'Three' => 3 ));
+        $ary = new \cPHP\Ary(array( 'One' => 1, 'Two' => 2, 'Three' => 3 ));
 
         $result = $ary->changeKeyCase();
 
         $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertNotSame( $ary, $result );
         $this->assertEquals(
                 array( 'one' => 1, 'two' => 2, 'three' => 3 ),
@@ -929,7 +929,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertNotSame( $ary, $result );
         $this->assertEquals(
                 array( 'one' => 1, 'two' => 2, 'three' => 3 ),
@@ -941,7 +941,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( array( 'One' => 1, 'Two' => 2, 'Three' => 3 ), $ary->get() );
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertNotSame( $ary, $result );
         $this->assertEquals(
                 array( 'ONE' => 1, 'TWO' => 2, 'THREE' => 3 ),
@@ -951,7 +951,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testImplode ()
     {
-        $ary = new cPHP::Ary(array(5, "string", "other"));
+        $ary = new \cPHP\Ary(array(5, "string", "other"));
 
         $this->assertEquals( "5stringother", $ary->implode() );
         $this->assertEquals( "5, string, other", $ary->implode(", ") );
@@ -962,41 +962,41 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array(50, 90),
-                cPHP::Ary::create( array( "50", "90") )->collect("floatval")->get()
+                \cPHP\Ary::create( array( "50", "90") )->collect("floatval")->get()
             );
 
         $lambda = function ( $value, $key ) { return "$key:$value"; };
         $this->assertEquals(
                 array("0:50", "1:90"),
-                cPHP::Ary::create( array( "50", "90") )->collect($lambda)->get()
+                \cPHP\Ary::create( array( "50", "90") )->collect($lambda)->get()
             );
 
         $this->assertEquals(
                 array( 1 => "o50:1", 3 => "o90:3" ),
-                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                \cPHP\Ary::create( array( 1 => "50",  3 => "90") )
                     ->collect(array($this, "callbackObject"))
                     ->get()
             );
 
         $this->assertEquals(
                 array( 1 => "s50:1", 3 => "s90:3" ),
-                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                \cPHP\Ary::create( array( 1 => "50",  3 => "90") )
                     ->collect(array(__CLASS__, "callbackStatic"))
                     ->get()
             );
 
         $this->assertEquals(
                 array( 1 => "i50:1", 3 => "i90:3" ),
-                cPHP::Ary::create( array( 1 => "50",  3 => "90") )
+                \cPHP\Ary::create( array( 1 => "50",  3 => "90") )
                     ->collect( $this )
                     ->get()
             );
 
         try {
-            cPHP::Ary::create()->collect("This is an uncallable value");
+            \cPHP\Ary::create()->collect("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
     }
 
     public function testFilter ()
@@ -1006,7 +1006,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             return $first % 2 == 0;
         };
 
-        $ary = new cPHP::Ary( array(1, 2, 3, 4, 5 ) );
+        $ary = new \cPHP\Ary( array(1, 2, 3, 4, 5 ) );
 
         $this->assertEquals(
                 array(1 => 2, 3 => 4),
@@ -1014,7 +1014,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
 
 
-        $ary = new cPHP::Ary( array("1", "2", 3, 4, "5" ) );
+        $ary = new \cPHP\Ary( array("1", "2", 3, 4, "5" ) );
 
         $this->assertEquals(
                 array(0 => "1", 1 => "2", 4 => "5"),
@@ -1023,10 +1023,10 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         try {
-            cPHP::Ary::create()->filter("This is an uncallable value");
+            \cPHP\Ary::create()->filter("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
     }
 
@@ -1037,7 +1037,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $result[ $value ] = $key;
         };
 
-        $ary = cPHP::Ary::create( array( "one" => 50, "two" => 90 ) );
+        $ary = \cPHP\Ary::create( array( "one" => 50, "two" => 90 ) );
 
         $this->assertSame( $ary, $ary->each( $lambda ) );
         $this->assertEquals( array( 50 => "one", 90 => "two"), $result );
@@ -1051,7 +1051,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->each("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {}
+        catch ( \cPHP\Exception\Argument $err ) {}
 
     }
 
@@ -1063,7 +1063,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
     public function testCompact ()
     {
 
-        $ary = new cPHP::Ary( array( 0, TRUE, NULL, "string", FALSE, 1, array(), array(1.5, ""), "  ", "0" ) );
+        $ary = new \cPHP\Ary( array( 0, TRUE, NULL, "string", FALSE, 1, array(), array(1.5, ""), "  ", "0" ) );
 
         $this->assertEquals(
                 array( 1 => TRUE, 3 => "string", 5 => 1, 7 => array(1.5), 9 => "0"),
@@ -1072,18 +1072,18 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array( 1 => TRUE, 2 => NULL, 3 => "string", 4 => FALSE, 5 => 1, 7 => array(1.5), 9 => "0"),
-                $ary->compact( ::cPHP::ALLOW_FALSE | ::cPHP::ALLOW_NULL )->get()
+                $ary->compact( \cPHP\ALLOW_FALSE | \cPHP\ALLOW_NULL )->get()
             );
 
 
-        $ary = new cPHP::Ary(array(
-                new cPHP::Ary(array("full", "of", "stuff", FALSE)),
-                new cPHP::Ary,
+        $ary = new \cPHP\Ary(array(
+                new \cPHP\Ary(array("full", "of", "stuff", FALSE)),
+                new \cPHP\Ary,
                 array(1.5, ""),
             ));
 
         $ary = $ary->compact();
-        $this->assertThat( $ary, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary, $this->isInstanceOf("cPHP\Ary") );
 
         $ary = $ary->get();
 
@@ -1091,7 +1091,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 2, $ary );
         $this->assertArrayNotHasKey( 1, $ary );
 
-        $this->assertThat( $ary[0], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary[0], $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array("full", "of", "stuff"),
                 $ary[0]->get()
@@ -1114,9 +1114,9 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testUnique ()
     {
-        $ary = new cPHP::Ary(array(1, 2, 4, 2, 9, 1, 6 ));
+        $ary = new \cPHP\Ary(array(1, 2, 4, 2, 9, 1, 6 ));
 
-        $this->assertThat( $ary->unique(), $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary->unique(), $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array(0 => 1, 1 => 2, 2 => 4, 4 => 9, 6 => 6 ),
                 $ary->unique()->get()
@@ -1125,11 +1125,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testMerge ()
     {
-        $ary = new cPHP::Ary( array( 1, 2, "con" => 4 ) );
+        $ary = new \cPHP\Ary( array( 1, 2, "con" => 4 ) );
 
         $merged = $ary->merge( array( 5, 6, "con" => 7 ) );
 
-        $this->assertThat( $merged, $this->isInstanceOf( "cPHP::Ary" ) );
+        $this->assertThat( $merged, $this->isInstanceOf( "\cPHP\Ary" ) );
 
         $this->assertEquals(
                 array( 1, 2, 5, 6, "con" => 7 ),
@@ -1139,11 +1139,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testAdd()
     {
-        $ary = new cPHP::Ary( array( 1, 2, "con" => 4 ) );
+        $ary = new \cPHP\Ary( array( 1, 2, "con" => 4 ) );
 
         $merged = $ary->add( array( 2 => 3, "con" => 7 ) );
 
-        $this->assertThat( $merged, $this->isInstanceOf( "cPHP::Ary" ) );
+        $this->assertThat( $merged, $this->isInstanceOf( "\cPHP\Ary" ) );
 
         $this->assertEquals(
                 array( 1, 2, 3, "con" => 4 ),
@@ -1165,7 +1165,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
 
         // Test a closure callback
-        $ary = new cPHP::Ary( range(0, 10) );
+        $ary = new \cPHP\Ary( range(0, 10) );
         $result = $ary->find(function ( $value, $key ) {
             return $value == 6 ? TRUE : FALSE;
         });
@@ -1173,7 +1173,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         // Test a closure without a match
-        $ary = new cPHP::Ary( range(0, 10) );
+        $ary = new \cPHP\Ary( range(0, 10) );
         $result = $ary->find(function ( $value, $key ) {
             return $value == 50 ? TRUE : FALSE;
         });
@@ -1181,12 +1181,12 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
 
         // Test a function name as a callback
-        $ary = new cPHP::Ary( range(5, -5) );
-        $result = $ary->find("cPHP::num::negative");
+        $ary = new \cPHP\Ary( range(5, -5) );
+        $result = $ary->find("cPHP\\num\\negative");
         $this->assertSame( -1, $result );
 
 
-        $ary = new cPHP::Ary( array(5, 4, "yes", 3, "also yes", 1) );
+        $ary = new \cPHP\Ary( array(5, 4, "yes", 3, "also yes", 1) );
 
 
         // Static method callback
@@ -1213,7 +1213,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->find("This is an uncallable value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must be callable", $err->getMessage());
         }
 
@@ -1221,7 +1221,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSearch ()
     {
-        $ary = new ::cPHP::Ary(array( 0 => 4, 5 => 3, "key" => "other"));
+        $ary = new \cPHP\Ary(array( 0 => 4, 5 => 3, "key" => "other"));
 
         $this->assertSame( 0, $ary->search(4) );
         $this->assertSame( 0, $ary->search("4") );
@@ -1234,24 +1234,24 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testWithout ()
     {
-        $ary = new ::cPHP::Ary(array( 1, 2, 3, "four", "five", "six" ));
+        $ary = new \cPHP\Ary(array( 1, 2, 3, "four", "five", "six" ));
 
         $result = $ary->without( 2 );
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array( 0 => 1, 2 => 3, 3 => "four", 4 => "five", 5 => "six"),
                 $result->get()
             );
 
         $result = $ary->without( 2, "3" );
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array( 0 => 1, 3 => "four", 4 => "five", 5 => "six"),
                 $result->get()
             );
 
         $result = $ary->without( 2, "3", "five", array("six") );
-        $this->assertThat( $result, $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array( 0 => 1, 3 => "four", 5 => "six"),
                 $result->get()
@@ -1265,7 +1265,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSetBranch_basic ()
     {
-        $ary = new cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
         $this->assertSame(
@@ -1273,19 +1273,19 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 $ary->keys()->get()
             );
 
-        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('two'),
                 $ary['one']->keys()->get()
             );
 
-        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('three'),
                 $ary['one']['two']->keys()->get()
             );
 
-        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('four' => 'new'),
                 $ary['one']['two']['three']->get()
@@ -1294,7 +1294,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSetBranch_flatten ()
     {
-        $ary = new cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $this->assertSame( $ary, $ary->branch("new", array( array("one") ), "two", array( "three", "four" ) ) );
         $this->assertSame(
@@ -1302,19 +1302,19 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 $ary->keys()->get()
             );
 
-        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('two'),
                 $ary['one']->keys()->get()
             );
 
-        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('three'),
                 $ary['one']['two']->keys()->get()
             );
 
-        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('four' => 'new'),
                 $ary['one']['two']['three']->get()
@@ -1323,7 +1323,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSetBranch_pushLastKey ()
     {
-        $ary = new cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $this->assertSame( $ary, $ary->branch("new", null) );
         $this->assertSame(
@@ -1344,7 +1344,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 $ary->keys()->get()
             );
 
-        $this->assertThat( $ary['push'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['push'], $this->isInstanceOf("cPHP\Ary") );
 
         $this->assertSame(
                 array ('leaf'),
@@ -1354,7 +1354,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSetBranch_pushMidKey ()
     {
-        $ary = new cPHP::Ary;
+        $ary = new \cPHP\Ary;
 
         $this->assertSame( $ary, $ary->branch("new", "one", null, "two") );
         $this->assertSame(
@@ -1362,13 +1362,13 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 $ary->keys()->get()
             );
 
-        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(0),
                 $ary['one']->keys()->get()
             );
 
-        $this->assertThat( $ary['one'][0], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one'][0], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('two' => 'new'),
                 $ary['one'][0]->get()
@@ -1377,7 +1377,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSetBranch_add ()
     {
-        $ary = new cPHP::Ary( array( "one" => array( "two" => "value" ) ) );
+        $ary = new \cPHP\Ary( array( "one" => array( "two" => "value" ) ) );
 
         $this->assertSame( $ary, $ary->branch("new", "one", "two", "three", "four") );
         $this->assertSame(
@@ -1391,13 +1391,13 @@ class classes_ary extends PHPUnit_Framework_TestCase
                 array_keys( $ary['one'] )
             );
 
-        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('three'),
                 $ary['one']['two']->keys()->get()
             );
 
-        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP::Ary") );
+        $this->assertThat( $ary['one']['two']['three'], $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array('four' => 'new'),
                 $ary['one']['two']['three']->get()
@@ -1417,7 +1417,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testStringize ()
     {
-        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+        $ary = new \cPHP\Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
 
         $this->assertSame( $ary, $ary->stringize() );
 
@@ -1429,7 +1429,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testIntegerize ()
     {
-        $ary = new ::cPHP::Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
+        $ary = new \cPHP\Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );
 
         $this->assertSame( $ary, $ary->integerize() );
 
@@ -1441,55 +1441,55 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testChangeCase ()
     {
-        $ary = new ::cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
             );
 
-        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_LOWER ) );
+        $this->assertSame( $ary, $ary->changeCase( \cPHP\Ary::CASE_LOWER ) );
         $this->assertSame(
                 array( "lower", "first", "last", "shout", "small phrase", "other phrase" ),
                 $ary->get()
             );
 
 
-        $ary = new ::cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
             );
 
-        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UPPER ) );
+        $this->assertSame( $ary, $ary->changeCase( \cPHP\Ary::CASE_UPPER ) );
         $this->assertSame(
                 array( "LOWER", "FIRST", "LAST", "SHOUT", "SMALL PHRASE", "OTHER PHRASE" ),
                 $ary->get()
             );
 
 
-        $ary = new ::cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
             );
 
-        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCFIRST ) );
+        $this->assertSame( $ary, $ary->changeCase( \cPHP\Ary::CASE_UCFIRST ) );
         $this->assertSame(
                 array( "Lower", "First", "LasT", "SHOUT", "Small phrase", "Other Phrase" ),
                 $ary->get()
             );
 
 
-        $ary = new ::cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
             );
 
-        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_UCWORDS ) );
+        $this->assertSame( $ary, $ary->changeCase( \cPHP\Ary::CASE_UCWORDS ) );
         $this->assertSame(
                 array( "Lower", "First", "LasT", "SHOUT", "Small Phrase", "Other Phrase" ),
                 $ary->get()
             );
 
 
-        $ary = new ::cPHP::Ary(
+        $ary = new \cPHP\Ary(
                 array( "lower", "First", "lasT", "SHOUT", "Small phrase", "other Phrase" )
             );
 
-        $this->assertSame( $ary, $ary->changeCase( ::cPHP::Ary::CASE_NOSHOUT ) );
+        $this->assertSame( $ary, $ary->changeCase( \cPHP\Ary::CASE_NOSHOUT ) );
         $this->assertSame(
                 $array = array( "lower", "First", "last", "Shout", "Small phrase", "other Phrase" ),
                 $ary->get()
@@ -1500,7 +1500,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->changeCase( "Invalid flag" );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Invalid Case Flag", $err->getMessage());
         }
 
@@ -1509,7 +1509,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
             $ary->changeCase( 10000 );
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( ::cPHP::Exception::Argument $err ) {
+        catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Invalid Case Flag", $err->getMessage());
         }
     }
@@ -1518,10 +1518,10 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $ary = new ::cPHP::Ary(array( "var" => "val", "other" => "something" ));
+        $ary = new \cPHP\Ary(array( "var" => "val", "other" => "something" ));
         $this->assertSame( "var=val&other=something", $ary->toQuery() );
 
-        $ary = new ::cPHP::Ary(array( "var" => "", "other" => "   " ));
+        $ary = new \cPHP\Ary(array( "var" => "", "other" => "   " ));
         $this->assertSame( "var=&other=+++", $ary->toQuery() );
     }
 
@@ -1530,23 +1530,23 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->iniSet("arg_separator.output", "--");
 
 
-        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $ary = new \cPHP\Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
         $this->assertSame( "one=1--two=2--three=3", $ary->toQuery() );
 
 
-        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $ary = new \cPHP\Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
         $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( FALSE ) );
 
 
-        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $ary = new \cPHP\Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
         $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( TRUE ) );
 
 
-        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $ary = new \cPHP\Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
         $this->assertSame( "one=1--two=2--three=3", $ary->toQuery( NULL ) );
 
 
-        $ary = new ::cPHP::Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
+        $ary = new \cPHP\Ary(array( "one" => "1", "two" => "2", "three" => 3 ));
         $this->assertSame( "one=1!-!two=2!-!three=3", $ary->toQuery( "!-!" ) );
     }
 
@@ -1554,19 +1554,19 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $ary = new ::cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
             "var" => array( "one", "two" ),
         ));
         $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
 
 
-        $ary = new ::cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
             "0" => array( "one", "two" ),
         ));
         $this->assertSame( "0%5B0%5D=one&0%5B1%5D=two", $ary->toQuery() );
 
 
-        $ary = new ::cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
             "var" => array( "one", "two" => array(
                     "double" => "depth"
                 )),
@@ -1579,11 +1579,11 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $ary = new ::cPHP::Ary(array( "var[]" => "encode" ));
+        $ary = new \cPHP\Ary(array( "var[]" => "encode" ));
         $this->assertSame( "var%5B%5D=encode", $ary->toQuery() );
 
 
-        $ary = new ::cPHP::Ary(array( "!@#" => "%^&" ));
+        $ary = new \cPHP\Ary(array( "!@#" => "%^&" ));
         $this->assertSame( "%21%40%23=%25%5E%26", $ary->toQuery() );
     }
 
@@ -1591,13 +1591,13 @@ class classes_ary extends PHPUnit_Framework_TestCase
     {
         $this->iniSet("arg_separator.output", "&");
 
-        $ary = new ::cPHP::Ary(array(
-            "var" => new ::cPHP::Ary(array( "one", "two" )),
+        $ary = new \cPHP\Ary(array(
+            "var" => new \cPHP\Ary(array( "one", "two" )),
         ));
         $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
 
 
-        $ary = new ::cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
             "var" => new ArrayIterator(array( "one", "two" )),
         ));
         $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $ary->toQuery() );
@@ -1611,7 +1611,7 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $obj = new stdClass;
         $obj->one = 1;
         $obj->two = "2";
-        $ary = new ::cPHP::Ary(array(
+        $ary = new \cPHP\Ary(array(
             "var" => $obj
         ));
         $this->assertSame( "var%5Bone%5D=1&var%5Btwo%5D=2", $ary->toQuery() );

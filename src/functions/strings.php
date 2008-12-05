@@ -30,7 +30,7 @@
  * @package strings
  */
 
-namespace cPHP::str;
+namespace cPHP\str;
 
 /**
  * Function constants
@@ -55,7 +55,7 @@ function int2Ordinal ($integer)
 {
     $integer = strval(intval($integer));
 
-    if ( ::cPHP::num::between( abs( substr($integer, -2) ), 11, 13, TRUE))
+    if ( \cPHP\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
 
     switch( substr($integer, -1) ) {
@@ -96,17 +96,17 @@ function contains($needle, $haystack, $ignoreCase = TRUE)
  */
 function offsets ($needle, $haystack, $ignoreCase = TRUE)
 {
-    $ignoreCase = ::cPHP::boolVal($ignoreCase);
-    $needle = ::cPHP::strVal($needle);
-    $haystack = ::cPHP::strVal($haystack);
+    $ignoreCase = \cPHP\boolVal($ignoreCase);
+    $needle = \cPHP\strVal($needle);
+    $haystack = \cPHP\strVal($haystack);
 
     if (empty($needle))
-        throw new ::cPHP::Exception::Argument(0, 'needle', 'Must not be empty');
+        throw new \cPHP\Exception\Argument(0, 'needle', 'Must not be empty');
 
-    if (!::cPHP::str::contains($needle, $haystack, $ignoreCase))
-        return new cPHP::Ary;
+    if (!\cPHP\str\contains($needle, $haystack, $ignoreCase))
+        return new \cPHP\Ary;
 
-    $count = $ignoreCase ? ::cPHP::str::substr_icount($haystack, $needle) : substr_count($haystack, $needle);
+    $count = $ignoreCase ? \cPHP\str\substr_icount($haystack, $needle) : substr_count($haystack, $needle);
 
     $found = array();
 
@@ -119,7 +119,7 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
         $offset = end( $found ) + $length;
     }
 
-    return new cPHP::Ary( $found );
+    return new \cPHP\Ary( $found );
 }
 
 /**
@@ -131,9 +131,9 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
  * @param Integer $wrapFlag How to handle offset wrapping when the offset, per {@link calcWrapFlag()}.
  * @return Integer Returns the offsets, from 0, of the needle in the haystack
  */
-function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = cPHP::Ary::OFFSET_RESTRICT)
+function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
 {
-    $found = ::cPHP::str::offsets($needle, $haystack, $ignoreCase);
+    $found = \cPHP\str\offsets($needle, $haystack, $ignoreCase);
 
     if (count($found) <= 0)
         return FALSE;
@@ -177,15 +177,15 @@ function unshout ($string)
 function stripW ($string, $flags = 0)
 {
 
-    $flags = max( intval( ::cPHP::reduce($flags)), 0 );
+    $flags = max( intval( \cPHP\reduce($flags)), 0 );
 
     return preg_replace(
             "/[^a-z0-9"
-            .($flags & ::cPHP::str::ALLOW_TABS?"\t":"")
-            .($flags & ::cPHP::str::ALLOW_NEWLINES?"\n\r":"")
-            .($flags & ::cPHP::str::ALLOW_SPACES?" ":"")
-            .($flags & ::cPHP::str::ALLOW_UNDERSCORES?"_":"")
-            .($flags & ::cPHP::str::ALLOW_DASHES?'\-':"")
+            .($flags & \cPHP\str\ALLOW_TABS?"\t":"")
+            .($flags & \cPHP\str\ALLOW_NEWLINES?"\n\r":"")
+            .($flags & \cPHP\str\ALLOW_SPACES?" ":"")
+            .($flags & \cPHP\str\ALLOW_UNDERSCORES?"_":"")
+            .($flags & \cPHP\str\ALLOW_DASHES?'\-':"")
             ."]/i",
             NULL,
             $string
@@ -204,7 +204,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
 
     if (is_array($repeated) ) {
-        $repeated = ::cPHP::Ary::create( $repeated )->flatten()->collect("strval");
+        $repeated = \cPHP\Ary::create( $repeated )->flatten()->collect("strval");
         foreach( $repeated AS $key => $value ) {
             $repeated[ $key ] = preg_quote($value, "/");
         }
@@ -214,8 +214,8 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote(strval($repeated), '/');
     }
 
-    if ( ::cPHP::isEmpty( $repeated ) )
-        throw new ::cPHP::Exception::Argument(1, 'Repeated', 'Must not be empty');
+    if ( \cPHP\isEmpty( $repeated ) )
+        throw new \cPHP\Exception\Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
             '/('. $repeated .')\1+/'. ($ignoreCase?'i':''),
@@ -237,7 +237,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
     $string = strval($string);
-    if ( ::cPHP::isEmpty($string) )
+    if ( \cPHP\isEmpty($string) )
         return '';
 
     $glue = strval( $glue );
@@ -246,7 +246,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
     $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
-    if ( ::cPHP::isVague($trimTo) || intval($trimTo) <= 0 )
+    if ( \cPHP\isVague($trimTo) || intval($trimTo) <= 0 )
         $trimTo = ceil($maxLength * (2 / 3));
 
     // The trimTo length can't be greater than the max length
@@ -284,13 +284,13 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     $string = strval($string);
 
-    $quotes = new cPHP::Ary( $quotes );
+    $quotes = new \cPHP\Ary( $quotes );
     $quotes = $quotes->flatten()->collect("trim")->unique()->compact();
 
     $split = preg_split(
             '/(?<!\\\\)(?:\\\\\\\\)*('
                 . $quotes->collect(
-                        cPHP::Curry::Call::Create("preg_quote")->setRight("/")->setLimit(1)
+                        \cPHP\Curry\Call::create("preg_quote")->setRight("/")->setLimit(1)
                     )->implode("|")
                 .')/i',
             $string,
@@ -358,7 +358,7 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
 
     $stringHead = substr($string, 0, strlen($head));
 
-    return ::cPHP::str::compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
+    return \cPHP\str\compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 
@@ -383,7 +383,7 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
 
     $stringTail = substr($string, 0 - strlen($tail));
 
-    return ::cPHP::str::compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
+    return \cPHP\str\compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 /**
@@ -403,7 +403,7 @@ function tail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    return !::cPHP::str::endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
+    return !\cPHP\str\endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
 }
 
 /**
@@ -423,7 +423,7 @@ function stripTail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    if ( ::cPHP::str::endsWith($string, $tail, $ignoreCase))
+    if ( \cPHP\str\endsWith($string, $tail, $ignoreCase))
         $string = substr($string, 0, 0 - strlen($tail));
 
     if ($string === FALSE)
@@ -448,7 +448,7 @@ function head ($string, $head, $ignoreCase = TRUE)
     if (empty($head))
         return $string;
 
-    return !::cPHP::str::startsWith($string, $head, $ignoreCase)?$head . $string:$string;
+    return !\cPHP\str\startsWith($string, $head, $ignoreCase)?$head . $string:$string;
 }
 
 /**
@@ -461,14 +461,14 @@ function head ($string, $head, $ignoreCase = TRUE)
  */
 function stripHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = ::cPHP::strval( ::cPHP::reduce($string) );
-    $head = ::cPHP::strval( ::cPHP::reduce($head) );
+    $string = \cPHP\strval( \cPHP\reduce($string) );
+    $head = \cPHP\strval( \cPHP\reduce($head) );
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
         return $string;
 
-    if (::cPHP::str::startsWith($string, $head, $ignoreCase))
+    if (\cPHP\str\startsWith($string, $head, $ignoreCase))
         $string = substr($string, strlen($head));
 
     if ($string === FALSE)
@@ -491,16 +491,16 @@ function stripHead ($string, $head, $ignoreCase = TRUE)
  */
 function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
 {
-    $string1 = ::cPHP::strval($string1);
-    $string2 = ::cPHP::strval($string2);
-    $glue = ::cPHP::strval($glue);
+    $string1 = \cPHP\strval($string1);
+    $string2 = \cPHP\strval($string2);
+    $glue = \cPHP\strval($glue);
 
-    if ( ::cPHP::isVague($glue, ::cPHP::str::ALLOW_SPACES))
+    if ( \cPHP\isVague($glue, \cPHP\str\ALLOW_SPACES))
         return $string1 . $string2;
 
-    return ::cPHP::str::stripTail($string1, $glue, $ignoreCase)
+    return \cPHP\str\stripTail($string1, $glue, $ignoreCase)
         .$glue
-        .::cPHP::str::stripHead($string2, $glue, $ignoreCase);
+        .\cPHP\str\stripHead($string2, $glue, $ignoreCase);
 
 }
 
@@ -515,16 +515,16 @@ function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
  */
 function partition ($string, $offsets)
 {
-    $string = ::cPHP::strval($string);
+    $string = \cPHP\strval($string);
 
     if (strlen($string) <= 0)
-        return new cPHP::Ary;
+        return new \cPHP\Ary;
 
     $offsets = func_get_args();
     array_shift($offsets);
-    $offsets = cPHP::Ary::Create( $offsets )->flatten()->collect("intval")->unique()->sort();
+    $offsets = \cPHP\Ary::create( $offsets )->flatten()->collect("intval")->unique()->sort();
 
-    $out = new cPHP::Ary;
+    $out = new \cPHP\Ary;
 
     $last = 0;
 
@@ -550,8 +550,8 @@ function partition ($string, $offsets)
 function compare ($string1, $string2, $ignoreCase = TRUE)
 {
     return $ignoreCase ?
-        strcasecmp( ::cPHP::strval($string1), ::cPHP::strval($string2) ) :
-        strcmp( ::cPHP::strval($string1), ::cPHP::strval($string2) );
+        strcasecmp( \cPHP\strval($string1), \cPHP\strval($string2) ) :
+        strcmp( \cPHP\strval($string1), \cPHP\strval($string2) );
 }
 
 /**
@@ -564,8 +564,8 @@ function compare ($string1, $string2, $ignoreCase = TRUE)
  */
 function enclose ($string, $enclose, $ignoreCase = TRUE)
 {
-    return ::cPHP::str::tail(
-            ::cPHP::str::head($string, $enclose, $ignoreCase),
+    return \cPHP\str\tail(
+            \cPHP\str\head($string, $enclose, $ignoreCase),
             $enclose,
             $ignoreCase
         );
@@ -609,10 +609,10 @@ function truncate ($string, $maxLength, $delimiter = '...')
  */
 function pluralize ( $string, $count = 2 )
 {
-    $string = ::cPHP::strval($string);
+    $string = \cPHP\strval($string);
 
-    if ( ::cPHP::isEmpty( trim($string) ) )
-        throw new ::cPHP::Exception::Argument(0, "String", "Must not be empty");
+    if ( \cPHP\isEmpty( trim($string) ) )
+        throw new \cPHP\Exception\Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )
         return $string;

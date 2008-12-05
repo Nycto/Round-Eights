@@ -30,13 +30,13 @@
  * @package Validators
  */
 
-namespace cPHP::Validator;
+namespace cPHP\Validator;
 
 /**
- * Given a cPHP::Form::Multi object, this determines whether the given value
+ * Given a \cPHP\Form\Multi object, this determines whether the given value
  * is a valid selection
  */
-class MultiField extends ::cPHP::Validator
+class MultiField extends \cPHP\Validator
 {
 
     /**
@@ -47,9 +47,9 @@ class MultiField extends ::cPHP::Validator
     /**
      * Constructor...
      *
-     * @param Object $field The cPHP::Form::Multi field to compare the value to
+     * @param Object $field The \cPHP\Form\Multi field to compare the value to
      */
-    public function __construct ( ::cPHP::Form::Multi $field )
+    public function __construct ( \cPHP\Form\Multi $field )
     {
         $this->field = $field;
     }
@@ -65,7 +65,7 @@ class MultiField extends ::cPHP::Validator
      */
     protected function process ( $value )
     {
-        if ( !::cPHP::isBasic($value) || !$this->field->getOptions()->keyExists($value) )
+        if ( !\cPHP\isBasic($value) || !$this->field->getOptions()->keyExists($value) )
             return "Value is not a valid selection";
     }
 

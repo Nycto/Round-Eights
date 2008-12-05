@@ -184,7 +184,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Returns and maintains a cPHP::DB::MySQLi Link
+     * Returns and maintains a \cPHP\DB\MySQLi Link
      *
      * This will also create a table and fill it with data, according to the
      * settings in the config.php file
@@ -194,7 +194,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
         static $link;
 
         if ( !isset($link) || !$link->isConnected() ) {
-            $link = new ::cPHP::DB::MySQLi::Link( $this->getURI() );
+            $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
 
 
             $mysqli = $link->getLink();
@@ -335,7 +335,7 @@ abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_EmptyFile_Fra
  * Stub of the Env class that allows tests to create an instance that represents
  * a specific environment
  */
-class Stub_Env extends ::cPHP::Env
+class Stub_Env extends \cPHP\Env
 {
 
     static public function fromArray( array $data )
