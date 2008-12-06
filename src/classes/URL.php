@@ -587,6 +587,17 @@ class URL
     }
 
     /**
+     * Sets the port in this instance from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillPort ()
+    {
+        $env = $this->getEnv();
+        return $this->setPort( $env->port );
+    }
+
+    /**
      * Returns the host and the port in one string
      *
      * @return String|Null This will return null the host isn't set
