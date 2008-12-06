@@ -1098,6 +1098,18 @@ class URL
     }
 
     /**
+     * Fills the faux directories from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillFauxDirs ()
+    {
+        $env = $this->getEnv();
+        $this->setFauxDirs( $env->fauxDirs );
+        return $this;
+    }
+
+    /**
      * Returns the query, if there is one
      *
      * @return String|Null Returns null if no query has been set

@@ -1124,6 +1124,32 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->fauxDirsExists() );
     }
 
+    public function testFillFauxDirs ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertSame( $url, $url->fillFauxDirs() );
+        $this->assertNull( $url->getFauxDirs() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array(
+                            "PATH_INFO" => "/fake/dir",
+                        ))
+                ));
+
+        $this->assertSame( $url, $url->fillFauxDirs() );
+        $this->assertSame( "/fake/dir", $url->getFauxDirs() );
+    }
+
     public function testQueryAccessors ()
     {
         $url = new \cPHP\URL;
