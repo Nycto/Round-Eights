@@ -127,6 +127,14 @@ class Env
     protected $cwd;
 
     /**
+     * The cPHP\URL instance for the environment
+     *
+     * Unlike the rest of properties in this class, this one is not directly
+     * accessible. Instead, use the getLink() method.
+     */
+    protected $link;
+
+    /**
      * The full requested host
      *
      * The host is the subdomain, SLD and TLD all in one. For example, "test.example.com"
@@ -145,50 +153,6 @@ class Env
     protected $hostWithPort;
 
     /**
-     * The top level domain of the requested URI
-     *
-     * In the URL "test.example.com", the TLD is "example.com"
-     *
-     * This is NULL if no TLD exists
-     *
-     * @public
-     */
-    protected $domain;
-
-    /**
-     * The top level domain of the requested URI
-     *
-     * In the URL "test.example.com", the TLD is "com"
-     *
-     * This is NULL if no TLD exists
-     *
-     * @public
-     */
-    protected $tld;
-
-    /**
-     * The second level domain of the requested URI
-     *
-     * In the URL "test.example.com", the SLD is "example"
-     *
-     * This is NULL if no SLD exists
-     *
-     * @public
-     */
-    protected $sld;
-
-    /**
-     * The subdomain of the requested URI
-     *
-     * In the URL "test.test.example.com", the SLD is "test.test"
-     *
-     * This is NULL if no subdomain was set
-     *
-     * @public
-     */
-    protected $subdomain;
-
-    /**
      * The relative path of the requested URI
      *
      * @public
@@ -201,20 +165,6 @@ class Env
      * @public
      */
     protected $uriDir;
-
-    /**
-     * The absolute path of the requested URI
-     *
-     * @public
-     */
-    protected $absUriPath;
-
-    /**
-     * The absolute directory of the requested URI
-     *
-     * @public
-     */
-    protected $absUriDir;
 
     /**
      * The relative URI
@@ -291,9 +241,11 @@ class Env
             $this->setPort( $server );
             $this->setScheme( $server );
             $this->setFauxDirs( $server );
-            $this->setHostInfo( $server );
-            $this->setUriPath( $server );
-            $this->setUri( $server );
+
+            $this->setLink( $server );
+
+            $this->setHostInfo();
+            $this->setUri();
         }
     }
 
@@ -309,6 +261,9 @@ class Env
 
         if ( !property_exists($this, $variable) )
             throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
+
+        if ( strcasecmp($variable, "link") == 0 )
+            throw new \cPHP\Exception\Argument(0, "Variable Name", "Link property is not publicly available");
 
         return $this->$variable;
     }
@@ -326,7 +281,20 @@ class Env
         if ( !property_exists($this, $variable) )
             throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
 
+        if ( strcasecmp($variable, "link") == 0 )
+            throw new \cPHP\Exception\Argument(0, "Variable Name", "Link property is not publicly available");
+
         return isset( $this->$variable );
+    }
+
+    /**
+     * Returns a clone of the cPHP\URL instance for the environment
+     *
+     * @return Object Returns a cPHP\URL instance
+     */
+    public function getLink ()
+    {
+        return clone $this->link;
     }
 
     /**
@@ -424,47 +392,6 @@ class Env
     }
 
     /**
-     * Sets the host, domain, told, sld and subdomain
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setHostInfo ( array &$server )
-    {
-        if ( !self::hasKey($server, 'HTTP_HOST') )
-            return;
-
-        // Confirm that it isn't equal to the IP
-        if ( $this->ip == $server['HTTP_HOST'] )
-            return;
-
-        $regex = '/^(?:(.*)\.)?([^\.\:]+)\.([^\.\:]+)(?:\:([0-9]*))?$/';
-
-        if ( !preg_match($regex, $server['HTTP_HOST'], $domain) )
-            return;
-
-        if ( self::hasKey($domain, 1) )
-            $this->subdomain = $domain[1];
-        else
-            $this->subdomain = 'www';
-
-        $this->sld = $domain[2];
-        $this->tld = $domain[3];
-
-        $this->domain = $this->sld .".". $this->tld;
-
-        if ( \cPHP\isEmpty($this->subdomain) )
-            $this->host = $this->domain;
-        else
-            $this->host = $this->subdomain .".". $this->domain;
-
-        if ( !\cPHP\isEmpty($this->port) && $this->port != 80 )
-            $this->hostWithPort = $this->host .":". $this->port;
-        else
-            $this->hostWithPort = $this->host;
-    }
-
-    /**
      * Sets the faux directory property
      *
      * @param Array $server The server info array
@@ -479,27 +406,43 @@ class Env
     }
 
     /**
-     * Sets the relative and absolute URI path and dir properties
+     * Creates the cPHP\URL instance representing the environment
      *
      * @param Array $server The server info array
      * @return null
      */
-    protected function setUriPath ( array &$server )
+    protected function setLink ( array &$server )
     {
-        if ( !self::hasKey($server, 'SCRIPT_NAME') )
-            return;
+        $this->link = new \cPHP\URL;
 
-        // Replace an windows forward slashes
-        $this->uriPath = str_replace("\\", "/", $server['SCRIPT_NAME']);
+        $this->link->setScheme( $this->scheme );
 
-        // Ensure it starts with a forward slash
-        $this->uriPath = \cPHP\str\head($this->uriPath, "/");
+        if ( self::hasKey($server, 'HTTP_HOST') )
+            $this->link->setHost($server['HTTP_HOST']);
 
-        $this->absUriPath = \cPHP\str\weld( $this->hostWithPort, $this->uriPath, "/");
+        else if ( self::hasKey($server, "SERVER_ADDR") )
+            $this->link->setHost($server['SERVER_ADDR']);
 
-        $this->uriDir = \cPHP\str\tail( dirname( $this->uriPath), "/" );
+        $this->link->setPort( $this->port );
 
-        $this->absUriDir = \cPHP\str\weld( $this->hostWithPort, $this->uriDir, "/");
+        if ( self::hasKey($server, 'SCRIPT_NAME') )
+            $this->link->setPath( $server['SCRIPT_NAME'] );
+
+        $this->link->setFauxDirs( $this->fauxDirs );
+
+        $this->link->setQuery( $this->query );
+    }
+
+    /**
+     * Sets the host
+     *
+     * @param Array $server The server info array
+     * @return null
+     */
+    protected function setHostInfo ()
+    {
+        $this->host = $this->link->getHost();
+        $this->hostWithPort = $this->link->getHostAndPort();
     }
 
     /**
@@ -508,31 +451,13 @@ class Env
      * @param Array $server The server info array
      * @return null
      */
-    protected function setUri ( array &$server )
+    protected function setUri ()
     {
-        $this->uri = null;
+        $this->uriPath = $this->link->getPath();
+        $this->uriDir = $this->link->getDir();
 
-        if ( !\cPHP\isEmpty( $this->uriPath ) )
-            $this->uri = $this->uriPath . $this->fauxDirs;
-
-        if ( !\cPHP\isEmpty( $this->query ) )
-            $this->uri .= \cPHP\str\head( $this->query, "?" );
-
-        $this->absUri = null;
-
-        if ( !\cPHP\isEmpty( $this->hostWithPort ) )
-            $this->absUri .= $this->hostWithPort;
-
-        if ( !\cPHP\isEmpty( $this->scheme ) )
-            $this->absUri = $this->scheme ."://" . $this->absUri;
-
-        if ( !\cPHP\isEmpty( $this->uri ) ) {
-            $this->absUri = \cPHP\str\weld(
-                    $this->absUri,
-                    $this->uri,
-                    "/"
-                );
-        }
+        $this->uri = $this->link->getRelative();
+        $this->absUri = $this->link->getURL();
     }
 
 }

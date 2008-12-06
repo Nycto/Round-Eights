@@ -79,11 +79,11 @@ class classes_env extends PHPUnit_Framework_TestCase
     public function testQuery ()
     {
         $env = Stub_Env::fromArray(array(
-                "QUERY_STRING" => "?var=value"
+                "QUERY_STRING" => "var=value"
             ));
 
         $this->assertTrue( isset($env->query) );
-        $this->assertSame( "?var=value", $env->query );
+        $this->assertSame( "var=value", $env->query );
 
 
         $env = Stub_Env::fromArray(array());
@@ -171,98 +171,158 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan( 0, strlen($env->cwd) );
     }
 
-    public function testSetHostInfo_noSubdomain ()
+    public function testLinkProperty ()
     {
-        $env = Stub_Env::fromArray(array(
-                "HTTP_HOST" => "example.com"
-            ));
+        $env = Stub_Env::fromArray(array());
 
-        $this->assertTrue( isset($env->subdomain) );
-        $this->assertSame( "www", $env->subdomain );
+        try {
+            $env->link;
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Link property is not publicly available", $err->getMessage() );
+        }
 
-        $this->assertTrue( isset($env->sld) );
-        $this->assertSame( "example", $env->sld);
-
-        $this->assertTrue( isset($env->tld) );
-        $this->assertSame( "com", $env->tld );
-
-        $this->assertTrue( isset($env->domain) );
-        $this->assertSame( "example.com", $env->domain );
-
-        $this->assertTrue( isset($env->host) );
-        $this->assertSame( "www.example.com", $env->host );
-
-        $this->assertTrue( isset($env->hostWithPort) );
-        $this->assertSame( "www.example.com", $env->hostWithPort );
+        try {
+            isset( $env->link );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Link property is not publicly available", $err->getMessage() );
+        }
     }
 
-    public function testSetHostInfo_withSubdomain ()
+    public function testGetLink_clone ()
     {
-        $env = Stub_Env::fromArray(array(
-                "HTTP_HOST" => "test.sub.example.com"
-            ));
+        $env = Stub_Env::fromArray(array());
 
-        $this->assertTrue( isset($env->subdomain) );
-        $this->assertSame( "test.sub", $env->subdomain );
+        $this->assertNotSame(
+                $env->getLink(),
+                $env->getLink()
+            );
 
-        $this->assertTrue( isset($env->sld) );
-        $this->assertSame( "example", $env->sld);
+        $url = $env->getLink();
+        $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
+        $this->assertNull( $url->getURL() );
+        $url->getURL("http://www.example.com");
 
-        $this->assertTrue( isset($env->tld) );
-        $this->assertSame( "com", $env->tld );
-
-        $this->assertTrue( isset($env->domain) );
-        $this->assertSame( "example.com", $env->domain );
-
-        $this->assertTrue( isset($env->host) );
-        $this->assertSame( "test.sub.example.com", $env->host );
-
-        $this->assertTrue( isset($env->hostWithPort) );
-        $this->assertSame( "test.sub.example.com", $env->hostWithPort );
-
+        $url = $env->getLink();
+        $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
+        $this->assertNull( $url->getURL() );
     }
 
-    public function testSetHostInfo_withPort ()
+    public function testGetLink_empty ()
+    {
+        $env = Stub_Env::fromArray(array());
+
+        $url = $env->getLink();
+        $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertFalse( $url->extExists() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+    }
+
+    public function testGetLink_full ()
     {
         $env = Stub_Env::fromArray(array(
-                "HTTP_HOST" => "test.sub.example.com",
-                "SERVER_PORT" => "40"
-            ));
-
-        $this->assertTrue( isset($env->hostWithPort) );
-        $this->assertSame( "test.sub.example.com:40", $env->hostWithPort );
-
-
-        $env = Stub_Env::fromArray(array(
-                "HTTP_HOST" => "test.sub.example.com",
+                "SERVER_PROTOCOL" => "HTTP/1.1",
+                "HTTP_HOST" => "example.com",
                 "SERVER_PORT" => "80"
             ));
 
-        $this->assertTrue( isset($env->hostWithPort) );
-        $this->assertSame( "test.sub.example.com", $env->hostWithPort );
+        $url = $env->getLink();
+        $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
+
+        $this->assertSame(
+                "http://example.com",
+                $url->getURL()
+            );
+
+
+        $env = Stub_Env::fromArray(array(
+                "SERVER_PROTOCOL" => "HTTP/1.1",
+                "HTTP_HOST" => "example.com",
+                "SERVER_PORT" => "8080",
+                "QUERY_STRING" => "query=val",
+                "SCRIPT_NAME" => "/dir/file.html",
+                "PATH_INFO" => "/test/faux/dirs"
+            ));
+
+        $url = $env->getLink();
+        $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
+
+        $this->assertSame(
+                "http://example.com:8080/dir/file.html/test/faux/dirs?query=val",
+                $url->getURL()
+            );
     }
 
     public function testSetHostInfo_empty ()
     {
         $env = Stub_Env::fromArray(array());
 
-        $this->assertFalse( isset($env->subdomain) );
-        $this->assertNull( $env->subdomain );
-
-        $this->assertFalse( isset($env->sld) );
-        $this->assertNull( $env->sld );
-
-        $this->assertFalse( isset($env->tld) );
-        $this->assertNull( $env->tld );
-
-        $this->assertFalse( isset($env->domain) );
-        $this->assertNull( $env->domain );
-
         $this->assertFalse( isset($env->host) );
         $this->assertNull( $env->host );
 
         $this->assertFalse( isset($env->hostWithPort) );
-        $this->assertNull( $env->hostWithPort );
+        $this->assertNull( $env->host );
+    }
+
+    public function testSetHostInfo_noPort ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "example.com"
+            ));
+
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "example.com", $env->host );
+
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "example.com", $env->hostWithPort );
+
+
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.sub.example.com"
+            ));
+
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "test.sub.example.com", $env->host );
+
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "test.sub.example.com", $env->hostWithPort );
+    }
+
+    public function testSetHostInfo_withPort ()
+    {
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "example.com",
+                "SERVER_PORT" => "40"
+            ));
+
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "example.com", $env->host );
+
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "example.com:40", $env->hostWithPort );
+
+
+        $env = Stub_Env::fromArray(array(
+                "HTTP_HOST" => "test.sub.example.com",
+                "SERVER_PORT" => "40"
+            ));
+
+        $this->assertTrue( isset($env->host) );
+        $this->assertSame( "test.sub.example.com", $env->host );
+
+        $this->assertTrue( isset($env->hostWithPort) );
+        $this->assertSame( "test.sub.example.com:40", $env->hostWithPort );
     }
 
     public function testSetFauxDir ()
@@ -283,22 +343,14 @@ class classes_env extends PHPUnit_Framework_TestCase
     public function testSetUriPath ()
     {
         $env = Stub_Env::fromArray(array(
-                "HTTP_HOST" => "test.example.com",
-                "SCRIPT_NAME" => "/path/to/file.php",
-                "SERVER_PORT" => "40"
+                "SCRIPT_NAME" => "/path/to/file.php"
             ));
 
         $this->assertTrue( isset($env->uriPath) );
         $this->assertSame( "/path/to/file.php", $env->uriPath );
 
-        $this->assertTrue( isset($env->uriPath) );
-        $this->assertSame( "test.example.com:40/path/to/file.php", $env->absUriPath );
-
         $this->assertTrue( isset($env->uriDir) );
         $this->assertSame( "/path/to/", $env->uriDir );
-
-        $this->assertTrue( isset($env->absUriDir) );
-        $this->assertSame( "test.example.com:40/path/to/", $env->absUriDir );
     }
 
     public function testSetUriPath_empty ()
@@ -307,15 +359,6 @@ class classes_env extends PHPUnit_Framework_TestCase
 
         $this->assertFalse( isset($env->uriPath) );
         $this->assertNull( $env->uriPath );
-
-        $this->assertFalse( isset($env->uriDir) );
-        $this->assertNull( $env->uriDir );
-
-        $this->assertFalse( isset($env->absUriPath) );
-        $this->assertNull( $env->absUriPath );
-
-        $this->assertFalse( isset($env->absUriDir) );
-        $this->assertNull( $env->absUriDir );
     }
 
     public function testSetUri ()
@@ -332,6 +375,7 @@ class classes_env extends PHPUnit_Framework_TestCase
         $env = Stub_Env::fromArray(array(
                 "HTTP_HOST" => "test.example.com"
             ));
+
 
         $this->assertFalse( isset($env->uri) );
         $this->assertNull( $env->uri );
@@ -428,7 +472,7 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SCRIPT_NAME" => "/path/to/file.php",
                 "SERVER_PORT" => "40",
                 "PATH_INFO" => "/test/faux/dirs",
-                "QUERY_STRING" => "?var=value",
+                "QUERY_STRING" => "var=value",
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
