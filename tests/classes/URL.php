@@ -48,6 +48,19 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToString ()
+    {
+        $url = new \cPHP\URL;
+
+        $this->assertSame( "", $url->__toString() );
+        $this->assertSame( "", "$url" );
+
+        $url->setURL("http://example.net/test.html");
+
+        $this->assertSame( "http://example.net/test.html", $url->__toString() );
+        $this->assertSame( "http://example.net/test.html", "$url" );
+    }
+
     public function testParseQuery_flat ()
     {
 

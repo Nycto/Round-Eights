@@ -189,6 +189,16 @@ class URL
     }
 
     /**
+     * Returns a string representation of this URL
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return strval( $this->getURL() );
+    }
+
+    /**
      * Returns the singelton Env instance
      *
      * This method exists strictly for unit testing purposes. By mocking this
