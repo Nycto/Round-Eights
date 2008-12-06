@@ -418,7 +418,7 @@ class Env
      *
      * @return null
      */
-    public function setCWD ()
+    protected function setCWD ()
     {
         $this->cwd = getcwd();
     }
