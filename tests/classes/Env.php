@@ -329,15 +329,15 @@ class classes_env extends PHPUnit_Framework_TestCase
     {
         $env = Stub_Env::fromArray(array());
 
-        $this->assertFalse( isset($env->fauxDirs) );
-        $this->assertNull( $env->fauxDirs );
+        $this->assertFalse( isset($env->fauxDir) );
+        $this->assertNull( $env->fauxDir );
 
         $env = Stub_Env::fromArray(array(
                 "PATH_INFO" => "/test/faux/dirs"
             ));
 
-        $this->assertTrue( isset($env->fauxDirs) );
-        $this->assertSame( "/test/faux/dirs", $env->fauxDirs );
+        $this->assertTrue( isset($env->fauxDir) );
+        $this->assertSame( "/test/faux/dirs", $env->fauxDir );
     }
 
     public function testSetURLPath ()

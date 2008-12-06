@@ -93,7 +93,7 @@ class URL
     /**
      * The faux directories of this link
      */
-    private $fauxDirs;
+    private $fauxDir;
 
     /**
      * Query variables for this link
@@ -1065,47 +1065,47 @@ class URL
     }
 
     /**
-     * Returns the value of the fauxDirs
+     * Returns the value of the fauxDir
      *
-     * @return String|Null Returns null if the fauxDirs isn't set
+     * @return String|Null Returns null if the fauxDir isn't set
      */
-    public function getFauxDirs ()
+    public function getFauxDir ()
     {
-        return $this->fauxDirs;
+        return $this->fauxDir;
     }
 
     /**
-     * Sets the fauxDirs
+     * Sets the fauxDir
      *
-     * @param String $fauxDirs The fauxDirs to set
+     * @param String $fauxDir The fauxDir to set
      * @return Object Returns a self reference
      */
-    public function setFauxDirs ( $fauxDirs )
+    public function setFauxDir ( $fauxDir )
     {
-        $fauxDirs = \cPHP\strval( $fauxDirs );
-        $this->fauxDirs = \cPHP\isEmpty( $fauxDirs )
-            ? null : \cPHP\str\head($fauxDirs, "/");
+        $fauxDir = \cPHP\strval( $fauxDir );
+        $this->fauxDir = \cPHP\isEmpty( $fauxDir )
+            ? null : \cPHP\str\head($fauxDir, "/");
         return $this;
     }
 
     /**
-     * Returns whether the fauxDirs has been set
+     * Returns whether the fauxDir has been set
      *
      * @return Boolean
      */
-    public function fauxDirsExists ()
+    public function fauxDirExists ()
     {
-        return isset( $this->fauxDirs );
+        return isset( $this->fauxDir );
     }
 
     /**
-     * Unsets the currently set fauxDirs
+     * Unsets the currently set fauxDir
      *
      * @return Object Returns a self reference
      */
-    public function clearFauxDirs ()
+    public function clearFauxDir ()
     {
-        $this->fauxDirs = null;
+        $this->fauxDir = null;
         return $this;
     }
 
@@ -1114,10 +1114,10 @@ class URL
      *
      * @return Object Returns a self reference
      */
-    public function fillFauxDirs ()
+    public function fillFauxDir ()
     {
         $env = $this->getEnv();
-        $this->setFauxDirs( $env->fauxDirs );
+        $this->setFauxDir( $env->fauxDir );
         return $this;
     }
 
@@ -1258,8 +1258,8 @@ class URL
             $result = $this->getPath();
 
             // Only add the faux directories if there is a path
-            if ( $this->fauxDirsExists() )
-                $result .= $this->getFauxDirs();
+            if ( $this->fauxDirExists() )
+                $result .= $this->getFauxDir();
 
         }
         else {
@@ -1356,7 +1356,7 @@ class URL
         $this->directory = null;
         $this->filename = null;
         $this->extension = null;
-        $this->fauxDirs = null;
+        $this->fauxDir = null;
         $this->query = null;
         $this->fragment = null;
 
@@ -1372,7 +1372,7 @@ class URL
     {
         return $this->fillBase()
             ->fillPath()
-            ->fillFauxDirs()
+            ->fillFauxDir()
             ->fillQuery();
     }
 

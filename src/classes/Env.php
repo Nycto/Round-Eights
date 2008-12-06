@@ -191,7 +191,7 @@ class Env
      *
      * @public
      */
-    protected $fauxDirs;
+    protected $fauxDir;
 
     /**
      * Returns the global Env instance
@@ -240,7 +240,7 @@ class Env
             $this->setQuery( $server );
             $this->setPort( $server );
             $this->setScheme( $server );
-            $this->setFauxDirs( $server );
+            $this->setFauxDir( $server );
 
             $this->setLink( $server );
 
@@ -397,12 +397,12 @@ class Env
      * @param Array $server The server info array
      * @return null
      */
-    protected function setFauxDirs ( array &$server )
+    protected function setFauxDir ( array &$server )
     {
         if ( !self::hasKey( $server, 'PATH_INFO' ) )
             return;
 
-        $this->fauxDirs = \cPHP\str\head( $server['PATH_INFO'], "/" );
+        $this->fauxDir = \cPHP\str\head( $server['PATH_INFO'], "/" );
     }
 
     /**
@@ -428,7 +428,7 @@ class Env
         if ( self::hasKey($server, 'SCRIPT_NAME') )
             $this->link->setPath( $server['SCRIPT_NAME'] );
 
-        $this->link->setFauxDirs( $this->fauxDirs );
+        $this->link->setFauxDir( $this->fauxDir );
 
         $this->link->setQuery( $this->query );
     }

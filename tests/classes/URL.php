@@ -1110,31 +1110,31 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "php", $url->getExt() );
     }
 
-    public function testFauxDirsAccessors ()
+    public function testFauxDirAccessors ()
     {
         $url = new \cPHP\URL;
 
-        $this->assertNull( $url->getFauxDirs() );
-        $this->assertFalse( $url->fauxDirsExists() );
+        $this->assertNull( $url->getFauxDir() );
+        $this->assertFalse( $url->fauxDirExists() );
 
-        $this->assertSame( $url, $url->setFauxDirs("/test/of/dirs") );
-        $this->assertSame( "/test/of/dirs", $url->getFauxDirs() );
-        $this->assertTrue( $url->fauxDirsExists() );
+        $this->assertSame( $url, $url->setFauxDir("/test/of/dirs") );
+        $this->assertSame( "/test/of/dirs", $url->getFauxDir() );
+        $this->assertTrue( $url->fauxDirExists() );
 
-        $this->assertSame( $url, $url->setFauxDirs("") );
-        $this->assertNull( $url->getFauxDirs() );
-        $this->assertFalse( $url->fauxDirsExists() );
+        $this->assertSame( $url, $url->setFauxDir("") );
+        $this->assertNull( $url->getFauxDir() );
+        $this->assertFalse( $url->fauxDirExists() );
 
-        $this->assertSame( $url, $url->setFauxDirs("dirs") );
-        $this->assertSame( "/dirs", $url->getFauxDirs() );
-        $this->assertTrue( $url->fauxDirsExists() );
+        $this->assertSame( $url, $url->setFauxDir("dirs") );
+        $this->assertSame( "/dirs", $url->getFauxDir() );
+        $this->assertTrue( $url->fauxDirExists() );
 
-        $this->assertSame( $url, $url->clearFauxDirs() );
-        $this->assertNull( $url->getFauxDirs() );
-        $this->assertFalse( $url->fauxDirsExists() );
+        $this->assertSame( $url, $url->clearFauxDir() );
+        $this->assertNull( $url->getFauxDir() );
+        $this->assertFalse( $url->fauxDirExists() );
     }
 
-    public function testFillFauxDirs ()
+    public function testFillFauxDir ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -1143,8 +1143,8 @@ class classes_url extends PHPUnit_Framework_TestCase
                     Stub_Env::fromArray(array())
                 ));
 
-        $this->assertSame( $url, $url->fillFauxDirs() );
-        $this->assertNull( $url->getFauxDirs() );
+        $this->assertSame( $url, $url->fillFauxDir() );
+        $this->assertNull( $url->getFauxDir() );
 
 
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
@@ -1156,8 +1156,8 @@ class classes_url extends PHPUnit_Framework_TestCase
                         ))
                 ));
 
-        $this->assertSame( $url, $url->fillFauxDirs() );
-        $this->assertSame( "/fake/dir", $url->getFauxDirs() );
+        $this->assertSame( $url, $url->fillFauxDir() );
+        $this->assertSame( "/fake/dir", $url->getFauxDir() );
     }
 
     public function testQueryAccessors ()
@@ -1325,7 +1325,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->setFragment("top");
         $this->assertSame( "/path/to/file.php?one=single#top", $url->getRelative() );
 
-        $url->setFauxDirs("/faux/Dir");
+        $url->setFauxDir("/faux/Dir");
         $this->assertSame( "/path/to/file.php/faux/Dir?one=single#top", $url->getRelative() );
 
         $url->clearQuery();
@@ -1420,7 +1420,7 @@ class classes_url extends PHPUnit_Framework_TestCase
     {
         $url = new \cPHP\URL;
         $url->setURL("http://uname:pwd@www.example.com/path/to/file.php?one=single#frag");
-        $url->setFauxDirs("/test/dir");
+        $url->setFauxDir("/test/dir");
 
         $this->assertSame( $url, $url->clearURL() );
 
@@ -1431,7 +1431,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->dirExists() );
         $this->assertFalse( $url->filenameExists() );
         $this->assertFalse( $url->extExists() );
-        $this->assertFalse( $url->fauxDirsExists() );
+        $this->assertFalse( $url->fauxDirExists() );
         $this->assertFalse( $url->queryExists() );
         $this->assertFalse( $url->fragmentExists() );
     }
