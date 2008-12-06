@@ -1177,6 +1177,18 @@ class URL
     }
 
     /**
+     * Fills the faux directories from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillQuery ()
+    {
+        $env = $this->getEnv();
+        $this->setQuery( $env->query );
+        return $this;
+    }
+
+    /**
      * Returns the fragment, if there is one
      *
      * @return String|Null Returns null if no fragment has been set

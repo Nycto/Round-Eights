@@ -1256,6 +1256,32 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testFillQuery ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertSame( $url, $url->fillQuery() );
+        $this->assertNull( $url->getQuery() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array(
+                            "QUERY_STRING" => "var=value"
+                        ))
+                ));
+
+        $this->assertSame( $url, $url->fillQuery() );
+        $this->assertSame( "var=value", $url->getQuery() );
+    }
+
     public function testFragmentAccessors ()
     {
         $url = new \cPHP\URL;
