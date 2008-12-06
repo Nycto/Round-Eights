@@ -184,8 +184,20 @@ class URL
      */
     public function __construct ( $url = null )
     {
-        if ( !\cPHP\isVague($url) )
-            $this->setURL( $url );
+        if ( $url instanceof self ) {
+            $this->setScheme( $url->getScheme() );
+            $this->setUsername( $url->getUserName() );
+            $this->setPassword( $url->getPassword() );
+            $this->setHost( $url->getHost() );
+            $this->setDir( $url->getDir() );
+            $this->setFilename( $url->getFileName() );
+            $this->setExt( $url->getExt() );
+            $this->setQuery( $url->getQuery() );
+            $this->setFragment( $url->getFragment() );
+        }
+        else if ( !\cPHP\isVague($url) ) {
+            $this->setURL( \cPHP\strval($url) );
+        }
     }
 
     /**
@@ -1344,6 +1356,7 @@ class URL
         $this->directory = null;
         $this->filename = null;
         $this->extension = null;
+        $this->fauxDirs = null;
         $this->query = null;
         $this->fragment = null;
 

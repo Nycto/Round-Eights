@@ -46,6 +46,16 @@ class classes_url extends PHPUnit_Framework_TestCase
                 "http://example.net/test.html",
                 $url->getURL()
             );
+
+
+        $url = new \cPHP\URL(
+                new \cPHP\URL("http://example.net:80/test.html")
+            );
+
+        $this->assertSame(
+                "http://example.net/test.html",
+                $url->getURL()
+            );
     }
 
     public function testToString ()
@@ -1410,6 +1420,7 @@ class classes_url extends PHPUnit_Framework_TestCase
     {
         $url = new \cPHP\URL;
         $url->setURL("http://uname:pwd@www.example.com/path/to/file.php?one=single#frag");
+        $url->setFauxDirs("/test/dir");
 
         $this->assertSame( $url, $url->clearURL() );
 
@@ -1420,6 +1431,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->dirExists() );
         $this->assertFalse( $url->filenameExists() );
         $this->assertFalse( $url->extExists() );
+        $this->assertFalse( $url->fauxDirsExists() );
         $this->assertFalse( $url->queryExists() );
         $this->assertFalse( $url->fragmentExists() );
     }
