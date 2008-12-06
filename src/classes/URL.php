@@ -173,6 +173,17 @@ class URL
     }
 
     /**
+     * Constructor...
+     *
+     * @param String $url The initial URL for this instance
+     */
+    public function __construct ( $url = null )
+    {
+        if ( !\cPHP\isVague($url) )
+            $this->setURL( $url );
+    }
+
+    /**
      * Returns the singelton Env instance
      *
      * This method exists strictly for unit testing purposes. By mocking this
