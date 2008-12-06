@@ -452,7 +452,7 @@ class classes_url extends PHPUnit_Framework_TestCase
 
         $this->assertFalse( $url->hostExists() );
         $this->assertSame( $url, $url->fillHost() );
-        $this->assertSame( "www.example.com", $url->getHost() );
+        $this->assertSame( "example.com", $url->getHost() );
 
 
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
@@ -824,7 +824,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->hostExists() );
         $this->assertSame( $url, $url->fillBase() );
         $this->assertSame( "http", $url->getScheme() );
-        $this->assertSame( "www.example.edu", $url->getHost() );
+        $this->assertSame( "example.edu", $url->getHost() );
         $this->assertSame( 80, $url->getPort() );
 
 
@@ -1035,6 +1035,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->extExists() );
     }
 
+    public function testFauxDirsAccessors ()
+    {
+        $url = new \cPHP\URL;
+
+        $this->assertNull( $url->getFauxDirs() );
+        $this->assertFalse( $url->fauxDirsExists() );
+
+        $this->assertSame( $url, $url->setFauxDirs("/test/of/dirs") );
+        $this->assertSame( "/test/of/dirs", $url->getFauxDirs() );
+        $this->assertTrue( $url->fauxDirsExists() );
+
+        $this->assertSame( $url, $url->setFauxDirs("") );
+        $this->assertNull( $url->getFauxDirs() );
+        $this->assertFalse( $url->fauxDirsExists() );
+
+        $this->assertSame( $url, $url->setFauxDirs("dirs") );
+        $this->assertSame( "/dirs", $url->getFauxDirs() );
+        $this->assertTrue( $url->fauxDirsExists() );
+
+        $this->assertSame( $url, $url->clearFauxDirs() );
+        $this->assertNull( $url->getFauxDirs() );
+        $this->assertFalse( $url->fauxDirsExists() );
+    }
+
     public function testQueryAccessors ()
     {
         $url = new \cPHP\URL;
@@ -1174,8 +1198,11 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->setFragment("top");
         $this->assertSame( "/path/to/file.php?one=single#top", $url->getRelative() );
 
+        $url->setFauxDirs("/faux/Dir");
+        $this->assertSame( "/path/to/file.php/faux/Dir?one=single#top", $url->getRelative() );
+
         $url->clearQuery();
-        $this->assertSame( "/path/to/file.php#top", $url->getRelative() );
+        $this->assertSame( "/path/to/file.php/faux/Dir#top", $url->getRelative() );
 
         $url->clearPath();
         $this->assertSame( "#top", $url->getRelative() );

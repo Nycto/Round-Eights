@@ -91,6 +91,11 @@ class URL
     private $extension;
 
     /**
+     * The faux directories of this link
+     */
+    private $fauxDirs;
+
+    /**
      * Query variables for this link
      */
     private $query;
@@ -1013,6 +1018,52 @@ class URL
         return $this;
     }
 
+
+    /**
+     * Returns the value of the fauxDirs
+     *
+     * @return String|Null Returns null if the fauxDirs isn't set
+     */
+    public function getFauxDirs ()
+    {
+        return $this->fauxDirs;
+    }
+
+    /**
+     * Sets the fauxDirs
+     *
+     * @param String $fauxDirs The fauxDirs to set
+     * @return Object Returns a self reference
+     */
+    public function setFauxDirs ( $fauxDirs )
+    {
+        $fauxDirs = \cPHP\strval( $fauxDirs );
+        $this->fauxDirs = \cPHP\isEmpty( $fauxDirs )
+            ? null : \cPHP\str\head($fauxDirs, "/");
+        return $this;
+    }
+
+    /**
+     * Returns whether the fauxDirs has been set
+     *
+     * @return Boolean
+     */
+    public function fauxDirsExists ()
+    {
+        return isset( $this->fauxDirs );
+    }
+
+    /**
+     * Unsets the currently set fauxDirs
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFauxDirs ()
+    {
+        $this->fauxDirs = null;
+        return $this;
+    }
+
     /**
      * Returns the query, if there is one
      *
@@ -1134,6 +1185,10 @@ class URL
     public function getRelative ()
     {
         $result = $this->getPath();
+
+        // Only add the faux directories if there is a path
+        if ( $result && $this->fauxDirsExists() )
+            $result .= $this->getFauxDirs();
 
         if ( $this->queryExists() )
             $result .= "?". $this->getQuery();
