@@ -1041,6 +1041,18 @@ class URL
     }
 
     /**
+     * Fills the path from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillPath ()
+    {
+        $env = $this->getEnv();
+        $this->setPath( $env->urlPath );
+        return $this;
+    }
+
+    /**
      * Returns the value of the fauxDirs
      *
      * @return String|Null Returns null if the fauxDirs isn't set
