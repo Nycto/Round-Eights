@@ -340,36 +340,36 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "/test/faux/dirs", $env->fauxDirs );
     }
 
-    public function testSetUriPath ()
+    public function testSetURLPath ()
     {
         $env = Stub_Env::fromArray(array(
                 "SCRIPT_NAME" => "/path/to/file.php"
             ));
 
-        $this->assertTrue( isset($env->uriPath) );
-        $this->assertSame( "/path/to/file.php", $env->uriPath );
+        $this->assertTrue( isset($env->urlPath) );
+        $this->assertSame( "/path/to/file.php", $env->urlPath );
 
-        $this->assertTrue( isset($env->uriDir) );
-        $this->assertSame( "/path/to/", $env->uriDir );
+        $this->assertTrue( isset($env->urlDir) );
+        $this->assertSame( "/path/to/", $env->urlDir );
     }
 
-    public function testSetUriPath_empty ()
+    public function testSetURLPath_empty ()
     {
         $env = Stub_Env::fromArray(array());
 
-        $this->assertFalse( isset($env->uriPath) );
-        $this->assertNull( $env->uriPath );
+        $this->assertFalse( isset($env->urlPath) );
+        $this->assertNull( $env->urlPath );
     }
 
-    public function testSetUri ()
+    public function testSetURL ()
     {
         $env = Stub_Env::fromArray(array());
 
-        $this->assertFalse( isset($env->uri) );
-        $this->assertNull( $env->uri );
+        $this->assertFalse( isset($env->url) );
+        $this->assertNull( $env->url );
 
-        $this->assertNull( $env->absUri );
-        $this->assertFalse( isset($env->absUri) );
+        $this->assertNull( $env->absURL );
+        $this->assertFalse( isset($env->absURL) );
 
 
         $env = Stub_Env::fromArray(array(
@@ -377,13 +377,13 @@ class classes_env extends PHPUnit_Framework_TestCase
             ));
 
 
-        $this->assertFalse( isset($env->uri) );
-        $this->assertNull( $env->uri );
+        $this->assertFalse( isset($env->url) );
+        $this->assertNull( $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "test.example.com",
-                $env->absUri
+                $env->absURL
             );
 
         $env = Stub_Env::fromArray(array(
@@ -391,13 +391,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertFalse( isset($env->uri) );
-        $this->assertNull( $env->uri );
+        $this->assertFalse( isset($env->url) );
+        $this->assertNull( $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com",
-                $env->absUri
+                $env->absURL
             );
 
 
@@ -407,13 +407,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertFalse( isset($env->uri) );
-        $this->assertNull( $env->uri );
+        $this->assertFalse( isset($env->url) );
+        $this->assertNull( $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com:40",
-                $env->absUri
+                $env->absURL
             );
 
         $env = Stub_Env::fromArray(array(
@@ -423,13 +423,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertTrue( isset($env->uri) );
-        $this->assertSame( "/path/to/file.php", $env->uri );
+        $this->assertTrue( isset($env->url) );
+        $this->assertSame( "/path/to/file.php", $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com:40/path/to/file.php",
-                $env->absUri
+                $env->absURL
             );
 
 
@@ -440,13 +440,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertTrue( isset($env->uri) );
-        $this->assertSame( "/path/to/file.php", $env->uri );
+        $this->assertTrue( isset($env->url) );
+        $this->assertSame( "/path/to/file.php", $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com:40/path/to/file.php",
-                $env->absUri
+                $env->absURL
             );
 
 
@@ -458,13 +458,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertTrue( isset($env->uri) );
-        $this->assertSame( "/path/to/file.php/test/faux/dirs", $env->uri );
+        $this->assertTrue( isset($env->url) );
+        $this->assertSame( "/path/to/file.php/test/faux/dirs", $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com:40/path/to/file.php/test/faux/dirs",
-                $env->absUri
+                $env->absURL
             );
 
         $env = Stub_Env::fromArray(array(
@@ -476,13 +476,13 @@ class classes_env extends PHPUnit_Framework_TestCase
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
-        $this->assertTrue( isset($env->uri) );
-        $this->assertSame( "/path/to/file.php/test/faux/dirs?var=value", $env->uri );
+        $this->assertTrue( isset($env->url) );
+        $this->assertSame( "/path/to/file.php/test/faux/dirs?var=value", $env->url );
 
-        $this->assertTrue( isset($env->absUri) );
+        $this->assertTrue( isset($env->absURL) );
         $this->assertSame(
                 "http://test.example.com:40/path/to/file.php/test/faux/dirs?var=value",
-                $env->absUri
+                $env->absURL
             );
 
     }

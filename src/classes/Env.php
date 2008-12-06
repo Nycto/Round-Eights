@@ -157,32 +157,32 @@ class Env
      *
      * @public
      */
-    protected $uriPath;
+    protected $urlPath;
 
     /**
      * The relative directory of the requested URI
      *
      * @public
      */
-    protected $uriDir;
+    protected $urlDir;
 
     /**
      * The relative URI
      *
      * @public
      */
-    protected $uri;
+    protected $url;
 
     /**
      * The absolute URI
      *
      * @public
      */
-    protected $absUri;
+    protected $absURL;
 
     /**
      * Also known as the path info, this represents any directories listed
-     * after the filename of the path... for example, the following uri:
+     * after the filename of the path... for example, the following url:
      *
      * http://www.example.com/file.php/faux/dir
      *
@@ -245,7 +245,7 @@ class Env
             $this->setLink( $server );
 
             $this->setHostInfo();
-            $this->setUri();
+            $this->setURL();
         }
     }
 
@@ -451,13 +451,13 @@ class Env
      * @param Array $server The server info array
      * @return null
      */
-    protected function setUri ()
+    protected function setURL ()
     {
-        $this->uriPath = $this->link->getPath();
-        $this->uriDir = $this->link->getDir();
+        $this->urlPath = $this->link->getPath();
+        $this->urlDir = $this->link->getDir();
 
-        $this->uri = $this->link->getRelative();
-        $this->absUri = $this->link->getURL();
+        $this->url = $this->link->getRelative();
+        $this->absURL = $this->link->getURL();
     }
 
 }
