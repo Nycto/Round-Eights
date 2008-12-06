@@ -1005,6 +1005,65 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testSetURL ()
+    {
+        $url = new \cPHP\URL;
+
+
+        $this->assertSame(
+                $url,
+                $url->setURL("http://uname:pwd@www.example.com/path/to/file.php?one=single#frag")
+            );
+        $this->assertSame( "http", $url->getScheme() );
+        $this->assertSame( "uname", $url->getUserName() );
+        $this->assertSame( "pwd", $url->getPassword() );
+        $this->assertSame( "www.example.com", $url->getHost() );
+        $this->assertSame( "/path/to/", $url->getDir() );
+        $this->assertSame( "file", $url->getFilename() );
+        $this->assertSame( "php", $url->getExt() );
+        $this->assertSame( "one=single", $url->getQuery() );
+        $this->assertSame( "frag", $url->getFragment() );
+
+
+        $this->assertSame(
+                $url,
+                $url->setURL("https://example.net/test.html")
+            );
+        $this->assertSame( "https", $url->getScheme() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertSame( "example.net", $url->getHost() );
+        $this->assertSame( "/", $url->getDir() );
+        $this->assertSame( "test", $url->getFilename() );
+        $this->assertSame( "html", $url->getExt() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+
+
+        $this->assertSame( $url, $url->setURL("") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertFalse( $url->extExists() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+
+
+        $this->assertSame( $url, $url->setURL("/subdir/style.css") );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertSame( "/subdir/", $url->getDir() );
+        $this->assertSame( "style", $url->getFilename() );
+        $this->assertSame( "css", $url->getExt() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+    }
+
 }
 
 ?>

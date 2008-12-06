@@ -1043,6 +1043,61 @@ class URL
         return \cPHP\isEmpty( $url, \cPHP\ALLOW_SPACES ) ? null : $url;
     }
 
+    /**
+     * Sets the entire URL at once
+     *
+     * @param String $url The URL string
+     * @return Object Returns a self reference
+     */
+    public function setURL ( $url )
+    {
+        $url = \cPHP\strval($url);
+
+        $parsed = parse_url( $url );
+
+        if ( isset($parsed["scheme"]) )
+            $this->setScheme( $parsed['scheme'] );
+        else
+            $this->clearScheme();
+
+        if ( isset($parsed["user"]) )
+            $this->setUserName( $parsed['user'] );
+        else
+            $this->clearUserName();
+
+        if ( isset($parsed["pass"]) )
+            $this->setPassword( $parsed['pass'] );
+        else
+            $this->clearPassword();
+
+        if ( isset($parsed["host"]) )
+            $this->setHost( $parsed['host'] );
+        else
+            $this->clearHost();
+
+        if ( isset($parsed["port"]) )
+            $this->setPort( $parsed['port'] );
+        else
+            $this->clearPort();
+
+        if ( isset($parsed["path"]) )
+            $this->setPath( $parsed['path'] );
+        else
+            $this->clearPath();
+
+        if ( isset($parsed["query"] ) )
+            $this->setQuery( $parsed['query'] );
+        else
+            $this->clearQuery();
+
+        if ( isset($parsed["fragment"] ) )
+            $this->setFragment( $parsed['fragment'] );
+        else
+            $this->clearFragment();
+
+        return $this;
+    }
+
 }
 
 ?>
