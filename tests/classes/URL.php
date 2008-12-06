@@ -738,6 +738,44 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $url->isSameBase() );
     }
 
+    public function testFillBase ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array(
+                            "SERVER_PROTOCOL" => "HTTP/1.1",
+                            'HTTP_HOST' => 'example.edu',
+                            "SERVER_PORT" => "80"
+                        ))
+                ));
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->portExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertSame( $url, $url->fillBase() );
+        $this->assertSame( "http", $url->getScheme() );
+        $this->assertSame( "www.example.edu", $url->getHost() );
+        $this->assertSame( 80, $url->getPort() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->portExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertSame( $url, $url->fillBase() );
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->portExists() );
+        $this->assertFalse( $url->hostExists() );
+    }
+
     public function testDirAccessors ()
     {
         $url = new \cPHP\URL;

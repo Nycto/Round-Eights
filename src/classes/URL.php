@@ -701,6 +701,16 @@ class URL
     }
 
     /**
+     * Sets the scheme, host and port in this instance from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillBase ()
+    {
+        return $this->fillScheme()->fillHost()->fillPort();
+    }
+
+    /**
      * Returns the value of the directory
      *
      * @return String|Null Returns null if the directory isn't set
