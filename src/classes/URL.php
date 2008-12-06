@@ -1018,6 +1018,17 @@ class URL
         return $this;
     }
 
+    /**
+     * Returns whether a path exists in this instance
+     *
+     * This requires a directory or a filename
+     *
+     * @return Boolean
+     */
+    public function pathExists ()
+    {
+        return $this->dirExists() || $this->filenameExists();
+    }
 
     /**
      * Returns the value of the fauxDirs
@@ -1184,11 +1195,18 @@ class URL
      */
     public function getRelative ()
     {
-        $result = $this->getPath();
+        if ( $this->pathExists() ) {
 
-        // Only add the faux directories if there is a path
-        if ( $result && $this->fauxDirsExists() )
-            $result .= $this->getFauxDirs();
+            $result = $this->getPath();
+
+            // Only add the faux directories if there is a path
+            if ( $this->fauxDirsExists() )
+                $result .= $this->getFauxDirs();
+
+        }
+        else {
+            $result = "";
+        }
 
         if ( $this->queryExists() )
             $result .= "?". $this->getQuery();

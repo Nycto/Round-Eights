@@ -1035,6 +1035,30 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->extExists() );
     }
 
+    public function testPathExists ()
+    {
+        $url = new \cPHP\URL;
+        $this->assertFalse( $url->pathExists() );
+
+        $url->setExt("html");
+        $this->assertFalse( $url->pathExists() );
+
+        $url->setFilename("test");
+        $this->assertTrue( $url->pathExists() );
+
+        $url->setDir("/dir/");
+        $this->assertTrue( $url->pathExists() );
+
+        $url->clearFilename();
+        $this->assertTrue( $url->pathExists() );
+
+        $url->clearExt();
+        $this->assertTrue( $url->pathExists() );
+
+        $url->clearDir();
+        $this->assertFalse( $url->pathExists() );
+    }
+
     public function testFauxDirsAccessors ()
     {
         $url = new \cPHP\URL;
