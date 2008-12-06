@@ -106,6 +106,30 @@ class URL
     private $fragment;
 
     /**
+     * Returns a new URL instance with the base pulled from the environment
+     *
+     * @return Object Returns a cPHP\URL object
+     */
+    static public function fromBase ()
+    {
+        $url = new self;
+        $url->fillBase();
+        return $url;
+    }
+
+    /**
+     * Returns a new URL instance with the entire URL pulled from the environment
+     *
+     * @return Object Returns a cPHP\URL object
+     */
+    static public function fromURL ()
+    {
+        $url = new self;
+        $url->fillURL();
+        return $url;
+    }
+
+    /**
      * Given a string representation of a URL query, this return an array of the values
      *
      * While a native PHP function exists to perform this function, the native

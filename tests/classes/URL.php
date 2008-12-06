@@ -38,6 +38,22 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_url extends PHPUnit_Framework_TestCase
 {
 
+    public function testFromBase ()
+    {
+        $this->assertThat(
+                \cPHP\URL::fromBase(),
+                $this->isInstanceOf("cPHP\\URL")
+            );
+    }
+
+    public function testFromURL ()
+    {
+        $this->assertThat(
+                \cPHP\URL::fromURL(),
+                $this->isInstanceOf("cPHP\\URL")
+            );
+    }
+
     public function testConstruct ()
     {
         $url = new \cPHP\URL("http://example.net/test.html");
