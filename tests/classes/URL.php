@@ -213,6 +213,32 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isSameScheme() );
     }
 
+    public function testFillScheme ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "SFTP/1.1"))
+                ));
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertSame( $url, $url->fillScheme() );
+        $this->assertSame( "sftp", $url->getScheme() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertSame( $url, $url->fillScheme() );
+        $this->assertFalse( $url->schemeExists() );
+    }
+
     public function testUserNameAccessors ()
     {
         $url = new \cPHP\URL;

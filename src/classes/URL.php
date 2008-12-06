@@ -266,6 +266,17 @@ class URL
     }
 
     /**
+     * Sets the scheme in this instance from the environment
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillScheme ()
+    {
+        $env = $this->getEnv();
+        return $this->setScheme( $env->scheme );
+    }
+
+    /**
      * Returns the value of the username
      *
      * @return String|Null Returns null if the username isn't set
