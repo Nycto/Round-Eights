@@ -1015,6 +1015,8 @@ class URL
      * Returns a relative URL
      *
      * This is a combination of the path, query and fragment
+     *
+     * @return String|Null This will return NULL if no path, query or fragment has been set
      */
     public function getRelative ()
     {
@@ -1027,6 +1029,18 @@ class URL
             $result .= "#". $this->getFragment();
 
         return \cPHP\isEmpty( $result, \cPHP\ALLOW_SPACES ) ? null : $result;
+    }
+
+    /**
+     * Returns the full URL contained in this instance
+     *
+     * @return String
+     */
+    public function getURL ()
+    {
+        $url = $this->getBase() . $this->getRelative();
+
+        return \cPHP\isEmpty( $url, \cPHP\ALLOW_SPACES ) ? null : $url;
     }
 
 }

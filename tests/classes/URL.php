@@ -986,6 +986,25 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "?one=single#top", $url->getRelative() );
     }
 
+    public function testGetURL ()
+    {
+        $url = new \cPHP\URL;
+        $this->assertNull( $url->getURL() );
+
+        $url->setBase("http://www.example.com/");
+        $this->assertSame( "http://www.example.com", $url->getURL() );
+
+        $url->setPath("/path/to/file.php");
+        $this->assertSame( "http://www.example.com/path/to/file.php", $url->getURL() );
+
+        $url->setQuery("one=single")
+            ->setFragment("frag");
+        $this->assertSame(
+                "http://www.example.com/path/to/file.php?one=single#frag",
+                $url->getURL()
+            );
+    }
+
 }
 
 ?>
