@@ -1350,6 +1350,19 @@ class URL
         return $this;
     }
 
+    /**
+     * Sets the entire URL from the source
+     *
+     * @return Object Returns a self reference
+     */
+    public function fillURL ()
+    {
+        return $this->fillBase()
+            ->fillPath()
+            ->fillFauxDirs()
+            ->fillQuery();
+    }
+
 }
 
 ?>

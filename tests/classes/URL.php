@@ -1424,6 +1424,40 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->fragmentExists() );
     }
 
+    public function testFillURL ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertSame( $url, $url->fillURL() );
+        $this->assertNull( $url->getURL() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array(
+                        "HTTP_HOST" => "test.example.com",
+                        "SCRIPT_NAME" => "/path/to/file.php",
+                        "SERVER_PORT" => "40",
+                        "PATH_INFO" => "/test/faux/dirs",
+                        "QUERY_STRING" => "var=value",
+                        "SERVER_PROTOCOL" => "HTTP/1.1"
+                    ))
+                ));
+
+        $this->assertSame( $url, $url->fillURL() );
+        $this->assertSame(
+                "http://test.example.com:40/path/to/file.php/test/faux/dirs?var=value",
+                $url->getURL()
+            );
+    }
+
 }
 
 ?>
