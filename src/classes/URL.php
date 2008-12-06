@@ -587,6 +587,55 @@ class URL
     }
 
     /**
+     * Returns whether the current port is the default for the scheme
+     *
+     * If no scheme is set, this will return FALSE. If no port is set, this will
+     * return TRUE. For unknown ports, FALSE will be returned
+     *
+     * @return Boolean
+     */
+    public function isDefaultPort ()
+    {
+        if ( !$this->schemeExists() )
+            return FALSE;
+
+        if ( !$this->portExists() )
+            return TRUE;
+
+        switch ( $this->getScheme() ) {
+
+            case 'http':
+                $port = 80;
+                break;
+
+            case 'https':
+                $port = 443;
+                break;
+
+            case 'ftp':
+                $port = 21;
+                break;
+
+            case 'ftps':
+                $port = 990;
+                break;
+
+            case 'sftp':
+                $port = 115;
+                break;
+
+            case 'ldap':
+                $port = 389;
+                break;
+
+            default:
+                return FALSE;
+        }
+
+        return $this->port == $port ? TRUE : FALSE;
+    }
+
+    /**
      * Sets the port in this instance from the environment
      *
      * @return Object Returns a self reference
@@ -995,7 +1044,12 @@ class URL
         if ( \cPHP\Ary::is($query) )
             $query = \cPHP\Ary::create( $query )->toQuery();
 
-        $this->query = \cPHP\strval( $query );
+        $query = \cPHP\strval( $query );
+
+        if ( \cPHP\isEmpty($query, \cPHP\ALLOW_SPACES) )
+            $this->query = null;
+        else
+            $this->query = $query;
 
         return $this;
     }

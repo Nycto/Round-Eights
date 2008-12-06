@@ -545,6 +545,71 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $url->isSamePort() );
     }
 
+    public function testIsDefaultPort_empty ()
+    {
+        $url = new \cPHP\URL;
+        $this->assertFalse( $url->isDefaultPort() );
+    }
+
+    public function testIsDefaultPort_noScheme ()
+    {
+        $url = new \cPHP\URL;
+
+        $url->setPort( 80 );
+        $this->assertFalse( $url->isDefaultPort() );
+    }
+
+    public function testIsDefaultPort_noPort ()
+    {
+        $url = new \cPHP\URL;
+
+        $url->setScheme( "http" );
+        $this->assertTrue( $url->isDefaultPort() );
+    }
+
+    public function testIsDefaultPort_unknown ()
+    {
+        $url = new \cPHP\URL;
+
+        $url->setScheme( "notARealScheme" )->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+    }
+
+    public function testIsDefaultPort_various ()
+    {
+        $url = new \cPHP\URL;
+
+        $url->setScheme( "http" )->setPort(80);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(2020);
+        $this->assertFalse( $url->isDefaultPort() );
+
+        $url->setScheme( "https" )->setPort(443);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+
+        $url->setScheme( "ftp" )->setPort(21);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+
+        $url->setScheme( "ftps" )->setPort(990);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+
+        $url->setScheme( "sftp" )->setPort(115);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+
+        $url->setScheme( "ldap" )->setPort(389);
+        $this->assertTrue( $url->isDefaultPort() );
+        $url->setPort(80);
+        $this->assertFalse( $url->isDefaultPort() );
+    }
+
     public function testFillPort ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
@@ -988,6 +1053,10 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( $url, $url->setQuery("  ") );
         $this->assertTrue( $url->queryExists() );
         $this->assertSame( "  ", $url->getQuery() );
+
+        $this->assertSame( $url, $url->setQuery( null ) );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertNull( $url->getQuery() );
     }
 
     public function testSetQuery_array ()
