@@ -1098,6 +1098,26 @@ class URL
         return $this;
     }
 
+    /**
+     * Clears all the values from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearURL ()
+    {
+        $this->scheme = null;
+        $this->username = null;
+        $this->password = null;
+        $this->host = null;
+        $this->directory = null;
+        $this->filename = null;
+        $this->extension = null;
+        $this->query = null;
+        $this->fragment = null;
+
+        return $this;
+    }
+
 }
 
 ?>

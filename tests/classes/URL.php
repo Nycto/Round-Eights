@@ -1064,6 +1064,24 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->fragmentExists() );
     }
 
+    public function testClearURL ()
+    {
+        $url = new \cPHP\URL;
+        $url->setURL("http://uname:pwd@www.example.com/path/to/file.php?one=single#frag");
+
+        $this->assertSame( $url, $url->clearURL() );
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertFalse( $url->extExists() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+    }
+
 }
 
 ?>
