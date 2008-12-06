@@ -687,6 +687,8 @@ class URL
     /**
      * Returns the scheme, the userinfo, the host and the port in one formatted string
      *
+     * If the port is the default port for this scheme, it will not be included.
+     *
      * @return String|NULL Returns the base of the URL. This will return null
      *      if the host isn't set.
      */
@@ -695,7 +697,10 @@ class URL
         if ( !$this->hostExists() )
             return null;
 
-        $result = $this->getHostAndPort();
+        if ( $this->isDefaultPort() )
+            $result = $this->getHost();
+        else
+            $result = $this->getHostAndPort();
 
         if ( $this->userInfoExists() )
             $result = $this->getUserInfo() ."@". $result;

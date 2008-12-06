@@ -684,7 +684,10 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull( $url->getBase() );
 
         $url->setHost("example.com");
-        $this->assertSame("ftp://uname:pword@example.com:21", $url->getBase());
+        $this->assertSame("ftp://uname:pword@example.com", $url->getBase());
+
+        $url->setPort(50);
+        $this->assertSame("ftp://uname:pword@example.com:50", $url->getBase());
 
         $url->clearPort();
         $this->assertSame("ftp://uname:pword@example.com", $url->getBase());
