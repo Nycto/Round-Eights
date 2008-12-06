@@ -441,6 +441,32 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isSameHost() );
     }
 
+    public function testFillHost ()
+    {
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array('HTTP_HOST' => 'example.com'))
+                ));
+
+        $this->assertFalse( $url->hostExists() );
+        $this->assertSame( $url, $url->fillHost() );
+        $this->assertSame( "www.example.com", $url->getHost() );
+
+
+        $url = $this->getMock("cPHP\\URL", array("getEnv"));
+        $url->expects( $this->any() )
+            ->method("getEnv")
+            ->will( $this->returnValue(
+                    Stub_Env::fromArray(array())
+                ));
+
+        $this->assertFalse( $url->hostExists() );
+        $this->assertSame( $url, $url->fillHost() );
+        $this->assertFalse( $url->hostExists() );
+    }
+
     public function testPortAccessors()
     {
         $url = new \cPHP\URL;
