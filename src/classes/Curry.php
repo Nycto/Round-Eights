@@ -63,25 +63,45 @@ abstract class Curry implements \cPHP\iface\Filter
     protected $length;
 
     /**
-     * Static method for in-line create
+     * Static method for creating a new curry object
      *
-     * @param mixed $action The callable action being curried
-     * @param mixed $args... any arguments to pass to the constructor
-     * @return Returns a new instance
+     * This takes the called function and looks for a class under
+     * the \cPHP\Curry namespace.
+     *
+     * @param String $curry The curry class to create
+     * @param array $args Any constructor args to use during instantiation
+     * @return Object Returns a new \cPHP\Curry subclass
      */
-    static public function create ( $action )
+    static public function __callStatic ( $curry, $args )
     {
-        $instance = new static( $action );
+        $curry = "\\cPHP\\Curry\\". trim( \cPHP\strval($curry) );
 
-        if ( func_num_args() > 1 ) {
-
-            $args = func_get_args();
-            array_shift( $args );
-            $instance->setRightByArray( $args );
-
+        if ( !class_exists($curry, true) ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "Curry Class Name",
+                    "Class could not be found in \\cPHP\\Curry namespace"
+                );
         }
 
-        return $instance;
+        if ( !\cPHP\kindOf( $curry, "\\cPHP\\Curry") ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "Curry Class Name",
+                    "Class is not a child of \\cPHP\\Curry"
+                );
+        }
+
+        if ( count($args) <= 0 ) {
+            return new $curry;
+        }
+        else if ( count($args) == 1 ) {
+            return new $curry( reset($args) );
+        }
+        else {
+            $refl = new \ReflectionClass( $curry );
+            return $refl->newInstanceArgs( $args );
+        }
     }
 
     /**

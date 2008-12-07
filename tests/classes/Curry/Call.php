@@ -47,9 +47,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
     public function testCallInternal ()
     {
         $callback = new \cPHP\Curry\Call("trim");
-
         $this->assertEquals( "trimmed", $callback("  trimmed  ") );
-
     }
 
     public function testCallClosure ()

@@ -55,6 +55,12 @@ class Call extends \cPHP\Curry
             throw new \cPHP\Exception\Argument( 0, "Callback", "Must be Callable" );
 
         $this->callback = $callback;
+
+        if ( func_num_args() > 1 ) {
+            $args = func_get_args();
+            array_shift( $args );
+            $this->setRightByArray( $args );
+        }
     }
 
     /**
@@ -65,17 +71,15 @@ class Call extends \cPHP\Curry
      */
     protected function rawExec ( array $args = array() )
     {
-
         return call_user_func_array(
 
                 // For object, skip the shortcuts and just jump straight to the invoke method
                 is_object($this->callback) ?
                     array( $this->callback, "__invoke") : $this->callback,
 
-                $this->collectArgs( $args )
+                $args
 
             );
-
     }
 
 }

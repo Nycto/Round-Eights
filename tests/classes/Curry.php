@@ -38,24 +38,30 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_curry extends PHPUnit_Framework_TestCase
 {
 
-
-    public function testCreate ()
+    public function testCallStatic ()
     {
+        $curry = \cPHP\Curry::Call("trim");
+        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $this->assertSame( "trimmed", $curry("  trimmed  ") );
 
-        $this->assertThat(
-                \cPHP\Curry\Call::create("trim"),
-                $this->isInstanceOf("cPHP\\Curry\\Call")
-            );
 
-        $instance = \cPHP\Curry\Call::create("trim", "/");
+        $curry = \cPHP\Curry::Call("rtrim", "-");
+        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $this->assertSame( "--trimmed", $curry("--trimmed--") );
 
-        $this->assertThat(
-                $instance,
-                $this->isInstanceOf("cPHP\\Curry\\Call")
-            );
 
-        $this->assertEquals( array("/"), $instance->getRight() );
+        $curry = \cPHP\Curry::Call("str_replace", "!", "original");
+        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $this->assertSame( "or!g!nal", $curry("i") );
 
+
+        try {
+            \cPHP\Curry::ThisIsNotReal();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\cPHP\\Curry namespace', $err->getMessage() );
+        }
     }
 
     public function testSet ()

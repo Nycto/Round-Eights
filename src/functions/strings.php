@@ -290,7 +290,7 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
     $split = preg_split(
             '/(?<!\\\\)(?:\\\\\\\\)*('
                 . $quotes->collect(
-                        \cPHP\Curry\Call::create("preg_quote")->setRight("/")->setLimit(1)
+                        \cPHP\Curry::Call("preg_quote")->setRight("/")->setLimit(1)
                     )->implode("|")
                 .')/i',
             $string,
