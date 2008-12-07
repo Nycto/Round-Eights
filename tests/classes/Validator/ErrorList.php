@@ -30,17 +30,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_errorlist extends PHPUnit_Framework_TestCase
+class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 {
 
     public function testAddError ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
 
@@ -71,7 +71,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddErrors ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addErrors("Error Message") );
         $this->assertEquals(
@@ -94,7 +94,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddDuplicateError ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
         $this->assertSame( $result, $result->addError("This is an error message") );
@@ -107,7 +107,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testClearErrors ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -123,7 +123,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testSetErrors ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -142,7 +142,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testHasErrors ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $this->assertFalse( $result->hasErrors() );
 
@@ -157,7 +157,7 @@ class classes_errorlist extends PHPUnit_Framework_TestCase
 
     public function testGetFirstError ()
     {
-        $result = new \cPHP\ErrorList;
+        $result = new \cPHP\Validator\ErrorList;
 
         $this->assertNull( $result->getFirstError() );
 

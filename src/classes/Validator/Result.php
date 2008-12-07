@@ -35,7 +35,7 @@ namespace cPHP\Validator;
 /**
  * Contains the results of a validation
  */
-class Result extends \cPHP\ErrorList
+class Result extends \cPHP\Validator\ErrorList
 {
 
     /**

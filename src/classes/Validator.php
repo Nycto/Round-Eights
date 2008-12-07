@@ -35,7 +35,7 @@ namespace cPHP;
 /**
  * This provides an interface for comparing a value to a set of parameters
  */
-abstract class Validator extends \cPHP\ErrorList implements \cPHP\iface\Validator
+abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\iface\Validator
 {
 
     /**

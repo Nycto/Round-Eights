@@ -30,7 +30,7 @@
  * @package Validator
  */
 
-namespace cPHP;
+namespace cPHP\Validator;
 
 /**
  * Helper class for managing a list of errors
