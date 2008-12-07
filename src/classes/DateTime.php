@@ -41,9 +41,10 @@ class DateTime
     /**
      * Standard date formats
      */
+    const FORMAT_DEFAULT = 'F j, Y, g:i a';
     const FORMAT_SQL_DATETIME = 'Y-m-d H:i:s';
     const FORMAT_SQL_DATE = 'Y-m-d';
-    const FORMAT_DEFAULT = 'F j, Y, g:i a';
+    const FORMAT_XSD_DATETIME = 'Y-m-d\TH:i:s';
 
     /**
      * Date/time units for use with the math method

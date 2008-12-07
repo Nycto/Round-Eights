@@ -158,6 +158,31 @@ class classes_datetime extends PHPUnit_Framework_TestCase
         $this->assertEquals("09.12.07", $time->getFormatted("m.d.y"));
     }
 
+    public function testFormats ()
+    {
+        $time = new \cPHP\DateTime(1189612103);
+
+        $this->assertSame(
+                "September 12, 2007, 3:48 pm",
+                $time->getFormatted( \cPHP\DateTime::FORMAT_DEFAULT )
+            );
+
+        $this->assertSame(
+                "2007-09-12 15:48:23",
+                $time->getFormatted( \cPHP\DateTime::FORMAT_SQL_DATETIME )
+            );
+
+        $this->assertSame(
+                "2007-09-12",
+                $time->getFormatted( \cPHP\DateTime::FORMAT_SQL_DATE)
+            );
+
+        $this->assertSame(
+                "2007-09-12T15:48:23",
+                $time->getFormatted( \cPHP\DateTime::FORMAT_XSD_DATETIME)
+            );
+    }
+
     public function testGetArray ()
     {
         $time = new \cPHP\DateTime;
