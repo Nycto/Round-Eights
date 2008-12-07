@@ -2,31 +2,26 @@
 /**
  * A file upload form field
  *
- * PHP version 5.3
+ * @license Artistic License 2.0
  *
- * This source file is subject to version 2.0 of the Artistic License. A copy
- * of the license should have been bundled with this source file inside a file
- * named LICENSE.txt. It is also available through the world-wide-web at one
- * of the following URIs:
- * http://www.commonphp.com/license.php
- * http://www.opensource.org/licenses/artistic-license-2.0.php
+ * This file is part of commonPHP.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * commonPHP is free software: you can redistribute it and/or modify
+ * it under the terms of the Artistic License as published by
+ * the Open Source Initiative, either version 2.0 of the License, or
+ * (at your option) any later version.
  *
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * commonPHP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Artistic License for more details.
+ *
+ * You should have received a copy of the Artistic License
+ * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
+ *
  * @author James Frasca <james@commonphp.com>
- * @license Artistic License 2.0 http://www.commonphp.com/license.php
+ * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
