@@ -60,7 +60,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testSet ()
     {
-        $curry = $this->getMock('\cPHP\Curry', array("exec"));
+        $curry = $this->getMock('\cPHP\Curry', array("rawExec"));
 
         $this->assertEquals( array(), $curry->getLeft() );
         $this->assertEquals( array(), $curry->getRight() );
@@ -84,7 +84,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testSetByArray ()
     {
-        $curry = $this->getMock("cPHP\\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\\Curry", array("rawExec"));
 
         $this->assertEquals( array(), $curry->getLeft() );
         $this->assertEquals( array(), $curry->getRight() );
@@ -109,7 +109,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testClearLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -136,7 +136,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testClearArgs ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -156,7 +156,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testOffset ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $this->assertEquals( 0, $curry->getOffset() );
 
@@ -175,7 +175,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testLimit ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $this->assertFalse( $curry->issetLimit() );
         $this->assertFalse( $curry->getLimit() );
@@ -199,7 +199,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testClearSlicing ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->setLimit( 1 );
         $curry->setOffset( 1 );
@@ -213,7 +213,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testClear ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -232,7 +232,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCollectArgs ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $this->assertEquals(
                 array(1, 2, 3),
@@ -275,10 +275,10 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCall ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("wakka", "test1") ) );
 
         $curry->call("wakka", "test1");
@@ -286,12 +286,12 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCallWithLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 1, 2, 3, "r1", "r2") ) );
 
         $curry->call(1, 2, 3);
@@ -299,13 +299,13 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCallWithSlicing ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
         $curry->setOffset(2)->setLimit(2);
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 3, 4, "r1", "r2") ) );
 
         $curry->call(1, 2, 3, 4, 5, 6);
@@ -313,10 +313,10 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testApply ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("wakka", "test1") ) );
 
         $curry->apply( array("wakka", "test1") );
@@ -324,12 +324,12 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testApplyWithLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 1, 2, 3, "r1", "r2") ) );
 
         $curry->apply( array(1, 2, 3) );
@@ -337,13 +337,13 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testApplyWithSlicing ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
         $curry->setOffset(2)->setLimit(2);
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 3, 4, "r1", "r2") ) );
 
         $curry->apply( array(1, 2, 3, 4, 5, 6) );
@@ -351,10 +351,10 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testInvoke ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("wakka", "test1") ) );
 
         $curry("wakka", "test1");
@@ -362,12 +362,12 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testInvokeWithLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 1, 2, 3, "r1", "r2") ) );
 
         $curry(1, 2, 3);
@@ -375,13 +375,13 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testInvokeWithSlicing ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
         $curry->setOffset(2)->setLimit(2);
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 3, 4, "r1", "r2") ) );
 
         $curry(1, 2, 3, 4, 5, 6);
@@ -389,10 +389,10 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testFilter ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("wakka") ) );
 
         $curry->filter("wakka");
@@ -400,12 +400,12 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testFilterWithLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 1, "r1", "r2") ) );
 
         $curry->filter(1);
@@ -413,13 +413,13 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testFilterWithZeroLimit ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("exec"));
+        $curry = $this->getMock("cPHP\Curry", array("rawExec"));
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
         $curry->setLimit(0);
 
         $curry->expects($this->once())
-            ->method('exec')
+            ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", "r1", "r2") ) );
 
         $curry->filter(1);
