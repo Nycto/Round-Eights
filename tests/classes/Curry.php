@@ -281,7 +281,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
             ->method('rawExec')
             ->with( $this->equalTo( array("wakka", "test1") ) );
 
-        $curry->call("wakka", "test1");
+        $curry->exec("wakka", "test1");
     }
 
     public function testCallWithLeftRight ()
@@ -294,7 +294,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
             ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 1, 2, 3, "r1", "r2") ) );
 
-        $curry->call(1, 2, 3);
+        $curry->exec(1, 2, 3);
     }
 
     public function testCallWithSlicing ()
@@ -308,7 +308,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
             ->method('rawExec')
             ->with( $this->equalTo( array("l1", "l2", 3, 4, "r1", "r2") ) );
 
-        $curry->call(1, 2, 3, 4, 5, 6);
+        $curry->exec(1, 2, 3, 4, 5, 6);
     }
 
     public function testApply ()

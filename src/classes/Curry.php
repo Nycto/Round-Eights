@@ -333,7 +333,7 @@ abstract class Curry implements \cPHP\iface\Filter
      * @param mixed $args... The arguments to pass to the callback
      * @return mixed Returns the result of the invokation
      */
-    public function call ()
+    public function exec ()
     {
         $args = func_get_args();
         return $this->rawExec( $this->collectArgs($args) );
