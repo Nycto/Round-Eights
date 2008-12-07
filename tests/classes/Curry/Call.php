@@ -68,11 +68,12 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
         $hasMethod
             ->expects( $this->once() )
             ->method('toCall')
-            ->with( $this->equalTo('argument') );
+            ->with( $this->equalTo('argument') )
+            ->will( $this->returnValue("called") );
 
         $callback = new \cPHP\Curry\Call( array($hasMethod, "toCall") );
 
-        $callback("argument");
+        $this->assertSame( "called", $callback("argument") );
     }
 
     public function testCallInvokable ()
@@ -82,11 +83,12 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
         $invokable
             ->expects( $this->once() )
             ->method('__invoke')
-            ->with( $this->equalTo('argument') );
+            ->with( $this->equalTo('argument') )
+            ->will( $this->returnValue("called") );
 
         $callback = new \cPHP\Curry\Call($invokable);
 
-        $callback("argument");
+        $this->assertSame( "called", $callback("argument") );
 
     }
 
