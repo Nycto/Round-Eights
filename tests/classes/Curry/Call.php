@@ -103,6 +103,30 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
         $callback = new \cPHP\Curry\Call( "ThisIsUnUncallableValue" );
     }
 
+    public function testWithArgs ()
+    {
+        $invokable = $this->getMock('Invokable', array('__invoke'));
+
+        $invokable
+            ->expects( $this->once() )
+            ->method('__invoke')
+            ->with(
+                    $this->equalTo('l1'),
+                    $this->equalTo('l2'),
+                    $this->equalTo('arg1'),
+                    $this->equalTo('arg2'),
+                    $this->equalTo('r1'),
+                    $this->equalTo('r2')
+                )
+            ->will( $this->returnValue("called") );
+
+        $callback = new \cPHP\Curry\Call($invokable);
+        $callback->setLeft("l1", "l2");
+        $callback->setRight("r1", "r2");
+
+        $this->assertSame( "called", $callback("arg1", "arg2") );
+    }
+
 }
 
 ?>
