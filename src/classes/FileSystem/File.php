@@ -93,6 +93,16 @@ class File extends \cPHP\FileSystem
     }
 
     /**
+     * Returns the directory as a cPHP\FileSystem\Dir object
+     *
+     * @return Object Returns a cPHP\FileSystem\Dir objec
+     */
+    public function getDir ()
+    {
+        return new \cPHP\FileSystem\Dir( $this->getRawDir() );
+    }
+
+    /**
      * Returns the extension, if there is one, for this file
      *
      * The extension will be returned without a leading period

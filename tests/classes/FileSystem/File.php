@@ -120,6 +120,20 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
         $this->assertNull( $file->getPath() );
     }
 
+    public function testGetDir ()
+    {
+        $file = new \cPHP\FileSystem\File;
+
+        $dir = $file->getDir();
+        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSystem\Dir') );
+        $this->assertNull( $dir->getRawDir() );
+
+        $file->setPath("/dir/to/file.php");
+        $dir = $file->getDir();
+        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSystem\Dir') );
+        $this->assertSame( "/dir/to/", $dir->getRawDir() );
+    }
+
     public function testExtAccessors ()
     {
         $file = new \cPHP\FileSystem\File;
