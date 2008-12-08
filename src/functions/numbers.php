@@ -260,7 +260,7 @@ function offsetWrap ($length, $offset, $wrapFlag)
     $length = intval( $length );
 
     if ( $length <= 0 )
-        throw new \cPHP\Exception\Argument(0, "Length", "Must be greater than zero");
+        throw new \cPHP\Exception\Index($offset, "Offset", "List is empty");
 
     $offset = intval( \cPHP\reduce($offset) );
 
@@ -271,7 +271,7 @@ function offsetWrap ($length, $offset, $wrapFlag)
 
         case \cPHP\num\OFFSET_NONE:
             if ( !\cPHP\num\between($offset, 0 - $length, $length - 1) )
-                throw new \cPHP\Exception\Argument(1, "Offset", "Offset is out of bounds");
+                throw new \cPHP\Exception\Index($offset, "Offset", "Offset is out of bounds");
 
             else if ($offset >= 0)
                 return $offset;

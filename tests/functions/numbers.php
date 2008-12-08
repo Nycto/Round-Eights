@@ -149,8 +149,8 @@ class functions_numbers extends PHPUnit_Framework_TestCase
             \cPHP\num\offsetWrap(0, 2, "invalid offset value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame( "Must be greater than zero", $err->getMessage() );
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame( "List is empty", $err->getMessage() );
         }
 
         $this->assertEquals(0, \cPHP\num\offsetWrap(5, -5, \cPHP\num\OFFSET_NONE) );
@@ -164,7 +164,7 @@ class functions_numbers extends PHPUnit_Framework_TestCase
             \cPHP\num\offsetWrap(1, 2, \cPHP\num\OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \cPHP\Exception\Index $err ) {
             $this->assertSame( "Offset is out of bounds", $err->getMessage() );
         }
 
@@ -172,7 +172,7 @@ class functions_numbers extends PHPUnit_Framework_TestCase
             \cPHP\num\offsetWrap(5, 5, \cPHP\num\OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \cPHP\Exception\Index $err ) {
             $this->assertSame( "Offset is out of bounds", $err->getMessage() );
         }
 
@@ -180,7 +180,7 @@ class functions_numbers extends PHPUnit_Framework_TestCase
             \cPHP\num\offsetWrap(5, -6, \cPHP\num\OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \cPHP\Exception\Index $err ) {
             $this->assertSame( "Offset is out of bounds", $err->getMessage() );
         }
 
