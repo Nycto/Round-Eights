@@ -167,7 +167,20 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testExplode ()
     {
-        $this->markTestIncomplete("To be written");
+        $parts = \cPHP\Ary::explode(":", "parts:of:a:string");
+        $this->assertThat( $parts, $this->isInstanceOf("cPHP\\Ary") );
+        $this->assertSame(
+                array("parts", "of", "a", "string"),
+                $parts->get()
+            );
+
+
+        $parts = \cPHP\Ary::explode(":-:", "parts:-:of:-:a:-:string", 3);
+        $this->assertThat( $parts, $this->isInstanceOf("cPHP\\Ary") );
+        $this->assertSame(
+                array("parts", "of", "a:-:string"),
+                $parts->get()
+            );
     }
 
     public function testIs ()

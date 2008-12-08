@@ -122,10 +122,36 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Splits a string at every instance of a given separator and returns a cPHP\Ary
+     * object of the result.
      *
+     * This is a wrapper for the built-in explode method that returns an cPHP\Ary
+     * object.
+     *
+     * @param String $separator The string delimiter to split on
+     * @param String $string The string being split
+     * @param Integer $limit The maximum number of parts to return
+     * @return Object Returns a cPHP\Ary object
      */
-    static public function explode ()
+    static public function explode ( $separator, $string, $limit = FALSE )
     {
+        if ( \cPHP\isVague($limit) ) {
+            return new self(
+                    explode(
+                            \cPHP\strval($separator),
+                            \cPHP\strval($string)
+                        )
+                );
+        }
+        else {
+            return new self(
+                    explode(
+                            \cPHP\strval($separator),
+                            \cPHP\strval($string),
+                            intval($limit)
+                        )
+                );
+        }
     }
 
     /**
