@@ -33,6 +33,36 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_filesys extends PHPUnit_Framework_TestCase
 {
 
+    public function testCallStatic ()
+    {
+        $filesys = \cPHP\FileSys::File();
+        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertNull( $filesys->getPath() );
+
+        $filesys = \cPHP\FileSys::Dir();
+        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertNull( $filesys->getPath() );
+
+        $filesys = \cPHP\FileSys::File("/dir/to/file.php");
+        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( "/dir/to/file.php", $filesys->getPath() );
+
+        $filesys = \cPHP\FileSys::Dir("/dir/path/");
+        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( "/dir/path/", $filesys->getPath() );
+
+        try {
+            \cPHP\FileSys::NotARealClass();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame(
+                    "Class could not be found in \cPHP\FileSys namespace",
+                    $err->getMessage()
+                );
+        }
+    }
+
     public function getTestObject ()
     {
         return $this->getMock(

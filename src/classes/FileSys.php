@@ -89,6 +89,47 @@ abstract class FileSys
     }
 
     /**
+     * Static method for creating a new filesys instance
+     *
+     * This takes the called function and looks for a class under
+     * the \cPHP\FileSys namespace.
+     *
+     * @param String $class The FileSys class to create
+     * @param array $args Any constructor args to use during instantiation
+     * @return Object Returns a new \cPHP\FileSys subclass
+     */
+    static public function __callStatic ( $class, $args )
+    {
+        $class = "\\cPHP\\FileSys\\". trim( \cPHP\strval($class) );
+
+        if ( !class_exists($class, true) ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "FileSys Class Name",
+                    "Class could not be found in \\cPHP\\FileSys namespace"
+                );
+        }
+
+        if ( !\cPHP\kindOf( $class, "\\cPHP\\FileSys") ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "FileSys Class Name",
+                    "Class does not implement \\cPHP\\FileSys"
+                );
+        }
+
+        if ( count($args) <= 0 ) {
+            return new $class;
+        }
+
+        // At the moment, neither FileSys\Dir nor FileSys\File take more than one
+        // argument, so there is no need to do anything else
+        else {
+            return new $class( reset($args) );
+        }
+    }
+
+    /**
      * Constructor...
      *
      * @param String $path The File System path represented by this instance
