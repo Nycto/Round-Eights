@@ -46,14 +46,13 @@ class Quoted extends \cPHP\Quoter\Section
     /**
      * Constructor...
      *
-     * @param Integer $offset The offset of the content in the scope of the original string
      * @param String $content The string content of this section
      * @param String $openQuote The open quote
      * @param String $closeQuote The quote that closed this section
      */
-    public function __construct( $offset, $content, $openQuote, $closeQuote )
+    public function __construct( $content, $openQuote, $closeQuote )
     {
-        parent::__construct( $offset, $content );
+        parent::__construct( $content );
 
         $this->setOpenQuote( $openQuote )
             ->setCloseQuote( $closeQuote );

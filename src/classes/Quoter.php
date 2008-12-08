@@ -329,10 +329,6 @@ class Quoter
 
         $result = new \cPHP\Quoter\Parsed;
 
-        // As we walk through the string, this is updated as the offset
-        // relative to the original string
-        $totalOffset = 0;
-
         do {
 
             // Find the next open quote and it's offset
@@ -343,7 +339,7 @@ class Quoter
             if ( $openOffset === FALSE ) {
 
                 $result->addSection(
-                        new \cPHP\Quoter\Section\Unquoted( $totalOffset, $string )
+                        new \cPHP\Quoter\Section\Unquoted( $string )
                     );
 
                 break;
@@ -354,14 +350,11 @@ class Quoter
                 // Construct the unquoted section and add it to the result
                 $result->addSection(
                         new \cPHP\Quoter\Section\Unquoted(
-                                $totalOffset,
                                 substr( $string, 0, $openOffset )
                             )
                     );
 
             }
-
-            $totalOffset += $openOffset + strlen( $openQuote );
 
 
             // Remove the unquoted section from the string
@@ -384,14 +377,11 @@ class Quoter
             // Construct the quoted section and add it to the result
             $result->addSection(
                     new \cPHP\Quoter\Section\Quoted(
-                            $totalOffset,
                             $quoted,
                             $openQuote,
                             $closeQuote
                         )
                 );
-
-            $totalOffset += $closeOffset + strlen( $closeQuote );
 
         } while ( $closeOffset !== FALSE && $string !== FALSE );
 

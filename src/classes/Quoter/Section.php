@@ -39,23 +39,12 @@ abstract class Section
     private $content;
 
     /**
-     * In the grand scheme of the original string, this is the offset
-     * of the content
-     */
-    private $offset;
-
-    /**
      * Constructor...
      *
-     * @param Integer $offset The offset of the content in the scope of the original string
      * @param String $content The string content of this section
      */
-    public function __construct( $offset, $content )
+    public function __construct( $content )
     {
-        $offset = intval($offset);
-        if ( $offset < 0 )
-            throw new \cPHP\Exception\Argument( 0, "Offset", "Must not be less than zero");
-        $this->offset = $offset;
         $this->setContent( $content );
     }
 
@@ -118,16 +107,6 @@ abstract class Section
     public function isEmpty ( $flags = 0 )
     {
         return \cPHP\isEmpty( $this->content, $flags );
-    }
-
-    /**
-     * Returns the offset of the content in this string
-     *
-     * @return Integer
-     */
-    public function getOffset ()
-    {
-        return $this->offset;
     }
 
     /**

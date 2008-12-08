@@ -51,8 +51,8 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
     {
         $list = new \cPHP\Quoter\Parsed;
 
-        $list->addSection( new \cPHP\Quoter\Section\Unquoted(0, "snippet") );
-        $list->addSection( new \cPHP\Quoter\Section\Quoted(8, "inQuotes", '(', ')') );
+        $list->addSection( new \cPHP\Quoter\Section\Unquoted("snippet") );
+        $list->addSection( new \cPHP\Quoter\Section\Quoted("inQuotes", '(', ')') );
 
         $this->assertSame( "snippet(inQuotes)", $list->__toString() );
         $this->assertSame( "snippet(inQuotes)", "$list" );
