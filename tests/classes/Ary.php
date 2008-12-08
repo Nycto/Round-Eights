@@ -573,7 +573,34 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testLast ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = \cPHP\Ary::range(1, 5);
+
+        $last = $ary->last();
+        $this->assertSame( 5, $last );
+        $last = 'new';
+        $this->assertSame( array(1, 2, 3, 4, 5), $ary->get() );
+
+
+        $last =& $ary->last();
+        $this->assertSame( 5, $last );
+        $last = 'new';
+        $this->assertSame( array(1, 2, 3, 4, 'new'), $ary->get() );
+
+
+        $ary = new \cPHP\Ary(array( 2 => 'two', 1 => 'one', 0 => 'zero' ));
+        $this->assertSame( 'zero', $ary->last() );
+
+
+        $ary = new \cPHP\Ary;
+
+        try {
+            $ary->last();
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame( "Offset does not exist", $err->getMessage() );
+        }
+
     }
 
     public function testKeyExists ()

@@ -477,9 +477,28 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      */
     public function &first ()
     {
+        // Make a copy of the array so we don't muck with it's internal pointer
         $array = $this->array;
 
         if ( reset( $array ) === FALSE )
+            throw new \cPHP\Exception\Index(0, "First Offset", "Offset does not exist");
+
+        return $this->array[ key($array) ];
+    }
+
+    /**
+     * Returns the last value from the array
+     *
+     * If you choose to, this will return a reference to the last element
+     *
+     * @return mixed Returns the last value
+     */
+    public function &last ()
+    {
+        // Make a copy of the array so we don't muck with it's internal pointer
+        $array = $this->array;
+
+        if ( end( $array ) === FALSE )
             throw new \cPHP\Exception\Index(0, "First Offset", "Offset does not exist");
 
         return $this->array[ key($array) ];
