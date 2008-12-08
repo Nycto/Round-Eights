@@ -82,6 +82,11 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
         $this->assertNull( $file->getRawDir() );
         $this->assertNull( $file->getFilename() );
         $this->assertNull( $file->getExt() );
+
+        $this->assertSame( $file, $file->setPath("/.ignore") );
+        $this->assertSame( "/", $file->getRawDir() );
+        $this->assertSame( ".ignore", $file->getFilename() );
+        $this->assertNull( $file->getExt() );
     }
 
     public function testGetPath ()
@@ -183,9 +188,17 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
         $this->assertSame( "example", $file->getFilename() );
         $this->assertNull( $file->getExt() );
 
-        $this->assertSame( $file, $file->setBasename(".php") );
+        $this->assertSame( $file, $file->setBasename(".htaccess") );
+        $this->assertSame( ".htaccess", $file->getFilename() );
+        $this->assertNull( $file->getExt() );
+
+        $this->assertSame( $file, $file->setBasename(".htaccess.2008.bak") );
+        $this->assertSame( ".htaccess.2008", $file->getFilename() );
+        $this->assertSame( "bak", $file->getExt() );
+
+        $this->assertSame( $file, $file->setBasename(".") );
         $this->assertNull( $file->getFilename() );
-        $this->assertSame( "php", $file->getExt() );
+        $this->assertNull( $file->getExt() );
 
         $this->assertSame( $file, $file->setBasename("dir/to/example.php") );
         $this->assertSame( "example", $file->getFilename() );

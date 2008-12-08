@@ -74,15 +74,10 @@ class File extends \cPHP\FileSystem
         else
             $this->clearDir();
 
-        if ( isset($path['filename']) )
-            $this->setFilename($path['filename']);
+        if ( isset($path['basename']) )
+            $this->setBaseName($path['basename']);
         else
-            $this->clearFilename();
-
-        if ( isset($path['extension']) )
-            $this->setExt($path['extension']);
-        else
-            $this->clearExt();
+            $this->clearBaseName();
 
         return $this;
     }
@@ -224,6 +219,12 @@ class File extends \cPHP\FileSystem
     {
         $basename = trim(\cPHP\strval( $basename ));
         $basename = pathinfo( $basename );
+
+        // Handle filenames that start with a dot, like ".htaccess"
+        if ( \cPHP\str\startsWith( $basename['basename'], "." ) ) {
+            $basename = pathinfo( substr($basename['basename'], 1) );
+            $basename['filename'] = ".".$basename['filename'];
+        }
 
         if ( isset($basename['filename']) )
             $this->setFilename($basename['filename']);
