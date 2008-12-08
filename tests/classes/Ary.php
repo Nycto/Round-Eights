@@ -716,7 +716,16 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testContains ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array( 3 => "d", 5 => "b", 6 => "a", 1 => "f", 4 => "c", 2 => "e" ));
+
+        $this->assertTrue( $ary->contains('d') );
+        $this->assertTrue( $ary->contains('a') );
+        $this->assertTrue( $ary->contains('e') );
+
+        $this->assertFalse( $ary->contains('not') );
+        $this->assertFalse( $ary->contains('D') );
+        $this->assertFalse( $ary->contains('A') );
+        $this->assertFalse( $ary->contains('E') );
     }
 
     public function testFlatten ()
