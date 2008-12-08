@@ -53,9 +53,9 @@ require_once cPHP_DIR_FUNCTIONS ."strings.php";
 require_once cPHP_DIR_FUNCTIONS ."debug.php";
 
 /**
- * This is temporary,... auto loader
+ * Register the autoloader
  */
-function __autoload ( $class ) {
+function cPHP_autoload ( $class ) {
 
     $class = explode("\\", $class);
     $class = array_filter( $class );
@@ -73,6 +73,8 @@ function __autoload ( $class ) {
         require_once $class;
 
 }
+
+spl_autoload_register("cPHP_autoload");
 
 /**
  * Set up custom exception handling
