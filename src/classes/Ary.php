@@ -463,9 +463,6 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     {
         $offset = $this->calcOffset( $offset, $wrapFlag );
 
-        if ($offset === FALSE)
-            throw new OffsetError(1, "Offset", "Invalid offset");
-
         $sliced = array_slice( $this->array, $offset, 1 );
 
         return reset($sliced);
@@ -484,7 +481,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
 
         if ( reset( $array ) === FALSE )
             throw new \cPHP\Exception\Index(0, "First Offset", "Offset does not exist");
-        
+
         return $this->array[ key($array) ];
     }
 
