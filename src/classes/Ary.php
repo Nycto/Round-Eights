@@ -472,6 +472,23 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Returns the first value from the array
+     *
+     * If you choose to, this will return a reference to the first element
+     *
+     * @return mixed Returns the first value
+     */
+    public function &first ()
+    {
+        $array = $this->array;
+
+        if ( reset( $array ) === FALSE )
+            throw new \cPHP\Exception\Index(0, "First Offset", "Offset does not exist");
+        
+        return $this->array[ key($array) ];
+    }
+
+    /**
      * Returns whether a key exists in this array
      *
      * @param mixed $key
