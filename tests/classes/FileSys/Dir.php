@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit test for running both file test suites
  */
-class classes_filesystem_dir
+class classes_filesys_dir
 {
 
     public static function suite()
@@ -51,7 +51,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testSetGetPath ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
 
         $this->assertNull( $dir->getRawDir() );
         $this->assertFalse( $dir->dirExists() );
@@ -74,7 +74,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
 
         $dir->setPath( __DIR__ );
         $this->assertTrue( $dir->exists() );
@@ -88,7 +88,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetBasename ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
         $this->assertNull( $dir->getBasename() );
 
         $dir->setPath( "/dir/to/path" );
@@ -103,12 +103,12 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile ()
     {
-        $dir = new \cPHP\FileSystem\Dir( sys_get_temp_dir() );
+        $dir = new \cPHP\FileSys\Dir( sys_get_temp_dir() );
 
         // No settings
         $file = $dir->getUniqueFile();
 
-        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSystem\File") );
+        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertFalse( $file->extExists() );
 
@@ -120,11 +120,11 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile_prefix ()
     {
-        $dir = new \cPHP\FileSystem\Dir( sys_get_temp_dir() );
+        $dir = new \cPHP\FileSys\Dir( sys_get_temp_dir() );
 
         $file = $dir->getUniqueFile("cPHP_");
 
-        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSystem\File") );
+        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertFalse( $file->extExists() );
 
@@ -136,11 +136,11 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile_ext ()
     {
-        $dir = new \cPHP\FileSystem\Dir( sys_get_temp_dir() );
+        $dir = new \cPHP\FileSys\Dir( sys_get_temp_dir() );
 
         $file = $dir->getUniqueFile( null, "php" );
 
-        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSystem\File") );
+        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertSame( "php", $file->getExt() );
 
@@ -152,11 +152,11 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile_moreEntropy ()
     {
-        $dir = new \cPHP\FileSystem\Dir( sys_get_temp_dir() );
+        $dir = new \cPHP\FileSys\Dir( sys_get_temp_dir() );
 
         $file = $dir->getUniqueFile( "cPHP_", "php", TRUE );
 
-        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSystem\File") );
+        $this->assertThat( $file, $this->isInstanceOf("cPHP\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertSame( "php", $file->getExt() );
 
@@ -168,7 +168,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testIncludeDotsAccessors ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
         $this->assertTrue( $dir->getIncludeDots() );
 
         $this->assertSame( $dir, $dir->setIncludeDots(FALSE) );
@@ -186,7 +186,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testIteration_missing ()
     {
-        $dir = new \cPHP\FileSystem\Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new \cPHP\FileSys\Dir("/path/to/a/dir/that/isnt/real");
 
         try {
             foreach( $dir AS $item ) {}
@@ -199,7 +199,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testIteration_noRewind ()
     {
-        $dir = new \cPHP\FileSystem\Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new \cPHP\FileSys\Dir("/path/to/a/dir/that/isnt/real");
 
         try {
             $dir->current();
@@ -247,9 +247,9 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testTemp ()
     {
-        $dir = \cPHP\FileSystem\Dir::getTemp();
+        $dir = \cPHP\FileSys\Dir::getTemp();
 
-        $this->assertThat( $dir, $this->isInstanceOf("cPHP\FileSystem\Dir") );
+        $this->assertThat( $dir, $this->isInstanceOf("cPHP\FileSys\Dir") );
         $this->assertSame(
                 rtrim( sys_get_temp_dir(), "/" ),
                 rtrim( $dir->getPath(), "/" )
@@ -366,7 +366,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testToArray ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         $list = $dir->toArray();
 
@@ -382,10 +382,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
         foreach ( $list AS $item ) {
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
 
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
         }
@@ -408,7 +408,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testToArray_noDots ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         $dir->setIncludeDots(FALSE);
 
         $list = $dir->toArray();
@@ -425,10 +425,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
         foreach ( $list AS $item ) {
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
 
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
         }
@@ -449,7 +449,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testMake ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
 
         try {
             $dir->make();
@@ -470,7 +470,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testMake_noPerms ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir ."/this/is/a/new/dir" );
+        $dir = new \cPHP\FileSys\Dir( $this->dir ."/this/is/a/new/dir" );
         chmod( $this->dir, 0000 );
 
         try {
@@ -484,7 +484,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testPurge ()
     {
-        $dir = new \cPHP\FileSystem\Dir;
+        $dir = new \cPHP\FileSys\Dir;
 
         try {
             $dir->purge();
@@ -505,7 +505,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testPurge_cantOpenDir ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         chmod( $this->dir, 0000 );
 
         try {
@@ -519,7 +519,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testPurge_cantDeleteDir ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         chmod( $this->dir ."/second", 4440 );
 
         try {
@@ -533,7 +533,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testDelete ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir ."/first" );
+        $dir = new \cPHP\FileSys\Dir( $this->dir ."/first" );
 
         $this->assertSame( $dir, $dir->delete() );
         $this->assertFalse( is_dir($dir) );
@@ -544,7 +544,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testDelete_filled ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         try {
             $dir->delete();
@@ -559,7 +559,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testIteration ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         $files = array();
         $dirs = array();
@@ -570,9 +570,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -604,7 +604,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testIteration_twice ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         // Iterate through it once
         $i = 0;
@@ -627,9 +627,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -662,7 +662,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testIteration_break ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         // Iterate through it once and break before iteration completes
         $i = 0;
@@ -683,9 +683,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -717,7 +717,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testIteration_NoDots ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         $dir->setIncludeDots( FALSE );
 
         $files = array();
@@ -729,9 +729,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -761,7 +761,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testIteration_NoPerms ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         chmod( $dir, 0000 );
 
         try {
@@ -775,7 +775,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testRecursiveIteration ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
 
         $files = array();
         $dirs = array();
@@ -786,9 +786,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -820,7 +820,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
     public function testRecursiveIteration_noDots ()
     {
-        $dir = new \cPHP\FileSystem\Dir( $this->dir );
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
         $dir->setIncludeDots( FALSE );
 
         $files = array();
@@ -832,9 +832,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \cPHP\FileSystem\Dir)
+            if ( $item instanceof \cPHP\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \cPHP\FileSystem\File)
+            else if ( $item instanceof \cPHP\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;

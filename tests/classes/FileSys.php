@@ -30,13 +30,13 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_filesystem extends PHPUnit_Framework_TestCase
+class classes_filesys extends PHPUnit_Framework_TestCase
 {
 
     public function getTestObject ()
     {
         return $this->getMock(
-                "\cPHP\FileSystem",
+                "\\cPHP\\FileSys",
                 array("getPath", "setPath", "exists")
             );
     }
@@ -530,32 +530,32 @@ class classes_filesystem extends PHPUnit_Framework_TestCase
 
     public function testResolvePath ()
     {
-        $this->assertSame( 'test.php', \cPHP\FileSystem::resolvePath('test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSystem::resolvePath('dir/test.php') );
-        $this->assertSame( '/test.php', \cPHP\FileSystem::resolvePath('/test.php') );
-        $this->assertSame( 'c:/test.php', \cPHP\FileSystem::resolvePath('c:/test.php') );
-        $this->assertSame( 'c:/dir/test.php', \cPHP\FileSystem::resolvePath('c:\\dir\\test.php') );
+        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('test.php') );
+        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/test.php') );
+        $this->assertSame( '/test.php', \cPHP\FileSys::resolvePath('/test.php') );
+        $this->assertSame( 'c:/test.php', \cPHP\FileSys::resolvePath('c:/test.php') );
+        $this->assertSame( 'c:/dir/test.php', \cPHP\FileSys::resolvePath('c:\\dir\\test.php') );
 
-        $this->assertSame( 'test.php', \cPHP\FileSystem::resolvePath('../test.php') );
-        $this->assertSame( '/test.php', \cPHP\FileSystem::resolvePath('///////test.php') );
-        $this->assertSame( 'test.php', \cPHP\FileSystem::resolvePath('./test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSystem::resolvePath('dir/./test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSystem::resolvePath('dir/sub/../test.php') );
+        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('../test.php') );
+        $this->assertSame( '/test.php', \cPHP\FileSys::resolvePath('///////test.php') );
+        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('./test.php') );
+        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/./test.php') );
+        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/sub/../test.php') );
 
-        $this->assertSame( '/test', \cPHP\FileSystem::resolvePath('/../test') );
-        $this->assertSame( '/test/', \cPHP\FileSystem::resolvePath('/../.././../test/') );
-        $this->assertSame( '/1/2', \cPHP\FileSystem::resolvePath('/1/2/3/4/5/6/../../../..') );
+        $this->assertSame( '/test', \cPHP\FileSys::resolvePath('/../test') );
+        $this->assertSame( '/test/', \cPHP\FileSys::resolvePath('/../.././../test/') );
+        $this->assertSame( '/1/2', \cPHP\FileSys::resolvePath('/1/2/3/4/5/6/../../../..') );
 
-        $this->assertSame( '', \cPHP\FileSystem::resolvePath('') );
-        $this->assertSame( '/', \cPHP\FileSystem::resolvePath('/') );
-        $this->assertSame( 'c:/', \cPHP\FileSystem::resolvePath('c:/') );
-        $this->assertSame( 'D:/', \cPHP\FileSystem::resolvePath('D:\\') );
+        $this->assertSame( '', \cPHP\FileSys::resolvePath('') );
+        $this->assertSame( '/', \cPHP\FileSys::resolvePath('/') );
+        $this->assertSame( 'c:/', \cPHP\FileSys::resolvePath('c:/') );
+        $this->assertSame( 'D:/', \cPHP\FileSys::resolvePath('D:\\') );
     }
 
     public function getResolveTest ( $original, $resolved, $cwd = "/" )
     {
         $mock = $this->getMock(
-                "\cPHP\FileSystem",
+                "\cPHP\FileSys",
                 array("getPath", "setPath", "exists", "getCWD")
             );
 

@@ -834,7 +834,7 @@ class URL
             $this->directory = null;
         }
         else {
-            $directory = \cPHP\FileSystem::resolvePath( $directory );
+            $directory = \cPHP\FileSys::resolvePath( $directory );
             $directory = \cPHP\str\enclose( $directory, "/" );
             $this->directory = $directory;
         }

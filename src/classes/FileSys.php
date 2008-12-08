@@ -30,7 +30,7 @@ namespace cPHP;
 /**
  * The base filesystem class
  */
-abstract class FileSystem
+abstract class FileSys
 {
 
     /**

@@ -25,12 +25,12 @@
  * @package FileSystem
  */
 
-namespace cPHP\FileSystem;
+namespace cPHP\FileSys;
 
 /**
  * Filesystem File class
  */
-class File extends \cPHP\FileSystem
+class File extends \cPHP\FileSys
 {
 
     /**
@@ -93,13 +93,13 @@ class File extends \cPHP\FileSystem
     }
 
     /**
-     * Returns the directory as a cPHP\FileSystem\Dir object
+     * Returns the directory as a cPHP\FileSys\Dir object
      *
-     * @return Object Returns a cPHP\FileSystem\Dir objec
+     * @return Object Returns a cPHP\FileSys\Dir objec
      */
     public function getDir ()
     {
-        return new \cPHP\FileSystem\Dir( $this->getRawDir() );
+        return new \cPHP\FileSys\Dir( $this->getRawDir() );
     }
 
     /**
@@ -404,7 +404,7 @@ class File extends \cPHP\FileSystem
      * Copies this file to a new location
      *
      * @param String $destination The new location for the file
-     * @return Object Returns a new instance of \cPHP\FileSystem\File with the
+     * @return Object Returns a new instance of \cPHP\FileSys\File with the
      *      path pointing to the new file
      */
     public function copy ( $destination )

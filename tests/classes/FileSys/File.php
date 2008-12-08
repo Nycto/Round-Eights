@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit test for running both file test suites
  */
-class classes_filesystem_file
+class classes_filesys_file
 {
 
     public static function suite()
@@ -51,7 +51,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetPath ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $this->assertSame( $file, $file->setPath("/dir/to/example.php") );
         $this->assertSame( "/dir/to/", $file->getRawDir() );
@@ -91,7 +91,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetPath ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $this->assertNull( $file->getPath() );
 
@@ -122,21 +122,21 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetDir ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $dir = $file->getDir();
-        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSystem\Dir') );
+        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSys\Dir') );
         $this->assertNull( $dir->getRawDir() );
 
         $file->setPath("/dir/to/file.php");
         $dir = $file->getDir();
-        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSystem\Dir') );
+        $this->assertThat( $dir, $this->isInstanceOf('\cPHP\FileSys\Dir') );
         $this->assertSame( "/dir/to/", $dir->getRawDir() );
     }
 
     public function testExtAccessors ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $this->assertNull( $file->getExt() );
         $this->assertFalse( $file->extExists() );
@@ -164,7 +164,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testFilenameAccessors ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $this->assertNull( $file->getFilename() );
         $this->assertFalse( $file->filenameExists() );
@@ -192,7 +192,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testSetBasename ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         $this->assertSame( $file, $file->setBasename("example.php") );
         $this->assertSame( "example", $file->getFilename() );
@@ -225,7 +225,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetBasename ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
         $this->assertNull( $file->getBasename() );
 
         $file->setExt("php");
@@ -251,19 +251,19 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testExists ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertTrue( $file->exists() );
 
-        $file = new \cPHP\FileSystem\File( __DIR__ );
+        $file = new \cPHP\FileSys\File( __DIR__ );
         $this->assertFalse( $file->exists() );
 
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         $this->assertFalse( $file->exists() );
     }
 
     public function testGet ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertSame(
                 "This is a string\n"
                 ."of data that is put\n"
@@ -273,7 +273,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
 
         chmod( $this->file, 0000 );
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         try {
             $file->get();
             $this->fail("An expected exception was not thrown");
@@ -283,7 +283,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
 
 
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         try {
             $file->get();
             $this->fail("An expected exception was not thrown");
@@ -295,7 +295,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testSet ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertSame( $file, $file->set("This is a new chunk of info") );
         $this->assertSame(
                 "This is a new chunk of info",
@@ -315,7 +315,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testAppend ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertSame( $file, $file->append("\nnew data") );
         $this->assertSame(
                 "This is a string\n"
@@ -348,7 +348,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testToArray ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertSame(
                 array(
                         "This is a string\n",
@@ -359,7 +359,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
             );
 
         chmod( $this->file, 0000 );
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         try {
             $file->toArray();
             $this->fail("An expected exception was not thrown");
@@ -369,7 +369,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
         }
 
 
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         try {
             $file->toArray();
             $this->fail("An expected exception was not thrown");
@@ -381,12 +381,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetSize ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertType( 'integer', $file->getSize() );
         $this->assertGreaterThan( 0, $file->getSize() );
 
 
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         try {
             $file->getSize();
             $this->fail("An expected exception was not thrown");
@@ -398,14 +398,14 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testTruncate ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $this->assertSame( $file, $file->truncate() );
         $this->assertSame( "", file_get_contents($this->file) );
     }
 
     public function testDelete ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
 
         $this->assertSame( $file, $file->delete() );
 
@@ -417,7 +417,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testGetMimeType ()
     {
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
 
         try {
             $file->getMimeType();
@@ -443,12 +443,12 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testCopy ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $newPath = $this->getTempFileName();
 
         $copied = $file->copy( $newPath );
 
-        $this->assertThat( $copied, $this->isInstanceOf("cPHP\FileSystem\File") );
+        $this->assertThat( $copied, $this->isInstanceOf("cPHP\FileSys\File") );
         $this->assertNotSame( $file, $copied );
 
         $this->assertSame( $newPath, $copied->getPath() );
@@ -470,7 +470,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
     public function testCopy_missing ()
     {
 
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         try {
             $file->copy( "/some/new/location" );
             $this->fail("An expected exception was not thrown");
@@ -482,7 +482,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testCopy_noPerms ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
 
         chmod( $this->file, 0000 );
 
@@ -498,7 +498,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove ()
     {
-        $file = new \cPHP\FileSystem\File( $this->file );
+        $file = new \cPHP\FileSys\File( $this->file );
         $newPath = $this->getTempFileName();
 
         $this->assertSame( $file, $file->move( $newPath ) );
@@ -516,7 +516,7 @@ class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
     public function testMove_missing ()
     {
-        $file = new \cPHP\FileSystem\File( "/path/to/missing/file" );
+        $file = new \cPHP\FileSys\File( "/path/to/missing/file" );
         try {
             $file->move( $this->getTempFileName() );
             $this->fail("An expected exception was not thrown");

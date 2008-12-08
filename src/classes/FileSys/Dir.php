@@ -25,12 +25,12 @@
  * @package FileSystem
  */
 
-namespace cPHP\FileSystem;
+namespace cPHP\FileSys;
 
 /**
  * Filesystem Directory class
  */
-class Dir extends \cPHP\FileSystem implements \RecursiveIterator
+class Dir extends \cPHP\FileSys implements \RecursiveIterator
 {
 
     /**
@@ -56,7 +56,7 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
     /**
      * Returns a Dir instance representing the system's temporary directory
      *
-     * @return Object A \cPHP\FileSystem\Dir instance
+     * @return Object A \cPHP\FileSys\Dir instance
      */
     static public function getTemp ()
     {
@@ -150,9 +150,9 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
             $item = $path . $item;
 
             if ( is_dir( $item ) )
-                $result[] = new \cPHP\FileSystem\Dir( $item );
+                $result[] = new \cPHP\FileSys\Dir( $item );
             else
-                $result[] = new \cPHP\FileSystem\File( $item );
+                $result[] = new \cPHP\FileSys\File( $item );
 
         }
 
@@ -281,14 +281,14 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
      * @param String $prefix A prefix to attach to the file name
      * @param String $extension The extension the file should have
      * @param Boolean $moreEntropy Increases the length of the generated filename
-     * @return Object Returns a \cPHP\FileSystem\File object
+     * @return Object Returns a \cPHP\FileSys\File object
      */
     public function getUniqueFile ( $prefix = null, $extension = null, $moreEntropy = FALSE )
     {
         if ( !$this->dirExists() )
             throw new \cPHP\Exception\Variable("Dir", "No directory has been set for this instance");
 
-        $file = new \cPHP\FileSystem\File;
+        $file = new \cPHP\FileSys\File;
         $file->setDir( $this->getRawDir() );
 
         if ( !\cPHP\isVague($extension) )
@@ -440,9 +440,9 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
         $current = $this->getRawDir() . $this->current;
 
         if ( is_dir( $current ) )
-            return new \cPHP\FileSystem\Dir( $current );
+            return new \cPHP\FileSys\Dir( $current );
         else
-            return new \cPHP\FileSystem\File( $current );
+            return new \cPHP\FileSys\File( $current );
     }
 
     /**
@@ -478,7 +478,7 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
     /**
      * Used for recursive iteration, this returns the iterator for the current element
      *
-     * @return Object Returns a \cPHP\FileSystem\Dir object
+     * @return Object Returns a \cPHP\FileSys\Dir object
      */
     public function getChildren ()
     {
@@ -488,7 +488,7 @@ class Dir extends \cPHP\FileSystem implements \RecursiveIterator
         if ( !$this->hasChildren() )
             throw new \cPHP\Exception\Interaction("Current value does not have children");
 
-        // Grab the current item as a \cPHP\FileSystem\Dir object
+        // Grab the current item as a \cPHP\FileSys\Dir object
         $current = $this->current();
 
         // Import the 'includeDots' setting
