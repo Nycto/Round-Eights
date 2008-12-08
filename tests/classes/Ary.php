@@ -298,7 +298,9 @@ class classes_ary extends PHPUnit_Framework_TestCase
             \cPHP\Ary::create(array())->calcOffset(2, "invalid offset value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {}
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("List is empty", $err->getMessage() );
+        }
 
 
         $this->assertEquals(0, \cPHP\Ary::range(1, 5)->calcOffset(-5, \cPHP\Ary::OFFSET_NONE) );
@@ -312,19 +314,25 @@ class classes_ary extends PHPUnit_Framework_TestCase
             \cPHP\Ary::create(array())->calcOffset(2, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {}
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("List is empty", $err->getMessage() );
+        }
 
         try {
             \cPHP\Ary::range(1, 5)->calcOffset(5, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {}
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Offset is out of bounds", $err->getMessage() );
+        }
 
         try {
             \cPHP\Ary::range(1, 5)->calcOffset(-6, \cPHP\Ary::OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {}
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Offset is out of bounds", $err->getMessage() );
+        }
 
 
         $this->assertEquals(1, \cPHP\Ary::range(1, 5)->calcOffset(-14, \cPHP\Ary::OFFSET_WRAP) );
