@@ -871,7 +871,41 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testSortyByKey ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array( 1 => 'x', 'b' => 'y', 'a' => 'z', '2' => 'w' ));
+        $this->assertSame( $ary, $ary->sortByKey() );
+        $this->assertSame(
+                array( 'a' => 'z', 'b' => 'y', 1 => 'x', '2' => 'w' ),
+                $ary->get()
+            );
+
+        $ary = new \cPHP\Ary(array( 1 => 'x', 'b' => 'y', 'a' => 'z', '2' => 'w' ));
+        $this->assertSame( $ary, $ary->sortByKey( TRUE ) );
+        $this->assertSame(
+                array( '2' => 'w', 1 => 'x', 'b' => 'y', 'a' => 'z' ),
+                $ary->get()
+            );
+
+        $ary = new \cPHP\Ary(array( 11 => 'x', '05' => 'y', '050' => 'z', '2' => 'w' ));
+        $this->assertSame( $ary, $ary->sortByKey( FALSE, SORT_STRING ) );
+        $this->assertSame(
+                array( '05' => 'y', '050' => 'z', 11 => 'x', '2' => 'w' ),
+                $ary->get()
+            );
+
+        $ary = new \cPHP\Ary(array( 11 => 'x', '05' => 'y', '050' => 'z', '2' => 'w' ));
+        $this->assertSame( $ary, $ary->sortByKey( TRUE, SORT_STRING ) );
+        $this->assertSame(
+                array( '2' => 'w', 11 => 'x', '050' => 'z', '05' => 'y' ),
+                $ary->get()
+            );
+
+        try {
+            $ary->sortByKey(FALSE, "This is not a valid value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertEquals("Invalid Sort Type", $err->getMessage());
+        }
     }
 
     public function testNaturalSort ()

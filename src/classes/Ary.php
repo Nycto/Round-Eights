@@ -661,9 +661,9 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
             throw new \cPHP\Exception\Argument(1, "Sort Type", "Invalid Sort Type");
 
         if ( $reverse )
-            ksort( $this->array, $type );
-        else
             krsort( $this->array, $type );
+        else
+            ksort( $this->array, $type );
 
         return $this;
     }
