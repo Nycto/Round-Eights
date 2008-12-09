@@ -964,7 +964,22 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testShuffle ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array( 'a' => 5, 'b' => 2, 'c' => 9, 'd' => 8 ));
+        $this->assertSame( $ary, $ary->shuffle() );
+        $this->assertNotSame(
+                array( 'a' => 5, 'b' => 2, 'c' => 9, 'd' => 8 ),
+                $ary->get()
+            );
+
+        $this->assertContains(5, $ary->get());
+        $this->assertContains(2, $ary->get());
+        $this->assertContains(9, $ary->get());
+        $this->assertContains(8, $ary->get());
+
+        $this->assertSame(
+                array(0, 1, 2, 3),
+                $ary->keys()->get()
+            );
     }
 
     public function testBubbleKeys ()
