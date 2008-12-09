@@ -946,7 +946,20 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testReverse ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array( 5, 2, 9, 8 ));
+        $this->assertSame( $ary, $ary->reverse() );
+        $this->assertSame(
+                array( 3 => 8, 2 => 9, 1 => 2, 0 => 5 ),
+                $ary->get()
+            );
+
+
+        $ary = new \cPHP\Ary(array( 5, 2, 9, 8 ));
+        $this->assertSame( $ary, $ary->reverse(FALSE) );
+        $this->assertSame(
+                array( 8, 9, 2, 5 ),
+                $ary->get()
+            );
     }
 
     public function testShuffle ()

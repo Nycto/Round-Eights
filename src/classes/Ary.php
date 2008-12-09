@@ -712,7 +712,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      */
     public function reverse ( $assoc = TRUE )
     {
-        array_reverse( $this->array, booleanVal($assoc) );
+        $this->array = array_reverse( $this->array, \cPHP\boolVal($assoc) );
 
         return $this;
     }
