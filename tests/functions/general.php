@@ -232,6 +232,22 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertFalse( \cPHP\kindOf( '\cPHP\Filter\Chain', '\cPHP\iface\Validator' ) );
     }
 
+    public function testRespondTo ()
+    {
+        $this->assertFalse( \cPHP\respondTo( 505, 'method') );
+        $this->assertFalse( \cPHP\respondTo( 50.5, 'method') );
+        $this->assertFalse( \cPHP\respondTo( NULL, 'method') );
+        $this->assertFalse( \cPHP\respondTo( TRUE, 'method') );
+        $this->assertFalse( \cPHP\respondTo( FALSE, 'method') );
+        $this->assertFalse( \cPHP\respondTo( 'string', 'method') );
+        $this->assertFalse( \cPHP\respondTo( array(), 'method') );
+
+        $this->assertFalse( \cPHP\respondTo( new stdClass, 'method') );
+
+        $this->assertTrue( \cPHP\respondTo( new \cPHP\Ary, 'offsetGet') );
+        $this->assertFalse( \cPHP\respondTo( new \cPHP\Ary, 'Not A Valid Method Name') );
+    }
+
 }
 
 ?>

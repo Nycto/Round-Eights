@@ -294,4 +294,24 @@ function kindOf ( $value, $className )
 
 }
 
+
+/**
+ * Determines if the given object responds to a list of functions
+ *
+ * Note that this doesn't take method overloading in to account
+ *
+ * @param Object $object The instance being tested
+ * @param String $function The function to test
+ * @return Boolean
+ */
+function respondTo ($object, $function)
+{
+    if (!is_object($object))
+        return FALSE;
+
+    $function = \cPHP\strval( $function );
+
+    return in_array( $function, get_class_methods($object) );
+}
+
 ?>
