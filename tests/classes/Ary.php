@@ -69,6 +69,33 @@ class stub_classes_ary_boolCallbacks
 }
 
 /**
+ * A stub class for testing the invoke method
+ */
+class stub_classes_ary_invokeTester
+{
+
+    /**
+     * The value that will be returned when 'get' is invoked
+     */
+    public $return;
+
+    /**
+     * Sets the value to be returned
+     */
+    public function __construct ( $return )
+    {
+        $this->return = $return;
+    }
+
+    public function get ()
+    {
+        $args = func_get_args();
+        return $this->return .":". implode(":", $args);
+    }
+
+}
+
+/**
  * unit tests
  */
 class classes_ary extends PHPUnit_Framework_TestCase
@@ -1305,7 +1332,32 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testInvoke ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array(
+                'meh' => new stub_classes_ary_invokeTester('one'),
+                0 => 5,
+                1 => new stub_classes_ary_invokeTester('two'),
+                5 => 'string',
+                8 => new stdClass,
+            ));
+
+
+        $result = $ary->invoke( 'get' );
+        $this->assertNotSame( $ary, $result );
+        $this->assertThat( $result, $this->isInstanceOf('\cPHP\Ary') );
+        $this->assertSame(
+                array( 'meh' => 'one:', 1 => 'two:' ),
+                $result->get()
+            );
+
+
+        $result = $ary->invoke( 'get', 'arg1', 'arg2' );
+        $this->assertNotSame( $ary, $result );
+        $this->assertThat( $result, $this->isInstanceOf('\cPHP\Ary') );
+        $this->assertSame(
+                array( 'meh' => 'one:arg1:arg2', 1 => 'two:arg1:arg2' ),
+                $result->get()
+            );
+
     }
 
     public function testUnique ()

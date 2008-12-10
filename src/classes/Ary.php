@@ -1067,11 +1067,33 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Calls the given method for all objects that respond to it
      *
+     * @param String $func The name of the method to invoke
+     * @param mixed $args... Any arguments to pass to the method
+     * @return Object Returns a new cPHP/Ary object with the results
      */
-    public function invoke ()
+    function invoke ( $func )
     {
+        $func = \cPHP\strval($func);
 
+        $out = new self;
+
+        $args = func_get_args();
+        array_shift($args);
+
+        foreach( $this->array AS $key => $val ) {
+
+            if ( is_object($val) && \cPHP\respondTo($val, $func) ) {
+                $out[$key] = call_user_func_array(
+                        array($val, $func),
+                        $args
+                    );
+            }
+
+        }
+
+        return $out;
     }
 
     /**
