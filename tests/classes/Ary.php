@@ -1427,7 +1427,33 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testWithoutKeys ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array(
+                'One' => 1, 'Two' => 2, 'Three' => 3, 4 => 'Four', 5 => 'Five'
+            ));
+
+        $result = $ary->withoutKeys('One');
+        $this->assertNotSame( $ary, $result );
+        $this->assertSame(
+                array( 'One' => 1, 'Two' => 2, 'Three' => 3, 4 => 'Four', 5 => 'Five' ),
+                $ary->get()
+            );
+        $this->assertSame(
+                array( 'Two' => 2, 'Three' => 3, 4 => 'Four', 5 => 'Five' ),
+                $result->get()
+            );
+
+
+        $result = $ary->withoutKeys( array('One', 'two'), 5 );
+        $this->assertNotSame( $ary, $result );
+        $this->assertSame(
+                array( 'One' => 1, 'Two' => 2, 'Three' => 3, 4 => 'Four', 5 => 'Five' ),
+                $ary->get()
+            );
+        $this->assertSame(
+                array( 'Two' => 2, 'Three' => 3, 4 => 'Four' ),
+                $result->get()
+            );
+
     }
 
     public function testSetBranch_basic ()

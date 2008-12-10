@@ -1204,6 +1204,21 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Returns a copy of this array without the given keys
+     *
+     * @param mixed $keys... Any keys to remove from this array
+     * @return Object Returns a new cPHP\Ary instance
+     */
+    public function withoutKeys ( $keys )
+    {
+        $keys = func_get_args();
+        $keys = new self( $keys );
+        $keys = array_flip( $keys->flatten()->get() );
+
+        return new \cPHP\Ary( array_diff_key( $this->array, $keys) );
+    }
+
+    /**
      * Adds a branch and value to an array tree
      *
      * @param mixed $value The value being pushed on to the tree
