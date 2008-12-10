@@ -1271,7 +1271,36 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testPluck ()
     {
-        $this->markTestIncomplete("To be written");
+        $obj = new stdClass;
+        $obj->one = 'vive';
+        $obj->four = 'viks';
+
+        $ary = new \cPHP\Ary(array(
+                2 => 'String',
+                5 => new \cPHP\Ary(array( 'one' => 'vun', 'two' => 'voo' )),
+                'blah' => 1,
+                8 => array( 'one' => 'vee', 'four' => 'vour' ),
+                'meh' => $obj,
+                'str' => new \ArrayObject(array( 'one' => 'vevn' ))
+            ));
+
+
+        $result = $ary->pluck( 'one' );
+        $this->assertNotSame( $ary, $result );
+        $this->assertThat( $result, $this->isInstanceOf('\cPHP\Ary') );
+        $this->assertSame(
+                array( 5 => 'vun', 8 => 'vee', 'meh' => 'vive', 'str' => 'vevn' ),
+                $result->get()
+            );
+
+
+        $result = $ary->pluck( 'four' );
+        $this->assertNotSame( $ary, $result );
+        $this->assertThat( $result, $this->isInstanceOf('\cPHP\Ary') );
+        $this->assertSame(
+                array( 8 => 'vour', 'meh' => 'viks' ),
+                $result->get()
+            );
     }
 
     public function testInvoke ()

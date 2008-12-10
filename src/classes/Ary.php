@@ -1075,11 +1075,37 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Fetches the given key value from each element
      *
+     * If an element is an array, it will return the value at that index. If it
+     * is an instance of ArrayAccess, it will pull the value using the offsetGet
+     * callback. If it is an object of any other kind, it will look for the property.
+     *
+     * Key association is retained. Elements that can't be plucked (Integers,
+     * strings, etc) or values that don't contain the given key will be left out
+     * of the result.
+     *
+     * @param String|Integer $key The value to pull from each element
+     * @return Object Returns a new cPHP/Ary object
      */
-    public function pluck ()
+    function pluck ($key)
     {
+        $out = new self;
 
+        foreach ( $this->array AS $nestKey => $nested ) {
+
+            if ( is_array($nested) && array_key_exists($key, $nested) )
+                $out[$nestKey] = $nested[$key];
+
+            else if ( $nested instanceof \ArrayAccess && $nested->offsetExists($key) )
+                $out[$nestKey] = $nested->offsetGet($key);
+
+            else if ( is_object($nested) && isset($nested->$key) )
+                $out[$nestKey] = $nested->$key;
+
+        }
+
+        return $out;
     }
 
     /**
