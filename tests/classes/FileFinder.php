@@ -33,6 +33,32 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_filefinder extends PHPUnit_Framework_TestCase
 {
 
+    public function testFallbackAccessors ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $this->assertNull( $finder->getFallback() );
+        $this->assertFalse( $finder->fallbackExists() );
+
+        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $finder, $finder->setFallback($fallback) );
+        $this->assertSame( $fallback, $finder->getFallback() );
+        $this->assertTrue( $finder->fallbackExists() );
+
+        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $finder, $finder->setFallback($fallback2) );
+        $this->assertSame( $fallback2, $finder->getFallback() );
+        $this->assertTrue( $finder->fallbackExists() );
+
+        $this->assertSame( $finder, $finder->clearFallback() );
+        $this->assertNull( $finder->getFallback() );
+        $this->assertFalse( $finder->fallbackExists() );
+
+        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $finder, $finder->setFallback($fallback) );
+        $this->assertSame( $fallback, $finder->getFallback() );
+        $this->assertTrue( $finder->fallbackExists() );
+    }
+
 }
 
 ?>

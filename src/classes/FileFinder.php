@@ -33,6 +33,88 @@ namespace cPHP;
 abstract class FileFinder
 {
 
+    /**
+     * The FileFinder class to fall back on if the file can not be found by
+     * this instance
+     */
+    private $fallback;
+
+    /**
+     * Returns the fallback class for this instance
+     *
+     * @return Object|Null Returns a FileFinder instance, or NULL if no fallback
+     *      has been set
+     */
+    public function getFallback ()
+    {
+        return $this->fallback;
+    }
+
+    /**
+     * Sets the FileFinder class to fall back on if the file can not be found by
+     * this instance
+     *
+     * @param Object $fallback The fallback instance
+     * @return Object Returns a self reference
+     */
+    public function setFallback ( \cPHP\FileFinder $fallback )
+    {
+        $this->fallback = $fallback;
+        return $this;
+    }
+
+    /**
+     * Returns whether this instance has a fallback
+     *
+     * @return Boolean
+     */
+    public function fallbackExists ()
+    {
+        return isset($this->fallback);
+    }
+
+    /**
+     * Clears the fallback from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFallback ()
+    {
+        $this->fallback = null;
+        return $this;
+    }
+
+    /**
+     * Returns the top-most fallback in this chain that doesn't have a fallback
+     *
+     * @return Object
+     */
+    public function getTopFallback ()
+    {
+        $scanned = array();
+
+        $fallback = $this;
+
+        while ( $fallback->fallbackExists() ) {
+
+            $fallback = $fallback->getFallback();
+
+            // We save the has of each fallback we scan to catch recursion
+            $hash = spl_object_hash( $fallback );
+            if ( in_array($hash, $scanned) )
+                throw new \cPHP\Exception\Interaction("Too much recursion");
+
+            $scanned[] = $hash;
+        }
+
+        return $fallback;
+    }
+
+    /**
+     * Internal method that actual searches this instance for the file
+     */
+    abstract protected function internalFind ( $file );
+
 }
 
 ?>
