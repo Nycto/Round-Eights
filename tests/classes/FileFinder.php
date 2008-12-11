@@ -59,6 +59,45 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
         $this->assertTrue( $finder->fallbackExists() );
     }
 
+    public function testFallback_infiniteLoop ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder->setFallback( $fallback );
+
+        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback->setFallback( $fallback2 );
+
+        try {
+            $fallback2->setFallback( $finder );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Interaction $err ) {
+            $this->assertSame( "Setting Fallback creates an infinite loop", $err->getMessage() );
+        }
+    }
+
+    public function testGetTopFallback_self ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $finder, $finder->getTopFallback() );
+    }
+
+    public function testGetTopFallback_chain ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder->setFallback( $fallback );
+
+        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback->setFallback( $fallback2 );
+
+        $this->assertSame( $fallback2, $finder->getTopFallback() );
+        $this->assertSame( $fallback2, $fallback->getTopFallback() );
+    }
+
 }
 
 ?>

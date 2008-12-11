@@ -59,6 +59,15 @@ abstract class FileFinder
      */
     public function setFallback ( \cPHP\FileFinder $fallback )
     {
+
+        // Ensure that this doesn't form a loop
+        $check = $fallback;
+        while ( $check->fallbackExists() ) {
+            $check = $check->getFallback();
+            if ( $check === $this )
+                throw new \cPHP\Exception\Interaction("Setting Fallback creates an infinite loop");
+        }
+
         $this->fallback = $fallback;
         return $this;
     }
@@ -91,20 +100,10 @@ abstract class FileFinder
      */
     public function getTopFallback ()
     {
-        $scanned = array();
-
         $fallback = $this;
 
         while ( $fallback->fallbackExists() ) {
-
             $fallback = $fallback->getFallback();
-
-            // We save the has of each fallback we scan to catch recursion
-            $hash = spl_object_hash( $fallback );
-            if ( in_array($hash, $scanned) )
-                throw new \cPHP\Exception\Interaction("Too much recursion");
-
-            $scanned[] = $hash;
         }
 
         return $fallback;
