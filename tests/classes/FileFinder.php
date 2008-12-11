@@ -207,6 +207,70 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
         $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
     }
 
+    public function testFind_array ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->at(0) )
+            ->method('internalFind')
+            ->with('file1.php')
+            ->will( $this->returnValue( FALSE ) );
+
+        $finder->expects( $this->at(1) )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( '/root/sub/dir/file.php' ) );
+
+
+        $file = $finder->find(
+                array( 'file1.php', 'sub/dir/file.php' )
+            );
+
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
+    public function testFind_array2 ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( '/root/sub/dir/file.php' ) );
+
+
+        $file = $finder->find(
+                array( 'sub/dir/file.php', 'file.php' )
+            );
+
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
+    public function testFind_iterator ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->at(0) )
+            ->method('internalFind')
+            ->with('file1.php')
+            ->will( $this->returnValue( FALSE ) );
+
+        $finder->expects( $this->at(1) )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( '/root/sub/dir/file.php' ) );
+
+
+        $file = $finder->find(
+                new \cPHP\Ary(array( 'file1.php', 'sub/dir/file.php' ))
+            );
+
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
 }
 
 ?>

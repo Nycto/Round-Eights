@@ -120,27 +120,45 @@ abstract class FileFinder
     /**
      * Attempts to find a file
      *
-     * @param String $file The file being looked for
+     * @param String|Array $file The file being looked for. If an array is given,
+     *      all the values will be tested at this level before moving on to the
+     *      fallback.
      * @return Boolean|Object Returns a cPHP\FileSys\File object if a file is found,
      *      Returns FALSE if the file couldn't be found
      */
     public function find ( $file )
     {
-        $file = ltrim( \cPHP\FileSys::resolvePath( $file ), "/" );
 
-        $result = $this->internalFind( $file );
+        // If it isn't traversable, convert it to an array
+        if ( !\cPHP\Ary::is( $file ) )
+            $file = array( $file );
 
-        if ( $result === FALSE )
-            return $this->fallbackExists() ? $this->getFallback()->find( $file ) : FALSE;
+        foreach ( $file AS $current ) {
 
-        else if ( $result instanceof \cPHP\FileSys )
-            return $result;
+            $current = ltrim( \cPHP\FileSys::resolvePath( $current ), "/" );
 
-        else if ( is_dir($result) )
-            return new \cPHP\FileSys\Dir( $result );
+            $result = $this->internalFind( $current );
 
+            if ( $result === FALSE )
+                continue;
+
+            else if ( $result instanceof \cPHP\FileSys )
+                return $result;
+
+            else if ( is_dir($result) )
+                return new \cPHP\FileSys\Dir( $result );
+
+            else
+                return new \cPHP\FileSys\File( $result );
+
+        }
+
+        // If we reach here, then nothing was found by this instance
+        if ( $this->fallbackExists() )
+            return $this->getFallback()->find( $file );
         else
-            return new \cPHP\FileSys\File( $result );
+            return FALSE;
+
     }
 
 }
