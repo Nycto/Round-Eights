@@ -98,6 +98,115 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
         $this->assertSame( $fallback2, $fallback->getTopFallback() );
     }
 
+    public function testFind_stringFile ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->exactly(2) )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue('/root/sub/dir/file.php') );
+
+
+        $file = $finder->find('sub/dir/file.php');
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+
+
+        // Ensure that leading slashes are stripped
+        $file = $finder->find('/sub/dir/file.php');
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
+    public function testFind_stringDir()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( __DIR__ ) );
+
+
+        $file = $finder->find('sub/dir/file.php');
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\Dir') );
+
+        $this->assertSame(
+                rtrim(__DIR__, "/") ."/",
+                $file->getPath()
+            );
+
+    }
+
+    public function testFind_objFile ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $result = new \cPHP\FileSys\File( '/root/sub/dir/file.php' );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( $result ) );
+
+        $file = $finder->find('sub/dir/file.php');
+        $this->assertSame( $result, $file );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
+    public function testFind_objDir ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $result = new \cPHP\FileSys\Dir( '/root/sub/dir/' );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( $result ) );
+
+        $file = $finder->find('sub/dir/file.php');
+        $this->assertSame( $result, $file );
+        $this->assertSame( '/root/sub/dir/', $file->getPath() );
+    }
+
+    public function testFind_none ()
+    {
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( FALSE ) );
+
+        $this->assertFalse( $finder->find('sub/dir/file.php') );
+    }
+
+    public function testFind_fallback ()
+    {
+        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+
+        $fallback->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( '/root/sub/dir/file.php' ) );
+
+
+        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder->setFallback( $fallback );
+
+        $finder->expects( $this->once() )
+            ->method('internalFind')
+            ->with('sub/dir/file.php')
+            ->will( $this->returnValue( FALSE ) );
+
+
+        $file = $finder->find('sub/dir/file.php');
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/root/sub/dir/file.php', $file->getPath() );
+    }
+
 }
 
 ?>

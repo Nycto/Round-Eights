@@ -59,7 +59,6 @@ abstract class FileFinder
      */
     public function setFallback ( \cPHP\FileFinder $fallback )
     {
-
         // Ensure that this doesn't form a loop
         $check = $fallback;
         while ( $check->fallbackExists() ) {
@@ -94,7 +93,7 @@ abstract class FileFinder
     }
 
     /**
-     * Returns the top-most fallback in this chain that doesn't have a fallback
+     * Returns the top-most file finder in this chain that doesn't have a fallback
      *
      * @return Object
      */
@@ -111,8 +110,38 @@ abstract class FileFinder
 
     /**
      * Internal method that actual searches this instance for the file
+     *
+     * @param String $file The file being looked for
+     * @param String|False This should return FALSE if the file couldn't be
+     *      found, or the path if it was.
      */
     abstract protected function internalFind ( $file );
+
+    /**
+     * Attempts to find a file
+     *
+     * @param String $file The file being looked for
+     * @return Boolean|Object Returns a cPHP\FileSys\File object if a file is found,
+     *      Returns FALSE if the file couldn't be found
+     */
+    public function find ( $file )
+    {
+        $file = ltrim( \cPHP\FileSys::resolvePath( $file ), "/" );
+
+        $result = $this->internalFind( $file );
+
+        if ( $result === FALSE )
+            return $this->fallbackExists() ? $this->getFallback()->find( $file ) : FALSE;
+
+        else if ( $result instanceof \cPHP\FileSys )
+            return $result;
+
+        else if ( is_dir($result) )
+            return new \cPHP\FileSys\Dir( $result );
+
+        else
+            return new \cPHP\FileSys\File( $result );
+    }
 
 }
 
