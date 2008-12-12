@@ -112,7 +112,7 @@ abstract class FileFinder
      * Internal method that actual searches this instance for the file
      *
      * @param String $file The file being looked for
-     * @param String|False This should return FALSE if the file couldn't be
+     * @return String|False This should return FALSE if the file couldn't be
      *      found, or the path if it was.
      */
     abstract protected function internalFind ( $file );
