@@ -139,17 +139,8 @@ abstract class FileFinder
 
             $result = $this->internalFind( $current );
 
-            if ( $result === FALSE )
-                continue;
-
-            else if ( $result instanceof \cPHP\FileSys )
+            if ( $result instanceof \cPHP\FileSys )
                 return $result;
-
-            else if ( is_dir($result) )
-                return new \cPHP\FileSys\Dir( $result );
-
-            else
-                return new \cPHP\FileSys\File( $result );
 
         }
 
