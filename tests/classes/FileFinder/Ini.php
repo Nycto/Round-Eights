@@ -25,12 +25,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_filefinder extends PHPUnit_Framework_TestCase
+class classes_filefinder_ini extends PHPUnit_Framework_TestCase
 {
 
 }
