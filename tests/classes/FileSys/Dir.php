@@ -488,6 +488,82 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
         $this->assertFalse( $dir->contains("/dir/to/a/non/existant/file") );
     }
 
+    public function testGetSubPath_noDir ()
+    {
+        $dir = new \cPHP\FileSys\Dir;
+
+        try {
+            $dir->getSubPath("file");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Variable $err ) {
+            $this->assertSame( "No directory has been set for this instance", $err->getMessage() );
+        }
+    }
+
+    public function testGetSubPath_dirs ()
+    {
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
+
+        $result = $dir->getSubPath("first");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( $this->dir ."/first/", $result->getPath() );
+
+        $result = $dir->getSubPath("third/fourth/");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( $this->dir ."/third/fourth/", $result->getPath() );
+
+        $result = $dir->getSubPath("./third/fourth/");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( $this->dir ."/third/fourth/", $result->getPath() );
+
+        $result = $dir->getSubPath( new \cPHP\FileSys\Dir("third") );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( $this->dir ."/third/", $result->getPath() );
+
+        $result = $dir->getSubPath( $this->dir );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertSame( $this->dir ."/", $result->getPath() );
+    }
+
+    public function testGetSubPath_files ()
+    {
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
+
+        $result = $dir->getSubPath("one");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/one", $result->getPath() );
+
+        $result = $dir->getSubPath("second/second-one");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/second/second-one", $result->getPath() );
+
+        $result = $dir->getSubPath("third/fourth/fourth-one");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/third/fourth/fourth-one", $result->getPath() );
+
+        $result = $dir->getSubPath("./one");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/one", $result->getPath() );
+
+        $result = $dir->getSubPath( new \cPHP\FileSys\File("third/fourth/fourth-one") );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/third/fourth/fourth-one", $result->getPath() );
+    }
+
+    public function testGetSubPath_doesntExist ()
+    {
+        $dir = new \cPHP\FileSys\Dir( $this->dir );
+
+        $result = $dir->getSubPath("notAFile");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( $this->dir ."/notAFile", $result->getPath() );
+
+        $result = $dir->getSubPath("/dir/to/a/non/existant/file");
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( "/dir/to/a/non/existant/file", $result->getPath() );
+    }
+
     public function testIteration ()
     {
         $dir = new \cPHP\FileSys\Dir( $this->dir );
