@@ -140,7 +140,13 @@ class DateTime
      */
     static public function isSQL ( $datetime )
     {
+        // Long integers will sometimes be converted to scientific notation.
+        // This compensates for that
+        if ( is_float($datetime) )
+            $datetime = number_format($datetime, 0, '.', '');
+
         $datetime = \cPHP\strval( $datetime );
+
 
         $year = '(?:[1-9][0-9]{3})';
         $month = '(?:0[0-9]|1[0-2])';
