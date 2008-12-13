@@ -63,6 +63,33 @@ class classes_filesys extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testCreate ()
+    {
+        $dir = \cPHP\FileSys::create( __DIR__ );
+        $this->assertThat( $dir, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertEquals( __DIR__ ."/", $dir->getPath() );
+
+        $newDir = \cPHP\FileSys::create( $dir );
+        $this->assertThat( $newDir, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $this->assertNotSame( $dir, $newDir );
+        $this->assertEquals( __DIR__ ."/", $newDir->getPath() );
+
+
+        $file = \cPHP\FileSys::create( __FILE__ );
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertEquals( __FILE__, $file->getPath() );
+
+        $newFile = \cPHP\FileSys::create( $file );
+        $this->assertThat( $newFile, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertNotSame( $file, $newFile );
+        $this->assertEquals( __FILE__, $newFile->getPath() );
+
+
+        $file = \cPHP\FileSys::create( "/path/to/the/abyss" );
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertEquals( "/path/to/the/abyss", $file->getPath() );
+    }
+
     public function getTestObject ()
     {
         return $this->getMock(

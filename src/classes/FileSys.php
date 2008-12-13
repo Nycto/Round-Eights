@@ -130,6 +130,29 @@ abstract class FileSys
     }
 
     /**
+     * Creates a new FileSys instance according to the given path. That is to say,
+     * if the path is a file, a FileSys\File instance will be returned. If it is
+     * a Dir, a FileSys\Dir instance will be returned
+     *
+     * If we can't determine the path type, a FileSys\File object will be created.
+     *
+     * @param Object|String $path The path to use for instantiation
+     * @return Object Returns a FileSys object of the appropriate type
+     */
+    static public function create ( $path )
+    {
+        if ( $path instanceof self )
+            return clone $path;
+
+        $path = \cPHP\strval($path);
+
+        if ( is_dir($path) )
+            return new \cPHP\FileSys\Dir( $path );
+        else
+            return new \cPHP\FileSys\File( $path );
+    }
+
+    /**
      * Constructor...
      *
      * @param String $path The File System path represented by this instance
