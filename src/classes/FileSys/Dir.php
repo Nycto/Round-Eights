@@ -312,6 +312,22 @@ class Dir extends \cPHP\FileSys implements \RecursiveIterator
     }
 
     /**
+     * Returns whether a sub-path exists below this directory
+     *
+     * @param Object|String $subPath The subpath to search for
+     * @return Boolean
+     */
+    public function contains ( $subPath )
+    {
+        if ( !$this->dirExists() )
+            throw new \cPHP\Exception\Variable("Dir", "No directory has been set for this instance");
+
+        $subPath = new \cPHP\FileSys\File( $subPath );
+        $subPath->resolve( $this->getPath() );
+        return $subPath->isDir() || $subPath->isFile();
+    }
+
+    /**
      * Returns whether "." and ".." will be included during iteration.
      *
      * This defaults to true

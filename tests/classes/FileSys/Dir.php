@@ -457,6 +457,37 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
         $this->assertTrue( is_dir($dir) );
     }
 
+    public function testContains ()
+    {
+        $dir = new \cPHP\FileSys\Dir;
+
+        try {
+            $dir->contains("file");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Variable $err ) {
+            $this->assertSame( "No directory has been set for this instance", $err->getMessage() );
+        }
+
+        $dir->setPath( $this->dir );
+
+        $this->assertTrue( $dir->contains("first") );
+        $this->assertTrue( $dir->contains("third/fourth/") );
+        $this->assertTrue( $dir->contains("./third/fourth/") );
+        $this->assertTrue( $dir->contains( new \cPHP\FileSys\Dir("third") ) );
+
+        $this->assertTrue( $dir->contains("one") );
+        $this->assertTrue( $dir->contains("second/second-one") );
+        $this->assertTrue( $dir->contains("third/fourth/fourth-one") );
+        $this->assertTrue( $dir->contains("./one") );
+        $this->assertTrue( $dir->contains( new \cPHP\FileSys\File("third/fourth/fourth-one") ) );
+
+        $this->assertTrue( $dir->contains( $this->dir ) );
+
+        $this->assertFalse( $dir->contains("notAFile") );
+        $this->assertFalse( $dir->contains("/dir/to/a/non/existant/file") );
+    }
+
     public function testIteration ()
     {
         $dir = new \cPHP\FileSys\Dir( $this->dir );
