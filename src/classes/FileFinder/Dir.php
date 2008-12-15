@@ -25,13 +25,53 @@
  * @package FileFinder
  */
 
-namespace \cPHP\FileFinder;
+namespace cPHP\FileFinder;
 
 /**
  * Class used to locate a file within a directory
  */
-class Dir extends \cPHP\FileFinder
+class Dir extends \cPHP\FileFinder\DirList
 {
+
+    /**
+     * The array of registered directories
+     */
+    private $dirs = array();
+
+    /**
+     * Returns a list of directories to be searched
+     *
+     * @return Object Returns a cPHP\Ary object of directories
+     */
+    public function getDirs ()
+    {
+        return new \cPHP\Ary( $this->dirs );
+    }
+
+    /**
+     * Adds a directory to this instance
+     *
+     * @param String|Object $dir The directory to add
+     * @return Object Returns a self reference
+     */
+    public function addDir ( $dir )
+    {
+        if ( !( $dir instanceof \cPHP\FileSys\Dir ) )
+            $dir = new \cPHP\FileSys\Dir( $dir );
+        $this->dirs[] = $dir;
+        return $this;
+    }
+
+    /**
+     * Clears all the directories from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearDirs ()
+    {
+        $this->dirs = array();
+        return $this;
+    }
 
 }
 

@@ -33,6 +33,48 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_filefinder_dir extends PHPUnit_Framework_TestCase
 {
 
+    public function testDirAccessors ()
+    {
+        $finder = new \cPHP\FileFinder\Dir;
+
+        $this->assertEquals( new \cPHP\Ary, $finder->getDirs() );
+
+        $this->assertSame( $finder, $finder->addDir("/root/dir") );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        new \cPHP\FileSys\Dir("/root/dir")
+                    )),
+                $finder->getDirs()
+            );
+
+
+        $this->assertSame( $finder, $finder->addDir("") );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        new \cPHP\FileSys\Dir("/root/dir"),
+                        new \cPHP\FileSys\Dir("")
+                    )),
+                $finder->getDirs()
+            );
+
+
+        $this->assertSame(
+                $finder,
+                $finder->addDir( new \cPHP\FileSys\Dir("path/to/dir") )
+            );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        new \cPHP\FileSys\Dir("/root/dir"),
+                        new \cPHP\FileSys\Dir(""),
+                        new \cPHP\FileSys\Dir("path/to/dir")
+                    )),
+                $finder->getDirs()
+            );
+
+        $this->assertSame( $finder, $finder->clearDirs() );
+        $this->assertEquals( new \cPHP\Ary, $finder->getDirs() );
+    }
+
 }
 
 ?>
