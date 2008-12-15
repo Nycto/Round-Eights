@@ -1,6 +1,6 @@
 <?php
 /**
- * Directory File Finder Class
+ * Directory File Finder Base Class
  *
  * @license Artistic License 2.0
  *
@@ -25,7 +25,7 @@
  * @package FileFinder
  */
 
-namespace \cPHP\FileFinder;
+namespace cPHP\FileFinder;
 
 /**
  * Base class for locating a file within a director
@@ -49,8 +49,19 @@ abstract class DirList extends \cPHP\FileFinder
      */
     protected function internalFind ( $file )
     {
+        foreach ( $this->getDirs() AS $scan ) {
 
+            if ( !($scan instanceof \cPHP\FileSys\Dir) )
+                $scan = new \cPHP\FileSys\Dir( $scan );
 
+            $scan = $scan->getSubPath( $file );
+
+            if ( $scan->exists() )
+                return $scan;
+
+        }
+
+        return FALSE;
     }
 
 }

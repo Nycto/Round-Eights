@@ -33,6 +33,95 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 {
 
+    public function testNoDirs ()
+    {
+        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+
+        $mock->expects( $this->once() )
+            ->method("getDirs")
+            ->will( $this->returnValue( array() ) );
+
+        $this->assertFalse( $mock->find( "file/to/find" ) );
+    }
+
+    public function testObjectList_simple ()
+    {
+        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+
+        $mock->expects( $this->once() )
+            ->method("getDirs")
+            ->will( $this->returnValue( array(
+                    new \cPHP\FileSys\Dir("/not/a/real/dir"),
+                    new \cPHP\FileSys\Dir($this->dir),
+                    new \cPHP\FileSys\Dir($this->dir ."/third")
+                ) ) );
+
+        $result = $mock->find( "third/third-one" );
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame(
+                $this->dir ."/third/third-one",
+                $result->getPath()
+            );
+    }
+
+    public function testStringList_simple ()
+    {
+        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+
+        $mock->expects( $this->once() )
+            ->method("getDirs")
+            ->will( $this->returnValue( array(
+                    "/not/a/real/dir",
+                    $this->dir,
+                    $this->dir ."/third"
+                ) ) );
+
+        $result = $mock->find( "third/third-one" );
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame(
+                $this->dir ."/third/third-one",
+                $result->getPath()
+            );
+    }
+
+    public function testStringList_withRoot ()
+    {
+        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+
+        $mock->expects( $this->once() )
+            ->method("getDirs")
+            ->will( $this->returnValue( array(
+                    "/not/a/real/dir",
+                    $this->dir,
+                    $this->dir ."/third"
+                ) ) );
+
+        $result = $mock->find( "/third-one" );
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame(
+                $this->dir ."/third/third-one",
+                $result->getPath()
+            );
+    }
+
+    public function testStringList_notFound ()
+    {
+        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+
+        $mock->expects( $this->once() )
+            ->method("getDirs")
+            ->will( $this->returnValue( array(
+                    "/not/a/real/dir",
+                    $this->dir,
+                    $this->dir ."/third"
+                ) ) );
+
+        $this->assertFalse( $mock->find( "file/to/find" ) );
+    }
+
 }
 
 ?>
