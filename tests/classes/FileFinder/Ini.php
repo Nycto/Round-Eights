@@ -33,6 +33,20 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_filefinder_ini extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetDirs ()
+    {
+        $this->iniSet("include_path", ".:..:sub/path:/root");
+
+        $ini = new \cPHP\FileFinder\Ini;
+
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        ".", "..", "sub/path", "/root"
+                    )),
+                $ini->getDirs()
+            );
+    }
+
 }
 
 ?>

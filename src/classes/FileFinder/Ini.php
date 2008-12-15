@@ -25,13 +25,23 @@
  * @package FileFinder
  */
 
-namespace \cPHP\FileFinder;
+namespace cPHP\FileFinder;
 
 /**
  * Class used to locate a file within the include_path ini setting
  */
-class Ini extends \cPHP\FileFinder
+class Ini extends \cPHP\FileFinder\DirList
 {
+
+    /**
+     * Returns a list of directories to be searched
+     *
+     * @return Object Returns a cPHP\Ary object of directories
+     */
+    public function getDirs ()
+    {
+        return \cPHP\Ary::explode( ":", get_include_path() );
+    }
 
 }
 
