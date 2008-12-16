@@ -28,10 +28,99 @@
 namespace cPHP\Template;
 
 /**
- * A raw template that simply returns exactly what is put in
+ * A raw template that simply outputs exactly what is put in
  */
-class Raw extends \cPHP\Template
+class Raw implements \cPHP\iface\Template
 {
+
+    /**
+     * The content for this instance
+     */
+    private $content;
+
+    /**
+     * Constructor...
+     *
+     * @param mixed $content The content for this instance
+     */
+    public function __construct( $content = NULL )
+    {
+        $this->setContent( $content );
+    }
+
+    /**
+     * Returns the content in this instance
+     *
+     * @return mixed The content
+     */
+    public function getContent ()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Sets the content for this instance
+     *
+     * @param mixed $content The content being set
+     * @return Object Returns a self reference
+     */
+    public function setContent ( $content )
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * Clears the content out of this instance
+     *
+     * @return Boolean Returns whether this instance has any content
+     */
+    public function contentExists ()
+    {
+        return isset( $this->content );
+    }
+
+    /**
+     * Clears the content out of this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearContent ()
+    {
+        $this->content = null;
+        return $this;
+    }
+
+    /**
+     * Displays the content of this template
+     *
+     * @return Object Returns a self reference
+     */
+    public function display ()
+    {
+        echo \cPHP\strval( $this->content );
+        return $this;
+    }
+
+    /**
+     * Returns the content of this template as a string
+     *
+     * @return Mixed
+     */
+    public function render ()
+    {
+        return \cPHP\strval( $this->content );
+    }
+
+    /**
+     * Wrapper for the render function
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
+    }
 
 }
 
