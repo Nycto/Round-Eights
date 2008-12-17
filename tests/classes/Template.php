@@ -207,6 +207,85 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testImport_array ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertSame(
+                $tpl,
+                $tpl->import( array('var' => 'value', 'other' => 3.1415) )
+            );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+    }
+
+    public function testImport_Ary ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertSame(
+                $tpl,
+                $tpl->import( new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ) )
+            );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+    }
+
+    public function testImport_Iterable ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertSame(
+                $tpl,
+                $tpl->import( new ArrayIterator( array('var' => 'value', 'other' => 3.1415) ) )
+            );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+    }
+
+    public function testImport_object ()
+    {
+        $obj = new stdClass;
+        $obj->var = "value";
+        $obj->other = 3.1415;
+
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertSame( $tpl, $tpl->import( $obj ) );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+    }
+
+    public function testImport_notImportable ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+
+        try {
+            $tpl->import( "String" );
+            $this->fail('An expected exception was not thrown');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Value can not be imported", $err->getMessage() );
+        }
+    }
+
+    public function testImport_badLabel ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+
+        try {
+            $tpl->import( array("50" => "String") );
+            $this->fail('An expected exception was not thrown');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>

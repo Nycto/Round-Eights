@@ -174,6 +174,37 @@ abstract class Template
         return $this;
     }
 
+    /**
+     * Imports a list of values
+     *
+     * If given a Template, the values will be pulled out of it. If given an array
+     * or a traversable object, it will pull out all the key/value pairs. If given
+     * any other kind of object, the public properties will be imported.
+     *
+     * @param mixed $values The values to import. This can be another Template,
+     *      an array, a traversable object.
+     * @return Object Returns a self reference
+     */
+    public function import ( $values )
+    {
+        // Allow other templates to be directly imported
+        if ( $values instanceof self )
+            $values = $values->getValues();
+
+        // pull any properties from non-traversable objects
+        else if ( is_object($values) && !($values instanceof \Traversable) )
+            $values = get_object_vars( $values );
+
+        else if ( !\cPHP\Ary::is($values) )
+            throw new \cPHP\Exception\Argument(0, "Import Values", "Value can not be imported");
+
+        foreach ( $values AS $label => $value ) {
+            $this->set( $label, $value );
+        }
+
+        return $this;
+    }
+
 }
 
 ?>
