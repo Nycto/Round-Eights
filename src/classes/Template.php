@@ -104,6 +104,20 @@ abstract class Template
             );
     }
 
+    /**
+     * Returns the value of a variable
+     *
+     * @param String The name of the variable to return
+     * @return mixed The value of the given variable
+     */
+    public function get ( $label )
+    {
+        if ( !$this->exists($label) )
+            return NULL;
+
+        return $this->variables[ self::normalizeLabel($label) ];
+    }
+
 }
 
 ?>

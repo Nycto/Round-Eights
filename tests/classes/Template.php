@@ -111,6 +111,28 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertFalse( $tpl->exists('var') );
     }
 
+    public function testGet ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+
+        $this->assertNull( $tpl->get('var') );
+
+        $tpl->set('var', 'value');
+        $this->assertSame( 'value', $tpl->get('var') );
+
+        $obj = new stdClass;
+        $tpl->set('Other One', $obj);
+        $this->assertSame( $obj, $tpl->get('Other One') );
+
+        $tpl->remove('Other One');
+        $this->assertNull( $tpl->get('Other One') );
+
+        $this->assertSame( 'value', $tpl->get('var') );
+
+        $tpl->remove('var');
+        $this->assertNull( $tpl->get('var') );
+    }
+
 }
 
 ?>
