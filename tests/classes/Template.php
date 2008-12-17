@@ -157,6 +157,25 @@ class classes_template extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testClear ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+
+        $this->assertSame( $tpl, $tpl->clear() );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+
+        $tpl->set('var', 'value');
+        $tpl->set('other', 3.1415);
+
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->clear() );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+    }
+
 }
 
 ?>
