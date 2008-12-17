@@ -112,10 +112,40 @@ abstract class Template
      */
     public function get ( $label )
     {
-        if ( !$this->exists($label) )
+        $label = self::normalizeLabel($label);
+
+        if ( !array_key_exists( $label, $this->variables ) )
             return NULL;
 
-        return $this->variables[ self::normalizeLabel($label) ];
+        return $this->variables[ $label ];
+    }
+
+    /**
+     * Adds a value only if it hasn't been set
+     *
+     * @param String $label The name of this value
+     * @param mixed $value The value being registered
+     * @return Object Returns a self reference
+     */
+    public function add ( $label, $value )
+    {
+        $label = self::normalizeLabel($label);
+
+        if ( !array_key_exists( $label, $this->variables ) )
+            $this->variables[ $label ] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Completely clears all the variables
+     *
+     * @return Object Returns a self reference
+     */
+    public function clear ()
+    {
+        $this->variables = array();
+        return $this;
     }
 
 }
