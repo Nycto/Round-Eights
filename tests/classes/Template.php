@@ -298,6 +298,17 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame("This is the output", $tpl->render());
     }
 
+    public function testToString ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
+        $tpl->expects( $this->once() )
+            ->method("display")
+            ->will( $this->returnCallback(function () {
+                    echo "This is the output";
+                }) );
+
+        $this->assertSame("This is the output", "$tpl");
+    }
 }
 
 ?>

@@ -224,6 +224,16 @@ abstract class Template
         return ob_get_clean();
     }
 
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
+    }
+
 }
 
 ?>
