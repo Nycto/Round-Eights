@@ -34,6 +34,11 @@ abstract class Template
 {
 
     /**
+     * The list of variables
+     */
+    protected $variables = Array();
+
+    /**
      * Normalizes a variable name and checks whether it is properly formatted
      *
      * @throws cPHP\Exception\Argument Thrown if the label is invalid
@@ -48,6 +53,29 @@ abstract class Template
             throw new \cPHP\Exception\Argument(0, "Label", "Must be a valid PHP variable name");
 
         return $label;
+    }
+
+    /**
+     * Returns the list of variables registered in this instance
+     *
+     * @return Object Returs a cPHP\Ary instance
+     */
+    public function getValues ()
+    {
+        return new \cPHP\Ary( $this->variables );
+    }
+
+    /**
+     * Set a variable value
+     *
+     * @param String $label The name of this value
+     * @param mixed $value The value being registered
+     * @return Object Returns a self reference
+     */
+    public function set ( $label, $value )
+    {
+        $this->variables[ self::normalizeLabel($label) ] = $value;
+        return $this;
     }
 
 }

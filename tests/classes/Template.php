@@ -48,7 +48,32 @@ class classes_template extends PHPUnit_Framework_TestCase
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
-    
+
+    public function testSet ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+
+        $this->assertSame( $tpl, $tpl->set('var', 'value') );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value') ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->set('other', 2) );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                $tpl->getValues()
+            );
+
+        $obj = new stdClass;
+        $this->assertSame( $tpl, $tpl->set('var', $obj) );
+        $this->assertSame(
+                array('var' => $obj, 'other' => 2),
+                $tpl->getValues()->get()
+            );
+
+    }
 }
 
 ?>
