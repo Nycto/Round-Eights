@@ -619,11 +619,16 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      * Returns whether the given value is contained within the array
      *
      * @param mixed $value
+     * @param Boolean $strict Whether a strict comparison should be used when
+     *      searching for the value... that is to say, == vs. ===
      * @return Boolean
      */
-    public function contains ( $value )
+    public function contains ( $value, $strict = FALSE )
     {
-        return in_array( $value, $this->array );
+        if ( $strict )
+            return array_search( $value, $this->array, TRUE ) !== FALSE ? TRUE : FALSE;
+        else
+            return in_array( $value, $this->array );
     }
 
     /**
