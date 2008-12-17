@@ -33,6 +33,22 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_template extends PHPUnit_Framework_TestCase
 {
 
+    public function testNormalizeLabel ()
+    {
+        $this->assertSame(
+                "VariableName",
+                \cPHP\Template::normalizeLabel("Variable Name")
+            );
+
+        try {
+            \cPHP\Template::normalizeLabel("50Label");
+            $this->fail('An expected exception was not thrown');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
+        }
+    }
+    
 }
 
 ?>

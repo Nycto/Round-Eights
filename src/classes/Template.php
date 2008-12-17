@@ -33,6 +33,23 @@ namespace cPHP;
 abstract class Template
 {
 
+    /**
+     * Normalizes a variable name and checks whether it is properly formatted
+     *
+     * @throws cPHP\Exception\Argument Thrown if the label is invalid
+     * @param String $label The variable name being filtered
+     * @return String
+     */
+    static public function normalizeLabel ( $label )
+    {
+        $label = \cPHP\Filter::Variable()->filter( $label );
+
+        if ( !\cPHP\Validator::Variable()->isValid( $label ) )
+            throw new \cPHP\Exception\Argument(0, "Label", "Must be a valid PHP variable name");
+
+        return $label;
+    }
+
 }
 
 ?>
