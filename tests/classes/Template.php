@@ -309,6 +309,53 @@ class classes_template extends PHPUnit_Framework_TestCase
 
         $this->assertSame("This is the output", "$tpl");
     }
+
+    public function testOverLoading ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
+
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertNull( $tpl->var );
+        $this->assertFalse( isset($tpl->var) );
+
+        $tpl->var = 'value';
+        $this->assertSame( 'value', $tpl->var );
+        $this->assertTrue( isset($tpl->var) );
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value' )),
+                $tpl->getValues()
+            );
+
+        $tpl->pi = 3.1415;
+        $this->assertSame( 3.1415, $tpl->pi );
+        $this->assertTrue( isset($tpl->pi) );
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                $tpl->getValues()
+            );
+
+        $tpl->var .= ' Lorem';
+        $this->assertSame( 'value Lorem', $tpl->var );
+        $this->assertTrue( isset($tpl->var) );
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value Lorem', 'pi' => 3.1415 )),
+                $tpl->getValues()
+            );
+
+        unset( $tpl->var );
+        $this->assertNull( $tpl->var );
+        $this->assertFalse( isset($tpl->var) );
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'pi' => 3.1415 )),
+                $tpl->getValues()
+            );
+
+        unset( $tpl->pi );
+        $this->assertNull( $tpl->pi );
+        $this->assertFalse( isset($tpl->pi) );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+    }
+
 }
 
 ?>

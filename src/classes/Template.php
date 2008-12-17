@@ -234,6 +234,49 @@ abstract class Template
         return $this->render();
     }
 
+    /**
+     * Allows you access the value of a variable as a class property
+     *
+     * @param String $label The value being fetched
+     * @return mixed Returns the value of the given variable
+     */
+    public function __get ( $label )
+    {
+        return $this->get( $label );
+    }
+
+    /**
+     * Allows you to set the value of a variable via a class property
+     *
+     * @param String $label The value being set
+     * @param mixed $value The new value
+     */
+    public function __set ( $label, $value )
+    {
+        $this->set( $label, $value );
+    }
+
+    /**
+     * Allows you to check if a value is set via a class property
+     *
+     * @param String $label The value being tested
+     * @return Boolean Returns whether the value is set
+     */
+    public function __isset ( $label )
+    {
+        return $this->exists( $label );
+    }
+
+    /**
+     * Allows you to unset a value via a class property
+     *
+     * @param String $label The value being unset
+     */
+    public function __unset ( $label )
+    {
+        $this->remove( $label );
+    }
+
 }
 
 ?>
