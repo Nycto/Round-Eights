@@ -56,6 +56,18 @@ abstract class Template
     }
 
     /**
+     * Constructor... allows you to import a set of data on instantiation
+     *
+     * @param mixed $import An array, object, or another template to use as the
+     *      source data. See the import method for more information.
+     */
+    public function __construct ( $import = NULL )
+    {
+        if ( !\cPHP\isVague($import) )
+            $this->import( $import );
+    }
+
+    /**
      * Returns the list of variables registered in this instance
      *
      * @return Object Returs a cPHP\Ary instance

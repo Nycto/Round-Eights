@@ -356,6 +356,44 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
     }
 
+    public function testConstruct ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\Template',
+                array("display"),
+                array(  array('var' => 'value', 'pi' => 3.1415) )
+                );
+
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                $tpl->getValues()
+            );
+
+
+        $tpl2 = $this->getMock(
+                'cPHP\Template',
+                array("display"),
+                array( $tpl )
+                );
+
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                $tpl2->getValues()
+            );
+
+
+        $tpl = $this->getMock(
+                'cPHP\Template',
+                array("display"),
+                array( new \cPHP\Ary( array('var' => 'value', 'pi' => 3.1415) ) )
+                );
+
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                $tpl->getValues()
+            );
+    }
+
 }
 
 ?>
