@@ -205,6 +205,25 @@ abstract class Template
         return $this;
     }
 
+    /**
+     * Renders this template and outputs it to the client
+     *
+     * @return Object Returns a self reference
+     */
+    abstract public function display ();
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String Returns the rendered template as a string
+     */
+    public function render ()
+    {
+        ob_start();
+        $this->display();
+        return ob_get_clean();
+    }
+
 }
 
 ?>

@@ -51,7 +51,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testSet ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->set('var', 'value') );
@@ -76,7 +76,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testRemove ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->remove('doesnt Exist') );
@@ -101,7 +101,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertFalse( $tpl->exists('var') );
 
         $tpl->set('var', 'value');
@@ -113,7 +113,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
         $this->assertNull( $tpl->get('var') );
 
@@ -135,7 +135,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testAdd ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->add('var', 'value') );
@@ -159,7 +159,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testClear ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
         $this->assertSame( $tpl, $tpl->clear() );
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
@@ -178,7 +178,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testAppend ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->append('var', 'value') );
@@ -209,7 +209,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_array ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( array('var' => 'value', 'other' => 3.1415) )
@@ -222,7 +222,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_Ary ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ) )
@@ -235,7 +235,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_Iterable ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( new ArrayIterator( array('var' => 'value', 'other' => 3.1415) ) )
@@ -252,7 +252,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $obj->var = "value";
         $obj->other = 3.1415;
 
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame( $tpl, $tpl->import( $obj ) );
         $this->assertEquals(
                 new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
@@ -262,7 +262,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_notImportable ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
         try {
             $tpl->import( "String" );
@@ -275,7 +275,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_badLabel ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
         try {
             $tpl->import( array("50" => "String") );
@@ -284,6 +284,18 @@ class classes_template extends PHPUnit_Framework_TestCase
         catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
+    }
+
+    public function testRender ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("display") );
+        $tpl->expects( $this->once() )
+            ->method("display")
+            ->will( $this->returnCallback(function () {
+                    echo "This is the output";
+                }) );
+
+        $this->assertSame("This is the output", $tpl->render());
     }
 
 }
