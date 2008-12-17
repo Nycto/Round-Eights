@@ -133,6 +133,30 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertNull( $tpl->get('var') );
     }
 
+    public function testAdd ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+
+        $this->assertSame( $tpl, $tpl->add('var', 'value') );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value') ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->add('other', 2) );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->add('var', 'new value') );
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                $tpl->getValues()
+            );
+    }
+
 }
 
 ?>
