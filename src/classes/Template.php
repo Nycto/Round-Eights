@@ -148,6 +148,32 @@ abstract class Template
         return $this;
     }
 
+    /**
+     * Appends a value to an existing label
+     *
+     * If the label doesn't already exist, it will be added with the given value.
+     * If the existing value isn't a string, it will be converted to one
+     *
+     * @param String $label The name of value
+     * @param mixed $value The value being appended
+     * @return Object Returns a self reference
+     */
+    public function append ( $label, $value )
+    {
+        $label = self::normalizeLabel($label);
+
+        if ( array_key_exists( $label, $this->variables ) ) {
+            $this->variables[ $label ] =
+                \cPHP\strval( $this->variables[ $label ] )
+                . \cPHP\strval( $value );
+        }
+        else {
+            $this->variables[ $label ] = $value;
+        }
+
+        return $this;
+    }
+
 }
 
 ?>
