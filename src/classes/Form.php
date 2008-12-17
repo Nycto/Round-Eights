@@ -183,7 +183,7 @@ class Form implements \Countable
     public function addField ( \cPHP\iface\Form\Field $field )
     {
         // ensure there aren't any duplicates
-        if ( !$this->fields->contains($field) )
+        if ( !$this->fields->contains($field, TRUE) )
             $this->fields[] = $field;
 
         return $this;
