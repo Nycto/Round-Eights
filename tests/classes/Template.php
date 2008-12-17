@@ -72,8 +72,33 @@ class classes_template extends PHPUnit_Framework_TestCase
                 array('var' => $obj, 'other' => 2),
                 $tpl->getValues()->get()
             );
-
     }
+
+    public function testRemove ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+
+        $this->assertSame( $tpl, $tpl->remove('doesnt Exist') );
+
+        $tpl->set('var', 'value');
+        $tpl->set('other', 3.1415);
+
+        $this->assertEquals(
+                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->remove('var') );
+        $this->assertEquals(
+                new \cPHP\Ary( array('other' => 3.1415) ),
+                $tpl->getValues()
+            );
+
+        $this->assertSame( $tpl, $tpl->remove('other') );
+        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+    }
+
 }
 
 ?>

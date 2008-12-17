@@ -78,6 +78,18 @@ abstract class Template
         return $this;
     }
 
+    /**
+     * Removes a variable
+     *
+     * @param String $label The name of the value being removed
+     * @return Object Returns a self reference
+     */
+    public function remove ( $label )
+    {
+        unset( $this->variables[ self::normalizeLabel($label) ] );
+        return $this;
+    }
+
 }
 
 ?>
