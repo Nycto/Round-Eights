@@ -99,6 +99,18 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
     }
 
+    public function testExists ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array("_mock") );
+        $this->assertFalse( $tpl->exists('var') );
+
+        $tpl->set('var', 'value');
+        $this->assertTrue( $tpl->exists('var') );
+
+        $tpl->remove('var');
+        $this->assertFalse( $tpl->exists('var') );
+    }
+
 }
 
 ?>

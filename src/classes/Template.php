@@ -90,6 +90,20 @@ abstract class Template
         return $this;
     }
 
+    /**
+     * Returns whether a variable has been set
+     *
+     * @param String $label The name of the value being tested
+     * @return Boolean
+     */
+    public function exists ( $label )
+    {
+        return array_key_exists(
+                self::normalizeLabel($label),
+                $this->variables
+            );
+    }
+
 }
 
 ?>
