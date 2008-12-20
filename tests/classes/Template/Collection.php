@@ -33,6 +33,30 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_template_collection extends PHPUnit_Framework_TestCase
 {
 
+    public function getMockTpl ()
+    {
+        return $this->getMock(
+                'cPHP\\iface\\Template',
+                array("render", "display", "__toString")
+            );
+    }
+
+    public function testAdd ()
+    {
+        $tpl = new \cPHP\Template\Collection;
+        $this->assertEquals( new \cPHP\Ary, $tpl->getTemplates() );
+
+        $mock = $this->getMockTpl();
+        $this->assertSame( $tpl, $tpl->add( $mock ) );
+        $this->assertThat( $tpl->getTemplates(), $this->isInstanceOf('cPHP\Ary') );
+        $this->assertSame( array($mock), $tpl->getTemplates()->get() );
+
+        $mock2 = $this->getMockTpl();
+        $this->assertSame( $tpl, $tpl->add( $mock2 ) );
+        $this->assertThat( $tpl->getTemplates(), $this->isInstanceOf('cPHP\Ary') );
+        $this->assertSame( array($mock, $mock2), $tpl->getTemplates()->get() );
+    }
+
 }
 
 ?>

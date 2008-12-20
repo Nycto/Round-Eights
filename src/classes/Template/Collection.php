@@ -30,8 +30,68 @@ namespace cPHP\Template;
 /**
  * A collection of templates that can be treated as a single template
  */
-class Collection extends \cPHP\Template
+class Collection implements \cPHP\iface\Template
 {
+
+    /**
+     * The list of templates
+     */
+    protected $list = array();
+
+    /**
+     * Returns the list of templates registered in this instance
+     *
+     * @return Object Returns a cPHP\Ary object
+     */
+    public function getTemplates ()
+    {
+        return new \cPHP\Ary( $this->list );
+    }
+
+    /**
+     * Adds a template to the end of this list
+     *
+     * @param object $template The template to add. This must be an instance of
+     *      cPHP\iface\Template
+     * @return Object Returns a self reference for chaining
+     */
+    public function add ( \cPHP\iface\Template $template )
+    {
+        $this->list[] = $template;
+        return $this;
+    }
+
+    /**
+     * Renders this template and outputs it to the client
+     *
+     * @return Object Returns a self reference
+     */
+    public function display ()
+    {
+
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String Returns the rendered template as a string
+     */
+    public function render ()
+    {
+        ob_start();
+        $this->display();
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
+    }
 
 }
 
