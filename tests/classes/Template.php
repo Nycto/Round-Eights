@@ -394,6 +394,30 @@ class classes_template extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testCallStatic ()
+    {
+        $obj = \cPHP\Template::Raw();
+        $this->assertThat( $obj, $this->isInstanceOf("cPHP\\Template\\Raw") );
+
+
+        $obj = \cPHP\Template::Raw("content");
+        $this->assertThat( $obj, $this->isInstanceOf("cPHP\\Template\\Raw") );
+        $this->assertSame( "content", $obj->getContent() );
+
+
+        $obj = \cPHP\Template::Raw("content", "garbage");
+        $this->assertThat( $obj, $this->isInstanceOf("cPHP\\Template\\Raw") );
+        $this->assertSame( "content", $obj->getContent() );
+
+        try {
+            \cPHP\Template::ThisIsNotReal();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\cPHP\\Template namespace', $err->getMessage() );
+        }
+    }
+
 }
 
 ?>

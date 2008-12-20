@@ -56,6 +56,38 @@ abstract class Template
     }
 
     /**
+     * Allows you to instantiate a template in-line by calling it like a static method
+     *
+     * @param String $class The template class to instantiate
+     * @param Array $args Any arguments to pass to the template
+     * @return Object Returns a new cPHP\Template object of the given type
+     */
+    static public function __callStatic ( $class, $args )
+    {
+        $class = "\\cPHP\\Template\\". trim( \cPHP\strval($class) );
+
+        if ( !class_exists( $class, true ) ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "Template Class Name",
+                    "Class could not be found in \\cPHP\\Template namespace"
+                );
+        }
+
+        if ( count($args) <= 0 ) {
+            return new $class;
+        }
+        else if ( count($args) == 1 ) {
+            return new $class( reset($args) );
+        }
+        else {
+            $refl = new \ReflectionClass( $class );
+            return $refl->newInstanceArgs( $args );
+        }
+
+    }
+
+    /**
      * Constructor... allows you to import a set of data on instantiation
      *
      * @param mixed $import An array, object, or another template to use as the
