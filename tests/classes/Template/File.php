@@ -33,6 +33,35 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_template_file extends PHPUnit_Framework_TestCase
 {
 
+    public function getMockTpl ()
+    {
+        return $this->getMock(
+                'cPHP\Template\File',
+                array('display')
+            );
+    }
+
+    public function testFinderAccessors ()
+    {
+        $tpl = $this->getMockTpl();
+        $this->assertNull( $tpl->getFinder() );
+        $this->assertFalse( $tpl->finderExists() );
+
+        $finder = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $tpl, $tpl->setFinder( $finder ) );
+        $this->assertSame( $finder, $tpl->getFinder() );
+        $this->assertTrue( $tpl->finderExists() );
+
+        $finder2 = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        $this->assertSame( $tpl, $tpl->setFinder( $finder2 ) );
+        $this->assertSame( $finder2, $tpl->getFinder() );
+        $this->assertTrue( $tpl->finderExists() );
+
+        $this->assertSame( $tpl, $tpl->clearFinder() );
+        $this->assertNull( $tpl->getFinder() );
+        $this->assertFalse( $tpl->finderExists() );
+    }
+
 }
 
 ?>
