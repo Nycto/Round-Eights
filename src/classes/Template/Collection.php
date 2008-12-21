@@ -62,17 +62,20 @@ class Collection implements \cPHP\iface\Template
     }
 
     /**
-     * Renders this template and outputs it to the client
+     * Displays all the templates contained in this instance
      *
      * @return Object Returns a self reference
      */
     public function display ()
     {
-
+        foreach ( $this->list AS $tpl ) {
+            $tpl->display();
+        }
+        return $this;
     }
 
     /**
-     * Renders the template and returns it as a string
+     * Renders this template and returns it as a string
      *
      * @return String Returns the rendered template as a string
      */
