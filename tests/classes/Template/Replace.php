@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Test Suite
  */
-class classes_template_raw
+class classes_template_replace
 {
 
     public static function suite()
