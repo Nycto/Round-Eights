@@ -41,6 +41,16 @@ class classes_template_file extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function setUp ()
+    {
+        \cPHP\Template\File::clearGlobalFinder();
+    }
+
+    public function tearDown ()
+    {
+        \cPHP\Template\File::clearGlobalFinder();
+    }
+
     public function testFinderAccessors ()
     {
         $tpl = $this->getMockTpl();
@@ -60,6 +70,26 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $this->assertSame( $tpl, $tpl->clearFinder() );
         $this->assertNull( $tpl->getFinder() );
         $this->assertFalse( $tpl->finderExists() );
+    }
+
+    public function testGlobalFinder ()
+    {
+        $this->assertNull( \cPHP\Template\File::getGlobalFinder() );
+        $this->assertFalse( \cPHP\Template\File::globalFinderExists() );
+
+        $finder = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        $this->assertNull( \cPHP\Template\File::setGlobalFinder( $finder ) );
+        $this->assertSame( $finder, \cPHP\Template\File::getGlobalFinder() );
+        $this->assertTrue( \cPHP\Template\File::globalFinderExists() );
+
+        $finder2 = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        $this->assertNull( \cPHP\Template\File::setGlobalFinder( $finder2 ) );
+        $this->assertSame( $finder2, \cPHP\Template\File::getGlobalFinder() );
+        $this->assertTrue( \cPHP\Template\File::globalFinderExists() );
+
+        $this->assertNull( \cPHP\Template\File::clearGlobalFinder() );
+        $this->assertNull( \cPHP\Template\File::getGlobalFinder() );
+        $this->assertFalse( \cPHP\Template\File::globalFinderExists() );
     }
 
 }

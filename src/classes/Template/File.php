@@ -34,6 +34,14 @@ abstract class File extends \cPHP\Template
 {
 
     /**
+     * The global file finder class
+     *
+     * This will be used by file templates if no specific template is set for
+     * the instance.
+     */
+    static protected $globalFinder;
+
+    /**
      * The file finder to use for this instance
      *
      * If this is not set, the global finder will be used.
@@ -42,6 +50,48 @@ abstract class File extends \cPHP\Template
      * instance will NOT be called.
      */
     private $finder;
+
+    /**
+     * Returns the global file finder
+     *
+     * @return Object|Null Returns the global cPHP\FileFinder object. Returns
+     *      NULL if there is no global file finder.
+     */
+    static public function getGlobalFinder ()
+    {
+        return self::$globalFinder;
+    }
+
+    /**
+     * Sets the global file finder
+     *
+     * @param Object $finder The new global file finder
+     * @return NULL
+     */
+    static public function setGlobalFinder ( \cPHP\FileFinder $finder )
+    {
+        self::$globalFinder = $finder;
+    }
+
+    /**
+     * Clears the global file finder
+     *
+     * @return null
+     */
+    static public function clearGlobalFinder ()
+    {
+        self::$globalFinder = null;
+    }
+
+    /**
+     * Returns whether a global file finder has been set
+     *
+     * @return Boolean
+     */
+    static public function globalFinderExists ()
+    {
+        return isset( self::$globalFinder );
+    }
 
     /**
      * Returns the file finder for this instance
