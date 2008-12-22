@@ -220,7 +220,7 @@ abstract class File extends \cPHP\Template
     /**
      * Finds the template file to load
      *
-     * @return
+     * @return Object Returns a cPHP\FileSys\File object
      */
     public function findFile ()
     {
