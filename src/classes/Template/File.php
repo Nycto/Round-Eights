@@ -52,6 +52,11 @@ abstract class File extends \cPHP\Template
     private $finder;
 
     /**
+     * The file this template will render
+     */
+    private $file;
+
+    /**
      * Returns the global file finder
      *
      * @return Object|Null Returns the global cPHP\FileFinder object. Returns
@@ -162,6 +167,54 @@ abstract class File extends \cPHP\Template
                 "FileFinder",
                 "No global or instance level FileFinder has been set"
             );
+    }
+
+    /**
+     * Sets the file this template will load
+     *
+     * @param mixed $file The file to load
+     * @return Object Returns a self reference
+     */
+    public function setFile ( $file )
+    {
+        if ( $file instanceof \cPHP\FileSys\File)
+            $this->file = $file;
+        else
+            $this->file = new \cPHP\FileSys\File( $file );
+
+        return $this;
+    }
+
+    /**
+     * Returns the file this template will load
+     *
+     * @return Object|Null Returns a cPHP\FileSys\File object, or NULL if no file
+     *      has been set.
+     */
+    public function getFile ()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Returns whether a file has been set in this instance
+     *
+     * @Boolean
+     */
+    public function fileExists ()
+    {
+        return isset( $this->file );
+    }
+
+    /**
+     * Clears the file from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFile ()
+    {
+        $this->file = null;
+        return $this;
     }
 
 }

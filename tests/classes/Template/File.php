@@ -119,6 +119,44 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $this->assertSame( $instFinder, $tpl->selectFinder() );
     }
 
+    public function testFileAccessors ()
+    {
+        $tpl = $this->getMockTpl();
+        $this->assertNull( $tpl->getFile() );
+        $this->assertFalse( $tpl->fileExists() );
+
+
+        // Set the file from a string
+        $this->assertSame( $tpl, $tpl->setFile( "/path/to/file.php" ) );
+        $this->assertTrue( $tpl->fileExists() );
+
+        $file = $tpl->getFile();
+        $this->assertThat( $file, $this->isInstanceOf('\cPHP\FileSys\File') );
+        $this->assertSame( "/path/to/file.php", $file->getPath() );
+
+
+        // Modify the file directly and make sure it sticks
+        $tpl->getFile()->setPath("/new/path.php");
+
+        $file2 = $tpl->getFile();
+        $this->assertSame( $file, $file2 );
+        $this->assertSame( "/new/path.php", $file2->getPath() );
+
+
+        // Set the file from an object
+        $fileObj = new \cPHP\FileSys\File('/dir/tpl.php');
+        $this->assertSame( $tpl, $tpl->setFile( $fileObj ) );
+        $this->assertTrue( $tpl->fileExists() );
+        $this->assertSame( $fileObj, $tpl->getFile() );
+        $this->assertSame( '/dir/tpl.php', $tpl->getFile()->getPath() );
+
+
+        // Test clearing the file
+        $this->assertSame( $tpl, $tpl->clearFile() );
+        $this->assertNull( $tpl->getFile() );
+        $this->assertFalse( $tpl->fileExists() );
+    }
+
 }
 
 ?>
