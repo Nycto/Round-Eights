@@ -28,10 +28,12 @@
 if ( !Phar::canWrite() )
     die("Archive creation restricted because of 'phar.readonly' ini setting");
 
+require_once rtrim( __DIR__, "/" ) .'/../src/commonPHP.php';
+
 $phar = new Phar('commonPHP.phar');
 
 // Add the source directory
-$phar->buildFromDirectory( rtrim( __DIR__, "/" ) .'/../src');
+$phar->buildFromDirectory( cPHP_DIR );
 
 if ( Phar::canCompress(Phar::GZ) )
     $phar->compressFiles(Phar::GZ);
@@ -39,7 +41,11 @@ if ( Phar::canCompress(Phar::GZ) )
 // Add the stub based on the data at the bottom of this file
 $file = fopen(__FILE__, 'r');
 fseek($file, __COMPILER_HALT_OFFSET__);
-$phar->setStub( stream_get_contents($file) ) ;
+
+$stub = stream_get_contents($file);
+$stub = str_replace('[$version]', cPHP_VERSION, $stub);
+
+$phar->setStub( $stub ) ;
 
 echo "Script Complete\n";
 
@@ -48,15 +54,15 @@ echo "Script Complete\n";
  */
 __halt_compiler();<?php
 /**
- * Phar archived commonPHP library
+ * commonPHP library, version [$version]
  *
  * This file is a Phar archive of the commonPHP library. For more information on
- * commonPHP, visit the website at the following URL:
+ * commonPHP, including downloads, documentation, roadmaps, and news,
+ * visit the website at the following URL:
  *
  * http://www.commonPHP.com
  *
- * For more information on the Phar file format, it has been documented in the
- * php manual, at this URL:
+ * More information about the Phar file format can be found at this URL:
  *
  * http://www.php.net/phar
  *
