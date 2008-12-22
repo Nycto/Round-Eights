@@ -157,6 +157,42 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $this->assertFalse( $tpl->fileExists() );
     }
 
+    public function testFindFile ()
+    {
+        $tpl = $this->getMockTpl();
+
+        try {
+            $tpl->findFile();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Variable $err ) {
+            $this->assertSame("No file has been set in template", $err->getMessage());
+        }
+
+        $file = new \cPHP\FileSys\File('/dir/tpl.php');
+        $tpl->setFile( $file );
+
+        try {
+            $tpl->findFile();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Variable $err ) {
+            $this->assertSame("No global or instance level FileFinder has been set", $err->getMessage());
+        }
+
+        $result = new \cPHP\FileSys\File('/path/to/tpl.php');
+
+        $finder = $this->getMock( 'cPHP\FileFinder', array('internalFind', 'find') );
+        $finder->expects( $this->once() )
+            ->method('find')
+            ->with( $this->equalTo($file) )
+            ->will( $this->returnValue($result) );
+
+        $tpl->setFinder( $finder );
+
+        $this->assertSame( $result, $tpl->findFile() );
+    }
+
 }
 
 ?>

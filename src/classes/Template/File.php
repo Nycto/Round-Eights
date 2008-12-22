@@ -217,6 +217,19 @@ abstract class File extends \cPHP\Template
         return $this;
     }
 
+    /**
+     * Finds the template file to load
+     *
+     * @return
+     */
+    public function findFile ()
+    {
+        if ( !$this->fileExists() )
+            throw new \cPHP\Exception\Variable("File", "No file has been set in template");
+
+        return $this->selectFinder()->find( $this->getFile() );
+    }
+
 }
 
 ?>
