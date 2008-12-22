@@ -36,10 +36,17 @@ define("cPHP_INCLUDED", TRUE);
 
 // mark the location of the commonPHP library
 if ( !defined("cPHP_DIR") ) {
-    $commonPHPdir = str_replace("\\", "/", __DIR__);
+
+    // Detect if this is currently being executed inside a Phar file
+    if ( Phar::running() === "" )
+        $commonPHPdir = str_replace("\\", "/", __DIR__);
+    else
+        $commonPHPdir = Phar::running();
+
     $commonPHPdir = rtrim( $commonPHPdir, "/" ) ."/";
     define("cPHP_DIR", $commonPHPdir);
     unset($commonPHPdir);
+
 }
 
 if (!defined("cPHP_DIR_FUNCTIONS"))
