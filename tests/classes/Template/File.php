@@ -193,6 +193,19 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $this->assertSame( $result, $tpl->findFile() );
     }
 
+    public function testConstruct ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\Template\File',
+                array( 'display' ),
+                array( '/path/to/file.php' )
+            );
+
+        $file = $tpl->getFile();
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertSame( '/path/to/file.php', $file->getPath() );
+    }
+
 }
 
 ?>

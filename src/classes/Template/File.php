@@ -99,6 +99,17 @@ abstract class File extends \cPHP\Template
     }
 
     /**
+     * Constructor allows you to immediately set the file, if you so desire
+     *
+     * @param mixed $file The file this tempalte should load
+     */
+    public function __construct ( $file = null )
+    {
+        if ( !\cPHP\isVague($file) )
+            $this->setFile( $file );
+    }
+
+    /**
      * Returns the file finder for this instance
      *
      * This does not look at the global instance
