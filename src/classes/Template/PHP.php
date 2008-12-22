@@ -33,6 +33,18 @@ namespace cPHP\Template;
 class PHP extends \cPHP\Template\File
 {
 
+    /**
+     * Render and output this template to the client
+     *
+     * @return Object Returns a self reference
+     */
+    public function display ()
+    {
+        extract( $this->getValues()->get(), EXTR_PREFIX_SAME, "var" );
+        include $this->findFile()->getPath();
+        return $this;
+    }
+
 }
 
 ?>

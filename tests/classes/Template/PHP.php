@@ -30,8 +30,59 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_template_php extends PHPUnit_Framework_TestCase
+class classes_template_php extends PHPUnit_Extensions_OutputTestCase
 {
+
+    public $file;
+
+    public function setUp ()
+    {
+        $this->file = rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_". uniqid();
+    }
+
+    public function tearDown ()
+    {
+        @chmod( $this->file, 0777 );
+        @unlink( $this->file );
+    }
+
+    public function testDisplay ()
+    {
+        file_put_contents(
+                $this->file,
+                '<?=$lorem ?> <?=$ipsum ?>'
+            );
+
+        $this->expectOutputString("Lorem Ipsum");
+
+        $tpl = new \cPHP\Template\PHP;
+        $tpl->setFinder( \cPHP\FileFinder::Dir()->addDir("/") );
+        $tpl->setFile( $this->file );
+
+        $tpl->set("lorem", "Lorem");
+        $tpl->set("ipsum", "Ipsum");
+
+        $tpl->display();
+    }
+
+    public function testDisplay_this ()
+    {
+        file_put_contents(
+                $this->file,
+                '<?=$lorem ?> <?=$var_this ?>'
+            );
+
+        $this->expectOutputString("Lorem Ipsum");
+
+        $tpl = new \cPHP\Template\PHP;
+        $tpl->setFinder( \cPHP\FileFinder::Dir()->addDir("/") );
+        $tpl->setFile( $this->file );
+
+        $tpl->set("lorem", "Lorem");
+        $tpl->set("this", "Ipsum");
+
+        $tpl->display();
+    }
 
 }
 
