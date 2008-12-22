@@ -24,6 +24,10 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  */
 
+// If cPHP has already been included...
+if ( defined("cPHP_INCLUDED") )
+    return;
+
 // Mark that commonPHP has been included
 define("cPHP_INCLUDED", TRUE);
 
