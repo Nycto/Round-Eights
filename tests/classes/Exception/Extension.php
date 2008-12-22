@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception Class
+ * Unit Test File
  *
  * @license Artistic License 2.0
  *
@@ -22,42 +22,35 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Exception
+ * @package UnitTests
  */
 
-namespace cPHP\Exception;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Exception class for PHP extension errors
+ * unit tests
  */
-class Extension extends \cPHP\Exception
+class classes_exception_extension extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * The title of this exception
-     */
-    const TITLE = "Extension Error";
-
-    /**
-     * A brief description of this error type
-     */
-    const DESCRIPTION = "PHP Extension Errors";
-
-    /**
-     * Constructor
-     *
-     * @param String $extension The PHP extension related to this error
-     * @param String $message The error message
-     * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
-     */
-    public function __construct($extension, $message = NULL, $code = 0, $fault = NULL)
+    public function testConstruct ()
     {
-        parent::__construct($message, $code, $fault);
+        $err = new \cPHP\Exception\Extension(
+                'Ext Name',
+                'Extension not loaded',
+                300,
+                0
+            );
 
-        $extension = \cPHP\strval( $extension );
+        $this->assertEquals( "Extension not loaded", $err->getMessage() );
+        $this->assertEquals( 300, $err->getCode() );
 
-        $this->addData( "Extension", $extension );
+        $this->assertEquals(
+                new \cPHP\Ary(array("Extension" => "Ext Name")),
+                $err->getData()
+            );
+
+        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }
