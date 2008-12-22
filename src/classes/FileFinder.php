@@ -40,6 +40,38 @@ abstract class FileFinder
     private $fallback;
 
     /**
+     * Allows you to instantiate a FileFinder in-line by calling it like a static method
+     *
+     * @param String $class The class to instantiate
+     * @param Array $args Any arguments to pass to the construcor
+     * @return Object Returns a new cPHP\FileFinder object of the given type
+     */
+    static public function __callStatic ( $class, $args )
+    {
+        $class = "\\cPHP\\FileFinder\\". trim( \cPHP\strval($class) );
+
+        if ( !class_exists( $class, true ) ) {
+            throw new \cPHP\Exception\Argument(
+                    0,
+                    "FileFinder Class Name",
+                    "Class could not be found in \\cPHP\\FileFinder namespace"
+                );
+        }
+
+        if ( count($args) <= 0 ) {
+            return new $class;
+        }
+        else if ( count($args) == 1 ) {
+            return new $class( reset($args) );
+        }
+        else {
+            $refl = new \ReflectionClass( $class );
+            return $refl->newInstanceArgs( $args );
+        }
+
+    }
+
+    /**
      * Returns the fallback class for this instance
      *
      * @return Object|Null Returns a FileFinder instance, or NULL if no fallback

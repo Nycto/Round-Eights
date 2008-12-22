@@ -33,6 +33,21 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_filefinder extends PHPUnit_Framework_TestCase
 {
 
+    public function testCallStatic ()
+    {
+        $finder = \cPHP\FileFinder::Dir();
+        $this->assertThat( $finder, $this->isInstanceOf("cPHP\\FileFinder\\Dir") );
+
+
+        try {
+            \cPHP\FileFinder::ThisIsNotReal();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\cPHP\\FileFinder namespace', $err->getMessage() );
+        }
+    }
+
     public function testFallbackAccessors ()
     {
         $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
