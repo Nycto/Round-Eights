@@ -56,6 +56,7 @@ class DB extends \cPHP\Exception
     {
         parent::__construct( $message, $code, $fault );
     }
+
 }
 
 ?>
