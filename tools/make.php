@@ -83,11 +83,14 @@ __halt_compiler();<?php
  * @package Phar
  */
 
+if ( version_compare( phpversion(), '5.3.0alpha3' ) < 0 )
+    trigger_error("Could not load commonPHP: PHP version 5.3 required", E_USER_ERROR);
+
 if ( !class_exists('Phar', FALSE) )
-    throw new Exception("Phar class does not exist");
+    trigger_error("Could not load commonPHP: Phar class does not exist", E_USER_ERROR);
 
 if ( !in_array('phar', stream_get_wrappers()) )
-    throw new Exception("Phar stream is not supported");
+    trigger_error("Could not load commonPHP: Phar stream is not supported", E_USER_ERROR);
 
 require_once "phar://". __FILE__ ."/commonPHP.php";
 
