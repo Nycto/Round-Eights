@@ -92,6 +92,33 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $this->assertFalse( \cPHP\Template\File::globalFinderExists() );
     }
 
+    public function testSelectFinder ()
+    {
+        $tpl = $this->getMockTpl();
+
+        try {
+            $tpl->selectFinder();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Variable $err ) {
+            $this->assertSame("No global or instance level FileFinder has been set", $err->getMessage());
+        }
+
+
+        $globalFinder = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        \cPHP\Template\File::setGlobalFinder( $globalFinder );
+        $this->assertSame( $globalFinder, $tpl->selectFinder() );
+
+
+        $instFinder = $this->getMock( 'cPHP\FileFinder', array('internalFind') );
+        $tpl->setFinder( $instFinder );
+        $this->assertSame( $instFinder, $tpl->selectFinder() );
+
+
+        \cPHP\Template\File::clearGlobalFinder();
+        $this->assertSame( $instFinder, $tpl->selectFinder() );
+    }
+
 }
 
 ?>

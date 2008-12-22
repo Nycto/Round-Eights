@@ -142,6 +142,28 @@ abstract class File extends \cPHP\Template
         return $this;
     }
 
+    /**
+     * Returns the file finder this instance will use
+     *
+     * If no finder is set for this instance, the global instance will be returned.
+     * Then, if there is no global instance, an exception will be thrown
+     *
+     * @return Object Returns a cPHP\FileFinder object
+     */
+    public function selectFinder ()
+    {
+        if (isset($this->finder))
+            return $this->finder;
+
+        else if ( isset(self::$globalFinder) )
+            return self::$globalFinder;
+
+        throw new \cPHP\Exception\Variable(
+                "FileFinder",
+                "No global or instance level FileFinder has been set"
+            );
+    }
+
 }
 
 ?>
