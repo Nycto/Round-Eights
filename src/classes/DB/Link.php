@@ -575,6 +575,31 @@ abstract class Link implements \cPHP\iface\DB\Link
     }
 
     /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URN
+     */
+    public function getIdentifier ()
+    {
+        if ( preg_match('/^cPHP\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
+            $ident = $matches[1];
+        else
+            $ident = "db";
+
+        $ident .= "://";
+
+        if ( !$this->hostExists() )
+            return $ident ."hash:". spl_object_hash($this);
+
+        if ( $this->userNameExists() )
+            $ident .= $this->getUserName() ."@";
+
+        $ident .= $this->getHostWithPort();
+
+        return $ident;
+    }
+
+    /**
      * Runs a query and returns the result
      *
      * @param String $query The query to run

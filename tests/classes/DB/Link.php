@@ -389,6 +389,41 @@ class classes_db_link extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetIdentifier ()
+    {
+        $mock = $this->getMockLink();
+        $mock->clearHost();
+
+        $this->assertRegExp(
+                '/^db\:\/\/hash\:[0-9a-zA-Z\_]+$/',
+                $mock->getIdentifier()
+            );
+
+        $mock->setHost('127.0.0.1');
+        $this->assertRegExp(
+                '/^db\:\/\/127\.0\.0\.1$/',
+                $mock->getIdentifier()
+            );
+
+        $mock->setPort( 8080 );
+        $this->assertRegExp(
+                '/^db\:\/\/127\.0\.0\.1\:8080$/',
+                $mock->getIdentifier()
+            );
+
+        $mock->setUserName( 'uname' );
+        $this->assertRegExp(
+                '/^db\:\/\/uname\@127\.0\.0\.1\:8080$/',
+                $mock->getIdentifier()
+            );
+
+        $mock->clearPort();
+        $this->assertRegExp(
+                '/^db\:\/\/uname\@127\.0\.0\.1$/',
+                $mock->getIdentifier()
+            );
+    }
+
     public function testDisconnect ()
     {
         $mock = $this->getMockLink();

@@ -108,6 +108,24 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
         $this->assertFalse( $link->isConnected() );
     }
 
+    public function testGetIdentifier ()
+    {
+        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
+
+        $this->assertSame(
+                "MySQLi://root@localhost:3306",
+                $link->getIdentifier()
+            );
+
+        $link = new \cPHP\DB\MySQLi\Link;
+        $link->clearHost();
+
+        $this->assertRegExp(
+                "/MySQLi:\/\/[0-9a-zA-Z]+/",
+                $link->getIdentifier()
+            );
+    }
+
 }
 
 ?>
