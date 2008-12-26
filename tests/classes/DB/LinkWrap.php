@@ -50,6 +50,46 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
         $this->assertSame( $link, $mock->getLink() );
     }
 
+    public function testGetTopLink_shallow ()
+    {
+
+        $link = $this->getMock(
+                "\cPHP\iface\DB\Link",
+                array("query", "quote", "escape")
+            );
+
+        $mock = $this->getMock(
+                "\cPHP\DB\LinkWrap",
+                array("_mock"),
+                array( $link )
+            );
+
+        $this->assertSame( $link, $mock->getTopLink() );
+    }
+
+    public function testGetTopLink_deep ()
+    {
+
+        $link = $this->getMock(
+                "\cPHP\iface\DB\Link",
+                array("query", "quote", "escape")
+            );
+
+        $mock1 = $this->getMock(
+                "\cPHP\DB\LinkWrap",
+                array("_mock"),
+                array( $link )
+            );
+
+        $mock2 = $this->getMock(
+                "\cPHP\DB\LinkWrap",
+                array("_mock"),
+                array( $mock1 )
+            );
+
+        $this->assertSame( $link, $mock2->getTopLink() );
+    }
+
     public function testQuery ()
     {
         $link = $this->getMock(

@@ -59,6 +59,23 @@ abstract class LinkWrap implements \cPHP\iface\DB\Link
     }
 
     /**
+     * Walks the chain of link wraps until a leaf is found, which is then returned
+     *
+     * @return Object Returns a cPHP\iface\DB\Link instance
+     */
+    public function getTopLink ()
+    {
+        $link = $this->link;
+
+        // walk the chain until we find something that isn't a link wrap
+        while ( $link instanceof \cPHP\DB\LinkWrap ) {
+            $link = $link->getLink();
+        }
+
+        return $link;
+    }
+
+    /**
      * Runs a query and returns the result
      *
      * Wraps the equivilent function in the Link
