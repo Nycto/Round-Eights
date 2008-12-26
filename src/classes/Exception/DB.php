@@ -49,10 +49,10 @@ class DB extends \cPHP\Exception
      * @param String $query The query that caused the error
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param mixed $Link The database Link associated with this error
+     * @param mixed $link The database Link associated with this error
      * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct ( $message = NULL, $code = 0, $Link = null, $fault = NULL )
+    public function __construct ( $message = NULL, $code = 0, $link = null, $fault = NULL )
     {
         parent::__construct( $message, $code, $fault );
     }
