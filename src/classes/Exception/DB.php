@@ -55,6 +55,14 @@ class DB extends \cPHP\Exception
     public function __construct ( $message = NULL, $code = 0, $link = null, $fault = NULL )
     {
         parent::__construct( $message, $code, $fault );
+
+        if ( $link instanceof \cPHP\DB\LinkWrap )
+            $link = $link->getTopLink();
+
+        if ( $link instanceof \cPHP\DB\Link )
+            $this->addData( 'Link', $link->getIdentifier() );
+        else
+            $this->addData( 'Link', \cPHP\getDump($link) );
     }
 
 }
