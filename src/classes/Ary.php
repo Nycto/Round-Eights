@@ -1424,6 +1424,36 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Returns whether a branch exists in an array
+     *
+     * @param mixed $keys... The key path being tested. Any values given will
+     *      be flattened down before using them as keys.
+     * @return Boolean
+     */
+    public function branchExists ( $keys )
+    {
+        $keys = func_get_args();
+        $keys = self::create($keys)->flatten()->unique()->get();
+
+        $array =& $this->array;
+
+        foreach ($keys AS $index) {
+
+            if ( !is_array($array) && !($array instanceof \ArrayAccess) )
+                return FALSE;
+
+            else if ( !isset($array[ $index ]) )
+                return FALSE;
+
+            else
+                $array =& $array[ $index ];
+
+        }
+
+        return TRUE;
+    }
+
+    /**
      * Converts all the values in the array to a string
      *
      * @return Object Returns a self reference

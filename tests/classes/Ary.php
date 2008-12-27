@@ -1930,9 +1930,62 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->markTestIncomplete("To be written");
     }
 
-    public function testBranchExists ()
+    public function testBranchExists_arrays ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array(
+                1 => array(
+                        2 => array(
+                                3 => 'three',
+                                4 => 'four',
+                                'eight' => array (
+                                        'Nine' => 9,
+                                        'ten' => 10
+                                    )
+                            )
+                    ),
+                5 => array( 6 => 'six', 7 => 'seven' )
+            ));
+
+        $this->assertTrue( $ary->branchExists(1, 2, 3) );
+        $this->assertTrue( $ary->branchExists(1, array(2)) );
+        $this->assertTrue( $ary->branchExists( array(1, 2 ), array( 'eight' ) ) );
+        $this->assertTrue( $ary->branchExists( array(1, 2, 'eight', 'Nine' ) ) );
+        $this->assertTrue( $ary->branchExists(
+                new \cPHP\Ary(array(1, 2, 'eight', 'Nine' ))
+            ) );
+
+        $this->assertFalse( $ary->branchExists(9) );
+        $this->assertFalse( $ary->branchExists(array(5), array(7), 9) );
+        $this->assertFalse( $ary->branchExists( array(1, 2, 'eight', 'nine' ) ) );
+    }
+
+    public function _testBranchExists_arrayAccess ()
+    {
+        $ary = new \cPHP\Ary(array(
+                1 => new \cPHP\Ary(array(
+                        2 => new ArrayObject(array(
+                                3 => 'three',
+                                4 => 'four',
+                                'eight' => \cPHP\Ary(array (
+                                        'Nine' => 9,
+                                        'ten' => 10
+                                    ))
+                            ))
+                    )),
+                5 => new ArrayObject(array( 6 => 'six', 7 => 'seven' ))
+            ));
+
+        $this->assertTrue( $ary->branchExists(1, 2, 3) );
+        $this->assertTrue( $ary->branchExists(1, array(2)) );
+        $this->assertTrue( $ary->branchExists( array(1, 2 ), array( 'eight' ) ) );
+        $this->assertTrue( $ary->branchExists( array(1, 2, 'eight', 'Nine' ) ) );
+        $this->assertTrue( $ary->branchExists(
+                new \cPHP\Ary(array(1, 2, 'eight', 'Nine' ))
+            ) );
+
+        $this->assertFalse( $ary->branchExists(9) );
+        $this->assertFalse( $ary->branchExists(array(5), array(7), 9) );
+        $this->assertFalse( $ary->branchExists( array(1, 2, 'eight', 'nine' ) ) );
     }
 
     public function testStringize ()
