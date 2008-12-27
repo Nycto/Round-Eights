@@ -1016,11 +1016,42 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Invokes the given callback for every value in this array and accumulates
+     * the result
      *
+     * The given callback will be applied to every value in this array. It will
+     * be passed three arguments. The first argument is the result of the previous
+     * callback invokation. The first time the callback is invoked it will be given
+     * the $original parameter. The other two arguments given to the callback are
+     * the value and key for the current array value being processed.
+     *
+     * You can think about it like this:
+     * <code>
+     * $result = callback( $original, $value[0], $key[0] );
+     * $result = callback( $result, $value[1], $key[1] );
+     * $result = callback( $result, $value[1], $key[1] );
+     * return $result;
+     * </code>
+     *
+     * @param mixed $original The starting value for the accumulation
+     * @param Callable $callback The callback to invoke
+     * @return mixed Returns the accumulated result
      */
-    public function inject ()
+    public function inject ( $original, $callback )
     {
+        if (!is_callable($callback))
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
+        foreach ( $this->array AS $key => $value ) {
+
+            if ( is_object($callback) )
+                $original = $callback->__invoke( $original, $value, $key );
+            else
+                $original = call_user_func( $callback, $original, $value, $key );
+
+        }
+
+        return $original;
     }
 
     /**

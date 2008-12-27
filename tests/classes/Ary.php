@@ -1271,7 +1271,43 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testInject ()
     {
-        $this->markTestIncomplete("To be written");
+        // Test an empty array
+        $ary = new \cPHP\Ary;
+        $this->assertSame(
+                'original',
+                $ary->inject( 'original', function () { return 'changed'; } )
+            );
+
+
+        // Create a callback
+        $lambda = create_function(
+                '$injected, $value, $key=0',
+                'return $injected ."$value-$key,";'
+            );
+
+        $ary = new \cPHP\Ary( array( 1 => 2, 3 => 4, 5 => 6 ) );
+        $this->assertSame(
+                'start2-1,4-3,6-5,',
+                $ary->inject( 'start', $lambda )
+            );
+
+
+        $this->assertSame(
+                'start2-1,4-3,6-5,',
+                $ary->inject( 'start', function ( $injected, $value, $key ) {
+                    return $injected ."$value-$key,";
+                } )
+            );
+
+
+        $obj = $this->getMock('mock', array('__invoke'));
+        $obj->expects( $this->any() )
+            ->method('__invoke')
+            ->will( $this->returnCallback( function ( $injected, $value, $key ) {
+                return $injected ."$value-$key,";
+            } ) );
+
+        $this->assertSame( 'start2-1,4-3,6-5,', $ary->inject('start', $obj) );
     }
 
     public function testCompact ()
