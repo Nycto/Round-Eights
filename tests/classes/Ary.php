@@ -1619,11 +1619,6 @@ class classes_ary extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testAll ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
     public function testFind ()
     {
 
