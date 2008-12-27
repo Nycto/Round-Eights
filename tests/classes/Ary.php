@@ -1519,6 +1519,106 @@ class classes_ary extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testAll_true ()
+    {
+        // Test an empty array
+        $ary = new \cPHP\Ary;
+        $result = $ary->all(function ( $value, $key ) {
+            return FALSE;
+        });
+        $this->assertTrue( $result );
+
+
+        // Test a closure callback
+        $ary = new \cPHP\Ary( range(0, 5) );
+        $result = $ary->all(function ( $value, $key ) {
+            return $value <= 5 ? TRUE : FALSE;
+        });
+        $this->assertTrue( $result );
+
+
+        // Test a function name as a callback
+        $ary = new \cPHP\Ary( range(-1, -5) );
+        $result = $ary->all("cPHP\\num\\negative");
+        $this->assertTrue( $result );
+
+
+        $ary = new \cPHP\Ary( array("YES", "yes", "also yes") );
+
+
+        // Static method callback
+        $result = $ary->all(array(
+                "stub_classes_ary_boolCallbacks",
+                "callbackStatic"
+            ));
+        $this->assertTrue( $result );
+
+
+        $callback = new stub_classes_ary_boolCallbacks;
+
+        // Object method callback
+        $this->assertTrue(
+                $ary->all(array($callback, "callbackObject"))
+            );
+
+        // Callable object callback
+        $this->assertTrue( $ary->all($callback) );
+    }
+
+    public function testAll_false ()
+    {
+
+        // Test a closure callback
+        $ary = new \cPHP\Ary( range(0, 6) );
+        $result = $ary->all(function ( $value, $key ) {
+            return $value <= 5 ? TRUE : FALSE;
+        });
+        $this->assertFalse( $result );
+
+
+        // Test a function name as a callback
+        $ary = new \cPHP\Ary( range(5, -1) );
+        $result = $ary->all("cPHP\\num\\negative");
+        $this->assertFalse( $result );
+
+
+        $ary = new \cPHP\Ary( array("yes", "yes", "no", 3, "also yes", 1) );
+
+
+        // Static method callback
+        $result = $ary->all(array(
+                "stub_classes_ary_boolCallbacks",
+                "callbackStatic"
+            ));
+        $this->assertFalse( $result );
+
+
+        $callback = new stub_classes_ary_boolCallbacks;
+
+        // Object method callback
+        $this->assertFalse(
+                $ary->all(array($callback, "callbackObject"))
+            );
+
+
+        // Callable object callback
+        $this->assertFalse( $ary->all($callback) );
+    }
+
+    public function testAll_error ()
+    {
+        $ary = new \cPHP\Ary;
+
+        // invoked without a proper callback
+        try {
+            $ary->all("This is an uncallable value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must be callable", $err->getMessage());
+        }
+    }
+
     public function testAll ()
     {
         $this->markTestIncomplete("To be written");

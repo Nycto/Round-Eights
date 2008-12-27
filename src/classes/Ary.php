@@ -1177,9 +1177,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
-     * Returns whether any of the given functions cause the given callback to return TRUE
-     *
-     * This does not guarantee 
+     * Returns whether any of the values in this array cause the given callback to return TRUE
      *
      * @param Callable $callback The callback method to invoke. It will be called
      *      with the value as the first argument and it's key as the second.
@@ -1216,11 +1214,40 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
+     * Returns whether all of the values in this array cause the given callback to return TRUE
      *
+     * @param Callable $callback The callback method to invoke. It will be called
+     *      with the value as the first argument and it's key as the second.
+     * @return Boolean
      */
-    public function all ()
+    public function all ( $callback )
     {
+        if (!is_callable($callback))
+            throw new \cPHP\Exception\Argument(0, "Callback", "Must be callable");
 
+        $sendKey = $this->sendKey( $callback );
+
+        foreach ( $this->array AS $key => $value ) {
+
+            if ( $sendKey ) {
+                if ( is_object($callback) )
+                    $result = $callback->__invoke( $value, $key );
+                else
+                    $result = call_user_func( $callback, $value, $key );
+            }
+            else {
+                if ( is_object($callback) )
+                    $result = $callback->__invoke( $value );
+                else
+                    $result = call_user_func( $callback, $value );
+            }
+
+            if ( !$result )
+                return FALSE;
+
+        }
+
+        return TRUE;
     }
 
     /**
