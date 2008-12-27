@@ -1925,11 +1925,6 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testGetBranch ()
-    {
-        $this->markTestIncomplete("To be written");
-    }
-
     public function testBranchExists_arrays ()
     {
         $ary = new \cPHP\Ary(array(
