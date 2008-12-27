@@ -1959,14 +1959,14 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( $ary->branchExists( array(1, 2, 'eight', 'nine' ) ) );
     }
 
-    public function _testBranchExists_arrayAccess ()
+    public function testBranchExists_arrayAccess ()
     {
         $ary = new \cPHP\Ary(array(
                 1 => new \cPHP\Ary(array(
                         2 => new ArrayObject(array(
                                 3 => 'three',
                                 4 => 'four',
-                                'eight' => \cPHP\Ary(array (
+                                'eight' => new \cPHP\Ary(array (
                                         'Nine' => 9,
                                         'ten' => 10
                                     ))
@@ -1974,6 +1974,8 @@ class classes_ary extends PHPUnit_Framework_TestCase
                     )),
                 5 => new ArrayObject(array( 6 => 'six', 7 => 'seven' ))
             ));
+
+        $copy = clone $ary;
 
         $this->assertTrue( $ary->branchExists(1, 2, 3) );
         $this->assertTrue( $ary->branchExists(1, array(2)) );
@@ -1986,6 +1988,8 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertFalse( $ary->branchExists(9) );
         $this->assertFalse( $ary->branchExists(array(5), array(7), 9) );
         $this->assertFalse( $ary->branchExists( array(1, 2, 'eight', 'nine' ) ) );
+
+        $this->assertEquals( $copy, $ary );
     }
 
     public function testStringize ()

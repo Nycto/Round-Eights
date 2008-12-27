@@ -1433,20 +1433,19 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     public function branchExists ( $keys )
     {
         $keys = func_get_args();
-        $keys = self::create($keys)->flatten()->unique()->get();
+        $keys = self::create($keys)->flatten()->get();
 
-        $array =& $this->array;
+        $node = $this->array;
 
         foreach ($keys AS $index) {
 
-            if ( !is_array($array) && !($array instanceof \ArrayAccess) )
+            if ( !is_array($node) && !($node instanceof \ArrayAccess) )
                 return FALSE;
 
-            else if ( !isset($array[ $index ]) )
+            else if ( !isset($node[ $index ]) )
                 return FALSE;
 
-            else
-                $array =& $array[ $index ];
+            $node = $node[ $index ];
 
         }
 
