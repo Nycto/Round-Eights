@@ -1992,6 +1992,126 @@ class classes_ary extends PHPUnit_Framework_TestCase
         $this->assertEquals( $copy, $ary );
     }
 
+    public function testGetBranch_arrays ()
+    {
+        $ary = new \cPHP\Ary(array(
+                1 => array(
+                        2 => array(
+                                3 => 'three',
+                                4 => 'four',
+                                'eight' => array (
+                                        'Nine' => 9,
+                                        'ten' => 10
+                                    )
+                            )
+                    ),
+                5 => array( 6 => 'six', 7 => 'seven' )
+            ));
+
+        $this->assertSame( 'three', $ary->getBranch(1, 2, 3) );
+        $this->assertSame( $ary[1][2], $ary->getBranch(1, array(2)) );
+
+        $this->assertSame(
+                array ( 'Nine' => 9, 'ten' => 10 ),
+                $ary->getBranch( array(1, 2 ), array( 'eight' ) )
+            );
+
+        $this->assertSame( 9, $ary->getBranch( array(1, 2, 'eight', 'Nine' ) ) );
+        $this->assertSame(
+                9,
+                $ary->getBranch(
+                        new \cPHP\Ary(array(1, 2, 'eight', 'Nine' ))
+                    )
+            );
+
+
+        try {
+            $ary->getBranch(9);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Index does not exist in branch", $err->getMessage());
+        }
+
+        try {
+            $ary->getBranch( array(1, 2, 'eight', 'nine') );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Index does not exist in branch", $err->getMessage());
+        }
+
+        try {
+            $ary->getBranch(array(5), array(7), 9);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Leaf node reach, unable to walk branch branch further", $err->getMessage());
+        }
+    }
+
+    public function testGetBranch_arrayAccess ()
+    {
+        $ary = new \cPHP\Ary(array(
+                1 => new \cPHP\Ary(array(
+                        2 => new ArrayObject(array(
+                                3 => 'three',
+                                4 => 'four',
+                                'eight' => new \cPHP\Ary(array (
+                                        'Nine' => 9,
+                                        'ten' => 10
+                                    ))
+                            ))
+                    )),
+                5 => new ArrayObject(array( 6 => 'six', 7 => 'seven' ))
+            ));
+
+        $copy = clone $ary;
+
+        $this->assertSame( 'three', $ary->getBranch(1, 2, 3) );
+        $this->assertSame( $ary[1][2], $ary->getBranch(1, array(2)) );
+
+        $this->assertEquals(
+                new \cPHP\Ary(array( 'Nine' => 9, 'ten' => 10 )),
+                $ary->getBranch( array(1, 2 ), array( 'eight' ) )
+            );
+
+        $this->assertSame( 9, $ary->getBranch( array(1, 2, 'eight', 'Nine' ) ) );
+        $this->assertSame(
+                9,
+                $ary->getBranch(
+                        new \cPHP\Ary(array(1, 2, 'eight', 'Nine' ))
+                    )
+            );
+
+
+        try {
+            $ary->getBranch(9);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Index does not exist in branch", $err->getMessage());
+        }
+
+        try {
+            $ary->getBranch( array(1, 2, 'eight', 'nine') );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Index does not exist in branch", $err->getMessage());
+        }
+
+        try {
+            $ary->getBranch(array(5), array(7), 9);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Leaf node reach, unable to walk branch branch further", $err->getMessage());
+        }
+
+        $this->assertEquals( $copy, $ary );
+    }
+
     public function testStringize ()
     {
         $ary = new \cPHP\Ary( array( 0,  array( 4.5, "another" ), "string", 1.5 ) );

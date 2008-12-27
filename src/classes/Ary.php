@@ -1435,7 +1435,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
         $keys = func_get_args();
         $keys = self::create($keys)->flatten()->get();
 
-        $node = $this->array;
+        $node = $this;
 
         foreach ($keys AS $index) {
 
@@ -1450,6 +1450,38 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
         }
 
         return TRUE;
+    }
+
+    /**
+     * Walks a branch and returns the value at the end
+     *
+     * This will throw a cPHP\Exception\Index error if the branch does not exist
+     *
+     * @param mixed $keys... The key path being tested. Any values given will
+     *      be flattened down before using them as keys.
+     * @return mixed Returns the value at the end of the branch
+     */
+    public function getBranch ( $keys )
+    {
+        $keys = func_get_args();
+        $keys = self::create($keys)->flatten()->get();
+
+        $node = $this;
+
+        foreach ($keys AS $index) {
+
+            if ( !is_array($node) && !($node instanceof \ArrayAccess) )
+                throw new \cPHP\Exception\Index($node, 'Node', 'Leaf node reach, unable to walk branch branch further');
+
+            else if ( !isset($node[ $index ]) )
+                throw new \cPHP\Exception\Index($index, 'Node Index', 'Index does not exist in branch');
+
+
+            $node = $node[ $index ];
+
+        }
+
+        return $node;
     }
 
     /**
