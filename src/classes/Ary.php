@@ -821,6 +821,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      * Returns a version of this array where all the keys have had their case changed
      *
      * @param Integer $case
+     * @return Object Returns a new cPHP\Ary object
      */
     public function changeKeyCase ( $case = CASE_LOWER )
     {
@@ -899,7 +900,8 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     /**
      * Removes the values from an array that cause the callback to return false
      *
-     * @param array $Array The array to be filtered
+     * @param Callable $callback The method to use for filtering
+     * @return Object Returns a new cPHP\Ary object
      */
     public function filter ( $callback )
     {
@@ -959,8 +961,8 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      *
      * Takes a multi-dimensional array and flattens it down to a single-dimensional array
      *
-     * @param array $Array The array you wish to flatten
-     * @return array Returns the flattened array
+     * @param Integer $maxDepth The maximum depth the array is allowed to be.
+     * @return Object Returns the flattened array as a cPHP\Ary object
      */
     public function flatten ( $maxDepth = 1 )
     {
@@ -1169,7 +1171,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
     /**
      * Returns a version of the current array without duplicates
      *
-     * @return object
+     * @return object Returns a new cPHP\Ary object
      */
     public function unique ()
     {
