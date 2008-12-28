@@ -1089,6 +1089,23 @@ class classes_ary extends PHPUnit_Framework_TestCase
                     ) ),
                 $ary
             );
+
+        // Make sure references stick
+        $one = 1;
+        $two = 2;
+        $ary = new \cPHP\Ary( array( 'one' => &$one, 'two' => &$two ) );
+        $this->assertSame( $ary, $ary->bubbleKeys('two') );
+        $this->assertEquals(
+                new \cPHP\Ary( array( 'two' => 2, 'one' => 1 ) ),
+                $ary
+            );
+
+        $one = 'single';
+        $two = 'double';
+        $this->assertEquals(
+                new \cPHP\Ary( array( 'two' => 'double', 'one' => 'single' ) ),
+                $ary
+            );
     }
 
     public function testHone ()
