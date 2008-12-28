@@ -736,9 +736,37 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
 
     /**
      * Sorts a list of specific keys to the top of the array
+     *
+     * @param mixed $keys... The list of keys being bubbled.
+     * @return Object Returns a self reference
      */
-    public function bubbleKeys ( array $keys )
+    public function bubbleKeys ( $keys )
     {
+        $keys = func_get_args();
+        $keys = self::create( $keys )->flatten()->unique()->get();
+
+        // Pull out the list of keys that actually exist in the current array
+        $keys = array_intersect( $keys, array_keys($this->array) );
+
+        if (count($keys) > 0) {
+
+            $collect = array();
+
+            // Loop through the list of keys being bubbled
+            foreach ($keys AS $key) {
+
+                // Save the data in a temporary array
+                $collect[$key] =& $this->array[$key];
+
+                // Now remove the original from the array
+                unset( $this->array[$key] );
+            }
+
+            $this->array = $collect + $this->array;
+    
+        }
+
+        return $this;
 
     }
 

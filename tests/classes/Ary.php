@@ -1031,7 +1031,64 @@ class classes_ary extends PHPUnit_Framework_TestCase
 
     public function testBubbleKeys ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary( array(
+                0 => 'zero', 1 => 'one', 2 => 'two',
+                3 => 'three', 4 => 'four', 5 => 'five'
+            ) );
+
+        $this->assertSame( $ary, $ary->bubbleKeys(4, 2, 3) );
+        $this->assertEquals(
+                new \cPHP\Ary( array(
+                        4 => 'four', 2 => 'two', 3 => 'three',
+                        0 => 'zero', 1 => 'one', 5 => 'five'
+                    ) ),
+                $ary
+            );
+
+        // An empty list of keys should leave everything as it was
+        $this->assertSame( $ary, $ary->bubbleKeys(array()) );
+        $this->assertEquals(
+                new \cPHP\Ary( array(
+                        4 => 'four', 2 => 'two', 3 => 'three',
+                        0 => 'zero', 1 => 'one', 5 => 'five'
+                    ) ),
+                $ary
+            );
+
+        $this->assertSame( $ary, $ary->bubbleKeys( new \cPHP\Ary(array(1)), 0 ) );
+        $this->assertEquals(
+                new \cPHP\Ary( array(
+                        1 => 'one', 0 => 'zero', 4 => 'four',
+                        2 => 'two', 3 => 'three', 5 => 'five'
+                    ) ),
+                $ary
+            );
+
+
+        $ary = new \cPHP\Ary( array(
+                'zero' => 0, 'one' => 1, 'two' => 2,
+                'three' => 3, 'four' => 4, 'five' => 5
+            ) );
+
+        // Non-existant keys
+        $this->assertSame( $ary, $ary->bubbleKeys(array('eight', 'nine', 'zero', 'one')) );
+        $this->assertEquals(
+                new \cPHP\Ary( array(
+                        'zero' => 0, 'one' => 1, 'two' => 2,
+                        'three' => 3, 'four' => 4, 'five' => 5
+                    ) ),
+                $ary
+            );
+
+        // Duplicate keys
+        $this->assertSame( $ary, $ary->bubbleKeys('one', 'two', array('two', 'one')) );
+        $this->assertEquals(
+                new \cPHP\Ary( array(
+                        'one' => 1, 'two' => 2, 'zero' => 0,
+                        'three' => 3, 'four' => 4, 'five' => 5
+                    ) ),
+                $ary
+            );
     }
 
     public function testHone ()
