@@ -89,7 +89,8 @@ function reduce ($value)
  *
  * @param string $constant The constant to define
  * @param mixed $value The constant's value
- * @return Boolean Returns whether the operation was succesful. This will return TRUE if the constant is already defined
+ * @return Boolean Returns whether the operation was succesful. This will return
+ *      TRUE if the constant is already defined
  */
 function defineIf ($constant, $value)
 {
@@ -236,7 +237,7 @@ function strVal ($value)
 /**
  * Prepares a value to be used as an array index
  *
- * This will reduce the value down to a basic type, the convert it to an integer
+ * This will reduce the value down to a basic type, then convert it to an integer
  * or a string. The idea is to simulate what PHP does when it uses a non-standard
  * value as an array index.
  *
@@ -294,9 +295,8 @@ function kindOf ( $value, $className )
 
 }
 
-
 /**
- * Determines if the given object responds to a list of functions
+ * Determines if the given object responds to a specific function
  *
  * Note that this doesn't take method overloading in to account
  *
