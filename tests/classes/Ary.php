@@ -986,9 +986,47 @@ class classes_ary extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testCustomSort ()
+    public function testCustomSort_error ()
     {
-        $this->markTestIncomplete("To be written");
+        $ary = new \cPHP\Ary(array( 'One' => 1, 'Two' => 2, 'Three' => 3 ));
+
+        try {
+            $ary->customSort("This is not a valid callback");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertEquals("Must be callable", $err->getMessage());
+        }
+    }
+
+    public function testCustomSort_assoc ()
+    {
+        $ary = new \cPHP\Ary(array( 'Three' => 3, 'Two' => 2, 'Four' => 4, 'One' => 1 ));
+
+        $sort = function ( $a, $b ) {
+            return strcasecmp( $a, $b );
+        };
+
+        $this->assertSame( $ary, $ary->customSort($sort) );
+        $this->assertSame(
+                array( 'One' => 1, 'Two' => 2, 'Three' => 3, 'Four' => 4 ),
+                $ary->get()
+            );
+    }
+
+    public function testCustomSort_nonAssoc ()
+    {
+        $ary = new \cPHP\Ary(array( 'Three' => 3, 'Two' => 2, 'Four' => 4, 'One' => 1 ));
+
+        $sort = function ( $a, $b ) {
+            return strcasecmp( $a, $b );
+        };
+
+        $this->assertSame( $ary, $ary->customSort($sort, FALSE) );
+        $this->assertSame(
+                array( 1, 2, 3, 4 ),
+                $ary->get()
+            );
     }
 
     public function testReverse ()

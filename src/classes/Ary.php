@@ -702,9 +702,9 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
             throw new \cPHP\Exception\Argument(0, "callback", "Must be callable");
 
         if ( $assoc )
-            usort( $this->array, $callback );
-        else
             uasort( $this->array, $callback );
+        else
+            usort( $this->array, $callback );
 
         return $this;
     }
@@ -763,7 +763,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
             }
 
             $this->array = $collect + $this->array;
-    
+
         }
 
         return $this;
