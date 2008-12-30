@@ -189,8 +189,8 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
         static $link;
 
         if ( !isset($link) || !$link->isConnected() ) {
-            $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
 
+            $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
 
             $mysqli = $link->getLink();
 
@@ -217,15 +217,15 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
         $mysqli = $link->getLink();
 
 
-            $result = $mysqli->query("TRUNCATE TABLE `". MYSQLI_TABLE ."`");
+        $result = $mysqli->query("TRUNCATE TABLE `". MYSQLI_TABLE ."`");
 
-            if ( !$result )
-                $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
+        if ( !$result )
+            $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
 
         $result = $mysqli->query("INSERT INTO `". MYSQLI_TABLE ."`
-                             VALUES (1, 'alpha', 'one'),
-                                    (2, 'beta', 'two'),
-                                    (3, 'gamma', 'three')");
+                                  VALUES (1, 'alpha', 'one'),
+                                         (2, 'beta', 'two'),
+                                         (3, 'gamma', 'three')");
 
         if ( !$result )
             $this->markTestSkipped("MySQLi Error (#". $mysqli->errno ."): ". $mysqli->error);
