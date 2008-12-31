@@ -1,2 +1,4 @@
 tests/config.php
 tools/commonPHP.phar
+tools/commonPHP-*.tar.gz
+tools/commonPHP-*.zip
