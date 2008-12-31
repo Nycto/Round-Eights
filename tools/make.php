@@ -22,7 +22,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Phar
+ * @package Package
  */
 
 if ( !Phar::canWrite() )
@@ -47,7 +47,7 @@ $stub = str_replace('[$version]', cPHP_VERSION, $stub);
 
 $phar->setStub( $stub ) ;
 
-echo "Script Complete\n";
+echo "Phar file packed\n";
 
 /**
  * Everything below the halt compiler construct will be used as the stub for the phar file
