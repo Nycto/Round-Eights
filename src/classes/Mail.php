@@ -83,6 +83,51 @@ class Mail
      */
     protected $html;
 
+    /**
+     * Returns the name this email will be sent from
+     *
+     * @return NULL|String Returns NULL if no from name is set
+     */
+    public function getFromName ()
+    {
+        return $this->fromName;
+    }
+
+    /**
+     * Set the label for the "from" field
+     *
+     * @param String $name The label being sent from
+     * @return Object Returns a self reference
+     */
+    public function setFromName ( $name )
+    {
+        $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+
+        $this->fromName = \cPHP\isEmpty($name) ? NULL : $name;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a from label has been set
+     *
+     * @return Boolean
+     */
+    public function fromNameExists ()
+    {
+        return isset( $this->fromName );
+    }
+
+    /**
+     * Clears the from label from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFromName ()
+    {
+        $this->fromName = null;
+        return $this;
+    }
 
 }
 

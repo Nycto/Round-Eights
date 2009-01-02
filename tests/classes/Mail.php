@@ -33,6 +33,30 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_mail extends PHPUnit_Framework_TestCase
 {
 
+    public function testFromNameAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->fromNameExists() );
+        $this->assertNull( $mail->getFromName() );
+
+        $this->assertSame( $mail, $mail->setFromName("John Doe") );
+        $this->assertTrue( $mail->fromNameExists() );
+        $this->assertSame( "John Doe", $mail->getFromName() );
+
+        $this->assertSame( $mail, $mail->clearFromName() );
+        $this->assertFalse( $mail->fromNameExists() );
+        $this->assertNull( $mail->getFromName() );
+
+        $this->assertSame( $mail, $mail->setFromName( "Name". chr(1) ) );
+        $this->assertTrue( $mail->fromNameExists() );
+        $this->assertSame( "Name", $mail->getFromName() );
+
+        $this->assertSame( $mail, $mail->setFromName("  ") );
+        $this->assertFalse( $mail->fromNameExists() );
+        $this->assertNull( $mail->getFromName() );
+    }
+
 }
 
 ?>
