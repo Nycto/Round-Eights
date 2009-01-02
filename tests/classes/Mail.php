@@ -189,6 +189,30 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertNull( $mail->getSubject() );
     }
 
+    public function testTextAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->textExists() );
+        $this->assertNull( $mail->getText() );
+
+        $this->assertSame( $mail, $mail->setText("Hey there") );
+        $this->assertTrue( $mail->textExists() );
+        $this->assertSame( "Hey there", $mail->getText() );
+
+        $this->assertSame( $mail, $mail->clearText() );
+        $this->assertFalse( $mail->textExists() );
+        $this->assertNull( $mail->getText() );
+
+        $this->assertSame( $mail, $mail->setText( "Some kind of content" ) );
+        $this->assertTrue( $mail->textExists() );
+        $this->assertSame( "Some kind of content", $mail->getText() );
+
+        $this->assertSame( $mail, $mail->setText("  ") );
+        $this->assertFalse( $mail->textExists() );
+        $this->assertNull( $mail->getText() );
+    }
+
 }
 
 ?>

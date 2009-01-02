@@ -328,6 +328,57 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns the raw text portion of this email
+     *
+     * @return NULL|String Returns NULL if no text is set
+     */
+    public function getText ()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Set the raw text portion of the email.
+     *
+     * If you want to send HTML content, use the setHTML method.
+     *
+     * If both HTML and text content are set, they will both be sent. Users
+     * without HTMl enabled will see the text content.
+     *
+     * @param String $text The email text
+     * @return Object Returns a self reference
+     */
+    public function setText ( $text )
+    {
+        $text = trim( \cPHP\strval( $text ) );
+
+        $this->text = \cPHP\isEmpty($text) ? NULL : $text;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a text has been set
+     *
+     * @return Boolean
+     */
+    public function textExists ()
+    {
+        return isset( $this->text );
+    }
+
+    /**
+     * Clears the text
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearText ()
+    {
+        $this->text = null;
+        return $this;
+    }
+
 }
 
 ?>
