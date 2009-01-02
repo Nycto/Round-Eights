@@ -181,6 +181,52 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns the name this email will be sent to
+     *
+     * @return NULL|String Returns NULL if no to name is set
+     */
+    public function getToName ()
+    {
+        return $this->toName;
+    }
+
+    /**
+     * Set the label for the "to" field
+     *
+     * @param String $name The label being sent to
+     * @return Object Returns a self reference
+     */
+    public function setToName ( $name )
+    {
+        $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+
+        $this->toName = \cPHP\isEmpty($name) ? NULL : $name;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a to label has been set
+     *
+     * @return Boolean
+     */
+    public function toNameExists ()
+    {
+        return isset( $this->toName );
+    }
+
+    /**
+     * Clears the to label to this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearToName ()
+    {
+        $this->toName = null;
+        return $this;
+    }
+
 }
 
 ?>

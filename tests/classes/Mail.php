@@ -99,6 +99,30 @@ class classes_mail extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testToNameAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setToName("John Doe") );
+        $this->assertTrue( $mail->toNameExists() );
+        $this->assertSame( "John Doe", $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->clearToName() );
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setToName( "Name". chr(1) ) );
+        $this->assertTrue( $mail->toNameExists() );
+        $this->assertSame( "Name", $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setToName("  ") );
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+    }
+
 }
 
 ?>
