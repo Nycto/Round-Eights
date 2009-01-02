@@ -131,6 +131,29 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
     }
 
     /**
+     * Throws an exception if the given value doesn't validate
+     *
+     * @param mixed $value The value to validate
+     * @return Object Returns a self reference
+     */
+    public function ensure ( $value )
+    {
+        $result = $this->validate( $value );
+
+        if ( !$result->isValid() ) {
+
+            throw new \cPHP\Exception\Data(
+                    $value,
+                    "Validated Value",
+                    $result->getFirstError()
+                );
+
+        }
+
+        return $this;
+    }
+
+    /**
      * The function that actually performs the validation
      *
      * @param mixed $value It will be given the value to validate

@@ -216,6 +216,27 @@ class classes_validator extends PHPUnit_Framework_TestCase
         $fails = $this->getMockValidator( "Default Error" );
         $this->assertFalse( $fails->isValid("To Validate") );
     }
+
+    public function testEnsure ()
+    {
+        $passes = $this->getMockValidator( NULL );
+        $this->assertSame( $passes, $passes->ensure("To Validate") );
+
+
+        $fails = $this->getMockValidator( "This is an error" );
+
+        try {
+            $fails->ensure("To Validate");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame(
+                    "This is an error",
+                    $err->getMessage()
+                );
+        }
+    }
+
 }
 
 ?>
