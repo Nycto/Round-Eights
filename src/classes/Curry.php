@@ -321,62 +321,6 @@ abstract class Curry implements \cPHP\iface\Filter
         return array_merge( $this->leftArgs, $args, $this->rightArgs );
     }
 
-    /**
-     * Internal function that actually executs the currying.
-     *
-     * It is given an array of arguments. It should call the method and return the results
-     *
-     * @param array $args The list of arguments to apply to this function
-     * @return mixed Returns the results of the function call
-     */
-    abstract protected function rawExec ( array $args = array() );
-
-    /**
-     * Calls the method using the contents of an array as the arguments
-     *
-     * @param array $args The list of arguments to apply to this function
-     * @return mixed Returns the results of the function call
-     */
-    public function apply ( array $args = array() )
-    {
-        return $this->rawExec( $this->collectArgs($args) );
-    }
-
-    /**
-     * Calls the contained function with the given arguments
-     *
-     * @param mixed $args... The arguments to pass to the callback
-     * @return mixed Returns the result of the invokation
-     */
-    public function exec ()
-    {
-        $args = func_get_args();
-        return $this->rawExec( $this->collectArgs($args) );
-    }
-
-    /**
-     * Calls the contained function with the given arguments
-     *
-     * @param mixed $args... Any arguments to apply to the function
-     * @return mixed Returns the results of the invokation
-     */
-    public function __invoke ()
-    {
-        $args = func_get_args();
-        return $this->rawExec( $this->collectArgs($args) );
-    }
-
-    /**
-     * Method for use with the filtering objects. Invokes the contained method with the given value
-     *
-     * @param $value mixed The value to be filtered
-     * @return mixed The result of the filtering
-     */
-    public function filter ( $value )
-    {
-        return $this->rawExec( $this->collectArgs( array($value) ) );
-    }
-
 }
 
 ?>

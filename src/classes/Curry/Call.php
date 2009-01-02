@@ -30,7 +30,7 @@ namespace cPHP\Curry;
 /**
  * The most basic curry class. Invokes a defined callback
  */
-class Call extends \cPHP\Curry
+class Call extends \cPHP\Curry\Unbound
 {
 
     /**

@@ -30,7 +30,7 @@ namespace cPHP\Curry;
 /**
  * A curry class for handling class instantiation
  */
-class Instantiate extends \cPHP\Curry
+class Instantiate extends \cPHP\Curry\Unbound
 {
 
     /**
