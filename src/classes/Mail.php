@@ -129,6 +129,58 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns the e-mail address the message will be sent from
+     *
+     * @return NULL|String Returns Null if this property has not been set. Otherwise,
+     *      it returns a string
+     */
+    public function getFrom ()
+    {
+        return $this->from;
+    }
+
+    /**
+     * Set the email address this email will sent from
+     *
+     * @param String $email The email address
+     * @param String $name The label attached to this address
+     * @return Object Returns a self reference
+     */
+    public function setFrom ( $email, $name = FALSE )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        $this->from = $email;
+
+        if ( !\cPHP\isVague( $name ) )
+            $this->setFromName( $name );
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a from address has been set
+     *
+     * @return Boolean
+     */
+    public function fromExists ()
+    {
+        return isset( $this->from );
+    }
+
+    /**
+     * Clears the "from" address from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearFrom ()
+    {
+        $this->from = null;
+        return $this;
+    }
+
 }
 
 ?>
