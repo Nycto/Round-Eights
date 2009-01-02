@@ -123,6 +123,48 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertNull( $mail->getToName() );
     }
 
+    public function testToAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->toExists() );
+        $this->assertNull( $mail->getTo() );
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setTo("test@example.com") );
+        $this->assertTrue( $mail->toExists() );
+        $this->assertSame( "test@example.com", $mail->getTo() );
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->clearTo() );
+        $this->assertFalse( $mail->toExists() );
+        $this->assertNull( $mail->getTo() );
+        $this->assertFalse( $mail->toNameExists() );
+        $this->assertNull( $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setTo( "Name". chr(220) ."@Example.net", "Label" ) );
+        $this->assertTrue( $mail->toExists() );
+        $this->assertSame( "Name@Example.net", $mail->getTo() );
+        $this->assertTrue( $mail->toNameExists() );
+        $this->assertSame( "Label", $mail->getToName() );
+
+        $this->assertSame( $mail, $mail->setTo("test@example.com") );
+        $this->assertTrue( $mail->toExists() );
+        $this->assertSame( "test@example.com", $mail->getTo() );
+        $this->assertTrue( $mail->toNameExists() );
+        $this->assertSame( "Label", $mail->getToName() );
+
+        try {
+            $this->assertSame( $mail, $mail->setTo("  ") );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>

@@ -227,6 +227,58 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns the e-mail address the message will be sent to
+     *
+     * @return NULL|String Returns Null if this property has not been set. Otherwise,
+     *      it returns a string
+     */
+    public function getTo ()
+    {
+        return $this->to;
+    }
+
+    /**
+     * Set the email address this email will sent to
+     *
+     * @param String $email The email address
+     * @param String $name The label attached to this address
+     * @return Object Returns a self reference
+     */
+    public function setTo ( $email, $name = FALSE )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        $this->to = $email;
+
+        if ( !\cPHP\isVague( $name ) )
+            $this->setToName( $name );
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a to address has been set
+     *
+     * @return Boolean
+     */
+    public function toExists ()
+    {
+        return isset( $this->to );
+    }
+
+    /**
+     * Clears the "to" address to this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearTo ()
+    {
+        $this->to = null;
+        return $this;
+    }
+
 }
 
 ?>
