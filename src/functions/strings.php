@@ -37,6 +37,7 @@ const ALLOW_UNDERSCORES = 8;
 const ALLOW_NEWLINES = 16;
 const ALLOW_TABS = 32;
 const ALLOW_DASHES = 64;
+const ALLOW_ASCII = 128;
 
 /**
  * Translate a number to a string with a suffix
@@ -167,6 +168,7 @@ function unshout ($string)
  *  - ALLOW_SPACES
  *  - ALLOW_UNDERSCORES
  *  - ALLOW_DASHES
+ *  - ALLOW_ASCII
  * @return String Returns the stripped string
  */
 function stripW ($string, $flags = 0)
@@ -174,17 +176,23 @@ function stripW ($string, $flags = 0)
 
     $flags = max( intval( \cPHP\reduce($flags)), 0 );
 
-    return preg_replace(
-            "/[^a-z0-9"
-            .($flags & \cPHP\str\ALLOW_TABS?"\t":"")
-            .($flags & \cPHP\str\ALLOW_NEWLINES?"\n\r":"")
-            .($flags & \cPHP\str\ALLOW_SPACES?" ":"")
-            .($flags & \cPHP\str\ALLOW_UNDERSCORES?"_":"")
-            .($flags & \cPHP\str\ALLOW_DASHES?'\-':"")
-            ."]/i",
-            NULL,
-            $string
-        );
+    // ALLOW_ASCII trumps all the other flags
+    if ( $flags & \cPHP\str\ALLOW_ASCII ) {
+        return preg_replace( '/[^\x20-\x7E]/', '', strval($string) );
+    }
+    else {
+        return preg_replace(
+                "/[^a-z0-9"
+                .($flags & \cPHP\str\ALLOW_TABS?"\t":"")
+                .($flags & \cPHP\str\ALLOW_NEWLINES?"\n\r":"")
+                .($flags & \cPHP\str\ALLOW_SPACES?" ":"")
+                .($flags & \cPHP\str\ALLOW_UNDERSCORES?"_":"")
+                .($flags & \cPHP\str\ALLOW_DASHES?'\-':"")
+                ."]/i",
+                NULL,
+                $string
+            );
+    }
 }
 
 /**

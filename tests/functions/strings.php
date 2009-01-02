@@ -222,6 +222,13 @@ class functions_strings extends PHPUnit_Framework_TestCase
                 "123-abc",
                 \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", \cPHP\str\ALLOW_DASHES)
             );
+
+        $chars = implode("", array_map( 'chr', range(0, 255) ));
+        $this->assertSame(
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
+                ."\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                \cPHP\str\stripW($chars, \cPHP\str\ALLOW_ASCII)
+            );
     }
 
     public function testStripRepeats ()
