@@ -213,6 +213,30 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertNull( $mail->getText() );
     }
 
+    public function testHTMLAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->htmlExists() );
+        $this->assertNull( $mail->getHTML() );
+
+        $this->assertSame( $mail, $mail->setHTML("Hey there") );
+        $this->assertTrue( $mail->htmlExists() );
+        $this->assertSame( "Hey there", $mail->getHTML() );
+
+        $this->assertSame( $mail, $mail->clearHTML() );
+        $this->assertFalse( $mail->htmlExists() );
+        $this->assertNull( $mail->getHTML() );
+
+        $this->assertSame( $mail, $mail->setHTML( "<p>Some kind of content</p>" ) );
+        $this->assertTrue( $mail->htmlExists() );
+        $this->assertSame( "<p>Some kind of content</p>", $mail->getHTML() );
+
+        $this->assertSame( $mail, $mail->setHTML("  ") );
+        $this->assertFalse( $mail->htmlExists() );
+        $this->assertNull( $mail->getHTML() );
+    }
+
 }
 
 ?>

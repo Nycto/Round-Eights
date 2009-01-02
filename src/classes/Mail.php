@@ -379,6 +379,57 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns the html portion of this email
+     *
+     * @return NULL|String Returns NULL if no html is set
+     */
+    public function getHTML ()
+    {
+        return $this->html;
+    }
+
+    /**
+     * Set the html portion of the email.
+     *
+     * If you want to send raw text content, use the setText method.
+     *
+     * If both HTML and text content are set, they will both be sent. Users
+     * without HTML enabled will see the text content.
+     *
+     * @param String $html The html
+     * @return Object Returns a self reference
+     */
+    public function setHTML ( $html )
+    {
+        $html = trim( \cPHP\strval( $html ) );
+
+        $this->html = \cPHP\isEmpty($html) ? NULL : $html;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether any html has been set
+     *
+     * @return Boolean
+     */
+    public function htmlExists ()
+    {
+        return isset( $this->html );
+    }
+
+    /**
+     * Clears the html
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearHTML ()
+    {
+        $this->html = null;
+        return $this;
+    }
+
 }
 
 ?>
