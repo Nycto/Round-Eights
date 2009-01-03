@@ -69,6 +69,11 @@ class Mail
     private $bcc = array();
 
     /**
+     * The message ID used to identify this message
+     */
+    private $messageID;
+
+    /**
      * The subject of the message
      */
     private $subject;
@@ -473,6 +478,55 @@ class Mail
     public function clearSubject ()
     {
         $this->subject = null;
+        return $this;
+    }
+
+    /**
+     * Returns the message ID of this email
+     *
+     * @return NULL|String Returns NULL if no message ID is set
+     */
+    public function getMessageID ()
+    {
+        return $this->messageID;
+    }
+
+    /**
+     * Set the message ID of the email
+     *
+     * @param String $messageID The email message ID
+     * @return Object Returns a self reference
+     */
+    public function setMessageID ( $messageID )
+    {
+        // Strip out any new lines or tabs
+        $messageID = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $messageID );
+
+        $messageID = trim( \cPHP\str\stripW( $messageID, \cPHP\str\ALLOW_ASCII ) );
+
+        $this->messageID = \cPHP\isEmpty($messageID) ? NULL : $messageID;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a messageID has been set
+     *
+     * @return Boolean
+     */
+    public function messageIDExists ()
+    {
+        return isset( $this->messageID );
+    }
+
+    /**
+     * Clears the messageID
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearMessageID ()
+    {
+        $this->messageID = null;
         return $this;
     }
 

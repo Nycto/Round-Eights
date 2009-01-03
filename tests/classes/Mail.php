@@ -372,6 +372,30 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertNull( $mail->getSubject() );
     }
 
+    public function testMessageIDAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertFalse( $mail->messageIDExists() );
+        $this->assertNull( $mail->getMessageID() );
+
+        $this->assertSame( $mail, $mail->setMessageID("ABC@132434.xyz") );
+        $this->assertTrue( $mail->messageIDExists() );
+        $this->assertSame( "ABC@132434.xyz", $mail->getMessageID() );
+
+        $this->assertSame( $mail, $mail->clearMessageID() );
+        $this->assertFalse( $mail->messageIDExists() );
+        $this->assertNull( $mail->getMessageID() );
+
+        $this->assertSame( $mail, $mail->setMessageID( "Invalid\nChars". chr(1)." In Here" ) );
+        $this->assertTrue( $mail->messageIDExists() );
+        $this->assertSame( "Invalid Chars In Here", $mail->getMessageID() );
+
+        $this->assertSame( $mail, $mail->setMessageID("  ") );
+        $this->assertFalse( $mail->messageIDExists() );
+        $this->assertNull( $mail->getMessageID() );
+    }
+
     public function testTextAccessors ()
     {
         $mail = new \cPHP\Mail;
