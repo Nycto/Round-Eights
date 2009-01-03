@@ -692,8 +692,12 @@ class Mail
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $this->headers[ $header ] =
-            \cPHP\str\stripW( $value, \cPHP\str\ALLOW_ASCII );
+        $value = \cPHP\strval($value);
+        $value = preg_replace( '/[^\x20-\x7E\r\n]/', '', $value );
+        $value = preg_replace( '/[\n\r]+/', self::EOL ."\t", $value );
+        $value = trim($value);
+
+        $this->headers[ $header ] = $value;
 
         return $this;
     }

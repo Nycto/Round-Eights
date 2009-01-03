@@ -549,10 +549,45 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
 
         $this->assertSame(
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQR"
+                "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQR"
                 ."STUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
                 $headers->pop( TRUE )
             );
+    }
+
+    public function testAddCustomHeader_lineBreaks ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\nString" ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\rString" ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\r\nString" ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\r\n\n\n\n\r\n\r\rString" ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "  String  " ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "String", $headers['X-test'] );
+
+        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "\n\nString\n\n" ) );
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertEquals( "String", $headers['X-test'] );
     }
 
     public function testAddCustomHeader_error ()
