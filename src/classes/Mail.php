@@ -720,6 +720,27 @@ class Mail
         return isset( $this->headers[$header] );
     }
 
+    /**
+     * Clears a custom header from this instance
+     *
+     * @param String $header The header to remove
+     * @return Object Returns a self reference
+     */
+    public function removeCustomHeader ( $header )
+    {
+        $header = \cPHP\strval( $header );
+        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+        $header = str_replace(':', '', $header);
+
+        if ( \cPHP\isEmpty($header) )
+            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+
+        if ( isset( $this->headers[$header] ) )
+            unset( $this->headers[$header] );
+
+        return $this;
+    }
+
 }
 
 ?>

@@ -613,6 +613,28 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mail->customHeaderExists('X-Other') );
     }
 
+    public function testRemoveCustomHeader ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $mail->addCustomHeader('X-Test', 'value');
+        $this->assertTrue( $mail->customHeaderExists('X-Test') );
+
+        $this->assertSame( $mail, $mail->removeCustomHeader('X-Test') );
+        $this->assertFalse( $mail->customHeaderExists('X-Test') );
+
+        $this->assertSame( $mail, $mail->removeCustomHeader('X-Test') );
+        $this->assertFalse( $mail->customHeaderExists('X-Test') );
+
+        try {
+            $mail->removeCustomHeader( '', 'Value' );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
