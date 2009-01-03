@@ -702,6 +702,24 @@ class Mail
         return $this;
     }
 
+    /**
+     * Returns whether a specific header has been set
+     *
+     * @param String $header The header to test
+     * @return Boolean
+     */
+    public function customHeaderExists ( $header )
+    {
+        $header = \cPHP\strval( $header );
+        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+        $header = str_replace(':', '', $header);
+
+        if ( \cPHP\isEmpty($header) )
+            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+
+        return isset( $this->headers[$header] );
+    }
+
 }
 
 ?>

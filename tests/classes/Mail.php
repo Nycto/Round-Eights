@@ -603,6 +603,16 @@ class classes_mail extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testCustomHeaderExists ()
+    {
+        $mail = new \cPHP\Mail;
+        $this->assertFalse( $mail->customHeaderExists('X-Test') );
+
+        $mail->addCustomHeader('X-Test', 'value');
+        $this->assertTrue( $mail->customHeaderExists('X-Test') );
+        $this->assertFalse( $mail->customHeaderExists('X-Other') );
+    }
+
 }
 
 ?>
