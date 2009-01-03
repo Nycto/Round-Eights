@@ -247,6 +247,71 @@ class Mail
     }
 
     /**
+     * Returns the list of primary addresses that this email will be CCd to
+     *
+     * @return Object Returns a cPHP\Ary object. This is actually an array of
+     *      arrays. The first dimension enumerates the different addresses
+     *      that will be CCd. The second dimension represents an individual
+     *      address. It has two keys: email and name.
+     */
+    public function getCC ()
+    {
+        return new \cPHP\Ary( $this->cc );
+    }
+
+    /**
+     * Adds an address this e-mail should be sent cc
+     *
+     * @param String $email The actual email address
+     * @param String $name The label for that e-mail address
+     * @return Object Returns a self reference
+     */
+    public function addCC ( $email, $name = FALSE )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( !\cPHP\isVague( $name ) ) {
+            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        }
+
+        $cc = array(
+                "email" => $email,
+                "name" => $name
+            );
+
+        $this->cc[$email] = $cc;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the addresses from the cc field
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearCC ()
+    {
+        $this->cc = array();
+        return $this;
+    }
+
+    /**
+     * Returns whether a given e-mail address has been registered in the 'cc' list
+     *
+     * @param String $email The actual email address
+     * @return Boolean
+     */
+    public function ccExists ( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        return isset( $this->cc[ $email ] );
+    }
+
+    /**
      * Returns the subject of this email
      *
      * @return NULL|String Returns NULL if no subject is set

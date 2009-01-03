@@ -171,6 +171,78 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mail->toExists('test@example.net') );
     }
 
+    public function testCCAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getCC()
+            );
+        $this->assertFalse( $mail->ccExists('addr@example.org') );
+        $this->assertFalse( $mail->ccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addCC('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
+                    )),
+                $mail->getCC()
+            );
+        $this->assertTrue( $mail->ccExists('addr@example.org') );
+        $this->assertFalse( $mail->ccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addCC('addr@example.org', 'Label') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
+                    )),
+                $mail->getCC()
+            );
+        $this->assertTrue( $mail->ccExists('addr@example.org') );
+        $this->assertFalse( $mail->ccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addCC('test@example.net', 'Name') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getCC()
+            );
+        $this->assertTrue( $mail->ccExists('addr@example.org') );
+        $this->assertTrue( $mail->ccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->clearCC() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getCC()
+            );
+        $this->assertFalse( $mail->ccExists('addr@example.org') );
+        $this->assertFalse( $mail->ccExists('test@example.net') );
+
+
+        try {
+            $this->assertSame( $mail, $mail->addCC("  ") );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+        }
+
+
+        $this->assertSame( $mail, $mail->clearCC() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getCC()
+            );
+        $this->assertFalse( $mail->ccExists('addr@example.org') );
+        $this->assertFalse( $mail->ccExists('test@example.net') );
+    }
+
     public function testSubjectAccessors ()
     {
         $mail = new \cPHP\Mail;
