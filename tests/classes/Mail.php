@@ -216,6 +216,17 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertTrue( $mail->ccExists('test@example.net') );
 
 
+        $this->assertSame( $mail, $mail->removeCC('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getCC()
+            );
+        $this->assertFalse( $mail->ccExists('addr@example.org') );
+        $this->assertTrue( $mail->ccExists('test@example.net') );
+
+
         $this->assertSame( $mail, $mail->clearCC() );
         $this->assertEquals(
                 new \cPHP\Ary(array()),

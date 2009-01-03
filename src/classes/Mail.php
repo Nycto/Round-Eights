@@ -312,6 +312,23 @@ class Mail
     }
 
     /**
+     * Removes an e-mail address from the CC list
+     *
+     * @param String $email The email address to remove
+     * @return Object Returns a self reference
+     */
+    public function removeCC ( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( isset($this->cc[ $email ]) )
+            unset( $this->cc[ $email ] );
+
+        return $this;
+    }
+
+    /**
      * Returns the subject of this email
      *
      * @return NULL|String Returns NULL if no subject is set
