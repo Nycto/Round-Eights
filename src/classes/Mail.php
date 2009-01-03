@@ -741,6 +741,17 @@ class Mail
         return $this;
     }
 
+    /**
+     * Clears all the custom headers set in this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearCustomHeaders ()
+    {
+        $this->headers = array();
+        return $this;
+    }
+
 }
 
 ?>
