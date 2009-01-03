@@ -144,6 +144,17 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertTrue( $mail->toExists('test@example.net') );
 
 
+        $this->assertSame( $mail, $mail->removeTo('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getTo()
+            );
+        $this->assertFalse( $mail->toExists('addr@example.org') );
+        $this->assertTrue( $mail->toExists('test@example.net') );
+
+
         $this->assertSame( $mail, $mail->clearTo() );
         $this->assertEquals(
                 new \cPHP\Ary(array()),
@@ -252,6 +263,89 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+    }
+
+    public function testBCCAbccessors ()
+    {
+        $mail = new \cPHP\Mail;
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getBCC()
+            );
+        $this->assertFalse( $mail->bccExists('addr@example.org') );
+        $this->assertFalse( $mail->bccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addBCC('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
+                    )),
+                $mail->getBCC()
+            );
+        $this->assertTrue( $mail->bccExists('addr@example.org') );
+        $this->assertFalse( $mail->bccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addBCC('addr@example.org', 'Label') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
+                    )),
+                $mail->getBCC()
+            );
+        $this->assertTrue( $mail->bccExists('addr@example.org') );
+        $this->assertFalse( $mail->bccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->addBCC('test@example.net', 'Name') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getBCC()
+            );
+        $this->assertTrue( $mail->bccExists('addr@example.org') );
+        $this->assertTrue( $mail->bccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->removeBCC('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getBCC()
+            );
+        $this->assertFalse( $mail->bccExists('addr@example.org') );
+        $this->assertTrue( $mail->bccExists('test@example.net') );
+
+
+        $this->assertSame( $mail, $mail->clearBCC() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getBCC()
+            );
+        $this->assertFalse( $mail->bccExists('addr@example.org') );
+        $this->assertFalse( $mail->bccExists('test@example.net') );
+
+
+        try {
+            $this->assertSame( $mail, $mail->addBCC("  ") );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+        }
+
+
+        $this->assertSame( $mail, $mail->clearBCC() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getBCC()
+            );
+        $this->assertFalse( $mail->bccExists('addr@example.org') );
+        $this->assertFalse( $mail->bccExists('test@example.net') );
     }
 
     public function testSubjectAccessors ()

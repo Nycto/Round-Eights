@@ -247,6 +247,23 @@ class Mail
     }
 
     /**
+     * Removes an e-mail address from the To list
+     *
+     * @param String $email The email address to remove
+     * @return Object Returns a self reference
+     */
+    public function removeTo ( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( isset($this->to[ $email ]) )
+            unset( $this->to[ $email ] );
+
+        return $this;
+    }
+
+    /**
      * Returns the list of primary addresses that this email will be CCd to
      *
      * @return Object Returns a cPHP\Ary object. This is actually an array of
@@ -324,6 +341,88 @@ class Mail
 
         if ( isset($this->cc[ $email ]) )
             unset( $this->cc[ $email ] );
+
+        return $this;
+    }
+
+    /**
+     * Returns the list of primary addresses that this email will be BCCd to
+     *
+     * @return Object Returns a cPHP\Ary object. This is actually an array of
+     *      arrays. The first dimension enumerates the different addresses
+     *      that will be BCCd. The second dimension represents an individual
+     *      address. It has two keys: email and name.
+     */
+    public function getBCC ()
+    {
+        return new \cPHP\Ary( $this->bcc );
+    }
+
+    /**
+     * Adds an address this e-mail should be sent bcc
+     *
+     * @param String $email The actual email address
+     * @param String $name The label for that e-mail address
+     * @return Object Returns a self reference
+     */
+    public function addBCC ( $email, $name = FALSE )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( !\cPHP\isVague( $name ) ) {
+            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        }
+
+        $bcc = array(
+                "email" => $email,
+                "name" => $name
+            );
+
+        $this->bcc[$email] = $bcc;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the addresses from the bcc field
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearBCC ()
+    {
+        $this->bcc = array();
+        return $this;
+    }
+
+    /**
+     * Returns whether a given e-mail address has been registered in the 'bcc' list
+     *
+     * @param String $email The actual email address
+     * @return Boolean
+     */
+    public function bccExists ( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        return isset( $this->bcc[ $email ] );
+    }
+
+    /**
+     * Removes an e-mail address from the BCC list
+     *
+     * @param String $email The email address to remove
+     * @return Object Returns a self reference
+     */
+    public function removeBCC ( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( isset($this->bcc[ $email ]) )
+            unset( $this->bcc[ $email ] );
 
         return $this;
     }
