@@ -182,34 +182,6 @@ class Mail
     }
 
     /**
-     * Returns the subject of this email
-     *
-     * @return NULL|String Returns NULL if no subject is set
-     */
-    public function getSubject ()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * Set the subject of the email
-     *
-     * @param String $subject The email subject
-     * @return Object Returns a self reference
-     */
-    public function setSubject ( $subject )
-    {
-        // Strip out any new lines or tabs
-        $subject = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $subject );
-
-        $subject = trim( \cPHP\str\stripW( $subject, \cPHP\str\ALLOW_ASCII ) );
-
-        $this->subject = \cPHP\isEmpty($subject) ? NULL : $subject;
-
-        return $this;
-    }
-
-    /**
      * Returns the list of primary addresses that this email will be sent to
      *
      * @return Object Returns a cPHP\Ary object. This is actually an array of
@@ -257,6 +229,34 @@ class Mail
     public function clearTo ()
     {
         $this->to = array();
+        return $this;
+    }
+
+    /**
+     * Returns the subject of this email
+     *
+     * @return NULL|String Returns NULL if no subject is set
+     */
+    public function getSubject ()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * Set the subject of the email
+     *
+     * @param String $subject The email subject
+     * @return Object Returns a self reference
+     */
+    public function setSubject ( $subject )
+    {
+        // Strip out any new lines or tabs
+        $subject = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $subject );
+
+        $subject = trim( \cPHP\str\stripW( $subject, \cPHP\str\ALLOW_ASCII ) );
+
+        $this->subject = \cPHP\isEmpty($subject) ? NULL : $subject;
+
         return $this;
     }
 
