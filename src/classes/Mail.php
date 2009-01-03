@@ -44,44 +44,44 @@ class Mail
     const EOL = "\n";
 
     /**
-     * The email address being sent to
-     */
-    protected $to;
-
-    /**
-     * The actual name of the person being sent to
-     */
-    protected $toName;
-
-    /**
      * The email address this message will be sent from
      */
-    protected $from;
+    private $from;
 
     /**
      * The actual name of the person this message was sent from
      */
-    protected $fromName;
+    private $fromName;
 
     /**
-     * The subject of the message
+     * The list of addresses to send to
      */
-    protected $subject;
+    private $to = array();
 
     /**
      * Any email addresses to cc the message to
      */
-    protected $cc = array();
+    private $cc = array();
+
+    /**
+     * Any email addresses to blind carbon copy the message to
+     */
+    private $bcc = array();
+
+    /**
+     * The subject of the message
+     */
+    private $subject;
 
     /**
      * The raw text of the message
      */
-    protected $text;
+    private $text;
 
     /**
      * The HTML of the message
      */
-    protected $html;
+    private $html;
 
     /**
      * Returns the name this email will be sent from
@@ -178,104 +178,6 @@ class Mail
     public function clearFrom ()
     {
         $this->from = null;
-        return $this;
-    }
-
-    /**
-     * Returns the name this email will be sent to
-     *
-     * @return NULL|String Returns NULL if no to name is set
-     */
-    public function getToName ()
-    {
-        return $this->toName;
-    }
-
-    /**
-     * Set the label for the "to" field
-     *
-     * @param String $name The label being sent to
-     * @return Object Returns a self reference
-     */
-    public function setToName ( $name )
-    {
-        $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
-
-        $this->toName = \cPHP\isEmpty($name) ? NULL : $name;
-
-        return $this;
-    }
-
-    /**
-     * Returns whether a to label has been set
-     *
-     * @return Boolean
-     */
-    public function toNameExists ()
-    {
-        return isset( $this->toName );
-    }
-
-    /**
-     * Clears the to label to this instance
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearToName ()
-    {
-        $this->toName = null;
-        return $this;
-    }
-
-    /**
-     * Returns the e-mail address the message will be sent to
-     *
-     * @return NULL|String Returns Null if this property has not been set. Otherwise,
-     *      it returns a string
-     */
-    public function getTo ()
-    {
-        return $this->to;
-    }
-
-    /**
-     * Set the email address this email will sent to
-     *
-     * @param String $email The email address
-     * @param String $name The label attached to this address
-     * @return Object Returns a self reference
-     */
-    public function setTo ( $email, $name = FALSE )
-    {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
-
-        $this->to = $email;
-
-        if ( !\cPHP\isVague( $name ) )
-            $this->setToName( $name );
-
-        return $this;
-    }
-
-    /**
-     * Returns whether a to address has been set
-     *
-     * @return Boolean
-     */
-    public function toExists ()
-    {
-        return isset( $this->to );
-    }
-
-    /**
-     * Clears the "to" address to this instance
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearTo ()
-    {
-        $this->to = null;
         return $this;
     }
 
