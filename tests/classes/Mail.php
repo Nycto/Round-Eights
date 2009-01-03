@@ -99,6 +99,54 @@ class classes_mail extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testToAccessors ()
+    {
+        $mail = new \cPHP\Mail;
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getTo()
+            );
+
+        $this->assertSame( $mail, $mail->addTo('addr@example.org') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
+                    )),
+                $mail->getTo()
+            );
+
+        $this->assertSame( $mail, $mail->addTo('addr@example.org', 'Label') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
+                    )),
+                $mail->getTo()
+            );
+
+        $this->assertSame( $mail, $mail->addTo('test@example.net', 'Name') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
+                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
+                    )),
+                $mail->getTo()
+            );
+
+        $this->assertSame( $mail, $mail->clearTo() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getTo()
+            );
+
+        try {
+            $this->assertSame( $mail, $mail->addTo("  ") );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+        }
+    }
+
     public function testSubjectAccessors ()
     {
         $mail = new \cPHP\Mail;

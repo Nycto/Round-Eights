@@ -210,6 +210,57 @@ class Mail
     }
 
     /**
+     * Returns the list of primary addresses that this email will be sent to
+     *
+     * @return Object Returns a cPHP\Ary object. This is actually an array of
+     *      arrays. The first dimension enumerates the different addresses
+     *      that will be sent to. The second dimension represents an individual
+     *      address. It has two keys: email and name.
+     */
+    public function getTo ()
+    {
+        return new \cPHP\Ary( $this->to );
+    }
+
+    /**
+     * Adds an address this e-mail should be sent to
+     *
+     * @param String $email The actual email address
+     * @param String $name The label for that e-mail address
+     * @return Object Returns a self reference
+     */
+    public function addTo ( $email, $name = FALSE )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        if ( !\cPHP\isVague( $name ) ) {
+            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        }
+
+        $to = array(
+                "email" => $email,
+                "name" => $name
+            );
+
+        $this->to[$email] = $to;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the addresses from the to field
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearTo ()
+    {
+        $this->to = array();
+        return $this;
+    }
+
+    /**
      * Returns whether a subject has been set
      *
      * @return Boolean
