@@ -35,6 +35,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testFromNameAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->fromNameExists() );
@@ -59,6 +61,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testFromAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->fromExists() );
@@ -101,6 +105,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testToAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
         $this->assertEquals(
                 new \cPHP\Ary(array()),
@@ -184,6 +190,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testCCAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
         $this->assertEquals(
                 new \cPHP\Ary(array()),
@@ -267,6 +275,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testBCCAbccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
         $this->assertEquals(
                 new \cPHP\Ary(array()),
@@ -350,6 +360,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testSubjectAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->subjectExists() );
@@ -374,6 +386,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testMessageIDAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->messageIDExists() );
@@ -398,6 +412,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testTextAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->textExists() );
@@ -422,6 +438,8 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testHTMLAccessors ()
     {
+        $this->iniSet('sendmail_from', '');
+
         $mail = new \cPHP\Mail;
 
         $this->assertFalse( $mail->htmlExists() );
@@ -442,6 +460,40 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertSame( $mail, $mail->setHTML("  ") );
         $this->assertFalse( $mail->htmlExists() );
         $this->assertNull( $mail->getHTML() );
+    }
+
+    public function testConstruct_emptyIni ()
+    {
+        $this->iniSet('sendmail_from', '');
+
+        $mail = new \cPHP\Mail;
+        $this->assertNull( $mail->getFrom() );
+    }
+
+    public function testConstruct_invalidIni ()
+    {
+        $this->iniSet('sendmail_from', 'example');
+
+        $mail = new \cPHP\Mail;
+        $this->assertNull( $mail->getFrom() );
+    }
+
+    public function testConstruct_validIni ()
+    {
+        $this->iniSet('sendmail_from', 'test@example.net');
+
+        $mail = new \cPHP\Mail;
+        $this->assertSame( 'test@example.net', $mail->getFrom() );
+    }
+
+    public function testCreate ()
+    {
+        $this->iniSet('sendmail_from', '');
+
+        $this->assertThat(
+                \cPHP\Mail::create(),
+                $this->isInstanceOf('cPHP\Mail')
+            );
     }
 
 }

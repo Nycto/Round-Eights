@@ -89,6 +89,32 @@ class Mail
     private $html;
 
     /**
+     * Creates a new mail instance
+     *
+     * @return Object Returns a new mail instance
+     */
+    static public function create ()
+    {
+        return new self;
+    }
+
+    /**
+     * Constructor...
+     *
+     * This will load the default email address for the sender from the
+     * 'sendmail_from' php.ini directive.
+     */
+    public function __construct ()
+    {
+        // Get the default source e-mail address from the php.ini file
+        $default = ini_get('sendmail_from');
+
+        $default = \cPHP\Filter::Email()->filter( $default );
+        if ( \cPHP\Validator::Email()->isValid( $default ) )
+            $this->setFrom( $default );
+    }
+
+    /**
      * Returns the name this email will be sent from
      *
      * @return NULL|String Returns NULL if no from name is set
