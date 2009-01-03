@@ -233,6 +233,20 @@ class Mail
     }
 
     /**
+     * Returns whether a given e-mail address has been registered in the 'to' list
+     *
+     * @param String $email The actual email address
+     * @return Boolean
+     */
+    public function toExists( $email )
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+        \cPHP\Validator::Email()->ensure( $email );
+
+        return isset( $this->to[ $email ] );
+    }
+
+    /**
      * Returns the subject of this email
      *
      * @return NULL|String Returns NULL if no subject is set

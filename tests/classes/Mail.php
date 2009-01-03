@@ -106,6 +106,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
                 new \cPHP\Ary(array()),
                 $mail->getTo()
             );
+        $this->assertFalse( $mail->toExists('addr@example.org') );
+        $this->assertFalse( $mail->toExists('test@example.net') );
+
 
         $this->assertSame( $mail, $mail->addTo('addr@example.org') );
         $this->assertEquals(
@@ -114,6 +117,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
                     )),
                 $mail->getTo()
             );
+        $this->assertTrue( $mail->toExists('addr@example.org') );
+        $this->assertFalse( $mail->toExists('test@example.net') );
+
 
         $this->assertSame( $mail, $mail->addTo('addr@example.org', 'Label') );
         $this->assertEquals(
@@ -122,6 +128,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
                     )),
                 $mail->getTo()
             );
+        $this->assertTrue( $mail->toExists('addr@example.org') );
+        $this->assertFalse( $mail->toExists('test@example.net') );
+
 
         $this->assertSame( $mail, $mail->addTo('test@example.net', 'Name') );
         $this->assertEquals(
@@ -131,12 +140,18 @@ class classes_mail extends PHPUnit_Framework_TestCase
                     )),
                 $mail->getTo()
             );
+        $this->assertTrue( $mail->toExists('addr@example.org') );
+        $this->assertTrue( $mail->toExists('test@example.net') );
+
 
         $this->assertSame( $mail, $mail->clearTo() );
         $this->assertEquals(
                 new \cPHP\Ary(array()),
                 $mail->getTo()
             );
+        $this->assertFalse( $mail->toExists('addr@example.org') );
+        $this->assertFalse( $mail->toExists('test@example.net') );
+
 
         try {
             $this->assertSame( $mail, $mail->addTo("  ") );
@@ -145,6 +160,15 @@ class classes_mail extends PHPUnit_Framework_TestCase
         catch ( \cPHP\Exception\Data $err ) {
             $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
         }
+
+
+        $this->assertSame( $mail, $mail->clearTo() );
+        $this->assertEquals(
+                new \cPHP\Ary(array()),
+                $mail->getTo()
+            );
+        $this->assertFalse( $mail->toExists('addr@example.org') );
+        $this->assertFalse( $mail->toExists('test@example.net') );
     }
 
     public function testSubjectAccessors ()
