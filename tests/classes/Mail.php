@@ -611,6 +611,14 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $mail->addCustomHeader('X-Test', 'value');
         $this->assertTrue( $mail->customHeaderExists('X-Test') );
         $this->assertFalse( $mail->customHeaderExists('X-Other') );
+
+        try {
+            $mail->customHeaderExists( '' );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
     }
 
     public function testRemoveCustomHeader ()
