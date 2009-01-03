@@ -488,12 +488,84 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testCreate ()
     {
-        $this->iniSet('sendmail_from', '');
-
         $this->assertThat(
                 \cPHP\Mail::create(),
                 $this->isInstanceOf('cPHP\Mail')
             );
+    }
+
+    public function testAddCustomHeader ()
+    {
+        $mail = new \cPHP\Mail;
+        $this->assertEquals(
+                new \cPHP\Ary,
+                $mail->getCustomHeaders()
+            );
+
+
+        $this->assertSame( $mail, $mail->addCustomHeader('X-Test', 'Example Header') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'X-Test' => 'Example Header'
+                    )),
+                $mail->getCustomHeaders()
+            );
+
+
+        $this->assertSame( $mail, $mail->addCustomHeader('X-Test', Null) );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'X-Test' => ''
+                    )),
+                $mail->getCustomHeaders()
+            );
+
+
+        $this->assertSame( $mail, $mail->addCustomHeader('In-Reply-To', 'abcxyz') );
+        $this->assertEquals(
+                new \cPHP\Ary(array(
+                        'X-Test' => '',
+                        'In-Reply-To' => 'abcxyz'
+                    )),
+                $mail->getCustomHeaders()
+            );
+    }
+
+    public function testAddCustomHeader_charTest ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $chars = implode("", array_map( 'chr', range(1, 255) ));
+        $this->assertSame( $mail, $mail->addCustomHeader( $chars, $chars ) );
+
+        $headers = $mail->getCustomHeaders();
+        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
+        $this->assertSame( 1, count($headers) );
+
+        $this->assertSame(
+                "!\"#$%&'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOPQ"
+                ."RSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                $headers->keys()->pop( TRUE )
+            );
+
+        $this->assertSame(
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQR"
+                ."STUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                $headers->pop( TRUE )
+            );
+    }
+
+    public function testAddCustomHeader_error ()
+    {
+        $mail = new \cPHP\Mail;
+
+        try {
+            $mail->addCustomHeader( '', 'Value' );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
     }
 
 }

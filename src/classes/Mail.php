@@ -69,6 +69,13 @@ class Mail
     private $bcc = array();
 
     /**
+     * Any custom headers to send
+     *
+     * The key is the name of the header, the value is the value for the header
+     */
+    private $headers = array();
+
+    /**
      * The message ID used to identify this message
      */
     private $messageID;
@@ -655,6 +662,39 @@ class Mail
     public function clearHTML ()
     {
         $this->html = null;
+        return $this;
+    }
+
+    /**
+     * Returns the list of custom headers loaded in this e-mail
+     *
+     * @return Object Returns a cPHP object where the key is the name of the
+     *      header, and the array value is the value of the header
+     */
+    public function getCustomHeaders ()
+    {
+        return new \cPHP\Ary( $this->headers );
+    }
+
+    /**
+     * Adds a custom header to send along with this e-mail
+     *
+     * @param String $header The name of the header
+     * @param String $value The value of the header
+     * @return Object Returns a self reference
+     */
+    public function addCustomHeader ( $header, $value )
+    {
+        $header = \cPHP\strval( $header );
+        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+        $header = str_replace(':', '', $header);
+
+        if ( \cPHP\isEmpty($header) )
+            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+
+        $this->headers[ $header ] =
+            \cPHP\str\stripW( $value, \cPHP\str\ALLOW_ASCII );
+
         return $this;
     }
 
