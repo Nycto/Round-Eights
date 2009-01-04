@@ -96,6 +96,25 @@ class Mail
     private $html;
 
     /**
+     * Strips any invalid characters from a header name string.
+     *
+     * According to RFC 2822 (http://www.faqs.org/rfcs/rfc2822.html), header
+     * field names can only contain ascii characters >= 33 and <= 126, except
+     * the colon character.
+     *
+     * @param String $header The header label to strip down
+     * @return String
+     */
+    static public function stripHeaderName ( $header )
+    {
+        $header = \cPHP\strval( $header );
+        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+        $header = str_replace(':', '', $header);
+
+        return $header;
+    }
+
+    /**
      * Creates a new mail instance
      *
      * @return Object Returns a new mail instance
@@ -685,9 +704,7 @@ class Mail
      */
     public function addCustomHeader ( $header, $value )
     {
-        $header = \cPHP\strval( $header );
-        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
-        $header = str_replace(':', '', $header);
+        $header = self::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -710,9 +727,7 @@ class Mail
      */
     public function customHeaderExists ( $header )
     {
-        $header = \cPHP\strval( $header );
-        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
-        $header = str_replace(':', '', $header);
+        $header = self::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -728,9 +743,7 @@ class Mail
      */
     public function removeCustomHeader ( $header )
     {
-        $header = \cPHP\strval( $header );
-        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
-        $header = str_replace(':', '', $header);
+        $header = self::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
