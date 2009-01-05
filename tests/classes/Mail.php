@@ -43,6 +43,57 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testStripHeaderValue ()
+    {
+        $chars = implode("", array_map( 'chr', range(1, 255) ));
+        $this->assertSame(
+                '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOP'
+                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
+                \cPHP\Mail::stripHeaderValue( $chars )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\nString" )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\rString" )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\r\nString" )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\n\tString" )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\n  \tString" )
+            );
+
+        $this->assertSame(
+                "Break\n\tString",
+                \cPHP\Mail::stripHeaderValue( "Break\n\n\n\r\n\r\r\rString" )
+            );
+
+        $this->assertSame(
+                "String",
+                \cPHP\Mail::stripHeaderValue( "   String   " )
+            );
+
+        $this->assertSame(
+                "String",
+                \cPHP\Mail::stripHeaderValue( "\nString\n\r" )
+            );
+
+    }
+
     public function testFromNameAccessors ()
     {
         $this->iniSet('sendmail_from', '');
@@ -563,41 +614,6 @@ class classes_mail extends PHPUnit_Framework_TestCase
                 ."STUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
                 $headers->pop( TRUE )
             );
-    }
-
-    public function testAddCustomHeader_lineBreaks ()
-    {
-        $mail = new \cPHP\Mail;
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\nString" ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\rString" ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\r\nString" ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "Break\r\n\n\n\n\r\n\r\rString" ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "Break\n\tString", $headers['X-test'] );
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "  String  " ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "String", $headers['X-test'] );
-
-        $this->assertSame( $mail, $mail->addCustomHeader( 'X-test', "\n\nString\n\n" ) );
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertEquals( "String", $headers['X-test'] );
     }
 
     public function testAddCustomHeader_error ()

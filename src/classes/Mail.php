@@ -107,11 +107,41 @@ class Mail
      */
     static public function stripHeaderName ( $header )
     {
+        // Convert it to a string
         $header = \cPHP\strval( $header );
+
+        // Remove any non-printable ascii characters
         $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+
+        // Strip out the colons
         $header = str_replace(':', '', $header);
 
         return $header;
+    }
+
+    /**
+     * Strips any invalid characters from a header value
+     *
+     * @param String $value The header label to strip down
+     * @return String
+     */
+    static public function stripHeaderValue ( $value )
+    {
+        // Alright... so this function isn't really RFC compliant, but it will
+        // suffice until a more extensive version can be written
+
+        // Convert it to a string
+        $value = \cPHP\strval($value);
+
+        // Remove any non-printable ascii characters, except for \r and \n
+        $value = preg_replace( '/[^\x20-\x7E\r\n]/', '', $value );
+
+        // Replace any line returns and following spaces with folding compatible eols
+        $value = preg_replace( '/[\r\n][\s]*/', self::EOL ."\t", $value );
+
+        $value = trim($value);
+
+        return $value;
     }
 
     /**
@@ -709,12 +739,7 @@ class Mail
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $value = \cPHP\strval($value);
-        $value = preg_replace( '/[^\x20-\x7E\r\n]/', '', $value );
-        $value = preg_replace( '/[\n\r]+/', self::EOL ."\t", $value );
-        $value = trim($value);
-
-        $this->headers[ $header ] = $value;
+        $this->headers[ $header ] = self::stripHeaderValue( $value );
 
         return $this;
     }
