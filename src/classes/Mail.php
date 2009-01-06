@@ -98,7 +98,7 @@ class Mail
     /**
      * Strips any invalid characters from a header name string.
      *
-     * According to RFC 2822 (http://www.faqs.org/rfcs/rfc2822.html), header
+     * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
      * field names can only contain ascii characters >= 33 and <= 126, except
      * the colon character.
      *
