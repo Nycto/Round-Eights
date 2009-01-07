@@ -34,6 +34,28 @@ namespace cPHP\Encode;
 class QuotedPrintable implements \cPHP\iface\Encoder
 {
 
+    /**
+     * Encodes a string
+     *
+     * @param mixed $value The value to encode
+     * @result mixed The result of the encoding process
+     */
+    public function encode ( $string )
+    {
+        return quoted_printable_encode( \cPHP\strval($string) );
+    }
+
+    /**
+     * Decodes an encoded string
+     *
+     * @param mixed $value The value to decode
+     * @result mixed The original, unencoded value
+     */
+    public function decode ( $string )
+    {
+        return quoted_printable_decode( \cPHP\strval($string) );
+    }
+
 }
 
 ?>
