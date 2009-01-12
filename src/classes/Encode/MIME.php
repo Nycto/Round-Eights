@@ -44,6 +44,11 @@ class MIME implements \cPHP\iface\Encoder
     private $length = 78;
 
     /**
+     * The name of the header to prepend to this encoding chunk
+     */
+    private $header;
+
+    /**
      * Strips any invalid characters from a header name string.
      *
      * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
@@ -91,6 +96,51 @@ class MIME implements \cPHP\iface\Encoder
     public function setLineLength ( $length )
     {
         $this->length = max( intval( $length ), 0 );
+        return $this;
+    }
+
+    /**
+     * Returns the name of the header to label this data with
+     *
+     * @return String|Null This will return the string name, or NULL if no header
+     *      header is set
+     */
+    public function getHeader ()
+    {
+        return $this->header;
+    }
+
+    /**
+     * Sets the name of the header to label this data with
+     *
+     * @param String $name The header name
+     * @return Object Returns a self reference
+     */
+    public function setHeader ( $name )
+    {
+        $name = self::stripHeaderName( $name );
+        $this->header = \cPHP\isEmpty( $name ) ? null : $name;
+        return $this;
+    }
+
+    /**
+     * Returns whether a header name has been set
+     *
+     * @return Boolean
+     */
+    public function headerExists ()
+    {
+        return isset($this->header);
+    }
+
+    /**
+     * Unsets the header name
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearHeader ()
+    {
+        $this->header = null;
         return $this;
     }
 

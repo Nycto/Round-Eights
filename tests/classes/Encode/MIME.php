@@ -70,6 +70,35 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mime->getLineLength() );
     }
 
+    public function testHeaderAccessors ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertFalse( $mime->headerExists() );
+        $this->assertNull( $mime->getHeader() );
+
+        $this->assertSame( $mime, $mime->setHeader("Return-Path") );
+        $this->assertTrue( $mime->headerExists() );
+        $this->assertSame( "Return-Path", $mime->getHeader() );
+
+        $this->assertSame( $mime, $mime->clearHeader() );
+        $this->assertFalse( $mime->headerExists() );
+        $this->assertNull( $mime->getHeader() );
+
+        $this->assertSame( $mime, $mime->setHeader( "  " ) );
+        $this->assertFalse( $mime->headerExists() );
+        $this->assertNull( $mime->getHeader() );
+
+        $chars = implode("", array_map( 'chr', range(1, 255) ));
+        $this->assertSame( $mime, $mime->setHeader($chars) );
+        $this->assertTrue( $mime->headerExists() );
+        $this->assertSame(
+                '!"#$%&\'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOP'
+                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
+                $mime->getHeader()
+            );
+    }
+
     public function testEncode ()
     {
         $this->markTestIncomplete("To be written");
