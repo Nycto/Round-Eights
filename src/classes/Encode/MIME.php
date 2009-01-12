@@ -46,6 +46,9 @@ class MIME implements \cPHP\iface\Encoder
     /**
      * Returns the maximum number of characters a line can contain, not including
      * the end-of-line marker.
+     *
+     * @return Integer|Boolean Returns the line length, or FALSE if line wrapping
+     *      has been disabled.
      */
     public function getLineLength ()
     {
