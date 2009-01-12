@@ -33,13 +33,41 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_encode_mime extends PHPUnit_Framework_TestCase
 {
 
+    public function testLineLengthAccessors ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $this->assertSame( 78, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(999) );
+        $this->assertSame( 999, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength("50") );
+        $this->assertSame( 50, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(500.5) );
+        $this->assertSame( 500, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(0) );
+        $this->assertSame( 0, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(-20) );
+        $this->assertSame( 0, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(null) );
+        $this->assertSame( 0, $mime->getLineLength() );
+
+        $this->assertSame( $mime, $mime->setLineLength(FALSE) );
+        $this->assertSame( 0, $mime->getLineLength() );
+    }
+
     public function testEncode ()
     {
+        $this->markTestIncomplete("To be written");
     }
 
     public function testDecode ()
     {
-
+        $this->markTestIncomplete("To be written");
     }
 
 }

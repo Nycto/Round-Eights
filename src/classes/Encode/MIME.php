@@ -35,6 +35,39 @@ class MIME implements \cPHP\iface\Encoder
 {
 
     /**
+     * The maximum length a line can be, not including the eol marker.
+     *
+     * The default value for this is 78 characters
+     *
+     * @var Integer
+     */
+    private $length = 78;
+
+    /**
+     * Returns the maximum number of characters a line can contain, not including
+     * the end-of-line marker.
+     */
+    public function getLineLength ()
+    {
+        return $this->length;
+    }
+
+    /**
+     * Sets the maximum character length a single line can contain, not
+     * including the end-of-line characters.
+     *
+     * Set this to 0 to disable line wrapping
+     *
+     * @param Integer $length
+     * @return Object Returns a self reference
+     */
+    public function setLineLength ( $length )
+    {
+        $this->length = max( intval( $length ), 0 );
+        return $this;
+    }
+
+    /**
      * Encodes a string
      *
      * @param mixed $value The value to encode
