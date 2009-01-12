@@ -33,6 +33,16 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_encode_mime extends PHPUnit_Framework_TestCase
 {
 
+    public function testStripHeaderName ()
+    {
+        $chars = implode("", array_map( 'chr', range(1, 255) ));
+        $this->assertSame(
+                '!"#$%&\'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOP'
+                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
+                \cPHP\Encode\MIME::stripHeaderName( $chars )
+            );
+    }
+
     public function testLineLengthAccessors ()
     {
         $mime = new \cPHP\Encode\MIME;

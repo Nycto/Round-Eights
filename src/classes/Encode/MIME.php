@@ -44,6 +44,30 @@ class MIME implements \cPHP\iface\Encoder
     private $length = 78;
 
     /**
+     * Strips any invalid characters from a header name string.
+     *
+     * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
+     * field names can only contain ascii characters >= 33 and <= 126, except
+     * the colon character.
+     *
+     * @param String $header The header label to strip down
+     * @return String
+     */
+    static public function stripHeaderName ( $header )
+    {
+        // Convert it to a string
+        $header = \cPHP\strval( $header );
+
+        // Remove any non-printable ascii characters
+        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
+
+        // Strip out the colons
+        $header = str_replace(':', '', $header);
+
+        return $header;
+    }
+
+    /**
      * Returns the maximum number of characters a line can contain, not including
      * the end-of-line marker.
      *

@@ -33,16 +33,6 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_mail extends PHPUnit_Framework_TestCase
 {
 
-    public function testStripHeaderName ()
-    {
-        $chars = implode("", array_map( 'chr', range(1, 255) ));
-        $this->assertSame(
-                '!"#$%&\'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOP'
-                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
-                \cPHP\Mail::stripHeaderName( $chars )
-            );
-    }
-
     public function testStripHeaderValue ()
     {
         $chars = implode("", array_map( 'chr', range(1, 255) ));

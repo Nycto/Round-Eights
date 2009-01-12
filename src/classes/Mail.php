@@ -96,30 +96,6 @@ class Mail
     private $html;
 
     /**
-     * Strips any invalid characters from a header name string.
-     *
-     * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
-     * field names can only contain ascii characters >= 33 and <= 126, except
-     * the colon character.
-     *
-     * @param String $header The header label to strip down
-     * @return String
-     */
-    static public function stripHeaderName ( $header )
-    {
-        // Convert it to a string
-        $header = \cPHP\strval( $header );
-
-        // Remove any non-printable ascii characters
-        $header = preg_replace('/[^\x21-\x7E]/', '', $header);
-
-        // Strip out the colons
-        $header = str_replace(':', '', $header);
-
-        return $header;
-    }
-
-    /**
      * Strips any invalid characters from a header value
      *
      * @param String $value The header label to strip down
@@ -734,7 +710,7 @@ class Mail
      */
     public function addCustomHeader ( $header, $value )
     {
-        $header = self::stripHeaderName( $header );
+        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -752,7 +728,7 @@ class Mail
      */
     public function customHeaderExists ( $header )
     {
-        $header = self::stripHeaderName( $header );
+        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -768,7 +744,7 @@ class Mail
      */
     public function removeCustomHeader ( $header )
     {
-        $header = self::stripHeaderName( $header );
+        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
 
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
