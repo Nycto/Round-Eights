@@ -49,7 +49,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function getLineLength ()
     {
-        return $this->length;
+        return $this->length > 0 ? $this->length : FALSE;
     }
 
     /**

@@ -48,16 +48,16 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         $this->assertSame( 500, $mime->getLineLength() );
 
         $this->assertSame( $mime, $mime->setLineLength(0) );
-        $this->assertSame( 0, $mime->getLineLength() );
+        $this->assertFalse( $mime->getLineLength() );
 
         $this->assertSame( $mime, $mime->setLineLength(-20) );
-        $this->assertSame( 0, $mime->getLineLength() );
+        $this->assertFalse( $mime->getLineLength() );
 
         $this->assertSame( $mime, $mime->setLineLength(null) );
-        $this->assertSame( 0, $mime->getLineLength() );
+        $this->assertFalse( $mime->getLineLength() );
 
         $this->assertSame( $mime, $mime->setLineLength(FALSE) );
-        $this->assertSame( 0, $mime->getLineLength() );
+        $this->assertFalse( $mime->getLineLength() );
     }
 
     public function testEncode ()
