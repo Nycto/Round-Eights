@@ -99,6 +99,27 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testEolAccessors ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $this->assertSame( "\r\n", $mime->getEOL() );
+
+        $this->assertSame( $mime, $mime->setEOL("BREAK") );
+        $this->assertSame( "BREAK", $mime->getEOL() );
+
+        $this->assertSame( $mime, $mime->resetEOL() );
+        $this->assertSame( "\r\n", $mime->getEOL() );
+
+        $this->assertSame( $mime, $mime->setEOL("") );
+        $this->assertSame( "", $mime->getEOL() );
+
+        $this->assertSame( $mime, $mime->setEOL( null ) );
+        $this->assertSame( "", $mime->getEOL() );
+
+        $this->assertSame( $mime, $mime->setEOL( "\n" ) );
+        $this->assertSame( "\n", $mime->getEOL() );
+    }
+
     public function testEncode ()
     {
         $this->markTestIncomplete("To be written");

@@ -49,6 +49,11 @@ class MIME implements \cPHP\iface\Encoder
     private $header;
 
     /**
+     * The end-of-line marker to wrap lines with
+     */
+    private $eol = "\r\n";
+
+    /**
      * Strips any invalid characters from a header name string.
      *
      * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
@@ -141,6 +146,39 @@ class MIME implements \cPHP\iface\Encoder
     public function clearHeader ()
     {
         $this->header = null;
+        return $this;
+    }
+
+    /**
+     * Returns the string that will be used to break lines
+     *
+     * @return String Returns the eol string
+     */
+    public function getEOL ()
+    {
+        return $this->eol;
+    }
+
+    /**
+     * Sets the string to use as the end-of-line marker
+     *
+     * @param String $name The end-of-line string
+     * @return Object Returns a self reference
+     */
+    public function setEOL ( $eol )
+    {
+        $this->eol = \cPHP\strval( $eol );
+        return $this;
+    }
+
+    /**
+     * Resets the end-of-line character to its default value, which is \r\n
+     *
+     * @return Object Returns a self reference
+     */
+    public function resetEOL ()
+    {
+        $this->eol = "\r\n";
         return $this;
     }
 
