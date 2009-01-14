@@ -43,6 +43,22 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testCanRawEncode ()
+    {
+        $chars = implode("", array_map( 'chr', range(33, 126) ));
+        $this->assertTrue( \cPHP\Encode\MIME::canRawEncode($chars) );
+
+        $chars = array_merge( range(1, 32), range(127, 255) );
+        foreach ( $chars AS $char ) {
+            if ( \cPHP\Encode\MIME::canRawEncode( chr($char) ) ) {
+                $this->fail(
+                        "failed asserting that character with the ascii "
+                        ."code ". $char ." can't be raw encoded"
+                    );
+            }
+        }
+    }
+
     public function testLineLengthAccessors ()
     {
         $mime = new \cPHP\Encode\MIME;
@@ -118,6 +134,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mime, $mime->setEOL( "\n" ) );
         $this->assertSame( "\n", $mime->getEOL() );
+
     }
 
     public function testEncode ()

@@ -54,6 +54,11 @@ class MIME implements \cPHP\iface\Encoder
     private $eol = "\r\n";
 
     /**
+     * The character encoding that the encoded value will be in
+     */
+    private $outEncoding = "ISO-8859-1";
+
+    /**
      * Strips any invalid characters from a header name string.
      *
      * According to RFC 2822 (http://tools.ietf.org/html/rfc2822), header
@@ -75,6 +80,22 @@ class MIME implements \cPHP\iface\Encoder
         $header = str_replace(':', '', $header);
 
         return $header;
+    }
+
+    /**
+     * Returns whether a string can be used in its raw form, without any encoding.
+     *
+     * The ability to be raw encoded requires that a string contains only
+     * ascii printable characters. These are any characters with a code >= 33
+     * and <= 126
+     *
+     * @param String $string The string being tested
+     * @return Boolean This will return TRUE if the given string contains only
+     *      printable characters.
+     */
+    static public function canRawEncode ( $string )
+    {
+        return preg_match('/[^\x21-\x7E]/', $string) ? FALSE : TRUE;
     }
 
     /**
