@@ -45,10 +45,10 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     public function testCanRawEncode ()
     {
-        $chars = implode("", array_map( 'chr', range(33, 126) ));
+        $chars = implode("", array_map( 'chr', range(32, 126) ));
         $this->assertTrue( \cPHP\Encode\MIME::canRawEncode($chars) );
 
-        $chars = array_merge( range(1, 32), range(127, 255) );
+        $chars = array_merge( range(1, 31), range(127, 255) );
         foreach ( $chars AS $char ) {
             if ( \cPHP\Encode\MIME::canRawEncode( chr($char) ) ) {
                 $this->fail(
@@ -135,6 +135,233 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         $this->assertSame( $mime, $mime->setEOL( "\n" ) );
         $this->assertSame( "\n", $mime->getEOL() );
 
+    }
+
+    public function testRawEncode_charStrip ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $chars = implode("", array_map( 'chr', range(1, 255) ));
+        $this->assertSame(
+                '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOP'
+                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
+                $mime->rawEncode( $chars )
+            );
+
+    }
+
+    public function testRawEncode_whitespace ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\nString" )
+            );
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\rString" )
+            );
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\r\nString" )
+            );
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\n\tString" )
+            );
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\n  \tString" )
+            );
+
+        $this->assertSame(
+                "Break\r\n\tString",
+                $mime->rawEncode( "Break\n\n\n\r\n\r\r\rString" )
+            );
+
+        $this->assertSame(
+                "String",
+                $mime->rawEncode( "   String   " )
+            );
+
+        $this->assertSame(
+                "String",
+                $mime->rawEncode( "\nString\n\r" )
+            );
+
+        $mime->setEOL("\n");
+
+        $this->assertSame(
+                "Break\n\tString",
+                $mime->rawEncode( "Break\nString" )
+            );
+
+        $mime->setEOL("RETURN");
+
+        $this->assertSame(
+                "BreakRETURN\tString",
+                $mime->rawEncode( "Break\rString" )
+            );
+
+    }
+
+    public function testRawEncode_noWrap ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $this->assertSame(
+                "This is a string that needs to be returned as it but it is rather long",
+                $mime->rawEncode( "This is a string that needs to be returned as it but it is rather long" )
+            );
+
+        $mime->setHeader("X-Info");
+
+        $this->assertSame(
+                "X-Info: Chunk of data",
+                $mime->rawEncode( "Chunk of data" )
+            );
+    }
+
+    public function testRawEncode_wrap_noHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame(
+                "A short string",
+                $mime->rawEncode("A short string")
+            );
+
+        $this->assertSame(
+                "Testing a longer line that needs to be wrapped just once because it exceeds\r\n"
+                ."\tthe seventy eight character limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just once "
+                        ."because it exceeds the seventy eight character limit"
+                    )
+            );
+
+        $this->assertSame(
+                "Testing a longer line that needs to be wrapped just twice because it exceeds\r\n"
+                ."\tthe seventy eight character limit twotimes so it should be wrapped to fit\r\n"
+                ."\twithin the limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just twice "
+                        ."because it exceeds the seventy eight character limit two"
+                        ."times so it should be wrapped to fit within the limit"
+                    )
+            );
+
+        $mime->setEOL("\n");
+
+        $this->assertSame(
+                "Testing a longer line that needs to be wrapped just twice because it exceeds\n"
+                ."\tthe seventy eight character limit twotimes so it should be wrapped to fit\n"
+                ."\twithin the limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just twice "
+                        ."because it exceeds the seventy eight character limit two"
+                        ."times so it should be wrapped to fit within the limit"
+                    )
+            );
+
+        $mime->setLineLength(20);
+
+        $this->assertSame(
+                "aaaaaaaaaaaaaaaaaaaa",
+                $mime->rawEncode( str_repeat("a", 20) )
+            );
+
+        $this->assertSame(
+                "aaaaaaaaaaaaaaaaaaaa\n"
+                ."\ta",
+                $mime->rawEncode( str_repeat("a", 21) )
+            );
+
+    }
+
+    public function testRawEncode_wrap_withHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-Head");
+
+        $this->assertSame(
+                "X-Head: A short string",
+                $mime->rawEncode("A short string")
+            );
+
+        $this->assertSame(
+                "X-Head: Testing a longer line that needs to be wrapped just once because it\r\n"
+                ."\texceeds the seventy eight character limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just once "
+                        ."because it exceeds the seventy eight character limit"
+                    )
+            );
+
+        $this->assertSame(
+                "X-Head: Testing a longer line that needs to be wrapped just twice because it\r\n"
+                ."\texceeds the seventy eight character limit two times so it should be wrapped to\r\n"
+                ."\tfit within the limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just twice "
+                        ."because it exceeds the seventy eight character limit two "
+                        ."times so it should be wrapped to fit within the limit"
+                    )
+            );
+
+        $mime->setEOL("\n");
+
+        $this->assertSame(
+                "X-Head: Testing a longer line that needs to be wrapped just twice because it\n"
+                ."\texceeds the seventy eight character limit two times so it should be wrapped to\n"
+                ."\tfit within the limit",
+                $mime->rawEncode(
+                        "Testing a longer line that needs to be wrapped just twice "
+                        ."because it exceeds the seventy eight character limit two "
+                        ."times so it should be wrapped to fit within the limit"
+                    )
+            );
+
+        $mime->setLineLength(20);
+
+        $this->assertSame(
+                "X-Head: Testing a\n"
+                ."\tline that needs to\n"
+                ."\tbe wrapped twice",
+                $mime->rawEncode(
+                        "Testing a line that needs to be wrapped twice"
+                    )
+            );
+    }
+
+    public function testRawEncode_longHeaderName ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-A-Really-Long-Header-Name-That-Shouldnt-Be-Wrapped");
+        $mime->setLineLength(20);
+
+        $this->assertSame(
+                "X-A-Really-Long-Header-Name-That-Shouldnt-Be-Wrapped:\r\n"
+                ."\tA short string",
+                $mime->rawEncode("A short string")
+            );
+        $this->assertSame(
+                "X-A-Really-Long-Header-Name-That-Shouldnt-Be-Wrapped:\r\n"
+                ."\tTesting a line that\r\n"
+                ."\tneeds to be wrapped\r\n"
+                ."\ttwice",
+                $mime->rawEncode(
+                        "Testing a line that needs to be wrapped twice"
+                    )
+            );
     }
 
     public function testEncode ()

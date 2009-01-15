@@ -86,7 +86,7 @@ class MIME implements \cPHP\iface\Encoder
      * Returns whether a string can be used in its raw form, without any encoding.
      *
      * The ability to be raw encoded requires that a string contains only
-     * ascii printable characters. These are any characters with a code >= 33
+     * ascii printable characters. These are any characters with a code >= 32
      * and <= 126
      *
      * @param String $string The string being tested
@@ -95,7 +95,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     static public function canRawEncode ( $string )
     {
-        return preg_match('/[^\x21-\x7E]/', $string) ? FALSE : TRUE;
+        return preg_match('/[^\x20-\x7E]/', $string) ? FALSE : TRUE;
     }
 
     /**
@@ -201,6 +201,53 @@ class MIME implements \cPHP\iface\Encoder
     {
         $this->eol = "\r\n";
         return $this;
+    }
+
+    /**
+     * Prepares the string using raw encoding.
+     *
+     * Invalid characters are stripped, and new lines are normalized and properly
+     * indented. It will then attach the header name and wrap the string to the
+     * appropriate length.
+     *
+     * @param String $string The string to encode
+     * @return String
+     */
+    public function rawEncode ( $string )
+    {
+        $string = \cPHP\strval( $string );
+
+        // Remove any non-printable ascii characters, except for \r and \n
+        $string = preg_replace( '/[^\x20-\x7E\r\n]/', '', $string );
+
+        // Replace any line returns and following spaces with folding compatible eols
+        $string = preg_replace( '/[\r\n][\s]*/', $this->eol ."\t", $string );
+
+        $string = trim($string);
+
+        // If we aren't doing any wrapping, take the easy out
+        if ( $this->getLineLength() == FALSE )
+            return ( $this->headerExists() ? $this->header .": " : "" ) . $string;
+
+        // If the header length (plus two for the colon and space) is longer than
+        // the allowed line, we don't want to wrap it. Instead, just wrap immediately after it
+        if ( $this->headerExists() && strlen( $this->getHeader() ) + 2 >= $this->getLineLength() ) {
+            return
+                $this->getHeader() .":". $this->getEOL() ."\t"
+                .wordwrap(
+                    $string,
+                    $this->getLineLength(),
+                    $this->getEOL() ."\t",
+                    true
+                );
+        }
+
+        return wordwrap(
+                ( $this->headerExists() ? $this->getHeader() .": " : "" ) . $string,
+                $this->getLineLength(),
+                $this->getEOL() ."\t",
+                true
+            );
     }
 
     /**
