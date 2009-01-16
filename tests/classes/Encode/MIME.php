@@ -33,6 +33,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_encode_mime extends PHPUnit_Framework_TestCase
 {
 
+    public function setUp ()
+    {
+        $this->iniSet("iconv.input_encoding", "ISO-8859-1");
+        $this->iniSet("iconv.output_encoding", "ISO-8859-1");
+    }
+
     public function testStripHeaderName ()
     {
         $chars = implode("", array_map( 'chr', range(1, 255) ));

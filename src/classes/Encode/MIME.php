@@ -37,7 +37,8 @@ class MIME implements \cPHP\iface\Encoder
     /**
      * The maximum length a line can be, not including the eol marker.
      *
-     * The default value for this is 78 characters
+     * The default value for this is 78 characters. When set to 0, no line
+     * wrapping will be performed.
      *
      * @var Integer
      */
@@ -45,18 +46,37 @@ class MIME implements \cPHP\iface\Encoder
 
     /**
      * The name of the header to prepend to this encoding chunk
+     *
+     * @var String|NULL
      */
     private $header;
 
     /**
      * The end-of-line marker to wrap lines with
+     *
+     * @var String
      */
     private $eol = "\r\n";
 
     /**
      * The character encoding that the encoded value will be in
+     *
+     * The default value for this property is pulled from the iconv.output_encoding
+     * php.ini setting
+     *
+     * @var String
      */
-    private $outEncoding = "ISO-8859-1";
+    private $outEncoding;
+
+    /**
+     * The character encoding of the input value
+     *
+     * The default value for this property is pulled from the iconv.input_encoding
+     * php.ini setting
+     *
+     * @var String
+     */
+    private $inEncoding;
 
     /**
      * Strips any invalid characters from a header name string.
@@ -96,6 +116,17 @@ class MIME implements \cPHP\iface\Encoder
     static public function canRawEncode ( $string )
     {
         return preg_match('/[^\x20-\x7E]/', $string) ? FALSE : TRUE;
+    }
+
+    /**
+     * Constructor...
+     *
+     * Sets the default values for the encoding
+     */
+    public function __construct ()
+    {
+        $this->inEncoding = iconv_get_encoding("input_encoding");
+        $this->outEncoding = iconv_get_encoding("output_encoding");
     }
 
     /**
@@ -248,6 +279,19 @@ class MIME implements \cPHP\iface\Encoder
                 $this->getEOL() ."\t",
                 true
             );
+    }
+
+    /**
+     * Performs 'B' encoding on the string
+     *
+     * @param String $string The string to encode
+     * @return String
+     */
+    public function bEncode ( $string )
+    {
+        $string = \cPHP\strval( $string );
+
+
     }
 
     /**
