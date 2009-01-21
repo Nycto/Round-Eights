@@ -331,6 +331,9 @@ class MIME implements \cPHP\iface\Encoder
     {
         $string = \cPHP\strval( $string );
 
+        // React to the input encoding
+        $string = iconv( $this->getInputEncoding(), 'ISO-8859-1', $string );
+
         // Remove any non-printable ascii characters, except for \r and \n
         $string = preg_replace( '/[^\x20-\x7E\r\n]/', '', $string );
 
