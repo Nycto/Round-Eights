@@ -238,6 +238,53 @@ class MIME implements \cPHP\iface\Encoder
     }
 
     /**
+     * Returns the character encoding that the unencoded output strings will be in.
+     *
+     * If a value has not been explicitly set, this value will be pulled from
+     * the iconv.internal_encoding php.ini setting.
+     *
+     * @return String This will return the encoding
+     */
+    public function getOutputEncoding ()
+    {
+        if ( isset($this->outEncoding) )
+            return $this->outEncoding;
+        else
+            return iconv_get_encoding("internal_encoding");
+    }
+
+    /**
+     * Sets the character encoding that the output string will be encoded with.
+     *
+     * If a value has not been explicitly set, this value will be pulled from
+     * the iconv.internal_encoding php.ini setting.
+     *
+     * @param String $charset The name of the output character set
+     * @return Object Returns a self reference
+     */
+    public function setOutputEncoding ( $charset )
+    {
+        $charset = \cPHP\str\stripW($charset, \cPHP\str\ALLOW_DASHES);
+
+        if ( \cPHP\isEmpty($charset) )
+            throw new \cPHP\Exception\Argument(0, "Character Set", "Must not be empty");
+
+        $this->outEncoding = $charset;
+        return $this;
+    }
+
+    /**
+     * resets the output encoding to the iconv.internal_encoding php.ini settings
+     *
+     * @return Object Returns a self reference
+     */
+    public function resetOutputEncoding ()
+    {
+        $this->outEncoding = null;
+        return $this;
+    }
+
+    /**
      * Returns the string that will be used to break lines
      *
      * @return String Returns the eol string

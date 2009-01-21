@@ -166,6 +166,30 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testOutputEncodingAccessors ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $this->assertSame("ISO-8859-1", $mime->getOutputEncoding());
+
+        $this->assertSame( $mime, $mime->setOutputEncoding("UTF-8") );
+        $this->assertSame("UTF-8", $mime->getOutputEncoding());
+
+        $this->assertSame( $mime, $mime->resetOutputEncoding() );
+        $this->assertSame("ISO-8859-1", $mime->getOutputEncoding());
+
+        // If the encoding has been reset, it should immediately react to a setting change
+        iconv_set_encoding("internal_encoding", "UTF-8");
+        $this->assertSame("UTF-8", $mime->getOutputEncoding());
+
+        try {
+            $mime->setOutputEncoding("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+    }
+
     public function testRawEncode_charStrip ()
     {
         $mime = new \cPHP\Encode\MIME;
