@@ -35,8 +35,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     public function setUp ()
     {
-        $this->iniSet("iconv.input_encoding", "ISO-8859-1");
-        $this->iniSet("iconv.output_encoding", "ISO-8859-1");
+        $this->iniSet("iconv.internal_encoding", "ISO-8859-1");
     }
 
     public function testStripHeaderName ()
@@ -141,6 +140,30 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         $this->assertSame( $mime, $mime->setEOL( "\n" ) );
         $this->assertSame( "\n", $mime->getEOL() );
 
+    }
+
+    public function testInputEncodingAccessors ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $this->assertSame("ISO-8859-1", $mime->getInputEncoding());
+
+        $this->assertSame( $mime, $mime->setInputEncoding("UTF-8") );
+        $this->assertSame("UTF-8", $mime->getInputEncoding());
+
+        $this->assertSame( $mime, $mime->resetInputEncoding() );
+        $this->assertSame("ISO-8859-1", $mime->getInputEncoding());
+
+        // If the encoding has been reset, it should immediately react to a setting change
+        iconv_set_encoding("internal_encoding", "UTF-8");
+        $this->assertSame("UTF-8", $mime->getInputEncoding());
+
+        try {
+            $mime->setInputEncoding("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
     }
 
     public function testRawEncode_charStrip ()

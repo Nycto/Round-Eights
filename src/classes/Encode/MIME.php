@@ -61,7 +61,7 @@ class MIME implements \cPHP\iface\Encoder
     /**
      * The character encoding that the encoded value will be in
      *
-     * The default value for this property is pulled from the iconv.output_encoding
+     * The default value for this property is pulled from the iconv.internal_encoding
      * php.ini setting
      *
      * @var String
@@ -71,7 +71,7 @@ class MIME implements \cPHP\iface\Encoder
     /**
      * The character encoding of the input value
      *
-     * The default value for this property is pulled from the iconv.input_encoding
+     * The default value for this property is pulled from the iconv.internal_encoding
      * php.ini setting
      *
      * @var String
@@ -116,17 +116,6 @@ class MIME implements \cPHP\iface\Encoder
     static public function canRawEncode ( $string )
     {
         return preg_match('/[^\x20-\x7E]/', $string) ? FALSE : TRUE;
-    }
-
-    /**
-     * Constructor...
-     *
-     * Sets the default values for the encoding
-     */
-    public function __construct ()
-    {
-        $this->inEncoding = iconv_get_encoding("input_encoding");
-        $this->outEncoding = iconv_get_encoding("output_encoding");
     }
 
     /**
@@ -198,6 +187,53 @@ class MIME implements \cPHP\iface\Encoder
     public function clearHeader ()
     {
         $this->header = null;
+        return $this;
+    }
+
+    /**
+     * Returns the character encoding that the input string will be encoded with.
+     *
+     * If a value has not been explicitly set, this value will be pulled from
+     * the iconv.internal_encoding php.ini setting.
+     *
+     * @return String This will return the encoding
+     */
+    public function getInputEncoding ()
+    {
+        if ( isset($this->inEncoding) )
+            return $this->inEncoding;
+        else
+            return iconv_get_encoding("internal_encoding");
+    }
+
+    /**
+     * Sets the character encoding that the input string will be encoded with.
+     *
+     * If a value has not been explicitly set, this value will be pulled from
+     * the iconv.internal_encoding php.ini setting.
+     *
+     * @param String $charset The name of the input character set
+     * @return Object Returns a self reference
+     */
+    public function setInputEncoding ( $charset )
+    {
+        $charset = \cPHP\str\stripW($charset, \cPHP\str\ALLOW_DASHES);
+
+        if ( \cPHP\isEmpty($charset) )
+            throw new \cPHP\Exception\Argument(0, "Character Set", "Must not be empty");
+
+        $this->inEncoding = $charset;
+        return $this;
+    }
+
+    /**
+     * Resets the input encoding to the iconv.internal_encoding php.ini settings
+     *
+     * @return Object Returns a self reference
+     */
+    public function resetInputEncoding ()
+    {
+        $this->inEncoding = null;
         return $this;
     }
 
