@@ -375,9 +375,106 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function bEncode ( $string )
     {
+        // Yes, I realize that the iconv methods can handle this, but this method
+        // can do one thing the iconv encode method cant: Handle encoding without
+        // a header defined
+
+
         $string = \cPHP\strval( $string );
 
+        // React to the input encoding
+        $string = iconv(
+                $this->getInputEncoding(),
+                $this->getOutputEncoding(),
+                $string
+            );
 
+        // Generate the part that describes the encoding
+        $encodingPart = "=?". $this->getOutputEncoding() ."?B?";
+
+        // Do the actual encoding
+        $string = base64_encode( $string );
+
+        // If we aren't doing any wrapping, take the easy out
+        if ( $this->getLineLength() == FALSE ) {
+            return
+                ( $this->headerExists() ? $this->header .": " : "" )
+                . $encodingPart . $string ."?=";
+        }
+
+        // If there is a header to attach, then we need to figure out how many
+        // characters will fit on the first line with it
+        if ( $this->headerExists() ) {
+
+            // If the header is so long it won't fit on a line (plus one for the colon)
+            if ( $this->getLineLength() < strlen($this->getHeader()) + 1 ) {
+                $err = new \cPHP\Exception\Data(
+                        $this->getHeader(),
+                        "MIME Header",
+                        "Header length exceeds the maximum line length"
+                    );
+                $err->addData("Max Line Length", $this->getLineLength());
+                throw $err;
+            }
+
+            // Line length, minus the Header length, minus two for the colon and
+            // space, minus the length of the encoding definition, minus two for
+            // the trailing ?=
+            $firstLineLength = $this->getLineLength()
+                - strlen($this->getHeader()) - 2
+                - strlen($encodingPart) - 2;
+
+            // Force it to a multiple of 4
+            $firstLineLength = floor( $firstLineLength / 4 ) * 4;
+
+            $prepend = $this->header .":";
+
+            // If there is room on the first line for at least four characters,
+            // then add them on
+            if ( $firstLineLength > 0 ) {
+
+                $prepend .= " "
+                    .$encodingPart
+                    .substr($string, 0, $firstLineLength)
+                    ."?=";
+
+                $string = substr($string, $firstLineLength);
+
+                // If it all fits on the first line, lets get out of here
+                if ( $string == "" )
+                    return $prepend;
+            }
+
+            $prepend .= $this->getEOL() ."\t". $encodingPart;
+
+        }
+        else {
+            $prepend = $encodingPart;
+        }
+
+        // The line length, minus one to compensate for the leading fold, minus
+        // the length of the encoding definition, minus two for the trailing ?=
+        $lineLength = $this->getLineLength() - 1 - strlen($encodingPart) - 2;
+
+        // Force it to a multiple of four
+        $lineLength = floor( $lineLength / 4 ) * 4;
+
+        // If the required data won't fit on a line, throw an error
+        if ( $lineLength <= 0 ) {
+            throw new \cPHP\Exception\Data(
+                    $this->getLineLength(),
+                    "Max Line Length",
+                    "Required content length exceeds the maximum line length"
+                );
+        }
+
+        return
+            $prepend
+            .implode(
+                    "?=". $this->getEOL() ."\t". $encodingPart,
+                    str_split( $string, $lineLength )
+                )
+            ."?=";
     }
 
     /**
