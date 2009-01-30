@@ -328,14 +328,14 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         $mime->setLineLength(20);
 
         $this->assertSame(
-                "aaaaaaaaaaaaaaaaaaaa",
-                $mime->rawEncode( str_repeat("a", 20) )
+                "aaaaaaaaaaaaaaaaaaa",
+                $mime->rawEncode( str_repeat("a", 19) )
             );
 
         $this->assertSame(
-                "aaaaaaaaaaaaaaaaaaaa\n"
+                "aaaaaaaaaaaaaaaaaaa\n"
                 ."\ta",
-                $mime->rawEncode( str_repeat("a", 21) )
+                $mime->rawEncode( str_repeat("a", 20) )
             );
 
     }
@@ -361,8 +361,8 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "X-Head: Testing a longer line that needs to be wrapped just twice because it\r\n"
-                ."\texceeds the seventy eight character limit two times so it should be wrapped to\r\n"
-                ."\tfit within the limit",
+                ."\texceeds the seventy eight character limit two times so it should be wrapped\r\n"
+                ."\tto fit within the limit",
                 $mime->rawEncode(
                         "Testing a longer line that needs to be wrapped just twice "
                         ."because it exceeds the seventy eight character limit two "
@@ -374,8 +374,8 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "X-Head: Testing a longer line that needs to be wrapped just twice because it\n"
-                ."\texceeds the seventy eight character limit two times so it should be wrapped to\n"
-                ."\tfit within the limit",
+                ."\texceeds the seventy eight character limit two times so it should be wrapped\n"
+                ."\tto fit within the limit",
                 $mime->rawEncode(
                         "Testing a longer line that needs to be wrapped just twice "
                         ."because it exceeds the seventy eight character limit two "

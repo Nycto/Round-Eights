@@ -353,7 +353,7 @@ class MIME implements \cPHP\iface\Encoder
                 $this->getHeader() .":". $this->getEOL() ."\t"
                 .wordwrap(
                     $string,
-                    $this->getLineLength(),
+                    $this->getLineLength() - 1,
                     $this->getEOL() ."\t",
                     true
                 );
@@ -361,7 +361,7 @@ class MIME implements \cPHP\iface\Encoder
 
         return wordwrap(
                 ( $this->headerExists() ? $this->getHeader() .": " : "" ) . $string,
-                $this->getLineLength(),
+                $this->getLineLength() - 1,
                 $this->getEOL() ."\t",
                 true
             );
