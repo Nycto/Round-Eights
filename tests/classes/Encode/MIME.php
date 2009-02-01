@@ -579,6 +579,196 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testQEncode_longHeaderName ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-A-Really-Long-Header-Name");
+        $mime->setLineLength(20);
+
+        try {
+            $mime->qEncode("A string");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame(
+                    "Header length exceeds the maximum line length",
+                    $err->getMessage()
+                );
+        }
+    }
+
+    public function testQEncode_longContent ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(15);
+
+        try {
+            $mime->bEncode("A short string");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame(
+                    "Required content length exceeds the maximum line length",
+                    $err->getMessage()
+                );
+        }
+    }
+
+    public function testQEncode_noWrap ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?This_is_a_string?=",
+                $mime->qEncode( "This is a string" )
+            );
+
+        $mime->setHeader("X-Info");
+
+        $this->assertSame(
+                "X-Info: =?ISO-8859-1?Q?Chunk_of_data?=",
+                $mime->qEncode( "Chunk of data" )
+            );
+    }
+
+    public function testQEncode_noFirstLineContent ()
+    {
+
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(30);
+        $mime->setHeader("X-A-Long-Header-Name");
+
+        $this->assertSame(
+                "X-A-Long-Header-Name:\r\n"
+                ."\t=?ISO-8859-1?Q?A_Short_Stri?=\r\n"
+                ."\t=?ISO-8859-1?Q?ng?=",
+                $mime->qEncode("A Short String")
+            );
+
+    }
+
+    public function testQEncode_whitespace ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?Break=0D=0A=09String?=",
+                $mime->qEncode( "Break\r\n\tString" )
+            );
+        $this->assertSame(
+                "=?ISO-8859-1?Q?Break___String?=",
+                $mime->qEncode( "Break   String" )
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?___String___?=",
+                $mime->qEncode( "   String   " )
+            );
+    }
+
+    public function testQEncode_wrap_noHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?A_short_string?=",
+                $mime->qEncode("A short string")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_of_its_?=\r\n"
+                ."\t=?ISO-8859-1?Q?length._It_is_oh_so_long.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long.")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_of_its_?=\r\n"
+                ."\t=?ISO-8859-1?Q?length._It_is_oh_so_long._It_is_so_long,_in_fact,_that_it_sh?=\r\n"
+                ."\t=?ISO-8859-1?Q?ould_be_wrapped_a_few_times.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+    }
+
+    public function testQEncode_wrap_withHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-Test");
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?Q?A_short_string?=",
+                $mime->qEncode("A short string")
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_?=\r\n"
+                ."\t=?ISO-8859-1?Q?of_its_length.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length.")
+
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_?=\r\n"
+                ."\t=?ISO-8859-1?Q?of_its_length._It_is_oh_so_long._It_is_so_long,_in_fact,_tha?=\r\n"
+                ."\t=?ISO-8859-1?Q?t_it_should_be_wrapped_a_few_times.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+    }
+
+    public function testQEncode_changedEOL ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-Test");
+        $mime->setEOL("\n");
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_?=\n"
+                ."\t=?ISO-8859-1?Q?of_its_length.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length.")
+
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?Q?A_longer_string_that_will_need_to_be_wrapped_because_?=\n"
+                ."\t=?ISO-8859-1?Q?of_its_length._It_is_oh_so_long._It_is_so_long,_in_fact,_tha?=\n"
+                ."\t=?ISO-8859-1?Q?t_it_should_be_wrapped_a_few_times.?=",
+                $mime->qEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+
+        $mime->setLineLength(30);
+        $mime->setHeader("X-A-Long-Header-Name");
+
+        $this->assertSame(
+                "X-A-Long-Header-Name:\n"
+                ."\t=?ISO-8859-1?Q?A_Short_Stri?=\n"
+                ."\t=?ISO-8859-1?Q?ng?=",
+                $mime->qEncode("A Short String")
+            );
+    }
+
+    public function testQEncode_charSet ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $mime->setOutputEncoding("UTF-8");
+
+        $this->assertSame(
+                "=?UTF-8?Q?Pr=C3=83=C2=BCfung_Pr=C3=83=C2=BCfung?=",
+                $mime->qEncode( "Prüfung Prüfung" )
+            );
+    }
+
     public function testEncode ()
     {
         $this->markTestIncomplete("To be written");

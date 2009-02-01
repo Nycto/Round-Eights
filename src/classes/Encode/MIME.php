@@ -478,6 +478,132 @@ class MIME implements \cPHP\iface\Encoder
     }
 
     /**
+     * Performs 'B' encoding on the string
+     *
+     * @param String $string The string to encode
+     * @return String
+     */
+    public function qEncode ( $string )
+    {
+        // Yes, I realize that the iconv methods can handle this, but this method
+        // can do a few things the iconv encode method cant: Handle encoding without
+        // a header defined, use the underscore as spaces to save on space.
+
+        $string = \cPHP\strval( $string );
+
+        // React to the input encoding
+        $string = iconv(
+                $this->getInputEncoding(),
+                $this->getOutputEncoding(),
+                $string
+            );
+
+        // This will hold the resulting string
+        $result = "";
+
+        // Generate the part that describes the encoding
+        $encodingPart = "=?". $this->getOutputEncoding() ."?Q?";
+
+        // This is a running total of the length of the current line
+        // Once this reaches the max length, the line will be wrapped
+        $currentLine = 0;
+
+        if ( $this->headerExists() ) {
+
+            $result = ( $this->headerExists() ? $this->header .":" : "" );
+
+            // If the header is so long it won't fit on a line (plus one for the colon)
+            if ( $this->getLineLength() !== FALSE && $this->getLineLength() < strlen($result) + 1 ) {
+                $err = new \cPHP\Exception\Data(
+                        $this->getHeader(),
+                        "MIME Header",
+                        "Header length exceeds the maximum line length"
+                    );
+                $err->addData("Max Line Length", $this->getLineLength());
+                throw $err;
+            }
+
+            // If the encoding part and the header can't fit on the same line,
+            // plus one for the space that hasn't been added yet,  plus two for the trailing '?=',
+            // plus 3 for the length of a single encoded character
+            if ( $this->getLineLength() !== FALSE
+                    && strlen($result) + strlen($encodingPart) + 1 + 2 + 3 > $this->getLineLength() ) {
+                $result .= $this->getEOL() ."\t";
+            }
+            else {
+                $result .= " ";
+
+                // Adjust the offset of the current line to compensate for the length of the header
+                $currentLine += strlen($result) - 1;
+            }
+
+        }
+
+        if ( $this->getLineLength() === FALSE ) {
+            $maxLineLength = FALSE;
+        }
+        else {
+            // The max line length is the line length, minus one for the fold,
+            // minus the length of the encoding definition, minus two for the closing ?=
+            $maxLineLength = $this->getLineLength() - 1 - strlen($encodingPart) - 2;
+        }
+
+        if ( $maxLineLength !== FALSE && $maxLineLength <= 0 ) {
+            throw new \cPHP\Exception\Data(
+                    $this->getLineLength(),
+                    "Max Line Length",
+                    "Required content length exceeds the maximum line length"
+                );
+        }
+
+        // Attach the leading encoding info
+        $result .= $encodingPart;
+
+        // Grab the string length only once
+        $stringLength = strlen($string);
+
+        // Iterate over each character of the string we're encoding
+        for ( $i = 0; $i < $stringLength; $i++ ) {
+
+            // Replace spaces with underscores
+            if ( $string[$i] == " " ) {
+                $result .= "_";
+                $currentLine++;
+            }
+
+            // Non-printable characters, equals, question marks and underscores must be encoded
+            else if ( ord($string[$i]) <= 32 || ord($string[$i]) >= 127
+                    || $string[$i] == "=" || $string[$i] == "?" || $string[$i] == "_" ) {
+
+                $result .= "=". strtoupper(
+                        str_pad( dechex( ord($string[$i]) ), 2, "0", STR_PAD_LEFT )
+                    );
+                $currentLine += 3;
+            }
+
+            // Otherwise, it can just be added to the string as is
+            else {
+                $result .= $string[$i];
+                $currentLine++;
+            }
+
+            if ( $maxLineLength !== FALSE ) {
+
+                // If we have reached the max characters in a line, and this isn't
+                // the final character in the string, then wrap
+                if ( $currentLine >= $maxLineLength && $i != $stringLength - 1 ) {
+                    $result .= "?=". $this->getEOL() ."\t". $encodingPart;
+                    $currentLine = 0;
+                }
+            }
+
+        }
+
+        return $result ."?=";
+
+    }
+
+    /**
      * Encodes a string
      *
      * @param mixed $value The value to encode
