@@ -28,9 +28,27 @@
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
+ * Suite for running both file test suites
+ */
+class classes_encode_mime
+{
+
+    public static function suite()
+    {
+        $suite = new cPHP_Base_TestSuite;
+        $suite->addTestSuite( 'classes_encode_mime_access' );
+        $suite->addTestSuite( 'classes_encode_mime_rawEncode' );
+        $suite->addTestSuite( 'classes_encode_mime_qEncode' );
+        $suite->addTestSuite( 'classes_encode_mime_bEncode' );
+        return $suite;
+    }
+
+}
+
+/**
  * unit tests
  */
-class classes_encode_mime extends PHPUnit_Framework_TestCase
+class classes_encode_mime_access extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -190,7 +208,30 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testRawEncode_charStrip ()
+    public function testEncode ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testDecode ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+}
+
+/**
+ * Tests for the raw encoding
+ */
+class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
+{
+
+    public function setUp ()
+    {
+        $this->iniSet("iconv.internal_encoding", "ISO-8859-1");
+    }
+
+    public function test_charStrip ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -204,7 +245,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testRawEncode_whitespace ()
+    public function test_whitespace ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -265,7 +306,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testRawEncode_noWrap ()
+    public function test_noWrap ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -283,7 +324,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testRawEncode_wrap_noHeader ()
+    public function test_wrap_noHeader ()
     {
         $mime = new \cPHP\Encode\MIME;
 
@@ -340,7 +381,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testRawEncode_wrap_withHeader ()
+    public function test_wrap_withHeader ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setHeader("X-Head");
@@ -395,7 +436,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testRawEncode_longHeaderName ()
+    public function test_longHeaderName ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setHeader("X-A-Really-Long-Header-Name-That-Shouldnt-Be-Wrapped");
@@ -417,169 +458,20 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testBEncode_noWrap ()
+}
+
+/**
+ * Tests for the 'Q' encoding
+ */
+class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
+{
+
+    public function setUp ()
     {
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setLineLength(0);
-
-        $this->assertSame(
-                "=?ISO-8859-1?B?VGhpcyBpcyBhIHN0cmluZw==?=",
-                $mime->bEncode( "This is a string" )
-            );
-
-        $mime->setHeader("X-Info");
-
-        $this->assertSame(
-                "X-Info: =?ISO-8859-1?B?Q2h1bmsgb2YgZGF0YQ==?=",
-                $mime->bEncode( "Chunk of data" )
-            );
+        $this->iniSet("iconv.internal_encoding", "ISO-8859-1");
     }
 
-    public function testBEncode_charSet ()
-    {
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setLineLength(0);
-
-        $mime->setOutputEncoding("UTF-8");
-
-        $this->assertSame(
-                "=?UTF-8?B?UHLDg8K8ZnVuZyBQcsODwrxmdW5n?=",
-                $mime->bEncode( "Prüfung Prüfung" )
-            );
-    }
-
-    public function testBEncode_wrap_noHeader ()
-    {
-        $mime = new \cPHP\Encode\MIME;
-
-        $this->assertSame(
-                "=?ISO-8859-1?B?QSBzaG9ydCBzdHJpbmc=?=",
-                $mime->bEncode("A short string")
-            );
-
-        $this->assertSame(
-                "=?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdyYXBwZWQg?=\r\n"
-                ."\t=?ISO-8859-1?B?YmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25nLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length. It is oh so long.")
-            );
-
-        $this->assertSame(
-                "=?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdyYXBwZWQg?=\r\n"
-                ."\t=?ISO-8859-1?B?YmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25nLiBJdCBp?=\r\n"
-                ."\t=?ISO-8859-1?B?cyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3cmFwcGVk?=\r\n"
-                ."\t=?ISO-8859-1?B?IGEgZmV3IHRpbWVzLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length. It is oh so long. It is so long, "
-                        ."in fact, that it should be wrapped a few times.")
-            );
-    }
-
-    public function testBEncode_wrap_withHeader ()
-    {
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setHeader("X-Test");
-
-        $this->assertSame(
-                "X-Test: =?ISO-8859-1?B?QSBzaG9ydCBzdHJpbmc=?=",
-                $mime->bEncode("A short string")
-            );
-
-        $this->assertSame(
-                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\r\n"
-                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length.")
-            );
-
-        $this->assertSame(
-                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\r\n"
-                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25n?=\r\n"
-                ."\t=?ISO-8859-1?B?LiBJdCBpcyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3?=\r\n"
-                ."\t=?ISO-8859-1?B?cmFwcGVkIGEgZmV3IHRpbWVzLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length. It is oh so long. It is so long, "
-                        ."in fact, that it should be wrapped a few times.")
-            );
-    }
-
-    public function testBEncode_changedEOL ()
-    {
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setHeader("X-Test");
-        $mime->setEOL("\n");
-
-        $this->assertSame(
-                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\n"
-                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length.")
-            );
-
-        $this->assertSame(
-                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\n"
-                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25n?=\n"
-                ."\t=?ISO-8859-1?B?LiBJdCBpcyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3?=\n"
-                ."\t=?ISO-8859-1?B?cmFwcGVkIGEgZmV3IHRpbWVzLg==?=",
-                $mime->bEncode("A longer string that will need to be wrapped "
-                        ."because of its length. It is oh so long. It is so long, "
-                        ."in fact, that it should be wrapped a few times.")
-            );
-    }
-
-    public function testBEncode_longHeaderName ()
-    {
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setHeader("X-A-Really-Long-Header-Name");
-        $mime->setLineLength(20);
-
-        try {
-            $mime->bEncode("A string");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame(
-                    "Header length exceeds the maximum line length",
-                    $err->getMessage()
-                );
-        }
-    }
-
-    public function testBEncode_longContent ()
-    {
-
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setLineLength(15);
-
-        try {
-            $mime->bEncode("A short string");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame(
-                    "Required content length exceeds the maximum line length",
-                    $err->getMessage()
-                );
-        }
-    }
-
-    public function testBEncode_noFirstLineContent ()
-    {
-
-        $mime = new \cPHP\Encode\MIME;
-        $mime->setLineLength(30);
-        $mime->setHeader("X-A-Long-Header-Name");
-
-        $this->assertSame(
-                "X-A-Long-Header-Name:\r\n"
-                ."\t=?ISO-8859-1?B?QSBTaG9ydCBT?=\r\n"
-                ."\t=?ISO-8859-1?B?dHJpbmc=?=",
-                $mime->bEncode("A Short String")
-            );
-
-    }
-
-    public function testQEncode_longHeaderName ()
+    public function test_longHeaderName ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setHeader("X-A-Really-Long-Header-Name");
@@ -597,7 +489,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testQEncode_longContent ()
+    public function test_longContent ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(15);
@@ -614,7 +506,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testQEncode_noWrap ()
+    public function test_noWrap ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -632,7 +524,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testQEncode_noFirstLineContent ()
+    public function test_noFirstLineContent ()
     {
 
         $mime = new \cPHP\Encode\MIME;
@@ -648,7 +540,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testQEncode_whitespace ()
+    public function test_whitespace ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -668,7 +560,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testQEncode_wrap_noHeader ()
+    public function test_wrap_noHeader ()
     {
         $mime = new \cPHP\Encode\MIME;
 
@@ -694,7 +586,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testQEncode_wrap_withHeader ()
+    public function test_wrap_withHeader ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setHeader("X-Test");
@@ -722,7 +614,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testQEncode_changedEOL ()
+    public function test_changedEOL ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setHeader("X-Test");
@@ -756,7 +648,7 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testQEncode_charSet ()
+    public function test_charSet ()
     {
         $mime = new \cPHP\Encode\MIME;
         $mime->setLineLength(0);
@@ -769,14 +661,179 @@ class classes_encode_mime extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testEncode ()
+}
+
+/**
+ * Tests for the 'B' encoding
+ */
+class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
+{
+
+    public function setUp ()
     {
-        $this->markTestIncomplete("To be written");
+        $this->iniSet("iconv.internal_encoding", "ISO-8859-1");
     }
 
-    public function testDecode ()
+    public function test_noWrap ()
     {
-        $this->markTestIncomplete("To be written");
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?VGhpcyBpcyBhIHN0cmluZw==?=",
+                $mime->bEncode( "This is a string" )
+            );
+
+        $mime->setHeader("X-Info");
+
+        $this->assertSame(
+                "X-Info: =?ISO-8859-1?B?Q2h1bmsgb2YgZGF0YQ==?=",
+                $mime->bEncode( "Chunk of data" )
+            );
+    }
+
+    public function test_charSet ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(0);
+
+        $mime->setOutputEncoding("UTF-8");
+
+        $this->assertSame(
+                "=?UTF-8?B?UHLDg8K8ZnVuZyBQcsODwrxmdW5n?=",
+                $mime->bEncode( "Prüfung Prüfung" )
+            );
+    }
+
+    public function test_wrap_noHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?QSBzaG9ydCBzdHJpbmc=?=",
+                $mime->bEncode("A short string")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdyYXBwZWQg?=\r\n"
+                ."\t=?ISO-8859-1?B?YmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25nLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long.")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdyYXBwZWQg?=\r\n"
+                ."\t=?ISO-8859-1?B?YmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25nLiBJdCBp?=\r\n"
+                ."\t=?ISO-8859-1?B?cyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3cmFwcGVk?=\r\n"
+                ."\t=?ISO-8859-1?B?IGEgZmV3IHRpbWVzLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+    }
+
+    public function test_wrap_withHeader ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-Test");
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?B?QSBzaG9ydCBzdHJpbmc=?=",
+                $mime->bEncode("A short string")
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\r\n"
+                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length.")
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\r\n"
+                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25n?=\r\n"
+                ."\t=?ISO-8859-1?B?LiBJdCBpcyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3?=\r\n"
+                ."\t=?ISO-8859-1?B?cmFwcGVkIGEgZmV3IHRpbWVzLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+    }
+
+    public function test_changedEOL ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-Test");
+        $mime->setEOL("\n");
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\n"
+                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length.")
+            );
+
+        $this->assertSame(
+                "X-Test: =?ISO-8859-1?B?QSBsb25nZXIgc3RyaW5nIHRoYXQgd2lsbCBuZWVkIHRvIGJlIHdy?=\n"
+                ."\t=?ISO-8859-1?B?YXBwZWQgYmVjYXVzZSBvZiBpdHMgbGVuZ3RoLiBJdCBpcyBvaCBzbyBsb25n?=\n"
+                ."\t=?ISO-8859-1?B?LiBJdCBpcyBzbyBsb25nLCBpbiBmYWN0LCB0aGF0IGl0IHNob3VsZCBiZSB3?=\n"
+                ."\t=?ISO-8859-1?B?cmFwcGVkIGEgZmV3IHRpbWVzLg==?=",
+                $mime->bEncode("A longer string that will need to be wrapped "
+                        ."because of its length. It is oh so long. It is so long, "
+                        ."in fact, that it should be wrapped a few times.")
+            );
+    }
+
+    public function test_longHeaderName ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setHeader("X-A-Really-Long-Header-Name");
+        $mime->setLineLength(20);
+
+        try {
+            $mime->bEncode("A string");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame(
+                    "Header length exceeds the maximum line length",
+                    $err->getMessage()
+                );
+        }
+    }
+
+    public function test_longContent ()
+    {
+
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(15);
+
+        try {
+            $mime->bEncode("A short string");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Data $err ) {
+            $this->assertSame(
+                    "Required content length exceeds the maximum line length",
+                    $err->getMessage()
+                );
+        }
+    }
+
+    public function test_noFirstLineContent ()
+    {
+
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setLineLength(30);
+        $mime->setHeader("X-A-Long-Header-Name");
+
+        $this->assertSame(
+                "X-A-Long-Header-Name:\r\n"
+                ."\t=?ISO-8859-1?B?QSBTaG9ydCBT?=\r\n"
+                ."\t=?ISO-8859-1?B?dHJpbmc=?=",
+                $mime->bEncode("A Short String")
+            );
+
     }
 
 }
