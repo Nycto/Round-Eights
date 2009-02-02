@@ -36,7 +36,7 @@ class classes_encode_mime
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite;
-        $suite->addTestSuite( 'classes_encode_mime_all' );
+        $suite->addTestSuite( 'classes_encode_mime_common' );
         $suite->addTestSuite( 'classes_encode_mime_rawEncode' );
         $suite->addTestSuite( 'classes_encode_mime_qEncode' );
         $suite->addTestSuite( 'classes_encode_mime_bEncode' );
@@ -48,7 +48,7 @@ class classes_encode_mime
 /**
  * unit tests
  */
-class classes_encode_mime_all extends PHPUnit_Framework_TestCase
+class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
