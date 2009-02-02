@@ -286,8 +286,18 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
             );
 
         $this->assertSame(
+                "test@example.com",
+                $mime->decode("Return-Path: test@example.com  ")
+            );
+
+        $this->assertSame(
                 "A Q Encoded String",
                 $mime->decode("X-Header: =?ISO-8859-1?Q?A_Q_Encoded?= String")
+            );
+
+        $this->assertSame(
+                "its A sample\tstring of stuff",
+                $mime->decode("X-Details:its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?= of stuff")
             );
     }
 
