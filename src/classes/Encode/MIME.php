@@ -721,6 +721,17 @@ class MIME implements \cPHP\iface\Encoder
     public function decode ( $string )
     {
         $string = \cPHP\strval( $string );
+
+        // Strip the header name off, if it exists
+        $string = preg_replace('/^[\x21-\x7E]+\s*\:/', '', $string);
+
+        $string = trim( $string );
+
+        // Look for a character encoding definition. If you can't find one, just return the string
+        if ( !preg_match('/=\?[a-z0-9\-\s\/]+?\?[BQ]\?.+\?\=/i', $string) )
+            return $string;
+
+        return iconv_mime_decode($string);
     }
 
 }

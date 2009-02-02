@@ -268,7 +268,27 @@ class classes_encode_mime_all extends PHPUnit_Framework_TestCase
 
     public function testDecode ()
     {
-        $this->markTestIncomplete("To be written");
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame(
+                "a string",
+                $mime->decode("a string")
+            );
+
+        $this->assertSame(
+                "A Q Encoded String of data",
+                $mime->decode("=?ISO-8859-1?Q?A_Q_Encoded?= String =?ISO-8859-1?Q?of_data?=")
+            );
+
+        $this->assertSame(
+                "its A sample\tstring",
+                $mime->decode("its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?=")
+            );
+
+        $this->assertSame(
+                "A Q Encoded String",
+                $mime->decode("X-Header: =?ISO-8859-1?Q?A_Q_Encoded?= String")
+            );
     }
 
 }
