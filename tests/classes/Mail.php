@@ -33,57 +33,6 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_mail extends PHPUnit_Framework_TestCase
 {
 
-    public function testStripHeaderValue ()
-    {
-        $chars = implode("", array_map( 'chr', range(1, 255) ));
-        $this->assertSame(
-                '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOP'
-                .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
-                \cPHP\Mail::stripHeaderValue( $chars )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\nString" )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\rString" )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\r\nString" )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\n\tString" )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\n  \tString" )
-            );
-
-        $this->assertSame(
-                "Break\n\tString",
-                \cPHP\Mail::stripHeaderValue( "Break\n\n\n\r\n\r\r\rString" )
-            );
-
-        $this->assertSame(
-                "String",
-                \cPHP\Mail::stripHeaderValue( "   String   " )
-            );
-
-        $this->assertSame(
-                "String",
-                \cPHP\Mail::stripHeaderValue( "\nString\n\r" )
-            );
-
-    }
-
     public function testFromNameAccessors ()
     {
         $this->iniSet('sendmail_from', '');
@@ -579,30 +528,6 @@ class classes_mail extends PHPUnit_Framework_TestCase
                         'In-Reply-To' => 'abcxyz'
                     )),
                 $mail->getCustomHeaders()
-            );
-    }
-
-    public function testAddCustomHeader_charTest ()
-    {
-        $mail = new \cPHP\Mail;
-
-        $chars = implode("", array_map( 'chr', range(1, 255) ));
-        $this->assertSame( $mail, $mail->addCustomHeader( $chars, $chars ) );
-
-        $headers = $mail->getCustomHeaders();
-        $this->assertThat( $headers, $this->isInstanceOf('cPHP\Ary') );
-        $this->assertSame( 1, count($headers) );
-
-        $this->assertSame(
-                "!\"#$%&'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOPQ"
-                ."RSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
-                $headers->keys()->pop( TRUE )
-            );
-
-        $this->assertSame(
-                "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQR"
-                ."STUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
-                $headers->pop( TRUE )
             );
     }
 

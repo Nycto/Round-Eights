@@ -96,31 +96,6 @@ class Mail
     private $html;
 
     /**
-     * Strips any invalid characters from a header value
-     *
-     * @param String $value The header label to strip down
-     * @return String
-     */
-    static public function stripHeaderValue ( $value )
-    {
-        // Alright... so this function isn't really RFC compliant, but it will
-        // suffice until a more extensive version can be written
-
-        // Convert it to a string
-        $value = \cPHP\strval($value);
-
-        // Remove any non-printable ascii characters, except for \r and \n
-        $value = preg_replace( '/[^\x20-\x7E\r\n]/', '', $value );
-
-        // Replace any line returns and following spaces with folding compatible eols
-        $value = preg_replace( '/[\r\n][\s]*/', self::EOL ."\t", $value );
-
-        $value = trim($value);
-
-        return $value;
-    }
-
-    /**
      * Creates a new mail instance
      *
      * @return Object Returns a new mail instance
@@ -715,7 +690,7 @@ class Mail
         if ( \cPHP\isEmpty($header) )
             throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $this->headers[ $header ] = self::stripHeaderValue( $value );
+        $this->headers[ $header ] = \cPHP\strval( $value );
 
         return $this;
     }
