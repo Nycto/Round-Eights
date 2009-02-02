@@ -36,7 +36,7 @@ class classes_encode_mime
     public static function suite()
     {
         $suite = new cPHP_Base_TestSuite;
-        $suite->addTestSuite( 'classes_encode_mime_access' );
+        $suite->addTestSuite( 'classes_encode_mime_all' );
         $suite->addTestSuite( 'classes_encode_mime_rawEncode' );
         $suite->addTestSuite( 'classes_encode_mime_qEncode' );
         $suite->addTestSuite( 'classes_encode_mime_bEncode' );
@@ -48,7 +48,7 @@ class classes_encode_mime
 /**
  * unit tests
  */
-class classes_encode_mime_access extends PHPUnit_Framework_TestCase
+class classes_encode_mime_all extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -208,9 +208,62 @@ class classes_encode_mime_access extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testEncode ()
+    public function testUseRaw ()
     {
-        $this->markTestIncomplete("To be written");
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame( $mime, $mime->useRaw() );
+
+        $this->assertSame(
+                "A samplestring",
+                $mime->encode("A sample\tstring")
+            );
+    }
+
+    public function testUseB ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame( $mime, $mime->useB() );
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?=",
+                $mime->encode("A sample\tstring")
+            );
+    }
+
+    public function testUseQ ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame( $mime, $mime->useQ() );
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?A_sample=09string?=",
+                $mime->encode("A sample\tstring")
+            );
+    }
+
+    public function testUseAuto ()
+    {
+        $mime = new \cPHP\Encode\MIME;
+
+        $this->assertSame( $mime, $mime->useAuto() );
+
+        $this->assertSame(
+                "A sample string",
+                $mime->encode("A sample string")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?Q?A=09sample=09string?=",
+                $mime->encode("A\tsample\tstring")
+            );
+
+        $this->assertSame(
+                "=?ISO-8859-1?B?CUEJc3RyaW5nCQ==?=",
+                $mime->encode("\tA\tstring\t")
+            );
     }
 
     public function testDecode ()
@@ -668,8 +721,8 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
         $mime->setLineLength(0);
 
         $this->assertSame(
-                "=?ISO-8859-1?Q?_=5F=3F=3D?=",
-                $mime->qEncode( " _?=" )
+                "=?ISO-8859-1?Q?_=5F=3F=3D=3A?=",
+                $mime->qEncode( " _?=:" )
             );
 
         $chars = implode("", array_map("chr", range(0, 32) ) );
@@ -681,7 +734,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
         $chars = implode("", array_map("chr", range(33, 126) ) );
         $this->assertSame(
-                "=?ISO-8859-1?Q?!\"#$%&'()*+,-./0123456789:;<=3D>=3F@ABCDEFGHIJK"
+                "=?ISO-8859-1?Q?!\"#$%&'()*+,-./0123456789=3A;<=3D>=3F@ABCDEFGHIJK"
                 ."LMNOPQRSTUVWXYZ[\]^=5F`abcdefghijklmnopqrstuvwxyz{|}~?=",
                 $mime->qEncode( $chars )
             );

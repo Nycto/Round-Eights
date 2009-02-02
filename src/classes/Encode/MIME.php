@@ -35,6 +35,26 @@ class MIME implements \cPHP\iface\Encoder
 {
 
     /**
+     * Represents that Auto encoding should be used
+     */
+    const ENCODE_AUTO = 0;
+
+    /**
+     * Represents Raw encoding
+     */
+    const ENCODE_RAW = 1;
+
+    /**
+     * Represents B encoding
+     */
+    const ENCODE_B = 2;
+
+    /**
+     * Represents Q encoding
+     */
+    const ENCODE_Q = 3;
+
+    /**
      * The maximum length a line can be, not including the eol marker.
      *
      * The default value for this is 78 characters. When set to 0, no line
@@ -77,6 +97,14 @@ class MIME implements \cPHP\iface\Encoder
      * @var String
      */
     private $inEncoding;
+
+    /**
+     * This is an internal flag that stores the specific encoding type selected.
+     * See the constants associated with this class for valid values
+     *
+     * @var Integer
+     */
+    private $encoding = 0;
 
     /**
      * Strips any invalid characters from a header name string.
@@ -314,6 +342,55 @@ class MIME implements \cPHP\iface\Encoder
     public function resetEOL ()
     {
         $this->eol = "\r\n";
+        return $this;
+    }
+
+    /**
+     * Sets that this class should automatically select the best encoding method
+     * depending on the input.
+     *
+     * When set, the encode method will use raw encoding if the string contains
+     * all ascii printable characters. Otherwise, it will perform both 'B' and 'Q'
+     * encoding, then choose whichever produces the shortest result.
+     *
+     * @return Object Returns a self reference
+     */
+    public function useAuto ()
+    {
+        $this->encode = self::ENCODE_AUTO;
+        return $this;
+    }
+
+    /**
+     * Sets that the encode method should always use raw encoding, no matter what
+     *
+     * @return Object Returns a self reference
+     */
+    public function useRaw ()
+    {
+        $this->encode = self::ENCODE_RAW;
+        return $this;
+    }
+
+    /**
+     * Sets that the encode method should always use 'B' encoding, no matter what
+     *
+     * @return Object Returns a self reference
+     */
+    public function useB ()
+    {
+        $this->encode = self::ENCODE_B;
+        return $this;
+    }
+
+    /**
+     * Sets that the encode method should always use 'Q' encoding, no matter what
+     *
+     * @return Object Returns a self reference
+     */
+    public function useQ ()
+    {
+        $this->encode = self::ENCODE_Q;
         return $this;
     }
 
@@ -573,7 +650,7 @@ class MIME implements \cPHP\iface\Encoder
 
             // Non-printable characters, equals, question marks and underscores must be encoded
             else if ( ord($string[$i]) <= 32 || ord($string[$i]) >= 127
-                    || $string[$i] == "=" || $string[$i] == "?" || $string[$i] == "_" ) {
+                    || $string[$i] == "=" || $string[$i] == "?" || $string[$i] == "_" || $string[$i] == ":" ) {
 
                 $result .= "=". strtoupper(
                         str_pad( dechex( ord($string[$i]) ), 2, "0", STR_PAD_LEFT )
@@ -611,7 +688,28 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function encode ( $string )
     {
+        if ( $this->encode == self::ENCODE_B )
+            return $this->bEncode( $string );
 
+        else if ( $this->encode == self::ENCODE_Q )
+            return $this->qEncode( $string );
+
+        else if ( $this->encode == self::ENCODE_RAW )
+            return $this->rawEncode( $string );
+
+        // At this point, we know that we're doing automatic selection
+
+        // If we can raw encode, always select that option
+        if ( self::canRawEncode($string) )
+            return $this->rawEncode( $string );
+
+        $bEncoded = $this->bEncode( $string );
+        $qEncoded = $this->qEncode( $string );
+
+        if ( strlen($bEncoded) <= strlen($qEncoded) )
+            return $bEncoded;
+        else
+            return $qEncoded;
     }
 
     /**
@@ -622,7 +720,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function decode ( $string )
     {
-
+        $string = \cPHP\strval( $string );
     }
 
 }
