@@ -45,26 +45,36 @@ class Mail
 
     /**
      * The email address this message will be sent from
+     *
+     * @var String
      */
     private $from;
 
     /**
      * The actual name of the person this message was sent from
+     *
+     * @var String
      */
     private $fromName;
 
     /**
      * The list of addresses to send to
+     *
+     * @var Array
      */
     private $to = array();
 
     /**
      * Any email addresses to cc the message to
+     *
+     * @var Array
      */
     private $cc = array();
 
     /**
      * Any email addresses to blind carbon copy the message to
+     *
+     * @var Array
      */
     private $bcc = array();
 
@@ -72,28 +82,45 @@ class Mail
      * Any custom headers to send
      *
      * The key is the name of the header, the value is the value for the header
+     *
+     * @var Array
      */
     private $headers = array();
 
     /**
      * The message ID used to identify this message
+     *
+     * @var String
      */
     private $messageID;
 
     /**
      * The subject of the message
+     *
+     * @var String
      */
     private $subject;
 
     /**
      * The raw text of the message
+     *
+     * @var String
      */
     private $text;
 
     /**
      * The HTML of the message
+     *
+     * @var String
      */
     private $html;
+
+    /**
+     * The generated boundary
+     *
+     * @var String
+     */
+    private $boundary;
 
     /**
      * Creates a new mail instance
@@ -739,6 +766,37 @@ class Mail
     {
         $this->headers = array();
         return $this;
+    }
+
+    /**
+     * Analyzes the html and text body and returns a boundary string that doesn't
+     * exist in either.
+     *
+     * This will return the same boundary every time it is called, unless the text
+     * or HTML is changed to include the boundary
+     *
+     * @return String A thirty character long string
+     */
+    public function getBoundary ()
+    {
+        // If the boundary has been generated and the string and HTML don't contain
+        // it, then there is no need to create another
+        while ( !isset($this->boundary)
+                || \cPHP\str\contains($this->boundary, $this->text)
+                || \cPHP\str\contains($this->boundary, $this->html) ) {
+
+            // The string "=_" can never appear in the quoted printable character
+            // encoding format (or base64, for that matter), which ensures that
+            // the generated boundary won't show up in any encoded data
+            $this->boundary =
+                "=_"
+                .substr(md5(
+                    microtime() . time()
+                ), 0, 26)
+                ."_=";
+        }
+
+        return $this->boundary;
     }
 
 }

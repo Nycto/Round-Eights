@@ -597,6 +597,32 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertEquals( new \cPHP\Ary, $mail->getCustomHeaders() );
     }
 
+    public function testGetBoundary ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $boundary = $mail->getBoundary();
+
+        $this->assertType( 'string', $boundary );
+        $this->assertEquals( 30, strlen($boundary) );
+        $this->assertRegExp( '/^\=\_[0-9a-zA-Z]{26}\_\=$/', $boundary );
+
+        // subsequent calls should be the same
+        $this->assertSame( $boundary, $mail->getBoundary() );
+        $this->assertSame( $boundary, $mail->getBoundary() );
+        $this->assertSame( $boundary, $mail->getBoundary() );
+
+        // Putting the boundary in the text should result in a change of the boundary
+        $mail->setText('string '. $boundary .' more data');
+
+        $newBoundary = $mail->getBoundary();
+        $this->assertNotSame( $newBoundary, $boundary );
+
+        $this->assertSame( $newBoundary, $mail->getBoundary() );
+        $this->assertSame( $newBoundary, $mail->getBoundary() );
+        $this->assertSame( $newBoundary, $mail->getBoundary() );
+    }
+
 }
 
 ?>
