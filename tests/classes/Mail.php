@@ -33,6 +33,29 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_mail extends PHPUnit_Framework_TestCase
 {
 
+    public function testFormatAddress ()
+    {
+        $this->assertSame(
+                "<test@example.com>",
+                \cPHP\Mail::formatAddress("test@example.com")
+            );
+
+        $this->assertSame(
+                '"Lug MightyChunk" <test@example.com>',
+                \cPHP\Mail::formatAddress("test@example.com", "Lug MightyChunk")
+            );
+
+        $this->assertSame(
+                '<test@example.com>',
+                \cPHP\Mail::formatAddress("test@example.com", chr(5))
+            );
+
+        $this->assertSame(
+                '"Lug \"MightyChunk\"" <test@example.com>',
+                \cPHP\Mail::formatAddress("test@example.com", 'Lug "MightyChunk"')
+            );
+    }
+
     public function testFromNameAccessors ()
     {
         $this->iniSet('sendmail_from', '');

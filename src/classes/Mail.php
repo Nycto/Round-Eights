@@ -133,6 +133,26 @@ class Mail
     }
 
     /**
+     * Returns an e-mail address formatted as such: Name <addr@host.com>
+     *
+     * @param String $email The e-mail address
+     * @param String $name The name of the person associated with the address
+     * @return String The well formatted address line
+     */
+    static public function formatAddress ($email, $name = NULL)
+    {
+        $email = \cPHP\Filter::Email()->filter( $email );
+
+        if ( !\cPHP\isVague($name) )
+            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+
+        if ( \cPHP\isVague($name) )
+            return "<". $email .">";
+        else
+            return '"'. addslashes($name) .'" <'. $email .'>';
+    }
+
+    /**
      * Constructor...
      *
      * This will load the default email address for the sender from the
