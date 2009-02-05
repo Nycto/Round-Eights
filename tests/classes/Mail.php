@@ -206,6 +206,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+        $this->assertFalse( $mail->hasCCs() );
 
 
         $this->assertSame( $mail, $mail->addCC('addr@example.org') );
@@ -217,6 +218,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+        $this->assertTrue( $mail->hasCCs() );
 
 
         $this->assertSame( $mail, $mail->addCC('addr@example.org', 'Label') );
@@ -228,6 +230,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+        $this->assertTrue( $mail->hasCCs() );
 
 
         $this->assertSame( $mail, $mail->addCC('test@example.net', 'Name') );
@@ -240,6 +243,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
         $this->assertTrue( $mail->ccExists('test@example.net') );
+        $this->assertTrue( $mail->hasCCs() );
 
 
         $this->assertSame( $mail, $mail->removeCC('addr@example.org') );
@@ -251,6 +255,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertTrue( $mail->ccExists('test@example.net') );
+        $this->assertTrue( $mail->hasCCs() );
 
 
         $this->assertSame( $mail, $mail->clearCC() );
@@ -260,6 +265,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+        $this->assertFalse( $mail->hasCCs() );
 
 
         try {
@@ -278,6 +284,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
+        $this->assertFalse( $mail->hasCCs() );
     }
 
     public function testBCCAbccessors ()

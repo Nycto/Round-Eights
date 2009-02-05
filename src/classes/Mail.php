@@ -394,6 +394,16 @@ class Mail
     }
 
     /**
+     * Returns whether there are any "to" addresses in this instance
+     *
+     * @return Boolean
+     */
+    public function hasCCs ()
+    {
+        return !empty( $this->cc );
+    }
+
+    /**
      * Removes an e-mail address from the CC list
      *
      * @param String $email The email address to remove
