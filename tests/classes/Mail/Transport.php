@@ -82,6 +82,32 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetBCCString ()
+    {
+        $mail = new \cPHP\Mail;
+        $transport = $this->getMock('cPHP\Mail\Transport');
+        $this->assertSame( "", $transport->getBCCString($mail) );
+
+        $mail->addBCC("test@example.com");
+        $this->assertSame(
+                "<test@example.com>",
+                $transport->getBCCString($mail)
+            );
+
+        $mail->addBCC("other@example.net", "Jack Snap");
+        $this->assertSame(
+                "<test@example.com>, \"Jack Snap\" <other@example.net>",
+                $transport->getBCCString($mail)
+            );
+
+        $mail->addBCC("another@example.org", "Crackle Pop");
+        $this->assertSame(
+                "<test@example.com>, \"Jack Snap\" <other@example.net>, "
+                ."\"Crackle Pop\" <another@example.org>",
+                $transport->getBCCString($mail)
+            );
+    }
+
     public function testGetHeaderList ()
     {
         $this->markTestIncomplete("To be written");

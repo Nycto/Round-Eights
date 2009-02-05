@@ -92,6 +92,28 @@ abstract class Transport
     }
 
     /**
+     * Returns the header content string of the list of CC addresses
+     *
+     * @param Object $mail The cPHP\Mail object whose to fields are being formatted
+     * @return String
+     */
+    public function getCCString ( \cPHP\Mail $mail )
+    {
+        return $this->getAddressList( $mail->getCC() );
+    }
+
+    /**
+     * Returns the header content string of the list of BCC addresses
+     *
+     * @param Object $mail The cPHP\Mail object whose to fields are being formatted
+     * @return String
+     */
+    public function getBCCString ( \cPHP\Mail $mail )
+    {
+        return $this->getAddressList( $mail->getBCC() );
+    }
+
+    /**
      * Returns an array of headers that will be sent with this message
      *
      * @param Object $mail The cPHP\Mail object whose headers should be returned
