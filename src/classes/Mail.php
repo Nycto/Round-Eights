@@ -1,6 +1,6 @@
 <?php
 /**
- * Email sender
+ * E-Mail detail class
  *
  * @license Artistic License 2.0
  *
@@ -28,20 +28,10 @@
 namespace cPHP;
 
 /**
- * Handles sending a piece of mail
+ * Collects the details of an e-mail
  */
 class Mail
 {
-
-    /**
-     * The maximum number of characters a single line can contain
-     */
-    const LINE_LENGTH = 750;
-
-    /**
-     * The end of line character to use
-     */
-    const EOL = "\n";
 
     /**
      * The email address this message will be sent from
@@ -130,26 +120,6 @@ class Mail
     static public function create ()
     {
         return new self;
-    }
-
-    /**
-     * Returns an e-mail address formatted as such: Name <addr@host.com>
-     *
-     * @param String $email The e-mail address
-     * @param String $name The name of the person associated with the address
-     * @return String The well formatted address line
-     */
-    static public function formatAddress ($email, $name = NULL)
-    {
-        $email = \cPHP\Filter::Email()->filter( $email );
-
-        if ( !\cPHP\isVague($name) )
-            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
-
-        if ( \cPHP\isVague($name) )
-            return "<". $email .">";
-        else
-            return '"'. addslashes($name) .'" <'. $email .'>';
     }
 
     /**

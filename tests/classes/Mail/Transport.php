@@ -33,6 +33,68 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_mail_transport extends PHPUnit_Framework_TestCase
 {
 
+    public function testFormatAddress ()
+    {
+        $this->assertSame(
+                "<test@example.com>",
+                \cPHP\Mail\Transport::formatAddress("test@example.com")
+            );
+
+        $this->assertSame(
+                '"Lug MightyChunk" <test@example.com>',
+                \cPHP\Mail\Transport::formatAddress("test@example.com", "Lug MightyChunk")
+            );
+
+        $this->assertSame(
+                '<test@example.com>',
+                \cPHP\Mail\Transport::formatAddress("test@example.com", chr(5))
+            );
+
+        $this->assertSame(
+                '"Lug \"MightyChunk\"" <test@example.com>',
+                \cPHP\Mail\Transport::formatAddress("test@example.com", 'Lug "MightyChunk"')
+            );
+    }
+
+    public function testGetToString ()
+    {
+        $mail = new \cPHP\Mail;
+        $transport = $this->getMock('cPHP\Mail\Transport');
+        $this->assertSame( "", $transport->getToString($mail) );
+
+        $mail->addTo("test@example.com");
+        $this->assertSame(
+                "<test@example.com>",
+                $transport->getToString($mail)
+            );
+
+        $mail->addTo("other@example.net", "Jack Snap");
+        $this->assertSame(
+                "<test@example.com>, \"Jack Snap\" <other@example.net>",
+                $transport->getToString($mail)
+            );
+
+        $mail->addTo("another@example.org", "Crackle Pop");
+        $this->assertSame(
+                "<test@example.com>, \"Jack Snap\" <other@example.net>, "
+                ."\"Crackle Pop\" <another@example.org>",
+                $transport->getToString($mail)
+            );
+    }
+
+    public function testGetHeaderList ()
+    {
+        $this->markTestIncomplete("To be written");
+        $mail = new \cPHP\Mail;
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $this->assertSame(
+                array(),
+                $transport->getHeaderList( $mail )
+            );
+    }
+
 }
 
 ?>
