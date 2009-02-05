@@ -302,6 +302,16 @@ class Mail
     }
 
     /**
+     * Returns whether there are any "to" addresses in this instance
+     *
+     * @return Boolean
+     */
+    public function hasTos ()
+    {
+        return !empty( $this->to );
+    }
+
+    /**
      * Removes an e-mail address from the To list
      *
      * @param String $email The email address to remove
