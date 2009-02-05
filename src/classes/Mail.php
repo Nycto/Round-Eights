@@ -394,7 +394,7 @@ class Mail
     }
 
     /**
-     * Returns whether there are any "to" addresses in this instance
+     * Returns whether there are any "CC" addresses in this instance
      *
      * @return Boolean
      */
@@ -483,6 +483,16 @@ class Mail
         \cPHP\Validator::Email()->ensure( $email );
 
         return isset( $this->bcc[ $email ] );
+    }
+
+    /**
+     * Returns whether there are any "BCC" addresses in this instance
+     *
+     * @return Boolean
+     */
+    public function hasBCCs ()
+    {
+        return !empty( $this->bcc );
     }
 
     /**

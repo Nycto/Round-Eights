@@ -298,6 +298,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
+        $this->assertFalse( $mail->hasBCCs() );
 
 
         $this->assertSame( $mail, $mail->addBCC('addr@example.org') );
@@ -309,6 +310,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
+        $this->assertTrue( $mail->hasBCCs() );
 
 
         $this->assertSame( $mail, $mail->addBCC('addr@example.org', 'Label') );
@@ -320,6 +322,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
+        $this->assertTrue( $mail->hasBCCs() );
 
 
         $this->assertSame( $mail, $mail->addBCC('test@example.net', 'Name') );
@@ -332,6 +335,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
         $this->assertTrue( $mail->bccExists('test@example.net') );
+        $this->assertTrue( $mail->hasBCCs() );
 
 
         $this->assertSame( $mail, $mail->removeBCC('addr@example.org') );
@@ -343,6 +347,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertTrue( $mail->bccExists('test@example.net') );
+        $this->assertTrue( $mail->hasBCCs() );
 
 
         $this->assertSame( $mail, $mail->clearBCC() );
@@ -352,6 +357,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
+        $this->assertFalse( $mail->hasBCCs() );
 
 
         try {
@@ -370,6 +376,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
+        $this->assertFalse( $mail->hasBCCs() );
     }
 
     public function testSubjectAccessors ()
