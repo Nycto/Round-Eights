@@ -36,12 +36,12 @@ abstract class Transport
     /**
      * The maximum number of characters a single line can contain
      */
-    const LINE_LENGTH = 750;
+    const LINE_LENGTH = 76;
 
     /**
      * The end of line character to use
      */
-    const EOL = "\n";
+    const EOL = "\r\n";
 
     /**
      * Returns an e-mail address formatted as such: Name <addr@host.com>
@@ -159,6 +159,31 @@ abstract class Transport
         }
 
         return $result;
+    }
+
+    /**
+     * Returns an the string of headers that will be sent with this message
+     *
+     * @param Object $mail The cPHP\Mail object whose headers should be returned
+     * @return String A MIME formatted header string
+     */
+    public function getHeaderString ( \cPHP\Mail $mail )
+    {
+        $mime = new \cPHP\Encode\MIME;
+        $mime->setEOL( self::EOL );
+        $mime->setLineLength( self::LINE_LENGTH );
+
+        $headers = $this->getHeaderList( $mail );
+
+        $result = array();
+
+        foreach ( $headers AS $name => $value ) {
+            $mime->setHeader($name);
+            $result[] = $mime->encode( $value );
+        }
+
+        return implode( self::EOL, $result );
+
     }
 
 }

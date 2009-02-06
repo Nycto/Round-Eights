@@ -251,6 +251,58 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetHeaderString_sparse ()
+    {
+        $mail = new \cPHP\Mail;
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderString( $mail );
+        $this->assertType('string', $headers);
+
+        $this->assertRegExp(
+                '/Date: \w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}/i',
+                $headers
+            );
+
+        $this->assertContains("MIME-Version: 1.0", $headers);
+        $this->assertContains('Content-Type: text/plain; charset="ISO-8859-1"', $headers);
+        $this->assertContains("Content-Transfer-Encoding: 7bit", $headers);
+    }
+
+    public function testGetHeaderString_full ()
+    {
+        $mail = new \cPHP\Mail;
+        $mail->setFrom("from@example.com", "Jack Test")
+            ->addTo("other@example.net", "Jack Snap")
+            ->addTo("another@example.org", "Crackle Pop")
+            ->addCC("cc@example.edu", "Veal SteakFace")
+            ->addCC("devnull@example.org")
+            ->addBCC("bcc@example.com")
+            ->setSubject("This is a test")
+            ->setMessageID("abc123");
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderString( $mail );
+        $this->assertType('string', $headers);
+
+        $this->assertRegExp(
+                '/Date: \w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}/i',
+                $headers
+            );
+
+        $this->assertContains('From: "Jack Test" <from@example.com>', $headers);
+        $this->assertContains('To: "Jack Snap" <other@example.net>, "Crackle Pop" <another@example.org>', $headers);
+        $this->assertContains('CC: "Veal SteakFace" <cc@example.edu>, <devnull@example.org>', $headers);
+        $this->assertContains('BCC: <bcc@example.com>', $headers);
+        $this->assertContains('Subject: This is a test', $headers);
+        $this->assertContains('MIME-Version: 1.0', $headers);
+        $this->assertContains('Message-ID: <abc123>', $headers);
+        $this->assertContains('Content-Type: text/plain; charset="ISO-8859-1"', $headers);
+        $this->assertContains('Content-Transfer-Encoding: 7bit', $headers);
+    }
+
 }
 
 ?>
