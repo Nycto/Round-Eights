@@ -108,16 +108,146 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testGetHeaderList ()
+    public function testGetHeaderList_sparse ()
     {
-        $this->markTestIncomplete("To be written");
         $mail = new \cPHP\Mail;
 
         $transport = $this->getMock('cPHP\Mail\Transport');
 
+        $headers = $transport->getHeaderList( $mail );
+        $this->assertArrayHasKey("Date", $headers);
+        $this->assertRegExp(
+                '/^\w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}$/i',
+                $headers['Date']
+            );
+        unset( $headers['Date'] );
+
         $this->assertSame(
-                array(),
-                $transport->getHeaderList( $mail )
+                array(
+                        "MIME-Version" => "1.0",
+                        "Content-Type" => 'text/plain; charset="ISO-8859-1"',
+                        "Content-Transfer-Encoding" => "7bit"
+                    ),
+                $headers
+            );
+    }
+
+    public function testGetHeaderList_full ()
+    {
+        $mail = new \cPHP\Mail;
+        $mail->setFrom("from@example.com", "Jack Test")
+            ->addTo("other@example.net", "Jack Snap")
+            ->addTo("another@example.org", "Crackle Pop")
+            ->addCC("cc@example.edu", "Veal SteakFace")
+            ->addCC("devnull@example.org")
+            ->addBCC("bcc@example.com")
+            ->setSubject("This is a test")
+            ->setMessageID("abc123");
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderList( $mail );
+        $this->assertArrayHasKey("Date", $headers);
+        $this->assertRegExp(
+                '/^\w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}$/i',
+                $headers['Date']
+            );
+        unset( $headers['Date'] );
+
+        $this->assertSame(
+                array(
+                        'From' => '"Jack Test" <from@example.com>',
+                        'To' => '"Jack Snap" <other@example.net>, "Crackle Pop" <another@example.org>',
+                        'CC' => '"Veal SteakFace" <cc@example.edu>, <devnull@example.org>',
+                        'BCC' => '<bcc@example.com>',
+                        'Subject' => 'This is a test',
+                        "MIME-Version" => "1.0",
+                        'Message-ID' => '<abc123>',
+                        "Content-Type" => 'text/plain; charset="ISO-8859-1"',
+                        "Content-Transfer-Encoding" => "7bit"
+                    ),
+                $headers
+            );
+    }
+
+    public function testGetHeaderList_textOnly ()
+    {
+        $mail = new \cPHP\Mail;
+        $mail->setText("This is some content");
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderList( $mail );
+        $this->assertArrayHasKey("Date", $headers);
+        $this->assertRegExp(
+                '/^\w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}$/i',
+                $headers['Date']
+            );
+        unset( $headers['Date'] );
+
+        $this->assertSame(
+                array(
+                        "MIME-Version" => "1.0",
+                        "Content-Type" => 'text/plain; charset="ISO-8859-1"',
+                        "Content-Transfer-Encoding" => "7bit"
+                    ),
+                $headers
+            );
+    }
+
+    public function testGetHeaderList_htmlOnly ()
+    {
+        $mail = new \cPHP\Mail;
+        $mail->setHTML("This is some content");
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderList( $mail );
+        $this->assertArrayHasKey("Date", $headers);
+        $this->assertRegExp(
+                '/^\w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}$/i',
+                $headers['Date']
+            );
+        unset( $headers['Date'] );
+
+        $this->assertSame(
+                array(
+                        "MIME-Version" => "1.0",
+                        "Content-Type" => 'text/html; charset="ISO-8859-1"',
+                        "Content-Transfer-Encoding" => "7bit"
+                    ),
+                $headers
+            );
+    }
+
+    public function testGetHeaderList_multipart ()
+    {
+        $mail = new \cPHP\Mail;
+        $mail->setHTML("This is some content");
+        $mail->setText("This is some content");
+
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $headers = $transport->getHeaderList( $mail );
+        $this->assertArrayHasKey("Date", $headers);
+        $this->assertRegExp(
+                '/^\w{3}\, \d{2} \w{3} \d{4} \d{2}\:\d{2}\:\d{2} [-+]\d{4}$/i',
+                $headers['Date']
+            );
+        unset( $headers['Date'] );
+
+        $this->assertArrayHasKey("Content-Type", $headers);
+        $this->assertRegExp(
+                "/^multipart\/alternative;\\sboundary='=_[\\w=]+'$/i",
+                $headers['Content-Type']
+            );
+        unset( $headers['Content-Type'] );
+
+        $this->assertSame(
+                array(
+                        "MIME-Version" => "1.0",
+                    ),
+                $headers
             );
     }
 

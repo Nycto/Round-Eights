@@ -127,7 +127,19 @@ abstract class Transport
         if ( $mail->fromExists() )
             $result['From'] = self::formatAddress( $mail->getFrom(), $mail->getFromName() );
 
+        if ( $mail->hasTos() )
+            $result['To'] = $this->getToString( $mail );
 
+        if ( $mail->hasCCs() )
+            $result['CC'] = $this->getCCString( $mail );
+
+        if ( $mail->hasBCCs() )
+            $result['BCC'] = $this->getBCCString( $mail );
+
+        if ( $mail->subjectExists() )
+            $result['Subject'] = $mail->getSubject();
+
+        $result['Date'] = date('r');
 
         $result["MIME-Version"] = "1.0";
 
@@ -135,7 +147,7 @@ abstract class Transport
             $result['Message-ID'] = '<'. $mail->getMessageID() .'>';
 
         if ( $mail->htmlExists() && $mail->textExists() ) {
-            $result['Content-Type'] = "multipart/alternative;\nboundary='". $mail->getBoundary ."'";
+            $result['Content-Type'] = "multipart/alternative;\nboundary='". $mail->getBoundary() ."'";
         }
         else if ( $mail->htmlExists() ) {
             $result['Content-Type'] = 'text/html; charset="ISO-8859-1"';
