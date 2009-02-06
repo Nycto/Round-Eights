@@ -357,7 +357,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function useAuto ()
     {
-        $this->encode = self::ENCODE_AUTO;
+        $this->encoding = self::ENCODE_AUTO;
         return $this;
     }
 
@@ -368,7 +368,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function useRaw ()
     {
-        $this->encode = self::ENCODE_RAW;
+        $this->encoding = self::ENCODE_RAW;
         return $this;
     }
 
@@ -379,7 +379,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function useB ()
     {
-        $this->encode = self::ENCODE_B;
+        $this->encoding = self::ENCODE_B;
         return $this;
     }
 
@@ -390,7 +390,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function useQ ()
     {
-        $this->encode = self::ENCODE_Q;
+        $this->encoding = self::ENCODE_Q;
         return $this;
     }
 
@@ -688,13 +688,13 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function encode ( $string )
     {
-        if ( $this->encode == self::ENCODE_B )
+        if ( $this->encoding == self::ENCODE_B )
             return $this->bEncode( $string );
 
-        else if ( $this->encode == self::ENCODE_Q )
+        else if ( $this->encoding == self::ENCODE_Q )
             return $this->qEncode( $string );
 
-        else if ( $this->encode == self::ENCODE_RAW )
+        else if ( $this->encoding == self::ENCODE_RAW )
             return $this->rawEncode( $string );
 
         // At this point, we know that we're doing automatic selection
