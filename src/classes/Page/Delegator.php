@@ -47,7 +47,8 @@ abstract class Delegator extends \cPHP\Page
      */
     public function __construct( $view = NULL )
     {
-
+        if ( !\cPHP\isVague($view) )
+            $this->setView( $view );
     }
 
     /**
@@ -58,18 +59,37 @@ abstract class Delegator extends \cPHP\Page
      */
     public function setView ( $view )
     {
+        $view = \cPHP\indexVal( $view );
 
+        if ( \cPHP\isEmpty($view) )
+            throw new \cPHP\Exception\Argument(0, 'View Index', 'Must not be empty');
+
+        $this->view = $view;
+
+        return $this;
     }
 
     /**
      * Returns the method that this instance will attempt to use as the renderer
      *
-     * @return String Returns the method name. This does not gaurantee that the method
-     *    exists, just that this method is the one selected
+     * @return String|Null Returns the view. This does not guarantee that the
+     *    view is defined, just that this view is the one selected. Returns NULL
+     *    if no view exists.
      */
     public function getView ()
     {
+        return $this->view;
+    }
 
+    /**
+     * Clears the view from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function resetView ()
+    {
+        $this->view = 'index';
+        return $this;
     }
 
     /**
@@ -86,12 +106,20 @@ abstract class Delegator extends \cPHP\Page
     }
 
     /**
+     * Returns whether the current view is defined
+     *
+     * @return Boolean Returns whether the current view is defined
+     */
+    abstract public function viewExists ();
+
+    /**
      * Returns the content to display if an invalid view is given
      *
      * @return Object Returns a template object
      */
-    public function error ()
+    public function getErrorView ()
     {
+        return new \cPHP\Template\Raw("View does not exist");
     }
 
 }
