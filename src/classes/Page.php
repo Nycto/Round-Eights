@@ -34,18 +34,36 @@ abstract class Page implements \cPHP\iface\Page
 {
 
     /**
-     * Returns the template this page will display
+     * Returns the core content this page will display
      *
-     * @return Object Returns a Template object
+     * @return mixed Returns the central content for the page
      */
-    abstract public function getCoreTemplate ();
+    abstract protected function createCoreContent ();
+
+    /**
+     * Returns the core content of this page as a template
+     *
+     * Behind the scenes, this calls the createCoreContent method and normalizes
+     * the results.
+     *
+     * @return Object Returns a cPHP\iface\Template object
+     */
+    public function getCoreContent ()
+    {
+        $content = $this->createCoreContent();
+
+        if ( $content instanceof \cPHP\iface\Template )
+            return $content;
+
+        return new \cPHP\Template\Raw( \cPHP\strval($content) );
+    }
 
     /**
      * Returns the template that will be used to render the entire page.
      *
-     * @return Object Returns a Template object
+     * @return mixed Returns
      */
-    public function getPageTemplate ()
+    public function getPageContent ()
     {
 
     }
@@ -57,6 +75,9 @@ abstract class Page implements \cPHP\iface\Page
      */
     public function display()
     {
+        $template = $this->getCoreTemplate();
+
+
     }
 
     /**

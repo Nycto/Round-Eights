@@ -33,6 +33,143 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_page extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetCoreContent_template ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getCoreContent() );
+    }
+
+    public function testGetCoreContent_string ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue("data chunk") );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "data chunk", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_integer ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue(404) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "404", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_float ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue( 10.5 ) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "10.5", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_null ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue( null ) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_boolean ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue( TRUE ) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "1", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_toString ()
+    {
+        $obj = $this->getMock( 'stdClass', array('__toString') );
+
+        $obj->expects( $this->once() )
+            ->method('__toString')
+            ->will( $this->returnValue("data chunk") );
+
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue($obj) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "data chunk", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_obj ()
+    {
+        $obj = new stdClass;
+        $obj->data = "data chunk";
+
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue($obj) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "data chunk", $content->getcontent() );
+    }
+
+    public function testGetCoreContent_array ()
+    {
+        $page = $this->getMock('cPHP\Page', array('createCoreContent'));
+
+        $page->expects( $this->once() )
+            ->method('createCoreContent')
+            ->will( $this->returnValue(array("data chunk")) );
+
+        $content = $page->getCoreContent();
+
+        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "data chunk", $content->getcontent() );
+    }
+
 }
 
 ?>
