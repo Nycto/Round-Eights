@@ -25,12 +25,12 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Base class for page objects that select their display from a set of options
  */
-abstract class Selector extends basePage
+abstract class Delegator extends \cPHP\Page
 {
 
     /**

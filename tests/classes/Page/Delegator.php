@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_page_selector extends PHPUnit_Framework_TestCase
+class classes_page_delegator extends PHPUnit_Framework_TestCase
 {
 
 }
