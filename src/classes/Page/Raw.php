@@ -92,6 +92,7 @@ class Raw extends \cPHP\Page
         $this->data = null;
         return $this;
     }
+
     /**
      * Returns the core content this page will display
      *
