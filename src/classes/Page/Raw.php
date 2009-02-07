@@ -25,12 +25,12 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Takes a given input, converts it to a string, and presents it as a page
  */
-class String extends \cPHP\Page
+class Raw extends \cPHP\Page
 {
 
     /**
@@ -38,55 +38,68 @@ class String extends \cPHP\Page
      *
      * @var String
      */
-    private $content;
+    private $data;
 
     /**
      * Constructor...
      *
-     * @param mixed $content The content this page will display
+     * @param mixed $data The data for this instance
      */
-    public function __construct ($content = null)
+    public function __construct( $data = NULL )
     {
-        $this->setContent( $content );
+        $this->setData( $data );
     }
 
     /**
-     * Sets the content this page will display
+     * Returns the data in this instance
      *
-     * @param mixed $content The content this page will display
+     * @return mixed The data
+     */
+    public function getData ()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Sets the data for this instance
+     *
+     * @param mixed $data The data being set
      * @return Object Returns a self reference
      */
-    public function setContent ( $content )
+    public function setData ( $data )
     {
-
+        $this->data = $data;
+        return $this;
     }
 
     /**
-     * Returns the content this page will display
+     * Clears the data out of this instance
      *
-     * @return String
+     * @return Boolean Returns whether this instance has any data
      */
-    public function getContent ()
+    public function dataExists ()
     {
-
+        return isset( $this->data );
     }
 
     /**
-     * Outputs this page to the user
+     * Clears the data out of this instance
      *
      * @return Object Returns a self reference
      */
-    public function display()
+    public function clearData ()
     {
+        $this->data = null;
+        return $this;
     }
-
     /**
-     * Returns the content of this page as a string
+     * Returns the core content this page will display
      *
-     * @return String
+     * @return mixed Returns the central content for the page
      */
-    public function render()
+    protected function createContent ()
     {
+        return new \cPHP\Template\Raw( $this->data );
     }
 
 }
