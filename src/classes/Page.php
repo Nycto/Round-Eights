@@ -114,11 +114,17 @@ abstract class Page implements \cPHP\iface\Page
     /**
      * Returns the template that will be used to render the entire page.
      *
-     * @return mixed Returns
+     * @return Object Returns a template object
      */
     public function getPage ()
     {
+        $content = $this->getContent();
 
+        // If there is no layout to wrap the content in, just return it
+        if ( !$this->layoutExists() )
+            return $content;
+
+        return $this->layout->set("content", $content);
     }
 
     /**

@@ -178,10 +178,7 @@ class classes_page extends PHPUnit_Framework_TestCase
         $this->assertFalse( $page->layoutExists() );
 
 
-        $tpl = $this->getMock(
-                'cPHP\Template',
-                array('render', 'display', '__toString')
-            );
+        $tpl = $this->getMock( 'cPHP\Template', array('display') );
         $this->assertSame( $page, $page->setLayout($tpl) );
         $this->assertSame( $tpl, $page->getLayout() );
         $this->assertTrue( $page->layoutExists() );
@@ -190,6 +187,46 @@ class classes_page extends PHPUnit_Framework_TestCase
         $this->assertSame( $page, $page->clearLayout() );
         $this->assertNull( $page->getLayout() );
         $this->assertFalse( $page->layoutExists() );
+    }
+
+    public function testGetPage_noLayout ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $page = $this->getMock('cPHP\Page', array('createContent'));
+
+        $page->expects( $this->once() )
+            ->method('createContent')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getPage() );
+    }
+
+    public function testGetPage_withLayout ()
+    {
+        $content = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $page = $this->getMock('cPHP\Page', array('createContent'));
+
+        $page->expects( $this->once() )
+            ->method('createContent')
+            ->will( $this->returnValue($content) );
+
+
+        $layout = $this->getMock( 'cPHP\Template', array('display') );
+
+        $page->setLayout( $layout );
+
+        $this->assertSame( $layout, $page->getPage() );
+
+        $this->assertTrue( $layout->exists('content') );
+        $this->assertSame( $content, $layout->get('content') );
     }
 
 }
