@@ -33,6 +33,18 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_blank extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetContent ()
+    {
+        $page = new \cPHP\Page\Blank;
+
+        $this->assertThat(
+                $page->getContent(),
+                $this->isInstanceOf('cPHP\Template\Raw')
+            );
+
+        $this->assertNull( $page->getContent()->getContent() );
+    }
+
 }
 
 ?>

@@ -25,7 +25,7 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Displays a blank page
@@ -34,21 +34,13 @@ class Blank extends \cPHP\Page
 {
 
     /**
-     * Outputs this page to the user
+     * Returns the core content this page will display
      *
-     * @return Object Returns a self reference
+     * @return mixed Returns the central content for the page
      */
-    public function display()
+    protected function createContent ()
     {
-    }
-
-    /**
-     * Returns the content of this page as a string
-     *
-     * @return String
-     */
-    public function render()
-    {
+        return new \cPHP\Template\Raw;
     }
 
 }
