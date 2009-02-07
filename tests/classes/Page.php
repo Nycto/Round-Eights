@@ -229,6 +229,23 @@ class classes_page extends PHPUnit_Framework_TestCase
         $this->assertSame( $content, $layout->get('content') );
     }
 
+    public function testDisplay ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array('display') );
+
+        $tpl->expects( $this->once() )
+            ->method('display');
+
+
+        $page = $this->getMock('cPHP\Page', array('createContent', 'getPage'));
+
+        $page->expects( $this->once() )
+            ->method('getPage')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $page, $page->display() );
+    }
+
 }
 
 ?>

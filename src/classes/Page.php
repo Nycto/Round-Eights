@@ -132,11 +132,10 @@ abstract class Page implements \cPHP\iface\Page
      *
      * @return Object Returns a self reference
      */
-    public function display()
+    public function display ()
     {
-        $template = $this->getCoreTemplate();
-
-
+        $this->getPage()->display();
+        return $this;
     }
 
     /**
