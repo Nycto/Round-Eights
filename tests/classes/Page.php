@@ -246,6 +246,24 @@ class classes_page extends PHPUnit_Framework_TestCase
         $this->assertSame( $page, $page->display() );
     }
 
+    public function testRender ()
+    {
+        $tpl = $this->getMock( 'cPHP\Template', array('display', 'render') );
+
+        $tpl->expects( $this->once() )
+            ->method('render')
+            ->will( $this->returnValue('Chunk of data') );
+
+
+        $page = $this->getMock('cPHP\Page', array('createContent', 'getPage'));
+
+        $page->expects( $this->once() )
+            ->method('getPage')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( 'Chunk of data', $page->render() );
+    }
+
 }
 
 ?>

@@ -145,6 +145,7 @@ abstract class Page implements \cPHP\iface\Page
      */
     public function render()
     {
+        return $this->getPage()->render();
     }
 
 }
