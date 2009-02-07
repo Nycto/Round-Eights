@@ -34,11 +34,18 @@ abstract class Page implements \cPHP\iface\Page
 {
 
     /**
+     * The layout template object that will wrap the content
+     *
+     * @var Object The layout template object
+     */
+    private $layout;
+
+    /**
      * Returns the core content this page will display
      *
      * @return mixed Returns the central content for the page
      */
-    abstract protected function createCoreContent ();
+    abstract protected function createContent ();
 
     /**
      * Returns the core content of this page as a template
@@ -48,9 +55,9 @@ abstract class Page implements \cPHP\iface\Page
      *
      * @return Object Returns a cPHP\iface\Template object
      */
-    public function getCoreContent ()
+    public function getContent ()
     {
-        $content = $this->createCoreContent();
+        $content = $this->createContent();
 
         if ( $content instanceof \cPHP\iface\Template )
             return $content;
@@ -59,11 +66,57 @@ abstract class Page implements \cPHP\iface\Page
     }
 
     /**
+     * Returns the layout template, if one exists
+     *
+     * @return Object|Null Returns a template object, or null if no layout has been set
+     */
+    public function getLayout ()
+    {
+        return $this->layout;
+    }
+
+    /**
+     * Sets the layout template that the content will be wrapped in.
+     *
+     * When the page is pulled via getPage, the content will be added to the
+     * layout template in the "content" variable.
+     *
+     * @param Object $layout The layout template
+     * @return Object Returns a self reference
+     */
+    public function setLayout ( \cPHP\Template $layout )
+    {
+        $this->layout = $layout;
+        return $this;
+    }
+
+    /**
+     * Returns the whether a layout template has been set
+     *
+     * @return Boolean
+     */
+    public function layoutExists ()
+    {
+        return isset($this->layout);
+    }
+
+    /**
+     * Clears the layout template from this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearLayout ()
+    {
+        $this->layout = null;
+        return $this;
+    }
+
+    /**
      * Returns the template that will be used to render the entire page.
      *
      * @return mixed Returns
      */
-    public function getPageContent ()
+    public function getPage ()
     {
 
     }
