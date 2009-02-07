@@ -33,6 +33,65 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_template extends PHPUnit_Framework_TestCase
 {
 
+    public function testTemplateAccessors ()
+    {
+        $page = new \cPHP\Page\Template;
+
+        $this->assertNull( $page->getTemplate() );
+        $this->assertFalse( $page->templateExists() );
+
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $this->assertSame( $page, $page->setTemplate($tpl) );
+        $this->assertSame( $tpl, $page->getTemplate() );
+        $this->assertTrue( $page->templateExists() );
+
+        $this->assertSame( $page, $page->clearTemplate() );
+        $this->assertNull( $page->getTemplate() );
+        $this->assertFalse( $page->templateExists() );
+    }
+
+    public function testConstructor ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $page = new \cPHP\Page\Template( $tpl );
+
+        $this->assertSame( $page, $page->setTemplate($tpl) );
+        $this->assertSame( $tpl, $page->getTemplate() );
+        $this->assertTrue( $page->templateExists() );
+    }
+
+    public function testGetContent_empty ()
+    {
+        $page = new \cPHP\Page\Template;
+
+        $this->assertThat(
+                $page->getContent(),
+                $this->isInstanceOf('cPHP\Template\Raw')
+            );
+
+        $this->assertNull( $page->getContent()->getContent() );
+    }
+
+    public function testGetContent_data ()
+    {
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('render', 'display', '__toString')
+            );
+
+        $page = new \cPHP\Page\Template( $tpl );
+
+        $this->assertSame( $tpl, $page->getContent() );
+    }
+
 }
 
 ?>

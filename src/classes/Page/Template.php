@@ -25,59 +25,86 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Passes a template through as a page
  */
-class Template extends basePage
+class Template extends \cPHP\Page
 {
 
     /**
-     * The template this page will display
+     * The content this page will display
      *
-     * @var Object A template
+     * @var Object a Template object
      */
     private $template;
 
     /**
      * Constructor...
      *
-     * @param mixed $template The content this page will display
-     */
-    public function __construct ( templatable $template = null )
-    {
-    }
-
-    /**
-     * Sets the template this page will display
-     *
      * @param mixed $template The template this page will display
-     * @return Object Returns a self reference
      */
-    public function setTemplate ( templatable $template )
+    public function __construct( \cPHP\iface\Template $template = NULL )
     {
-
+        if ( $template instanceof \cPHP\iface\Template )
+            $this->setTemplate( $template );
     }
 
     /**
-     * Returns the content this page will display
+     * Returns the template in this instance
      *
      * @return Object Returns a template object
      */
-    public function getContent ()
+    public function getTemplate ()
     {
-
+        return $this->template;
     }
 
     /**
-     * Returns the template this page will display
+     * Sets the template for this instance
      *
-     * @return Object Returns a Template object
+     * @param Object $template The template being set
+     * @return Object Returns a self reference
      */
-    public function getCoreTemplate ()
+    public function setTemplate ( \cPHP\iface\Template $template )
     {
+        $this->template = $template;
+        return $this;
+    }
 
+    /**
+     * Clears the template out of this instance
+     *
+     * @return Boolean Returns whether this instance has any template
+     */
+    public function templateExists ()
+    {
+        return isset( $this->template );
+    }
+
+    /**
+     * Clears the template out of this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearTemplate ()
+    {
+        $this->template = null;
+        return $this;
+    }
+
+    /**
+     * Returns the core content this page will display
+     *
+     * @return mixed Returns the central content for the page
+     */
+    protected function createContent ()
+    {
+        if ( $this->templateExists() )
+            return $this->template;
+        else
+            return new \cPHP\Template\Raw;
     }
 
 }
