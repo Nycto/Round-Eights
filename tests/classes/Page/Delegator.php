@@ -35,7 +35,10 @@ class classes_page_delegator extends PHPUnit_Framework_TestCase
 
     public function testViewAccessors ()
     {
-        $page = $this->getMock('cPHP\Page\Delegator', array('createContent', 'viewExists'));
+        $page = $this->getMock(
+                'cPHP\Page\Delegator',
+                array('createContent', 'viewExists')
+            );
 
         $this->assertSame( "index", $page->getView() );
 
@@ -59,7 +62,10 @@ class classes_page_delegator extends PHPUnit_Framework_TestCase
 
     public function testSetViewFrom_array ()
     {
-        $page = $this->getMock('cPHP\Page\Delegator', array('createContent', 'viewExists'));
+        $page = $this->getMock(
+                'cPHP\Page\Delegator',
+                array('createContent', 'viewExists')
+            );
 
         $this->assertSame(
                 $page,
@@ -84,7 +90,10 @@ class classes_page_delegator extends PHPUnit_Framework_TestCase
 
     public function testSetViewFrom_arrayAccess ()
     {
-        $page = $this->getMock('cPHP\Page\Delegator', array('createContent', 'viewExists'));
+        $page = $this->getMock(
+                'cPHP\Page\Delegator',
+                array('createContent', 'viewExists')
+            );
 
         $this->assertSame(
                 $page,
@@ -105,6 +114,24 @@ class classes_page_delegator extends PHPUnit_Framework_TestCase
                 $page->setViewFrom('func', new cPHP\Ary(array('func' => null)) )
             );
         $this->assertSame('list', $page->getView());
+    }
+
+    public function testGetErrorView ()
+    {
+        $page = $this->getMock(
+                'cPHP\Page\Delegator',
+                array('createContent', 'viewExists')
+            );
+
+        $this->assertThat(
+                $page->getErrorView(),
+                $this->isInstanceOf('cPHP\Template\Raw')
+            );
+
+        $this->assertSame(
+                "View does not exist",
+                $page->getErrorView()->getContent()
+            );
     }
 
 }
