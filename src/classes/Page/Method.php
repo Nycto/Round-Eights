@@ -25,21 +25,35 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Decides which method to use based on a string
+ *
+ * Views are defined by extending this class and defining methods. Any method
+ * that beings with 'view_' will be callable.
  */
-abstract class Method extends basePage
+abstract class Method extends \cPHP\Page\Delegator
 {
+
+    /**
+     * Returns whether the current view is defined
+     *
+     * @return Boolean Returns whether the current view is defined
+     */
+    public function viewExists ()
+    {
+        return method_exists( $this, 'view_'. $this->getView() );
+    }
 
     /**
      * Executes the view method and returns it's results
      *
      * @return Object Returns a template object
      */
-    public function getCoreTemplate ()
+    public function createContent ()
     {
+        
     }
 
 }

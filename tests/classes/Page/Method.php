@@ -33,6 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_method extends PHPUnit_Framework_TestCase
 {
 
+    public function testViewExists ()
+    {
+        $page = $this->getMock(
+                'cPHP\Page\Method',
+                array('view_list')
+            );
+
+        $page->setView('list');
+        $this->assertTrue( $page->viewExists() );
+
+        $page->setView('LIST');
+        $this->assertTrue( $page->viewExists() );
+
+        $page->setView('other');
+        $this->assertFalse( $page->viewExists() );
+    }
+
 }
 
 ?>
