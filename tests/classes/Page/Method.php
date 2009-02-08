@@ -50,6 +50,46 @@ class classes_page_method extends PHPUnit_Framework_TestCase
         $this->assertFalse( $page->viewExists() );
     }
 
+    public function testCreateContent_viewExists ()
+    {
+        $page = $this->getMock(
+                'cPHP\Page\Method',
+                array('view_list')
+            );
+
+        $tpl = new \cPHP\Template\Raw;
+
+        $page->expects( $this->once() )
+            ->method('view_list')
+            ->will( $this->returnValue( $tpl ) );
+
+        $page->setView('list');
+
+        $this->assertSame( $tpl, $page->createContent() );
+    }
+
+    public function testCreateContent_noExists ()
+    {
+        $page = $this->getMock(
+                'cPHP\Page\Method',
+                array('view_list')
+            );
+
+        $page->setView('none');
+
+        $result = $page->createContent();
+
+        $this->assertThat(
+                $result,
+                $this->isInstanceOf('cPHP\Template\Raw')
+            );
+
+        $this->assertSame(
+                "View does not exist",
+                $result->getContent()
+            );
+    }
+
 }
 
 ?>

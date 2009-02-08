@@ -53,7 +53,12 @@ abstract class Method extends \cPHP\Page\Delegator
      */
     public function createContent ()
     {
-        
+        if ( !$this->viewExists() )
+            return $this->getErrorView();
+
+        $method = 'view_'. $this->getView();
+
+        return $this->$method();
     }
 
 }
