@@ -57,6 +57,56 @@ class classes_page_delegator extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSetViewFrom_array ()
+    {
+        $page = $this->getMock('cPHP\Page\Delegator', array('createContent', 'viewExists'));
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom('func', array('func' => 'list'))
+            );
+        $this->assertSame('list', $page->getView());
+
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom('func', array())
+            );
+        $this->assertSame('list', $page->getView());
+
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom('func', array('func' => null))
+            );
+        $this->assertSame('list', $page->getView());
+    }
+
+    public function testSetViewFrom_arrayAccess ()
+    {
+        $page = $this->getMock('cPHP\Page\Delegator', array('createContent', 'viewExists'));
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom( 'func', new cPHP\Ary(array('func' => 'list')) )
+            );
+        $this->assertSame('list', $page->getView());
+
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom('func', new \cPHP\Ary)
+            );
+        $this->assertSame('list', $page->getView());
+
+
+        $this->assertSame(
+                $page,
+                $page->setViewFrom('func', new cPHP\Ary(array('func' => null)) )
+            );
+        $this->assertSame('list', $page->getView());
+    }
+
 }
 
 ?>

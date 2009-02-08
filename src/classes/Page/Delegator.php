@@ -97,12 +97,22 @@ abstract class Delegator extends \cPHP\Page
      * an array
      *
      * @param String $index The index to pull
-     * @param mixed $source The source array, ArrayAccess object, or object
+     * @param mixed $source The source array
      * @return Object Returns a self reference
      */
     public function setViewFrom ( $index, $source )
     {
+        if ( !($source instanceof \ArrayAccess ) )
+            $source = new \cPHP\Ary( $source );
 
+        if ( isset($source[$index]) ) {
+            try {
+                $this->setView( $source[$index] );
+            }
+            catch ( \cPHP\Exception\Argument $err ) {}
+        }
+
+        return $this;
     }
 
     /**
