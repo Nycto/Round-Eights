@@ -33,6 +33,44 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_form extends PHPUnit_Framework_TestCase
 {
 
+    public function getTestObj ()
+    {
+        return $this->getMock(
+                'cPHP\Page\Form',
+                array('createForm')
+            );
+    }
+
+    public function testGetForm ()
+    {
+        $form = new \cPHP\Form;
+
+        $page = $this->getTestObj();
+        $page->expects( $this->once() )
+            ->method( 'createForm' )
+            ->will( $this->returnValue($form) );
+
+        $this->assertSame( $form, $page->getForm() );
+        $this->assertSame( $form, $page->getForm() );
+        $this->assertSame( $form, $page->getForm() );
+    }
+
+    public function testGetForm_invalid ()
+    {
+        $page = $this->getTestObj();
+        $page->expects( $this->once() )
+            ->method( 'createForm' )
+            ->will( $this->returnValue('non form') );
+
+        $form = $page->getForm();
+
+        $this->assertThat( $form, $this->isInstanceOf('cPHP\Form') );
+
+        $this->assertSame( $form, $page->getForm() );
+        $this->assertSame( $form, $page->getForm() );
+        $this->assertSame( $form, $page->getForm() );
+    }
+
 }
 
 ?>

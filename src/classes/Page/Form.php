@@ -25,12 +25,12 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Shortcut for displaying and submitting a form
  */
-abstract class Form extends basePage
+abstract class Form extends \cPHP\Page
 {
 
     /**
@@ -56,7 +56,13 @@ abstract class Form extends basePage
      */
     public function getForm ()
     {
+        if ( !isset($this->form) ) {
+            $this->form = $this->createForm();
+            if ( !($this->form instanceof \cPHP\Form) )
+                $this->form = new \cPHP\Form;
+        }
 
+        return $this->form;
     }
 
     /**
@@ -64,7 +70,7 @@ abstract class Form extends basePage
      *
      * @return Object Returns a template object
      */
-    public function getCoreTemplate ()
+    public function createContent ()
     {
 
     }
