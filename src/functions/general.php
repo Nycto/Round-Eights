@@ -70,11 +70,11 @@ function reduce ($value)
         if (count($value) <= 0)
             return NULL;
         else
-            return reduce(current($value));
+            return \cPHP\reduce(current($value));
     }
 
     else if (is_object($value))
-        return reduce(get_object_vars($value));
+        return \cPHP\reduce(get_object_vars($value));
 
     else if (is_resource($value))
         return get_resource_type($value);
@@ -120,7 +120,7 @@ function defineIf ($constant, $value)
 function isEmpty ($value, $flags = 0)
 {
 
-    $flags = max(intval(reduce($flags)), 0);
+    $flags = max(intval(\cPHP\reduce($flags)), 0);
 
     // Use the default empty function, if we can
     // Note that empty() considers the string '0' to be empty and this function doesn't
@@ -161,7 +161,7 @@ function isEmpty ($value, $flags = 0)
  */
 function isVague ($value, $flags = 0)
 {
-    return (is_bool($value) || isEmpty($value, $flags));
+    return (is_bool($value) || \cPHP\isEmpty($value, $flags));
 }
 
 /**
@@ -200,7 +200,7 @@ function numVal ($value)
 {
     if (is_int($value) || is_float($value))
         return $value;
-    $value = reduce($value);
+    $value = \cPHP\reduce($value);
     return intval($value) == floatval($value)?intval($value):floatval($value);
 }
 
@@ -231,7 +231,7 @@ function strVal ($value)
     if (is_object($value) && in_array("__toString", get_class_methods($value)))
         return \strval( $value->__toString() );
     else
-        return \strval( reduce($value) );
+        return \strval( \cPHP\reduce($value) );
 }
 
 /**
