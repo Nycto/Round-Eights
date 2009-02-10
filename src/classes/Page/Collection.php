@@ -25,12 +25,12 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Collects a list of pages and displays them all
  */
-class Collection extends basePage
+class Collection extends \cPHP\Page
 {
 
     /**
@@ -47,7 +47,7 @@ class Collection extends basePage
      */
     public function getPages ()
     {
-
+        return new \cPHP\Ary($this->pages);
     }
 
     /**
@@ -56,9 +56,21 @@ class Collection extends basePage
      * @param Object $page The page to add
      * @return Object Returns a self reference
      */
-    public function addPage ( Page $page )
+    public function addPage ( \cPHP\iface\Page $page )
     {
+        $this->pages[] = $page;
+        return $this;
+    }
 
+    /**
+     * Resets the list of pages in this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearPages ()
+    {
+        $this->pages = array();
+        return $this;
     }
 
     /**
@@ -66,8 +78,25 @@ class Collection extends basePage
      *
      * @return Object Returns a template object
      */
-    public function getCoreTemplate ()
+    protected function createContent ()
     {
+        $tpl = new \cPHP\Template\Collection;
+
+        foreach ( $this->pages AS $page ) {
+
+            if ( $page instanceof \cPHP\Page )
+                $content = $page->getPage();
+            else
+                $content = $page->render();
+
+            if ( !($content instanceof \cPHP\iface\Template) )
+                $content = new \cPHP\Template\Raw( $content );
+
+            $tpl->add( $content );
+
+        }
+
+        return $tpl;
     }
 
 }
