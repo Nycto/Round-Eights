@@ -29,7 +29,7 @@ if ( defined("cPHP_INCLUDED") )
     return;
 
 // Define the version
-define("cPHP_VERSION", "0.1.0");
+define("cPHP_VERSION", "0.2.0dev");
 
 // Mark that commonPHP has been included
 define("cPHP_INCLUDED", TRUE);
