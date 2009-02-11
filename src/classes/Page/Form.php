@@ -66,13 +66,25 @@ abstract class Form extends \cPHP\Page
     }
 
     /**
+     * Returns the array that will be used to fill the form with data.
+     *
+     * By default, this will return the $_POST array. This method was designed
+     * to be overridden if a different data source is desired
+     *
+     * @return Array
+     */
+    public function getSource ()
+    {
+        return $_POST;
+    }
+
+    /**
      * Executes the view method and returns it's results
      *
      * @return Object Returns a template object
      */
     public function createContent ()
     {
-
     }
 
 }

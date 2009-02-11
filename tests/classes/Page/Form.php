@@ -71,6 +71,13 @@ class classes_page_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $page->getForm() );
     }
 
+    public function testGetSource ()
+    {
+        $page = $this->getTestObj();
+
+        $this->assertType( 'array', $page->getSource() );
+    }
+
 }
 
 ?>
