@@ -79,12 +79,53 @@ abstract class Form extends \cPHP\Page
     }
 
     /**
+     * The method invoked when a form is initially displayed
+     *
+     * @return Object Returns the template for the content
+     */
+    abstract public function onDisplay ();
+
+    /**
+     * The method invoked when a form is submitted but the values are invalid.
+     *
+     * By default, this method just calls the onDisplay method
+     *
+     * @return Object Returns the template for the content
+     */
+    public function onInvalid ()
+    {
+        return $this->onDisplay();
+    }
+
+    /**
+     * The method invoked when a form is submitted and validates
+     *
+     * @return Object Returns the template for the content
+     */
+    abstract public function onSuccess ();
+
+    /**
      * Executes the view method and returns it's results
      *
      * @return Object Returns a template object
      */
-    public function createContent ()
+    protected function createContent ()
     {
+        $form = $this->getForm();
+
+        $source = $this->getSource();
+
+        // If there was nothing submitted...
+        if ( !$form->anyIn($source) )
+            return $this->onDisplay();
+
+        // Load the source data into the form and validate
+        else if ( $form->fill($source)->isValid() )
+            return $this->onSuccess();
+
+        // Otherwise, display the error page
+        else
+            return $this->onInvalid();
     }
 
 }

@@ -33,11 +33,11 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_form extends PHPUnit_Framework_TestCase
 {
 
-    public function getTestObj ()
+    public function getTestObj ( array $methods = array() )
     {
         return $this->getMock(
                 'cPHP\Page\Form',
-                array('createForm')
+                array_merge( array('createForm', 'onDisplay', 'onSuccess'), $methods )
             );
     }
 
@@ -76,6 +76,150 @@ class classes_page_form extends PHPUnit_Framework_TestCase
         $page = $this->getTestObj();
 
         $this->assertType( 'array', $page->getSource() );
+    }
+
+    public function testCreateContent_display ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+
+        $page = $this->getTestObj( array('getSource') );
+
+        $page->expects( $this->once() )
+            ->method('createForm')
+            ->will( $this->returnValue( new \cPHP\Form ) );
+
+        $page->expects( $this->once() )
+            ->method('getSource')
+            ->will( $this->returnValue(array()) );
+
+        $page->expects( $this->once() )
+            ->method('onDisplay')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getContent() );
+    }
+
+    public function testCreateContent_invalid ()
+    {
+        $form = $this->getMock(
+                'cPHP\Form',
+                array('anyIn', 'fill', 'isValid')
+            );
+
+        $form->expects( $this->once() )
+            ->method('anyIn')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( TRUE ) );
+
+        $form->expects( $this->once() )
+            ->method('fill')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( $form ) );
+
+        $form->expects( $this->once() )
+            ->method('isValid')
+            ->will( $this->returnValue( FALSE ) );
+
+
+        $tpl = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+
+        $page = $this->getTestObj( array('getSource', 'onInvalid') );
+
+        $page->expects( $this->once() )
+            ->method('createForm')
+            ->will( $this->returnValue( $form ) );
+
+        $page->expects( $this->once() )
+            ->method('getSource')
+            ->will( $this->returnValue( array('source' => 'data') ) );
+
+        $page->expects( $this->once() )
+            ->method('onInvalid')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getContent() );
+    }
+
+    public function testCreateContent_invalidDisplay ()
+    {
+        $form = $this->getMock(
+                'cPHP\Form',
+                array('anyIn', 'fill', 'isValid')
+            );
+
+        $form->expects( $this->once() )
+            ->method('anyIn')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( TRUE ) );
+
+        $form->expects( $this->once() )
+            ->method('fill')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( $form ) );
+
+        $form->expects( $this->once() )
+            ->method('isValid')
+            ->will( $this->returnValue( FALSE ) );
+
+
+        $tpl = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+
+        $page = $this->getTestObj( array('getSource') );
+
+        $page->expects( $this->once() )
+            ->method('createForm')
+            ->will( $this->returnValue( $form ) );
+
+        $page->expects( $this->once() )
+            ->method('getSource')
+            ->will( $this->returnValue( array('source' => 'data') ) );
+
+        $page->expects( $this->once() )
+            ->method('onDisplay')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getContent() );
+    }
+
+    public function testCreateContent_success ()
+    {
+        $form = $this->getMock(
+                'cPHP\Form',
+                array('anyIn', 'fill', 'isValid')
+            );
+
+        $form->expects( $this->once() )
+            ->method('anyIn')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( TRUE ) );
+
+        $form->expects( $this->once() )
+            ->method('fill')
+            ->with( $this->equalTo( array('source' => 'data') ) )
+            ->will( $this->returnValue( $form ) );
+
+        $form->expects( $this->once() )
+            ->method('isValid')
+            ->will( $this->returnValue( TRUE ) );
+
+
+        $tpl = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+
+        $page = $this->getTestObj( array('getSource') );
+
+        $page->expects( $this->once() )
+            ->method('createForm')
+            ->will( $this->returnValue( $form ) );
+
+        $page->expects( $this->once() )
+            ->method('getSource')
+            ->will( $this->returnValue( array('source' => 'data') ) );
+
+        $page->expects( $this->once() )
+            ->method('onSuccess')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $page->getContent() );
     }
 
 }
