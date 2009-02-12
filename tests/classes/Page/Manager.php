@@ -95,6 +95,26 @@ class classes_page_manager extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetSubPage ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+
+        $this->assertNull( $mgr->getSubPage('first') );
+        $this->assertNull( $mgr->getSubPage('second') );
+
+        $page1 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('first', $page1);
+
+        $this->assertSame( $page1, $mgr->getSubPage('first') );
+        $this->assertNull( $mgr->getSubPage('second') );
+
+        $page2 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('second', $page2);
+
+        $this->assertSame( $page1, $mgr->getSubPage('first') );
+        $this->assertSame( $page2, $mgr->getSubPage('second') );
+    }
+
 }
 
 ?>
