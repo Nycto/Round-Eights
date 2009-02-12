@@ -115,6 +115,26 @@ class classes_page_manager extends PHPUnit_Framework_TestCase
         $this->assertSame( $page2, $mgr->getSubPage('second') );
     }
 
+    public function testSubPageExists ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+
+        $this->assertFalse( $mgr->subPageExists('first') );
+        $this->assertFalse( $mgr->subPageExists('second') );
+
+        $page1 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('first', $page1);
+
+        $this->assertTrue( $mgr->subPageExists('first') );
+        $this->assertFalse( $mgr->subPageExists('second') );
+
+        $page2 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('second', $page2);
+
+        $this->assertTrue( $mgr->subPageExists('first') );
+        $this->assertTrue( $mgr->subPageExists('second') );
+    }
+
 }
 
 ?>
