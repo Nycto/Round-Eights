@@ -33,6 +33,68 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_manager extends PHPUnit_Framework_TestCase
 {
 
+    public function testSetSubPage ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+        $this->assertEquals( new \cPHP\Ary, $mgr->getSubPages() );
+
+
+        $page1 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+
+        $this->assertSame( $mgr, $mgr->setSubPage('first', $page1) );
+        $result = $mgr->getSubPages();
+        $this->assertEquals(
+                new \cPHP\Ary(array('first' => $page1) ),
+                $result
+            );
+        $this->assertSame( $page1, $result['first']);
+
+
+        $page2 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+
+        $this->assertSame( $mgr, $mgr->setSubPage('second', $page2) );
+        $result = $mgr->getSubPages();
+        $this->assertEquals(
+                new \cPHP\Ary(array('first' => $page1, 'second' => $page2) ),
+                $result
+            );
+        $this->assertSame( $page1, $result['first']);
+        $this->assertSame( $page2, $result['second']);
+
+
+        // Add the same page twice
+        $this->assertSame( $mgr, $mgr->setSubPage('third', $page1) );
+        $result = $mgr->getSubPages();
+        $this->assertEquals(
+                new \cPHP\Ary(array('first' => $page1, 'second' => $page2, 'third' => $page1) ),
+                $result
+            );
+        $this->assertSame( $page1, $result['first']);
+        $this->assertSame( $page2, $result['second']);
+        $this->assertSame( $page1, $result['third']);
+
+
+        // Overwrite an existing index
+        $this->assertSame( $mgr, $mgr->setSubPage('first', $page2) );
+        $result = $mgr->getSubPages();
+        $this->assertEquals(
+                new \cPHP\Ary(array('first' => $page2, 'second' => $page2, 'third' => $page1) ),
+                $result
+            );
+        $this->assertSame( $page2, $result['first']);
+        $this->assertSame( $page2, $result['second']);
+        $this->assertSame( $page1, $result['third']);
+
+
+        try {
+            $mgr->setSubPage('', $page1);
+            $this->fail('An expected exception was not thrown');
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+    }
+
 }
 
 ?>

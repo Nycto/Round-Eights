@@ -25,12 +25,12 @@
  * @package Filters
  */
 
-namespace cPHP;
+namespace cPHP\Page;
 
 /**
  * Collects a list of pages and selects which to display
  */
-class Manager extends basePage
+class Manager extends \cPHP\Page\Delegator
 {
 
     /**
@@ -46,9 +46,9 @@ class Manager extends basePage
      *
      * @return Array Returns an array of page objects
      */
-    public function getPages ()
+    public function getSubPages ()
     {
-
+        return new \cPHP\Ary( $this->pages );
     }
 
     /**
@@ -58,9 +58,47 @@ class Manager extends basePage
      * @param Object $page The page to add
      * @return Object Returns a self reference
      */
-    public function addPage ( $index, Page $page )
+    public function setSubPage ( $index, \cPHP\iface\Page $page )
     {
+        $index = \cPHP\indexVal( $index );
 
+        if ( \cPHP\isEmpty($index) )
+            throw new \cPHP\Exception\Argument(0, "Page Index", "Must not be empty");
+
+        $this->pages[ $index ] = $page;
+
+        return $this;
+    }
+
+    /**
+     * Returns a specific sub-page based on it's index
+     *
+     * @param String $index The reference of the page to retreive
+     * @return Object|Null Returns a cPHP\iface\Page object, or Null if the
+     *      specified page doesn't exist
+     */
+    public function getSubPage ( $index )
+    {
+        $index = \cPHP\indexVal( $index );
+
+        if ( array_key_exists($index, $this->pages) )
+            return $this->pages[ $index ];
+
+        return null;
+    }
+
+    /**
+     * Returns whether a page has been set
+     *
+     * @param String $index The page index
+     * @return Boolean
+     */
+    public function subPageExists ( $index )
+    {
+        return array_key_exists(
+                \cPHP\indexVal( $index ),
+                $this->pages
+            );
     }
 
     /**
@@ -69,17 +107,41 @@ class Manager extends basePage
      * @param String $index The reference of the page to remove
      * @return Object Returns a self reference
      */
-    public function removePage ( $index )
+    public function removeSubPage ( $index )
     {
-
+        $index = \cPHP\indexVal( $index );
+        if ( array_key_exists($index, $this->pages) )
+            unset( $this->pages[ $index ] );
+        return $this;
     }
 
     /**
-     * Executes the view method and returns it's results
+     * Removes all the pages from the list
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearSubPages ()
+    {
+        $this->pages = array();
+        return $this;
+    }
+
+    /**
+     * Returns whether the current view is defined
+     *
+     * @return Boolean Returns whether the current view is defined
+     */
+    public function viewExists ()
+    {
+        return $this->pageExsts( $this->getView() );
+    }
+
+    /**
+     * Executes the appropriate template and returns it's results
      *
      * @return Object Returns a template object
      */
-    public function getCoreTemplate ()
+    public function createContent ()
     {
     }
 
