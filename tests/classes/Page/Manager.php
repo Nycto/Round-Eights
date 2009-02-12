@@ -179,6 +179,32 @@ class classes_page_manager extends PHPUnit_Framework_TestCase
         $this->assertEquals( new \cPHP\Ary, $mgr->getSubPages() );
     }
 
+    public function testViewExists ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+        $mgr->setView('first');
+
+        $this->assertFalse( $mgr->viewExists() );
+
+        $page1 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('first', $page1);
+
+        $this->assertTrue( $mgr->viewExists() );
+
+        $page2 = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $mgr->setSubPage('second', $page2);
+
+        $this->assertTrue( $mgr->viewExists() );
+
+        $mgr->setView('second');
+
+        $this->assertTrue( $mgr->viewExists() );
+
+        $mgr->setView('index');
+
+        $this->assertFalse( $mgr->viewExists() );
+    }
+
 }
 
 ?>

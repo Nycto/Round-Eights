@@ -133,7 +133,7 @@ class Manager extends \cPHP\Page\Delegator
      */
     public function viewExists ()
     {
-        return $this->pageExsts( $this->getView() );
+        return $this->subPageExists( $this->getView() );
     }
 
     /**
