@@ -143,6 +143,20 @@ class Manager extends \cPHP\Page\Delegator
      */
     public function createContent ()
     {
+        if ( !$this->viewExists() )
+            return $this->getErrorView();
+
+        $view = $this->pages[ $this->getView() ];
+
+        if ( $view instanceof \cPHP\Page )
+            $content = $view->getPage();
+        else
+            $content = $view->render();
+
+        if ( !($content instanceof \cPHP\iface\Template) )
+            $content = new \cPHP\Template\Raw($content);
+
+        return $content;
     }
 
 }

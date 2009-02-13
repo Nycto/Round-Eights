@@ -205,6 +205,52 @@ class classes_page_manager extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mgr->viewExists() );
     }
 
+    public function testCreateContent_errorView ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+        $mgr->setView('index');
+
+        $tpl = $mgr->getContent();
+
+        $this->assertThat( $tpl, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "View does not exist", $tpl->getContent() );
+    }
+
+    public function testCreateContent_iface ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+        $mgr->setView('first');
+
+        $page = $this->getMock('\cPHP\iface\Page', array('display', 'render', '__toString'));
+        $page->expects( $this->once() )
+            ->method('render')
+            ->will( $this->returnValue('Chunk of data') );
+
+        $mgr->setSubPage('first', $page);
+
+        $tpl = $mgr->getContent();
+
+        $this->assertThat( $tpl, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertSame( "Chunk of data", $tpl->getContent() );
+    }
+
+    public function testCreateContent_page ()
+    {
+        $mgr = new \cPHP\Page\Manager;
+        $mgr->setView('first');
+
+        $tpl = new \cPHP\Template\Raw("test");
+
+        $page = $this->getMock('\cPHP\Page', array('createContent', 'getPage'));
+        $page->expects( $this->once() )
+            ->method('getPage')
+            ->will( $this->returnValue($tpl) );
+
+        $mgr->setSubPage('first', $page);
+
+        $this->assertSame( $tpl, $mgr->getContent() );
+    }
+
 }
 
 ?>
