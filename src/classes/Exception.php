@@ -142,7 +142,7 @@ class Exception extends \Exception
      */
     public function issetMessage ()
     {
-        return !isEmpty($this->getMessage());
+        return !\cPHP\isEmpty($this->getMessage());
     }
 
     /**
@@ -152,7 +152,7 @@ class Exception extends \Exception
      */
     public function issetCode ()
     {
-        return !isEmpty($this->getCode());
+        return !\cPHP\isEmpty($this->getCode());
     }
 
     /**
