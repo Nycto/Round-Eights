@@ -79,11 +79,24 @@ abstract class Form extends \cPHP\Page
     }
 
     /**
+     * Returns an array that will be used to fill the form with data when it
+     * is initially displayed.
+     *
+     * By default, this returns an empty array
+     *
+     * @return Array
+     */
+    public function getInitialValues ()
+    {
+        return array();
+    }
+
+    /**
      * The method invoked when a form is initially displayed
      *
      * @return Object Returns the template for the content
      */
-    abstract public function onDisplay ();
+    abstract protected function onDisplay ();
 
     /**
      * The method invoked when a form is submitted but the values are invalid.
@@ -92,7 +105,7 @@ abstract class Form extends \cPHP\Page
      *
      * @return Object Returns the template for the content
      */
-    public function onInvalid ()
+    protected function onInvalid ()
     {
         return $this->onDisplay();
     }
@@ -102,7 +115,7 @@ abstract class Form extends \cPHP\Page
      *
      * @return Object Returns the template for the content
      */
-    abstract public function onSuccess ();
+    abstract protected function onSuccess ();
 
     /**
      * Executes the view method and returns it's results
@@ -116,16 +129,20 @@ abstract class Form extends \cPHP\Page
         $source = $this->getSource();
 
         // If there was nothing submitted...
-        if ( !$form->anyIn($source) )
+        if ( !$form->anyIn($source) ) {
+            $form->fill( $this->getInitialValues() );
             return $this->onDisplay();
+        }
 
         // Load the source data into the form and validate
-        else if ( $form->fill($source)->isValid() )
+        else if ( $form->fill($source)->isValid() ) {
             return $this->onSuccess();
+        }
 
         // Otherwise, display the error page
-        else
+        else {
             return $this->onInvalid();
+        }
     }
 
 }

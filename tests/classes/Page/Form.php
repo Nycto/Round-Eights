@@ -80,17 +80,34 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testCreateContent_display ()
     {
-        $tpl = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+        $tpl = $this->getMock(
+                'cPHP\iface\Template',
+                array('display', 'render', '__toString')
+            );
 
-        $page = $this->getTestObj( array('getSource') );
+        $form = $this->getMock(
+                'cPHP\Form',
+                array('fill')
+            );
+
+        $form->expects( $this->once() )
+            ->method('fill')
+            ->with( $this->equalTo( array('field' => 'value') ) )
+            ->will( $this->returnValue( $form ) );
+
+        $page = $this->getTestObj( array('getSource', 'getInitialValues') );
 
         $page->expects( $this->once() )
             ->method('createForm')
-            ->will( $this->returnValue( new \cPHP\Form ) );
+            ->will( $this->returnValue( $form) );
 
         $page->expects( $this->once() )
             ->method('getSource')
             ->will( $this->returnValue(array()) );
+
+        $page->expects( $this->once() )
+            ->method('getInitialValues')
+            ->will( $this->returnValue( array('field' => 'value') ) );
 
         $page->expects( $this->once() )
             ->method('onDisplay')
