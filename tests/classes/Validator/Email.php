@@ -58,6 +58,21 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
     {
         $validator = new \cPHP\Validator\Email;
 
+        // Empty addresses
+        $result = $validator->validate('');
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Email Address must not be empty"),
+                $result->getErrors()->get()
+            );
+
+        $result = $validator->validate('    ');
+        $this->assertFalse( $result->isValid() );
+        $this->assertEquals(
+                array("Email Address must not be empty"),
+                $result->getErrors()->get()
+            );
+
         // Missing an @ symbol
         $result = $validator->validate('Abc.example.com');
         $this->assertFalse( $result->isValid() );

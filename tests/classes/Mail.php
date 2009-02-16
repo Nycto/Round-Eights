@@ -99,7 +99,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+            $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
     }
 
@@ -181,7 +181,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+            $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
 
@@ -273,7 +273,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+            $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
 
@@ -365,7 +365,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Data $err ) {
-            $this->assertSame( "Email Address must contain an 'at' (@) symbol", $err->getMessage() );
+            $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
 
