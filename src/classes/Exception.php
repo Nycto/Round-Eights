@@ -305,7 +305,7 @@ class Exception extends \Exception
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
-            $args[] = getDump($arg);
+            $args[] = \cPHP\getDump($arg);
         }
 
         if ( $trace->keyExists('function') ) {
@@ -342,7 +342,7 @@ class Exception extends \Exception
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
-            $args[] = htmlspecialchars( getDump($arg) );
+            $args[] = htmlspecialchars( \cPHP\getDump($arg) );
         }
 
         if ( $trace->keyExists('function') ) {

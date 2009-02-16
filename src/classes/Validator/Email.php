@@ -57,6 +57,9 @@ class Email extends \cPHP\Validator
     {
         $value = \cPHP\strval( $value );
 
+        if ( \cPHP\isEmpty($value) )
+            return "Email Address must not be empty";
+
         $atCount = substr_count($value, "@");
         if ( $atCount == 0 )
             return "Email Address must contain an 'at' (@) symbol";

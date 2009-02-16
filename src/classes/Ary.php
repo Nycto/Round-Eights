@@ -430,7 +430,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
      */
     public function keyOffset ( $key )
     {
-        $key = reduce($key);
+        $key = \cPHP\reduce($key);
         if ( !array_key_exists($key, $this->array) )
             throw new \cPHP\Exception\Argument(0, "Key", "Key does not exist in the given Array");
 
@@ -1038,7 +1038,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
             return $output;
         };
 
-        $maxDepth = max(intval(reduce($maxDepth)), 1);
+        $maxDepth = max(intval(\cPHP\reduce($maxDepth)), 1);
 
         return new self(
                 $flatten( $this->array, $maxDepth, $flatten )
@@ -1106,7 +1106,7 @@ class Ary implements \Iterator, \Countable, \ArrayAccess
 
                         $value = $compact( $value->get(), $compact );
 
-                        if ( !isEmpty($value, $flags) )
+                        if ( !\cPHP\isEmpty($value, $flags) )
                             $output[ $key ] = new \cPHP\Ary($value);
 
                     }
