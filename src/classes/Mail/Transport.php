@@ -187,15 +187,15 @@ abstract class Transport
     }
 
     /**
-     * Prepares the text body for sending
+     * Prepares the a chunk of message content for sending
      *
      * This does things like fix line endings and wrap the text to the propper
-     * length.
+     * length. It will be applied to both the text and html content of a message
      *
-     * @param String $body The text string being sent in the email
+     * @param String $body The content string being sent in the email
      * @return String Returns the prepared string
      */
-    public function prepareText ( $body )
+    public function prepareContent ( $body )
     {
         // Fix the line endings
         $body = preg_replace('/\r\n|\r|\n/', "\r\n", $body);
@@ -205,21 +205,6 @@ abstract class Transport
 
         // Replace any periods that appear on their own line
         $body = preg_replace( '/^(\s*)\.(\s*)$/m', '\1..\2', $body );
-
-        return $body;
-    }
-
-    /**
-     * Prepares the html body for sending
-     *
-     * This does things like fix line endings and wrap the text to the propper
-     * length.
-     *
-     * @param String $body The text string being sent in the email
-     * @return String Returns the prepared string
-     */
-    public function prepareHTML ( $body )
-    {
 
         return $body;
     }
@@ -248,7 +233,7 @@ abstract class Transport
 
                 .self::EOL
 
-                .$this->prepareText( $mail->getText() )
+                .$this->prepareContent( $mail->getText() )
 
                 .self::EOL
                 .self::EOL
@@ -259,7 +244,7 @@ abstract class Transport
 
                 .self::EOL
 
-                .$this->prepareHTML( $mail->getHTML() )
+                .$this->prepareContent( $mail->getHTML() )
 
                 .self::EOL
                 .self::EOL
@@ -270,12 +255,12 @@ abstract class Transport
 
         // If just the HTML is set
         else if ( $mail->htmlExists() ) {
-            return $this->prepareHTML( $mail->getHTML() );
+            return $this->prepareContent( $mail->getHTML() );
         }
 
         // If just the text was set
         else {
-            return $this->prepareText( $mail->getText() );
+            return $this->prepareContent( $mail->getText() );
         }
     }
 

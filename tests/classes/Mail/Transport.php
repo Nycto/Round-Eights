@@ -303,41 +303,36 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
         $this->assertContains('Content-Transfer-Encoding: 7bit', $headers);
     }
 
-    public function testPrepareText ()
+    public function testPrepareContent ()
     {
         $transport = $this->getMock('cPHP\Mail\Transport');
 
         $this->assertSame(
                 "This string should not be changed",
-                $transport->prepareText("This string should not be changed")
+                $transport->prepareContent("This string should not be changed")
             );
 
-        $this->assertSame( "start\r\nend", $transport->prepareText("start\nend") );
-        $this->assertSame( "start\r\nend", $transport->prepareText("start\rend") );
-        $this->assertSame( "start\r\nend", $transport->prepareText("start\r\nend") );
+        $this->assertSame( "start\r\nend", $transport->prepareContent("start\nend") );
+        $this->assertSame( "start\r\nend", $transport->prepareContent("start\rend") );
+        $this->assertSame( "start\r\nend", $transport->prepareContent("start\r\nend") );
 
         $this->assertSame(
                 "A long string that will need to be wrapped because it exceeds the line\r\n"
                 ."length limit.",
-                $transport->prepareText(
+                $transport->prepareContent(
                         "A long string that will need to be wrapped because it exceeds the line length limit."
                     )
             );
 
         $this->assertSame(
                 "fix\r\n..\r\nthe dots",
-                $transport->prepareText("fix\r\n.\r\nthe dots")
+                $transport->prepareContent("fix\r\n.\r\nthe dots")
             );
 
         $this->assertSame(
                 "fix\r\n..\r\nthe dots",
-                $transport->prepareText("fix\r\n.\r\nthe dots")
+                $transport->prepareContent("fix\r\n.\r\nthe dots")
             );
-    }
-
-    public function testPrepareHTMl ()
-    {
-        $this->markTestIncomplete("To be written");
     }
 
     public function testGetBody ()
