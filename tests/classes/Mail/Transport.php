@@ -335,9 +335,63 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testGetBody ()
+    public function testGetBody_text ()
     {
-        $this->markTestIncomplete("To be written");
+        $mail = new \cPHP\Mail;
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $this->assertSame(
+                "",
+                $transport->getBody( $mail )
+            );
+
+        $mail->setText("This is a chunk of text");
+
+        $this->assertSame(
+                "This is a chunk of text",
+                $transport->getBody( $mail )
+            );
+    }
+
+    public function testGetBody_html ()
+    {
+        $mail = new \cPHP\Mail;
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $mail->setHTML("<h1>This is a chunk of text</h1>");
+
+        $this->assertSame(
+                "<h1>This is a chunk of text</h1>",
+                $transport->getBody( $mail )
+            );
+    }
+
+    public function testGetBody_multi ()
+    {
+        $mail = new \cPHP\Mail;
+        $transport = $this->getMock('cPHP\Mail\Transport');
+
+        $mail->setHTML("<h1>This is a chunk of text</h1>");
+        $mail->setText("This is a chunk of text");
+
+        $boundary = $mail->getBoundary();
+
+        $this->assertSame(
+                "--". $boundary ."\r\n"
+                ."Content-Type: text/plain; charset=\"ISO-8859-1\"\r\n"
+                ."Content-Transfer-Encoding: 7bit\r\n"
+                ."\r\n"
+                ."This is a chunk of text\r\n"
+                ."\r\n"
+                ."--". $boundary ."\r\n"
+                ."Content-Type: text/html; charset=\"ISO-8859-1\"\r\n"
+                ."Content-Transfer-Encoding: 7bit\r\n"
+                ."\r\n"
+                ."<h1>This is a chunk of text</h1>\r\n"
+                ."\r\n"
+                ."--". $boundary ."--\r\n",
+                $transport->getBody( $mail )
+            );
     }
 
 }
