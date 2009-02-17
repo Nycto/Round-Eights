@@ -186,6 +186,99 @@ abstract class Transport
 
     }
 
+    /**
+     * Prepares the text body for sending
+     *
+     * This does things like fix line endings and wrap the text to the propper
+     * length.
+     *
+     * @param String $body The text string being sent in the email
+     * @return String Returns the prepared string
+     */
+    public function prepareText ( $body )
+    {
+        // Fix the line endings
+        $body = preg_replace('/\r\n|\r|\n/', "\r\n", $body);
+
+        // Wrap the content
+        $body = wordwrap($body, self::LINE_LENGTH, self::EOL, TRUE);
+
+        // Replace any periods that appear on their own line
+        $body = preg_replace( '/^(\s*)\.(\s*)$/m', '\1..\2', $body );
+
+        return $body;
+    }
+
+    /**
+     * Prepares the html body for sending
+     *
+     * This does things like fix line endings and wrap the text to the propper
+     * length.
+     *
+     * @param String $body The text string being sent in the email
+     * @return String Returns the prepared string
+     */
+    public function prepareHTML ( $body )
+    {
+
+        return $body;
+    }
+
+    /**
+     * Returns the body string for an HTML
+     *
+     * @param Object $mail The cPHP\Mail object whose body will be returned
+     * @return String A formatted body email string
+     */
+    public function getBody ( \cPHP\Mail $mail )
+    {
+        // If both the text and HTML are set...
+        if ( $mail->htmlExists() && $mail->textExists() ) {
+
+            $mime = new \cPHP\Encode\MIME;
+            $mime->setEOL( self::EOL );
+            $mime->setLineLength( self::LINE_LENGTH );
+
+            $boundary = $mail->getBoundary();
+
+            return
+                "--". $boundary . self::EOL
+                .$mime->setHeader("Content-Type")->encode('text/plain; charset="ISO-8859-1"') . self::EOL
+                .$mime->setHeader("Content-Transfer-Encoding")->encode('7bit') . self::EOL
+
+                .self::EOL
+
+                .$this->prepareText( $mail->getText() )
+
+                .self::EOL
+                .self::EOL
+
+                ."--". $boundary . self::EOL
+                .$mime->setHeader("Content-Type")->encode('text/html; charset="ISO-8859-1"') . self::EOL
+                .$mime->setHeader("Content-Transfer-Encoding")->encode('7bit') . self::EOL
+
+                .self::EOL
+
+                .$this->prepareHTML( $mail->getHTML() )
+
+                .self::EOL
+                .self::EOL
+
+                ."--". $boundary ."--". self::EOL;
+
+        }
+
+        // If just the HTML is set
+        else if ( $mail->htmlExists() ) {
+            return $this->prepareHTML( $mail->getHTML() );
+        }
+
+        // If just the text was set
+        else {
+            return $this->prepareText( $mail->getText() );
+        }
+    }
+
 }
 
 ?>
