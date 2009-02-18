@@ -264,6 +264,37 @@ abstract class Transport
         }
     }
 
+    /**
+     * Internal function that actually sends a piece of mail using this transport.
+     *
+     * This method is called indirectly via the send method. Use that method
+     * if you want to send a piece of mail
+     *
+     * @param Object $mail The mail object to send
+     * @return Null
+     */
+    abstract protected function internalSend ( \cPHP\Mail $mail );
+
+
+    /**
+     * Method for sending a piece of mail using this transport.
+     *
+     * @param Object $mail The mail object to send
+     * @return Object Returns a self reference
+     */
+    public function send ( \cPHP\Mail $mail )
+    {
+        if ( !$mail->fromExists() )
+            throw new \cPHP\Exception\Variable('From Address', '"From" Address must be set to send an email');
+
+        if ( !$mail->hasTos() )
+            throw new \cPHP\Exception\Variable('To Address', '"To" Address must be set to send an email');
+
+        $this->internalSend( $mail );
+
+        return $this;
+    }
+
 }
 
 ?>
