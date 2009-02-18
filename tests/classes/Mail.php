@@ -33,6 +33,11 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_mail extends PHPUnit_Framework_TestCase
 {
 
+    public function testDefaulTransportAccessors ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
     public function testFromNameAccessors ()
     {
         $this->iniSet('sendmail_from', '');

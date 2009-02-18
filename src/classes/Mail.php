@@ -34,6 +34,13 @@ class Mail
 {
 
     /**
+     * The default transport class for sending a piece of mail
+     *
+     * @var Object A cPHP\Mail\Transport instance
+     */
+    static private $defaultTransport;
+
+    /**
      * The email address this message will be sent from
      *
      * @var String
@@ -111,6 +118,33 @@ class Mail
      * @var String
      */
     private $boundary;
+
+    /**
+     * Sets the default transport to send mail with
+     *
+     * @param Object $transport A cPHP\Mail\Transport object
+     * @return null
+     */
+    static public function setDefaultTransport ( \cPHP\Mail\Transport $transport )
+    {
+        self::$defaultTransport = $transport;
+    }
+
+    /**
+     * Returns the default transport that will be used to send mail
+     *
+     * If no default transport has been sent, this will return an instance of
+     * cPHP\Mail\Transport\Mail
+     *
+     * @return Object A cPHP\Mail\Transport object
+     */
+    static public function getDefaultTransport ()
+    {
+        if ( !(self::$defaultTransport instanceof \cPHP\Mail\Transport ) )
+            self::$defaultTransport = new \cPHP\Mail\Transport\Mail;
+
+        return self::$defaultTransport;
+    }
 
     /**
      * Creates a new mail instance
