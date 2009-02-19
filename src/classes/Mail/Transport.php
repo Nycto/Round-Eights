@@ -275,7 +275,6 @@ abstract class Transport
      */
     abstract protected function internalSend ( \cPHP\Mail $mail );
 
-
     /**
      * Method for sending a piece of mail using this transport.
      *
