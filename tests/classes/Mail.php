@@ -35,7 +35,15 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testDefaulTransportAccessors ()
     {
-        $this->markTestIncomplete("To be written");
+        $transport = \cPHP\Mail::getDefaultTransport();
+        $this->assertThat( $transport, $this->isInstanceOf('cPHP\Mail\Transport\Mail') );
+        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
+        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
+
+        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $this->assertNull( \cPHP\Mail::setDefaultTransport($transport) );
+        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
+        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
     }
 
     public function testFromNameAccessors ()
