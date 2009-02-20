@@ -41,6 +41,15 @@ class Mail
     static private $defaultTransport;
 
     /**
+     * If set, this is the specific transport to use for this message
+     *
+     * If this value isn't set, the default transport will be used
+     *
+     * @var Object A cPHP\Mail\Transport instance
+     */
+    private $transport;
+
+    /**
      * The email address this message will be sent from
      *
      * @var String
@@ -170,6 +179,46 @@ class Mail
         $default = \cPHP\Filter::Email()->filter( $default );
         if ( \cPHP\Validator::Email()->isValid( $default ) )
             $this->setFrom( $default );
+    }
+
+    /**
+     * Returns the transport that will be used to send this message.
+     *
+     * If no specific transport has been set for this message, the default
+     * transport will be used
+     *
+     * @return Object Returns a cPHP\Transport instance
+     */
+    public function getTransport ()
+    {
+        if ( isset($this->transport) )
+            return $this->transport;
+        else
+            return self::getDefaultTransport();
+    }
+
+    /**
+     * Sets the transport to send this specific piece of mail with
+     *
+     * @param Object $transport A cPHP\Mail\Transport object
+     * @return Object Returns a self reference
+     */
+    public function setTransport ( \cPHP\Mail\Transport $transport )
+    {
+        $this->transport = $transport;
+        return $this;
+    }
+
+    /**
+     * Clears the specific transport from this instance. This will cause the
+     * default transport to be used
+     *
+     * @return Object Returns a self reference
+     */
+    public function clearTransport ()
+    {
+        $this->transport = null;
+        return $this;
     }
 
     /**
