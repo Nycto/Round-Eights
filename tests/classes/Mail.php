@@ -672,6 +672,20 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertSame( $newBoundary, $mail->getBoundary() );
     }
 
+    public function testSend ()
+    {
+        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend', 'send'));
+
+        $mail = new \cPHP\Mail;
+        $mail->setTransport( $transport );
+
+        $transport->expects( $this->once() )
+            ->method('send')
+            ->with( $this->equalTo($mail) );
+
+        $this->assertSame( $mail, $mail->send() );
+    }
+
 }
 
 ?>

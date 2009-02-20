@@ -902,6 +902,17 @@ class Mail
         return $this->boundary;
     }
 
+    /**
+     * Sends this piece of mail
+     *
+     * @return Object Returns a self reference
+     */
+    public function send ()
+    {
+        $this->getTransport()->send( $this );
+        return $this;
+    }
+
 }
 
 ?>
