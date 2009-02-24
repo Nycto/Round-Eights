@@ -25,12 +25,19 @@
  * @package FileFinder
  */
 
-namespace cPHP\Cache;
+namespace cPHP\Cache\DB;
 
 /**
- * Base hash table object for key/value caches that use a database
+ * Base hash table object for key/value caching with MySQL
+ *
+ * The basic fields required are:
+ *
+ * Key: VarChar(255), Primary Key
+ * Hash: VarChar(32)
+ * Expiration: DateTime
+ * Value: LongText
  */
-abstract class DB implements \cPHP\iface\Cache
+class MySQL extends \cPHP\Cache\DB
 {
 
     /**

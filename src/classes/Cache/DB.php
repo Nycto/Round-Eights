@@ -96,9 +96,31 @@ abstract class DB implements \cPHP\iface\Cache
      * @param String $expir The name of expiration field in the table
      * @param String $value The name of key field in the table
      */
-    public function __construct ( $link, $table, $key, $hash, $expir, $value )
+    public function __construct ( \cPHP\iface\DB\Link $link, $table, $key, $hash, $expir, $value )
     {
+        $this->setLink( $link );
+    }
 
+    /**
+     * Sets the database link to query against
+     *
+     * @param Object $link The database connection to run the queries against
+     * @return Object Returns a self reference
+     */
+    public function setLink ( \cPHP\iface\DB\Link $link )
+    {
+        $this->link = $link;
+        return $this;
+    }
+
+    /**
+     * Returns the database link the cache queries will be run against
+     *
+     * @return Object Returns a cPHP\iface\DB\Link object
+     */
+    public function getLink ()
+    {
+        return $this->link;
     }
 
 }

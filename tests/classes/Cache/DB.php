@@ -33,6 +33,51 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_cache_db extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * The mock database link that will be loaded into the test object
+     *
+     * @var Object
+     */
+    protected $link;
+
+    /**
+     * Returns a new mock cPHP\Cache\DB object
+     *
+     * @return Object
+     */
+    public function getTestLink ()
+    {
+        return $this->getMock('cPHP\iface\DB\Link', array('query', 'quote', 'escape'));
+    }
+
+    /**
+     * Returns a new mock cPHP\Cache\DB object
+     *
+     * @return Object
+     */
+    public function getTestObj ()
+    {
+        $this->link = $this->getTestLink();
+
+        return $this->getMock(
+                'cPHP\Cache\DB',
+                array('get', 'getForUpdate', 'set', 'add', 'replace', 'append',
+                        'prepend', 'increment', 'decrement', 'delete', 'flush'),
+                array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
+            );
+    }
+
+    public function testLinkAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( $this->link, $cache->getLink() );
+
+        $link = $this->getTestLink();
+        $this->assertSame( $cache, $cache->setLink($link) );
+        $this->assertSame( $link, $cache->getLink() );
+    }
+
 }
 
 ?>
