@@ -96,6 +96,24 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testKeyAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( 'key', $cache->getKey() );
+
+        $this->assertSame( $cache, $cache->setKey('Key_name') );
+        $this->assertSame( 'Key_name', $cache->getKey() );
+
+        try {
+            $cache->setKey('  ');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame('Must not be empty', $err->getMessage());
+        }
+    }
+
 }
 
 ?>

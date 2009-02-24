@@ -100,6 +100,7 @@ abstract class DB implements \cPHP\iface\Cache
     {
         $this->setLink( $link );
         $this->setTable( $table );
+        $this->setKey( $key );
     }
 
     /**
@@ -150,6 +151,34 @@ abstract class DB implements \cPHP\iface\Cache
     public function getTable ()
     {
         return $this->table;
+    }
+
+    /**
+     * Sets the field name for
+     *
+     * @param String $table The name of the database table
+     * @return Object Returns a self reference
+     */
+    public function setKey ( $key )
+    {
+        $key = \cPHP\str\stripW( $key, \cPHP\str\ALLOW_UNDERSCORES );
+
+        if ( \cPHP\isEmpty($key) )
+            throw new \cPHP\Exception\Argument( 0, "Key Field", "Must not be empty" );
+
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the table that will be queried against
+     *
+     * @return Object Returns a cPHP\iface\DB\Link object
+     */
+    public function getKey ()
+    {
+        return $this->key;
     }
 
 }
