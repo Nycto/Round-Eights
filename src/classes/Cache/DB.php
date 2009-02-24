@@ -101,6 +101,8 @@ abstract class DB implements \cPHP\iface\Cache
         $this->setLink( $link );
         $this->setTable( $table );
         $this->setKey( $key );
+        $this->setHash( $hash );
+        $this->setValue( $value );
     }
 
     /**
@@ -154,9 +156,9 @@ abstract class DB implements \cPHP\iface\Cache
     }
 
     /**
-     * Sets the field name for
+     * Sets the name of the field the for the key
      *
-     * @param String $table The name of the database table
+     * @param String $key The name of key field
      * @return Object Returns a self reference
      */
     public function setKey ( $key )
@@ -172,13 +174,69 @@ abstract class DB implements \cPHP\iface\Cache
     }
 
     /**
-     * Returns the name of the table that will be queried against
+     * Returns the name of the field for the keys
      *
-     * @return Object Returns a cPHP\iface\DB\Link object
+     * @return String The name of the key field
      */
     public function getKey ()
     {
         return $this->key;
+    }
+
+    /**
+     * Sets the name of the field the for the hash
+     *
+     * @param String $hash The name of hash field
+     * @return Object Returns a self reference
+     */
+    public function setHash ( $hash )
+    {
+        $hash = \cPHP\str\stripW( $hash, \cPHP\str\ALLOW_UNDERSCORES );
+
+        if ( \cPHP\isEmpty($hash) )
+            throw new \cPHP\Exception\Argument( 0, "Hash Field", "Must not be empty" );
+
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the field for the hashs
+     *
+     * @return String The name of the hash field
+     */
+    public function getHash ()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * Sets the name of the field the for the value
+     *
+     * @param String $value The name of value field
+     * @return Object Returns a self reference
+     */
+    public function setValue ( $value )
+    {
+        $value = \cPHP\str\stripW( $value, \cPHP\str\ALLOW_UNDERSCORES );
+
+        if ( \cPHP\isEmpty($value) )
+            throw new \cPHP\Exception\Argument( 0, "Value Field", "Must not be empty" );
+
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the field for the values
+     *
+     * @return String The name of the value field
+     */
+    public function getValue ()
+    {
+        return $this->value;
     }
 
 }

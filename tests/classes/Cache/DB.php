@@ -114,6 +114,42 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testHashAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( 'hash', $cache->getHash() );
+
+        $this->assertSame( $cache, $cache->setHash('Hash_name') );
+        $this->assertSame( 'Hash_name', $cache->getHash() );
+
+        try {
+            $cache->setHash('  ');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame('Must not be empty', $err->getMessage());
+        }
+    }
+
+    public function testValueAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( 'value', $cache->getValue() );
+
+        $this->assertSame( $cache, $cache->setValue('Value_name') );
+        $this->assertSame( 'Value_name', $cache->getValue() );
+
+        try {
+            $cache->setValue('  ');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame('Must not be empty', $err->getMessage());
+        }
+    }
+
 }
 
 ?>
