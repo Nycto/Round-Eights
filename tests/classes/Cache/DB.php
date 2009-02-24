@@ -78,6 +78,24 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         $this->assertSame( $link, $cache->getLink() );
     }
 
+    public function testTableAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( 'tble', $cache->getTable() );
+
+        $this->assertSame( $cache, $cache->setTable('  Table_Name  ') );
+        $this->assertSame( 'Table_Name', $cache->getTable() );
+
+        try {
+            $cache->setTable('  ');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame('Must not be empty', $err->getMessage());
+        }
+    }
+
 }
 
 ?>

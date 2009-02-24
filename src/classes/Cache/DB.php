@@ -99,6 +99,7 @@ abstract class DB implements \cPHP\iface\Cache
     public function __construct ( \cPHP\iface\DB\Link $link, $table, $key, $hash, $expir, $value )
     {
         $this->setLink( $link );
+        $this->setTable( $table );
     }
 
     /**
@@ -121,6 +122,34 @@ abstract class DB implements \cPHP\iface\Cache
     public function getLink ()
     {
         return $this->link;
+    }
+
+    /**
+     * Sets the name of the table to query against
+     *
+     * @param String $table The name of the database table
+     * @return Object Returns a self reference
+     */
+    public function setTable ( $table )
+    {
+        $table = \cPHP\str\stripW( $table, \cPHP\str\ALLOW_UNDERSCORES );
+
+        if ( \cPHP\isEmpty($table) )
+            throw new \cPHP\Exception\Argument( 0, "Table Name", "Must not be empty" );
+
+        $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the table that will be queried against
+     *
+     * @return Object Returns a cPHP\iface\DB\Link object
+     */
+    public function getTable ()
+    {
+        return $this->table;
     }
 
 }
