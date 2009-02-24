@@ -102,6 +102,7 @@ abstract class DB implements \cPHP\iface\Cache
         $this->setTable( $table );
         $this->setKey( $key );
         $this->setHash( $hash );
+        $this->setExpiration( $expir );
         $this->setValue( $value );
     }
 
@@ -209,6 +210,34 @@ abstract class DB implements \cPHP\iface\Cache
     public function getHash ()
     {
         return $this->hash;
+    }
+
+    /**
+     * Sets the name of the field the for the expiration
+     *
+     * @param String $expiration The name of expiration field
+     * @return Object Returns a self reference
+     */
+    public function setExpiration ( $expiration )
+    {
+        $expiration = \cPHP\str\stripW( $expiration, \cPHP\str\ALLOW_UNDERSCORES );
+
+        if ( \cPHP\isEmpty($expiration) )
+            throw new \cPHP\Exception\Argument( 0, "Expiration Field", "Must not be empty" );
+
+        $this->expiration = $expiration;
+
+        return $this;
+    }
+
+    /**
+     * Returns the name of the field for the expirations
+     *
+     * @return String The name of the expiration field
+     */
+    public function getExpiration ()
+    {
+        return $this->expiration;
     }
 
     /**

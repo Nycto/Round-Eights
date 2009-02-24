@@ -132,6 +132,24 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testExpirationAccessors ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame( 'expir', $cache->getExpiration() );
+
+        $this->assertSame( $cache, $cache->setExpiration('Expiration_name') );
+        $this->assertSame( 'Expiration_name', $cache->getExpiration() );
+
+        try {
+            $cache->setExpiration('  ');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame('Must not be empty', $err->getMessage());
+        }
+    }
+
     public function testValueAccessors ()
     {
         $cache = $this->getTestObj();
