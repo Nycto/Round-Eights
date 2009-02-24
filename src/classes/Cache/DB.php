@@ -268,6 +268,17 @@ abstract class DB implements \cPHP\iface\Cache
         return $this->value;
     }
 
+    /**
+     * Takes a raw key and normalizes it before using it in a database query
+     *
+     * @param mixed $key The key to normalize
+     * @return String Returns a 32 character alphanumeric string
+     */
+    public function normalizeKey ( $key )
+    {
+        return md5( \cPHP\strval($key) );
+    }
+
 }
 
 ?>

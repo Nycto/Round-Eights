@@ -168,6 +168,21 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testNormalizeString ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->assertSame(
+                "bdba1e73537ab471b9fcc506e827fb10",
+                $cache->normalizeKey("Key Value")
+            );
+
+        $this->assertSame(
+                "d41d8cd98f00b204e9800998ecf8427e",
+                $cache->normalizeKey( new stdClass )
+            );
+    }
+
 }
 
 ?>
