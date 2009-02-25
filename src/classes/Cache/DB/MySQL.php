@@ -41,14 +41,21 @@ class MySQL extends \cPHP\Cache\DB
 {
 
     /**
-     * Returns a cached value based on it's key
+     * Internal method to generate the query needed to fetch a key's value from
+     * the DB
      *
      * @param String $key The value to retrieve
-     * @return mixed Returns the cached value
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
      */
-    public function get ( $key )
+    protected function createGetSQL ( $key )
     {
-
+        return "SELECT `". $this->getValue() ."` AS `Value`,
+                       `". $this->getHash() ."` AS `Hash`
+                  FROM `". $this->getTable() ."`
+                 WHERE `". $this->getExpiration() ."` >= NOW()
+                   AND `". $this->getKey() ."` = ". $this->getLink()->quote( $key ) ."
+                 LIMIT 1";
     }
 
     /**
