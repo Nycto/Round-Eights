@@ -279,6 +279,40 @@ abstract class DB implements \cPHP\iface\Cache
         return md5( \cPHP\strval($key) );
     }
 
+    /**
+     * Internal method to actually fetch value from the database
+     *
+     * @param String $key The value to retrieve
+     * @return Object This should return a database result object with one row
+     *  and two fields, the Value and the Hash
+     */
+    abstract protected function internalGet ( $key );
+
+    /**
+     * Returns a cached value based on it's key
+     *
+     * @param String $key The value to retrieve
+     * @return mixed Returns the cached value. If the cache value hasn't been
+     *      set, NULL will be returned
+     */
+    public function get ( $key )
+    {
+        $query = $this->internalGet(
+                $this->normalizeKey($key)
+            );
+
+        $result = $this->getLink()->query( $query );
+
+        if ( $result->count() <= 0 )
+            return NULL;
+
+        $row = $result->rewind()->current();
+
+        $result->free();
+
+        return @unserialize( $row['Value'] );
+    }
+
 }
 
 ?>

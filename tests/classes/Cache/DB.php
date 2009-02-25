@@ -47,7 +47,21 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
      */
     public function getTestLink ()
     {
-        return $this->getMock('cPHP\iface\DB\Link', array('query', 'quote', 'escape'));
+        $link = $this->getMock('cPHP\iface\DB\Link', array('query', 'quote', 'escape'));
+
+        $link->expects( $this->any() )
+            ->method('escape')
+            ->will( $this->returnCallback(function ($value) {
+                return addslashes($value);
+            }));
+
+        $link->expects( $this->any() )
+            ->method('quote')
+            ->will( $this->returnCallback(function ($value) {
+                return "'". addslashes($value) ."'";
+            }));
+
+        return $link;
     }
 
     /**
@@ -61,7 +75,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('get', 'getForUpdate', 'set', 'add', 'replace', 'append',
+                array('internalGet', 'getForUpdate', 'set', 'add', 'replace', 'append',
                         'prepend', 'increment', 'decrement', 'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
             );
@@ -181,6 +195,73 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
                 "d41d8cd98f00b204e9800998ecf8427e",
                 $cache->normalizeKey( new stdClass )
             );
+    }
+
+    public function testGet ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('internalGet')
+            ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
+            ->will( $this->returnValue("SELECT Hash, Value FROM table") );
+
+        $read = $this->getMock(
+                'cPHP\DB\Result\Read',
+                array('count', 'rewind', 'current', 'rawCount', 'rawFields',
+                        'rawFetch', 'rawSeek', 'rawFree'),
+                array(new stdClass, "SELECT Hash, Value FROM table")
+            );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('SELECT Hash, Value FROM table') )
+            ->will( $this->returnValue( $read ) );
+
+        $read->expects( $this->once() )
+            ->method('count')
+            ->will( $this->returnValue(1) );
+
+        $read->expects( $this->once() )
+            ->method('rewind')
+            ->will( $this->returnValue($read) );
+
+        $read->expects( $this->once() )
+            ->method('current')
+            ->will( $this->returnValue(array(
+                    "Value" => 's:13:"Chunk of data";',
+                    "Hash" => '5c75fc8da8565c7dbabf500c40c024d2'
+                )) );
+
+        $this->assertSame("Chunk of data", $cache->get("LookupKey"));
+    }
+
+    public function testGet_notSet ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('internalGet')
+            ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
+            ->will( $this->returnValue("SELECT Hash, Value FROM table") );
+
+        $read = $this->getMock(
+                'cPHP\DB\Result\Read',
+                array('count', 'rewind', 'current', 'rawCount', 'rawFields',
+                        'rawFetch', 'rawSeek', 'rawFree'),
+                array(new stdClass, "SELECT Hash, Value FROM table")
+            );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('SELECT Hash, Value FROM table') )
+            ->will( $this->returnValue( $read ) );
+
+        $read->expects( $this->once() )
+            ->method('count')
+            ->will( $this->returnValue(0) );
+
+        $this->assertNull($cache->get("LookupKey"));
     }
 
 }
