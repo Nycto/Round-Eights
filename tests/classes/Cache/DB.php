@@ -75,7 +75,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('internalGet', 'getForUpdate', 'set', 'add', 'replace', 'append',
+                array('createGetSQL', 'getForUpdate', 'set', 'add', 'replace', 'append',
                         'prepend', 'increment', 'decrement', 'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
             );
@@ -202,7 +202,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         $cache = $this->getTestObj();
 
         $cache->expects( $this->once() )
-            ->method('internalGet')
+            ->method('createGetSQL')
             ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
             ->will( $this->returnValue("SELECT Hash, Value FROM table") );
 
@@ -241,7 +241,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         $cache = $this->getTestObj();
 
         $cache->expects( $this->once() )
-            ->method('internalGet')
+            ->method('createGetSQL')
             ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
             ->will( $this->returnValue("SELECT Hash, Value FROM table") );
 

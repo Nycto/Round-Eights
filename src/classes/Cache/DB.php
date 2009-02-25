@@ -286,7 +286,7 @@ abstract class DB implements \cPHP\iface\Cache
      * @return Object This should return a database result object with one row
      *  and two fields, the Value and the Hash
      */
-    abstract protected function internalGet ( $key );
+    abstract protected function createGetSQL ( $key );
 
     /**
      * Returns a cached value based on it's key
@@ -297,7 +297,7 @@ abstract class DB implements \cPHP\iface\Cache
      */
     public function get ( $key )
     {
-        $query = $this->internalGet(
+        $query = $this->createGetSQL(
                 $this->normalizeKey($key)
             );
 
