@@ -313,6 +313,38 @@ abstract class DB implements \cPHP\iface\Cache
         return @unserialize( $row['Value'] );
     }
 
+    /**
+     * Returns a cached value based on it's key
+     *
+     * This returns a cached value in the form of an object. This object will allow
+     * you to run an update on the value with the clause that it shouldn't be
+     * changed if it has changed since it was retrieved. This can be used to
+     * prevent race conditions.
+     *
+     * @param String $key The value to retrieve
+     * @return Object A cPHP\Cache\Value object
+     */
+    public function getForUpdate ( $key )
+    {
+        $query = $this->createGetSQL(
+                $this->normalizeKey($key)
+            );
+
+        $result = $this->getLink()->query( $query );
+
+        if ( $result->count() <= 0 ) {
+            $row = array( 'Hash' => NULL, 'Value' => NULL );
+        }
+        else {
+            $row = $result->rewind()->current();
+            $row['Value'] = @unserialize( $row['Value'] );
+        }
+
+        $result->free();
+
+        return new \cPHP\Cache\Result( $this, $key, $row['Hash'], $row['Value'] );
+    }
+
 }
 
 ?>

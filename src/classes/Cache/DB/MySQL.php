@@ -59,22 +59,6 @@ class MySQL extends \cPHP\Cache\DB
     }
 
     /**
-     * Returns a cached value based on it's key
-     *
-     * This returns a cached value in the form of an object. This object will allow
-     * you to run an update on the value with the clause that it shouldn't be
-     * changed if it has changed since it was retrieved. This can be used to
-     * prevent race conditions.
-     *
-     * @param String $key The value to retrieve
-     * @return Object A cPHP\Cache\Value object
-     */
-    public function getForUpdate ( $key )
-    {
-
-    }
-
-    /**
      * Sets a new caching value, overwriting any existing values
      *
      * @param String $key The key for the value

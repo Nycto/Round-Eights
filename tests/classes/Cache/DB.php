@@ -75,7 +75,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('createGetSQL', 'getForUpdate', 'set', 'setIfSame', 'add',
+                array('createGetSQL', 'set', 'setIfSame', 'add',
                     'replace', 'append', 'prepend', 'increment', 'decrement',
                     'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
@@ -263,6 +263,87 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue(0) );
 
         $this->assertNull($cache->get("LookupKey"));
+    }
+
+    public function testGetForUpdate ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('createGetSQL')
+            ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
+            ->will( $this->returnValue("SELECT Hash, Value FROM table") );
+
+        $read = $this->getMock(
+                'cPHP\DB\Result\Read',
+                array('count', 'rewind', 'current', 'rawCount', 'rawFields',
+                        'rawFetch', 'rawSeek', 'rawFree'),
+                array(new stdClass, "SELECT Hash, Value FROM table")
+            );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('SELECT Hash, Value FROM table') )
+            ->will( $this->returnValue( $read ) );
+
+        $read->expects( $this->once() )
+            ->method('count')
+            ->will( $this->returnValue(1) );
+
+        $read->expects( $this->once() )
+            ->method('rewind')
+            ->will( $this->returnValue($read) );
+
+        $read->expects( $this->once() )
+            ->method('current')
+            ->will( $this->returnValue(array(
+                    "Value" => 's:13:"Chunk of data";',
+                    "Hash" => '5c75fc8da8565c7dbabf500c40c024d2'
+                )) );
+
+        $result = $cache->getForUpdate("LookupKey");
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Cache\Result') );
+
+        $this->assertSame( $cache, $result->getCache() );
+        $this->assertSame( "LookupKey", $result->getKey() );
+        $this->assertSame( "5c75fc8da8565c7dbabf500c40c024d2", $result->getHash() );
+        $this->assertSame( "Chunk of data", $result->getValue() );
+    }
+
+    public function testGetForUpdate_notSet ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('createGetSQL')
+            ->with( $this->equalTo('94a8446abb76477df9ce1bd5d7dce5f8') )
+            ->will( $this->returnValue("SELECT Hash, Value FROM table") );
+
+        $read = $this->getMock(
+                'cPHP\DB\Result\Read',
+                array('count', 'rewind', 'current', 'rawCount', 'rawFields',
+                        'rawFetch', 'rawSeek', 'rawFree'),
+                array(new stdClass, "SELECT Hash, Value FROM table")
+            );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('SELECT Hash, Value FROM table') )
+            ->will( $this->returnValue( $read ) );
+
+        $read->expects( $this->once() )
+            ->method('count')
+            ->will( $this->returnValue(0) );
+
+        $result = $cache->getForUpdate("LookupKey");
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Cache\Result') );
+
+        $this->assertSame( $cache, $result->getCache() );
+        $this->assertSame( "LookupKey", $result->getKey() );
+        $this->assertNull( $result->getHash() );
+        $this->assertNull( $result->getValue() );
     }
 
 }
