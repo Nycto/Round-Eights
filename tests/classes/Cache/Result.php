@@ -42,8 +42,8 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 'cPHP\iface\Cache',
-                array('get', 'getForUpdate', 'set', 'add', 'replace', 'append',
-                        'prepend', 'increment', 'decrement', 'delete', 'flush')
+                array('get', 'getForUpdate', 'set', 'setIfSame', 'add', 'replace',
+                    'append', 'prepend', 'increment', 'decrement', 'delete', 'flush')
             );
     }
 

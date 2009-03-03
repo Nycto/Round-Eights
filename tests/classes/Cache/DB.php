@@ -75,8 +75,9 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('createGetSQL', 'getForUpdate', 'set', 'add', 'replace', 'append',
-                        'prepend', 'increment', 'decrement', 'delete', 'flush'),
+                array('createGetSQL', 'getForUpdate', 'set', 'setIfSame', 'add',
+                    'replace', 'append', 'prepend', 'increment', 'decrement',
+                    'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
             );
     }

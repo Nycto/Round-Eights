@@ -64,6 +64,17 @@ interface Cache
     public function set ( $key, $value );
 
     /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param cPHP\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function setIfSame ( \cPHP\Cache\Result $result, $value );
+
+    /**
      * Sets a new caching value, but only if that value doesn't exist
      *
      * @param String $key The key for the value
