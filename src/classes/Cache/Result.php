@@ -122,6 +122,30 @@ class Result
         return $this->value;
     }
 
+    /**
+     * Sets the value for this key in the cache
+     *
+     * @param mixed $value The new value
+     * @return cPHP\Cache\Result Returns a self reference
+     */
+    public function set ( $value )
+    {
+        $this->cache->set( $this->key, $value );
+        return $this;
+    }
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param mixed $value The new value
+     * @return cPHP\Cache\Result Returns a self reference
+     */
+    public function setIfSame ( $value )
+    {
+
+    }
+
 }
 
 ?>
