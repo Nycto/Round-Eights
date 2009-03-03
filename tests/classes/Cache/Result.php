@@ -87,7 +87,15 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
 
     public function testSetIfSame ()
     {
-        $this->markTestIncomplete("To be written");
+        $cache = $this->getTestCache();
+
+        $result = new \cPHP\Cache\Result( $cache, "Pi", "abc", 3.14);
+
+        $cache->expects( $this->once() )
+            ->method("setIfSame")
+            ->with( $this->equalTo( $result ), $this->equalTo(3.1415) );
+
+        $this->assertSame( $result, $result->setIfSame(3.1415) );
     }
 
 }

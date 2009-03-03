@@ -143,7 +143,8 @@ class Result
      */
     public function setIfSame ( $value )
     {
-
+        $this->cache->setIfSame( $this, $value );
+        return $this;
     }
 
 }
