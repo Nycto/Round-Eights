@@ -280,11 +280,23 @@ abstract class DB implements \cPHP\iface\Cache
     }
 
     /**
-     * Internal method to actually fetch value from the database
+     * Creates the hash of the value being saved
+     *
+     * @param String $value The value to hash
+     * @return String Returns a 32 character alphanumeric string
+     */
+    private function createHash ( $value )
+    {
+        return md5( $value );
+    }
+
+    /**
+     * Internal method to generate the query needed to fetch a key's value from
+     * the DB
      *
      * @param String $key The value to retrieve
-     * @return Object This should return a database result object with one row
-     *  and two fields, the Value and the Hash
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
      */
     abstract protected function createGetSQL ( $key );
 
@@ -343,6 +355,39 @@ abstract class DB implements \cPHP\iface\Cache
         $result->free();
 
         return new \cPHP\Cache\Result( $this, $key, $row['Hash'], $row['Value'] );
+    }
+
+    /**
+     * Internal method to generate the query needed to set a key's value
+     *
+     * @param String $key The key to set
+     * @param String $hash The hash representing the state of this value
+     * @param String $value The already encoded value
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
+     */
+    abstract protected function createSetSQL ( $key, $hash, $value );
+
+    /**
+     * Sets a new caching value, overwriting any existing values
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function set ( $key, $value )
+    {
+        $value = serialize($value);
+
+        $query = $this->createSetSQL(
+                $this->normalizeKey($key),
+                $this->createHash($value),
+                $value
+            );
+
+        $this->getLink()->query( $query );
+
+        return $this;
     }
 
 }

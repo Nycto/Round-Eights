@@ -75,7 +75,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('createGetSQL', 'set', 'setIfSame', 'add',
+                array('createGetSQL', 'createSetSQL', 'setIfSame', 'add',
                     'replace', 'append', 'prepend', 'increment', 'decrement',
                     'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
@@ -344,6 +344,26 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
         $this->assertSame( "LookupKey", $result->getKey() );
         $this->assertNull( $result->getHash() );
         $this->assertNull( $result->getValue() );
+    }
+
+    public function testSet ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('createSetSQL')
+            ->with(
+                    $this->equalTo('11b30ee46e917709c2f32b72a837df97'),
+                    $this->equalTo('ae7df06119b27e791f12c0b5bf1a5f1b'),
+                    $this->equalTo('s:13:"Value To Save";')
+                )
+            ->will( $this->returnValue("INSERT INTO table") );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('INSERT INTO table') );
+
+        $this->assertSame( $cache, $cache->set("Some Key", "Value To Save") );
     }
 
 }
