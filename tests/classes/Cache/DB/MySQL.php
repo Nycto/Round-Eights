@@ -116,6 +116,24 @@ class classes_cache_db_mysql extends PHPUnit_Framework_TestCase
         $this->assertSame(101, $cache->get("A Label"));
     }
 
+    public function testSet ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->logicalAnd(
+                    $this->stringContains('INSERT INTO `tble`'),
+                    $this->stringContains("SET `key` = '57d319c1fcd99a3594ae888cba1e496e',"),
+                    $this->stringContains("`hash` = '742ceb44bddde105975930f4c084e74c',"),
+                    $this->stringContains("`value` = 'i:125;'"),
+                    $this->stringContains("ON DUPLICATE KEY"),
+                    $this->stringContains("UPDATE `value` = 'i:125;'")
+                ) );
+
+        $this->assertSame($cache, $cache->set("A Label", 125));
+    }
+
 }
 
 ?>

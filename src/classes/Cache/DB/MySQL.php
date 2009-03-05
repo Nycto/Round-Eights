@@ -59,15 +59,24 @@ class MySQL extends \cPHP\Cache\DB
     }
 
     /**
-     * Sets a new caching value, overwriting any existing values
+     * Internal method to generate the query needed to set a key's value
      *
-     * @param String $key The key for the value
-     * @param mixed $value The value to set
-     * @return Object Returns a self reference
+     * @param String $key The key to set
+     * @param String $hash The hash representing the state of this value
+     * @param String $value The already encoded value
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
      */
-    public function set ( $key, $value )
+    protected function createSetSQL ( $key, $hash, $value )
     {
+        $link = $this->getLink();
 
+        return "INSERT INTO `". $this->getTable() ."`
+                        SET `". $this->getKey() ."` = ". $link->quote( $key ) .",
+                            `". $this->getHash() ."` = ". $link->quote( $hash ) .",
+                            `". $this->getValue() ."` = ". $link->quote( $value ) ."
+                         ON DUPLICATE KEY
+                     UPDATE `". $this->getValue() ."` = ". $link->quote( $value );
     }
 
     /**
