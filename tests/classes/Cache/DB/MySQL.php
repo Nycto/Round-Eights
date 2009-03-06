@@ -134,6 +134,33 @@ class classes_cache_db_mysql extends PHPUnit_Framework_TestCase
         $this->assertSame($cache, $cache->set("A Label", 125));
     }
 
+    public function testSetIfSame ()
+    {
+        $cache = $this->getTestObj();
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->logicalAnd(
+                    $this->stringContains('UPDATE `tble`'),
+                    $this->stringContains("SET `hash` = 'dcca48101505dd86b703689a604fe3c4',"),
+                    $this->stringContains("`value` = 'N;'"),
+                    $this->stringContains("WHERE `key` = 'e2ef1ae60ec7ad634fbf1a92ef1742bb'"),
+                    $this->stringContains("AND `hash` = 'ae7df06119b27e791f12c0b5bf1a5f1b'"),
+                    $this->stringContains("LIMIT 1")
+                ) );
+
+
+        $result = new \cPHP\Cache\Result(
+                $cache, "Avg_Of_Something",
+                'ae7df06119b27e791f12c0b5bf1a5f1b', "Existing Value"
+            );
+
+        $this->assertSame(
+                $cache,
+                $cache->setIfSame($result, NULL)
+            );
+    }
+
 }
 
 ?>

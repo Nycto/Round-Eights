@@ -80,17 +80,26 @@ class MySQL extends \cPHP\Cache\DB
     }
 
     /**
-     * Sets the value for this key only if the value hasn't changed in the cache
-     * since it was originally pulled
+     * Internal method to generate the query needed to set a key's value only
+     * if it hasn't changed
      *
-     * @param cPHP\Cache\Result $result A result object that was returned by
-     *      the getForUpdate method
-     * @param mixed $value The value to set
-     * @return Object Returns a self reference
+     * @param String $key The key to set
+     * @param String $oldHash The hash representing the existing value
+     * @param String $newHash The hash representing the new value
+     * @param String $value The already encoded value
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
      */
-    public function setIfSame ( \cPHP\Cache\Result $result, $value )
+    protected function createSetIfSameSQL ( $key, $oldHash, $newHash, $value )
     {
+        $link = $this->getLink();
 
+        return "UPDATE `". $this->getTable() ."`
+                   SET `". $this->getHash() ."` = ". $link->quote( $newHash ) .",
+                       `". $this->getValue() ."` = ". $link->quote( $value ) ."
+                 WHERE `". $this->getKey() ."` = ". $link->quote( $key ) ."
+                   AND `". $this->getHash() ."` = ". $link->quote( $oldHash ) ."
+                 LIMIT 1";
     }
 
     /**
