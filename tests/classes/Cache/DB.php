@@ -75,7 +75,7 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
 
         return $this->getMock(
                 'cPHP\Cache\DB',
-                array('createGetSQL', 'createSetSQL', 'setIfSame', 'add',
+                array('createGetSQL', 'createSetSQL', 'createSetIfSameSQL', 'add',
                     'replace', 'append', 'prepend', 'increment', 'decrement',
                     'delete', 'flush'),
                 array( $this->link, 'tble', 'key', 'hash', 'expir', 'value' )
@@ -364,6 +364,35 @@ class classes_cache_db extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo('INSERT INTO table') );
 
         $this->assertSame( $cache, $cache->set("Some Key", "Value To Save") );
+    }
+
+    public function testSetIfSame ()
+    {
+        $cache = $this->getTestObj();
+
+        $cache->expects( $this->once() )
+            ->method('createSetIfSameSQL')
+            ->with(
+                    $this->equalTo('11b30ee46e917709c2f32b72a837df97'),
+                    $this->equalTo('ae7df06119b27e791f12c0b5bf1a5f1b'),
+                    $this->equalTo('431014e4a761ea216e9a35f20aaec61c'),
+                    $this->equalTo('b:1;')
+                )
+            ->will( $this->returnValue("UPDATE table") );
+
+        $this->link->expects( $this->once() )
+            ->method('query')
+            ->with( $this->equalTo('UPDATE table') );
+
+        $result = new \cPHP\Cache\Result(
+                $cache, "Some Key",
+                'ae7df06119b27e791f12c0b5bf1a5f1b', "Value To Save"
+            );
+
+        $this->assertSame(
+                $cache,
+                $cache->setIfSame($result, TRUE)
+            );
     }
 
 }

@@ -390,6 +390,44 @@ abstract class DB implements \cPHP\iface\Cache
         return $this;
     }
 
+    /**
+     * Internal method to generate the query needed to set a key's value only
+     * if it hasn't changed
+     *
+     * @param String $key The key to set
+     * @param String $oldHash The hash representing the existing value
+     * @param String $newHash The hash representing the new value
+     * @param String $value The already encoded value
+     * @return String A SQL query that will result in a single row, two field
+     *      result set. The fields should be labelled Value and Hash
+     */
+    abstract protected function createSetIfSameSQL ( $key, $oldHash, $newHash, $value );
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param cPHP\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function setIfSame ( \cPHP\Cache\Result $result, $value )
+    {
+        $value = serialize($value);
+
+        $query = $this->createSetIfSameSQL(
+                $this->normalizeKey( $result->getKey() ),
+                $result->getHash(),
+                $this->createHash($value),
+                $value
+            );
+
+        $this->getLink()->query( $query );
+
+        return $this;
+    }
+
 }
 
 ?>
