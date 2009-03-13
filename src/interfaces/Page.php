@@ -36,11 +36,11 @@ interface Page
     /**
      * Returns the content of this page as a string
      *
-     * @param cPHP\Page $page The core page that will be used to synchronize
-     *      the actions of all the other pages
+     * @param cPHP\Page\Context $page A context object which is used by this
+     *      page to communicate with the root page
      * @return cPHP\iface\Template
      */
-    public function getTemplate ( \cPHP\Page $page );
+    public function getTemplate ( \cPHP\Page\Context $context );
 
 }
 
