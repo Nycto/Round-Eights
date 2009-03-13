@@ -28,124 +28,72 @@
 namespace cPHP;
 
 /**
- * Provides a foundation for most Page classes
+ * The root page generates the templates of the pages it contains, reacting to
+ * any global decisions they make via the context object
  */
-abstract class Page implements \cPHP\iface\Page
+class Page
 {
 
     /**
-     * The layout template object that will wrap the content
+     * The page being rendered
      *
-     * @var Object The layout template object
+     * @var cPHP\iface\Page
      */
-    private $layout;
+    private $page;
 
     /**
-     * Returns the core content this page will display
+     * A description of the current environment
      *
-     * @return mixed Returns the central content for the page
+     * @var cPHP\Env
      */
-    abstract protected function createContent ();
+    private $env;
 
     /**
-     * Returns the core content of this page as a template
+     * The context object that will be used to coordinate multiple pages
      *
-     * Behind the scenes, this calls the createCoreContent method and normalizes
-     * the results.
-     *
-     * @return Object Returns a cPHP\iface\Template object
+     * @var cPHP\Page\Context
      */
-    public function getContent ()
+    private $context;
+
+    /**
+     * Constructor... Accepts the page that will be rendered when getTemplate is
+     * called.
+     *
+     * @param cPHP\iface\Page $page The page being displayed
+     */
+    public function __construct ( \cPHP\iface\Page $page )
     {
-        $content = $this->createContent();
-
-        if ( $content instanceof \cPHP\iface\Template )
-            return $content;
-
-        return new \cPHP\Template\Raw( \cPHP\strval($content) );
+        $this->page = $page;
     }
 
     /**
-     * Returns the layout template, if one exists
+     * Returns the page that will be rendered
      *
-     * @return Object|Null Returns a template object, or null if no layout has been set
-     */
-    public function getLayout ()
-    {
-        return $this->layout;
-    }
-
-    /**
-     * Sets the layout template that the content will be wrapped in.
-     *
-     * When the page is pulled via getPage, the content will be added to the
-     * layout template in the "content" variable.
-     *
-     * @param Object $layout The layout template
-     * @return Object Returns a self reference
-     */
-    public function setLayout ( \cPHP\Template $layout )
-    {
-        $this->layout = $layout;
-        return $this;
-    }
-
-    /**
-     * Returns the whether a layout template has been set
-     *
-     * @return Boolean
-     */
-    public function layoutExists ()
-    {
-        return isset($this->layout);
-    }
-
-    /**
-     * Clears the layout template from this instance
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearLayout ()
-    {
-        $this->layout = null;
-        return $this;
-    }
-
-    /**
-     * Returns the template that will be used to render the entire page.
-     *
-     * @return Object Returns a template object
+     * @return cPHP\iface\Page
      */
     public function getPage ()
     {
-        $content = $this->getContent();
-
-        // If there is no layout to wrap the content in, just return it
-        if ( !$this->layoutExists() )
-            return $content;
-
-        return $this->layout->set("content", $content);
+        return $this->page;
     }
 
     /**
-     * Outputs this page to the user
+     * Renders the contained page and returns the results
      *
-     * @return Object Returns a self reference
+     * @return cPHP\iface\Template Returns the rendered template
+     */
+    public function getTemplate ()
+    {
+
+    }
+
+    /**
+     * Helper function that invokes getTemplate and outputs the result to the client
+     *
+     * @return cPHP\Page Returns a self reference
      */
     public function display ()
     {
-        $this->getPage()->display();
-        return $this;
-    }
 
-    /**
-     * Returns the content of this page as a string
-     *
-     * @return String
-     */
-    public function render()
-    {
-        return $this->getPage()->render();
     }
 
 }
