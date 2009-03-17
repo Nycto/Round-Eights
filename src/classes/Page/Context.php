@@ -34,6 +34,37 @@ namespace cPHP\Page;
 class Context
 {
 
+    /**
+     * Whether the overall result of this page should be suppressed
+     *
+     * @var Boolean
+     */
+    private $supressed = FALSE;
+
+    /**
+     * Indicates to the root page that the rendered content should not be displayed
+     *
+     * @return cPHP\Page\Context Returns a self reference
+     */
+    public function supress ()
+    {
+        $this->supressed = TRUE;
+        return $this;
+    }
+
+    /**
+     * Returns whether the content should be supressed
+     *
+     * The root page will look at this value. If it is true, a blank template is
+     * returned.
+     *
+     * @return Boolean
+     */
+    public function isSupressed ()
+    {
+        return $this->supressed;
+    }
+
 }
 
 ?>

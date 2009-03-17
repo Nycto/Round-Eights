@@ -33,6 +33,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_context extends PHPUnit_Framework_TestCase
 {
 
+    public function testSupress ()
+    {
+        $context = new \cPHP\Page\Context;
+
+        $this->assertFalse( $context->isSupressed() );
+        $this->assertSame( $context, $context->supress() );
+        $this->assertTrue( $context->isSupressed() );
+    }
 }
 
 ?>
