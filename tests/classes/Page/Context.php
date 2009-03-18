@@ -56,6 +56,13 @@ class classes_page_context extends PHPUnit_Framework_TestCase
         $this->assertSame( $context, $context->redirect("http://example.com") );
         $this->assertSame( "http://example.com", $context->getRedirect() );
         $this->assertTrue( $context->isSupressed() );
+
+        try {
+            $context->redirect("bad url");
+        }
+        catch ( cPHP\Exception\Data $err ) {
+            $this->assertSame( "URL must not contain spaces", $err->getMessage() );
+        }
     }
 
 }

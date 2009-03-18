@@ -82,7 +82,7 @@ class Context
      */
     public function redirect ( $url )
     {
-        $url = \cPHP\strval( $url );
+        $url = trim( \cPHP\strval( $url ) );
 
         \cPHP\Validator::URL( \cPHP\Validator\URL::ALLOW_RELATIVE )->ensure( $url );
 
