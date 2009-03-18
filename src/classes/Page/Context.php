@@ -1,6 +1,6 @@
 <?php
 /**
- * Root Page Context Class
+ * Page Context Class
  *
  * @license Artistic License 2.0
  *
@@ -42,6 +42,13 @@ class Context
     private $supressed = FALSE;
 
     /**
+     * If a page requests a redirect, the URL to point to is saved here
+     *
+     * @var String
+     */
+    private $redirect;
+
+    /**
      * Indicates to the root page that the rendered content should not be displayed
      *
      * @return cPHP\Page\Context Returns a self reference
@@ -63,6 +70,37 @@ class Context
     public function isSupressed ()
     {
         return $this->supressed;
+    }
+
+    /**
+     * Helper function that redirects the client to another url
+     *
+     * If redirect is called twice, the second call will override the first call
+     *
+     * @param String $url The URL to forward them to
+     * @return cPHP\Page\Context Returns a self reference
+     */
+    public function redirect ( $url )
+    {
+        $url = \cPHP\strval( $url );
+
+        \cPHP\Validator::URL( \cPHP\Validator\URL::ALLOW_RELATIVE )->ensure( $url );
+
+        $this->redirect = $url;
+
+        $this->supress();
+
+        return $this;
+    }
+
+    /**
+     * Returns the URL the page will be redirected to
+     *
+     * @return Null|String Returns NULL if no redirect has been set
+     */
+    public function getRedirect ()
+    {
+        return $this->redirect;
     }
 
 }

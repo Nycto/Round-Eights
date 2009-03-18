@@ -41,6 +41,23 @@ class classes_page_context extends PHPUnit_Framework_TestCase
         $this->assertSame( $context, $context->supress() );
         $this->assertTrue( $context->isSupressed() );
     }
+
+    public function testRedirect ()
+    {
+        $context = new \cPHP\Page\Context;
+
+        $this->assertNull( $context->getRedirect() );
+        $this->assertFalse( $context->isSupressed() );
+
+        $this->assertSame( $context, $context->redirect("/test.html") );
+        $this->assertSame( "/test.html", $context->getRedirect() );
+        $this->assertTrue( $context->isSupressed() );
+
+        $this->assertSame( $context, $context->redirect("http://example.com") );
+        $this->assertSame( "http://example.com", $context->getRedirect() );
+        $this->assertTrue( $context->isSupressed() );
+    }
+
 }
 
 ?>
