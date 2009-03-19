@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
  * unit tests
  */
-class classes_exception_index extends PHPUnit_Framework_TestCase
+class classes_exception_interrupt_page extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
-        $err = new \cPHP\Exception\Interaction(
+        $err = new \cPHP\Exception\Interrupt\Page(
                 'Interrupted',
                 2020,
                 0

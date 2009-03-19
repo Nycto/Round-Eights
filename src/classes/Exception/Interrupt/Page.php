@@ -25,23 +25,26 @@
  * @package Exception
  */
 
-namespace cPHP\Exception;
+namespace cPHP\Exception\Interrupt;
 
 /**
- * Interruption exception
+ * Page load Interruption exception
+ *
+ * This exception is used by the Page classes to interrupt the loading of a page
+ * and immediately send control back to the root page
  */
-class Interrupt extends \cPHP\Exception
+class Page extends \cPHP\Exception\Interrupt
 {
 
     /**
      * The title of this exception
      */
-    const TITLE = "Interruption";
+    const TITLE = "Page Interruption";
 
     /**
      * A brief description of this error type
      */
-    const DESCRIPTION = "Explicit request to interrupt a process";
+    const DESCRIPTION = "Page load interruption";
 
 }
 
