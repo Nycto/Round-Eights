@@ -42,7 +42,7 @@ class Blank implements \cPHP\iface\Page
      */
     public function getTemplate ( \cPHP\Page\Context $context )
     {
-        return new \cPHP\Template\Raw;
+        return new \cPHP\Template\Blank;
     }
 
 }

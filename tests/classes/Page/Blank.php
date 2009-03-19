@@ -39,8 +39,7 @@ class classes_page_blank extends PHPUnit_Framework_TestCase
 
         $tpl = $page->getTemplate( new \cPHP\Page\Context );
 
-        $this->assertThat( $tpl, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertNull( $tpl->getContent() );
+        $this->assertThat( $tpl, $this->isInstanceOf('cPHP\Template\Blank') );
     }
 
 }
