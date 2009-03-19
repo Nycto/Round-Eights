@@ -36,9 +36,9 @@ class Blank implements \cPHP\iface\Page
     /**
      * Returns the core content this page will display
      *
-     * @param cPHP\Page\Context $page A context object which is used by this
+     * @param cPHP\Page\Context $context A context object which is used by this
      *      page to communicate with the root page
-     * @return \cPHP\Template\Raw Returns the content for the page
+     * @return \cPHP\Template\Blank Returns a blank template
      */
     public function getTemplate ( \cPHP\Page\Context $context )
     {
