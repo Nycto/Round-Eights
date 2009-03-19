@@ -59,9 +59,23 @@ class classes_page_context extends PHPUnit_Framework_TestCase
 
         try {
             $context->redirect("bad url");
+            $this->fail("An expected exception was not thrown");
         }
         catch ( cPHP\Exception\Data $err ) {
             $this->assertSame( "URL must not contain spaces", $err->getMessage() );
+        }
+    }
+
+    public function testInterrupt ()
+    {
+        $context = new \cPHP\Page\Context;
+
+        try {
+            $context->interrupt();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( cPHP\Exception\Interrupt\Page $err ) {
+            $this->assertSame( "Page execution interrupted", $err->getMessage() );
         }
     }
 

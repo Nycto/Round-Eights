@@ -103,6 +103,20 @@ class Context
         return $this->redirect;
     }
 
+    /**
+     * Immediately interrupts the page load and returns control to the root page
+     *
+     * This causes an interrupt exception to be thrown. The root page will react
+     * by catching the exception and returning a blank template
+     *
+     * @throws \cPHP\Exception\Interrupt\Page
+     * @return null
+     */
+    public function interrupt ()
+    {
+        throw new \cPHP\Exception\Interrupt\Page("Page execution interrupted");
+    }
+
 }
 
 ?>
