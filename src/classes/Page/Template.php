@@ -30,42 +30,34 @@ namespace cPHP\Page;
 /**
  * Passes a template through as a page
  */
-class Template extends \cPHP\Page
+class Template implements \cPHP\iface\Page
 {
 
     /**
      * The content this page will display
      *
-     * @var Object a Template object
+     * @var cPHP\iface\Template A Template object
      */
     private $template;
 
     /**
      * Constructor...
      *
-     * @param mixed $template The template this page will display
+     * @param cPHP\iface\Template $template The template this page will display
      */
     public function __construct( \cPHP\iface\Template $template = NULL )
     {
         if ( $template instanceof \cPHP\iface\Template )
             $this->setTemplate( $template );
-    }
-
-    /**
-     * Returns the template in this instance
-     *
-     * @return Object Returns a template object
-     */
-    public function getTemplate ()
-    {
-        return $this->template;
+        else
+            $this->setTemplate( new \cPHP\Template\Blank );
     }
 
     /**
      * Sets the template for this instance
      *
-     * @param Object $template The template being set
-     * @return Object Returns a self reference
+     * @param cPHP\iface\Template $template The template being set
+     * @return cPHP\Page\Template Returns a self reference
      */
     public function setTemplate ( \cPHP\iface\Template $template )
     {
@@ -74,37 +66,25 @@ class Template extends \cPHP\Page
     }
 
     /**
-     * Clears the template out of this instance
+     * Sets the template for this instance
      *
-     * @return Boolean Returns whether this instance has any template
+     * @return cPHP\iface\Template Returns the template this instance represents
      */
-    public function templateExists ()
+    public function getTemplate ()
     {
-        return isset( $this->template );
-    }
-
-    /**
-     * Clears the template out of this instance
-     *
-     * @return Object Returns a self reference
-     */
-    public function clearTemplate ()
-    {
-        $this->template = null;
-        return $this;
+        return $this->template;
     }
 
     /**
      * Returns the core content this page will display
      *
-     * @return mixed Returns the central content for the page
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return \cPHP\iface\Template Returns the content for the page
      */
-    protected function createContent ()
+    public function getContent ( \cPHP\Page\Context $context )
     {
-        if ( $this->templateExists() )
-            return $this->template;
-        else
-            return new \cPHP\Template\Raw;
+        return $this->template;
     }
 
 }

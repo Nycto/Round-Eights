@@ -33,54 +33,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_template extends PHPUnit_Framework_TestCase
 {
 
-    public function testTemplateAccessors ()
-    {
-        $page = new \cPHP\Page\Template;
-
-        $this->assertNull( $page->getTemplate() );
-        $this->assertFalse( $page->templateExists() );
-
-        $tpl = $this->getMock(
-                'cPHP\iface\Template',
-                array('render', 'display', '__toString')
-            );
-
-        $this->assertSame( $page, $page->setTemplate($tpl) );
-        $this->assertSame( $tpl, $page->getTemplate() );
-        $this->assertTrue( $page->templateExists() );
-
-        $this->assertSame( $page, $page->clearTemplate() );
-        $this->assertNull( $page->getTemplate() );
-        $this->assertFalse( $page->templateExists() );
-    }
-
-    public function testConstructor ()
-    {
-        $tpl = $this->getMock(
-                'cPHP\iface\Template',
-                array('render', 'display', '__toString')
-            );
-
-        $page = new \cPHP\Page\Template( $tpl );
-
-        $this->assertSame( $page, $page->setTemplate($tpl) );
-        $this->assertSame( $tpl, $page->getTemplate() );
-        $this->assertTrue( $page->templateExists() );
-    }
-
-    public function testGetContent_empty ()
+    public function testConstruct_Blank ()
     {
         $page = new \cPHP\Page\Template;
 
         $this->assertThat(
-                $page->getContent(),
-                $this->isInstanceOf('cPHP\Template\Raw')
+                $page->getTemplate(),
+                $this->isInstanceOf('cPHP\Template\Blank')
             );
 
-        $this->assertNull( $page->getContent()->getContent() );
+        $this->assertThat(
+                $page->getContent( new \cPHP\Page\Context ),
+                $this->isInstanceOf('cPHP\Template\Blank')
+            );
     }
 
-    public function testGetContent_data ()
+    public function testConstruct_Fill ()
     {
         $tpl = $this->getMock(
                 'cPHP\iface\Template',
@@ -88,8 +56,12 @@ class classes_page_template extends PHPUnit_Framework_TestCase
             );
 
         $page = new \cPHP\Page\Template( $tpl );
+        $this->assertSame( $tpl, $page->getTemplate() );
 
-        $this->assertSame( $tpl, $page->getContent() );
+        $this->assertSame(
+                $tpl,
+                $page->getContent( new \cPHP\Page\Context )
+            );
     }
 
 }
