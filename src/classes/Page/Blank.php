@@ -40,7 +40,7 @@ class Blank implements \cPHP\iface\Page
      *      page to communicate with the root page
      * @return \cPHP\Template\Blank Returns a blank template
      */
-    public function getTemplate ( \cPHP\Page\Context $context )
+    public function getContent ( \cPHP\Page\Context $context )
     {
         return new \cPHP\Template\Blank;
     }

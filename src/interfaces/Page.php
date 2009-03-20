@@ -40,7 +40,7 @@ interface Page
      *      page to communicate with the root page
      * @return cPHP\iface\Template
      */
-    public function getTemplate ( \cPHP\Page\Context $context );
+    public function getContent ( \cPHP\Page\Context $context );
 
 }
 
