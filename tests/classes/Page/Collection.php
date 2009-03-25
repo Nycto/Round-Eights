@@ -37,57 +37,34 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
     {
         $page = new \cPHP\Page\Collection;
 
-        $sub1 = $this->getMock('cPHP\iface\Page', array('render', 'display'));
-        $sub2 = $this->getMock('cPHP\iface\Page', array('render', 'display'));
+        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
 
-
-        $this->assertEquals( new cPHP\Ary, $page->getPages() );
-
+        $this->assertEquals( array(), $page->getPages() );
 
         $this->assertSame( $page, $page->addPage($sub1) );
-        $this->assertEquals(
-                new cPHP\Ary(array($sub1)),
-                $page->getPages()
-            );
-        $this->assertSame( $sub1, $page->getPages()->offsetGet(0) );
-
+        $this->assertSame( array($sub1), $page->getPages() );
 
         $this->assertSame( $page, $page->addPage($sub2) );
-        $this->assertEquals(
-                new cPHP\Ary(array($sub1, $sub2)),
-                $page->getPages()
-            );
-        $this->assertSame( $sub1, $page->getPages()->offsetGet(0) );
-        $this->assertSame( $sub2, $page->getPages()->offsetGet(1) );
+        $this->assertSame( array($sub1, $sub2), $page->getPages() );
 
 
         $this->assertSame( $page, $page->addPage($sub1) );
-        $this->assertEquals(
-                new cPHP\Ary(array($sub1, $sub2, $sub1)),
-                $page->getPages()
-            );
-        $this->assertSame( $sub1, $page->getPages()->offsetGet(0) );
-        $this->assertSame( $sub2, $page->getPages()->offsetGet(1) );
-        $this->assertSame( $sub1, $page->getPages()->offsetGet(2) );
-
+        $this->assertSame( array($sub1, $sub2, $sub1), $page->getPages() );
 
         $this->assertSame( $page, $page->clearPages() );
-        $this->assertEquals( new cPHP\Ary, $page->getPages() );
+        $this->assertSame( array(), $page->getPages() );
     }
 
     public function testCreateContent_empty ()
     {
         $page = new \cPHP\Page\Collection;
 
-        $result = $page->getContent();
-        $this->assertThat(
-                $result,
-                $this->isInstanceOf('cPHP\Template\Collection')
-            );
-        $this->assertEquals(
-                new \cPHP\Ary,
-                $result->getTemplates()
-            );
+        $result = $page->getContent( new \cPHP\Page\Context );
+
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
+
+        $this->assertEquals( new \cPHP\Ary, $result->getTemplates() );
     }
 
     public function testCreateContent_templates ()
@@ -101,11 +78,8 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
         $page->addPage( new \cPHP\Page\Template($tpl2) );
 
 
-        $result = $page->getContent();
-        $this->assertThat(
-                $result,
-                $this->isInstanceOf('cPHP\Template\Collection')
-            );
+        $result = $page->getContent( new \cPHP\Page\Context );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
         $this->assertEquals(
                 new \cPHP\Ary(array($tpl1, $tpl2)),
                 $result->getTemplates()
@@ -117,21 +91,18 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
     public function testCreateContent_string ()
     {
-        $sub = $this->getMock('cPHP\iface\Page', array('render', 'display'));
+        $sub = $this->getMock('cPHP\iface\Page', array('getContent'));
 
         $sub->expects( $this->once() )
-            ->method( 'render' )
+            ->method( 'getContent' )
             ->will( $this->returnValue('Chunk of data') );
 
         $page = new \cPHP\Page\Collection;
         $page->addPage( $sub );
 
+        $result = $page->getContent( new \cPHP\Page\Context );
 
-        $result = $page->getContent();
-        $this->assertThat(
-                $result,
-                $this->isInstanceOf('cPHP\Template\Collection')
-            );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
         $this->assertSame( 1, $result->getTemplates()->count() );
         $this->assertThat(
                 $result->getTemplates()->offsetGet(0),

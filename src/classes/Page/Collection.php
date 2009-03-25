@@ -22,7 +22,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Filters
+ * @package Page
  */
 
 namespace cPHP\Page;
@@ -30,7 +30,7 @@ namespace cPHP\Page;
 /**
  * Collects a list of pages and displays them all
  */
-class Collection extends \cPHP\Page
+class Collection implements \cPHP\iface\Page
 {
 
     /**
@@ -47,14 +47,14 @@ class Collection extends \cPHP\Page
      */
     public function getPages ()
     {
-        return new \cPHP\Ary($this->pages);
+        return $this->pages;
     }
 
     /**
      * Adds a page to this list of pages to render
      *
-     * @param Object $page The page to add
-     * @return Object Returns a self reference
+     * @param cPHP\iface\Page $page The page to add
+     * @return cPHP\Page\Collection Returns a self reference
      */
     public function addPage ( \cPHP\iface\Page $page )
     {
@@ -65,7 +65,7 @@ class Collection extends \cPHP\Page
     /**
      * Resets the list of pages in this instance
      *
-     * @return Object Returns a self reference
+     * @return cPHP\Page\Collection Returns a self reference
      */
     public function clearPages ()
     {
@@ -74,20 +74,19 @@ class Collection extends \cPHP\Page
     }
 
     /**
-     * Executes the view method and returns it's results
+     * Returns the core content this page will display
      *
-     * @return Object Returns a template object
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return \cPHP\Template\Collection Returns a template collection
      */
-    protected function createContent ()
+    public function getContent ( \cPHP\Page\Context $context )
     {
         $tpl = new \cPHP\Template\Collection;
 
         foreach ( $this->pages AS $page ) {
 
-            if ( $page instanceof \cPHP\Page )
-                $content = $page->getPage();
-            else
-                $content = $page->render();
+            $content = $page->getContent( $context );
 
             if ( !($content instanceof \cPHP\iface\Template) )
                 $content = new \cPHP\Template\Raw( $content );
