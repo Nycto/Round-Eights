@@ -22,15 +22,15 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Filters
+ * @package Page
  */
 
 namespace cPHP\Page;
 
 /**
- * Takes a given input, converts it to a string, and presents it as a page
+ * Takes an input, converts it to a string, and presents it as a page
  */
-class Raw extends \cPHP\Page
+class Raw implements \cPHP\iface\Page
 {
 
     /**
@@ -96,9 +96,11 @@ class Raw extends \cPHP\Page
     /**
      * Returns the core content this page will display
      *
-     * @return mixed Returns the central content for the page
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return cPHP\Template\Raw Returns the template for this page
      */
-    protected function createContent ()
+    public function getContent ( \cPHP\Page\Context $context )
     {
         return new \cPHP\Template\Raw( $this->data );
     }

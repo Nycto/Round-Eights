@@ -62,12 +62,10 @@ class classes_page_raw extends PHPUnit_Framework_TestCase
     {
         $page = new \cPHP\Page\Raw;
 
-        $this->assertThat(
-                $page->getContent(),
-                $this->isInstanceOf('cPHP\Template\Raw')
-            );
+        $result = $page->getContent( new \cPHP\Page\Context );
 
-        $this->assertNull( $page->getContent()->getContent() );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertNull( $result->getContent( new \cPHP\Page\Context ) );
     }
 
     public function testGetContent_data ()
@@ -75,15 +73,11 @@ class classes_page_raw extends PHPUnit_Framework_TestCase
         $page = new \cPHP\Page\Raw;
         $page->setData( "Chunk of data" );
 
-        $this->assertThat(
-                $page->getContent(),
-                $this->isInstanceOf('cPHP\Template\Raw')
-            );
+        $result = $page->getContent( new \cPHP\Page\Context );
 
-        $this->assertSame(
-                "Chunk of data",
-                $page->getContent()->getContent()
-            );
+        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Raw') );
+
+        $this->assertSame( "Chunk of data", $result->getContent() );
     }
 
 }
