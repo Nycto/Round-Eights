@@ -33,6 +33,98 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_injector extends PHPUnit_Framework_TestCase
 {
 
+    public function testPageAccessors ()
+    {
+        $page = new \cPHP\Page\Injector(
+                $this->getMock('cPHP\Template', array('display'))
+            );
+
+        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
+
+        $this->assertEquals( array(), $page->getPages() );
+
+        $this->assertSame( $page, $page->addPage('one', $sub1) );
+        $this->assertSame( array('one' => $sub1), $page->getPages() );
+
+        $this->assertSame( $page, $page->addPage('two', $sub2) );
+        $this->assertSame(
+                array('one' => $sub1, 'two' => $sub2),
+                $page->getPages()
+            );
+
+        $this->assertSame( $page, $page->addPage('three', $sub1) );
+        $this->assertSame(
+                array('one' => $sub1, 'two' => $sub2, 'three' => $sub1),
+                $page->getPages()
+            );
+
+        $this->assertSame( $page, $page->addPage('one', $sub2) );
+        $this->assertSame(
+                array('one' => $sub2, 'two' => $sub2, 'three' => $sub1),
+                $page->getPages()
+            );
+
+        $this->assertSame( $page, $page->clearPages() );
+        $this->assertSame( array(), $page->getPages() );
+    }
+
+    public function testGetContent ()
+    {
+        $tpl = $this->getMock('cPHP\Template', array('display', 'set'));
+
+        $page = new \cPHP\Page\Injector( $tpl );
+
+        $context = new \cPHP\Page\Context;
+
+        // Set up a page and template that will be injected
+        $tpl1 = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub1->expects( $this->once() )
+            ->method('getContent')
+            ->with( $this->equalTo($context) )
+            ->will( $this->returnValue($tpl1) );
+
+        // Set up a page and template that will be injected
+        $tpl2 = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub2->expects( $this->once() )
+            ->method('getContent')
+            ->with( $this->equalTo($context) )
+            ->will( $this->returnValue($tpl2) );
+
+
+        // Add the sub pages to the Injector
+        $page->addPage('One', $sub1);
+        $page->addPage('Two', $sub2);
+
+
+        // Set up the input template so it expects the injected templates
+        $tpl->expects( $this->at(0) )
+            ->method('set')
+            ->with( $this->equalTo('One'), $this->equalTo($tpl1) );
+
+        $tpl->expects( $this->at(1) )
+            ->method('set')
+            ->with( $this->equalTo('Two'), $this->equalTo($tpl2) );
+
+        // Run the test
+        $this->assertSame( $tpl, $page->getContent( $context ) );
+    }
+
+    public function testGetContent_empty ()
+    {
+        $tpl = $this->getMock('cPHP\Template', array('display', 'set'));
+
+        $page = new \cPHP\Page\Injector( $tpl );
+
+        $tpl->expects( $this->never() )
+            ->method('set');
+
+        // Run the test
+        $this->assertSame( $tpl, $page->getContent( new \cPHP\Page\Context ) );
+    }
+
 }
 
 ?>

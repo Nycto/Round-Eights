@@ -28,12 +28,95 @@
 namespace cPHP\Page;
 
 /**
- * Accepts a Template and a list of pages. When the instance is rendered, it
+ * Accepts a Template and a list of pages. When this instance is rendered, it
  * will render all the contained pages and inject them as values into the given
  * template
  */
 class Injector implements \cPHP\iface\Page
 {
+
+    /**
+     * The template that will have pages injected into it.
+     *
+     * @var \cPHP\Template
+     */
+    private $template;
+
+    /**
+     * The list of pages to render and inject
+     *
+     * @var array
+     */
+    private $pages = array();
+
+    /**
+     * Constructor...
+     *
+     * @param \cPHP\Template $template The template that will have pages injected
+     *      into it.
+     */
+    public function __construct ( \cPHP\Template $template )
+    {
+        $this->template = $template;
+    }
+
+    /**
+     * Returns the list of pages that will be rendered
+     *
+     * @return Array Returns an array of page objects
+     */
+    public function getPages ()
+    {
+        return $this->pages;
+    }
+
+    /**
+     * Adds a page to this list of pages to render
+     *
+     * @param String The variable name to inject this page as
+     * @param cPHP\iface\Page $page The page to add
+     * @return cPHP\Page\Collection Returns a self reference
+     */
+    public function addPage ( $index, \cPHP\iface\Page $page )
+    {
+        $index = \cPHP\Template::normalizeLabel( $index );
+        $this->pages[ $index ] = $page;
+        return $this;
+    }
+
+    /**
+     * Resets the list of pages in this instance
+     *
+     * @return cPHP\Page\Collection Returns a self reference
+     */
+    public function clearPages ()
+    {
+        $this->pages = array();
+        return $this;
+    }
+
+    /**
+     * Returns the core content this page will display
+     *
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return \cPHP\Template Returns the input template
+     */
+    public function getContent ( \cPHP\Page\Context $context )
+    {
+        foreach ( $this->pages AS $index => $page ) {
+
+            $content = $page->getContent( $context );
+
+            if ( !($content instanceof \cPHP\iface\Template) )
+                $content = new \cPHP\Template\Raw( $content );
+
+            $this->template->set( $index, $content );
+
+        }
+
+        return $this->template;
+    }
 
 }
 
