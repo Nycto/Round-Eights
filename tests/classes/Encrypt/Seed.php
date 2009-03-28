@@ -109,6 +109,33 @@ class classes_encrypt_seed extends PHPUnit_Framework_TestCase
         $this->assertSame( 1646109084, $seed->getInteger() );
     }
 
+    public function testGetFloat ()
+    {
+        if ( !extension_loaded("bcmath") )
+            $this->markTestSkipped("BCMath extension is not enabled");
+
+        $seed = new \cPHP\Encrypt\Seed("Initial value");
+        $this->assertSame( 0.47091518923217, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource(123456) );
+        $this->assertSame( 0.6118107878658, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource(array("value")) );
+        $this->assertSame( 0.59219704083735, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource(NULL) );
+        $this->assertSame( 0.89195354557222, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource(1.98) );
+        $this->assertSame( 0.5937047324114, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource(TRUE) );
+        $this->assertSame( 0.29613740383468, $seed->getFloat() );
+
+        $this->assertSame( $seed, $seed->setSource( new stdClass ) );
+        $this->assertSame( 0.76652927546135, $seed->getFloat() );
+    }
+
 }
 
 ?>

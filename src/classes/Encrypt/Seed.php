@@ -92,6 +92,9 @@ class Seed
     /**
      * Returns an integer representation of this seed
      *
+     * Note that to be able to use this method, you must have the BC Math extension
+     * installed. An exception will be thrown if it is not.
+     *
      * @return Integer Returns an integer between zero and the value of the
      *      PHP_INT_MAX constant
      */
@@ -112,6 +115,20 @@ class Seed
         // Integers can only be so big, so fit the source value into
         // the constraints of PHP
         return \intval( \bcmod($source, PHP_INT_MAX) );
+    }
+
+    /**
+     * Returns a float representation of this seed between and including 0 and 1.
+     *
+     * Note that to be able to use this method, you must have the BC Math extension
+     * installed. An exception will be thrown if it is not.
+     *
+     * @return Float A float value >= 0 and <= 1. This will have precision of up
+     *      to 14 decimal places.
+     */
+    public function getFloat ()
+    {
+        return round( $this->getInteger() / PHP_INT_MAX, 14 );
     }
 
 }
