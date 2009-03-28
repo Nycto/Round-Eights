@@ -40,14 +40,18 @@ class Select extends \cPHP\Form\Multi
      */
     public function getOptionList ()
     {
-        return $this->getOptions()->collect(function ($value, $key) {
-            return "<option"
+        $result = "";
+
+        foreach ( $this->getOptions() AS $key => $value ) {
+            $result .= "<option"
                 ." value='" .htmlspecialchars($key) ."'"
                 .( $this->getValue() == $key ? " selected='selected'" : "" )
                 .">"
                 .htmlspecialchars($value)
                 ."</option>";
-        })->implode();
+        }
+
+        return $result;
     }
 
     /**

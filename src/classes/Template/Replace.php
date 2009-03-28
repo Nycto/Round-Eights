@@ -125,12 +125,14 @@ class Replace extends \cPHP\Template
      */
     public function render ()
     {
-        return preg_replace_callback( $this->search, function ($matches) {
+        $self = $this;
+
+        return preg_replace_callback( $this->search, function ($matches) use ($self) {
 
             // Ensure that the search string returns the proper number of matches
             if ( count($matches) < 4 ) {
                 $err = new \cPHP\Exception\Data(
-                        $this->search,
+                        $self->search,
                         "Search Regular Expression",
                         "Must return at least 3 groupings"
                     );
@@ -143,12 +145,12 @@ class Replace extends \cPHP\Template
                 return substr( $matches[1], 0, -1 ) .$matches[2];
 
             // If this variable isn't set or this replacement would cause recursion, return blank
-            else if ( !$this->exists( $matches[3] ) || $this->get( $matches[3] ) === $this )
+            else if ( !$self->exists( $matches[3] ) || $self->get( $matches[3] ) === $self )
                 return $matches[1];
 
             // Otherwise make the replacement
             else
-                return $matches[1] . \cPHP\strval( $this->get( $matches[3] ) );
+                return $matches[1] . \cPHP\strval( $self->get( $matches[3] ) );
 
         }, $this->template );
     }
