@@ -109,13 +109,17 @@ class Radio extends \cPHP\Form\Multi
      */
     public function getOptionList ()
     {
-        return $this->getOptions()->collect(function ($value, $key) {
-            return "<li>"
+        $result = "";
+
+        foreach ( $this->getOptions() AS $key => $value ) {
+            $result .= "<li>"
                 .$this->getOptionRadioTag( $key )
                 ." "
                 .$this->getOptionLabelTag( $key )
                 ."</li>";
-        })->implode();
+        }
+
+        return $result;
     }
 
     /**
