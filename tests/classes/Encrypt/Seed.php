@@ -35,7 +35,27 @@ class classes_encrypt_seed extends PHPUnit_Framework_TestCase
 
     public function testSourceAccessors ()
     {
-        $this->markTestIncomplete("To be written");
+        $seed = new \cPHP\Encrypt\Seed("Initial value");
+
+        $this->assertSame( "Initial value", $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource(123456) );
+        $this->assertSame( "123456", $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource(array("value")) );
+        $this->assertSame( 'a:1:{i:0;s:5:"value";}', $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource(NULL) );
+        $this->assertSame( "", $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource(1.98) );
+        $this->assertSame( "1.98", $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource(TRUE) );
+        $this->assertSame( "1", $seed->getSource() );
+
+        $this->assertSame( $seed, $seed->setSource( new stdClass ) );
+        $this->assertSame( 'O:8:"stdClass":0:{}', $seed->getSource() );
     }
 
     public function testGetString ()
