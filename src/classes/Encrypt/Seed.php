@@ -92,10 +92,14 @@ class Seed
     /**
      * Returns an integer representation of this seed
      *
-     * @return Integer
+     * @return Integer Returns an integer between zero and the value of the
+     *      PHP_INT_MAX constant
      */
     public function getInteger ()
     {
+        if ( !extension_loaded("bcmath") )
+            throw new \cPHP\Exception\Extension("BC Math", "BC Math extension is not loaded");
+
         $source = strtolower( $this->getString() );
 
         // Convert any non-digits to digits
@@ -107,7 +111,7 @@ class Seed
 
         // Integers can only be so big, so fit the source value into
         // the constraints of PHP
-        return intval( bcmod($source, PHP_INT_MAX) );
+        return \intval( \bcmod($source, PHP_INT_MAX) );
     }
 
 }

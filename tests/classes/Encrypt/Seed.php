@@ -84,7 +84,29 @@ class classes_encrypt_seed extends PHPUnit_Framework_TestCase
 
     public function testGetInteger ()
     {
-        $this->markTestIncomplete("To be written");
+        if ( !extension_loaded("bcmath") )
+            $this->markTestSkipped("BCMath extension is not enabled");
+
+        $seed = new \cPHP\Encrypt\Seed("Initial value");
+        $this->assertSame( 1011282668, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource(123456) );
+        $this->assertSame( 1313853662, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource(array("value")) );
+        $this->assertSame( 1271733461, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource(NULL) );
+        $this->assertSame( 1915455653, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource(1.98) );
+        $this->assertSame( 1274971204, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource(TRUE) );
+        $this->assertSame( 635950232, $seed->getInteger() );
+
+        $this->assertSame( $seed, $seed->setSource( new stdClass ) );
+        $this->assertSame( 1646109084, $seed->getInteger() );
     }
 
 }
