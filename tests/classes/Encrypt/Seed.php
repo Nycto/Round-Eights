@@ -60,7 +60,26 @@ class classes_encrypt_seed extends PHPUnit_Framework_TestCase
 
     public function testGetString ()
     {
-        $this->markTestIncomplete("To be written");
+        $seed = new \cPHP\Encrypt\Seed("Initial value");
+        $this->assertSame( "fcb1ddc45496d5bd9bbb1d0e3e24a58c56f33281", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource(123456) );
+        $this->assertSame( "7c4a8d09ca3762af61e59520943dc26494f8941b", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource(array("value")) );
+        $this->assertSame( "ea5d1512ad0c5e2b4516bb698c469805ff6ce5ec", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource(NULL) );
+        $this->assertSame( "da39a3ee5e6b4b0d3255bfef95601890afd80709", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource(1.98) );
+        $this->assertSame( "299ef94535e5fc122da1afbd80be0ba4f6f99c3e", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource(TRUE) );
+        $this->assertSame( "356a192b7913b04c54574d18c28d46e6395428ab", $seed->getString() );
+
+        $this->assertSame( $seed, $seed->setSource( new stdClass ) );
+        $this->assertSame( "dac1c1d5a67359940473a571ae99ea5a6e1d3505", $seed->getString() );
     }
 
     public function testGetInteger ()

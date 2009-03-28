@@ -81,7 +81,8 @@ class Seed
     /**
      * Returns an alpha-numeric representation of this seed
      *
-     * @return String
+     * @return String Returns a 40 character string containing digits and lower
+     *      case letters.
      */
     public function getString ()
     {
