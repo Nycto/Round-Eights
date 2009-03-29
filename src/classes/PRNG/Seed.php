@@ -25,7 +25,7 @@
  * @package Encrypt
  */
 
-namespace cPHP\Encrypt;
+namespace cPHP\PRNG;
 
 /**
  * Class for generating a seed value
