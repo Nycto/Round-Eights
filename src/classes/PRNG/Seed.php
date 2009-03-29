@@ -34,6 +34,15 @@ class Seed
 {
 
     /**
+     * The maximum integer value available
+     *
+     * This is equal to (2^31) - 1
+     *
+     * @var Integer
+     */
+    const MAX_INT = 2147483647;
+
+    /**
      * The source value to generate the seed from
      *
      * @param String
@@ -96,7 +105,7 @@ class Seed
      * installed. An exception will be thrown if it is not.
      *
      * @return Integer Returns an integer between zero and the value of the
-     *      PHP_INT_MAX constant
+     *      self::MAX_INT constant
      */
     public function getInteger ()
     {
@@ -114,7 +123,7 @@ class Seed
 
         // Integers can only be so big, so fit the source value into
         // the constraints of PHP
-        return \intval( \bcmod($source, PHP_INT_MAX) );
+        return \intval( \bcmod($source, self::MAX_INT) );
     }
 
     /**
@@ -128,7 +137,7 @@ class Seed
      */
     public function getFloat ()
     {
-        return round( $this->getInteger() / PHP_INT_MAX, 14 );
+        return round( $this->getInteger() / self::MAX_INT, 14 );
     }
 
 }
