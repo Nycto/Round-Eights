@@ -40,4 +40,18 @@ interface PRNG
      */
     public function nextIngeter ();
 
+    /**
+     * Returns the next random number as a float value between 0 and 1
+     *
+     * @return Float
+     */
+    public function nextFloat ();
+
+    /**
+     * Returns the next random number as a string
+     *
+     * @return String Returns a 40 character alpha-numeric string
+     */
+    public function nextString ();
+
 }
