@@ -34,42 +34,69 @@ abstract class Form extends \cPHP\Page
 {
 
     /**
-     * Stores the form after it has been created
+     * The form this page represents
      *
-     * @var Object A Form object
+     * @var \cPHP\Form
      */
     private $form;
 
     /**
-     * Returns a new instance of the form for this instance. This is called automatically
-     * by the getForm method, so use that instead
+     * The initial values to inject into the form if no values have been submitted
      *
-     * @return Object Returns a form object
+     * @var array
      */
-    abstract protected function createForm ();
+    private $initials = array();
 
     /**
-     * Returns the form instance for this page. This can be called as many times
-     * as needed, but the same form instance will always be returned
+     * The source array to pull submitted values from
      *
-     * @return Object Returns a form object
+     * @var array
+     */
+    private $source;
+
+    /**
+     * The page to return when displaying the form
+     *
+     * @var \cPHP\iface\Page
+     */
+    private $display;
+
+    /**
+     * The page to return when the form has been submitted and validates
+     *
+     * @var \cPHP\iface\Page
+     */
+    private $success;
+
+    /**
+     * Constructor...
+     *
+     * @param \cPHP\Form $form The form this page represents
+     * @param \cPHP\iface\Page $display The page to return when displaying the form
+     * @param \cPHP\iface\Page $success The page to return when the form has been
+     *      submitted and validates
+     */
+    public function __construct ( \cPHP\Form $form, \cPHP\iface\Page $display, \cPHP\iface\Page $success )
+    {
+        $this->form = $form;
+        $this->display = $display;
+        $this->success = $success;
+    }
+
+    /**
+     * Returns the form instance for this page
+     *
+     * @return \cPHP\Form Returns a form object
      */
     public function getForm ()
     {
-        if ( !isset($this->form) ) {
-            $this->form = $this->createForm();
-            if ( !($this->form instanceof \cPHP\Form) )
-                $this->form = new \cPHP\Form;
-        }
-
         return $this->form;
     }
 
     /**
      * Returns the array that will be used to fill the form with data.
      *
-     * By default, this will return the $_POST array. This method was designed
-     * to be overridden if a different data source is desired
+     * By default, this will return the array of posted values
      *
      * @return Array
      */
