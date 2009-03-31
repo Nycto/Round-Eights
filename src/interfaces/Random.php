@@ -30,7 +30,7 @@ namespace cPHP\iface;
 /**
  * Interface for pseudo-random number generators
  */
-interface PRNG
+interface Random
 {
 
     /**

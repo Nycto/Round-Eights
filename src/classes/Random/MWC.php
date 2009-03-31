@@ -30,7 +30,7 @@ namespace cPHP\Random;
 /**
  * Multiply-With-Carry pseudo-random number generator
  */
-class MWC implements \cPHP\iface\PRNG
+class MWC implements \cPHP\iface\Random
 {
 
     /**
