@@ -22,7 +22,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package PRNG
+ * @package Random
  */
 
 namespace cPHP\Random;
@@ -40,14 +40,14 @@ class MWC implements \cPHP\iface\Random
      *
      * @var Integer
      */
-    const scalar = "2147354603";
+    const SCALAR = 2147354603;
 
     /**
      * The maximum size the generated numbers can be
      *
      * @var Integer
      */
-    const base = 0x7fffffff;
+    const MAX_INT = 0x7fffffff;
 
     /**
      * The previously generated random number
@@ -69,12 +69,12 @@ class MWC implements \cPHP\iface\Random
     /**
      * Constructor...
      *
-     * @param \cPHP\PRNG\Seed $seed The seed to feed into the random number generator
+     * @param \cPHP\Random\Seed $seed The seed to feed into the random number generator
      */
     public function __construct ( \cPHP\Random\Seed $seed )
     {
         if ( !extension_loaded('bcmath') )
-            throw new Exception("BC Math required");
+            throw new \cPHP\Exception\Extension("BC Math extension required");
 
         $this->num = abs( $seed->getInteger() );
 
@@ -90,18 +90,14 @@ class MWC implements \cPHP\iface\Random
     public function nextInteger ()
     {
         // Generate the 64 bit number to base the next random number off of
-        $long = bcmul( self::scalar, $this->num );
+        $long = bcmul( self::SCALAR, $this->num );
         $long = bcadd( $long, $this->carry );
 
-        // Pull the low order byte as the next random number
-        $num = bcmod( $long, self::base );
+        // Pull the low order bits as the next random number
+        $this->num = intval( bcmod( $long, self::MAX_INT ) );
 
-        // Pull the high order byte as the next carry value
-        $carry = bcdiv( $long, self::base );
-
-        // Save these values so they can be used to generate the next number
-        $this->num = abs( intval($num) );
-        $this->carry = abs( intval($carry) );
+        // Pull the high order bits as the next carry value
+        $this->carry = intval( bcdiv( $long, self::MAX_INT ) );
 
         return $this->num;
     }
@@ -113,7 +109,7 @@ class MWC implements \cPHP\iface\Random
      */
     public function nextFloat ()
     {
-        return round( $this->nextInteger() / self::base, 14 );
+        return round( $this->nextInteger() / self::MAX_INT, 14 );
     }
 
     /**
