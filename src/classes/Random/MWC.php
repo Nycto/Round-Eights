@@ -25,7 +25,7 @@
  * @package PRNG
  */
 
-namespace cPHP\PRNG;
+namespace cPHP\Random;
 
 /**
  * Multiply-With-Carry pseudo-random number generator
@@ -71,7 +71,7 @@ class MWC implements \cPHP\iface\PRNG
      *
      * @param \cPHP\PRNG\Seed $seed The seed to feed into the random number generator
      */
-    public function __construct ( \cPHP\PRNG\Seed $seed )
+    public function __construct ( \cPHP\Random\Seed $seed )
     {
         if ( !extension_loaded('bcmath') )
             throw new Exception("BC Math required");

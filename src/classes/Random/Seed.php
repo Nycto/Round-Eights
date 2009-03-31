@@ -25,7 +25,7 @@
  * @package PRNG
  */
 
-namespace cPHP\PRNG;
+namespace cPHP\Random;
 
 /**
  * Class for generating a seed value

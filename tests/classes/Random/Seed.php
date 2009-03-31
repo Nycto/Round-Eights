@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_prng_seed extends PHPUnit_Framework_TestCase
+class classes_random_seed extends PHPUnit_Framework_TestCase
 {
 
     public function testSourceAccessors ()
     {
-        $seed = new \cPHP\PRNG\Seed("Initial value");
+        $seed = new \cPHP\Random\Seed("Initial value");
 
         $this->assertSame( "Initial value", $seed->getSource() );
 
@@ -60,7 +60,7 @@ class classes_prng_seed extends PHPUnit_Framework_TestCase
 
     public function testGetString ()
     {
-        $seed = new \cPHP\PRNG\Seed("Initial value");
+        $seed = new \cPHP\Random\Seed("Initial value");
         $this->assertSame( "fcb1ddc45496d5bd9bbb1d0e3e24a58c56f33281", $seed->getString() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
@@ -87,7 +87,7 @@ class classes_prng_seed extends PHPUnit_Framework_TestCase
         if ( !extension_loaded("bcmath") )
             $this->markTestSkipped("BCMath extension is not enabled");
 
-        $seed = new \cPHP\PRNG\Seed("Initial value");
+        $seed = new \cPHP\Random\Seed("Initial value");
         $this->assertSame( 1011282668, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
@@ -114,7 +114,7 @@ class classes_prng_seed extends PHPUnit_Framework_TestCase
         if ( !extension_loaded("bcmath") )
             $this->markTestSkipped("BCMath extension is not enabled");
 
-        $seed = new \cPHP\PRNG\Seed("Initial value");
+        $seed = new \cPHP\Random\Seed("Initial value");
         $this->assertSame( 0.47091518923217, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
