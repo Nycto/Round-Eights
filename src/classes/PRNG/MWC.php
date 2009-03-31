@@ -34,30 +34,98 @@ class MWC implements \cPHP\iface\PRNG
 {
 
     /**
-     * The integer to seed the algorithm with
+     * The constant to use while generating the next random number
+     *
+     * This is a safe prime, which means that (p-1)/2 is also a prime.
      *
      * @var Integer
      */
-    private $current;
+    const scalar = "2147354603";
+
+    /**
+     * The maximum size the generated numbers can be
+     *
+     * @var Integer
+     */
+    const base = 0x7fffffff;
+
+    /**
+     * The previously generated random number
+     *
+     * @var Integer
+     */
+    private $num;
+
+    /**
+     * The carry value used when generating random numbers
+     *
+     * The initial value of this property represents the initial
+     * carry value. Note that this is a prime number
+     *
+     * @var Integer
+     */
+    private $carry = 22500011;
 
     /**
      * Constructor...
      *
-     * @param \cPHP\PRNG\Seed $seed The seed used to start the sequence of random numbers
+     * @param \cPHP\PRNG\Seed $seed The seed to feed into the random number generator
      */
     public function __construct ( \cPHP\PRNG\Seed $seed )
     {
-        $this->current = $seed->getInteger();
+        if ( !extension_loaded('bcmath') )
+            throw new Exception("BC Math required");
+
+        $this->num = abs( $seed->getInteger() );
+
+        // Throw away the first value
+        $this->nextInteger();
     }
 
     /**
-     * Returns the next random integer
+     * Returns the next random number in this sequence
      *
      * @return Integer
      */
-    public function nextIngeter ()
+    public function nextInteger ()
     {
+        // Generate the 64 bit number to base the next random number off of
+        $long = bcmul( self::scalar, $this->num );
+        $long = bcadd( $long, $this->carry );
 
+        // Pull the low order byte as the next random number
+        $num = bcmod( $long, self::base );
+
+        // Pull the high order byte as the next carry value
+        $carry = bcdiv( $long, self::base );
+
+        // Save these values so they can be used to generate the next number
+        $this->num = abs( intval($num) );
+        $this->carry = abs( intval($carry) );
+
+        return $this->num;
+    }
+
+    /**
+     * Returns the next random number as a float value between 0 and 1
+     *
+     * @return Float
+     */
+    public function nextFloat ()
+    {
+        return round( $this->nextInteger() / self::base, 14 );
+    }
+
+    /**
+     * Returns the next random number as a string
+     *
+     * @return String Returns a 40 character alpha-numeric string
+     */
+    public function nextString ()
+    {
+        return sha1( $this->nextInteger() );
     }
 
 }
+
+?>

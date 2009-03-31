@@ -38,6 +38,16 @@ class classes_prng_mwc extends PHPUnit_Framework_TestCase
         $this->markTestIncomplete("To be written");
     }
 
+    public function testNextFloat ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testNextString ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
