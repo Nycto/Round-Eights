@@ -22,7 +22,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package PRNG
+ * @package Random
  */
 
 namespace cPHP\iface;
@@ -38,7 +38,7 @@ interface Random
      *
      * @return Integer
      */
-    public function nextIngeter ();
+    public function nextInteger ();
 
     /**
      * Returns the next random number as a float value between 0 and 1
