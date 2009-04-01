@@ -154,9 +154,9 @@ abstract class Multi extends \cPHP\Form\Field
 
         $source = new \cPHP\Ary( $source );
 
-        $source->flatten()->each(function( $value, $key ) {
+        foreach ( $source->flatten() AS $key => $value ) {
             $this->addOption($key, $value);
-        });
+        }
 
         return $this;
     }
