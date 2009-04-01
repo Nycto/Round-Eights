@@ -75,6 +75,27 @@ class classes_random extends PHPUnit_Framework_TestCase
         $this->assertSame( "75878664309b1e12165b0823315376b0d27e4f80", $random->nextString() );
     }
 
+    public function testNextRange ()
+    {
+        $random = $this->getMock('cPHP\Random', array('nextInteger'));
+
+        $random->expects( $this->at(0) )
+            ->method('nextInteger')
+            ->will( $this->returnValue(1975807251) );
+
+        $random->expects( $this->at(1) )
+            ->method('nextInteger')
+            ->will( $this->returnValue(0) );
+
+        $random->expects( $this->at(2) )
+            ->method('nextInteger')
+            ->will( $this->returnValue(0x7fffffff) );
+
+        $this->assertSame( 12, $random->nextRange(0, 20) );
+        $this->assertSame( 6, $random->nextRange(5, 10) );
+        $this->assertSame( 134, $random->nextRange(100, 200) );
+    }
+
 }
 
 ?>

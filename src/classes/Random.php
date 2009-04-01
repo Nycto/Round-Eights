@@ -60,6 +60,19 @@ abstract class Random implements \cPHP\iface\Random
         return sha1( $this->nextInteger() );
     }
 
+    /**
+     * Returns the next random number as an integer between the given minimum
+     * and maximum
+     *
+     * @param Integer $min The minimum allowed value, inclusive
+     * @param Integer $max The maximum value, inclusive
+     * @return Integer
+     */
+    public function nextRange ( $min, $max )
+    {
+        return \cPHP\num\intWrap( $this->nextInteger(), $min, $max );
+    }
+
 }
 
 ?>
