@@ -30,7 +30,7 @@ namespace cPHP\Random;
 /**
  * Multiply-With-Carry pseudo-random number generator
  */
-class MWC implements \cPHP\iface\Random
+class MWC extends \cPHP\Random
 {
 
     /**
@@ -41,13 +41,6 @@ class MWC implements \cPHP\iface\Random
      * @var Integer
      */
     const SCALAR = 2147354603;
-
-    /**
-     * The maximum size the generated numbers can be
-     *
-     * @var Integer
-     */
-    const MAX_INT = 0x7fffffff;
 
     /**
      * The previously generated random number
@@ -100,26 +93,6 @@ class MWC implements \cPHP\iface\Random
         $this->carry = intval( bcdiv( $long, self::MAX_INT ) );
 
         return $this->num;
-    }
-
-    /**
-     * Returns the next random number as a float value between 0 and 1
-     *
-     * @return Float
-     */
-    public function nextFloat ()
-    {
-        return round( $this->nextInteger() / self::MAX_INT, 14 );
-    }
-
-    /**
-     * Returns the next random number as a string
-     *
-     * @return String Returns a 40 character alpha-numeric string
-     */
-    public function nextString ()
-    {
-        return sha1( $this->nextInteger() );
     }
 
 }
