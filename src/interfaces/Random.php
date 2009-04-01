@@ -54,4 +54,16 @@ interface Random
      */
     public function nextString ();
 
+    /**
+     * Returns the next random number as an integer between the given minimum
+     * and maximum
+     *
+     * @param Integer $min The minimum allowed value, inclusive
+     * @param Integer $max The maximum value, inclusive
+     * @return Integer
+     */
+    public function nextRange ( $min, $max );
+
 }
+
+?>
