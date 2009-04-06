@@ -33,6 +33,17 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_env extends PHPUnit_Framework_TestCase
 {
 
+    public function testResponseAccessors ()
+    {
+        $response = \cPHP\Env::Response();
+
+        $this->assertThat( $response, $this->isInstanceOf("\cPHP\iface\Env\Response") );
+
+        $this->assertSame( $response, \cPHP\Env::Response() );
+        $this->assertSame( $response, \cPHP\Env::Response() );
+        $this->assertSame( $response, \cPHP\Env::Response() );
+    }
+
     public function testHasKey ()
     {
         $ary = array( "one" => "value", "two" => "" );

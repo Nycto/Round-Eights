@@ -37,6 +37,13 @@ class Env
     static protected $instance;
 
     /**
+     * The global response object
+     *
+     * @var \cPHP\Env\iface\Response
+     */
+    static private $response;
+
+    /**
      * Whether this script is being run locally, or was requested remotely
      *
      * @public
@@ -215,6 +222,19 @@ class Env
             return FALSE;
 
         return TRUE;
+    }
+
+    /**
+     * Returns the global response object
+     *
+     * @return \cPHP\Env\iface\Response
+     */
+    static public function response ()
+    {
+        if ( !isset(self::$response) )
+            self::$response = new \cPHP\Env\Response;
+
+        return self::$response;
     }
 
     /**
