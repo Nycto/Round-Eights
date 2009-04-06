@@ -41,10 +41,12 @@ interface Response
     /**
      * Sends a header back to the client
      *
+     * This will overwrite any previously sent headers of the same type
+     *
      * @param String $header The header string to send
      * @return cPHP\iface\Env\Response Returns a self reference
      */
-    public function sendHeader ( $header );
+    public function setHeader ( $header );
 
 }
 
