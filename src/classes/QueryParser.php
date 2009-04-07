@@ -68,7 +68,7 @@ class QueryParser
      *
      * @var String
      */
-    private $subRegEx = '/\[([^\]])\]/';
+    private $subRegEx = '/\[(.*?)\]/';
 
     /**
      * The filter to apply to the keys before returning them
@@ -106,7 +106,7 @@ class QueryParser
     }
 
     /**
-     * Returns the delimiter used to separate each key/value pair
+     * Sets the delimiter used to separate each key/value pair
      *
      * @param String $delim The new delimiter
      * @return \cPHP\QueryParser Returns a self reference
@@ -162,7 +162,7 @@ class QueryParser
     }
 
     /**
-     * Returns the delimiter used to separate the key and value within a pair
+     * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
      * @return \cPHP\QueryParser Returns a self reference
@@ -211,7 +211,7 @@ class QueryParser
     }
 
     /**
-     * Returns the delimiter used to separate the key and value within a pair
+     * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
      * @return \cPHP\QueryParser Returns a self reference
@@ -246,6 +246,34 @@ class QueryParser
     public function clearEndDelim ()
     {
         $this->endDelim = null;
+        return $this;
+    }
+
+    /**
+     * Returns the reglar expression used to extract sub-keys from the keys
+     *
+     * @return String
+     */
+    public function getSubRegEx ()
+    {
+        return $this->subRegEx;
+    }
+
+    /**
+     * Sets the reglar expression used to extract sub-keys from the keys
+     *
+     * @param String $regex The new regular expression
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setSubRegEx ( $regex )
+    {
+        $regex = \cPHP\strval($regex);
+
+        if ( \cPHP\isEmpty($regex) )
+            throw new \cPHP\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
+
+        $this->subRegEx = $regex;
+
         return $this;
     }
 

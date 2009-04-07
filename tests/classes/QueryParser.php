@@ -125,6 +125,26 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertFalse( $parser->endDelimExists() );
     }
 
+    public function testSubRegExAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame( '/\[(.*?)\]/', $parser->getSubRegEx() );
+
+        $this->assertSame( $parser, $parser->setSubRegEx("`.`") );
+        $this->assertSame( "`.`", $parser->getSubRegEx() );
+
+        try {
+            $parser->setSubRegEx("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+
+        $this->assertSame( "`.`", $parser->getSubRegEx() );
+    }
+
 }
 
 ?>
