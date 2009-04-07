@@ -299,6 +299,28 @@ class QueryParser
         return $this;
     }
 
+    /**
+     * Returns the filter that will be applied to the values
+     *
+     * @return \cPHP\iface\Filter
+     */
+    public function getValueFilter ()
+    {
+        return $this->valueFilter;
+    }
+
+    /**
+     * Sets the filter that will be applied to the values
+     *
+     * @param \cPHP\iface\Filter $filter The new Filter
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setValueFilter ( \cPHP\iface\Filter $filter )
+    {
+        $this->valueFilter = $filter;
+        return $this;
+    }
+
 }
 
 ?>

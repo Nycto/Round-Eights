@@ -156,6 +156,17 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertSame( $filter, $parser->getKeyFilter() );
     }
 
+    public function testValueFilterAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertThat($parser->getValueFilter(), $this->isInstanceOf('cPHP\Curry\Call'));
+
+        $filter = $this->getMock('cPHP\iface\Filter', array('filter'));
+        $this->assertSame( $parser, $parser->setValueFilter($filter) );
+        $this->assertSame( $filter, $parser->getValueFilter() );
+    }
+
 }
 
 ?>
