@@ -42,11 +42,11 @@ class Page
     private $page;
 
     /**
-     * A description of the current environment
+     * The response object to be sent back to the client
      *
-     * @var cPHP\Env
+     * @var cPHP\iface\Env\Response
      */
-    private $env;
+    private $response;
 
     /**
      * The context object that will be used to coordinate multiple pages
@@ -64,6 +64,7 @@ class Page
     public function __construct ( \cPHP\iface\Page $page )
     {
         $this->page = $page;
+        $this->context = new \cPHP\Page\Context;
     }
 
     /**
@@ -77,13 +78,82 @@ class Page
     }
 
     /**
+     * Returns the context object that will be passed in to sub-pages
+     *
+     * @return cPHP\Page\Context
+     */
+    public function getContext ()
+    {
+        return $this->context;
+    }
+
+    /**
+     * Sets the context object to pass in to sub-pages
+     *
+     * @param \cPHP\Page\Context $context The context object to pass in to sub-pages
+     * @return \cPHP\Page Returns a self reference
+     */
+    public function setContext ( \cPHP\Page\Context $context )
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    /**
+     * Returns the response object that will be sent to the client
+     *
+     * @return cPHP\iface\Env\Response
+     */
+    public function getResponse ()
+    {
+        if ( isset($this->response) )
+            return $this->response;
+        else
+            return \cPHP\Env::Response();
+    }
+
+    /**
+     * Sets the response object this instance should use
+     *
+     * @param \cPHP\iface\Env\Response $response
+     * @return \cPHP\Page Returns a self reference
+     */
+    public function setResponse ( \cPHP\iface\Env\Response $response )
+    {
+        $this->response = $response;
+        return $this;
+    }
+
+    /**
      * Renders the contained page and returns the results
      *
      * @return cPHP\iface\Template Returns the rendered template
      */
     public function getTemplate ()
     {
+        $context = $this->getContext();
 
+        try {
+            $template = $this->getPage()->getContent( $context );
+        }
+        catch ( \cPHP\Exception\Interrupt\Page $err ) {
+
+            // If an interrupt is thrown, suppress the page load
+            $context->supress();
+        }
+
+        // Pull the redirect URL
+        $redirect = $context->getRedirect();
+
+        // If the redirect URL isn't empty, send the appropriate header
+        if ( !\cPHP\isEmpty( $redirect ) )
+            $this->getResponse()->setHeader( "Location: ". $redirect );
+
+        // If the context denotes a suppressed page, return a blank template
+        if ( $context->isSupressed() )
+            return new \cPHP\Template\Blank;
+
+        return $template;
     }
 
     /**
@@ -93,7 +163,8 @@ class Page
      */
     public function display ()
     {
-
+        $this->getTemplate()->display();
+        return $this;
     }
 
 }

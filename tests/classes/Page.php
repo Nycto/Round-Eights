@@ -33,6 +33,172 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_page extends PHPUnit_Framework_TestCase
 {
 
+    public function getTestPage ()
+    {
+        return $this->getMock("cPHP\iface\Page", array("getContent"));
+    }
+
+    public function testPageAccessors ()
+    {
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $this->assertSame( $page, $root->getPage() );
+        $this->assertSame( $page, $root->getPage() );
+    }
+
+    public function testContextAccessors ()
+    {
+        $root = new \cPHP\Page( $this->getTestPage() );
+
+        $context = $root->getContext();
+
+        $this->assertThat( $context, $this->isInstanceOf("cPHP\Page\Context") );
+        $this->assertSame( $context, $root->getContext() );
+        $this->assertSame( $context, $root->getContext() );
+
+        $context = $this->getMock( 'cPHP\Page\Context' );
+
+        $this->assertSame( $root, $root->setcontext( $context ) );
+
+        $this->assertSame( $context, $root->getContext() );
+        $this->assertSame( $context, $root->getContext() );
+    }
+
+    public function testResponseAccessors ()
+    {
+        $root = new \cPHP\Page( $this->getTestPage() );
+
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+
+        $response = $this->getMock(
+                'cPHP\iface\Env\Response',
+                array('headersSent', 'setHeader')
+            );
+
+        $this->assertSame( $root, $root->setResponse( $response ) );
+
+        $this->assertSame( $response, $root->getResponse() );
+        $this->assertSame( $response, $root->getResponse() );
+        $this->assertSame( $response, $root->getResponse() );
+    }
+
+    public function testGetTemplate_standard ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $context = $root->getContext();
+
+        $page->expects( $this->once() )
+            ->method("getContent")
+            ->with( $this->equalTo($context) )
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $tpl, $root->getTemplate() );
+
+    }
+
+    public function testGetTemplate_suppress ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $context = $root->getContext();
+        $context->supress();
+
+        $page->expects( $this->once() )
+            ->method("getContent")
+            ->with( $this->equalTo($context) )
+            ->will( $this->returnValue($tpl) );
+
+        $result = $root->getTemplate();
+
+        $this->assertNotSame( $tpl, $result );
+
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Template\Blank") );
+    }
+
+    public function testGetTemplate_interrupt ()
+    {
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $page->expects( $this->once() )
+            ->method("getContent")
+            ->with( $this->isInstanceOf('cPHP\Page\Context') )
+            ->will( $this->throwException(
+                    new \cPHP\Exception\Interrupt\Page
+                ) );
+
+        $result = $root->getTemplate();
+
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Template\Blank") );
+
+        $this->assertTrue( $root->getContext()->isSupressed() );
+    }
+
+    public function testGetTemplate_redirect ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $page = $this->getTestPage();
+
+        $context = $this->getMock('cPHP\Page\Context', array('getRedirect'));
+        $context->expects( $this->once() )
+            ->method('getRedirect')
+            ->will( $this->returnValue('http://www.example.com') );
+
+        $response = $this->getMock(
+                'cPHP\iface\Env\Response',
+                array('headersSent', 'setHeader')
+            );
+        $response->expects( $this->once() )
+            ->method('setHeader')
+            ->with( $this->equalTo('Location: http://www.example.com') );
+
+        $root = new \cPHP\Page( $page );
+        $root->setContext( $context );
+        $root->setResponse( $response );
+
+        $page->expects( $this->once() )
+            ->method("getContent")
+            ->with( $this->isInstanceOf('cPHP\Page\Context') )
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame($tpl, $root->getTemplate());
+    }
+
+    public function testDisplay ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $tpl->expects( $this->once() )
+            ->method('display');
+
+        $root = $this->getMock(
+                'cPHP\Page',
+                array('getTemplate'),
+                array( $this->getTestPage() )
+            );
+
+        $root->expects( $this->once() )
+            ->method('getTemplate')
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame( $root, $root->display() );
+    }
+
 }
 
 ?>
