@@ -145,6 +145,17 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertSame( "`.`", $parser->getSubRegEx() );
     }
 
+    public function testKeyFilterAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertThat($parser->getKeyFilter(), $this->isInstanceOf('cPHP\Curry\Call'));
+
+        $filter = $this->getMock('cPHP\iface\Filter', array('filter'));
+        $this->assertSame( $parser, $parser->setKeyFilter($filter) );
+        $this->assertSame( $filter, $parser->getKeyFilter() );
+    }
+
 }
 
 ?>

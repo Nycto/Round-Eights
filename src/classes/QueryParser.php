@@ -277,6 +277,28 @@ class QueryParser
         return $this;
     }
 
+    /**
+     * Returns the filter that will be applied to the keys
+     *
+     * @return \cPHP\iface\Filter
+     */
+    public function getKeyFilter ()
+    {
+        return $this->keyFilter;
+    }
+
+    /**
+     * Sets the filter that will be applied to the keys
+     *
+     * @param \cPHP\iface\Filter $filter The new Filter
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setKeyFilter ( \cPHP\iface\Filter $filter )
+    {
+        $this->keyFilter = $filter;
+        return $this;
+    }
+
 }
 
 ?>
