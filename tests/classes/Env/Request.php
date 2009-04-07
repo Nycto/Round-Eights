@@ -25,37 +25,25 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_env extends PHPUnit_Framework_TestCase
+class classes_env_request extends PHPUnit_Framework_TestCase
 {
-
-    public function testResponseAccessors ()
-    {
-        $response = \cPHP\Env::Response();
-
-        $this->assertThat( $response, $this->isInstanceOf("\cPHP\iface\Env\Response") );
-
-        $this->assertSame( $response, \cPHP\Env::Response() );
-        $this->assertSame( $response, \cPHP\Env::Response() );
-        $this->assertSame( $response, \cPHP\Env::Response() );
-    }
-
     public function testHasKey ()
     {
         $ary = array( "one" => "value", "two" => "" );
 
-        $this->assertTrue( \cPHP\Env::hasKey($ary, "one") );
-        $this->assertFalse( \cPHP\Env::hasKey($ary, "two") );
-        $this->assertFalse( \cPHP\Env::hasKey($ary, "three") );
+        $this->assertTrue( \cPHP\Env\Request::hasKey($ary, "one") );
+        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "two") );
+        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "three") );
     }
 
     public function testIsLocal ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SHELL" => "/bin/bash"
             ));
 
@@ -63,13 +51,13 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertTrue( isset($env->local) );
 
 
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
         $this->assertFalse( $env->local );
     }
 
     public function testIP ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SERVER_ADDR" => "127.0.0.1"
             ));
 
@@ -77,14 +65,14 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "127.0.0.1", $env->ip );
 
 
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
         $this->assertFalse( isset($env->ip) );
         $this->assertNull( $env->ip );
     }
 
     public function testQuery ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "QUERY_STRING" => "var=value"
             ));
 
@@ -92,14 +80,14 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "var=value", $env->query );
 
 
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
         $this->assertFalse( isset($env->query) );
         $this->assertNull( $env->query );
     }
 
     public function testPort ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SERVER_PORT" => "40"
             ));
 
@@ -107,14 +95,14 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( 40, $env->port );
 
 
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
         $this->assertFalse( isset($env->port) );
         $this->assertNull( $env->port );
     }
 
     public function testScheme ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
 
@@ -122,7 +110,7 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "http", $env->scheme );
 
 
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
         $this->assertFalse( isset($env->scheme) );
         $this->assertNull( $env->scheme );
     }
@@ -130,7 +118,7 @@ class classes_env extends PHPUnit_Framework_TestCase
     public function testFileInfo ()
     {
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SCRIPT_FILENAME" => "/home/user/public_html/info.php"
             ));
 
@@ -153,7 +141,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testFileInfo_empty ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertFalse( isset($env->path) );
         $this->assertNull( $env->path );
@@ -170,7 +158,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetCWD ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertTrue( isset($env->cwd) );
         $this->assertType( "string", $env->cwd );
@@ -179,7 +167,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testLinkProperty ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         try {
             $env->link;
@@ -200,7 +188,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testGetLink_clone ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertNotSame(
                 $env->getLink(),
@@ -219,7 +207,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testGetLink_empty ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $url = $env->getLink();
         $this->assertThat( $url, $this->isInstanceOf("cPHP\\URL") );
@@ -237,7 +225,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testGetLink_full ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SERVER_PROTOCOL" => "HTTP/1.1",
                 "HTTP_HOST" => "example.com",
                 "SERVER_PORT" => "80"
@@ -252,7 +240,7 @@ class classes_env extends PHPUnit_Framework_TestCase
             );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SERVER_PROTOCOL" => "HTTP/1.1",
                 "HTTP_HOST" => "example.com",
                 "SERVER_PORT" => "8080",
@@ -272,7 +260,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetHostInfo_empty ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertFalse( isset($env->host) );
         $this->assertNull( $env->host );
@@ -283,7 +271,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetHostInfo_noPort ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "example.com"
             ));
 
@@ -294,7 +282,7 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "example.com", $env->hostWithPort );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.sub.example.com"
             ));
 
@@ -307,7 +295,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetHostInfo_withPort ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "example.com",
                 "SERVER_PORT" => "40"
             ));
@@ -319,7 +307,7 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertSame( "example.com:40", $env->hostWithPort );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.sub.example.com",
                 "SERVER_PORT" => "40"
             ));
@@ -333,12 +321,12 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetFauxDir ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertFalse( isset($env->fauxDir) );
         $this->assertNull( $env->fauxDir );
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "PATH_INFO" => "/test/faux/dirs"
             ));
 
@@ -348,7 +336,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetURLPath ()
     {
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "SCRIPT_NAME" => "/path/to/file.php"
             ));
 
@@ -361,7 +349,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetURLPath_empty ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertFalse( isset($env->urlPath) );
         $this->assertNull( $env->urlPath );
@@ -369,7 +357,7 @@ class classes_env extends PHPUnit_Framework_TestCase
 
     public function testSetURL ()
     {
-        $env = Stub_Env::fromArray(array());
+        $env = new \cPHP\Env\Request(array());
 
         $this->assertFalse( isset($env->url) );
         $this->assertNull( $env->url );
@@ -378,7 +366,7 @@ class classes_env extends PHPUnit_Framework_TestCase
         $this->assertFalse( isset($env->absURL) );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com"
             ));
 
@@ -392,7 +380,7 @@ class classes_env extends PHPUnit_Framework_TestCase
                 $env->absURL
             );
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SERVER_PROTOCOL" => "HTTP/1.1"
             ));
@@ -407,7 +395,7 @@ class classes_env extends PHPUnit_Framework_TestCase
             );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SERVER_PORT" => "40",
                 "SERVER_PROTOCOL" => "HTTP/1.1"
@@ -422,7 +410,7 @@ class classes_env extends PHPUnit_Framework_TestCase
                 $env->absURL
             );
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SCRIPT_NAME" => "/path/to/file.php",
                 "SERVER_PORT" => "40",
@@ -439,7 +427,7 @@ class classes_env extends PHPUnit_Framework_TestCase
             );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SCRIPT_NAME" => "/path/to/file.php",
                 "SERVER_PORT" => "40",
@@ -456,7 +444,7 @@ class classes_env extends PHPUnit_Framework_TestCase
             );
 
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SCRIPT_NAME" => "/path/to/file.php",
                 "SERVER_PORT" => "40",
@@ -473,7 +461,7 @@ class classes_env extends PHPUnit_Framework_TestCase
                 $env->absURL
             );
 
-        $env = Stub_Env::fromArray(array(
+        $env = new \cPHP\Env\Request(array(
                 "HTTP_HOST" => "test.example.com",
                 "SCRIPT_NAME" => "/path/to/file.php",
                 "SERVER_PORT" => "40",

@@ -23,25 +23,13 @@
  * @package Env
  */
 
-namespace cPHP;
+namespace cPHP\Env;
 
 /**
- * Collects information about the current environment and allows readonly access to it
+ * Collects information about the current request and allows readonly access to it
  */
-class Env
+class Request implements \cPHP\iface\Env\Request
 {
-
-    /**
-     * Contains the singleton instance of this class
-     */
-    static protected $instance;
-
-    /**
-     * The global response object
-     *
-     * @var \cPHP\Env\iface\Response
-     */
-    static private $response;
 
     /**
      * Whether this script is being run locally, or was requested remotely
@@ -194,19 +182,6 @@ class Env
     protected $fauxDir;
 
     /**
-     * Returns the global Env instance
-     *
-     * @return Object The singleton Env object
-     */
-    static public function get ()
-    {
-        if ( !( self::$instance instanceof static ) )
-            self::$instance = new static( $_SERVER );
-
-        return self::$instance;
-    }
-
-    /**
      * Returns whether a given array has key with a non-empty value
      *
      * @param Array $array The array to test
@@ -225,24 +200,11 @@ class Env
     }
 
     /**
-     * Returns the global response object
-     *
-     * @return \cPHP\Env\iface\Response
-     */
-    static public function response ()
-    {
-        if ( !isset(self::$response) )
-            self::$response = new \cPHP\Env\Response;
-
-        return self::$response;
-    }
-
-    /**
      * Protected to force the use of the static constructors
      *
      * @param Array $server The $_SERVER array to parse in to this instance
      */
-    protected function __construct( array $server )
+    public function __construct( array $server )
     {
         $this->setLocal( $server );
         $this->setCWD();
