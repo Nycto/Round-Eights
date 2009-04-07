@@ -54,6 +54,29 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertSame( " ", $parser->getOuterDelim() );
     }
 
+    public function testInnerDelimAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame( "=", $parser->getInnerDelim() );
+
+        $this->assertSame( $parser, $parser->setInnerDelim(";=;") );
+        $this->assertSame( ";=;", $parser->getInnerDelim() );
+
+        $this->assertSame( $parser, $parser->setInnerDelim(" ") );
+        $this->assertSame( " ", $parser->getInnerDelim() );
+
+        try {
+            $parser->setInnerDelim("");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+
+        $this->assertSame( " ", $parser->getInnerDelim() );
+    }
+
 }
 
 ?>

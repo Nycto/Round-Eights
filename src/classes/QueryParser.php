@@ -123,6 +123,34 @@ class QueryParser
         return $this;
     }
 
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @return String
+     */
+    public function getInnerDelim ()
+    {
+        return $this->innerDelim;
+    }
+
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @param String $delim The new delimiter
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setInnerDelim ( $delim )
+    {
+        $delim = \cPHP\strval($delim);
+
+        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
+            throw new \cPHP\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
+
+        $this->innerDelim = $delim;
+
+        return $this;
+    }
+
 }
 
 ?>
