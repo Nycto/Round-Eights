@@ -139,7 +139,7 @@ class Page
         catch ( \cPHP\Exception\Interrupt\Page $err ) {
 
             // If an interrupt is thrown, suppress the page load
-            $context->supress();
+            $context->suppress();
         }
 
         // Pull the redirect URL
@@ -150,7 +150,7 @@ class Page
             $this->getResponse()->setHeader( "Location: ". $redirect );
 
         // If the context denotes a suppressed page, return a blank template
-        if ( $context->isSupressed() )
+        if ( $context->isSuppressed() )
             return new \cPHP\Template\Blank;
 
         return $template;

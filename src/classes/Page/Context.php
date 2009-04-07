@@ -39,7 +39,7 @@ class Context
      *
      * @var Boolean
      */
-    private $supressed = FALSE;
+    private $suppressed = FALSE;
 
     /**
      * If a page requests a redirect, the URL to point to is saved here
@@ -53,23 +53,23 @@ class Context
      *
      * @return cPHP\Page\Context Returns a self reference
      */
-    public function supress ()
+    public function suppress ()
     {
-        $this->supressed = TRUE;
+        $this->suppressed = TRUE;
         return $this;
     }
 
     /**
-     * Returns whether the content should be supressed
+     * Returns whether the content should be suppressed
      *
      * The root page will look at this value. If it is true, a blank template is
      * returned.
      *
      * @return Boolean
      */
-    public function isSupressed ()
+    public function isSuppressed ()
     {
-        return $this->supressed;
+        return $this->suppressed;
     }
 
     /**
@@ -88,7 +88,7 @@ class Context
 
         $this->redirect = $url;
 
-        $this->supress();
+        $this->suppress();
 
         return $this;
     }

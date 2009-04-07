@@ -434,18 +434,4 @@ abstract class PHPUnit_Dir_Framework_TestCase extends PHPUnit_Framework_TestCase
 
 }
 
-/**
- * Stub of the Env class that allows tests to create an instance that represents
- * a specific environment
- */
-class Stub_Env extends \cPHP\Env
-{
-
-    static public function fromArray( array $data )
-    {
-        return new static( $data );
-    }
-
-}
-
 ?>

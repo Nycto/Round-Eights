@@ -77,7 +77,7 @@ class Form implements \Countable
         $this->fields = new \cPHP\Ary;
 
         // Set the default action URI to the current page
-        $this->action = \cPHP\Env::get()->url;
+        $this->action = \cPHP\Env::Request()->url;
     }
 
     /**

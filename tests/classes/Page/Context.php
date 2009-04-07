@@ -33,13 +33,13 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_page_context extends PHPUnit_Framework_TestCase
 {
 
-    public function testSupress ()
+    public function testSuppress ()
     {
         $context = new \cPHP\Page\Context;
 
-        $this->assertFalse( $context->isSupressed() );
-        $this->assertSame( $context, $context->supress() );
-        $this->assertTrue( $context->isSupressed() );
+        $this->assertFalse( $context->isSuppressed() );
+        $this->assertSame( $context, $context->suppress() );
+        $this->assertTrue( $context->isSuppressed() );
     }
 
     public function testRedirect ()
@@ -47,15 +47,15 @@ class classes_page_context extends PHPUnit_Framework_TestCase
         $context = new \cPHP\Page\Context;
 
         $this->assertNull( $context->getRedirect() );
-        $this->assertFalse( $context->isSupressed() );
+        $this->assertFalse( $context->isSuppressed() );
 
         $this->assertSame( $context, $context->redirect("/test.html") );
         $this->assertSame( "/test.html", $context->getRedirect() );
-        $this->assertTrue( $context->isSupressed() );
+        $this->assertTrue( $context->isSuppressed() );
 
         $this->assertSame( $context, $context->redirect("http://example.com") );
         $this->assertSame( "http://example.com", $context->getRedirect() );
-        $this->assertTrue( $context->isSupressed() );
+        $this->assertTrue( $context->isSuppressed() );
 
         try {
             $context->redirect("bad url");

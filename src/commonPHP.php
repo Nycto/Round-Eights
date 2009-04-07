@@ -117,6 +117,6 @@ set_exception_handler(function ( $exception ) {
 /**
  * Take a snapshot of the environment
  */
-\cPHP\Env::get();
+\cPHP\Env::Request();
 
 ?>

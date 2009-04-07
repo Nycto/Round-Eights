@@ -114,7 +114,7 @@ class classes_page extends PHPUnit_Framework_TestCase
         $root = new \cPHP\Page( $page );
 
         $context = $root->getContext();
-        $context->supress();
+        $context->suppress();
 
         $page->expects( $this->once() )
             ->method("getContent")
@@ -145,7 +145,7 @@ class classes_page extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Template\Blank") );
 
-        $this->assertTrue( $root->getContext()->isSupressed() );
+        $this->assertTrue( $root->getContext()->isSuppressed() );
     }
 
     public function testGetTemplate_redirect ()

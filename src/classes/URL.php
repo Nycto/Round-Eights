@@ -239,7 +239,7 @@ class URL
      */
     protected function getEnv ()
     {
-        return Env::get();
+        return \cPHP\Env::Request();
     }
 
     /**
