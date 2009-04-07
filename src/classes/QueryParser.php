@@ -54,14 +54,14 @@ class QueryParser
      *
      * @var String
      */
-    private $head = "?";
+    private $startDelim = "?";
 
     /**
      * The string marking the end of the URL query
      *
      * @var String
      */
-    private $tail = "#";
+    private $endDelim = "#";
 
     /**
      * The regular expression used to find multi-dimensional keys within the key
@@ -148,6 +148,104 @@ class QueryParser
 
         $this->innerDelim = $delim;
 
+        return $this;
+    }
+
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @return String
+     */
+    public function getStartDelim ()
+    {
+        return $this->startDelim;
+    }
+
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @param String $delim The new delimiter
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setStartDelim ( $delim )
+    {
+        $delim = \cPHP\strval($delim);
+
+        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
+            $delim = null;
+
+        $this->startDelim = $delim;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a starting delimiter has been set
+     *
+     * @return Boolean
+     */
+    public function startDelimExists ()
+    {
+        return isset( $this->startDelim );
+    }
+
+    /**
+     * Clears the starting delimiter from this instance
+     *
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function clearStartDelim ()
+    {
+        $this->startDelim = null;
+        return $this;
+    }
+
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @return String
+     */
+    public function getEndDelim ()
+    {
+        return $this->endDelim;
+    }
+
+    /**
+     * Returns the delimiter used to separate the key and value within a pair
+     *
+     * @param String $delim The new delimiter
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function setEndDelim ( $delim )
+    {
+        $delim = \cPHP\strval($delim);
+
+        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
+            $delim = null;
+
+        $this->endDelim = $delim;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether a ending delimiter has been set
+     *
+     * @return Boolean
+     */
+    public function endDelimExists ()
+    {
+        return isset( $this->endDelim );
+    }
+
+    /**
+     * Clears the ending delimiter from this instance
+     *
+     * @return \cPHP\QueryParser Returns a self reference
+     */
+    public function clearEndDelim ()
+    {
+        $this->endDelim = null;
         return $this;
     }
 

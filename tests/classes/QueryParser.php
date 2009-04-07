@@ -77,6 +77,54 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertSame( " ", $parser->getInnerDelim() );
     }
 
+    public function testStartDelimAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame( "?", $parser->getStartDelim() );
+        $this->assertTrue( $parser->startDelimExists() );
+
+        $this->assertSame( $parser, $parser->setStartDelim(";=;") );
+        $this->assertSame( ";=;", $parser->getStartDelim() );
+        $this->assertTrue( $parser->startDelimExists() );
+
+        $this->assertSame( $parser, $parser->setStartDelim("") );
+        $this->assertNull( $parser->getStartDelim() );
+        $this->assertFalse( $parser->startDelimExists() );
+
+        $this->assertSame( $parser, $parser->setStartDelim(" ") );
+        $this->assertSame( " ", $parser->getStartDelim() );
+        $this->assertTrue( $parser->startDelimExists() );
+
+        $this->assertSame( $parser, $parser->clearStartDelim() );
+        $this->assertNull( $parser->getStartDelim() );
+        $this->assertFalse( $parser->startDelimExists() );
+    }
+
+    public function testEndDelimAccessors ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame( "#", $parser->getEndDelim() );
+        $this->assertTrue( $parser->endDelimExists() );
+
+        $this->assertSame( $parser, $parser->setEndDelim(";=;") );
+        $this->assertSame( ";=;", $parser->getEndDelim() );
+        $this->assertTrue( $parser->endDelimExists() );
+
+        $this->assertSame( $parser, $parser->setEndDelim("") );
+        $this->assertNull( $parser->getEndDelim() );
+        $this->assertFalse( $parser->endDelimExists() );
+
+        $this->assertSame( $parser, $parser->setEndDelim(" ") );
+        $this->assertSame( " ", $parser->getEndDelim() );
+        $this->assertTrue( $parser->endDelimExists() );
+
+        $this->assertSame( $parser, $parser->clearEndDelim() );
+        $this->assertNull( $parser->getEndDelim() );
+        $this->assertFalse( $parser->endDelimExists() );
+    }
+
 }
 
 ?>
