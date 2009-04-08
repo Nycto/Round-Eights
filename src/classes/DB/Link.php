@@ -436,13 +436,11 @@ abstract class Link implements \cPHP\iface\DB\Link
     /**
      * Imports the settings in this instance from an array
      *
-     * @param mixed $array The array of settings to import
+     * @param array $array The array of settings to import
      * @return Object Returns a self reference
      */
-    public function fromArray ( $array )
+    public function fromArray ( array $array )
     {
-        $array = new \cPHP\Ary( $array );
-
         foreach ( $array AS $key => $value ) {
 
             $key = "set". strtolower( \cPHP\str\stripW( $key ) );
@@ -470,18 +468,18 @@ abstract class Link implements \cPHP\iface\DB\Link
         if ( !$result->isValid() )
             throw new \cPHP\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
 
-        $uri = new \cPHP\Ary( parse_url( $uri ) );
-        $uri = $uri->translateKeys(array(
+        $uri = parse_url( $uri );
+        $uri = \cPHP\ary\translateKeys( $uri, array(
                 "user" => "username",
                 "pass" => "password"
             ));
 
         $this->fromArray( $uri );
 
-        if ( $uri->keyExists("path") )
+        if ( isset($uri["path"]) )
             $this->setDatabase( ltrim( $uri['path'], "/" ) );
 
-        if ( $uri->keyExists("query") ) {
+        if ( isset($uri["query"]) ) {
             $query = array();
             parse_str( $uri['query'], $query );
             $this->fromArray( $query );

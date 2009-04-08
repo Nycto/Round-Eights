@@ -244,8 +244,10 @@ class functions_general extends PHPUnit_Framework_TestCase
 
         $this->assertFalse( \cPHP\respondTo( new stdClass, 'method') );
 
-        $this->assertTrue( \cPHP\respondTo( new \cPHP\Ary, 'offsetGet') );
-        $this->assertFalse( \cPHP\respondTo( new \cPHP\Ary, 'Not A Valid Method Name') );
+        $test = $this->getMock('stdClass', array('testFunc'));
+
+        $this->assertTrue( \cPHP\respondTo( $test, 'testFunc') );
+        $this->assertFalse( \cPHP\respondTo( $test, 'Not A Valid Method Name') );
     }
 
 }
