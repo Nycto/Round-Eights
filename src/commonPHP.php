@@ -65,6 +65,7 @@ require_once cPHP_DIR_FUNCTIONS ."general.php";
 require_once cPHP_DIR_FUNCTIONS ."numbers.php";
 require_once cPHP_DIR_FUNCTIONS ."strings.php";
 require_once cPHP_DIR_FUNCTIONS ."debug.php";
+require_once cPHP_DIR_FUNCTIONS ."array.php";
 
 /**
  * Register the autoloader
