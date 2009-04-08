@@ -204,6 +204,27 @@ class functions_array extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testTranslateKeys ()
+    {
+        $ary = array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 );
+
+        $this->assertEquals(
+                array( 'eno' => 1, 'two' => 2, 'eerht' => 3, 'ruof' => 4, 'five' => 5 ),
+                \cPHP\ary\translateKeys(
+                        $ary,
+                        array('one' => 'eno', 'three' => 'eerht', 'four' => 'ruof')
+                    )
+            );
+
+        $this->assertEquals(
+                array( 'one' => 1, 'two' => 2, 'six' => 3, 'four' => 4, 'five' => 5 ),
+                \cPHP\ary\translateKeys(
+                        $ary,
+                        array('one' => 'five', 'three' => 'six')
+                    )
+            );
+    }
+
 }
 
 ?>

@@ -128,4 +128,36 @@ function branch ( array &$array, $value, array $keys )
     return null;
 }
 
+/**
+ * Changes the keys in an array from one value to another using an associative array
+ *
+ * @param Array $array The array whose keys should be translated
+ * @param Array $map The lookup map to use for translation
+ * @return Array Returns a new array with the keys changed
+ */
+function translateKeys ( array $array, array $map )
+{
+    $output = array();
+
+    foreach ( $array AS $key => $value ) {
+
+        if ( array_key_exists( $key, $map ) ) {
+
+            $map[$key] = \cPHP\indexVal($map[$key]);
+
+            // Don't overwrite any existing keys
+            if ( array_key_exists( $map[$key], $array ) )
+                $output[ $key ] = $value;
+            else
+                $output[ $map[$key] ] = $value;
+
+        }
+        else {
+            $output[ $key ] = $value;
+        }
+    }
+
+    return $output;
+}
+
 ?>
