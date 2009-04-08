@@ -100,7 +100,7 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
         throw new \cPHP\Exception\Argument(0, 'needle', 'Must not be empty');
 
     if (!\cPHP\str\contains($needle, $haystack, $ignoreCase))
-        return new \cPHP\Ary;
+        return array();
 
     $count = $ignoreCase ? \cPHP\str\substr_icount($haystack, $needle) : substr_count($haystack, $needle);
 
@@ -115,7 +115,7 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
         $offset = end( $found ) + $length;
     }
 
-    return new \cPHP\Ary( $found );
+    return $found;
 }
 
 /**
@@ -127,14 +127,14 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
  * @param Integer $wrapFlag How to handle offset wrapping when the offset, per {@link calcWrapFlag()}.
  * @return Integer Returns the offsets, from 0, of the needle in the haystack
  */
-function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
 {
     $found = \cPHP\str\offsets($needle, $haystack, $ignoreCase);
 
     if (count($found) <= 0)
         return FALSE;
     else
-        return $found->offset($offset, $wrapFlag);
+        return \cPHP\ary\offset($found, $offset, $wrapFlag);
 }
 
 /**
@@ -207,11 +207,14 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
 
     if (is_array($repeated) ) {
-        $repeated = \cPHP\Ary::create( $repeated )->flatten()->collect("strval");
+
+        $repeated = \cPHP\ary\flatten($repeated);
+        $repeated = array_map('strval', $repeated);
+
         foreach( $repeated AS $key => $value ) {
             $repeated[ $key ] = preg_quote($value, "/");
         }
-        $repeated = $repeated->implode("|");
+        $repeated = implode("|", $repeated);
     }
     else {
         $repeated = preg_quote(strval($repeated), '/');
@@ -287,14 +290,21 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     $string = strval($string);
 
-    $quotes = new \cPHP\Ary( $quotes );
-    $quotes = $quotes->flatten()->collect("trim")->unique()->compact();
+    $quotes = \cPHP\arrayVal( $quotes );
+    $quotes = \cPHP\ary\flatten( $quotes );
+    $quotes = \array_map( 'trim', $quotes );
+    $quotes = \array_unique($quotes);
+    $quotes = \cPHP\ary\compact($quotes);
+
+    $quoteString = array_map(
+            \cPHP\Curry::Call("preg_quote")->setRight("/")->setLimit(1),
+            $quotes
+        );
+    $quoteString = implode("|", $quoteString);
 
     $split = preg_split(
             '/(?<!\\\\)(?:\\\\\\\\)*('
-                . $quotes->collect(
-                        \cPHP\Curry::Call("preg_quote")->setRight("/")->setLimit(1)
-                    )->implode("|")
+                . $quoteString
                 .')/i',
             $string,
             -1,
@@ -306,13 +316,13 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     foreach ($split AS $key => $part) {
 
-        if ( is_null($curQuote) && $quotes->contains($part) )
+        if ( is_null($curQuote) && in_array($part, $quotes) )
             $curQuote = $part;
 
         else if (is_null($curQuote))
             $output .= $part;
 
-        else if ( $quotes->contains($part) )
+        else if ( in_array($part, $quotes) )
             $curQuote = null;
 
     }
@@ -521,13 +531,16 @@ function partition ($string, $offsets)
     $string = \cPHP\strval($string);
 
     if (strlen($string) <= 0)
-        return new \cPHP\Ary;
+        return array();
 
     $offsets = func_get_args();
     array_shift($offsets);
-    $offsets = \cPHP\Ary::create( $offsets )->flatten()->collect("intval")->unique()->sort();
+    $offsets = \cPHP\ary\flatten( $offsets );
+    $offsets = \array_map( "intval", $offsets );
+    $offsets = \array_unique( $offsets );
+    sort( $offsets );
 
-    $out = new \cPHP\Ary;
+    $out = array();
 
     $last = 0;
 

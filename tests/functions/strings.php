@@ -96,32 +96,32 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(0, 8, 52, 60, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string' )->get()
+                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string' )
             );
 
         $this->assertEquals(
                 array(0, 8, 52, 60, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', TRUE )->get()
+                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', TRUE )
             );
 
         $this->assertEquals(
                 array(8, 52, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )->get()
+                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
         $this->assertEquals(
                 array(0, 60),
-                \cPHP\str\offsets( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )->get()
+                \cPHP\str\offsets( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
         $this->assertEquals(
                 array(),
-                \cPHP\str\offsets( 'Not in Haystack', 'Stringy string with multiple occurances of the word string, Stringity string' )->get()
+                \cPHP\str\offsets( 'Not in Haystack', 'Stringy string with multiple occurances of the word string, Stringity string' )
             );
 
         $this->assertEquals(
                 array(),
-                \cPHP\str\offsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )->get()
+                \cPHP\str\offsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
     }
@@ -590,49 +590,47 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
     public function testPartition ()
     {
-        $result = \cPHP\str\partition("", 5, 10, 12);
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array(), $result->get() );
+        $this->assertSame( array(), \cPHP\str\partition("", 5, 10, 12) );
 
-
-        $result = \cPHP\str\partition("This is a string to split", 5, 10, 12);
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array( "This ", "is a ", "st", "ring to split" ), $result->get() );
-
-
-        $this->assertEquals(
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", array( 5, 10 ), 12)->get()
+                \cPHP\str\partition("This is a string to split", 5, 10, 12)
             );
 
-        $this->assertEquals(
+
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", -10, 5, 10, 12)->get()
+                \cPHP\str\partition("This is a string to split", array( 5, 10 ), 12)
             );
 
-        $this->assertEquals(
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 0, 5, 10, 12)->get()
+                \cPHP\str\partition("This is a string to split", -10, 5, 10, 12)
             );
 
-        $this->assertEquals(
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 12, 10, 5)->get()
+                \cPHP\str\partition("This is a string to split", 0, 5, 10, 12)
             );
 
-        $this->assertEquals(
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 5, 10, 12, 10)->get()
+                \cPHP\str\partition("This is a string to split", 12, 10, 5)
             );
 
-        $this->assertEquals(
+        $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )->get()
+                \cPHP\str\partition("This is a string to split", 5, 10, 12, 10)
             );
 
-        $this->assertEquals(
+        $this->assertSame(
+                array( "This ", "is a ", "st", "ring to split" ),
+                \cPHP\str\partition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )
+            );
+
+        $this->assertSame(
                 array( "T", "his is a string to spli", "t" ),
-                \cPHP\str\partition( "This is a string to split", 0, 1, 24, 25 )->get()
+                \cPHP\str\partition( "This is a string to split", 0, 1, 24, 25 )
             );
     }
 
