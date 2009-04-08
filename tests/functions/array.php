@@ -307,6 +307,7 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals(15, \cPHP\ary\offset($ary, -1) );
         $this->assertEquals(8, \cPHP\ary\offset($ary, 7) );
     }
+
     public function testCompact ()
     {
         $ary = array( 0, TRUE, NULL, "string", FALSE, 1, array(), array(1.5, ""), "  ", "0" );
@@ -331,6 +332,26 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals(
                 array( 0 => array("full", "of", "stuff"), 2 => array(1.5) ),
                 \cPHP\ary\compact($ary)
+            );
+    }
+
+    public function testHone ()
+    {
+        $ary = array( 'one' => 1, 'two' => 2, 'three' => 3, 'four' => 4, 'five' => 5 );
+
+        $this->assertEquals(
+                array ( 'five' => 5, 'three' => 3, 'six' => 1 ),
+                \cPHP\ary\hone($ary, 'five', 'three', 'six')
+            );
+
+        $this->assertEquals(
+                array ( 'ten' => 1, 'eleven' => 2, 'twelve' => 3 ),
+                \cPHP\ary\hone($ary,  array('ten', 'eleven'), 'twelve')
+            );
+
+        $this->assertEquals(
+                array ( 'seven' => 1, 'six' => 2, 'five' => 5, 'four' => 4 ),
+                \cPHP\ary\hone($ary,  array('seven', 'six'), 'five', array(array('four')) )
             );
     }
 

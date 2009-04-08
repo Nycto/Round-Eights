@@ -287,4 +287,38 @@ function compact ( array $array, $flags = 0 )
 
 }
 
+/**
+ * Translates an array to contain the specified keys
+ *
+ * If a key isn't set in the original array, it fills the array by offset.
+ *
+ * @param mixed $keys... The keys being filtered
+ * @return array
+ */
+function hone ( array $array, $keys )
+{
+    $keys = \func_get_args();
+    \array_shift($keys);
+    $keys = \cPHP\ary\flatten( $keys );
+    $keys = \array_unique( $keys );
+
+    // get values in the array that do not have the required keys
+    $no_keys = array_diff_key( $array, array_flip($keys) );
+
+    $out = array();
+
+    // Rather than using internal functions, we are looping in order to
+    // preserve the order of the keys
+    foreach ( $keys AS $key ) {
+
+        if (array_key_exists($key, $array))
+            $out[$key] = $array[$key];
+
+        else if (count($no_keys) > 0)
+            $out[$key] = array_shift($no_keys);
+    }
+
+    return $out;
+}
+
 ?>
