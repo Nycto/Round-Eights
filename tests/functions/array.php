@@ -35,7 +35,6 @@ class functions_array extends PHPUnit_Framework_TestCase
 
     public function testFlatten ()
     {
-
         $this->assertSame(
                 array(1,2,3),
                 \cPHP\ary\flatten( array(array(1,2,3)) )
@@ -74,7 +73,135 @@ class functions_array extends PHPUnit_Framework_TestCase
                         4
                     )
             );
+    }
 
+    public function testBranch_basic ()
+    {
+        $ary = array();
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "new", array("one", "two", "three"))
+            );
+        $this->assertSame(
+                array('one' => array('two' => array('three' => 'new'))),
+                $ary
+            );
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "other", array( array("one"), array(array("two"), "five")))
+            );
+        $this->assertSame(
+                array('one' => array(
+                        'two' => array('three' => 'new', 'five' => 'other')
+                    )),
+                $ary
+            );
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "val", array('one', 'two'))
+            );
+        $this->assertSame(
+                array( 'one' => array('two' => 'val') ),
+                $ary
+            );
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "value", array('first'))
+            );
+        $this->assertSame(
+                array( 'one' => array('two' => 'val'), 'first' => 'value' ),
+                $ary
+            );
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "value", array(array('first', '2nd')))
+            );
+        $this->assertSame(
+                array(
+                        'one' => array('two' => 'val'),
+                        'first' => array( '2nd' => 'value' )
+                    ),
+                $ary
+            );
+
+        $this->assertNull(
+                \cPHP\ary\branch($ary, "over", array(array('first', '2nd', '3rd')))
+            );
+        $this->assertSame(
+                array(
+                        'one' => array('two' => 'val'),
+                        'first' => array( '2nd' => array( '3rd' => 'over' ) )
+                    ),
+                $ary
+            );
+    }
+
+    public function testBranch_pushLastKey ()
+    {
+        $ary = array();
+
+        $this->assertNull( \cPHP\ary\branch($ary, "new", array(null)) );
+        $this->assertSame(
+                array('new'),
+                $ary
+            );
+
+        $this->assertNull( \cPHP\ary\branch($ary, "another", array(null)) );
+        $this->assertSame(
+                array('new', 'another'),
+                $ary
+            );
+
+
+        $this->assertNull( \cPHP\ary\branch($ary, "leaf", array('push', null)) );
+        $this->assertSame(
+                array('new', 'another', 'push' => array('leaf')),
+                $ary
+            );
+
+
+        $this->assertNull( \cPHP\ary\branch($ary, "leaf2", array('push', null)) );
+        $this->assertSame(
+                array('new', 'another', 'push' => array('leaf', 'leaf2')),
+                $ary
+            );
+
+
+        $this->assertNull( \cPHP\ary\branch($ary, "leaf3", array('push', null)) );
+        $this->assertSame(
+                array('new', 'another', 'push' => array('leaf', 'leaf2', 'leaf3')),
+                $ary
+            );
+    }
+
+    public function testBranch_pushMidKey ()
+    {
+        $ary = array();
+
+        $this->assertNull( \cPHP\ary\branch($ary, "new", array("one", null, "two")) );
+        $this->assertSame(
+                array('one' => array(array('two' => 'new'))),
+                $ary
+            );
+
+        $this->assertNull( \cPHP\ary\branch($ary, "val", array("one", null, "two")) );
+        $this->assertSame(
+                array('one' => array(
+                        array('two' => 'new'),
+                        array('two' => 'val')
+                    )),
+                $ary
+            );
+
+        $this->assertNull( \cPHP\ary\branch($ary, 3, array("one", null, "three")) );
+        $this->assertSame(
+                array('one' => array(
+                        array('two' => 'new'),
+                        array('two' => 'val'),
+                        array('three' => 3)
+                    )),
+                $ary
+            );
     }
 
 }

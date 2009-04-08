@@ -66,4 +66,66 @@ function flatten ( array $array, $maxDepth = 1 )
     return $output;
 }
 
+/**
+ * Adds a branch and value to an array tree
+ *
+ * @param Array $array The array to operate on. This is passed in by reference,
+ *      so it will be changed in place.
+ * @param mixed $value The value being pushed on to the tree
+ * @param Array $keys The list of keys leading down to the value
+ *      A Null key will cause that node to be pushed on to the array
+ * @return Null
+ */
+function branch ( array &$array, $value, array $keys )
+{
+    // Get the list of keys as a flattened array
+    $keys = \cPHP\ary\flatten($keys);
+
+    if ( count($keys) <= 0 )
+        return;
+
+    // Grab the last key from the list and remove it. It can't be treated
+    // like the rest of them
+    $lastKey = array_pop ( $keys );
+
+    // Start with the root of the array
+    $current =& $array;
+
+    // Loop through the list of keys and create the branch
+    foreach ( $keys AS $index ) {
+
+        // For null keys, just push a new array on the end
+        if ( is_null($index) ) {
+
+            $new = array();
+
+            // Add the new value on the end
+            $current[] =& $new;
+
+            // Then switch the current leaf to pointing at the new array
+            $current =& $new;
+
+        }
+
+        else {
+
+            // If the key doesn't exist or it isn't an array, then overwrite it with an array
+            if ( !isset($current[ $index ]) || !is_array($current[$index]) )
+                $current[$index] = array();
+
+            $current =& $current[$index];
+
+        }
+
+    }
+
+    // Finally, push the value on to the end of the branch
+    if ( is_null($lastKey) )
+        $current[] = $value;
+    else
+        $current[ $lastKey ] = $value;
+
+    return null;
+}
+
 ?>
