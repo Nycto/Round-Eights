@@ -355,6 +355,40 @@ class functions_array extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testContains ()
+    {
+        $ary = array(
+                3 => "d", 5 => "b", 6 => "a",
+                1 => "f", 4 => "c", 2 => "e",
+                5, 6, 7, 8
+            );
+
+        $this->assertTrue( \cPHP\ary\contains($ary, 'd') );
+        $this->assertTrue( \cPHP\ary\contains($ary, 'a') );
+        $this->assertTrue( \cPHP\ary\contains($ary, 'e') );
+
+        $this->assertTrue( \cPHP\ary\contains($ary, 5) );
+        $this->assertTrue( \cPHP\ary\contains($ary, 6) );
+
+        $this->assertTrue( \cPHP\ary\contains($ary, "5") );
+        $this->assertTrue( \cPHP\ary\contains($ary, "6") );
+
+        $this->assertFalse( \cPHP\ary\contains($ary, 'not') );
+        $this->assertFalse( \cPHP\ary\contains($ary, 'D') );
+        $this->assertFalse( \cPHP\ary\contains($ary, 'A') );
+        $this->assertFalse( \cPHP\ary\contains($ary, 'E') );
+
+        $this->assertFalse( \cPHP\ary\contains($ary, "5", TRUE) );
+        $this->assertFalse( \cPHP\ary\contains($ary, "6", TRUE) );
+
+
+        $obj = new stdClass;
+        $ary = array( new stdClass );
+
+        $this->assertTrue( \cPHP\ary\contains($ary, $obj) );
+        $this->assertFalse( \cPHP\ary\contains($ary, $obj, TRUE) );
+    }
+
 }
 
 ?>

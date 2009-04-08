@@ -321,4 +321,21 @@ function hone ( array $array, $keys )
     return $out;
 }
 
+/**
+ * Returns whether the given value is contained within the array
+ *
+ * @param Array $array The array to search
+ * @param mixed $value The value to search for
+ * @param Boolean $strict Whether a strict comparison should be used when
+ *      searching for the value... that is to say, == vs. ===
+ * @return Boolean
+ */
+function contains ( array $array, $value, $strict = FALSE )
+{
+    if ( $strict )
+        return array_search( $value, $array, TRUE ) !== FALSE ? TRUE : FALSE;
+    else
+        return in_array( $value, $array );
+}
+
 ?>
