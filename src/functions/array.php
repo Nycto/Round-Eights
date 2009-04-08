@@ -28,6 +28,56 @@
 namespace cPHP\ary;
 
 /**
+ * No wrapping will be perfomed. If the given offset falls outside of the
+ * length, FALSE is returned. Negative offsets are allowed
+ */
+const OFFSET_NONE = \cPHP\num\OFFSET_NONE;
+
+/**
+ * The offset will be wrapped until it fits within the length. Negative
+ * offsets are allowed
+ */
+const OFFSET_WRAP = \cPHP\num\OFFSET_WRAP;
+
+/**
+ * The offset will be wrapped once. Anything past the edge after this initial
+ * wrap is cut down to the edge. Negative offsets are allowed
+ */
+const OFFSET_RESTRICT = \cPHP\num\OFFSET_RESTRICT;
+
+/**
+ * The offset is forced to within the length. Negative offsets are NOT allowed
+ */
+const OFFSET_LIMIT = \cPHP\num\OFFSET_LIMIT;
+
+/**
+ * For the changeCase method, flag for setting the case to lower case
+ */
+const CASE_LOWER = \CASE_LOWER;
+
+/**
+ * For the changeCase method, flag for setting the case to upper case
+ */
+const CASE_UPPER = \CASE_UPPER;
+
+/**
+ * For the changeCase method, flag for setting the case to upper on the first letter
+ */
+const CASE_UCFIRST = 2;
+
+/**
+ * For the changeCase method, flag for setting the case to upper on the first
+ * letter of every world
+ */
+const CASE_UCWORDS = 3;
+
+/**
+ * For the changeCase method, flag for setting the case to properly case any
+ * all upper case words
+ */
+const CASE_NOSHOUT = 4;
+
+/**
  * Reduces a multi-dimensional array down to a single-dimensional array
  *
  * Takes a multi-dimensional array and flattens it down to a single-dimensional array
@@ -158,6 +208,30 @@ function translateKeys ( array $array, array $map )
     }
 
     return $output;
+}
+
+/**
+ * calculates the offset based on the wrap flag
+ *
+ * This is generally used by array functions to wrap offsets
+ *
+ * @param array $array The array to use as a base for calculating the offset
+ * @param Integer $offset The offset being wrapped
+ * @param Integer $wrapFlag How to handle offsets that fall outside of the
+ *      length of the list. Allowed values are:
+ *          - \cPHP\ary::OFFSET_NONE
+ *          - \cPHP\ary::OFFSET_WRAP
+ *          - \cPHP\ary::OFFSET_RESTRICT
+ *          - \cPHP\ary::OFFSET_LIMIT
+ * @return Integer Returns the wrapped offset
+ */
+function calcOffset ( array $array, $offset, $wrapFlag )
+{
+    return \cPHP\num\offsetWrap(
+            count( $array ),
+            $offset,
+            $wrapFlag
+        );
 }
 
 ?>

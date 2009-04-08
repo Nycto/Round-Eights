@@ -225,6 +225,80 @@ class functions_array extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testCalcOffset ()
+    {
+        try {
+            \cPHP\ary\calcOffset(array(), 2, "invalid offset value");
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("List is empty", $err->getMessage() );
+        }
+
+
+        $this->assertEquals(0, \cPHP\ary\calcOffset( range(1, 5), -5, \cPHP\ary\OFFSET_NONE) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset( range(1, 5), -2, \cPHP\ary\OFFSET_NONE) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset( range(1, 5), -1, \cPHP\ary\OFFSET_NONE) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset( range(1, 5),  0, \cPHP\ary\OFFSET_NONE) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset( range(1, 5),  3, \cPHP\ary\OFFSET_NONE) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset( range(1, 5),  4, \cPHP\ary\OFFSET_NONE) );
+
+        try {
+            \cPHP\ary\calcOffset(array(), 2, \cPHP\Ary\OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("List is empty", $err->getMessage() );
+        }
+
+        try {
+            \cPHP\ary\calcOffset(range(1, 5), 5, \cPHP\ary\OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Offset is out of bounds", $err->getMessage() );
+        }
+
+        try {
+            \cPHP\ary\calcOffset(range(1, 5), -6, \cPHP\ary\OFFSET_NONE);
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \cPHP\Exception\Index $err ) {
+            $this->assertSame("Offset is out of bounds", $err->getMessage() );
+        }
+
+
+        $this->assertEquals(1, \cPHP\ary\calcOffset(range(1, 5), -14, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(2, \cPHP\ary\calcOffset(range(1, 5), -8, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -5, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), -2, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), -1, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), 0, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), 3, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 4, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), 8, \cPHP\ary\OFFSET_WRAP) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), 15, \cPHP\ary\OFFSET_WRAP) );
+
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -14, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -8, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -5, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), -2, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), -1, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), 0, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), 3, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 4, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 8, \cPHP\ary\OFFSET_RESTRICT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 15, \cPHP\ary\OFFSET_RESTRICT) );
+
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -2, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), -1, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(0, \cPHP\ary\calcOffset(range(1, 5), 0, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(3, \cPHP\ary\calcOffset(range(1, 5), 3, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 4, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 8, \cPHP\ary\OFFSET_LIMIT) );
+        $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 15, \cPHP\ary\OFFSET_LIMIT) );
+    }
+
 }
 
 ?>
