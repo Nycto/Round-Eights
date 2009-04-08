@@ -234,4 +234,21 @@ function calcOffset ( array $array, $offset, $wrapFlag )
         );
 }
 
+/**
+ * Returns the value of an element at the given offset
+ *
+ * @param Array $array The array to pull the offset from
+ * @param Integer $offset The offset to fetch
+ * @param Integer $wrapFlag How to handle offsets outside the array range
+ * @return mixed
+ */
+function offset ( array $array, $offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT )
+{
+    $offset = \cPHP\ary\calcOffset( $array, $offset, $wrapFlag );
+
+    $sliced = array_slice( $array, $offset, 1 );
+
+    return reset($sliced);
+}
+
 ?>

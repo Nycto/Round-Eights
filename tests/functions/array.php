@@ -299,6 +299,15 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, \cPHP\ary\calcOffset(range(1, 5), 15, \cPHP\ary\OFFSET_LIMIT) );
     }
 
+    public function testOffset ()
+    {
+        $ary = range(1, 15);
+
+        $this->assertEquals(1, \cPHP\ary\offset($ary, 0) );
+        $this->assertEquals(15, \cPHP\ary\offset($ary, -1) );
+        $this->assertEquals(8, \cPHP\ary\offset($ary, 7) );
+    }
+
 }
 
 ?>
