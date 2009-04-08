@@ -73,6 +73,11 @@ class functions_array extends PHPUnit_Framework_TestCase
                         4
                     )
             );
+
+        $this->assertSame(
+                array(1 => 'one', 2 => 'two', 3 => 'three'),
+                \cPHP\ary\flatten( array(1 => 'one', 2 => 'two', 3 => 'three') )
+            );
     }
 
     public function testBranch_basic ()

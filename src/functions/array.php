@@ -88,32 +88,42 @@ const CASE_NOSHOUT = 4;
  */
 function flatten ( array $array, $maxDepth = 1 )
 {
-    $maxDepth = max( intval($maxDepth), 1 );
+    $flatten = function ( $array, $maxDepth, $flatten ) {
 
-    $output = array();
+        $output = array();
 
-    foreach ( $array AS $key => $value ) {
+        foreach($array AS $key => $value) {
 
-        if ( !is_array($array[$key]) ) {
-            $output = array_merge( $output, array( $key => $value ) );
-        }
+            // If it isn't an array, just plop it on to the end of the output
+            if ( !is_array($array[$key]) ) {
 
-        else {
+                // There really is a good reason I do it like this... and that
+                // is "because of the way array_merge handles conflicting keys."
+                if ( !isset($output[$key]) )
+                    $output[ $key ] = $value;
+                else
+                    $output = array_merge( $output, array( $key => $value ) );
 
-            if ($maxDepth <= 1) {
-                $flat = \cPHP\ary\flatten($array[$key], 1);
+            }
+
+            else if ($maxDepth <= 1) {
+                $flat = $flatten($array[$key], 1, $flatten);
                 $output = array_merge($output, $flat);
                 unset ($flat);
             }
+
             else {
-                $output[$key] = \cPHP\ary\flatten($array[$key], $maxDepth - 1);
+                $output[$key] = $flatten($array[$key], $maxDepth - 1, $flatten);
             }
 
         }
 
-    }
+        return $output;
+    };
 
-    return $output;
+    $maxDepth = max(intval(\cPHP\reduce($maxDepth)), 1);
+
+    return $flatten( $array, $maxDepth, $flatten );
 }
 
 /**
