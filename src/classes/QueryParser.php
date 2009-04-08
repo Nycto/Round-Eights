@@ -321,6 +321,103 @@ class QueryParser
         return $this;
     }
 
+    /**
+     * Takes a key string and parses it into any multi-dimensional parts it has
+     *
+     * @param String $key The key being parsed
+     * @return Array Returns a list of the sub-keys
+     */
+    private function parseKey ( $key )
+    {
+        $found = preg_match_all(
+                $this->subRegEx,
+                $key,
+                $matches,
+                PREG_OFFSET_CAPTURE
+            );
+
+        // If no sub-keys were found, just return the original key
+        if ( !$found )
+            return array($key);
+
+        // Grab the value of the key up to the position of the first match
+        if ( $matches[0][0][1] > 0 )
+            $result = array( substr($key, 0, $matches[0][0][1]) );
+        else
+            $result = array();
+
+        if ( !isset($matches[1]) ) {
+            $err = new \cPHP\Exception\Interaction("Sub-Key RegEx did not return a sub-pattern");
+            $err->addData("Sub-Key RegEx", $this->subRegEx);
+            throw $err;
+        }
+
+        // Loop through the matched sub-patterns
+        foreach ( $matches[1] AS $subKey ) {
+
+            if ( \cPHP\isEmpty($subKey[0], \cPHP\ALLOW_SPACES) )
+                $result[] = null;
+            else
+                $result[] = $subKey[0];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Parses a query string into an array
+     *
+     * @param String $query The query string to parser
+     * @return Array Returns the parsed string as an array
+     */
+    public function parse ( $query )
+    {
+        $query = \cPHP\strval($query);
+
+        // Grab everything after the starting delimiter
+        if ( \cPHP\str\contains($this->startDelim, $query) )
+            $query = substr($query, strpos($query, $this->startDelim) + 1);
+
+        // Cut off everything after the ending delimiter
+        if ( \cPHP\str\contains($this->endDelim, $query) )
+            $query = substr($query, 0, strpos($query, $this->endDelim) );
+
+        // Split the query into its pairs
+        $query = explode($this->outerDelim, $query);
+
+        $result = array();
+
+        // Loop through each pair
+        foreach ($query AS $pair) {
+
+            // Skip over empty pairs
+            if ( \cPHP\isEmpty($pair) )
+                continue;
+
+            // split the pair up into its key and value
+            if ( \cPHP\str\contains($this->innerDelim, $pair) )
+                list( $key, $value ) = explode($this->innerDelim, $pair, 2);
+            else
+                list( $key, $value ) = array( $pair, "" );
+
+            // if the key is empty, do nothing with it
+            if ( \cPHP\isEmpty( $key, \cPHP\ALLOW_SPACES ) )
+                continue;
+
+            // Apply the filters to the key and value
+            $key = $this->keyFilter->filter( $key );
+            $value = $this->valueFilter->filter( $value );
+
+            // parse the list of keys into an array
+            $key = $this->parseKey( $key );
+
+            // Add the branch to the result array
+            \cPHP\ary\branch( $result, $value, $key );
+        }
+
+        return $result;
+    }
+
 }
 
 ?>

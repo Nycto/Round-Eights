@@ -167,6 +167,169 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
         $this->assertSame( $filter, $parser->getValueFilter() );
     }
 
+    public function testParse_standards ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" => array('sub' => array('sub2' => "value3")) ),
+                $parser->parse( "url.com?key=value&key2[sub][sub2]=value3#fragment" )
+            );
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" => array('sub' => array('sub2' => "value3")) ),
+                $parser->parse( "key=value&key2[sub][sub2]=value3" )
+            );
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" =>  "value3", "k3" => "other" ),
+                $parser->parse( "key=value&key2=value3&k3=other" )
+            );
+
+        $this->assertSame(
+                array ( "key" => array("value", "value2", "value3") ),
+                $parser->parse( "key[]=value&key[]=value2&key[]=value3" )
+            );
+
+        $this->assertSame(
+                array ( "key more" => "value for decoding" ),
+                $parser->parse( "key%20more=value%20for%20decoding" )
+            );
+    }
+
+    public function testParse_fringe ()
+    {
+        $parser = new \cPHP\QueryParser;
+
+        $this->assertSame(
+                array (),
+                $parser->parse( "" )
+            );
+
+        $this->assertSame(
+                array ("key" => "value", "key2" => ""),
+                $parser->parse( "key=value&key2" )
+            );
+
+        $this->assertSame(
+                array ("key" => "value2"),
+                $parser->parse( "key=value&key=value2" )
+            );
+
+        $this->assertSame(
+                array ("key" => "value"),
+                $parser->parse( "key=value&&&   &" )
+            );
+
+        $this->assertSame(
+                array (),
+                $parser->parse( "=value" )
+            );
+
+        $this->assertSame(
+                array ("key" => "value"),
+                $parser->parse( "[key]=value" )
+            );
+
+        $this->assertSame(
+                array ("key  " => array("key" => "value")),
+                $parser->parse( "key  [key]=value" )
+            );
+
+        $this->assertSame(
+                array ("key" => array("   " => "value")),
+                $parser->parse( "key[   ]=value" )
+            );
+
+        $this->assertSame(
+                array ("key  " => array("key" => array("key" => array("key" => "value")))),
+                $parser->parse( "key  [key]  [key] [key]=value" )
+            );
+
+        $this->assertSame(
+                array ("key" => array("  key  " => "value")),
+                $parser->parse( "key[  key  ]=value" )
+            );
+
+        $this->assertSame(
+                array ( "key.with" => "a.period" ),
+                $parser->parse( "key.with=a.period" )
+            );
+
+        $this->assertSame(
+                array ("key" => array("key" => "value")),
+                $parser->parse( "key%5Bkey%5D=value" )
+            );
+    }
+
+    public function testParse_custom ()
+    {
+        $parser = new \cPHP\QueryParser;
+        $parser->setStartDelim('(');
+        $parser->setEndDelim(')');
+        $parser->setOuterDelim('/');
+        $parser->setInnerDelim(':');
+        $parser->setSubRegEx('/\.([^\.]*)/');
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" => array('sub' => array('sub2' => "value3")) ),
+                $parser->parse( "url.com(key:value/key2.sub.sub2:value3)fragment" )
+            );
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" => array('sub' => array('sub2' => "value3")) ),
+                $parser->parse( "key:value/key2.sub.sub2:value3" )
+            );
+
+        $this->assertSame(
+                array ( "key" => "value", "key2" =>  "value3", "k3" => "other" ),
+                $parser->parse( "key:value/key2:value3/k3:other" )
+            );
+
+        $this->assertSame(
+                array ( "key" => array("value", "value2", "value3") ),
+                $parser->parse( "key.:value/key.:value2/key.:value3" )
+            );
+    }
+
+    public function testParse_badSubRegEx ()
+    {
+        $parser = new \cPHP\QueryParser;
+        $parser->setSubRegEx('/\[.*?\]/');
+
+        try {
+            $parser->parse( "key[sub]=value" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Interaction $err ) {
+            $this->assertSame( "Sub-Key RegEx did not return a sub-pattern", $err->getMessage() );
+        }
+    }
+
+    public function testParse_filters ()
+    {
+        $keyFilter = $this->getMock('cPHP\iface\Filter', array('filter'));
+        $keyFilter->expects( $this->once() )
+            ->method('filter')
+            ->with( $this->equalTo('key[sub]') )
+            ->will( $this->returnValue('newKey') );
+
+        $valFilter = $this->getMock('cPHP\iface\Filter', array('filter'));
+        $valFilter->expects( $this->once() )
+            ->method('filter')
+            ->with( $this->equalTo('value') )
+            ->will( $this->returnValue('newVal') );
+
+        $parser = new \cPHP\QueryParser;
+        $parser->setKeyFilter($keyFilter);
+        $parser->setValueFilter($valFilter);
+
+        $this->assertSame(
+                array ( "newKey" => "newVal" ),
+                $parser->parse( "key[sub]=value" )
+            );
+    }
+
 }
 
 ?>
