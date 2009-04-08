@@ -307,6 +307,32 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals(15, \cPHP\ary\offset($ary, -1) );
         $this->assertEquals(8, \cPHP\ary\offset($ary, 7) );
     }
+    public function testCompact ()
+    {
+        $ary = array( 0, TRUE, NULL, "string", FALSE, 1, array(), array(1.5, ""), "  ", "0" );
+
+        $this->assertEquals(
+                array( 1 => TRUE, 3 => "string", 5 => 1, 7 => array(1.5), 9 => "0"),
+                \cPHP\ary\compact($ary)
+            );
+
+        $this->assertEquals(
+                array( 1 => TRUE, 2 => NULL, 3 => "string", 4 => FALSE, 5 => 1, 7 => array(1.5), 9 => "0"),
+                \cPHP\ary\compact($ary, \cPHP\ALLOW_FALSE | \cPHP\ALLOW_NULL )
+            );
+
+
+        $ary = array(
+                array("full", "of", "stuff", FALSE),
+                array(),
+                array(1.5, ""),
+            );
+
+        $this->assertEquals(
+                array( 0 => array("full", "of", "stuff"), 2 => array(1.5) ),
+                \cPHP\ary\compact($ary)
+            );
+    }
 
 }
 

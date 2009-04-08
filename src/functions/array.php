@@ -251,4 +251,40 @@ function offset ( array $array, $offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT )
     return reset($sliced);
 }
 
+/**
+ * Recursively removes all the empty values from an array
+ *
+ * @param array $array The array to compact
+ * @param integer $flags Any valid isEmpty flags to use to determine if a value is empty
+ * @return object Returns a compacted version of the current array
+ */
+function compact ( array $array, $flags = 0 )
+{
+    $flags = max( intval($flags), 0 );
+
+    // Create the callback to apply to each sub-array
+    $compact = function ( $array, &$compact ) use ( $flags ) {
+
+        $output = array();
+
+        foreach ( $array AS $key => $value ) {
+
+            // Recurse in to sub arrays
+            if ( is_array($value) && count($value) > 0 )
+                $value = $compact( $value, $compact );
+
+            // Add the value on to the result array only if it isn't empty
+            if ( !\cPHP\isEmpty($value, $flags) )
+                $output[ $key ] = $value;
+
+        }
+
+        return $output;
+
+    };
+
+    return $compact( $array, $compact );
+
+}
+
 ?>
