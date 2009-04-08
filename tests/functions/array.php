@@ -389,6 +389,61 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertFalse( \cPHP\ary\contains($ary, $obj, TRUE) );
     }
 
+    public function testInvoke ()
+    {
+        $obj1 = $this->getMock('stdClass', array('get'));
+        $obj1->expects( $this->once() )
+            ->method('get')
+            ->with()
+            ->will( $this->returnValue('one') );
+
+        $obj2 = $this->getMock('stdClass', array('get'));
+        $obj2->expects( $this->once() )
+            ->method('get')
+            ->with()
+            ->will( $this->returnValue('two') );
+
+        $ary = array(
+                'meh' => $obj1,
+                0 => 5,
+                1 => $obj2,
+                5 => 'string',
+                8 => new stdClass,
+            );
+
+        $this->assertSame(
+                array( 'meh' => 'one', 1 => 'two' ),
+                \cPHP\ary\invoke($ary, 'get' )
+            );
+
+
+        $obj1 = $this->getMock('stdClass', array('get'));
+        $obj1->expects( $this->once() )
+            ->method('get')
+            ->with( $this->equalTo('arg1'), $this->equalTo('arg2') )
+            ->will( $this->returnValue('one') );
+
+        $obj2 = $this->getMock('stdClass', array('get'));
+        $obj2->expects( $this->once() )
+            ->method('get')
+            ->with( $this->equalTo('arg1'), $this->equalTo('arg2') )
+            ->will( $this->returnValue('two') );
+
+        $ary = array(
+                'meh' => $obj1,
+                0 => 5,
+                1 => $obj2,
+                5 => 'string',
+                8 => new stdClass,
+            );
+
+        $this->assertSame(
+                array( 'meh' => 'one', 1 => 'two' ),
+                \cPHP\ary\invoke($ary, 'get', 'arg1', 'arg2' )
+            );
+
+    }
+
 }
 
 ?>
