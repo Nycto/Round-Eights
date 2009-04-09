@@ -380,4 +380,19 @@ function invoke ( array $array, $func )
     return $out;
 }
 
+/**
+ * Returns a copy of an array without the given values
+ *
+ * @param Array $array The array being pruned
+ * @param mixed $value... The values to remove
+ * @return Array Returns a new array
+ */
+function without ( array $array, $value )
+{
+    $value = func_get_args();
+    array_shift( $value );
+
+    return array_diff( $array, $value );
+}
+
 ?>

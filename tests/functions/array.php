@@ -449,6 +449,26 @@ class functions_array extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testWithout ()
+    {
+        $ary = array( 1, 2, 3, "four", "five", "six" );
+
+        $this->assertSame(
+                array( 0 => 1, 2 => 3, 3 => "four", 4 => "five", 5 => "six"),
+                \cPHP\ary\without($ary, 2)
+            );
+
+        $this->assertSame(
+                array( 0 => 1, 3 => "four", 4 => "five", 5 => "six"),
+                \cPHP\ary\without($ary, 2, "3")
+            );
+
+        $this->assertSame(
+                array( 0 => 1, 3 => "four", 5 => "six"),
+                \cPHP\ary\without($ary, 2, "3", "five", array("six"))
+            );
+    }
+
 }
 
 ?>
