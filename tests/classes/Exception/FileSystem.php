@@ -46,7 +46,7 @@ class classes_exception_filesystem extends PHPUnit_Framework_TestCase
         $this->assertEquals( 123, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Path" => "/path/to/file.txt")),
+                array("Path" => "/path/to/file.txt"),
                 $err->getData()
             );
 

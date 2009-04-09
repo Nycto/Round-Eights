@@ -101,7 +101,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File exceeds the server's maximum allowed size"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

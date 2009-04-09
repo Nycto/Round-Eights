@@ -329,7 +329,7 @@ class Mail
      */
     public function getTo ()
     {
-        return new \cPHP\Ary( $this->to );
+        return $this->to;
     }
 
     /**
@@ -421,7 +421,7 @@ class Mail
      */
     public function getCC ()
     {
-        return new \cPHP\Ary( $this->cc );
+        return $this->cc;
     }
 
     /**
@@ -513,7 +513,7 @@ class Mail
      */
     public function getBCC ()
     {
-        return new \cPHP\Ary( $this->bcc );
+        return $this->bcc;
     }
 
     /**
@@ -803,7 +803,7 @@ class Mail
      */
     public function getCustomHeaders ()
     {
-        return new \cPHP\Ary( $this->headers );
+        return $this->headers;
     }
 
     /**

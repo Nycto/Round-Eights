@@ -47,7 +47,7 @@ class classes_exception_index extends PHPUnit_Framework_TestCase
         $this->assertEquals( 219, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Index Label" => "Array Offset", 'Value' => "int(5)")),
+                array("Index Label" => "Array Offset", 'Value' => "int(5)"),
                 $err->getData()
             );
 

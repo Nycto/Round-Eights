@@ -112,7 +112,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2 ),
-                $all->getValidators()->get()
+                $all->getValidators()
             );
 
 
@@ -122,7 +122,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2, $validator3 ),
-                $all->getValidators()->get()
+                $all->getValidators()
             );
     }
 

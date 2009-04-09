@@ -58,10 +58,10 @@ class classes_exception_db_deadlock extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $err->getFaultOffset() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         "Link" => "db://ident",
                         "Query" => "SELECT * FROM table FOR UPDATE"
-                    )),
+                    ),
                 $err->getData()
             );
     }

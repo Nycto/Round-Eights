@@ -49,6 +49,8 @@ class Form implements \Countable
      * The URL this form will be submitted to
      *
      * The default value for this is the current URL, if there is one
+     *
+     * @var String
      */
     private $action;
 
@@ -56,26 +58,30 @@ class Form implements \Countable
      * The submit method
      *
      * This defaults to 'POST'
+     *
+     * @var String
      */
     private $method = self::METHOD_POST;
 
     /**
      * The form encoding
+     *
+     * @var Integer
      */
     private $encoding = self::ENCODING_URLENCODED;
 
     /**
      * The list of form fields
+     *
+     * @var array
      */
-    private $fields;
+    private $fields = array();
 
     /**
      * Constructor... Sets the initial state of the instance
      */
     public function __construct ()
     {
-        $this->fields = new \cPHP\Ary;
-
         // Set the default action URI to the current page
         $this->action = \cPHP\Env::Request()->url;
     }
@@ -171,7 +177,7 @@ class Form implements \Countable
      */
     public function getFields ()
     {
-        return clone $this->fields;
+        return $this->fields;
     }
 
     /**
@@ -183,7 +189,7 @@ class Form implements \Countable
     public function addField ( \cPHP\iface\Form\Field $field )
     {
         // ensure there aren't any duplicates
-        if ( !$this->fields->contains($field, TRUE) )
+        if ( !\cPHP\ary\contains($this->fields, $field, TRUE) )
             $this->fields[] = $field;
 
         return $this;
@@ -196,7 +202,7 @@ class Form implements \Countable
      */
     public function clearFields ()
     {
-        $this->fields->clear();
+        $this->fields = array();
         return $this;
     }
 
@@ -207,14 +213,14 @@ class Form implements \Countable
      */
     public function count ()
     {
-        return $this->fields->count();
+        return count( $this->fields );
     }
 
     /**
      * Returns the first field with the given name
      *
      * @param String $name The name of the field to return
-     * @return Boolean|Object Returns the requested field, or FALSE if it can't be found
+     * @return Boolean Returns the requested field, or NULL if it can't be found
      */
     public function find ( $name )
     {
@@ -223,9 +229,12 @@ class Form implements \Countable
         if ( !\cPHP\Validator::Variable()->isValid( $name ) )
             throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
-        return $this->fields->find(function($field) use ( $name ) {
-            return $field->getName() == $name ? TRUE : FALSE;
-        });
+        foreach ( $this->fields AS $field ) {
+            if ( $field->getName() == $name )
+                return $field;
+        }
+
+        return null;
     }
 
     /**
@@ -234,16 +243,11 @@ class Form implements \Countable
      * @param mixed $source An array or traversable object
      * @return Boolean
      */
-    public function anyIn ( $source )
+    public function anyIn ( array $source )
     {
-        if ( !\cPHP\Ary::is($source) )
-            throw new \cPHP\Exception\Argument( 0, "Input", "Must be an array or a traversable object" );
-
-        $source = new \cPHP\Ary( $source );
-
         foreach ( $this->fields AS $field ) {
 
-            if ( $source->keyExists( $field->getName() ) )
+            if ( array_key_exists( $field->getName(), $source ) )
                 return TRUE;
 
         }
@@ -258,21 +262,16 @@ class Form implements \Countable
      * If the source does not have a value for a specific field, this will set
      * the field value to null.
      *
-     * @param mixed $source An array or traversable object
-     * @return object Returns a self reference
+     * @param array $source
+     * @return \cPHP\Form Returns a self reference
      */
-    public function fill ( $source )
+    public function fill ( array $source )
     {
-        if ( !\cPHP\Ary::is($source) )
-            throw new \cPHP\Exception\Argument( 0, "Input", "Must be an array or a traversable object" );
-
-        $source = new \cPHP\Ary( $source );
-
         foreach ( $this->fields AS $field ) {
 
             $name = $field->getName();
 
-            if ( $source->keyExists( $name ) )
+            if ( array_key_exists( $name, $source ) )
                 $field->setValue( $source[$name] );
             else
                 $field->setValue( null );
@@ -333,9 +332,12 @@ class Form implements \Countable
      */
     public function getHidden ()
     {
-        return $this->fields->filter(function ( $field ) {
-            return ($field instanceof \cPHP\Form\Field\Hidden);
-        });
+        return array_filter(
+                $this->fields,
+                function ( $field ) {
+                    return ($field instanceof \cPHP\Form\Field\Hidden);
+                }
+            );
     }
 
     /**
@@ -345,9 +347,10 @@ class Form implements \Countable
      */
     public function getHiddenHTML ()
     {
-        return $this->getHidden()->collect(function ( $field ) {
-            return $field->__toString();
-        })->implode();
+        return implode(
+                "",
+                \cPHP\ary\invoke($this->getHidden(), "__toString")
+            );
     }
 
 }

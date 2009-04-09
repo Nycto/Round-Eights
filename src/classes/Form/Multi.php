@@ -64,7 +64,7 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function getOptions ()
     {
-        return new \cPHP\Ary( $this->options );
+        return $this->options;
     }
 
     /**
@@ -144,17 +144,14 @@ abstract class Multi extends \cPHP\Form\Field
     /**
      * Imports a set of options from an array or traversable object
      *
-     * @param mixed $source An array or a traversable object
+     * @param array $source
      * @return Object Returns a self reference
      */
-    public function importOptions ( $source )
+    public function importOptions ( array $source )
     {
-        if ( !\cPHP\Ary::is($source) )
-            throw new \cPHP\Exception\Argument(0, "Import Source", "Must be an array or a traversable object");
+        $source = \cPHP\ary\flatten( $source );
 
-        $source = new \cPHP\Ary( $source );
-
-        foreach ( $source->flatten() AS $key => $value ) {
+        foreach ( $source AS $key => $value ) {
             $this->addOption($key, $value);
         }
 

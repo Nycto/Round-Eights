@@ -45,7 +45,7 @@ class classes_exception_interrupt extends PHPUnit_Framework_TestCase
         $this->assertEquals( 2020, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array()),
+                array(),
                 $err->getData()
             );
 

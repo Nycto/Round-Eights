@@ -79,7 +79,7 @@ class classes_filter_ary extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array( 28 ),
-                $filter->filter( new \cPHP\Ary(array("28")) )->get()
+                $filter->filter( array("28") )
             );
     }
 

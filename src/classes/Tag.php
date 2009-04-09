@@ -333,16 +333,11 @@ class Tag implements \ArrayAccess
     /**
      * Imports a list of attributes in to this instance
      *
-     * @param mixed $attrs The list of attributes to import
-     * @return object Returns a self reference
+     * @param Array $attrs The list of attributes to import
+     * @return \cPHP\Tag Returns a self reference
      */
-    public function importAttrs ( $attrs )
+    public function importAttrs ( array $attrs )
     {
-        if ( is_array($attrs) )
-            $attrs = \cPHP\Ary::create( $attrs );
-        else if ( !( $attrs instanceof \Traversable ) )
-            throw new \cPHP\Exception\Argument( 0, "Attribute List", "Must be an array or a traversable object" );
-
         foreach ( $attrs AS $key => $value ) {
             $this->setAttr( $key, $value );
         }

@@ -37,23 +37,23 @@ class classes_filefinder_dir extends PHPUnit_Framework_TestCase
     {
         $finder = new \cPHP\FileFinder\Dir;
 
-        $this->assertEquals( new \cPHP\Ary, $finder->getDirs() );
+        $this->assertEquals( array(), $finder->getDirs() );
 
         $this->assertSame( $finder, $finder->addDir("/root/dir") );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         new \cPHP\FileSys\Dir("/root/dir")
-                    )),
+                    ),
                 $finder->getDirs()
             );
 
 
         $this->assertSame( $finder, $finder->addDir("") );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         new \cPHP\FileSys\Dir("/root/dir"),
                         new \cPHP\FileSys\Dir("")
-                    )),
+                    ),
                 $finder->getDirs()
             );
 
@@ -63,16 +63,16 @@ class classes_filefinder_dir extends PHPUnit_Framework_TestCase
                 $finder->addDir( new \cPHP\FileSys\Dir("path/to/dir") )
             );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         new \cPHP\FileSys\Dir("/root/dir"),
                         new \cPHP\FileSys\Dir(""),
                         new \cPHP\FileSys\Dir("path/to/dir")
-                    )),
+                    ),
                 $finder->getDirs()
             );
 
         $this->assertSame( $finder, $finder->clearDirs() );
-        $this->assertEquals( new \cPHP\Ary, $finder->getDirs() );
+        $this->assertEquals( array(), $finder->getDirs() );
     }
 
 }

@@ -139,7 +139,7 @@ class Dir extends \cPHP\FileSys implements \RecursiveIterator
 
         $path = $this->getPath();
 
-        $result = new \cPHP\Ary;
+        $result = array();
 
         while ( ($item = readdir($resource)) !== FALSE ) {
 
@@ -159,7 +159,6 @@ class Dir extends \cPHP\FileSys implements \RecursiveIterator
         closedir( $resource );
 
         return $result;
-
     }
 
     /**

@@ -1,7 +1,5 @@
 <?php
 /**
- * Array filtering class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -45,9 +43,9 @@ class AryOffset extends \cPHP\Filter
     /**
      * Constructor...
      *
-     * @param Array|Object A list of filters to apply indexed by the offsets to apply each filter to
+     * @param Array A list of filters to apply indexed by the offsets to apply each filter to
      */
-    public function __construct( $filters = array() )
+    public function __construct( array $filters = array() )
     {
         $this->import( $filters );
     }
@@ -55,11 +53,11 @@ class AryOffset extends \cPHP\Filter
     /**
      * Returns the list of filters loaded in this instance
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getFilters ()
     {
-        return new \cPHP\Ary( $this->filters );
+        return $this->filters;
     }
 
     /**
@@ -68,8 +66,8 @@ class AryOffset extends \cPHP\Filter
      * This will overwrite any previous filters for the given index
      *
      * @param mixed $index The index this filter will be applied to
-     * @param Object $filter The filter to apply to the given index
-     * @return Object Returns a self reference
+     * @param \cPHP\iface\Filter $filter The filter to apply to the given index
+     * @return \cPHP\Filter\AryOffset Returns a self reference
      */
     public function setFilter ( $index, \cPHP\iface\Filter $filter )
     {
@@ -81,15 +79,11 @@ class AryOffset extends \cPHP\Filter
     /**
      * Imports a list of filters in to this instance
      *
-     * @param Array|ObjectThe list of filters to import indexed by the offsets to apply each filter to
+     * @param Array The list of filters to import indexed by the offsets to apply each filter to
      * @return Object Returns a self reference
      */
-    public function import ( $filters )
+    public function import ( array $filters )
     {
-        if ( !\cPHP\Ary::is( $filters) )
-            throw new \cPHP\Exception\Argument( 0, "Filter List", "Must be an array or a traversable object" );
-
-        $filters = new \cPHP\Ary( $filters );
         foreach ( $filters AS $key => $value ) {
             if ( $value instanceof \cPHP\iface\Filter )
                 $this->setFilter( $key, $value );
@@ -106,10 +100,7 @@ class AryOffset extends \cPHP\Filter
      */
     public function filter ( $value )
     {
-        if ( !\cPHP\Ary::is( $value ) )
-            return $value;
-
-        else if ( is_object($value) && ( !( $value instanceof \ArrayAccess ) || !( $value instanceof \Traversable ) ) )
+        if ( !is_array( $value ) )
             return $value;
 
         foreach ( $this->filters AS $key => $filter ) {

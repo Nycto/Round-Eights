@@ -60,17 +60,15 @@ class classes_template_collection_standard extends PHPUnit_Framework_TestCase
     public function testAdd ()
     {
         $tpl = new \cPHP\Template\Collection;
-        $this->assertEquals( new \cPHP\Ary, $tpl->getTemplates() );
+        $this->assertEquals( array(), $tpl->getTemplates() );
 
         $mock = $this->getMockTpl();
         $this->assertSame( $tpl, $tpl->add( $mock ) );
-        $this->assertThat( $tpl->getTemplates(), $this->isInstanceOf('cPHP\Ary') );
-        $this->assertSame( array($mock), $tpl->getTemplates()->get() );
+        $this->assertSame( array($mock), $tpl->getTemplates() );
 
         $mock2 = $this->getMockTpl();
         $this->assertSame( $tpl, $tpl->add( $mock2 ) );
-        $this->assertThat( $tpl->getTemplates(), $this->isInstanceOf('cPHP\Ary') );
-        $this->assertSame( array($mock, $mock2), $tpl->getTemplates()->get() );
+        $this->assertSame( array($mock, $mock2), $tpl->getTemplates() );
     }
 
     public function testRender ()

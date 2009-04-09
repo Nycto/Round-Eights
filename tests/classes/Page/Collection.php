@@ -64,7 +64,7 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
 
-        $this->assertEquals( new \cPHP\Ary, $result->getTemplates() );
+        $this->assertEquals( array(), $result->getTemplates() );
     }
 
     public function testCreateContent_templates ()
@@ -81,12 +81,14 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
         $result = $page->getContent( new \cPHP\Page\Context );
         $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
         $this->assertEquals(
-                new \cPHP\Ary(array($tpl1, $tpl2)),
+                array($tpl1, $tpl2),
                 $result->getTemplates()
             );
 
-        $this->assertSame( $tpl1, $result->getTemplates()->offsetGet(0) );
-        $this->assertSame( $tpl2, $result->getTemplates()->offsetGet(1) );
+        $tpls = $result->getTemplates();
+
+        $this->assertSame( $tpl1, $tpls[0] );
+        $this->assertSame( $tpl2, $tpls[1] );
     }
 
     public function testCreateContent_string ()
@@ -103,14 +105,16 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
         $result = $page->getContent( new \cPHP\Page\Context );
 
         $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
-        $this->assertSame( 1, $result->getTemplates()->count() );
+
+        $tpls = $result->getTemplates();
+        $this->assertSame( 1, count( $tpls ) );
         $this->assertThat(
-                $result->getTemplates()->offsetGet(0),
+                $tpls[0],
                 $this->isInstanceOf('cPHP\Template\Raw')
             );
         $this->assertSame(
                 "Chunk of data",
-                $result->getTemplates()->offsetGet(0)->getContent()
+                $tpls[0]->getContent()
             );
     }
 

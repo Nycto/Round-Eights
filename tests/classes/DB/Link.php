@@ -572,13 +572,9 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("string thing") );
         $this->assertSame( "'string thing'", $mock->quote( "string thing" ) );
 
-        $this->assertThat(
-                $mock->quote(array(5, 5.5)),
-                $this->isInstanceOf("cPHP\Ary")
-            );
         $this->assertSame(
                 array("5", "5.5"),
-                $mock->quote(array(5, 5.5))->get()
+                $mock->quote(array(5, 5.5))
             );
     }
 
@@ -638,13 +634,9 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("string thing") );
         $this->assertSame( "string thing", $mock->escape( "string thing" ) );
 
-        $this->assertThat(
-                $mock->quote(array(5, 5.5)),
-                $this->isInstanceOf("cPHP\Ary")
-            );
         $this->assertSame(
                 array("5", "5.5"),
-                $mock->escape(array(5, 5.5))->get()
+                $mock->escape(array(5, 5.5))
             );
     }
 

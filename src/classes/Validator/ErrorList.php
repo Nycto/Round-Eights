@@ -69,11 +69,12 @@ class ErrorList
     public function addErrors ( $errors )
     {
         $errors = func_get_args();
-        \cPHP\Ary::create( $errors )
-            ->flatten()
-            ->compact()
-            ->unique()
-            ->each(array($this, "addError"));
+        $errors = \cPHP\ary\flatten( $errors );
+        $errors = \cPHP\ary\compact( $errors );
+        $errors = \array_unique( $errors );
+
+        array_walk( $errors, array($this, "addError") );
+
         return $this;
     }
 
@@ -84,7 +85,7 @@ class ErrorList
      */
     public function getErrors ()
     {
-        return new \cPHP\Ary( $this->errors );
+        return $this->errors;
     }
 
     /**

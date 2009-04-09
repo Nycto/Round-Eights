@@ -97,7 +97,7 @@ spl_autoload_register("cPHP_autoload");
 set_exception_handler(function ( $exception ) {
 
     // If we are running in script mode, we don't need HTML
-    if ( \cPHP\Env::get()->local ) {
+    if ( \cPHP\Env::request()->local ) {
         echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
     }
     else {

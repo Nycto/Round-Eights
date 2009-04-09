@@ -46,7 +46,7 @@ class classes_exception_variable extends PHPUnit_Framework_TestCase
         $this->assertEquals( 2020, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array('Variable Name' => 'Observer')),
+                array('Variable Name' => 'Observer'),
                 $err->getData()
             );
 

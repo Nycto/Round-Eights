@@ -72,7 +72,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
         $result = $field->validate();
         $this->assertEquals(
                 array("This form has expired"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

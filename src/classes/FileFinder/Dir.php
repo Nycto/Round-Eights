@@ -1,7 +1,5 @@
 <?php
 /**
- * Directory File Finder Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -45,7 +43,7 @@ class Dir extends \cPHP\FileFinder\DirList
      */
     public function getDirs ()
     {
-        return new \cPHP\Ary( $this->dirs );
+        return $this->dirs;
     }
 
     /**

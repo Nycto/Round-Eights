@@ -661,8 +661,8 @@ abstract class Link implements \cPHP\iface\DB\Link
     public function quote ( $value, $allowNull = TRUE )
     {
 
-        if ( \cPHP\Ary::is( $value ) )
-            return \cPHP\Ary::create( $value )->collect( array($this, "quote") );
+        if ( is_array( $value ) )
+            return array_map( array($this, "quote"), $value );
 
         $value = \cPHP\reduce($value);
 
@@ -699,8 +699,8 @@ abstract class Link implements \cPHP\iface\DB\Link
     public function escape ( $value, $allowNull = TRUE )
     {
 
-        if ( \cPHP\Ary::is( $value ) )
-            return \cPHP\Ary::create( $value )->collect( array($this, "escape") );
+        if ( is_array( $value ) )
+            return array_map( array($this, "escape"), $value );
 
         $value = \cPHP\reduce($value);
 

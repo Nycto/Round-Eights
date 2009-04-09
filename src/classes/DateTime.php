@@ -1,7 +1,5 @@
 <?php
 /**
- * File for the array object
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -213,22 +211,20 @@ class DateTime
      *
      * These keys are defined by the getdate() php function
      *
-     * @param Array|Object An array containing
+     * @param Array $time An array containing
      * @return object Returns a self reference
      */
-    public function setArray ( $time )
+    public function setArray ( array $time )
     {
-
-        $time = new \cPHP\Ary( $time );
-
-        $time = $time->changeKeyCase()
-            ->translateKeys(array(
-                    "day" => "mday",
-                    "month" => "mon"
-                ))
-            ->hone('seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
-
-        $time = $time->get();
+        $time = array_change_key_case($time, CASE_LOWER);
+        $time = \cPHP\ary\translateKeys(
+                $time,
+                array(
+                        "day" => "mday",
+                        "month" => "mon"
+                    )
+            );
+        $time = \cPHP\ary\hone( $time, 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
 
         if ( isset($this->time) )
             $time += getdate( $this->time );

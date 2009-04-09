@@ -1,7 +1,5 @@
 <?php
 /**
- * Array filtering class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -78,8 +76,7 @@ class Ary extends \cPHP\Filter
      */
     public function filter ( $value )
     {
-        if ( !\cPHP\Ary::is($value) || ( is_object($value) && !( $value instanceof \ArrayAccess) ) )
-            $value = array($value);
+        $value = \cPHP\arrayVal($value);
 
         foreach( $value AS $key => $val ) {
             $value[ $key ] = $this->filter->filter( $val );

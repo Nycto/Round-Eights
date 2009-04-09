@@ -87,9 +87,12 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
         // Invoke the internal validator
         $result = $this->process( $value );
 
-        // Normalize the results
-        if ( \cPHP\Ary::is($result) )
-            $result = \cPHP\Ary::create( $result )->flatten()->collect("cPHP\\strval")->compact()->get();
+        // Normalize the results if it is an array
+        if ( \is_array($result) ) {
+            $result = \cPHP\ary\flatten( $result );
+            $result = \array_map( 'cPHP\\strval', $result );
+            $result = \cPHP\ary\compact( $result );
+        }
 
         elseif ( $result instanceof \cPHP\Validator\Result )
             $result = $result->getErrors();

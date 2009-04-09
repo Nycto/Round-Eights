@@ -60,7 +60,7 @@ class MultiField extends \cPHP\Validator
      */
     protected function process ( $value )
     {
-        if ( !\cPHP\isBasic($value) || !$this->field->getOptions()->keyExists($value) )
+        if ( !\cPHP\isBasic($value) || !array_key_exists( $value, $this->field->getOptions() ) )
             return "Value is not a valid selection";
     }
 

@@ -43,11 +43,9 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
                 $filter->setFilter( 50, $intFilter )
             );
 
-        $list = $filter->getFilters();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array( 50 => $intFilter ),
-                $list->get()
+                $filter->getFilters()
             );
 
 
@@ -57,11 +55,8 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
                 $filter->setFilter( 50, $boolFilter )
             );
 
-        $list = $filter->getFilters();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
-                array( 50 => $boolFilter ),
-                $list->get()
+                array( 50 => $boolFilter ),$filter->getFilters()
             );
 
 
@@ -70,11 +65,9 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
                 $filter->setFilter( "str", $intFilter)
             );
 
-        $list = $filter->getFilters();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array( 50 => $boolFilter, "str" => $intFilter ),
-                $list->get()
+                $filter->getFilters()
             );
     }
 
@@ -82,38 +75,40 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
     {
         $filter = new \cPHP\Filter\AryOffset;
 
+        $filter1 = new \cPHP\Filter\Number;
+        $filter2 = new \cPHP\Filter\URL;
+
         $filter->import(array(
                 5 => new \cPHP\Filter\Number,
                 "index" => new \cPHP\Filter\URL
             ));
 
-        $list = $filter->getFilters();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $list = $list->get();
-
-        $this->assertArrayHasKey( 5, $list );
-        $this->assertThat( $list[5], $this->isInstanceOf("cPHP\Filter\Number") );
-
-        $this->assertArrayHasKey( "index", $list );
-        $this->assertThat( $list["index"], $this->isInstanceOf("cPHP\Filter\URL") );
+        $this->assertEquals(
+                array(
+                        5 => $filter1,
+                        "index" => $filter2
+                    ),
+                $filter->getFilters()
+            );
     }
 
     public function testConstruct ()
     {
+        $filter1 = new \cPHP\Filter\Number;
+        $filter2 = new \cPHP\Filter\URL;
+
         $filter = new \cPHP\Filter\AryOffset(array(
-                5 => new \cPHP\Filter\Number,
-                "index" => new \cPHP\Filter\URL
+                5 => $filter1,
+                "index" => $filter2
             ));
 
-        $list = $filter->getFilters();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $list = $list->get();
-
-        $this->assertArrayHasKey( 5, $list );
-        $this->assertThat( $list[5], $this->isInstanceOf("cPHP\Filter\Number") );
-
-        $this->assertArrayHasKey( "index", $list );
-        $this->assertThat( $list["index"], $this->isInstanceOf("cPHP\Filter\URL") );
+        $this->assertSame(
+                array(
+                        5 => $filter1,
+                        "index" => $filter2
+                    ),
+                $filter->getFilters()
+            );
     }
 
     public function testFilter ()
@@ -125,18 +120,8 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array( 1 => 10, 5 => true ),
-                $filter->filter(array( 1 => "10", 5 => 1 ))
+                $filter->filter( array( 1 => "10", 5 => 1 ) )
             );
-
-        $ary = new \cPHP\Ary(array( 1 => "10", 5 => 1 ));
-        $result = $filter->filter( $ary );
-
-        $this->assertSame( $ary, $result );
-        $this->assertSame(
-                array( 1 => 10, 5 => true ),
-                $result->get()
-            );
-
     }
 
 }

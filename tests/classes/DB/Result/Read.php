@@ -223,12 +223,9 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
             ->method("rawFields")
             ->will( $this->returnValue( array("one", "two") ) );
 
-        $result = $read->getFields();
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertSame( array("one", "two"), $result->get() );
-
-        $this->assertSame( array("one", "two"), $read->getFields()->get() );
-        $this->assertSame( array("one", "two"), $read->getFields()->get() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
+        $this->assertSame( array("one", "two"), $read->getFields() );
     }
 
     public function testGetFields_invalid ()
@@ -243,13 +240,9 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
             ->method("rawFields")
             ->will( $this->returnValue(null) );
 
-
-        $result = $read->getFields();
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertSame( array(), $result->get() );
-
-        $this->assertSame( array(), $read->getFields()->get() );
-        $this->assertSame( array(), $read->getFields()->get() );
+        $this->assertSame( array(), $read->getFields() );
+        $this->assertSame( array(), $read->getFields() );
+        $this->assertSame( array(), $read->getFields() );
     }
 
     public function testIsField ()

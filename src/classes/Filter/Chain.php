@@ -84,9 +84,9 @@ class Chain extends \cPHP\Filter
      *
      * @return Object Returns an Array object
      */
-    public function get ()
+    public function getFilters ()
     {
-        return new \cPHP\Ary( $this->filters );
+        return $this->filters;
     }
 
     /**

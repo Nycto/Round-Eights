@@ -1,7 +1,5 @@
 <?php
 /**
- * File Finder Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -162,7 +160,7 @@ abstract class FileFinder
     {
 
         // If it isn't traversable, convert it to an array
-        if ( !\cPHP\Ary::is( $file ) )
+        if ( !is_array( $file ) )
             $file = array( $file );
 
         foreach ( $file AS $current ) {

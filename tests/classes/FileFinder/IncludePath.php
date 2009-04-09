@@ -40,9 +40,7 @@ class classes_filefinder_includepath extends PHPUnit_Framework_TestCase
         $ini = new \cPHP\FileFinder\IncludePath;
 
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        ".", "..", "sub/path", "/root"
-                    )),
+                array( ".", "..", "sub/path", "/root" ),
                 $ini->getDirs()
             );
     }

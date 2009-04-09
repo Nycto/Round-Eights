@@ -40,7 +40,7 @@ class IncludePath extends \cPHP\FileFinder\DirList
      */
     public function getDirs ()
     {
-        return \cPHP\Ary::explode( ":", get_include_path() );
+        return explode( ":", get_include_path() );
     }
 
 }

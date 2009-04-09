@@ -45,7 +45,7 @@ class Collection implements \cPHP\iface\Template
      */
     public function getTemplates ()
     {
-        return new \cPHP\Ary( $this->list );
+        return $this->list;
     }
 
     /**
