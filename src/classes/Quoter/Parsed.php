@@ -51,11 +51,11 @@ class Parsed
     /**
      * Returns a list of all the sections in this instance
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array Returns an array of \cPHP\Quoter\Parsed objects
      */
     public function getSections ()
     {
-        return new \cPHP\Ary( $this->sections );
+        return $this->sections;
     }
 
     /**
