@@ -46,7 +46,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be longer than 0 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -76,7 +76,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be longer than 1 character"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -93,7 +93,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be longer than 0 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -119,7 +119,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be longer than 2 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -134,7 +134,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be longer than 7 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -146,7 +146,7 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

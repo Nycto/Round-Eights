@@ -54,7 +54,7 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("IP address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -62,7 +62,7 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("IP address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -70,7 +70,7 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("IP address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

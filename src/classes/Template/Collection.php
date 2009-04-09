@@ -41,7 +41,7 @@ class Collection implements \cPHP\iface\Template
     /**
      * Returns the list of templates registered in this instance
      *
-     * @return Object Returns a cPHP\Ary object
+     * @return Array
      */
     public function getTemplates ()
     {

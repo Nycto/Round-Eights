@@ -51,15 +51,12 @@ class In extends \cPHP\Validator
     /**
      * Sets the list of valid values
      *
-     * @param mixed $list The list of valid values
+     * @param Array $list The list of valid values
      * @return Object Returns a self reference
      */
-    public function setList ( $list )
+    public function setList ( array $list )
     {
-        if ( !\cPHP\Ary::is( $list ) )
-            throw new \cPHP\Exception\Argument( 0, "Valid Value List", "Must be an array or a traversable object" );
-
-        $this->list = \cPHP\Ary::create( $list )->unique();
+        $this->list = array_unique( $list );
 
         return $this;
     }
@@ -67,11 +64,11 @@ class In extends \cPHP\Validator
     /**
      * Returns the list of valid objects
      *
-     * @return Object Returns a \cPHP\Ary object of the valid values
+     * @return array Returns a list of the valid values
      */
     public function getList ()
     {
-        return clone $this->list;
+        return $this->list;
     }
 
     /**
@@ -82,7 +79,7 @@ class In extends \cPHP\Validator
      */
     public function exists ( $value )
     {
-        return $this->list->contains($value);
+        return in_array($value, $this->list);
     }
 
     /**
@@ -107,7 +104,7 @@ class In extends \cPHP\Validator
      */
     public function remove ( $value )
     {
-        $this->list = $this->list->without( $value )->values();
+        $this->list = array_values( \cPHP\ary\without($this->list, $value ) );
         return $this;
     }
 
@@ -119,7 +116,7 @@ class In extends \cPHP\Validator
      */
     protected function process ( $value )
     {
-        if ( !$this->list->contains($value) )
+        if ( !in_array($value, $this->list) )
             return "Invalid option";
     }
 

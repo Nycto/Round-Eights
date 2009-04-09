@@ -173,7 +173,7 @@ class Form implements \Countable
     /**
      * Returns the list of fields registered in this form
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return array
      */
     public function getFields ()
     {
@@ -328,7 +328,7 @@ class Form implements \Countable
     /**
      * Returns all the hidden fields registered in this instance
      *
-     * @return Object Returns a \cPHP\Ary object or hidden field objects
+     * @return array Returns a list of hidden fields
      */
     public function getHidden ()
     {

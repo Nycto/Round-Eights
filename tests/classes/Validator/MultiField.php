@@ -42,7 +42,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -50,7 +50,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -63,7 +63,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -78,21 +78,21 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $valid->validate( "Triple" );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $valid->validate( "ONE" );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not a valid selection"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

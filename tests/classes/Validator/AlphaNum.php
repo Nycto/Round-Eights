@@ -41,42 +41,42 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(10);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(1.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -106,14 +106,14 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain letters and numbers"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain letters and numbers"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

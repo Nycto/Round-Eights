@@ -145,7 +145,7 @@ abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIter
     /**
      * Returns a list of field names returned by the query
      *
-     * @return Object Returns a \cPHP\Ary Object
+     * @return Array
      */
     public function getFields ()
     {

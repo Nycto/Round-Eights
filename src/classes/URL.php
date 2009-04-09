@@ -1071,7 +1071,7 @@ class URL
     /**
      * Returns the query parsed in to an array
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return array
      */
     public function getParsedQuery ()
     {

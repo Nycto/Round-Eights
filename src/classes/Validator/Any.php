@@ -53,7 +53,7 @@ class Any extends \cPHP\Validator\Collection
             if ( $result->isValid() )
                 return array();
 
-            $errors = array_merge( $errors, $result->getErrors()->get() );
+            $errors = array_merge( $errors, $result->getErrors() );
 
         }
 

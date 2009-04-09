@@ -52,7 +52,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("This is an invalid result") );
 
         $any = new \cPHP\Validator\Any( $valid );
-        $this->assertEquals( array($valid), $any->getValidators()->get() );
+        $this->assertEquals( array($valid), $any->getValidators() );
 
         try {
             $any->validate("example value");
@@ -133,7 +133,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }
@@ -169,7 +169,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error", "This is another Error"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }
@@ -205,7 +205,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

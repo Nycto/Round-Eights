@@ -156,7 +156,7 @@ class Quoter
      * is the opening quote character. The second dimension is a list of characters
      * that are allowed to close the opening quote
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return array
      */
     public function getQuotes ()
     {
@@ -214,7 +214,7 @@ class Quoter
     /**
      * Returns a flat list of all the open and close quotes registered in this instance
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getAllQuotes ()
     {
@@ -228,7 +228,7 @@ class Quoter
     /**
      * Returns a list of all the opening quotes
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getOpenQuotes ()
     {

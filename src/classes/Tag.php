@@ -1,7 +1,5 @@
 <?php
 /**
- * HTML Tag Creator
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -116,7 +114,6 @@ class Tag implements \ArrayAccess
      * @param String $tag The tag this instance represents
      * @param String $content Any content for this instance
      * @param Array $attrs Any attributes to load in
-     * @return null
      */
     public function __construct ( $tag, $content = null, $attrs = array() )
     {
@@ -139,7 +136,7 @@ class Tag implements \ArrayAccess
      * Sets the value of the tag in this instance
      *
      * @param String $tag The tag this instance represents
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function setTag ( $tag )
     {
@@ -167,7 +164,7 @@ class Tag implements \ArrayAccess
      * Sets the content of this instance
      *
      * @param string $content
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function setContent ( $content )
     {
@@ -180,7 +177,7 @@ class Tag implements \ArrayAccess
      * Adds content to the end of the existing content
      *
      * @param string $content
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function appendContent ( $content )
     {
@@ -203,7 +200,7 @@ class Tag implements \ArrayAccess
     /**
      * Unsets any content in this instance
      *
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function clearContent ()
     {
@@ -215,7 +212,7 @@ class Tag implements \ArrayAccess
      * Sets whether this instance should be rendered as empty
      *
      * @param Boolean $setting
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function setEmpty ( $setting )
     {
@@ -226,7 +223,7 @@ class Tag implements \ArrayAccess
     /**
      * Clears the empty override and reverts to automatic detection
      *
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function clearEmpty ()
     {
@@ -264,7 +261,7 @@ class Tag implements \ArrayAccess
      */
     public function getAttrs ()
     {
-        return new \cPHP\Ary( $this->attrs );
+        return $this->attrs;
     }
 
     /**
@@ -284,7 +281,7 @@ class Tag implements \ArrayAccess
      * @param mixed $value The value of this attribute
      *      Setting this to boolean true (or not passing it as an argument),
      *      marks this attribute as a boolean value
-     * @param object Returns a self reference
+     * @param \cPHP\Tag Returns a self reference
      */
     public function setAttr ( $attr, $value = TRUE )
     {
@@ -307,7 +304,7 @@ class Tag implements \ArrayAccess
      * Clears an attribute from being set
      *
      * @param String $attr The attribute to test
-     * @param object Returns a self reference
+     * @param \cPHP\Tag Returns a self reference
      */
     public function unsetAttr ( $attr )
     {
@@ -347,7 +344,7 @@ class Tag implements \ArrayAccess
     /**
      * Removes all attributes from this instance
      *
-     * @return object Returns a self reference
+     * @return \cPHP\Tag Returns a self reference
      */
     public function clearAttrs ()
     {

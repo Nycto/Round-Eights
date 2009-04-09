@@ -656,7 +656,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow
-     * @return String|Object Returns the escaped string, or a \cPHP\Ary object
+     * @return String|Array Returns the escaped string, or an array
      */
     public function quote ( $value, $allowNull = TRUE )
     {
@@ -694,7 +694,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      *
      * @param mixed $value The value to quote
      * @param Boolean $allowNull Whether to allow
-     * @return String|Object Returns the escaped string, or a \cPHP\Ary object
+     * @return String|array Returns the escaped string, or an array
      */
     public function escape ( $value, $allowNull = TRUE )
     {

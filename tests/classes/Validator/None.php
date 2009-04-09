@@ -52,7 +52,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("This is an invalid result") );
 
         $none = new \cPHP\Validator\None( $valid );
-        $this->assertEquals( array($valid), $none->getValidators()->get() );
+        $this->assertEquals( array($valid), $none->getValidators() );
 
         try {
             $none->validate("example value");
@@ -109,7 +109,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }
@@ -137,7 +137,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }
@@ -169,7 +169,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

@@ -292,7 +292,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String
      */
-    public function getTraceOffsetString ($offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+    public function getTraceOffsetString ($offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
     {
 
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
@@ -330,7 +330,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String A string of HTML
      */
-    public function getTraceOffsetHTML ($offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+    public function getTraceOffsetHTML ($offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
     {
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 

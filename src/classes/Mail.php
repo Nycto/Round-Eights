@@ -322,10 +322,9 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be sent to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be sent to. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be sent to. The second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getTo ()
     {
@@ -414,10 +413,9 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be CCd to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be CCd. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be CCdThe second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getCC ()
     {
@@ -506,10 +504,9 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be BCCd to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be BCCd. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be BCCd. The second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getBCC ()
     {

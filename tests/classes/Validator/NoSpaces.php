@@ -63,7 +63,7 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -75,35 +75,35 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not contain any spaces"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("String With Spaces");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not contain any spaces"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("\tTabbed");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not contain any tabs"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("lineBreak\n");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not contain any new lines"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("return\r");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not contain any new lines"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

@@ -36,7 +36,7 @@ abstract class DirList extends \cPHP\FileFinder
     /**
      * Returns a list of directories to be searched
      *
-     * @return Object Returns a cPHP\Ary object of directories
+     * @return array Returns a list of directories
      */
     abstract public function getDirs ();
 

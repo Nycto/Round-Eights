@@ -57,7 +57,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $tag = new \cPHP\Tag("a", "a snip of content", array("href" => "#"));
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
-        $this->assertSame(array("href" => "#"), $tag->getAttrs()->get());
+        $this->assertSame(array("href" => "#"), $tag->getAttrs());
     }
 
     public function testSetTag ()
@@ -259,10 +259,10 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
         $tag->setAttr("Rel", "nofollow");
 
-        $attrs = $tag->getAttrs();
-
-        $this->assertThat( $attrs, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertSame( array("rel" => "nofollow"), $attrs->get() );
+        $this->assertSame(
+                array("rel" => "nofollow"),
+                $tag->getAttrs()
+            );
     }
 
     public function testHasAttrs ()
@@ -281,31 +281,31 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $tag = new \cPHP\Tag("hr");
 
         $this->assertSame( $tag, $tag->setAttr("Rel", "nofollow") );
-        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("class", "title") );
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("class", "link") );
-        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("rel", TRUE) );
-        $this->assertSame( array("rel" => TRUE, "class" => "link"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => TRUE, "class" => "link"), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("class") );
-        $this->assertSame( array("rel" => TRUE, "class" => TRUE), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => TRUE, "class" => TRUE), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("rel", FALSE) );
-        $this->assertSame( array("rel" => FALSE, "class" => TRUE), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => FALSE, "class" => TRUE), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("class", null) );
-        $this->assertSame( array("rel" => FALSE, "class" => null), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => FALSE, "class" => null), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("rel", 50) );
-        $this->assertSame( array("rel" => 50, "class" => null), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => 50, "class" => null), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->setAttr("class", array( 1.5, 50 ) ) );
-        $this->assertSame( array("rel" => 50, "class" => 1.5), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => 50, "class" => 1.5), $tag->getAttrs() );
 
         try {
             $tag->setAttr("  ", "empty");
@@ -352,11 +352,11 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $tag->setAttr("rel", "nofollow")
             ->setAttr("class", "title");
 
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->unsetAttr("rel") );
 
-        $this->assertSame( array("class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("class" => "title"), $tag->getAttrs() );
 
         try {
             $tag->unsetAttr("  ");
@@ -390,27 +390,27 @@ class classes_tag extends PHPUnit_Framework_TestCase
     {
         $tag = new \cPHP\Tag("hr");
 
-        $this->assertSame( array(), $tag->getAttrs()->get() );
+        $this->assertSame( array(), $tag->getAttrs() );
 
         $this->assertSame(
                 $tag,
                 $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) )
             );
 
-        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->importAttrs( array() ) );
 
-        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs() );
 
         $tag->clearAttrs();
 
         $this->assertSame(
                 $tag,
-                $tag->importAttrs( new \cPHP\Ary( array( "rel" => "nofollow", "class" => "link" ) ) )
+                $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) )
             );
 
-        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs() );
 
         try {
             $tag->importAttrs( array( "rel" => "nofollow", "  " => "link" ) );
@@ -419,29 +419,21 @@ class classes_tag extends PHPUnit_Framework_TestCase
         catch ( \cPHP\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
-
-        try {
-            $tag->importAttrs( "This is not traversable" );
-            $this->fail("An expected exception has not been thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertEquals( "Must be an array or a traversable object", $err->getMessage() );
-        }
     }
 
     public function testClearAttrs ()
     {
         $tag = new \cPHP\Tag("hr");
 
-        $this->assertSame( array(), $tag->getAttrs()->get() );
+        $this->assertSame( array(), $tag->getAttrs() );
 
         $tag->importAttrs( array( "rel" => "nofollow", "class" => "link" ) );
 
-        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs()->get() );
+        $this->assertSame( array( "rel" => "nofollow", "class" => "link" ), $tag->getAttrs() );
 
         $this->assertSame( $tag, $tag->clearAttrs() );
 
-        $this->assertSame( array(), $tag->getAttrs()->get() );
+        $this->assertSame( array(), $tag->getAttrs() );
 
     }
 
@@ -450,13 +442,13 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $tag = new \cPHP\Tag("hr");
 
         $tag['Rel'] = "nofollow";
-        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
 
         $tag['class'] = "title";
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
 
         $tag['class'] = "link";
-        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "link"), $tag->getAttrs() );
 
         try {
             $tag['  '] = "link";
@@ -503,11 +495,11 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $tag->setAttr("rel", "nofollow")
             ->setAttr("class", "title");
 
-        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("rel" => "nofollow", "class" => "title"), $tag->getAttrs() );
 
         unset( $tag['rel'] );
 
-        $this->assertSame( array("class" => "title"), $tag->getAttrs()->get() );
+        $this->assertSame( array("class" => "title"), $tag->getAttrs() );
 
         try {
             unset( $tag['  '] );
@@ -543,19 +535,19 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame("div", $tag->getTag());
         $this->assertNull($tag->getContent());
-        $this->assertSame(array(), $tag->getAttrs()->get());
+        $this->assertSame(array(), $tag->getAttrs());
 
         $tag = \cPHP\Tag::strong("words");
         $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame("strong", $tag->getTag());
         $this->assertSame("words", $tag->getContent());
-        $this->assertSame(array(), $tag->getAttrs()->get());
+        $this->assertSame(array(), $tag->getAttrs());
 
         $tag = \cPHP\Tag::a("this is content", array("href" => "#"));
         $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("this is content", $tag->getContent());
-        $this->assertSame(array( "href" => "#" ), $tag->getAttrs()->get());
+        $this->assertSame(array( "href" => "#" ), $tag->getAttrs());
     }
 
     public function testQuoteAttr ()

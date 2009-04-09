@@ -249,7 +249,7 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, \cPHP\ary\calcOffset( range(1, 5),  4, \cPHP\ary\OFFSET_NONE) );
 
         try {
-            \cPHP\ary\calcOffset(array(), 2, \cPHP\Ary\OFFSET_NONE);
+            \cPHP\ary\calcOffset(array(), 2, \cPHP\ary\OFFSET_NONE);
             $this->fail('An expected exception has not been raised.');
         }
         catch ( \cPHP\Exception\Index $err ) {

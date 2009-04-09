@@ -69,7 +69,7 @@ abstract class Transport
      * @param Array $list The list of headers to format
      * @return String
      */
-    private function getAddressList ( \cPHP\Ary $list )
+    private function getAddressList ( array $list )
     {
         $result = array();
 

@@ -86,7 +86,7 @@ abstract class Collection extends \cPHP\Validator
     /**
      * Returns the list of validators contained in this instance
      *
-     * @return object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getValidators ()
     {

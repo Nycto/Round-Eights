@@ -60,7 +60,7 @@ abstract class Multi extends \cPHP\Form\Field
     /**
      * Returns the list of registered options
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getOptions ()
     {

@@ -41,42 +41,42 @@ class classes_validator_digits extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(10);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(1.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -94,14 +94,14 @@ class classes_validator_digits extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain digits"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('abcdefghijklmnopqrstuvwxyz');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain digits"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Get a list of extended range ascii characters
@@ -110,14 +110,14 @@ class classes_validator_digits extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain digits"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must only contain digits"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

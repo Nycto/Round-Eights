@@ -49,7 +49,7 @@ class All extends \cPHP\Validator\Collection
             if ( !$result instanceof \cPHP\Validator\Result )
                 throw new \cPHP\Exception\Data( $result, "Validator Result", "Must be an instance of \cPHP\Validator\Result" );
 
-            $errors = array_merge( $errors, $result->getErrors()->get() );
+            $errors = array_merge( $errors, $result->getErrors() );
 
         }
 

@@ -76,7 +76,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value must be tonic"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -90,7 +90,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value must be cheese"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -104,7 +104,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value must be jelly"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -118,7 +118,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value must be milk"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -132,7 +132,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Value must be sugar"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -150,7 +150,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be <= 10", "Greater than 10"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -158,8 +158,8 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
     {
         $valid = new \cPHP\Validator\Callback(function ($value) {
             if ( $value > 10 )
-                return new \cPHP\Ary(array("Must be <= 10", "Greater than 10"));
-            return new \cPHP\Ary;
+                return array("Must be <= 10", "Greater than 10");
+            return array();
         });
 
         $this->assertTrue( $valid->isValid(5) );
@@ -168,7 +168,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be <= 10", "Greater than 10"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -186,7 +186,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be <= 10", "Greater than 10"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -205,7 +205,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Error one", "error two"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -223,7 +223,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Error"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -241,7 +241,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("1.505"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -259,7 +259,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("99"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
