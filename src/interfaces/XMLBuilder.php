@@ -35,7 +35,7 @@ interface XMLBuilder
      * Creates and returns a new node to attach to a document
      *
      * @param DOMDocument $doc The root document this node is being created for
-     * @return DOMNode
+     * @return DOMNode Returns the created node
      */
     public function buildNode ( DOMDocument $doc );
 
