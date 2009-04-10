@@ -1,7 +1,5 @@
 <?php
 /**
- * File Template Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Template
  */
 
 namespace cPHP\Template;
@@ -36,7 +34,7 @@ class PHP extends \cPHP\Template\File
     /**
      * Render and output this template to the client
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\Template\PHP Returns a self reference
      */
     public function display ()
     {

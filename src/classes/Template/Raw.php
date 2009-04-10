@@ -1,7 +1,5 @@
 <?php
 /**
- * Core Template Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Template
  */
 
 namespace cPHP\Template;
@@ -35,6 +33,8 @@ class Raw implements \cPHP\iface\Template
 
     /**
      * The content for this instance
+     *
+     * @var mixed
      */
     private $content;
 
@@ -51,7 +51,7 @@ class Raw implements \cPHP\iface\Template
     /**
      * Returns the content in this instance
      *
-     * @return mixed The content
+     * @return mixed
      */
     public function getContent ()
     {
@@ -62,7 +62,7 @@ class Raw implements \cPHP\iface\Template
      * Sets the content for this instance
      *
      * @param mixed $content The content being set
-     * @return Object Returns a self reference
+     * @return \cPHP\Template\Raw Returns a self reference
      */
     public function setContent ( $content )
     {
@@ -71,9 +71,9 @@ class Raw implements \cPHP\iface\Template
     }
 
     /**
-     * Clears the content out of this instance
+     * Returns whether this instance has any content
      *
-     * @return Boolean Returns whether this instance has any content
+     * @return Boolean
      */
     public function contentExists ()
     {
@@ -83,7 +83,7 @@ class Raw implements \cPHP\iface\Template
     /**
      * Clears the content out of this instance
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\Template\Blank Returns a self reference
      */
     public function clearContent ()
     {
@@ -94,7 +94,7 @@ class Raw implements \cPHP\iface\Template
     /**
      * Displays the content of this template
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\Template\Blank Returns a self reference
      */
     public function display ()
     {
@@ -113,7 +113,9 @@ class Raw implements \cPHP\iface\Template
     }
 
     /**
-     * Wrapper for the render function
+     * Returns the content of this template as a string
+     *
+     * This is a wrapper for the render function
      *
      * @return String
      */
