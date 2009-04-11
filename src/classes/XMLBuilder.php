@@ -88,6 +88,17 @@ class XMLBuilder
      */
     public function buildDoc ()
     {
+        $node = $this->builder->buildNode( $this->doc );
+
+        if ( !($node instanceof \DOMNode) ) {
+            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
+            $err->addData("Document", \cPHP\getDump($this->doc));
+            $err->addData("Built Node", \cPHP\getDump($node));
+            throw $err;
+        }
+
+        $this->doc->appendChild( self::importNode($this->doc, $node) );
+
         return $this->doc;
     }
 
