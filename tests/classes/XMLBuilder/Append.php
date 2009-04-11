@@ -35,7 +35,113 @@ class classes_xmlbuilder_append extends PHPUnit_Framework_TestCase
 
     public function testBuildNode ()
     {
+        $doc = new \DOMDocument;
 
+        $parent = $doc->createElement("parent");
+        $parentBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $parentBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($parent) );
+
+        $builder = new \cPHP\XMLBuilder\Append( $parentBuilder );
+
+        $built = $builder->buildNode( $doc );
+
+        $this->assertSame( $parent, $built );
+
+        $this->assertSame(
+                '<parent/>',
+                $doc->saveXML( $built )
+            );
+    }
+
+    public function testBuildNode_oneChild ()
+    {
+        $doc = new \DOMDocument;
+
+        $parent = $doc->createElement("parent");
+        $parentBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $parentBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($parent) );
+
+        $builder = new \cPHP\XMLBuilder\Append( $parentBuilder );
+
+
+        $child = $doc->createElement("child");
+        $childBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $childBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($child) );
+
+        $this->assertSame( $builder, $builder->addChild( $childBuilder ) );
+
+
+        $built = $builder->buildNode( $doc );
+
+        $this->assertSame( $parent, $built );
+
+        $this->assertSame(
+                '<parent><child/></parent>',
+                $doc->saveXML( $built )
+            );
+    }
+
+    public function testBuildNode_multiChild ()
+    {
+        $doc = new \DOMDocument;
+
+        $parent = $doc->createElement("parent");
+        $parentBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $parentBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($parent) );
+
+        $builder = new \cPHP\XMLBuilder\Append( $parentBuilder );
+
+
+        $child1 = $doc->createElement("child1");
+        $child1Builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $child1Builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($child1) );
+
+        $this->assertSame( $builder, $builder->addChild( $child1Builder ) );
+
+
+        $child2 = $doc->createElement("child2");
+        $child2Builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $child2Builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($child2) );
+
+        $this->assertSame( $builder, $builder->addChild( $child2Builder ) );
+
+
+        $child3 = $doc->createElement("child3");
+        $child3Builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $child3Builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($child3) );
+
+        $this->assertSame( $builder, $builder->addChild( $child3Builder ) );
+
+
+        $built = $builder->buildNode( $doc );
+
+        $this->assertSame( $parent, $built );
+
+        $this->assertSame(
+                '<parent><child1/><child2/><child3/></parent>',
+                $doc->saveXML( $built )
+            );
     }
 
 }

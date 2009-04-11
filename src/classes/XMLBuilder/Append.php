@@ -57,6 +57,19 @@ class Append implements \cPHP\iface\XMLBuilder
     }
 
     /**
+     * Adds a new builder whose results will be appended to the parent
+     *
+     * @param \cPHP\iface\XMLBuilder $child The builder to use to construct this
+     *      child element
+     * @return \cPHP\XMLBuilder\Append Returns a self reference
+     */
+    public function addChild ( \cPHP\iface\XMLBuilder $child )
+    {
+        $this->children[] = $child;
+        return $this;
+    }
+
+    /**
      * Creates and returns a new node to attach to a document
      *
      * @param \DOMDocument $doc The root document this node is being created for
@@ -64,6 +77,17 @@ class Append implements \cPHP\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
+        $parent = \cPHP\XMLBuilder::buildNode( $this->parent, $doc );
+
+        foreach ( $this->children AS $child ) {
+
+            $parent->appendChild(
+                    \cPHP\XMLBuilder::buildNode( $child, $doc )
+                );
+
+        }
+
+        return $parent;
     }
 
 }
