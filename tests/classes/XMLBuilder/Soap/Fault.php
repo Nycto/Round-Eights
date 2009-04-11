@@ -33,9 +33,45 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstructErrs ()
+    {
+        try {
+            new \cPHP\XMLBuilder\Soap\Fault( "", "An error was encountered" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+
+        try {
+            new \cPHP\XMLBuilder\Soap\Fault( "Error", "" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame("Must not be empty", $err->getMessage());
+        }
+    }
+
     public function testBuildNode ()
     {
-        
+        $builder = new \cPHP\XMLBuilder\Soap\Fault(
+                "Error",
+                "An error was encountered"
+            );
+
+        $doc = new \DOMDocument;
+
+        $builtNode = $builder->buildNode( $doc );
+        $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
+        $this->assertSame( "soap:Fault", $builtNode->tagName );
+
+        $this->assertSame(
+                '<soap:Fault xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                    .'<soap:Code><soap:Value>Error</soap:Value></soap:Code>'
+                    .'<soap:Reason><soap:Text>An error was encountered</soap:Text></soap:Reason>'
+                .'</soap:Fault>',
+                $doc->saveXML( $builtNode )
+            );
     }
 
 }

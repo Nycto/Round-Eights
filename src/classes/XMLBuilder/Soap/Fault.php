@@ -75,7 +75,25 @@ class Fault implements \cPHP\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        
+        $fault = $doc->createElementNS(
+                "http://www.w3.org/2003/05/soap-envelope",
+                "soap:Fault"
+            );
+
+        $code = $doc->createElement("soap:Code");
+        $code->appendChild(
+                $doc->createElement("soap:Value", $this->code)
+            );
+
+        $reason = $doc->createElement("soap:Reason");
+        $reason->appendChild(
+                $doc->createElement("soap:Text", $this->reason)
+            );
+
+        $fault->appendChild( $code );
+        $fault->appendChild( $reason );
+
+        return $fault;
     }
 
 }
