@@ -102,19 +102,9 @@ class Wrap implements \cPHP\iface\XMLBuilder
             $node->setAttribute($key, $value);
         }
 
-        $built = $this->builder->buildNode( $doc );
-
-        if ( !($built instanceof \DOMNode) ) {
-            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
-            $err->addData("Document", \cPHP\getDump($doc));
-            $err->addData("Built Node", \cPHP\getDump($built));
-            throw $err;
-        }
-
-        // Ensure the built node is a member of the document
-        $built = \cPHP\XMLBuilder::importNode( $doc, $built );
-
-        $node->appendChild( $built );
+        $node->appendChild(
+                \cPHP\XMLBuilder::buildNode( $this->builder, $doc )
+            );
 
         return $node;
     }

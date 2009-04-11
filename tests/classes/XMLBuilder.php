@@ -57,6 +57,64 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
         $this->assertSame( $newNode, $node );
     }
 
+    public function testBuildNode_standard ()
+    {
+        $doc = new \DOMDocument;
+
+        $node = $doc->createElement("tag");
+
+        $builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($node) );
+
+        $built = \cPHP\XMLBuilder::buildNode( $builder, $doc );
+
+        $this->assertSame( $node, $built );
+    }
+
+    public function testBuildNode_import ()
+    {
+        $doc = new \DOMDocument;
+
+        $node = new \DOMElement("tag");
+
+        $builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($node) );
+
+        $built = \cPHP\XMLBuilder::buildNode( $builder, $doc );
+
+        $this->assertNotSame( $node, $built );
+        $this->assertThat( $built, $this->isInstanceOf("DOMElement") );
+        $this->assertSame( "tag", $node->tagName );
+    }
+
+    public function testBuildNode_error ()
+    {
+        $doc = new \DOMDocument;
+
+        $builder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $builder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue("invalid result") );
+
+        try {
+            \cPHP\XMLBuilder::buildNode( $builder, $doc );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Interaction $err ) {
+            $this->assertSame(
+                    "XMLBuilder did not return a DOMNode object",
+                    $err->getMessage()
+                );
+        }
+    }
+
     public function testBuildDoc ()
     {
         $doc = new \DOMDocument;
@@ -75,29 +133,6 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $node, $doc->firstChild );
         $this->assertSame( $doc->firstChild, $doc->lastChild );
-    }
-
-    public function testBuildDoc_import ()
-    {
-        $doc = new \DOMDocument;
-
-        $node = new \DOMElement("tag");
-
-        $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
-        $subBuilder->expects( $this->once() )
-            ->method("buildNode")
-            ->with( $this->isInstanceOf("DOMDocument") )
-            ->will( $this->returnValue($node) );
-
-        $builder = new \cPHP\XMLBuilder($doc, $subBuilder);
-
-        $this->assertSame( $doc, $builder->buildDoc() );
-
-        $this->assertNotSame( $node, $doc->firstChild );
-        $this->assertSame( $doc->firstChild, $doc->lastChild );
-
-        $this->assertThat( $node, $this->isInstanceOf("DOMElement") );
-        $this->assertSame( "tag", $node->tagName );
     }
 
 }

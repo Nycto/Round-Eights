@@ -32,20 +32,20 @@ class Soap implements \cPHP\iface\XMLBuilder
 {
 
     /**
-     * The builder to use for generating the soap content
+     * The builder to use for generating the soap body
      *
      * @var \cPHP\iface\XMLBuilder
      */
-    private $builder;
+    private $body;
 
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\XMLBuilder $builder The builder to use for generating the soap content
+     * @param \cPHP\iface\XMLBuilder $body The builder to use for generating the soap body
      */
-    public function __construct ( \cPHP\iface\XMLBuilder $builder )
+    public function __construct ( \cPHP\iface\XMLBuilder $body )
     {
-        $this->builder = $builder;
+        $this->body = $body;
     }
 
     /**
@@ -65,20 +65,9 @@ class Soap implements \cPHP\iface\XMLBuilder
         $soapBody = $doc->createElement("soap:Body");
         $soapEnv->appendChild( $soapBody );
 
-        // Create the node being wrapped
-        $built = $this->builder->buildNode( $doc );
-
-        if ( !($built instanceof \DOMNode) ) {
-            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
-            $err->addData("Document", \cPHP\getDump($doc));
-            $err->addData("Built Node", \cPHP\getDump($built));
-            throw $err;
-        }
-
-        // Ensure the built node is a member of the document
-        $built = \cPHP\XMLBuilder::importNode( $doc, $built );
-
-        $soapBody->appendChild( $built );
+        $soapBody->appendChild(
+                \cPHP\XMLBuilder::buildNode( $this->body, $doc )
+            );
 
         return $soapEnv;
     }

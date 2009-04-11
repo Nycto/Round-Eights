@@ -68,6 +68,25 @@ class XMLBuilder
     }
 
     /**
+     * A helper function for building a node, ensuring a proper value was returned,
+     * and then importing it into the document
+     */
+    static public function buildNode ( \cPHP\iface\XMLBuilder $builder, \DOMDocument $doc )
+    {
+        $built = $builder->buildNode( $doc );
+
+        if ( !($built instanceof \DOMNode) ) {
+            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
+            $err->addData("Document", \cPHP\getDump($doc));
+            $err->addData("Built Node", \cPHP\getDump($built));
+            throw $err;
+        }
+
+        // Ensure the built node is a member of the document
+        return \cPHP\XMLBuilder::importNode( $doc, $built );
+    }
+
+    /**
      * Constructor...
      *
      * @param DOMDocument $doc The DOMDocument to add the built nodes to
@@ -88,16 +107,9 @@ class XMLBuilder
      */
     public function buildDoc ()
     {
-        $node = $this->builder->buildNode( $this->doc );
-
-        if ( !($node instanceof \DOMNode) ) {
-            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
-            $err->addData("Document", \cPHP\getDump($this->doc));
-            $err->addData("Built Node", \cPHP\getDump($node));
-            throw $err;
-        }
-
-        $this->doc->appendChild( self::importNode($this->doc, $node) );
+        $this->doc->appendChild(
+                self::buildNode( $this->builder, $this->doc )
+            );
 
         return $this->doc;
     }
