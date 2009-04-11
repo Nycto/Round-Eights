@@ -33,6 +33,30 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 {
 
+    public function testImportNode_import ()
+    {
+        $doc = new DOMDocument;
+
+        $node = new DOMElement("tag");
+
+        $newNode = \cPHP\XMLBuilder::importNode( $doc, $node );
+
+        $this->assertNotSame( $newNode, $node );
+        $this->assertSame( $doc, $newNode->ownerDocument );
+        $this->assertSame( "tag", $newNode->tagName );
+    }
+
+    public function testImportNode_unchanged ()
+    {
+        $doc = new DOMDocument;
+
+        $node = $doc->createElement("tag");
+
+        $newNode = \cPHP\XMLBuilder::importNode( $doc, $node );
+
+        $this->assertSame( $newNode, $node );
+    }
+
     public function testBuildDoc ()
     {
         $this->markTestIncomplete();

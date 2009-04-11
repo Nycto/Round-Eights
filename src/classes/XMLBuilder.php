@@ -49,6 +49,25 @@ class XMLBuilder
     private $builder;
 
     /**
+     * Ensures that a node is a member of the given document
+     *
+     * If the node already belongs to the doc, nothing will be done. Otherwise,
+     * it will be imported into the document (a deep import).
+     *
+     * @param DOMDocument $doc The dom document this node should belong to
+     * @param DOMNode $node The node being tested
+     * @return DOMNode Returns the imported dom node
+     */
+    static public function importNode ( \DOMDocument $doc, \DOMNode $node )
+    {
+        // If there is no owner, or it has a different owner, import it
+        if ( is_null($node->ownerDocument) || !$node->ownerDocument->isSameNode( $doc ) )
+           $node = $doc->importNode( $node, TRUE );
+
+        return $node;
+    }
+
+    /**
      * Constructor...
      *
      * @param DOMDocument $doc The DOMDocument to add the built nodes to
