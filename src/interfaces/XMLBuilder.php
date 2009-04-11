@@ -37,7 +37,7 @@ interface XMLBuilder
      * @param DOMDocument $doc The root document this node is being created for
      * @return DOMNode Returns the created node
      */
-    public function buildNode ( DOMDocument $doc );
+    public function buildNode ( \DOMDocument $doc );
 
 }
 
