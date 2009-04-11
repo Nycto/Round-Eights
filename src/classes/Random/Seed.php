@@ -1,7 +1,5 @@
 <?php
 /**
- * Encryption seed class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -48,6 +46,16 @@ class Seed
      * @param String
      */
     private $source;
+
+    /**
+     * Returns a new, random seed
+     *
+     * @return \cPHP\Random\Seed
+     */
+    static public function random ()
+    {
+        return new self( mt_rand() .":". microtime(TRUE) .":". uniqid() );
+    }
 
     /**
      * Constructor...
@@ -141,3 +149,5 @@ class Seed
     }
 
 }
+
+?>

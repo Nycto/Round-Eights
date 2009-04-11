@@ -33,6 +33,24 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_random_seed extends PHPUnit_Framework_TestCase
 {
 
+    public function testRandom ()
+    {
+        $this->assertThat(
+                \cPHP\Random\Seed::random(),
+                $this->isInstanceOf("cPHP\Random\Seed")
+            );
+
+        $this->assertNotEquals(
+                \cPHP\Random\Seed::random()->getSource(),
+                \cPHP\Random\Seed::random()->getSource()
+            );
+
+        $this->assertNotEquals(
+                \cPHP\Random\Seed::random()->getSource(),
+                \cPHP\Random\Seed::random()->getSource()
+            );
+    }
+
     public function testSourceAccessors ()
     {
         $seed = new \cPHP\Random\Seed("Initial value");
