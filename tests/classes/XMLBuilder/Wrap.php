@@ -37,8 +37,6 @@ class classes_xmlbuilder_wrap extends PHPUnit_Framework_TestCase
     {
         $doc = new \DOMDocument;
 
-        $rootNode = $doc->createElement("root");
-
         $subNode = $doc->createElement("sub");
         $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
         $subBuilder->expects( $this->once() )
@@ -47,19 +45,71 @@ class classes_xmlbuilder_wrap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($subNode) );
 
 
-        $builder = new \cPHP\XMLBuilder\Wrap( $subBuilder, $rootNode );
+        $builder = new \cPHP\XMLBuilder\Wrap( $subBuilder, "tag" );
 
-        $this->assertSame( $rootNode, $builder->buildNode( $doc ) );
+        $built = $builder->buildNode( $doc );
 
-        $this->assertSame( $subNode, $rootNode->firstChild );
-        $this->assertSame( $rootNode->firstChild, $rootNode->lastChild );
+        $this->assertSame( "tag", $built->tagName );
+        $this->assertSame( $doc, $built->ownerDocument );
+
+        $this->assertSame( $subNode, $built->firstChild );
+        $this->assertSame( $built->firstChild, $built->lastChild );
+
+
+        $this->assertSame(
+                '<tag><sub/></tag>',
+                $doc->saveXML( $built )
+            );
     }
 
     public function testBuildNode_attrs ()
     {
         $doc = new \DOMDocument;
 
-        $rootNode = $doc->createElement("root");
+        $subNode = $doc->createElement("sub");
+        $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $subBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($subNode) );
+
+
+        $builder = new \cPHP\XMLBuilder\Wrap( $subBuilder, "wrap" );
+
+        $this->assertSame( array(), $builder->getAttributes() );
+        $this->assertSame( $builder, $builder->setAttributes(array("one" => "1", "two" => 2)) );
+
+        $this->assertSame(
+                array("one" => "1", "two" => 2),
+                $builder->getAttributes()
+            );
+
+
+        $built = $builder->buildNode( $doc );
+
+        $this->assertSame( "wrap", $built->tagName );
+        $this->assertSame( $doc, $built->ownerDocument );
+
+
+        $this->assertSame( $subNode, $built->firstChild );
+        $this->assertSame( $built->firstChild, $built->lastChild );
+
+        $this->assertTrue( $built->hasAttribute("one") );
+        $this->assertSame("1", $built->getAttribute("one"));
+
+        $this->assertTrue( $built->hasAttribute("two") );
+        $this->assertSame("2", $built->getAttribute("two"));
+
+
+        $this->assertSame(
+                '<wrap one="1" two="2"><sub/></wrap>',
+                $doc->saveXML( $built )
+            );
+    }
+
+    public function testBuildNode_constructAttrs ()
+    {
+        $doc = new \DOMDocument;
 
         $subNode = $doc->createElement("sub");
         $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
@@ -69,21 +119,37 @@ class classes_xmlbuilder_wrap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($subNode) );
 
 
-        $builder = new \cPHP\XMLBuilder\Wrap( $subBuilder, $rootNode );
+        $builder = new \cPHP\XMLBuilder\Wrap(
+                $subBuilder,
+                "wrap",
+                array("one" => "1", "two" => 2)
+            );
 
-        $this->assertSame( array(), $builder->getAttributes() );
-        $this->assertSame( $builder, $builder->setAttributes(array("one" => "1", "two" => 2)) );
+        $this->assertSame(
+                array("one" => "1", "two" => 2),
+                $builder->getAttributes()
+            );
 
-        $this->assertSame( $rootNode, $builder->buildNode( $doc ) );
+        $built = $builder->buildNode( $doc );
 
-        $this->assertSame( $subNode, $rootNode->firstChild );
-        $this->assertSame( $rootNode->firstChild, $rootNode->lastChild );
+        $this->assertSame( "wrap", $built->tagName );
+        $this->assertSame( $doc, $built->ownerDocument );
 
-        $this->assertTrue( $rootNode->hasAttribute("one") );
-        $this->assertSame("1", $rootNode->getAttribute("one"));
 
-        $this->assertTrue( $rootNode->hasAttribute("two") );
-        $this->assertSame("2", $rootNode->getAttribute("two"));
+        $this->assertSame( $subNode, $built->firstChild );
+        $this->assertSame( $built->firstChild, $built->lastChild );
+
+        $this->assertTrue( $built->hasAttribute("one") );
+        $this->assertSame("1", $built->getAttribute("one"));
+
+        $this->assertTrue( $built->hasAttribute("two") );
+        $this->assertSame("2", $built->getAttribute("two"));
+
+
+        $this->assertSame(
+                '<wrap one="1" two="2"><sub/></wrap>',
+                $doc->saveXML( $built )
+            );
     }
 
 }

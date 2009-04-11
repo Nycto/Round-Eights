@@ -26,7 +26,7 @@
 namespace cPHP\XMLBuilder;
 
 /**
- * Appends the built node from an XMLBuilder to a given DOMElement
+ * Creates new element and appends appends the results of another builder to it
  */
 class Wrap implements \cPHP\iface\XMLBuilder
 {
@@ -39,14 +39,14 @@ class Wrap implements \cPHP\iface\XMLBuilder
     private $builder;
 
     /**
-     * The dom node to nest the builder in
+     * The name of the tag to construct
      *
-     * @var \DOMElement
+     * @var String
      */
-    private $node;
+    private $tag;
 
     /**
-     * Any attributes to add to the wrapping node after it is attached to the document
+     * Any attributes to add to the created element
      *
      * @var array
      */
@@ -55,13 +55,20 @@ class Wrap implements \cPHP\iface\XMLBuilder
     /**
      * Constructor...
      *
-     * @param XMLBuilder $builder The builder to use for generating a node
-     * @param \cPHP\iface\XMLBuilder $node The dom node to nest the builder in
+     * @param \cPHP\iface\XMLBuilder $builder The builder to use for generating a node
+     * @param String $tag The name of the tag to construct
+     * @param Array $attrs Any attributes to add to the created element
      */
-    public function __construct ( \cPHP\iface\XMLBuilder $builder, \DOMElement $node )
+    public function __construct ( \cPHP\iface\XMLBuilder $builder, $tag, array $attrs = array() )
     {
+        $tag = trim( \cPHP\strval($tag) );
+
+        if ( \cPHP\isEmpty($tag) )
+            throw new \cPHP\Exception\Argument(1, "Tag Name", "Must not be empty");
+
         $this->builder = $builder;
-        $this->node = $node;
+        $this->tag = $tag;
+        $this->setAttributes( $attrs );
     }
 
     /**
@@ -96,7 +103,7 @@ class Wrap implements \cPHP\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $node = \cPHP\XMLBuilder::importNode( $doc, $this->node );
+        $node = $doc->createElement( $this->tag );
 
         foreach ( $this->attrs AS $key => $value ) {
             $node->setAttribute($key, $value);
