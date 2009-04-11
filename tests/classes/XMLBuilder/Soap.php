@@ -35,7 +35,31 @@ class classes_xmlbuilder_soap extends PHPUnit_Framework_TestCase
 
     public function testBuildNode ()
     {
+        $doc = new \DOMDocument;
 
+        $node = $doc->createElement("tag");
+        $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $subBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($node) );
+
+
+        $builder = new \cPHP\XMLBuilder\Soap( $subBuilder );
+
+        $builtNode = $builder->buildNode( $doc );
+        $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
+        $this->assertSame( "soap:Envelope", $builtNode->tagName );
+
+        $this->assertSame(
+                '<soap:Envelope '
+                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope" '
+                    .'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
+                    .'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+                        .'<soap:Body><tag/></soap:Body>'
+                .'</soap:Envelope>',
+                $doc->saveXML( $builtNode )
+            );
     }
 
 }
