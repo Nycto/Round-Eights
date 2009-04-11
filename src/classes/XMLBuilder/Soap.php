@@ -39,13 +39,22 @@ class Soap implements \cPHP\iface\XMLBuilder
     private $body;
 
     /**
+     * The builder to use for generating the soap header
+     *
+     * @var \cPHP\iface\XMLBuilder
+     */
+    private $header;
+
+    /**
      * Constructor...
      *
      * @param \cPHP\iface\XMLBuilder $body The builder to use for generating the soap body
+     * @param \cPHP\iface\XMLBuilder $header The builder to use for generating the soap header
      */
-    public function __construct ( \cPHP\iface\XMLBuilder $body )
+    public function __construct ( \cPHP\iface\XMLBuilder $body, \cPHP\iface\XMLBuilder $header = null )
     {
         $this->body = $body;
+        $this->header = $header;
     }
 
     /**
@@ -60,6 +69,16 @@ class Soap implements \cPHP\iface\XMLBuilder
         $soapEnv = $doc->createElementNS("http://www.w3.org/2003/05/soap-envelope", "soap:Envelope");
         $soapEnv->setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
         $soapEnv->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+        // Add the soap header, if it has been defined
+        if ( $this->header ) {
+            $soapHeader = $doc->createElement("soap:Header");
+            $soapEnv->appendChild( $soapHeader );
+
+            $soapHeader->appendChild(
+                    \cPHP\XMLBuilder::buildNode( $this->header, $doc )
+                );
+        }
 
         // Add the soap body node
         $soapBody = $doc->createElement("soap:Body");
