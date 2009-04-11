@@ -55,6 +55,37 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
         $this->assertSame( $rootNode->firstChild, $rootNode->lastChild );
     }
 
+    public function testBuildNode_attrs ()
+    {
+        $doc = new \DOMDocument;
+
+        $rootNode = $doc->createElement("root");
+
+        $subNode = $doc->createElement("sub");
+        $subBuilder = $this->getMock("cPHP\iface\XMLBuilder", array("buildNode"));
+        $subBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($subNode) );
+
+
+        $builder = new \cPHP\XMLBuilder\Wrap( $subBuilder, $rootNode );
+
+        $this->assertSame( array(), $builder->getAttributes() );
+        $this->assertSame( $builder, $builder->setAttributes(array("one" => "1", "two" => 2)) );
+
+        $this->assertSame( $rootNode, $builder->buildNode( $doc ) );
+
+        $this->assertSame( $subNode, $rootNode->firstChild );
+        $this->assertSame( $rootNode->firstChild, $rootNode->lastChild );
+
+        $this->assertTrue( $rootNode->hasAttribute("one") );
+        $this->assertSame("1", $rootNode->getAttribute("one"));
+
+        $this->assertTrue( $rootNode->hasAttribute("two") );
+        $this->assertSame("2", $rootNode->getAttribute("two"));
+    }
+
 }
 
 ?>

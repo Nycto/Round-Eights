@@ -26,7 +26,7 @@
 namespace cPHP\XMLBuilder;
 
 /**
- * Appends the built node from an XMLBuilder to a given DOMNode
+ * Appends the built node from an XMLBuilder to a given DOMElement
  */
 class Wrap implements \cPHP\iface\XMLBuilder
 {
@@ -41,36 +41,71 @@ class Wrap implements \cPHP\iface\XMLBuilder
     /**
      * The dom node to nest the builder in
      *
-     * @var DOMNode
+     * @var DOMElement
      */
     private $node;
+
+    /**
+     * Any attributes to add to the wrapping node after it is attached to the document
+     *
+     * @var array
+     */
+    private $attrs = array();
 
     /**
      * Constructor...
      *
      * @param XMLBuilder $builder The builder to use for generating a node
-     * @param DOMNode $node The dom node to nest the builder in
+     * @param DOMElement $node The dom node to nest the builder in
      */
-    public function __construct ( \cPHP\iface\XMLBuilder $builder, \DOMNode $node )
+    public function __construct ( \cPHP\iface\XMLBuilder $builder, \DOMElement $node )
     {
         $this->builder = $builder;
         $this->node = $node;
     }
 
     /**
+     * Returns the attributes that will be attached to the wrapping node after
+     * it is imported into the document.
+     *
+     * @return array
+     */
+    public function getAttributes ()
+    {
+        return $this->attrs;
+    }
+
+    /**
+     * Sets the attributes that will be attached to the wrapping node after
+     * it is imported into the document.
+     *
+     * @param array $attrs The attribute arrays to add to the wrapping node
+     * @return \cPHP\XMLBuilder\Wrap Returns a self reference
+     */
+    public function setAttributes ( array $attrs )
+    {
+        $this->attrs = \cPHP\ary\flatten( $attrs );
+        return $this;
+    }
+
+    /**
      * Creates and returns a new node to attach to a document
      *
      * @param DOMDocument $doc The root document this node is being created for
-     * @return DOMNode Returns the created node
+     * @return DOMElement Returns the created node
      */
     public function buildNode ( \DOMDocument $doc )
     {
         $node = \cPHP\XMLBuilder::importNode( $doc, $this->node );
 
+        foreach ( $this->attrs AS $key => $value ) {
+            $node->setAttribute($key, $value);
+        }
+
         $built = $this->builder->buildNode( $doc );
 
-        if ( !($built instanceof \DOMNode) ) {
-            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMNode object");
+        if ( !($built instanceof \DOMElement) ) {
+            $err = new \cPHP\Exception\Interaction("XMLBuilder did not return a DOMElement object");
             $err->addData("Document", \cPHP\getDump($doc));
             $err->addData("Built Node", \cPHP\getDump($built));
             throw $err;
