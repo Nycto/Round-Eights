@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_xmlbuilder extends PHPUnit_Framework_TestCase
+class classes_xmlbuilder_wrap extends PHPUnit_Framework_TestCase
 {
 
     public function testBuildNode ()
