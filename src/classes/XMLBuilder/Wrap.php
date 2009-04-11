@@ -28,7 +28,7 @@ namespace cPHP\XMLBuilder;
 /**
  * Creates new element and appends appends the results of another builder to it
  */
-class Wrap implements \cPHP\iface\XMLBuilder
+class Wrap extends \cPHP\XMLBuilder\Node
 {
 
     /**
@@ -39,20 +39,6 @@ class Wrap implements \cPHP\iface\XMLBuilder
     private $builder;
 
     /**
-     * The name of the tag to construct
-     *
-     * @var String
-     */
-    private $tag;
-
-    /**
-     * Any attributes to add to the created element
-     *
-     * @var array
-     */
-    private $attrs = array();
-
-    /**
      * Constructor...
      *
      * @param \cPHP\iface\XMLBuilder $builder The builder to use for generating a node
@@ -61,38 +47,8 @@ class Wrap implements \cPHP\iface\XMLBuilder
      */
     public function __construct ( \cPHP\iface\XMLBuilder $builder, $tag, array $attrs = array() )
     {
-        $tag = trim( \cPHP\strval($tag) );
-
-        if ( \cPHP\isEmpty($tag) )
-            throw new \cPHP\Exception\Argument(1, "Tag Name", "Must not be empty");
-
+        parent::__construct($tag, $attrs);
         $this->builder = $builder;
-        $this->tag = $tag;
-        $this->setAttributes( $attrs );
-    }
-
-    /**
-     * Returns the attributes that will be attached to the wrapping node after
-     * it is imported into the document.
-     *
-     * @return array
-     */
-    public function getAttributes ()
-    {
-        return $this->attrs;
-    }
-
-    /**
-     * Sets the attributes that will be attached to the wrapping node after
-     * it is imported into the document.
-     *
-     * @param array $attrs The attribute arrays to add to the wrapping node
-     * @return \cPHP\XMLBuilder\Wrap Returns a self reference
-     */
-    public function setAttributes ( array $attrs )
-    {
-        $this->attrs = \cPHP\ary\flatten( $attrs );
-        return $this;
     }
 
     /**
@@ -103,11 +59,7 @@ class Wrap implements \cPHP\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $node = $doc->createElement( $this->tag );
-
-        foreach ( $this->attrs AS $key => $value ) {
-            $node->setAttribute($key, $value);
-        }
+        $node = parent::buildNode( $doc );
 
         $node->appendChild(
                 \cPHP\XMLBuilder::buildNode( $this->builder, $doc )
