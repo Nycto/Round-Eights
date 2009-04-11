@@ -34,14 +34,14 @@ class Wrap implements \cPHP\iface\XMLBuilder
     /**
      * The builder to use for generating a node
      *
-     * @var XMLBuilder
+     * @var \cPHP\iface\XMLBuilder
      */
     private $builder;
 
     /**
      * The dom node to nest the builder in
      *
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $node;
 
@@ -56,7 +56,7 @@ class Wrap implements \cPHP\iface\XMLBuilder
      * Constructor...
      *
      * @param XMLBuilder $builder The builder to use for generating a node
-     * @param DOMElement $node The dom node to nest the builder in
+     * @param \cPHP\iface\XMLBuilder $node The dom node to nest the builder in
      */
     public function __construct ( \cPHP\iface\XMLBuilder $builder, \DOMElement $node )
     {
@@ -91,8 +91,8 @@ class Wrap implements \cPHP\iface\XMLBuilder
     /**
      * Creates and returns a new node to attach to a document
      *
-     * @param DOMDocument $doc The root document this node is being created for
-     * @return DOMElement Returns the created node
+     * @param \DOMDocument $doc The root document this node is being created for
+     * @return \DOMElement Returns the created node
      */
     public function buildNode ( \DOMDocument $doc )
     {
