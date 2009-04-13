@@ -51,12 +51,30 @@ class classes_template_domdoc_standard extends PHPUnit_Framework_TestCase
 
     public function testRender ()
     {
-        $this->markTestIncomplete();
+        $doc = new DOMDocument;
+        $doc->appendChild( $doc->createElement("tag") );
+
+        $tpl = new \cPHP\Template\DOMDoc( $doc );
+
+        $this->assertSame(
+                '<?xml version="1.0"?>' ."\n"
+                .'<tag/>' ."\n",
+                $tpl->render()
+            );
     }
 
     public function testToString ()
     {
-        $this->markTestIncomplete();
+        $doc = new DOMDocument;
+        $doc->appendChild( $doc->createElement("tag") );
+
+        $tpl = new \cPHP\Template\DOMDoc( $doc );
+
+        $this->assertSame(
+                '<?xml version="1.0"?>' ."\n"
+                .'<tag/>' ."\n",
+                "$tpl"
+            );
     }
 
 }
@@ -66,7 +84,17 @@ class classes_template_domdoc_output extends PHPUnit_Extensions_OutputTestCase
 
     public function testDisplay_string ()
     {
-        $this->markTestIncomplete();
+        $this->expectOutputString(
+                '<?xml version="1.0"?>' ."\n"
+                .'<tag/>' ."\n"
+            );
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $doc->createElement("tag") );
+
+        $tpl = new \cPHP\Template\DOMDoc( $doc );
+
+        $this->assertSame( $tpl, $tpl->display() );
     }
 
 }

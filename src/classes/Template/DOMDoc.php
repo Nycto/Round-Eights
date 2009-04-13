@@ -53,10 +53,12 @@ class DOMDoc implements \cPHP\iface\Template
      *
      * In this specific template, this method will not display anything
      *
-     * @return \cPHP\Template\Blank Returns a self reference
+     * @return \cPHP\Template\DOMDoc Returns a self reference
      */
     public function display ()
     {
+        echo $this->render();
+        return $this;
     }
 
     /**
@@ -66,6 +68,7 @@ class DOMDoc implements \cPHP\iface\Template
      */
     public function render ()
     {
+        return $this->doc->saveXML();
     }
 
     /**
@@ -75,6 +78,7 @@ class DOMDoc implements \cPHP\iface\Template
      */
     public function __toString ()
     {
+        return $this->render();
     }
 
 }
