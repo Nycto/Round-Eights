@@ -33,6 +33,36 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_iterator_filter extends PHPUnit_Framework_TestCase
 {
 
+    public function testFilter ()
+    {
+        $filter = $this->getMock('cPHP\iface\Filter', array('filter'));
+
+        $filter->expects( $this->at(0) )
+            ->method('filter')
+            ->with($this->equalTo(1))
+            ->will($this->returnValue("one"));
+
+        $filter->expects( $this->at(1) )
+            ->method('filter')
+            ->with($this->equalTo(2))
+            ->will($this->returnValue("two"));
+
+        $filter->expects( $this->at(2) )
+            ->method('filter')
+            ->with($this->equalTo(3))
+            ->will($this->returnValue("three"));
+
+        $iterator = new \cPHP\Iterator\Filter(
+                new \ArrayIterator(range(1,3)),
+                $filter
+            );
+
+        $this->assertSame(
+                array( "one", "two", "three" ),
+                \iterator_to_array($iterator)
+            );
+    }
+
 }
 
 ?>

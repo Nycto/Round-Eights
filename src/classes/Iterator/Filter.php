@@ -28,8 +28,37 @@ namespace cPHP\Iterator;
 /**
  * An iterator that passes each value through a filter before returning it
  */
-class Filter
+class Filter extends \IteratorIterator
 {
+
+    /**
+     * The filter to apply to each iterator element
+     *
+     * @var \cPHP\iface\Filter
+     */
+    private $filter;
+
+    /**
+     * Constructor...
+     *
+     * @param \Traversable $iterator The iterator being wrapped
+     * @param \cPHP\iface\Filter $filter The filter to apply to each iterator element
+     */
+    public function __construct ( \Traversable $iterator, \cPHP\iface\Filter $filter )
+    {
+        parent::__construct($iterator);
+        $this->filter = $filter;
+    }
+
+    /**
+     * Returns the current value of the iterator
+     *
+     * @return mixed
+     */
+    public function current ()
+    {
+        return $this->filter->filter( parent::current() );
+    }
 
 }
 
