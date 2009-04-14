@@ -32,7 +32,60 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_iterator_validator extends PHPUnit_Framework_TestCase
 {
-    
+
+    public function testIncludeAll ()
+    {
+        $validator = $this->getMock('cPHP\iface\Validator', array('validate', 'isValid'));
+        $validator->expects( $this->exactly(5) )
+            ->method('isValid')
+            ->will($this->returnValue(TRUE));
+
+        $iterator = new \cPHP\Iterator\Validator(
+                new \ArrayIterator(range(1,5)),
+                $validator
+            );
+
+        $this->assertSame(
+                array(1,2,3,4,5),
+                \iterator_to_array($iterator)
+            );
+    }
+
+    public function testExcludeAll ()
+    {
+        $validator = $this->getMock('cPHP\iface\Validator', array('validate', 'isValid'));
+        $validator->expects( $this->exactly(5) )
+            ->method('isValid')
+            ->will($this->returnValue(FALSE));
+
+        $iterator = new \cPHP\Iterator\Validator(
+                new \ArrayIterator(range(1,5)),
+                $validator
+            );
+
+        $this->assertSame(
+                array(),
+                \iterator_to_array($iterator)
+            );
+    }
+
+    public function testExcludeSome ()
+    {
+        $validator = new \cPHP\Validator\Callback(function ($value) {
+            return $value % 2 == 0 ? NULL : "Error";
+        });
+
+        $iterator = new \cPHP\Iterator\Validator(
+                new \ArrayIterator(range(1,5)),
+                $validator
+            );
+
+        $this->assertSame(
+                array( 1 => 2, 3 => 4 ),
+                \iterator_to_array($iterator)
+            );
+    }
+
 }
 
 ?>
