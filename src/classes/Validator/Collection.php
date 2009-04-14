@@ -33,6 +33,8 @@ abstract class Collection extends \cPHP\Validator
 
     /**
      * The list of validators contained in this instance
+     *
+     * @var array
      */
     protected $validators = array();
 
@@ -41,7 +43,7 @@ abstract class Collection extends \cPHP\Validator
      *
      * Allows you to add validators on construction
      *
-     * @param object $validators...
+     * @param \cPHP\iface\Validator $validators...
      */
     public function __construct ()
     {
@@ -54,10 +56,11 @@ abstract class Collection extends \cPHP\Validator
     /**
      * Adds a validator to this instance
      *
+     * @todo This really shouldn't accept a string
      * @param Object The validator to addd to this instance
      * @return Object Returns a self reference
      */
-    public function add( $validator )
+    public function add ( $validator )
     {
         if ( is_object($validator) ) {
 

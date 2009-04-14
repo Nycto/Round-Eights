@@ -1,7 +1,5 @@
 <?php
 /**
- * Validator Collection
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -37,6 +35,7 @@ class All extends \cPHP\Validator\Collection
      * Runs all of the contained validators
      *
      * @param mixed $value The value being validated
+     * @return array Returns an array of errors
      */
     protected function process ( $value )
     {

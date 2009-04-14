@@ -1,7 +1,6 @@
 <?php
 /**
- * Validation class
- *
+
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -68,7 +67,7 @@ class Callback extends \cPHP\Validator
      * Validates the given value
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {

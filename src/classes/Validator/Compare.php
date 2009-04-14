@@ -1,7 +1,5 @@
 <?php
 /**
- * Validation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,11 +33,15 @@ class Compare extends \cPHP\Validator
 
     /**
      * The operator to use for comparison
+     *
+     * @var string
      */
     protected $operator;
 
     /**
      * The value to compare against
+     *
+     * @var mixed
      */
     protected $versus;
 
@@ -51,7 +53,6 @@ class Compare extends \cPHP\Validator
      */
     public function __construct( $operator, $versus )
     {
-
         $operator = trim( \cPHP\strval($operator) );
 
         if ( !preg_match( '/^(?:<=?|>=?|={1,3}|<>|!={1,2})$/', $operator ) )
@@ -66,7 +67,7 @@ class Compare extends \cPHP\Validator
      * Validates the given value
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {

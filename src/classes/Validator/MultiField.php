@@ -1,7 +1,6 @@
 <?php
 /**
- * Validation class
- *
+
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -36,13 +35,15 @@ class MultiField extends \cPHP\Validator
 
     /**
      * The field that is being validated
+     *
+     * @var \cPHP\Form\Multi
      */
     protected $field;
 
     /**
      * Constructor...
      *
-     * @param Object $field The \cPHP\Form\Multi field to compare the value to
+     * @param \cPHP\Form\Multi $field The field to compare the value against
      */
     public function __construct ( \cPHP\Form\Multi $field )
     {
@@ -56,7 +57,7 @@ class MultiField extends \cPHP\Validator
      * null, integers, floats, or strings.
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {

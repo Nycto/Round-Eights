@@ -1,7 +1,5 @@
 <?php
 /**
- * Class used to collect a list of errors
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,6 +33,8 @@ class ErrorList
 
     /**
      * The list of errors in this instance
+     *
+     * @var array
      */
     private $errors = array();
 
@@ -42,7 +42,7 @@ class ErrorList
      * Adds a new error to this instance
      *
      * @param String $message The error message to add
-     * @return object Returns a self reference
+     * @return \cPHP\Validator\ErrorList Returns a self reference
      */
     public function addError ( $message )
     {
@@ -64,7 +64,7 @@ class ErrorList
      * converted to strings and added as errors
      *
      * @param String|Array $errors... Errors to add to this instance
-     * @return Object Returns a self reference
+     * @return \cPHP\Validator\ErrorList Returns a self reference
      */
     public function addErrors ( $errors )
     {
@@ -91,7 +91,7 @@ class ErrorList
     /**
      * Clears all the errors from
      *
-     * @return object Returns a self reference for chaining
+     * @return \cPHP\Validator\ErrorList Returns a self reference for chaining
      */
     public function clearErrors ()
     {
@@ -103,7 +103,7 @@ class ErrorList
      * Clears all other errors and sets
      *
      * @param String $message The error message to add
-     * @return object Returns a self reference for chaining
+     * @return \cPHP\Validator\ErrorList Returns a self reference for chaining
      */
     public function setError ( $message )
     {

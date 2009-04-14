@@ -1,7 +1,5 @@
 <?php
 /**
- * Validation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,11 +33,16 @@ class URL extends \cPHP\Validator
 
     /**
      * Flags that a relative URL should be allowed
+     *
+     * @var Integer
      */
     const ALLOW_RELATIVE = 1;
 
     /**
      * Any flags to pass to the isEmpty function
+     *
+     * @see \cPHP\isEmpty()
+     * @var Integer
      */
     protected $flags = 0;
 
@@ -58,7 +61,7 @@ class URL extends \cPHP\Validator
      * Validates a URL
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {

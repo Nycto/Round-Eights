@@ -1,7 +1,5 @@
 <?php
 /**
- * Validation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,15 +33,17 @@ class In extends \cPHP\Validator
 
     /**
      * The list of valid values
+     *
+     * @var array
      */
     protected $list;
 
     /**
      * Constructor...
      *
-     * @param mixed $list The list of valid values
+     * @param Array $list The list of valid values
      */
-    public function __construct ( $list = array() )
+    public function __construct ( array $list = array() )
     {
         $this->setList( $list );
     }
@@ -52,7 +52,7 @@ class In extends \cPHP\Validator
      * Sets the list of valid values
      *
      * @param Array $list The list of valid values
-     * @return Object Returns a self reference
+     * @return \cPHP\Validator\In Returns a self reference
      */
     public function setList ( array $list )
     {
@@ -86,7 +86,7 @@ class In extends \cPHP\Validator
      * Adds a value to the list of valid values
      *
      * @param mixed $value The value to add
-     * @return Object Returns a self reference
+     * @return \cPHP\Validator\In Returns a self reference
      */
     public function add ( $value )
     {
@@ -100,7 +100,7 @@ class In extends \cPHP\Validator
      * Removes a value to the list of valid options
      *
      * @param mixed $value The value to remove
-     * @return Object Returns a self reference
+     * @return \cPHP\Validator\In Returns a self reference
      */
     public function remove ( $value )
     {
@@ -112,7 +112,7 @@ class In extends \cPHP\Validator
      * Validates that the given value is in a given list
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {
