@@ -53,7 +53,7 @@ class Env
     static public function request ()
     {
         if ( !isset(self::$request) )
-            self::$request = new \cPHP\Env\Request( $_SERVER );
+            self::$request = new \cPHP\Env\Request( $_SERVER, $_POST, $_FILES );
 
         return self::$request;
     }
