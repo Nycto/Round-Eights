@@ -31,6 +31,41 @@ namespace cPHP\iface\Env;
 interface Request
 {
 
+    /**
+     * Returns the data posted by the client
+     *
+     * @return array
+     */
+    public function getPost ();
+
+    /**
+     * Returns the query string parsed as an array
+     *
+     * @return array
+     */
+    public function getGet ();
+
+    /**
+     * Returns the list of files uploaded by the client
+     *
+     * @return array
+     */
+    public function getFiles ();
+
+    /**
+     * Returns the URL the client requested
+     *
+     * @return \cPHP\URL
+     */
+    public function getURL ();
+
+    /**
+     * Returns the file requested by the client, in the context of the file system
+     *
+     * @return \cPHP\FileSys\File
+     */
+    public function getFile ();
+
 }
 
 ?>
