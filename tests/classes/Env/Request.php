@@ -61,6 +61,25 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetGet ()
+    {
+        $req = new \cPHP\Env\Request(
+                array( 'QUERY_STRING' => 'one=first&two=second' ),
+                array(),
+                array()
+            );
+
+        $this->assertSame(
+                array( 'one' => 'first', 'two' => 'second' ),
+                $req->getGet()
+            );
+
+        $this->assertSame(
+                array( 'one' => 'first', 'two' => 'second' ),
+                $req->getGet()
+            );
+    }
+
 }
 
 ?>

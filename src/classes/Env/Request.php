@@ -32,6 +32,13 @@ class Request implements \cPHP\iface\Env\Request
 {
 
     /**
+     * The server variables given to PHP
+     *
+     * @var array
+     */
+    private $server;
+
+    /**
      * The variables posted by the client
      *
      * @var array
@@ -46,6 +53,13 @@ class Request implements \cPHP\iface\Env\Request
     private $files;
 
     /**
+     * The parsed query string
+     *
+     * @var array
+     */
+    private $get;
+
+    /**
      * Constructor...
      *
      * @param array $server The $_SERVER array
@@ -54,6 +68,7 @@ class Request implements \cPHP\iface\Env\Request
      */
     public function __construct ( array $server, array $post, array $files )
     {
+        $this->server = $server;
         $this->post = $post;
         $this->files = $files;
     }
@@ -75,7 +90,13 @@ class Request implements \cPHP\iface\Env\Request
      */
     public function getGet ()
     {
+        // Lazy instantiation
+        if ( !isset($this->get) ) {
+            $parser = new \cPHP\QueryParser;
+            $this->get = $parser->parse( $this->server['QUERY_STRING'] );
+        }
 
+        return $this->get;
     }
 
     /**
