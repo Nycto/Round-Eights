@@ -33,6 +33,15 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_env_request extends PHPUnit_Framework_TestCase
 {
 
+    public function testHasKey ()
+    {
+        $ary = array( "one" => "value", "two" => "" );
+
+        $this->assertTrue( \cPHP\Env\Request::hasKey($ary, "one") );
+        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "two") );
+        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "three") );
+    }
+
     public function testGetPost ()
     {
         $req = new \cPHP\Env\Request(
@@ -78,6 +87,16 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                 array( 'one' => 'first', 'two' => 'second' ),
                 $req->getGet()
             );
+    }
+
+    public function testGetURL ()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testGetFile ()
+    {
+        $this->markTestIncomplete();
     }
 
 }

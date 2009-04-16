@@ -60,6 +60,32 @@ class Request implements \cPHP\iface\Env\Request
     private $get;
 
     /**
+     * The URL the client requested
+     *
+     * @var \cPHP\URL
+     */
+    private $url;
+
+    /**
+     * Helper function that returns whether a given array has key with a
+     * non-empty value
+     *
+     * @param Array $array The array to test
+     * @param String $key The key to test
+     * @return Boolean
+     */
+    static public function hasKey( array &$array, $key )
+    {
+        if ( !array_key_exists($key, $array) )
+            return FALSE;
+
+        if ( \cPHP\isEmpty($array[$key]) )
+            return FALSE;
+
+        return TRUE;
+    }
+
+    /**
      * Constructor...
      *
      * @param array $server The $_SERVER array
@@ -110,13 +136,29 @@ class Request implements \cPHP\iface\Env\Request
     }
 
     /**
-     * Returns the URL the client requested
+     * Private method for building the URL object
      *
      * @return \cPHP\URL
      */
+    private function buildURL ()
+    {
+        $url = new \cPHP\URL;
+
+        return $url;
+    }
+
+    /**
+     * Returns the URL the client requested
+     *
+     * @return \cPHP\URL This will return a clone of the url object every
+     *      time it is called
+     */
     public function getURL ()
     {
+        if ( !isset($this->url) )
+            $this->url = $this->buildURL();
 
+        return clone $this->url;
     }
 
     /**
