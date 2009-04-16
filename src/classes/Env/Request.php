@@ -67,6 +67,13 @@ class Request implements \cPHP\iface\Env\Request
     private $url;
 
     /**
+     * The requested file, relative to the file system
+     *
+     * @var \cPHP\FileSys\File
+     */
+    private $file;
+
+    /**
      * Helper function that returns whether a given array has key with a
      * non-empty value
      *
@@ -196,7 +203,14 @@ class Request implements \cPHP\iface\Env\Request
      */
     public function getFile ()
     {
+        if ( !isset($this->file) ) {
+            $this->file = new \cPHP\FileSys\File;
 
+            if ( self::hasKey($this->server, 'SCRIPT_FILENAME') )
+                $this->file->setPath( $this->server['SCRIPT_FILENAME'] );
+        }
+
+        return clone $this->file;
     }
 
 }

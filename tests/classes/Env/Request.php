@@ -188,9 +188,40 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $this->assertNotSame( $url, $env->getURL() );
     }
 
-    public function testGetFile ()
+    public function testGetFile_empty ()
     {
-        $this->markTestIncomplete();
+        $env = new \cPHP\Env\Request( array(), array(), array() );
+
+        $this->assertEquals(
+                new \cPHP\FileSys\File,
+                $env->getFile()
+            );
+    }
+
+    public function testGetFile_full ()
+    {
+        $env = new \cPHP\Env\Request(
+                array('SCRIPT_FILENAME' => '/example/path/file.php'),
+                array(),
+                array()
+            );
+
+        $this->assertEquals(
+                new \cPHP\FileSys\File('/example/path/file.php'),
+                $env->getFile()
+            );
+    }
+
+    public function testGetFile_clone ()
+    {
+        $env = new \cPHP\Env\Request( array(), array(), array() );
+
+        $file = $env->getFile();
+        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+
+        $this->assertNotSame( $file, $env->getFile() );
+        $this->assertNotSame( $file, $env->getFile() );
+        $this->assertNotSame( $file, $env->getFile() );
     }
 
 }
