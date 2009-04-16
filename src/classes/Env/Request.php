@@ -144,6 +144,34 @@ class Request implements \cPHP\iface\Env\Request
     {
         $url = new \cPHP\URL;
 
+        // Get the url Scheme from the server protocol
+        if ( self::hasKey($this->server, "SERVER_PROTOCOL") )
+            $url->setScheme( strtolower( strstr( $this->server['SERVER_PROTOCOL'], "/", TRUE ) ) );
+
+        // Pull the server host, if it is set
+        if ( self::hasKey($this->server, 'HTTP_HOST') )
+            $url->setHost($this->server['HTTP_HOST']);
+
+        // If there is no host, pull the IP address
+        else if ( self::hasKey($this->server, "SERVER_ADDR") )
+            $url->setHost($this->server['SERVER_ADDR']);
+
+        // Pull the port
+        if ( self::hasKey($this->server, "SERVER_PORT") )
+            $url->setPort( intval( $this->server['SERVER_PORT'] ) );
+
+        // The path and file name
+        if ( self::hasKey($this->server, 'SCRIPT_NAME') )
+            $url->setPath( $this->server['SCRIPT_NAME'] );
+
+        // The faux directories
+        if ( self::hasKey( $this->server, 'PATH_INFO' ) )
+            $url->setFauxDir( \cPHP\str\head( $this->server['PATH_INFO'], "/" ) );
+
+        // Finally, pull the the URL query
+        if ( self::hasKey($this->server, 'QUERY_STRING') )
+            $url->setQuery($this->server['QUERY_STRING']);
+
         return $url;
     }
 

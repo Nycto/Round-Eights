@@ -89,9 +89,103 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testGetURL ()
+    public function testGetURL_empty ()
     {
-        $this->markTestIncomplete();
+        $req = new \cPHP\Env\Request( array(), array(), array() );
+
+        $url = $req->getURL();
+        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+
+        $this->assertFalse( $url->schemeExists() );
+        $this->assertFalse( $url->userNameExists() );
+        $this->assertFalse( $url->passwordExists() );
+        $this->assertFalse( $url->hostExists() );
+        $this->assertFalse( $url->dirExists() );
+        $this->assertFalse( $url->filenameExists() );
+        $this->assertFalse( $url->extExists() );
+        $this->assertFalse( $url->queryExists() );
+        $this->assertFalse( $url->fragmentExists() );
+    }
+
+    public function testGetURL_partial ()
+    {
+        $env = new \cPHP\Env\Request(
+                array(
+                        "SERVER_PROTOCOL" => "HTTP/1.1",
+                        "HTTP_HOST" => "example.com",
+                        "SERVER_PORT" => "80"
+                    ),
+                array(),
+                array()
+            );
+
+        $url = $env->getURL();
+        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+
+        $this->assertSame(
+                "http://example.com",
+                $url->getURL()
+            );
+    }
+
+    public function testGetURL_full ()
+    {
+        $env = new \cPHP\Env\Request(
+                array(
+                        "SERVER_PROTOCOL" => "HTTP/1.1",
+                        "HTTP_HOST" => "example.com",
+                        "SERVER_PORT" => "8080",
+                        "QUERY_STRING" => "query=val",
+                        "SCRIPT_NAME" => "/dir/file.html",
+                        "PATH_INFO" => "/test/faux/dirs"
+                    ),
+                array(),
+                array()
+            );
+
+        $url = $env->getURL();
+        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+
+        $this->assertSame(
+                "http://example.com:8080/dir/file.html/test/faux/dirs?query=val",
+                $url->getURL()
+            );
+    }
+
+    public function testGetURL_IP ()
+    {
+        $env = new \cPHP\Env\Request(
+                array(
+                        "SERVER_PROTOCOL" => "HTTP/1.1",
+                        "SERVER_ADDR" => "127.0.0.1",
+                        "SERVER_PORT" => "8080",
+                        "QUERY_STRING" => "query=val&other=here",
+                        "SCRIPT_NAME" => "/dir/file.html",
+                        "PATH_INFO" => "/test/faux/dirs"
+                    ),
+                array(),
+                array()
+            );
+
+        $url = $env->getURL();
+        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+
+        $this->assertSame(
+                "http://127.0.0.1:8080/dir/file.html/test/faux/dirs?query=val&other=here",
+                $url->getURL()
+            );
+    }
+
+    public function testGetURL_clone ()
+    {
+        $env = new \cPHP\Env\Request( array(), array(), array() );
+
+        $url = $env->getURL();
+        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+
+        $this->assertNotSame( $url, $env->getURL() );
+        $this->assertNotSame( $url, $env->getURL() );
+        $this->assertNotSame( $url, $env->getURL() );
     }
 
     public function testGetFile ()
