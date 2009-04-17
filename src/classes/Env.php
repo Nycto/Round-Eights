@@ -46,14 +46,45 @@ class Env
     static private $response;
 
     /**
+     * Returns the environment headers
+     *
+     * @return array
+     */
+    static private function getHeaders ()
+    {
+        if ( function_exists('apache_request_headers') )
+            return apache_request_headers();
+
+        return array();
+    }
+
+    /**
+     * Returns PHP is operating in command line mode
+     *
+     * @return Boolean
+     */
+    static private function isCLI ()
+    {
+        return php_sapi_name() == "cli" ? TRUE : FALSE;
+    }
+
+    /**
      * Returns the global Env\Request instance
      *
      * @return \cPHP\iface\Env\Request The singleton Env object
      */
     static public function request ()
     {
-        if ( !isset(self::$request) )
-            self::$request = new \cPHP\Env\Request( $_SERVER, $_POST, $_FILES );
+        if ( !isset(self::$request) ) {
+
+            self::$request = new \cPHP\Env\Request(
+                    $_SERVER,
+                    $_POST,
+                    $_FILES,
+                    self::getHeaders(),
+                    self::isCLI()
+                );
+        }
 
         return self::$request;
     }
