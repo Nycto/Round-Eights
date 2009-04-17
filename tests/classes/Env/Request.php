@@ -228,6 +228,18 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testIsCLI ()
+    {
+        $req = new \cPHP\Env\Request;
+        $this->assertFalse( $req->isCLI() );
+
+        $req = new \cPHP\Env\Request( array(), array(), array(), array(), FALSE );
+        $this->assertFalse( $req->isCLI() );
+
+        $req = new \cPHP\Env\Request( array(), array(), array(), array(), TRUE );
+        $this->assertTrue( $req->isCLI() );
+    }
+
 }
 
 ?>

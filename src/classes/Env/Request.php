@@ -126,6 +126,7 @@ class Request implements \cPHP\iface\Env\Request
         $this->post = $post;
         $this->files = $files;
         $this->headers = $headers;
+        $this->cli = \cPHP\boolVal( $cli );
     }
 
     /**
@@ -242,7 +243,7 @@ class Request implements \cPHP\iface\Env\Request
      */
     public function isCLI ()
     {
-
+        return $this->cli;
     }
 
     /**
