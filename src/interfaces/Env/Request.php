@@ -66,6 +66,27 @@ interface Request
      */
     public function getFile ();
 
+    /**
+     * Returns whether this request was made via command line
+     *
+     * @return Boolean
+     */
+    public function isCLI ();
+
+    /**
+     * Returns whether this request was made over a secure connection
+     *
+     * @return Boolean
+     */
+    public function isSecure ();
+
+    /**
+     * Returns the request headers
+     *
+     * @return array
+     */
+    public function getHeaders ();
+
 }
 
 ?>

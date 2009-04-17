@@ -60,6 +60,20 @@ class Request implements \cPHP\iface\Env\Request
     private $get;
 
     /**
+     * The request headers
+     *
+     * @var array
+     */
+    private $headers;
+
+    /**
+     * Whether the script is running in command line mode
+     *
+     * @var boolean
+     */
+    private $cli;
+
+    /**
      * The URL the client requested
      *
      * @var \cPHP\URL
@@ -98,12 +112,20 @@ class Request implements \cPHP\iface\Env\Request
      * @param array $server The $_SERVER array
      * @param array $post The $_POST array
      * @param array $files The $_FILES array
+     * @param array $headers The list of request headers
+     * @param Boolean $cli Whether the script was invoked via the command line
      */
-    public function __construct ( array $server, array $post, array $files )
-    {
+    public function __construct (
+        array $server = array(),
+        array $post = array(),
+        array $files = array(),
+        array $headers = array(),
+        $cli = FALSE
+    ) {
         $this->server = $server;
         $this->post = $post;
         $this->files = $files;
+        $this->headers = $headers;
     }
 
     /**
@@ -211,6 +233,36 @@ class Request implements \cPHP\iface\Env\Request
         }
 
         return clone $this->file;
+    }
+
+    /**
+     * Returns whether this request was made via command line
+     *
+     * @return Boolean
+     */
+    public function isCLI ()
+    {
+
+    }
+
+    /**
+     * Returns whether this request was made over a secure connection
+     *
+     * @return Boolean
+     */
+    public function isSecure ()
+    {
+
+    }
+
+    /**
+     * Returns the request headers
+     *
+     * @return array
+     */
+    public function getHeaders ()
+    {
+        return $this->headers;
     }
 
 }

@@ -46,8 +46,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     {
         $req = new \cPHP\Env\Request(
                 array(),
-                array( 'one' => 'first', 'two' => 'second' ),
-                array()
+                array( 'one' => 'first', 'two' => 'second' )
             );
 
         $this->assertSame(
@@ -73,9 +72,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     public function testGetGet ()
     {
         $req = new \cPHP\Env\Request(
-                array( 'QUERY_STRING' => 'one=first&two=second' ),
-                array(),
-                array()
+                array( 'QUERY_STRING' => 'one=first&two=second' )
             );
 
         $this->assertSame(
@@ -114,9 +111,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                         "SERVER_PROTOCOL" => "HTTP/1.1",
                         "HTTP_HOST" => "example.com",
                         "SERVER_PORT" => "80"
-                    ),
-                array(),
-                array()
+                    )
             );
 
         $url = $env->getURL();
@@ -138,9 +133,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                         "QUERY_STRING" => "query=val",
                         "SCRIPT_NAME" => "/dir/file.html",
                         "PATH_INFO" => "/test/faux/dirs"
-                    ),
-                array(),
-                array()
+                    )
             );
 
         $url = $env->getURL();
@@ -162,9 +155,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                         "QUERY_STRING" => "query=val&other=here",
                         "SCRIPT_NAME" => "/dir/file.html",
                         "PATH_INFO" => "/test/faux/dirs"
-                    ),
-                array(),
-                array()
+                    )
             );
 
         $url = $env->getURL();
@@ -178,7 +169,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_clone ()
     {
-        $env = new \cPHP\Env\Request( array(), array(), array() );
+        $env = new \cPHP\Env\Request;
 
         $url = $env->getURL();
         $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
@@ -190,7 +181,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetFile_empty ()
     {
-        $env = new \cPHP\Env\Request( array(), array(), array() );
+        $env = new \cPHP\Env\Request;
 
         $this->assertEquals(
                 new \cPHP\FileSys\File,
@@ -201,9 +192,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     public function testGetFile_full ()
     {
         $env = new \cPHP\Env\Request(
-                array('SCRIPT_FILENAME' => '/example/path/file.php'),
-                array(),
-                array()
+                array('SCRIPT_FILENAME' => '/example/path/file.php')
             );
 
         $this->assertEquals(
@@ -214,7 +203,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetFile_clone ()
     {
-        $env = new \cPHP\Env\Request( array(), array(), array() );
+        $env = new \cPHP\Env\Request;
 
         $file = $env->getFile();
         $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
@@ -222,6 +211,21 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $this->assertNotSame( $file, $env->getFile() );
         $this->assertNotSame( $file, $env->getFile() );
         $this->assertNotSame( $file, $env->getFile() );
+    }
+
+    public function testGetHeaders ()
+    {
+        $req = new \cPHP\Env\Request(
+                array(),
+                array(),
+                array(),
+                array( 'one' => 'first', 'two' => 'second' )
+            );
+
+        $this->assertSame(
+                array( 'one' => 'first', 'two' => 'second' ),
+                $req->getHeaders()
+            );
     }
 
 }
