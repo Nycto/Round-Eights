@@ -240,6 +240,11 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $this->assertTrue( $req->isCLI() );
     }
 
+    public function testIsSecure ()
+    {
+        $this->markTestIncomplete("To be implemented");
+    }
+
 }
 
 ?>
