@@ -253,7 +253,20 @@ class Request implements \cPHP\iface\Env\Request
      */
     public function isSecure ()
     {
+        if ( self::hasKey($this->server, 'HTTPS') ) {
 
+            if ( $this->server['HTTPS'] == 1 )
+               return TRUE;
+
+            else if ( $this->server['HTTPS'] == 'on' )
+               return TRUE;
+
+        }
+
+        if ( self::hasKey($this->server, 'SERVER_PORT') && $this->server['SERVER_PORT'] == 443 )
+            return TRUE;
+
+        return FALSE;
     }
 
     /**

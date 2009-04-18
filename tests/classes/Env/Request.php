@@ -242,7 +242,20 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testIsSecure ()
     {
-        $this->markTestIncomplete("To be implemented");
+        $req = new \cPHP\Env\Request;
+        $this->assertFalse( $req->isSecure() );
+
+        $req = new \cPHP\Env\Request( array('HTTPS' => 1) );
+        $this->assertTrue( $req->isSecure() );
+
+        $req = new \cPHP\Env\Request( array('HTTPS' => 'on') );
+        $this->assertTrue( $req->isSecure() );
+
+        $req = new \cPHP\Env\Request( array('SERVER_PORT' => 443) );
+        $this->assertTrue( $req->isSecure() );
+
+        $req = new \cPHP\Env\Request( array('HTTPS' => 'off') );
+        $this->assertFalse( $req->isSecure() );
     }
 
 }
