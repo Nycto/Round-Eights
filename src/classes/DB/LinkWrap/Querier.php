@@ -1,7 +1,5 @@
 <?php
 /**
- * Advanced querying linkwrap
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -103,16 +101,13 @@ class Querier extends \cPHP\DB\LinkWrap
     /**
      * Takes an array of fields and constructs a field list for a query
      *
-     * @param array|object $fields The fields to iterate over where the key
+     * @param array $fields The fields to iterate over where the key
      *      is the field name and the value is the field value
      * @return String Returns a SQL field list
      */
-    public function getFieldList ($fields)
+    public function getFieldList ( array $fields )
     {
-        if ( !\cPHP\Ary::is($fields) )
-            throw new \cPHP\Exception\Argument(0, "Field List", "Must be an array or traversable");
-
-        $fields = \cPHP\Ary::create($fields)->flatten();
+        $fields = \cPHP\ary\flatten($fields);
 
         if (count($fields) <= 0)
             throw new \cPHP\Exception\Argument(0, "Field List", "Must not be empty");
@@ -121,7 +116,7 @@ class Querier extends \cPHP\DB\LinkWrap
             $fields[$name] = "`". $name ."` = ". $this->quote($value);
         }
 
-        return $fields->implode(", ");
+        return implode(", ", $fields);
     }
 
     /**

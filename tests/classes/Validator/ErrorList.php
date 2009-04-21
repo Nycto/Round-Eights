@@ -40,20 +40,16 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
         $this->assertSame( $result, $result->addError("This is an error message") );
 
 
-        $errors = $result->getErrors();
-
-        $this->assertThat( $errors, $this->isInstanceOf("cPHP\Ary") );
-
         $this->assertEquals(
                 array("This is an error message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $this->assertSame( $result, $result->addError("This is another error message") );
 
         $this->assertEquals(
                 array("This is an error message", "This is another error message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -71,7 +67,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
         $this->assertSame( $result, $result->addErrors("Error Message") );
         $this->assertEquals(
                 array("Error Message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result->clearErrors();
@@ -83,7 +79,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
             );
         $this->assertEquals(
                 array("Error Message", "more", "Another", "then some"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -96,7 +92,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array("This is an error message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -108,12 +104,12 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array("This is an error message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $this->assertSame( $result, $result->clearErrors() );
 
-        $this->assertEquals( array(), $result->getErrors()->get() );
+        $this->assertEquals( array(), $result->getErrors() );
     }
 
     public function testSetErrors ()
@@ -124,14 +120,14 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 array("This is an error message"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $this->assertSame( $result, $result->setError("This is a new error") );
 
         $this->assertEquals(
                 array("This is a new error"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

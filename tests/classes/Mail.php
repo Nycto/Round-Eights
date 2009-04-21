@@ -137,7 +137,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $mail = new \cPHP\Mail;
         $this->assertEquals(
-                new \cPHP\Ary(array()),
+                array(),
                 $mail->getTo()
             );
         $this->assertFalse( $mail->toExists('addr@example.org') );
@@ -147,9 +147,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addTo('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => null) ),
                 $mail->getTo()
             );
         $this->assertTrue( $mail->toExists('addr@example.org') );
@@ -159,9 +157,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addTo('addr@example.org', 'Label') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label') ),
                 $mail->getTo()
             );
         $this->assertTrue( $mail->toExists('addr@example.org') );
@@ -171,10 +167,10 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addTo('test@example.net', 'Name') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
                         'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                    ),
                 $mail->getTo()
             );
         $this->assertTrue( $mail->toExists('addr@example.org') );
@@ -184,9 +180,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->removeTo('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                    ),
                 $mail->getTo()
             );
         $this->assertFalse( $mail->toExists('addr@example.org') );
@@ -195,10 +191,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearTo() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getTo()
-            );
+        $this->assertEquals( array(), $mail->getTo() );
         $this->assertFalse( $mail->toExists('addr@example.org') );
         $this->assertFalse( $mail->toExists('test@example.net') );
         $this->assertFalse( $mail->hasTos() );
@@ -214,10 +207,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearTo() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getTo()
-            );
+        $this->assertEquals( array(), $mail->getTo() );
         $this->assertFalse( $mail->toExists('addr@example.org') );
         $this->assertFalse( $mail->toExists('test@example.net') );
         $this->assertFalse( $mail->hasTos() );
@@ -228,10 +218,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->iniSet('sendmail_from', '');
 
         $mail = new \cPHP\Mail;
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getCC()
-            );
+        $this->assertEquals( array(), $mail->getCC() );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
         $this->assertFalse( $mail->hasCCs() );
@@ -239,9 +226,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addCC('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => null) ),
                 $mail->getCC()
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
@@ -251,9 +236,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addCC('addr@example.org', 'Label') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label') ),
                 $mail->getCC()
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
@@ -263,10 +246,10 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addCC('test@example.net', 'Name') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
                         'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                    ),
                 $mail->getCC()
             );
         $this->assertTrue( $mail->ccExists('addr@example.org') );
@@ -276,9 +259,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->removeCC('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                    ),
                 $mail->getCC()
             );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
@@ -287,10 +270,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearCC() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getCC()
-            );
+        $this->assertEquals( array(), $mail->getCC() );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
         $this->assertFalse( $mail->hasCCs() );
@@ -306,10 +286,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearCC() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getCC()
-            );
+        $this->assertEquals( array(), $mail->getCC() );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
         $this->assertFalse( $mail->hasCCs() );
@@ -320,10 +297,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->iniSet('sendmail_from', '');
 
         $mail = new \cPHP\Mail;
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getBCC()
-            );
+        $this->assertEquals( array(), $mail->getBCC() );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
         $this->assertFalse( $mail->hasBCCs() );
@@ -331,9 +305,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addBCC('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => null)
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => null) ),
                 $mail->getBCC()
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
@@ -343,9 +315,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addBCC('addr@example.org', 'Label') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label')
-                    )),
+                array( 'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label') ),
                 $mail->getBCC()
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
@@ -355,10 +325,10 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->addBCC('test@example.net', 'Name') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'addr@example.org' => array('email' => 'addr@example.org', 'name' => 'Label'),
                         'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                    ),
                 $mail->getBCC()
             );
         $this->assertTrue( $mail->bccExists('addr@example.org') );
@@ -368,9 +338,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $mail, $mail->removeBCC('addr@example.org') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
-                        'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name')
-                    )),
+                array( 'test@example.net' => array('email' => 'test@example.net', 'name' => 'Name') ),
                 $mail->getBCC()
             );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
@@ -379,10 +347,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearBCC() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getBCC()
-            );
+        $this->assertEquals( array(), $mail->getBCC() );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
         $this->assertFalse( $mail->hasBCCs() );
@@ -398,10 +363,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame( $mail, $mail->clearBCC() );
-        $this->assertEquals(
-                new \cPHP\Ary(array()),
-                $mail->getBCC()
-            );
+        $this->assertEquals( array(), $mail->getBCC() );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
         $this->assertFalse( $mail->hasBCCs() );
@@ -546,36 +508,32 @@ class classes_mail extends PHPUnit_Framework_TestCase
     public function testAddCustomHeader ()
     {
         $mail = new \cPHP\Mail;
-        $this->assertEquals(
-                new \cPHP\Ary,
-                $mail->getCustomHeaders()
-            );
-
+        $this->assertEquals( array(), $mail->getCustomHeaders() );
 
         $this->assertSame( $mail, $mail->addCustomHeader('X-Test', 'Example Header') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'X-Test' => 'Example Header'
-                    )),
+                    ),
                 $mail->getCustomHeaders()
             );
 
 
         $this->assertSame( $mail, $mail->addCustomHeader('X-Test', Null) );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'X-Test' => ''
-                    )),
+                    ),
                 $mail->getCustomHeaders()
             );
 
 
         $this->assertSame( $mail, $mail->addCustomHeader('In-Reply-To', 'abcxyz') );
         $this->assertEquals(
-                new \cPHP\Ary(array(
+                array(
                         'X-Test' => '',
                         'In-Reply-To' => 'abcxyz'
-                    )),
+                    ),
                 $mail->getCustomHeaders()
             );
     }
@@ -643,7 +601,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
         $this->assertTrue( $mail->customHeaderExists('X-Other') );
 
         $this->assertSame( $mail, $mail->clearCustomHeaders() );
-        $this->assertEquals( new \cPHP\Ary, $mail->getCustomHeaders() );
+        $this->assertEquals( array(), $mail->getCustomHeaders() );
     }
 
     public function testGetBoundary ()

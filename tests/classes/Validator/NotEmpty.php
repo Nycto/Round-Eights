@@ -42,42 +42,42 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("    ");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(0);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(array());
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }
@@ -91,7 +91,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -102,7 +102,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -113,7 +113,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

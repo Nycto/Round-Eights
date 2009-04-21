@@ -47,7 +47,7 @@ class classes_exception_data extends PHPUnit_Framework_TestCase
         $this->assertEquals( 404, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Nonsense" => "string('lorm ipsum')")),
+                array("Nonsense" => "string('lorm ipsum')"),
                 $err->getData()
             );
 

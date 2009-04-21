@@ -36,11 +36,11 @@ class IncludePath extends \cPHP\FileFinder\DirList
     /**
      * Returns a list of directories to be searched
      *
-     * @return Object Returns a cPHP\Ary object of directories
+     * @return array Returns a list of directories
      */
     public function getDirs ()
     {
-        return \cPHP\Ary::explode( ":", get_include_path() );
+        return explode( ":", get_include_path() );
     }
 
 }

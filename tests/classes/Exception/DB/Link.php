@@ -57,7 +57,7 @@ class classes_exception_db_link extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $err->getFaultOffset() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Link" => "db://ident")),
+                array("Link" => "db://ident"),
                 $err->getData()
             );
     }

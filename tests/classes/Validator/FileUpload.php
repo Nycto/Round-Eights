@@ -71,7 +71,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("No file was uploaded"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -86,7 +86,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File exceeds the server's maximum allowed size"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -101,7 +101,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File exceeds the maximum allowed size"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -116,7 +116,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File was only partially uploaded"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -131,7 +131,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("No file was uploaded"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -146,7 +146,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("No temporary directory was defined on the server"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -161,7 +161,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Unable to write the uploaded file to the server"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -176,7 +176,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("A PHP extension has restricted this upload"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -191,7 +191,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("An unknown error occured"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -209,7 +209,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File is restricted"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -237,7 +237,7 @@ class classes_validator_fileupload_emptyFile extends PHPUnit_EmptyFile_Framework
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Uploaded file is empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -267,7 +267,7 @@ class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_T
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Uploaded file is not readable"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

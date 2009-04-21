@@ -77,7 +77,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -91,7 +91,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -105,7 +105,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -119,7 +119,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -133,7 +133,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -147,7 +147,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -161,7 +161,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[a-z]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -175,7 +175,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must match the following regular expression: /[0-9]/"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

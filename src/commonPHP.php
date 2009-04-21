@@ -65,6 +65,7 @@ require_once cPHP_DIR_FUNCTIONS ."general.php";
 require_once cPHP_DIR_FUNCTIONS ."numbers.php";
 require_once cPHP_DIR_FUNCTIONS ."strings.php";
 require_once cPHP_DIR_FUNCTIONS ."debug.php";
+require_once cPHP_DIR_FUNCTIONS ."array.php";
 
 /**
  * Register the autoloader
@@ -96,7 +97,7 @@ spl_autoload_register("cPHP_autoload");
 set_exception_handler(function ( $exception ) {
 
     // If we are running in script mode, we don't need HTML
-    if ( \cPHP\Env::get()->local ) {
+    if ( \cPHP\Env::request()->local ) {
         echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
     }
     else {
@@ -117,6 +118,6 @@ set_exception_handler(function ( $exception ) {
 /**
  * Take a snapshot of the environment
  */
-\cPHP\Env::get();
+\cPHP\Env::Request();
 
 ?>

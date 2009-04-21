@@ -51,11 +51,11 @@ class Parsed
     /**
      * Returns a list of all the sections in this instance
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array Returns an array of \cPHP\Quoter\Parsed objects
      */
     public function getSections ()
     {
-        return new \cPHP\Ary( $this->sections );
+        return $this->sections;
     }
 
     /**
@@ -132,11 +132,11 @@ class Parsed
      * This will only explode on the separators found in the selected section.
      *
      * @param String $separator The separator to split the string on
-     * @return Object Returns a \cPHP\Ary object containing the string sections
+     * @return Array Returns a list containing the string sections
      */
     public function explode ( $separator )
     {
-        $result = new \cPHP\Ary(array(""));
+        $result = array("");
 
         foreach ( $this->sections AS $section ) {
 
@@ -145,11 +145,12 @@ class Parsed
             else
                 $exploded = array( $section->__toString() );
 
-            $result->push(
-                    $result->pop( TRUE ) . array_shift( $exploded )
+            array_push(
+                    $result,
+                    array_pop( $result ) . array_shift( $exploded )
                 );
 
-            $result = $result->merge( $exploded );
+            $result = array_merge( $result, $exploded );
 
         }
 

@@ -1,7 +1,5 @@
 <?php
 /**
- * Core Template Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Template
  */
 
 namespace cPHP\Template;
@@ -35,25 +33,26 @@ class Collection implements \cPHP\iface\Template
 
     /**
      * The list of templates
+     *
+     * @var Array An array of \cPHP\iface\Template objects
      */
     protected $list = array();
 
     /**
      * Returns the list of templates registered in this instance
      *
-     * @return Object Returns a cPHP\Ary object
+     * @return Array Returns an array of \cPHP\iface\Template objects
      */
     public function getTemplates ()
     {
-        return new \cPHP\Ary( $this->list );
+        return $this->list;
     }
 
     /**
      * Adds a template to the end of this list
      *
-     * @param object $template The template to add. This must be an instance of
-     *      cPHP\iface\Template
-     * @return Object Returns a self reference for chaining
+     * @param \cPHP\iface\Template $template The template to add
+     * @return \cPHP\Template\Collection Returns a self reference for chaining
      */
     public function add ( \cPHP\iface\Template $template )
     {
@@ -64,7 +63,7 @@ class Collection implements \cPHP\iface\Template
     /**
      * Displays all the templates contained in this instance
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\Template\Collection Returns a self reference
      */
     public function display ()
     {

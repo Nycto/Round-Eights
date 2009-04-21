@@ -1,7 +1,5 @@
 <?php
 /**
- * Page encapsulation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Filters
+ * @package Page
  */
 
 namespace cPHP\Page;
@@ -30,17 +28,19 @@ namespace cPHP\Page;
 /**
  * Displays a blank page
  */
-class Blank extends \cPHP\Page
+class Blank implements \cPHP\iface\Page
 {
 
     /**
      * Returns the core content this page will display
      *
-     * @return mixed Returns the central content for the page
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return \cPHP\Template\Blank Returns a blank template
      */
-    protected function createContent ()
+    public function getContent ( \cPHP\Page\Context $context )
     {
-        return new \cPHP\Template\Raw;
+        return new \cPHP\Template\Blank;
     }
 
 }

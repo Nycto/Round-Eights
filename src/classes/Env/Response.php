@@ -1,7 +1,5 @@
 <?php
 /**
- * Page encapsulation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,43 +20,50 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Filters
+ * @package Env
  */
 
-namespace cPHP\Page;
+namespace cPHP\Env;
 
 /**
- * Decides which method to use based on a string
- *
- * Views are defined by extending this class and defining methods. Any method
- * that beings with 'view_' will be callable.
+ * Manages the response that will be sent to the client
  */
-abstract class Method extends \cPHP\Page\Delegator
+class Response implements \cPHP\iface\Env\Response
 {
 
     /**
-     * Returns whether the current view is defined
+     * Returns whether the headers have been sent to the client
      *
-     * @return Boolean Returns whether the current view is defined
+     * @return Boolean
      */
-    public function viewExists ()
+    public function headersSent ()
     {
-        return method_exists( $this, 'view_'. $this->getView() );
+        return headers_sent();
     }
 
     /**
-     * Executes the view method and returns it's results
+     * Sends a header back to the client
      *
-     * @return Object Returns a template object
+     * This will overwrite any previously sent headers of the same type
+     *
+     * @param String $header The header string to send
+     * @return cPHP\iface\Env\Response Returns a self reference
      */
-    public function createContent ()
+    public function setHeader ( $header )
     {
-        if ( !$this->viewExists() )
-            return $this->getErrorView();
+        $file = null;
+        $line = null;
 
-        $method = 'view_'. $this->getView();
+        if ( headers_sent($file, $line) ) {
+            $err = new \cPHP\Exception\Interaction("HTTP Headers have already been sent");
+            $err->addData("Output Started in File", $file);
+            $err->addData("Output Started on Line", $line);
+            throw $err;
+        }
 
-        return $this->$method();
+        header( \cPHP\strval($header) );
+
+        return $this;
     }
 
 }

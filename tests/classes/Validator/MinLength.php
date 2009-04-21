@@ -46,7 +46,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 2 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -61,7 +61,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 1 character"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -78,7 +78,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 3 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -95,7 +95,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 2 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -109,7 +109,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 1 character"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -126,7 +126,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 4 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -141,7 +141,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must not be shorter than 7 characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -153,7 +153,7 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

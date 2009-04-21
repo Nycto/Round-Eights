@@ -179,15 +179,6 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             );
 
         try {
-            $query->getFieldList( "not an array" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame("Must be an array or traversable", $err->getMessage());
-        }
-
-
-        try {
             $query->getFieldList( array() );
             $this->fail("An expected exception was not thrown");
         }
@@ -221,14 +212,6 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         }
         catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
-        }
-
-        try {
-            $query->insert( "tablename", "some string" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame("Must be an array or traversable", $err->getMessage());
         }
 
     }
@@ -320,14 +303,6 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         }
         catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
-        }
-
-        try {
-            $query->update( "tablename", null, "some string" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame("Must be an array or traversable", $err->getMessage());
         }
 
     }
@@ -683,7 +658,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             ->method("getRow")
             ->with( $this->equalTo("SELECT * FROM table" ) )
             ->will( $this->returnValue(
-                    new \cPHP\Ary( array( 'id' => 1, 'value' => 'cejijunto' ) )
+                    array( 'id' => 1, 'value' => 'cejijunto' )
                 ));
 
         $this->assertSame(

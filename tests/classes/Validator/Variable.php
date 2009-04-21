@@ -41,42 +41,42 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(10);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(1.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(NULL);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(FALSE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -100,21 +100,21 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a valid PHP variable name"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate("test.period");
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a valid PHP variable name"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('$noDollar');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Must be a valid PHP variable name"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

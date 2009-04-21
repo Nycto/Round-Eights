@@ -1,7 +1,5 @@
 <?php
 /**
- * Validator Results
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,6 +33,8 @@ class Result extends \cPHP\Validator\ErrorList
 
     /**
      * The value that was validated
+     *
+     * @var mixed
      */
     protected $value;
 

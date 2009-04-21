@@ -1,7 +1,5 @@
 <?php
 /**
- * Validation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,6 +33,9 @@ class NotEmpty extends \cPHP\Validator
 
     /**
      * Any flags to pass to the isEmpty function
+     *
+     * @see \cPHP\isEmpty()
+     * @var Integer
      */
     protected $flags = 0;
 
@@ -53,7 +54,7 @@ class NotEmpty extends \cPHP\Validator
      * Validates the given value
      *
      * @param mixed $value The value to validate
-     * @return String Any errors encountered
+     * @return String|NULL Any errors encountered
      */
     protected function process ( $value )
     {

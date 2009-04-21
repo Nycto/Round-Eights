@@ -33,235 +33,170 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_page extends PHPUnit_Framework_TestCase
 {
 
-    public function testgetContent_template ()
+    public function getTestPage ()
     {
-        $tpl = $this->getMock(
-                'cPHP\iface\Template',
-                array('render', 'display', '__toString')
+        return $this->getMock("cPHP\iface\Page", array("getContent"));
+    }
+
+    public function testPageAccessors ()
+    {
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $this->assertSame( $page, $root->getPage() );
+        $this->assertSame( $page, $root->getPage() );
+    }
+
+    public function testContextAccessors ()
+    {
+        $root = new \cPHP\Page( $this->getTestPage() );
+
+        $context = $root->getContext();
+
+        $this->assertThat( $context, $this->isInstanceOf("cPHP\Page\Context") );
+        $this->assertSame( $context, $root->getContext() );
+        $this->assertSame( $context, $root->getContext() );
+
+        $context = $this->getMock( 'cPHP\Page\Context' );
+
+        $this->assertSame( $root, $root->setcontext( $context ) );
+
+        $this->assertSame( $context, $root->getContext() );
+        $this->assertSame( $context, $root->getContext() );
+    }
+
+    public function testResponseAccessors ()
+    {
+        $root = new \cPHP\Page( $this->getTestPage() );
+
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+        $this->assertSame( \cPHP\Env::Response(), $root->getResponse() );
+
+        $response = $this->getMock(
+                'cPHP\iface\Env\Response',
+                array('headersSent', 'setHeader')
             );
 
-        $page = $this->getMock('cPHP\Page', array('createContent'));
+        $this->assertSame( $root, $root->setResponse( $response ) );
+
+        $this->assertSame( $response, $root->getResponse() );
+        $this->assertSame( $response, $root->getResponse() );
+        $this->assertSame( $response, $root->getResponse() );
+    }
+
+    public function testGetTemplate_standard ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $context = $root->getContext();
 
         $page->expects( $this->once() )
-            ->method('createContent')
+            ->method("getContent")
+            ->with( $this->equalTo($context) )
             ->will( $this->returnValue($tpl) );
 
-        $this->assertSame( $tpl, $page->getContent() );
+        $this->assertSame( $tpl, $root->getTemplate() );
+
     }
 
-    public function testgetContent_string ()
+    public function testGetTemplate_suppress ()
     {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+
+        $page = $this->getTestPage();
+
+        $root = new \cPHP\Page( $page );
+
+        $context = $root->getContext();
+        $context->suppress();
 
         $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue("data chunk") );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "data chunk", $content->getContent() );
-    }
-
-    public function testgetContent_integer ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue(404) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "404", $content->getcontent() );
-    }
-
-    public function testgetContent_float ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue( 10.5 ) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "10.5", $content->getcontent() );
-    }
-
-    public function testgetContent_null ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue( null ) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "", $content->getcontent() );
-    }
-
-    public function testgetContent_boolean ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue( TRUE ) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "1", $content->getcontent() );
-    }
-
-    public function testgetContent_toString ()
-    {
-        $obj = $this->getMock( 'stdClass', array('__toString') );
-
-        $obj->expects( $this->once() )
-            ->method('__toString')
-            ->will( $this->returnValue("data chunk") );
-
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue($obj) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "data chunk", $content->getcontent() );
-    }
-
-    public function testgetContent_obj ()
-    {
-        $obj = new stdClass;
-        $obj->data = "data chunk";
-
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue($obj) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "data chunk", $content->getcontent() );
-    }
-
-    public function testgetContent_array ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue(array("data chunk")) );
-
-        $content = $page->getContent();
-
-        $this->assertThat( $content, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertSame( "data chunk", $content->getcontent() );
-    }
-
-    public function testLayoutAccessors ()
-    {
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $this->assertNull( $page->getLayout() );
-        $this->assertFalse( $page->layoutExists() );
-
-
-        $tpl = $this->getMock( 'cPHP\Template', array('display') );
-        $this->assertSame( $page, $page->setLayout($tpl) );
-        $this->assertSame( $tpl, $page->getLayout() );
-        $this->assertTrue( $page->layoutExists() );
-
-
-        $this->assertSame( $page, $page->clearLayout() );
-        $this->assertNull( $page->getLayout() );
-        $this->assertFalse( $page->layoutExists() );
-    }
-
-    public function testGetPage_noLayout ()
-    {
-        $tpl = $this->getMock(
-                'cPHP\iface\Template',
-                array('render', 'display', '__toString')
-            );
-
-        $page = $this->getMock('cPHP\Page', array('createContent'));
-
-        $page->expects( $this->once() )
-            ->method('createContent')
+            ->method("getContent")
+            ->with( $this->equalTo($context) )
             ->will( $this->returnValue($tpl) );
 
-        $this->assertSame( $tpl, $page->getPage() );
+        $result = $root->getTemplate();
+
+        $this->assertNotSame( $tpl, $result );
+
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Template\Blank") );
     }
 
-    public function testGetPage_withLayout ()
+    public function testGetTemplate_interrupt ()
     {
-        $content = $this->getMock(
-                'cPHP\iface\Template',
-                array('render', 'display', '__toString')
-            );
+        $page = $this->getTestPage();
 
-        $page = $this->getMock('cPHP\Page', array('createContent'));
+        $root = new \cPHP\Page( $page );
 
         $page->expects( $this->once() )
-            ->method('createContent')
-            ->will( $this->returnValue($content) );
+            ->method("getContent")
+            ->with( $this->isInstanceOf('cPHP\Page\Context') )
+            ->will( $this->throwException(
+                    new \cPHP\Exception\Interrupt\Page
+                ) );
 
+        $result = $root->getTemplate();
 
-        $layout = $this->getMock( 'cPHP\Template', array('display') );
+        $this->assertThat( $result, $this->isInstanceOf("cPHP\Template\Blank") );
 
-        $page->setLayout( $layout );
+        $this->assertTrue( $root->getContext()->isSuppressed() );
+    }
 
-        $this->assertSame( $layout, $page->getPage() );
+    public function testGetTemplate_redirect ()
+    {
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
 
-        $this->assertTrue( $layout->exists('content') );
-        $this->assertSame( $content, $layout->get('content') );
+        $page = $this->getTestPage();
+
+        $context = $this->getMock('cPHP\Page\Context', array('getRedirect'));
+        $context->expects( $this->once() )
+            ->method('getRedirect')
+            ->will( $this->returnValue('http://www.example.com') );
+
+        $response = $this->getMock(
+                'cPHP\iface\Env\Response',
+                array('headersSent', 'setHeader')
+            );
+        $response->expects( $this->once() )
+            ->method('setHeader')
+            ->with( $this->equalTo('Location: http://www.example.com') );
+
+        $root = new \cPHP\Page( $page );
+        $root->setContext( $context );
+        $root->setResponse( $response );
+
+        $page->expects( $this->once() )
+            ->method("getContent")
+            ->with( $this->isInstanceOf('cPHP\Page\Context') )
+            ->will( $this->returnValue($tpl) );
+
+        $this->assertSame($tpl, $root->getTemplate());
     }
 
     public function testDisplay ()
     {
-        $tpl = $this->getMock( 'cPHP\Template', array('display') );
+        $tpl = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
 
         $tpl->expects( $this->once() )
             ->method('display');
 
+        $root = $this->getMock(
+                'cPHP\Page',
+                array('getTemplate'),
+                array( $this->getTestPage() )
+            );
 
-        $page = $this->getMock('cPHP\Page', array('createContent', 'getPage'));
-
-        $page->expects( $this->once() )
-            ->method('getPage')
+        $root->expects( $this->once() )
+            ->method('getTemplate')
             ->will( $this->returnValue($tpl) );
 
-        $this->assertSame( $page, $page->display() );
-    }
-
-    public function testRender ()
-    {
-        $tpl = $this->getMock( 'cPHP\Template', array('display', 'render') );
-
-        $tpl->expects( $this->once() )
-            ->method('render')
-            ->will( $this->returnValue('Chunk of data') );
-
-
-        $page = $this->getMock('cPHP\Page', array('createContent', 'getPage'));
-
-        $page->expects( $this->once() )
-            ->method('getPage')
-            ->will( $this->returnValue($tpl) );
-
-        $this->assertSame( 'Chunk of data', $page->render() );
+        $this->assertSame( $root, $root->display() );
     }
 
 }

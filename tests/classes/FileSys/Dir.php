@@ -270,10 +270,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
         $list = $dir->toArray();
 
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(0, 1, 2, 3, 4, 5, 6, 7, 8),
-                $list->keys()->get()
+                array_keys( $list )
             );
 
 
@@ -313,10 +312,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
         $list = $dir->toArray();
 
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array(0, 1, 2, 3, 4, 5, 6),
-                $list->keys()->get()
+                array_keys( $list )
             );
 
 

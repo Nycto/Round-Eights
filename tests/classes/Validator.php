@@ -84,7 +84,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("278.09"), $result->getErrors()->get() );
+        $this->assertEquals( array("278.09"), $result->getErrors() );
 
 
         $mock = $this->getMockValidator ( 0.0 );
@@ -99,7 +99,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("278"), $result->getErrors()->get() );
+        $this->assertEquals( array("278"), $result->getErrors() );
 
 
         $mock = $this->getMockValidator ( 0 );
@@ -123,7 +123,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("This is an Error"), $result->getErrors()->get() );
+        $this->assertEquals( array("This is an Error"), $result->getErrors() );
     }
 
     public function testArrayError ()
@@ -134,8 +134,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
-
+        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
 
 
         $mock = $this->getMockValidator( array( array("First Error"), "", "Second Error") );
@@ -144,7 +143,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
+        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
     }
 
     public function testEmptyArrayError ()
@@ -157,7 +156,6 @@ class classes_validator extends PHPUnit_Framework_TestCase
         $this->assertTrue( $result->isValid() );
 
 
-
         $mock = $this->getMockValidator( array( "", FALSE, "  " ) );
 
         $result = $mock->validate("To Validate");
@@ -168,7 +166,6 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function testResultError ()
     {
-
         $return = new \cPHP\Validator\Result("To Validate");
         $return->addErrors("First Error", "Second Error");
         $mock = $this->getMockValidator( $return );
@@ -177,13 +174,12 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors()->get() );
+        $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
 
     }
 
     public function testEmptyResultError ()
     {
-
         $return = new \cPHP\Validator\Result("To Validate");
         $mock = $this->getMockValidator( $return );
 
@@ -196,7 +192,6 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function testCustomErrors ()
     {
-
         $mock = $this->getMockValidator( "Default Error" );
         $mock->addError("Custom Error Message");
 
@@ -204,7 +199,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result") );
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals( array("Custom Error Message"), $result->getErrors()->get() );
+        $this->assertEquals( array("Custom Error Message"), $result->getErrors() );
 
     }
 

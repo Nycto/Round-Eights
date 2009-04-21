@@ -1,7 +1,5 @@
 <?php
 /**
- * Page encapsulation class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Filters
+ * @package Page
  */
 
 namespace cPHP\Page;
@@ -30,99 +28,148 @@ namespace cPHP\Page;
 /**
  * Shortcut for displaying and submitting a form
  */
-abstract class Form extends \cPHP\Page
+class Form extends \cPHP\Page
 {
 
     /**
-     * Stores the form after it has been created
+     * The form this page represents
      *
-     * @var Object A Form object
+     * @var \cPHP\Form
      */
     private $form;
 
     /**
-     * Returns a new instance of the form for this instance. This is called automatically
-     * by the getForm method, so use that instead
+     * The initial values to inject into the form if no values have been submitted
      *
-     * @return Object Returns a form object
+     * @var array
      */
-    abstract protected function createForm ();
+    private $initials = array();
 
     /**
-     * Returns the form instance for this page. This can be called as many times
-     * as needed, but the same form instance will always be returned
+     * The source array to pull submitted values from
      *
-     * @return Object Returns a form object
+     * @var array
+     */
+    private $source;
+
+    /**
+     * The page to return when displaying the form
+     *
+     * @var \cPHP\iface\Page
+     */
+    private $display;
+
+    /**
+     * The page to return when the form has been submitted and validates
+     *
+     * @var \cPHP\iface\Page
+     */
+    private $success;
+
+    /**
+     * Constructor...
+     *
+     * @param \cPHP\Form $form The form this page represents
+     * @param \cPHP\iface\Page $display The page to return when displaying the form
+     * @param \cPHP\iface\Page $success The page to return when the form has been
+     *      submitted and validates
+     */
+    public function __construct ( \cPHP\Form $form, \cPHP\iface\Page $display, \cPHP\iface\Page $success )
+    {
+        $this->form = $form;
+        $this->display = $display;
+        $this->success = $success;
+    }
+
+    /**
+     * Returns the form instance for this page
+     *
+     * @return \cPHP\Form Returns a form object
      */
     public function getForm ()
     {
-        if ( !isset($this->form) ) {
-            $this->form = $this->createForm();
-            if ( !($this->form instanceof \cPHP\Form) )
-                $this->form = new \cPHP\Form;
-        }
-
         return $this->form;
     }
 
     /**
-     * Returns the array that will be used to fill the form with data.
+     * Returns the page to use when displaying the form
      *
-     * By default, this will return the $_POST array. This method was designed
-     * to be overridden if a different data source is desired
-     *
-     * @return Array
+     * @return \cPHP\iface\Page
      */
-    public function getSource ()
+    public function getDisplay ()
     {
-        return $_POST;
+        return $this->display;
+    }
+
+    /**
+     * Returns the page to use when a form is succesfully submitted
+     *
+     * @return \cPHP\iface\Page
+     */
+    public function getSuccess ()
+    {
+        return $this->success;
     }
 
     /**
      * Returns an array that will be used to fill the form with data when it
      * is initially displayed.
      *
-     * By default, this returns an empty array
+     * @return Array
+     */
+    public function getInitials ()
+    {
+        return $this->initials;
+    }
+
+    /**
+     * Sets the array that will be used to fill the form with data when it
+     * is initially displayed.
+     *
+     * @param array $initials The initial values array
+     * @return cPHP\Page\Form Returns a self reference
+     */
+    public function setInitials ( array $initials )
+    {
+        $this->initials = $initials;
+        return $this;
+    }
+
+    /**
+     * Returns the array that will be used to fill the form with data.
+     *
+     * By default, this will return the array of posted values
      *
      * @return Array
      */
-    public function getInitialValues ()
+    public function getSource ()
     {
-        return array();
+        if ( isset($this->source) )
+            return $this->source;
+
+        // @todo Replace this $_POST reference with something more OO
+        else
+            return $_POST;
     }
 
     /**
-     * The method invoked when a form is initially displayed
+     * Sets the array that will be used to fill the form with data.
      *
-     * @return Object Returns the template for the content
+     * @param array $source The source to pull the submitted data from
+     * @return cPHP\Page\Form Returns a self reference
      */
-    abstract protected function onDisplay ();
-
-    /**
-     * The method invoked when a form is submitted but the values are invalid.
-     *
-     * By default, this method just calls the onDisplay method
-     *
-     * @return Object Returns the template for the content
-     */
-    protected function onInvalid ()
+    public function setSource ( array $source )
     {
-        return $this->onDisplay();
+        $this->source = $source;
+        return $this;
     }
 
     /**
-     * The method invoked when a form is submitted and validates
+     * Returns the page object to use for the current form state
      *
-     * @return Object Returns the template for the content
+     * @return \cPHP\iface\Page
      */
-    abstract protected function onSuccess ();
-
-    /**
-     * Executes the view method and returns it's results
-     *
-     * @return Object Returns a template object
-     */
-    protected function createContent ()
+    public function getPage ()
     {
         $form = $this->getForm();
 
@@ -130,19 +177,32 @@ abstract class Form extends \cPHP\Page
 
         // If there was nothing submitted...
         if ( !$form->anyIn($source) ) {
-            $form->fill( $this->getInitialValues() );
-            return $this->onDisplay();
+            $form->fill( $this->getInitials() );
+            return $this->getDisplay();
         }
 
-        // Load the source data into the form and validate
-        else if ( $form->fill($source)->isValid() ) {
-            return $this->onSuccess();
-        }
+        // Load the submitted data into the form
+        $form->fill( $source );
 
-        // Otherwise, display the error page
-        else {
-            return $this->onInvalid();
-        }
+        // If the form validates, display the success page
+        if ( $form->isValid() )
+            return $this->getSuccess();
+
+        // Otherwise, display the page with errors
+        else
+            return $this->getDisplay();
+    }
+
+    /**
+     * Returns the core content this page will display
+     *
+     * @param cPHP\Page\Context $context A context object which is used by this
+     *      page to communicate with the root page
+     * @return \cPHP\iface\Template Returns a blank template
+     */
+    public function getContent ( \cPHP\Page\Context $context )
+    {
+        return $this->getPage()->getContent( $context );
     }
 
 }

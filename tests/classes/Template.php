@@ -52,17 +52,17 @@ class classes_template extends PHPUnit_Framework_TestCase
     public function testSet ()
     {
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->set('var', 'value') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value') ),
+                array('var' => 'value'),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->set('other', 2) );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                array('var' => 'value', 'other' => 2),
                 $tpl->getValues()
             );
 
@@ -70,14 +70,14 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame( $tpl, $tpl->set('var', $obj) );
         $this->assertSame(
                 array('var' => $obj, 'other' => 2),
-                $tpl->getValues()->get()
+                $tpl->getValues()
             );
     }
 
     public function testRemove ()
     {
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->remove('doesnt Exist') );
 
@@ -85,18 +85,18 @@ class classes_template extends PHPUnit_Framework_TestCase
         $tpl->set('other', 3.1415);
 
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->remove('var') );
         $this->assertEquals(
-                new \cPHP\Ary( array('other' => 3.1415) ),
+                array('other' => 3.1415),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->remove('other') );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
     }
 
     public function testExists ()
@@ -136,23 +136,23 @@ class classes_template extends PHPUnit_Framework_TestCase
     public function testAdd ()
     {
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->add('var', 'value') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value') ),
+                array('var' => 'value'),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->add('other', 2) );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                array('var' => 'value', 'other' => 2),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->add('var', 'new value') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 2) ),
+                array('var' => 'value', 'other' => 2),
                 $tpl->getValues()
             );
     }
@@ -162,49 +162,48 @@ class classes_template extends PHPUnit_Framework_TestCase
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
         $this->assertSame( $tpl, $tpl->clear() );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
 
         $tpl->set('var', 'value');
         $tpl->set('other', 3.1415);
 
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->clear() );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
     }
 
     public function testAppend ()
     {
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->append('var', 'value') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value') ),
+                array('var' => 'value'),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->append('other', 3.1415) );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->append('var', ' add') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value add', 'other' => 3.1415) ),
+                array('var' => 'value add', 'other' => 3.1415),
                 $tpl->getValues()
             );
 
         $this->assertSame( $tpl, $tpl->append('other', 'num') );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value add', 'other' => '3.1415num') ),
+                array('var' => 'value add', 'other' => '3.1415num'),
                 $tpl->getValues()
             );
-
     }
 
     public function testImport_array ()
@@ -215,7 +214,7 @@ class classes_template extends PHPUnit_Framework_TestCase
                 $tpl->import( array('var' => 'value', 'other' => 3.1415) )
             );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
     }
@@ -225,10 +224,10 @@ class classes_template extends PHPUnit_Framework_TestCase
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame(
                 $tpl,
-                $tpl->import( new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ) )
+                $tpl->import( array('var' => 'value', 'other' => 3.1415) )
             );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
     }
@@ -239,10 +238,6 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 $tpl,
                 $tpl->import( new ArrayIterator( array('var' => 'value', 'other' => 3.1415) ) )
-            );
-        $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
-                $tpl->getValues()
             );
     }
 
@@ -255,7 +250,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
         $this->assertSame( $tpl, $tpl->import( $obj ) );
         $this->assertEquals(
-                new \cPHP\Ary( array('var' => 'value', 'other' => 3.1415) ),
+                array('var' => 'value', 'other' => 3.1415),
                 $tpl->getValues()
             );
     }
@@ -314,7 +309,7 @@ class classes_template extends PHPUnit_Framework_TestCase
     {
         $tpl = $this->getMock( 'cPHP\Template', array("display") );
 
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
         $this->assertNull( $tpl->var );
         $this->assertFalse( isset($tpl->var) );
 
@@ -322,7 +317,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame( 'value', $tpl->var );
         $this->assertTrue( isset($tpl->var) );
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value' )),
+                array( 'var' => 'value' ),
                 $tpl->getValues()
             );
 
@@ -330,7 +325,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame( 3.1415, $tpl->pi );
         $this->assertTrue( isset($tpl->pi) );
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                array( 'var' => 'value', 'pi' => 3.1415 ),
                 $tpl->getValues()
             );
 
@@ -338,7 +333,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertSame( 'value Lorem', $tpl->var );
         $this->assertTrue( isset($tpl->var) );
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value Lorem', 'pi' => 3.1415 )),
+                array( 'var' => 'value Lorem', 'pi' => 3.1415 ),
                 $tpl->getValues()
             );
 
@@ -346,14 +341,14 @@ class classes_template extends PHPUnit_Framework_TestCase
         $this->assertNull( $tpl->var );
         $this->assertFalse( isset($tpl->var) );
         $this->assertEquals(
-                new \cPHP\Ary(array( 'pi' => 3.1415 )),
+                array( 'pi' => 3.1415 ),
                 $tpl->getValues()
             );
 
         unset( $tpl->pi );
         $this->assertNull( $tpl->pi );
         $this->assertFalse( isset($tpl->pi) );
-        $this->assertEquals( new \cPHP\Ary, $tpl->getValues() );
+        $this->assertEquals( array(), $tpl->getValues() );
     }
 
     public function testConstruct ()
@@ -365,7 +360,7 @@ class classes_template extends PHPUnit_Framework_TestCase
                 );
 
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                array( 'var' => 'value', 'pi' => 3.1415 ),
                 $tpl->getValues()
             );
 
@@ -377,7 +372,7 @@ class classes_template extends PHPUnit_Framework_TestCase
                 );
 
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                array( 'var' => 'value', 'pi' => 3.1415 ),
                 $tpl2->getValues()
             );
 
@@ -385,11 +380,11 @@ class classes_template extends PHPUnit_Framework_TestCase
         $tpl = $this->getMock(
                 'cPHP\Template',
                 array("display"),
-                array( new \cPHP\Ary( array('var' => 'value', 'pi' => 3.1415) ) )
+                array( array('var' => 'value', 'pi' => 3.1415) )
                 );
 
         $this->assertEquals(
-                new \cPHP\Ary(array( 'var' => 'value', 'pi' => 3.1415 )),
+                array( 'var' => 'value', 'pi' => 3.1415 ),
                 $tpl->getValues()
             );
     }

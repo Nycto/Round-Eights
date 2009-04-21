@@ -322,14 +322,13 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be sent to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be sent to. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be sent to. The second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getTo ()
     {
-        return new \cPHP\Ary( $this->to );
+        return $this->to;
     }
 
     /**
@@ -414,14 +413,13 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be CCd to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be CCd. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be CCdThe second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getCC ()
     {
-        return new \cPHP\Ary( $this->cc );
+        return $this->cc;
     }
 
     /**
@@ -506,14 +504,13 @@ class Mail
     /**
      * Returns the list of primary addresses that this email will be BCCd to
      *
-     * @return Object Returns a cPHP\Ary object. This is actually an array of
-     *      arrays. The first dimension enumerates the different addresses
-     *      that will be BCCd. The second dimension represents an individual
-     *      address. It has two keys: email and name.
+     * @return Array This is actually an array of arrays. The first dimension
+     *      enumerates the different addresses that will be BCCd. The second
+     *      dimension represents an individual address. It has two keys: email and name.
      */
     public function getBCC ()
     {
-        return new \cPHP\Ary( $this->bcc );
+        return $this->bcc;
     }
 
     /**
@@ -803,7 +800,7 @@ class Mail
      */
     public function getCustomHeaders ()
     {
-        return new \cPHP\Ary( $this->headers );
+        return $this->headers;
     }
 
     /**

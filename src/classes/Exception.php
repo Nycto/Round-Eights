@@ -118,11 +118,7 @@ class Exception extends \Exception
         if (count($trace) <= 0)
             return FALSE;
 
-        $trace = new \cPHP\Ary( $trace );
-
-        return new \cPHP\Ary(
-                $trace->offset($offset, $wrapFlag)
-            );
+        return \cPHP\ary\offset($trace, $offset, $wrapFlag);
     }
 
     /**
@@ -169,9 +165,7 @@ class Exception extends \Exception
         if (count($trace) <= 0)
             return $this;
 
-        $trace = new \cPHP\Ary( $trace );
-
-        $this->fault = $trace->calcOffset( $offset, $wrapFlag);
+        $this->fault = \cPHP\ary\calcOffset($trace, $offset, $wrapFlag);
 
         return $this;
     }
@@ -216,7 +210,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function shiftFault ($shift = 1, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+    public function shiftFault ($shift = 1, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
     {
 
         // Shifting the fault when no fault is set marks it to the end of the list
@@ -225,7 +219,7 @@ class Exception extends \Exception
 
         $shift = intval(reduce($shift));
 
-        $trace = new \cPHP\Ary( $this->getTrace() );
+        $trace = $this->getTrace();
 
         if (count($trace) <= 0)
             return FALSE;
@@ -234,7 +228,7 @@ class Exception extends \Exception
 
         $fault += $shift;
 
-        $fault = $trace->calcOffset($fault, \cPHP\Ary::OFFSET_RESTRICT);
+        $fault = \cPHP\ary\calcOffset($trace, $fault, \cPHP\ary\OFFSET_RESTRICT);
 
         return $this->setFault($fault);
     }
@@ -272,7 +266,7 @@ class Exception extends \Exception
      */
     public function getData ()
     {
-        return new \cPHP\Ary( $this->data );
+        return $this->data;
     }
 
     /**
@@ -298,7 +292,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String
      */
-    public function getTraceOffsetString ($offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+    public function getTraceOffsetString ($offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
     {
 
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
@@ -336,7 +330,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String A string of HTML
      */
-    public function getTraceOffsetHTML ($offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT)
+    public function getTraceOffsetHTML ($offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
     {
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 

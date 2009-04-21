@@ -28,24 +28,19 @@
 namespace cPHP\iface;
 
 /**
- * General interface for creating a page
+ * Interface for a node in a page wire frame
  */
 interface Page
 {
 
     /**
-     * Outputs this page to the user
-     *
-     * @return Object Returns a self reference
-     */
-    public function display();
-
-    /**
      * Returns the content of this page as a string
      *
-     * @return String
+     * @param cPHP\Page\Context $page A context object which is used by this
+     *      page to communicate with the root page
+     * @return cPHP\iface\Template
      */
-    public function render();
+    public function getContent ( \cPHP\Page\Context $context );
 
 }
 

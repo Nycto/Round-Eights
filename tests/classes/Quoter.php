@@ -37,11 +37,9 @@ class classes_quoter extends PHPUnit_Framework_TestCase
     {
         $quoter = new \cPHP\Quoter;
 
-        $this->assertThat( $quoter->getQuotes(), $this->isInstanceOf("cPHP\Ary") );
-
         $this->assertSame(
                 array( "'" => array( "'" ), '"' => array( '"' ) ),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
 
         $this->assertSame( '\\', $quoter->getEscape() );
@@ -53,14 +51,14 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array( "'" => array( "'" ), '"' => array( '"' ) ),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
 
         $this->assertSame( $quoter, $quoter->clearQuotes() );
 
         $this->assertSame(
                 array(),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
     }
 
@@ -71,14 +69,14 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
 
         $this->assertSame( $quoter, $quoter->setQuote( "`" ) );
 
         $this->assertSame(
                 array( "`" => array("`") ),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
 
 
@@ -86,7 +84,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array( "`" => array("`"), "(" => array( ")" ) ),
-                $quoter->getQuotes()->get()
+                $quoter->getQuotes()
             );
     }
 
@@ -96,11 +94,9 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $quoter->setQuote( "'", array( "'", '"', '`' ) );
         $quoter->setQuote( "!", array( '@', '#', '*' ) );
 
-        $quotes = $quoter->getAllQuotes();
-        $this->assertThat( $quotes, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array( "'", '"', '`', '@', '#', '*', "!" ),
-                $quotes->get()
+                $quoter->getAllQuotes()
             );
     }
 
@@ -112,11 +108,9 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $quoter->setQuote( "(", ")" );
         $quoter->setQuote( "`" );
 
-        $quotes = $quoter->getOpenQuotes();
-        $this->assertThat( $quotes, $this->isInstanceOf("cPHP\Ary") );
         $this->assertEquals(
                 array( "'", '"', '!', '(', '`' ),
-                $quotes->get()
+                $quoter->getOpenQuotes()
             );
     }
 
@@ -138,13 +132,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $quoter->setQuote( "`" );
         $quoter->setQuote( "!", array( '@', '#', '*' ) );
 
-        $quotes = $quoter->getCloseQuotesFor( "(" );
-        $this->assertThat( $quotes, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array( ')' ), $quotes->get() );
+        $this->assertEquals(
+                array( ')' ),
+                $quoter->getCloseQuotesFor( "(" )
+            );
 
-        $quotes = $quoter->getCloseQuotesFor( "!" );
-        $this->assertThat( $quotes, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array( '@', '#', '*' ), $quotes->get() );
+        $this->assertEquals(
+                array( '@', '#', '*' ),
+                $quoter->getCloseQuotesFor( "!" )
+            );
     }
 
     public function testSetEscape ()
@@ -362,15 +358,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("string 'with' quotes");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("string ", "'with'", " quotes"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map( 'cPHP\strval', $result->getSections() )
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")
@@ -378,7 +375,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "string ", $offset->getContent() );
 
 
-        $offset = $result->getSections()->OffsetGet(1);
+        $offset = $result->getSections();
+        $offset = $offset[1];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -388,7 +386,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "'", $offset->getCloseQuote() );
 
 
-        $offset = $result->getSections()->OffsetGet(2);
+        $offset = $result->getSections();
+        $offset = $offset[2];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")
@@ -403,15 +402,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("string 'with'");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("string ", "'with'"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map( 'cPHP\strval', $result->getSections() )
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")
@@ -419,7 +419,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "string ", $offset->getContent() );
 
 
-        $offset = $result->getSections()->OffsetGet(1);
+        $offset = $result->getSections();
+        $offset = $offset[1];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -435,15 +436,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("This is a string");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("This is a string"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map('cPHP\strval', $result->getSections() )
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")
@@ -457,15 +459,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("'This is a string'");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("'This is a string'"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map('cPHP\strval', $result->getSections() )
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -481,15 +484,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("'This is''a string'");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("'This is'", "'a string'"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map('cPHP\strval', $result->getSections() )
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -499,7 +503,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "'", $offset->getCloseQuote() );
 
 
-        $offset = $result->getSections()->OffsetGet(1);
+        $offset = $result->getSections();
+        $offset = $offset[1];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -517,15 +522,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $result = $quoter->parse("<({This isEND OF QUOTE a string <({with stuff)) in it");
         $this->assertThat( $result, $this->isInstanceOf("cPHP\Quoter\Parsed") );
-        $this->assertThat( $result->getSections(), $this->isInstanceOf("cPHP\Ary") );
 
         $this->assertSame(
                 array("<({This isEND OF QUOTE", " a string ", "<({with stuff))", " in it"),
-                $result->getSections()->collect('cPHP\strval')->get()
+                array_map("cPHP\strval", $result->getSections())
             );
 
 
-        $offset = $result->getSections()->OffsetGet(0);
+        $offset = $result->getSections();
+        $offset = $offset[0];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -535,7 +540,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "END OF QUOTE", $offset->getCloseQuote() );
 
 
-        $offset = $result->getSections()->OffsetGet(1);
+        $offset = $result->getSections();
+        $offset = $offset[1];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")
@@ -543,7 +549,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( " a string ", $offset->getContent() );
 
 
-        $offset = $result->getSections()->OffsetGet(2);
+        $offset = $result->getSections();
+        $offset = $offset[2];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Quoted")
@@ -553,7 +560,8 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $this->assertSame( "))", $offset->getCloseQuote() );
 
 
-        $offset = $result->getSections()->OffsetGet(3);
+        $offset = $result->getSections();
+        $offset = $offset[3];
         $this->assertThat(
                 $offset,
                 $this->isInstanceOf("cPHP\Quoter\Section\Unquoted")

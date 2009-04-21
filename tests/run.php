@@ -40,7 +40,7 @@ if ( $cutoff === FALSE ) {
     $cutoff = array_search( "tests", $test );
 
     if ( $cutoff === FALSE )
-        die ( "Could not locate 'src' or 'tests' directory in given file: ". $$_SERVER['argv'][1] );
+        die ( "Could not locate 'src' or 'tests' directory in given file: ". $_SERVER['argv'][1] );
 }
 
 $test = array_slice($test, $cutoff + 1);

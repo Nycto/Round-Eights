@@ -55,8 +55,7 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
         $this->assertEquals( "From our sponsors", $err->getMessage() );
         $this->assertEquals( 505, $err->getCode() );
 
-        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array("Arg Label" => "test"), $err->getData()->get() );
+        $this->assertSame( array("Arg Label" => "test"), $err->getData() );
 
         $this->assertEquals( 0, $err->getFaultOffset() );
 

@@ -63,14 +63,14 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('    ');
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not be empty"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Missing an @ symbol
@@ -78,7 +78,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must contain an 'at' (@) symbol"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Multiple @ symbols
@@ -86,7 +86,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must only contain one 'at' (@) symbol"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Repated periods
@@ -94,7 +94,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not contain repeated periods"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Spaces
@@ -102,7 +102,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not contain spaces"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Line Breaks... \n
@@ -110,7 +110,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not contain line breaks"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Line Breaks... \r
@@ -118,7 +118,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not contain line breaks"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Tabs
@@ -126,7 +126,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not contain tabs"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // invalid characters
@@ -134,7 +134,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address contains invalid characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Period as the last character
@@ -142,7 +142,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not end with a period"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Period as the first character
@@ -150,7 +150,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address must not start with a period"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Period as the last character in the local part
@@ -158,7 +158,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Period as the first character of the domain
@@ -166,7 +166,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // The local part is too long
@@ -174,7 +174,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is too long"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // The domain is too long
@@ -182,7 +182,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is too long"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Nothing before the @
@@ -190,7 +190,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Nothing after the @
@@ -198,7 +198,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // No top level domain
@@ -206,7 +206,7 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Email Address is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

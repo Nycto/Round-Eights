@@ -42,9 +42,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $collection, $collection->add($valid) );
 
-        $list = $collection->getValidators();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals(array( $valid ), $list->get());
+        $this->assertEquals(array( $valid ), $collection->getValidators());
     }
 
     public function testAddObjectError ()
@@ -66,8 +64,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
         $this->assertSame( $collection, $collection->add($valid) );
 
         $list = $collection->getValidators();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertThat( $list->offsetGet(0), $this->isInstanceOf( $valid ) );
+        $this->assertThat( $list[0], $this->isInstanceOf( $valid ) );
     }
 
     public function testAddClassString ()
@@ -79,8 +76,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
         $this->assertSame( $collection, $collection->add($valid) );
 
         $list = $collection->getValidators();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertThat( $list->offsetGet(0), $this->isInstanceOf( $valid ) );
+        $this->assertThat( $list[0], $this->isInstanceOf( $valid ) );
     }
 
     public function testAddStringError ()
@@ -105,10 +101,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
                 $collection->addMany( array( $valid, "Non validator" ), array(), $valid2 )
             );
 
-        $list = $collection->getValidators();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals(array( $valid, $valid2 ), $list->get());
-
+        $this->assertEquals(array( $valid, $valid2 ), $collection->getValidators());
     }
 
     public function testConstruct ()
@@ -123,10 +116,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
                 array( $valid, "Not a validator", $valid2 )
             );
 
-
-        $list = $collection->getValidators();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals(array( $valid, $valid2 ), $list->get());
+        $this->assertEquals(array( $valid, $valid2 ), $collection->getValidators());
 
     }
 

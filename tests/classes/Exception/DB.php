@@ -57,7 +57,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $err->getFaultOffset() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Link" => "db://ident")),
+                array("Link" => "db://ident"),
                 $err->getData()
             );
     }
@@ -93,7 +93,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $err->getFaultOffset() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Link" => "db://ident")),
+                array("Link" => "db://ident"),
                 $err->getData()
             );
     }
@@ -112,7 +112,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
         $this->assertEquals( 0, $err->getFaultOffset() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Link" => "string('ident')")),
+                array("Link" => "string('ident')"),
                 $err->getData()
             );
     }

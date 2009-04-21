@@ -1,7 +1,5 @@
 <?php
 /**
- * Validator Collection
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -53,7 +51,7 @@ class Any extends \cPHP\Validator\Collection
             if ( $result->isValid() )
                 return array();
 
-            $errors = array_merge( $errors, $result->getErrors()->get() );
+            $errors = array_merge( $errors, $result->getErrors() );
 
         }
 

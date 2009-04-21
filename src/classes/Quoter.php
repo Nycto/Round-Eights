@@ -1,7 +1,5 @@
 <?php
 /**
- * String parsing class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -158,11 +156,11 @@ class Quoter
      * is the opening quote character. The second dimension is a list of characters
      * that are allowed to close the opening quote
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return array
      */
     public function getQuotes ()
     {
-        return new \cPHP\Ary( $this->quotes );
+        return $this->quotes;
     }
 
     /**
@@ -183,7 +181,7 @@ class Quoter
      * be replaced with the new set
      *
      * @param String $open The opening quote
-     * @param Null|String|Array If left empty, this will assume the closing quote
+     * @param Null|String|Array $close If left empty, this will assume the closing quote
      *      is the same as the opening quote. If an array is given, it will be
      *      flattened and compacted.
      * @return object Returns a self reference
@@ -200,12 +198,11 @@ class Quoter
         }
         else {
 
-            $close = \cPHP\Ary::create( $close )
-                ->flatten()
-                ->collect('cPHP\strval')
-                ->compact( ALLOW_SPACES )
-                ->unique()
-                ->get();
+            $close = \cPHP\arrayVal( $close );
+            $close = \cPHP\ary\flatten( $close );
+            $close = \array_map( 'cPHP\strval', $close );
+            $close = \cPHP\ary\compact( $close, \cPHP\ALLOW_SPACES );
+            $close = \array_unique( $close );
 
         }
 
@@ -217,25 +214,25 @@ class Quoter
     /**
      * Returns a flat list of all the open and close quotes registered in this instance
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getAllQuotes ()
     {
-        return \cPHP\Ary::create( array_values( $this->quotes ) )
-            ->flatten()
-            ->merge( array_keys( $this->quotes ) )
-            ->unique()
-            ->values();
+        $quotes = array_values( $this->quotes );
+        $quotes = \cPHP\ary\flatten( $quotes );
+        $quotes = \array_merge( $quotes, array_keys($this->quotes) );
+        $quotes = \array_unique( $quotes );
+        return \array_values($quotes);
     }
 
     /**
      * Returns a list of all the opening quotes
      *
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getOpenQuotes ()
     {
-        return new \cPHP\Ary( array_keys( $this->quotes ) );
+        return array_keys( $this->quotes );
     }
 
     /**
@@ -254,7 +251,7 @@ class Quoter
      * Returns a list of closing quotes for an opening quote
      *
      * @param String $quote The opening quote
-     * @return Object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getCloseQuotesFor ( $quote )
     {
@@ -263,7 +260,7 @@ class Quoter
         if ( !$this->isOpenQuote($quote) )
             throw new \cPHP\Exception\Argument( 0, "Open Quote", "Invalid open quote" );
 
-        return \cPHP\Ary::create( $this->quotes[ $quote ] )->values();
+        return array_values( $this->quotes[ $quote ] );
     }
 
     /**
@@ -325,7 +322,7 @@ class Quoter
     {
         $string = \cPHP\strval( $string );
 
-        $openQuotes = $this->getOpenQuotes()->get();
+        $openQuotes = $this->getOpenQuotes();
 
         $result = new \cPHP\Quoter\Parsed;
 
@@ -362,7 +359,7 @@ class Quoter
 
             // Look for the close quote
             list( $closeOffset, $closeQuote ) =
-                self::findNext( $string, $this->getCloseQuotesFor($openQuote)->get(), $this->escape );
+                self::findNext( $string, $this->getCloseQuotesFor($openQuote), $this->escape );
 
 
             if ( $closeOffset === FALSE ) {

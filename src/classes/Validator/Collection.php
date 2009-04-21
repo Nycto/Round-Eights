@@ -1,7 +1,5 @@
 <?php
 /**
- * Base Class for a collection of validators
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -35,6 +33,8 @@ abstract class Collection extends \cPHP\Validator
 
     /**
      * The list of validators contained in this instance
+     *
+     * @var array
      */
     protected $validators = array();
 
@@ -43,7 +43,7 @@ abstract class Collection extends \cPHP\Validator
      *
      * Allows you to add validators on construction
      *
-     * @param object $validators...
+     * @param \cPHP\iface\Validator $validators...
      */
     public function __construct ()
     {
@@ -56,10 +56,11 @@ abstract class Collection extends \cPHP\Validator
     /**
      * Adds a validator to this instance
      *
+     * @todo This really shouldn't accept a string
      * @param Object The validator to addd to this instance
      * @return Object Returns a self reference
      */
-    public function add( $validator )
+    public function add ( $validator )
     {
         if ( is_object($validator) ) {
 
@@ -88,11 +89,11 @@ abstract class Collection extends \cPHP\Validator
     /**
      * Returns the list of validators contained in this instance
      *
-     * @return object Returns a \cPHP\Ary object
+     * @return Array
      */
     public function getValidators ()
     {
-        return new \cPHP\Ary( $this->validators );
+        return $this->validators;
     }
 
     /**
@@ -104,12 +105,15 @@ abstract class Collection extends \cPHP\Validator
     public function addMany ( $validators )
     {
         $validators = func_get_args();
-        \cPHP\Ary::create( $validators )
-            ->flatten()
-            ->filter(function($validator) {
-                return $validator instanceof \cPHP\iface\Validator;
-            })
-            ->each(array($this, "add"));
+        $validators = \cPHP\ary\flatten( $validators );
+        $validators = array_filter(
+                $validators,
+                function($validator) {
+                    return $validator instanceof \cPHP\iface\Validator;
+                }
+            );
+        array_walk( $validators, array($this, "add") );
+
         return $this;
     }
 

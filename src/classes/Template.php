@@ -102,11 +102,11 @@ abstract class Template
     /**
      * Returns the list of variables registered in this instance
      *
-     * @return Object Returs a cPHP\Ary instance
+     * @return Array
      */
     public function getValues ()
     {
-        return new \cPHP\Ary( $this->variables );
+        return $this->variables;
     }
 
     /**
@@ -239,7 +239,10 @@ abstract class Template
         else if ( is_object($values) && !($values instanceof \Traversable) )
             $values = get_object_vars( $values );
 
-        else if ( !\cPHP\Ary::is($values) )
+        else if ( $values instanceof \Traversable )
+            $values = iterator_to_array( $values );
+
+        else if ( !is_array($values) )
             throw new \cPHP\Exception\Argument(0, "Import Values", "Value can not be imported");
 
         foreach ( $values AS $label => $value ) {

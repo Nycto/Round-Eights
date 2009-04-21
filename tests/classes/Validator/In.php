@@ -37,22 +37,10 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
     {
         $valid = new \cPHP\Validator\In(array("one", "two", "three"));
 
-        $list = $valid->getList();
-
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three"),
-                $list->get()
+                $valid->getList()
             );
-
-
-        try {
-            new \cPHP\Validator\In("invalid");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
-        }
     }
 
     public function testSetList ()
@@ -61,22 +49,10 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $valid, $valid->setList(array("one", "two", "three")) );
 
-        $list = $valid->getList();
-
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three"),
-                $list->get()
+                $valid->getList()
             );
-
-
-        try {
-            $valid->setList("Invalid");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame( "Must be an array or a traversable object", $err->getMessage() );
-        }
     }
 
     public function testSetList_unique ()
@@ -84,12 +60,9 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $valid = new \cPHP\Validator\In;
         $valid->setList(array("one", "two", "three", "Three", "two"));
 
-        $list = $valid->getList();
-
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "two", "three", "Three"),
-                $list->get()
+                $valid->getList()
             );
     }
 
@@ -99,16 +72,12 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $valid, $valid->add("one") );
 
-        $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertSame( array("one"), $list->get() );
+        $this->assertSame( array("one"), $valid->getList() );
 
 
         $this->assertSame( $valid, $valid->add("two") );
 
-        $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertSame( array("one", "two"), $list->get() );
+        $this->assertSame( array("one", "two"), $valid->getList() );
     }
 
     public function testExists ()
@@ -124,32 +93,23 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $valid = new \cPHP\Validator\In(array("one", "two", "three", "four"));
 
         $this->assertSame( $valid, $valid->remove("two") );
-
-        $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
-                $list->get()
+                $valid->getList()
             );
 
 
         $this->assertSame( $valid, $valid->remove("five") );
-
-        $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
-                $list->get()
+                $valid->getList()
             );
 
 
         $this->assertSame( $valid, $valid->remove("FOUR") );
-
-        $list = $valid->getList();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
         $this->assertSame(
                 array("one", "three", "four"),
-                $list->get()
+                $valid->getList()
             );
     }
 
@@ -174,7 +134,7 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("Invalid option"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 

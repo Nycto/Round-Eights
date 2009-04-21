@@ -242,7 +242,7 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
 
         $result = $finder->find(
-                new \cPHP\Ary(array( 'file1.php', 'sub/dir/file.php' ))
+                array( 'file1.php', 'sub/dir/file.php' )
             );
 
         $this->assertSame( $file, $result );

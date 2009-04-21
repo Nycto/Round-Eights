@@ -91,13 +91,9 @@ class classes_db_mysqli_read extends PHPUnit_MySQLi_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf("cPHP\DB\MySQLi\Read") );
 
-        $fields = $result->getFields();
-
-        $this->assertThat( $fields, $this->isInstanceOf("cPHP\Ary") );
-
         $this->assertSame(
                 array('id', 'label', 'data'),
-                $fields->get()
+                $result->getFields()
             );
     }
 

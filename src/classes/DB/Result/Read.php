@@ -145,7 +145,7 @@ abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIter
     /**
      * Returns a list of field names returned by the query
      *
-     * @return Object Returns a \cPHP\Ary Object
+     * @return Array
      */
     public function getFields ()
     {
@@ -157,7 +157,7 @@ abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIter
                 $this->fields = array();
         }
 
-        return new \cPHP\Ary( $this->fields );
+        return $this->fields;
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIter
      */
     public function isField ( $field )
     {
-        return $this->getFields()->contains( \cPHP\strval($field) );
+        return in_array( \cPHP\strval($field), $this->getFields() );
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class Read extends \cPHP\DB\Result implements \Countable, \SeekableIter
      */
     public function fieldCount ()
     {
-        return $this->getFields()->count();
+        return count( $this->getFields() );
     }
 
     /**

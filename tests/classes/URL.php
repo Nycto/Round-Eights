@@ -82,113 +82,6 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "http://example.net/test.html", "$url" );
     }
 
-    public function testParseQuery_flat ()
-    {
-
-        $result = \cPHP\URL::parseQuery( "key=value" );
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array ( "key" => "value" ), $result->get() );
-
-        $this->assertSame(
-                array ( "key" => "value", "key2" => "value2", "key3" => "value3" ),
-                \cPHP\URL::parseQuery( "?key=value?key2=value2&?&key3=value3?" )->get()
-            );
-
-        $this->assertSame(
-                array ( "key" => "value", "key3" => "value3" ),
-                \cPHP\URL::parseQuery( "?key=value&=value2&key3=value3" )->get()
-            );
-
-        $this->assertSame(
-                array ( "key" => "value2" ),
-                \cPHP\URL::parseQuery( "key=value&key=value2" )->get()
-            );
-
-        $this->assertSame(
-                array ( "key more" => "value for decoding" ),
-                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding" )->get()
-            );
-
-        $this->assertSame(
-                array ( "key.with" => "a.period" ),
-                \cPHP\URL::parseQuery( "key.with=a.period" )->get()
-            );
-
-    }
-
-    public function testParseQuery_encodedFlags ()
-    {
-
-        $this->assertSame(
-                array ( "key%20more" => "value for decoding" ),
-                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_KEYS )->get()
-            );
-
-        $this->assertSame(
-                array ( "key more" => "value%20for%20decoding" ),
-                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_VALUES )->get()
-            );
-
-        $this->assertSame(
-                array ( "key%20more" => "value%20for%20decoding" ),
-                \cPHP\URL::parseQuery( "key%20more=value%20for%20decoding", \cPHP\URL::ENCODED_KEYS | \cPHP\URL::ENCODED_VALUES )->get()
-            );
-
-    }
-
-    public function testParseQuery_recurse ()
-    {
-
-        $qry = \cPHP\URL::parseQuery( "key[1]=value" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('key'), $qry->keys()->get() );
-
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
-
-
-        $qry = \cPHP\URL::parseQuery( "key[1]   =value" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('key'), $qry->keys()->get() );
-
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array( 1 => "value" ), $qry['key']->get() );
-
-
-        $qry = \cPHP\URL::parseQuery( "key[]=value&key[]=another&key[  ]=again" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('key'), $qry->keys()->get() );
-
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array( "value", "another", "again" ), $qry['key']->get() );
-
-
-        $qry = \cPHP\URL::parseQuery( "first=one&second[]=two&second[]=two2&third[key]=three" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('first', 'second', 'third'), $qry->keys()->get() );
-
-        $this->assertSame( 'one', $qry['first'] );
-
-        $this->assertThat( $qry['second'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('two', 'two2'), $qry['second']->get() );
-
-        $this->assertThat( $qry['third'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('key' => 'three'), $qry['third']->get() );
-
-
-        $qry = \cPHP\URL::parseQuery( "key[index][1]=value&key[index][2]=value2&key[index][1]=value3&key[other]=value4" );
-        $this->assertThat( $qry, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('key'), $qry->keys()->get() );
-
-        $this->assertThat( $qry['key'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array('index', 'other'), $qry['key']->keys()->get() );
-
-        $this->assertThat( $qry['key']['index'], $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array( 1 => "value3", 2 => "value2" ), $qry['key']['index']->get() );
-
-        $this->assertSame( 'value4', $qry['key']['other'] );
-    }
-
     public function testSchemeAccessors()
     {
         $url = new \cPHP\URL;
@@ -220,7 +113,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->isSameScheme() );
@@ -235,7 +128,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "HTTP/1.1"))
+                    new \cPHP\Env\Request(array("SERVER_PROTOCOL" => "HTTP/1.1"))
                 ));
 
         $this->assertFalse( $url->isSameScheme() );
@@ -253,7 +146,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PROTOCOL" => "SFTP/1.1"))
+                    new \cPHP\Env\Request(array("SERVER_PROTOCOL" => "SFTP/1.1"))
                 ));
 
         $this->assertFalse( $url->schemeExists() );
@@ -265,7 +158,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->schemeExists() );
@@ -399,7 +292,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array('HTTP_HOST' => 'sub.example.edu'))
+                    new \cPHP\Env\Request(array('HTTP_HOST' => 'sub.example.edu'))
                 ));
 
         $this->assertFalse( $url->isSameHost() );
@@ -423,7 +316,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array('HTTP_HOST' => 'www.example.edu'))
+                    new \cPHP\Env\Request(array('HTTP_HOST' => 'www.example.edu'))
                 ));
 
         $this->assertFalse( $url->isSameHost() );
@@ -444,7 +337,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array('HTTP_HOST' => 'example.edu'))
+                    new \cPHP\Env\Request(array('HTTP_HOST' => 'example.edu'))
                 ));
 
         $this->assertFalse( $url->isSameHost() );
@@ -465,7 +358,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         // Since neither the SLD or TLD are set, this defaults to the current domain
@@ -481,7 +374,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array('HTTP_HOST' => 'example.com'))
+                    new \cPHP\Env\Request(array('HTTP_HOST' => 'example.com'))
                 ));
 
         $this->assertFalse( $url->hostExists() );
@@ -493,7 +386,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->hostExists() );
@@ -531,7 +424,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->isSamePort() );
@@ -549,7 +442,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PORT" => "40"))
+                    new \cPHP\Env\Request(array("SERVER_PORT" => "40"))
                 ));
 
         $this->assertFalse( $url->isSamePort() );
@@ -567,7 +460,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PORT" => "80"))
+                    new \cPHP\Env\Request(array("SERVER_PORT" => "80"))
                 ));
 
         $this->assertTrue( $url->isSamePort() );
@@ -650,7 +543,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array("SERVER_PORT" => "2020"))
+                    new \cPHP\Env\Request(array("SERVER_PORT" => "2020"))
                 ));
 
         $this->assertFalse( $url->portExists() );
@@ -662,7 +555,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->portExists() );
@@ -806,7 +699,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->isSameBase() );
@@ -818,7 +711,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                             "SERVER_PROTOCOL" => "HTTP/1.1",
                             'HTTP_HOST' => 'example.edu',
                             "SERVER_PORT" => "80"
@@ -846,7 +739,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                             "SERVER_PROTOCOL" => "HTTP/1.1",
                             'HTTP_HOST' => 'example.edu',
                             "SERVER_PORT" => "80"
@@ -866,7 +759,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertFalse( $url->schemeExists() );
@@ -1099,7 +992,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertSame( $url, $url->fillPath() );
@@ -1110,7 +1003,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                             "SCRIPT_NAME" => "/path/to/file.php",
                         ))
                 ));
@@ -1151,7 +1044,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertSame( $url, $url->fillFauxDir() );
@@ -1162,7 +1055,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                             "PATH_INFO" => "/fake/dir",
                         ))
                 ));
@@ -1217,25 +1110,6 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( "var=&other=+++", $url->getQuery() );
     }
 
-    public function testSetQuery_iterators ()
-    {
-        $this->iniSet("arg_separator.output", "&");
-
-        $url = new \cPHP\URL;
-
-        $this->assertSame(
-                $url,
-                $url->setQuery(array( "var" => new \cPHP\Ary(array( "one", "two" )) ))
-            );
-        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $url->getQuery() );
-
-        $this->assertSame(
-                $url,
-                $url->setQuery(array( "var" => new ArrayIterator(array( "one", "two" )) ))
-            );
-        $this->assertSame( "var%5B0%5D=one&var%5B1%5D=two", $url->getQuery() );
-    }
-
     public function testSetQuery_object ()
     {
         $this->iniSet("arg_separator.output", "&");
@@ -1256,24 +1130,18 @@ class classes_url extends PHPUnit_Framework_TestCase
     public function testGetParsedQuery ()
     {
         $url = new \cPHP\URL;
-        $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
-        $this->assertSame( array(), $query->get() );
+        $this->assertSame( array(), $url->getParsedQuery() );
 
         $url->setQuery("var=val&other=something");
-        $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame(
                 array( "var" => "val", "other" => "something" ),
-                $query->get()
+                $url->getParsedQuery()
             );
 
         $url->setQuery("var%5Bone%5D=1&var%5Btwo%5D=2");
-        $query = $url->getParsedQuery();
-        $this->assertThat( $query, $this->isInstanceOf("cPHP\\Ary") );
         $this->assertSame(
                 array( "var" => array( "one" => "1", "two" => "2" ) ),
-                $query->get()
+                $url->getParsedQuery()
             );
     }
 
@@ -1283,7 +1151,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertSame( $url, $url->fillQuery() );
@@ -1294,7 +1162,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                             "QUERY_STRING" => "var=value"
                         ))
                 ));
@@ -1453,7 +1321,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array())
+                    new \cPHP\Env\Request(array())
                 ));
 
         $this->assertSame( $url, $url->fillURL() );
@@ -1464,7 +1332,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->expects( $this->any() )
             ->method("getEnv")
             ->will( $this->returnValue(
-                    Stub_Env::fromArray(array(
+                    new \cPHP\Env\Request(array(
                         "HTTP_HOST" => "test.example.com",
                         "SCRIPT_NAME" => "/path/to/file.php",
                         "SERVER_PORT" => "40",

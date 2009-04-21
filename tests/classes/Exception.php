@@ -57,11 +57,10 @@ class classes_exception extends PHPUnit_Framework_TestCase
     {
         $err = new \cPHP\Exception();
 
-        $this->assertThat( $err->getTraceByOffset(0), $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals(
-                __FUNCTION__,
-                $err->getTraceByOffset(0)->offsetGet("function")
-            );
+        $trace = $err->getTraceByOffset(0);
+
+        $this->assertType( 'array', $trace );
+        $this->assertEquals( __FUNCTION__, $trace['function'] );
     }
 
     public function testGetTraceCount ()
@@ -88,7 +87,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
         $this->assertEquals( 1, $err->getFaultOffset() );
 
         // Make sure getFault returns an array
-        $this->assertThat( $err->getFault(), $this->isInstanceOf("cPHP\Ary") );
+        $this->assertType( 'array', $err->getFault() );
 
         // test unsetFault
         $this->assertSame( $err, $err->unsetFault() );
@@ -106,10 +105,8 @@ class classes_exception extends PHPUnit_Framework_TestCase
         $err = new \cPHP\Exception;
 
         $this->assertSame( $err, $err->addData("Data Label", 20) );
-        $this->assertThat( $err->getData(), $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( array("Data Label" => 20), $err->getData()->get() );
+        $this->assertSame( array("Data Label" => 20), $err->getData() );
         $this->assertEquals( 20, $err->getDataValue("Data Label") );
-
     }
 
     public function testThrowing ()

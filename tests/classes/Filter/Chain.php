@@ -40,18 +40,10 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
 
         $filter = new \cPHP\Filter\Chain;
         $this->assertSame( $filter, $filter->add( $mock ) );
-
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( 1, count($list) );
-        $this->assertSame( $mock, $list[0] );
+        $this->assertSame( array($mock), $filter->getFilters() );
 
         $this->assertSame( $filter, $filter->add( $mock2 ) );
-
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( 2, count($list) );
-        $this->assertSame( array($mock, $mock2), $list->get() );
+        $this->assertSame( array($mock, $mock2), $filter->getFilters() );
     }
 
     public function testConstruct ()
@@ -60,11 +52,7 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
         $mock2 = $this->getMock("cPHP\iface\Filter", array("filter"));
 
         $filter = new \cPHP\Filter\Chain( $mock, $mock2 );
-
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( 2, count($list) );
-        $this->assertSame( array($mock, $mock2), $list->get() );
+        $this->assertSame( array($mock, $mock2), $filter->getFilters() );
     }
 
     public function testClear ()
@@ -74,16 +62,10 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
 
         $filter = new \cPHP\Filter\Chain( $mock, $mock2 );
 
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( 2, count($list) );
-        $this->assertSame( array($mock, $mock2), $list->get() );
+        $this->assertSame( array($mock, $mock2), $filter->getFilters() );
 
         $this->assertSame( $filter, $filter->clear() );
-
-        $list = $filter->get();
-        $this->assertThat( $list, $this->isInstanceOf("cPHP\Ary") );
-        $this->assertEquals( 0, count($list) );
+        $this->assertSame( array(), $filter->getFilters() );
     }
 
     public function testFilter ()

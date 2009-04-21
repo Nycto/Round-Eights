@@ -41,28 +41,28 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(5.5);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(null);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate(TRUE);
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must be a string"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
     }
 
@@ -75,7 +75,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must not contain spaces"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Tab
@@ -83,7 +83,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must not contain tabs"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Line break... \n
@@ -91,7 +91,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must not contain line breaks"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // Line break... \r
@@ -99,7 +99,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL must not contain line breaks"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         // invalid characters
@@ -107,7 +107,7 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("URL contains invalid characters"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
 
@@ -115,28 +115,28 @@ class classes_validator_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("URL is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('example.com');
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("URL is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('www.example.com/test.php');
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("URL is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
         $result = $validator->validate('/dir/test.php');
         $this->assertFalse( $result->isValid() );
         $this->assertSame(
                 array("URL is not valid"),
-                $result->getErrors()->get()
+                $result->getErrors()
             );
 
     }

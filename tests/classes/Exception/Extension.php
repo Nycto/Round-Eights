@@ -46,7 +46,7 @@ class classes_exception_extension extends PHPUnit_Framework_TestCase
         $this->assertEquals( 300, $err->getCode() );
 
         $this->assertEquals(
-                new \cPHP\Ary(array("Extension" => "Ext Name")),
+                array("Extension" => "Ext Name"),
                 $err->getData()
             );
 

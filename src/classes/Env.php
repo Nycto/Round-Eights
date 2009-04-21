@@ -1,7 +1,5 @@
 <?php
 /**
- * HTML Form Helper
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,437 +20,86 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Forms
+ * @package Env
  */
 
 namespace cPHP;
 
 /**
- * Collects information about the current environment and allows readonly access to it
+ * A global registry for accessing the request and response objects
  */
 class Env
 {
 
     /**
-     * Contains the singleton instance of this class
+     * The global request object
+     *
+     * @var \cPHP\Env\iface\Request
      */
-    static protected $instance;
+    static protected $request;
 
     /**
-     * Whether this script is being run locally, or was requested remotely
+     * The global response object
      *
-     * @public
+     * @var \cPHP\Env\iface\Response
      */
-    protected $local;
+    static private $response;
 
     /**
-     * The current IP
+     * Returns the environment headers
      *
-     * @public
+     * @return array
      */
-    protected $ip;
-
-    /**
-     * The raw URL query used to load this page
-     *
-     * @public
-     */
-    protected $query;
-
-    /**
-     * The port this page was requested over
-     *
-     * @public
-     */
-    protected $port;
-
-    /**
-     * The scheme used to request this page, usually "http"
-     *
-     * @public
-     */
-    protected $scheme;
-
-    /**
-     * The filesystem path of the requested file
-     *
-     * @public public
-     */
-    protected $path;
-
-    /**
-     * The filesystem directory of the requested file
-     *
-     * @public public
-     */
-    protected $dir;
-
-    /**
-     * The basename of the request file
-     *
-     * This includes the filename and extension
-     *
-     * @public
-     */
-    protected $basename;
-
-    /**
-     * The requested filename
-     *
-     * This does not include the file extension
-     *
-     * @public
-     */
-    protected $filename;
-
-    /**
-     * The extension of the requested file
-     *
-     * This is NULL if there is no exception
-     *
-     * @public
-     */
-    protected $extension;
-
-    /**
-     * The current working directory
-     *
-     * @public
-     */
-    protected $cwd;
-
-    /**
-     * The cPHP\URL instance for the environment
-     *
-     * Unlike the rest of properties in this class, this one is not directly
-     * accessible. Instead, use the getLink() method.
-     */
-    protected $link;
-
-    /**
-     * The full requested host
-     *
-     * The host is the subdomain, SLD and TLD all in one. For example, "test.example.com"
-     *
-     * This is NULL if no host was set
-     *
-     * @public
-     */
-    protected $host;
-
-    /**
-     * The host name with the port attached.
-     *
-     * This will only attach the port if it isn't port 80, and if it is set
-     */
-    protected $hostWithPort;
-
-    /**
-     * The relative path of the requested URI
-     *
-     * @public
-     */
-    protected $urlPath;
-
-    /**
-     * The relative directory of the requested URI
-     *
-     * @public
-     */
-    protected $urlDir;
-
-    /**
-     * The relative URI
-     *
-     * @public
-     */
-    protected $url;
-
-    /**
-     * The absolute URI
-     *
-     * @public
-     */
-    protected $absURL;
-
-    /**
-     * Also known as the path info, this represents any directories listed
-     * after the filename of the path... for example, the following url:
-     *
-     * http://www.example.com/file.php/faux/dir
-     *
-     * will execute the script "file.php" and "/faux/dir" will be stored in
-     * this property.
-     *
-     * @public
-     */
-    protected $fauxDir;
-
-    /**
-     * Returns the global Env instance
-     *
-     * @return Object The singleton Env object
-     */
-    static public function get ()
+    static private function getHeaders ()
     {
-        if ( !( self::$instance instanceof static ) )
-            self::$instance = new static( $_SERVER );
+        if ( function_exists('apache_request_headers') )
+            return apache_request_headers();
 
-        return self::$instance;
+        return array();
     }
 
     /**
-     * Returns whether a given array has key with a non-empty value
+     * Returns PHP is operating in command line mode
      *
-     * @param Array $array The array to test
-     * @param String $key The key to test
      * @return Boolean
      */
-    static public function hasKey( array &$array, $key )
+    static private function isCLI ()
     {
-        if ( !array_key_exists($key, $array) )
-            return FALSE;
-
-        if ( \cPHP\isEmpty($array[$key]) )
-            return FALSE;
-
-        return TRUE;
+        return php_sapi_name() == "cli" ? TRUE : FALSE;
     }
 
     /**
-     * Protected to force the use of the static constructors
+     * Returns the global Env\Request instance
      *
-     * @param Array $server The $_SERVER array to parse in to this instance
+     * @return \cPHP\iface\Env\Request The singleton Env object
      */
-    protected function __construct( array $server )
+    static public function request ()
     {
-        $this->setLocal( $server );
-        $this->setCWD();
-        $this->setFileInfo( $server );
+        if ( !isset(self::$request) ) {
 
-        if ( !$this->local ) {
-            $this->setIP( $server );
-            $this->setQuery( $server );
-            $this->setPort( $server );
-            $this->setScheme( $server );
-            $this->setFauxDir( $server );
-
-            $this->setLink( $server );
-
-            $this->setHostInfo();
-            $this->setURL();
+            self::$request = new \cPHP\Env\Request(
+                    $_SERVER,
+                    $_POST,
+                    $_FILES,
+                    self::getHeaders(),
+                    self::isCLI()
+                );
         }
+
+        return self::$request;
     }
 
     /**
-     * Provides read only access to the protected variables in this instance
+     * Returns the global response object
      *
-     * @param String $variable The variable to fetch
-     * @return mixed Returns the value of the requested property
+     * @return \cPHP\Env\iface\Response
      */
-    public function __get ($variable)
+    static public function response ()
     {
-        $variable = \cPHP\str\stripW( $variable );
+        if ( !isset(self::$response) )
+            self::$response = new \cPHP\Env\Response;
 
-        if ( !property_exists($this, $variable) )
-            throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
-
-        if ( strcasecmp($variable, "link") == 0 )
-            throw new \cPHP\Exception\Argument(0, "Variable Name", "Link property is not publicly available");
-
-        return $this->$variable;
-    }
-
-    /**
-     * Provides read only access to detect whether a protected variable is set
-     *
-     * @param String $variable The variable to test
-     * @return Boolean Whether the requested variable has a value
-     */
-    public function __isset ($variable)
-    {
-        $variable = \cPHP\str\stripW( $variable );
-
-        if ( !property_exists($this, $variable) )
-            throw new \cPHP\Exception\Argument(0, "Variable Name", "Variable does not exist");
-
-        if ( strcasecmp($variable, "link") == 0 )
-            throw new \cPHP\Exception\Argument(0, "Variable Name", "Link property is not publicly available");
-
-        return isset( $this->$variable );
-    }
-
-    /**
-     * Returns a clone of the cPHP\URL instance for the environment
-     *
-     * @return Object Returns a cPHP\URL instance
-     */
-    public function getLink ()
-    {
-        return clone $this->link;
-    }
-
-    /**
-     * Sets whether this script is being executed via command line or not
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setLocal ( array &$server )
-    {
-        $this->local = self::hasKey($server, "SHELL");
-    }
-
-    /**
-     * Fills in the IP property
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setIP ( array &$server )
-    {
-        if ( self::hasKey($server, "SERVER_ADDR") )
-            $this->ip = $server['SERVER_ADDR'];
-    }
-
-    /**
-     * Fills in the URL Query property
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setQuery ( array &$server )
-    {
-        if ( self::hasKey($server, "QUERY_STRING") )
-            $this->query = $server['QUERY_STRING'];
-    }
-
-    /**
-     * Fills in the request port property
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setPort ( array &$server )
-    {
-        if ( self::hasKey($server, "SERVER_PORT") )
-            $this->port = intval( $server['SERVER_PORT'] );
-    }
-
-    /**
-     * Fills in the protocol property
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setScheme ( array &$server )
-    {
-        if ( self::hasKey($server, "SERVER_PROTOCOL") )
-            $this->scheme = strtolower( strstr( $server['SERVER_PROTOCOL'], "/", TRUE ) );
-    }
-
-    /**
-     * This sets the file name, basename, path and extension of the executed file
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setFileInfo ( array &$server )
-    {
-        if ( !self::hasKey($server, "SCRIPT_FILENAME") )
-            return;
-
-        $this->path = $server['SCRIPT_FILENAME'];
-
-        $this->basename = basename( $this->path );
-        $this->dir = dirname( $this->path );
-
-        $info = pathinfo( $this->path );
-
-        $this->filename = $info['filename'];
-
-        if ( self::hasKey($info, "extension") )
-            $this->extension = $info['extension'];
-
-    }
-
-    /**
-     * Sets the current working directory
-     *
-     * @return null
-     */
-    protected function setCWD ()
-    {
-        $this->cwd = getcwd();
-    }
-
-    /**
-     * Sets the faux directory property
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setFauxDir ( array &$server )
-    {
-        if ( !self::hasKey( $server, 'PATH_INFO' ) )
-            return;
-
-        $this->fauxDir = \cPHP\str\head( $server['PATH_INFO'], "/" );
-    }
-
-    /**
-     * Creates the cPHP\URL instance representing the environment
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setLink ( array &$server )
-    {
-        $this->link = new \cPHP\URL;
-
-        $this->link->setScheme( $this->scheme );
-
-        if ( self::hasKey($server, 'HTTP_HOST') )
-            $this->link->setHost($server['HTTP_HOST']);
-
-        else if ( self::hasKey($server, "SERVER_ADDR") )
-            $this->link->setHost($server['SERVER_ADDR']);
-
-        $this->link->setPort( $this->port );
-
-        if ( self::hasKey($server, 'SCRIPT_NAME') )
-            $this->link->setPath( $server['SCRIPT_NAME'] );
-
-        $this->link->setFauxDir( $this->fauxDir );
-
-        $this->link->setQuery( $this->query );
-    }
-
-    /**
-     * Sets the host
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setHostInfo ()
-    {
-        $this->host = $this->link->getHost();
-        $this->hostWithPort = $this->link->getHostAndPort();
-    }
-
-    /**
-     * Sets the relative and absolute URI properties
-     *
-     * @param Array $server The server info array
-     * @return null
-     */
-    protected function setURL ()
-    {
-        $this->urlPath = $this->link->getPath();
-        $this->urlDir = $this->link->getDir();
-
-        $this->url = $this->link->getRelative();
-        $this->absURL = $this->link->getURL();
+        return self::$response;
     }
 
 }

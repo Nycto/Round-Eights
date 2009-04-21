@@ -1,7 +1,5 @@
 <?php
 /**
- * Exception Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -81,7 +79,7 @@ class Argument extends \cPHP\Exception
      * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function setArg ( $offset, $wrapFlag = \cPHP\Ary::OFFSET_RESTRICT )
+    public function setArg ( $offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT )
     {
         // If the fault isn't set, default to the end of the trace
         if ( !$this->issetFault())
@@ -89,15 +87,13 @@ class Argument extends \cPHP\Exception
 
         $fault = $this->getFault();
 
-        if ($fault === FALSE || !$fault->keyExists('args') || !is_array($fault['args']))
+        if ($fault === FALSE || !isset($fault['args']) || !is_array($fault['args']))
             trigger_error("Error fetching fault trace arguments", E_USER_ERROR);
 
         if (count($fault['args']) <= 0)
             return $this->unsetArg();
 
-        $fault['args'] = new \cPHP\Ary($fault['args']);
-
-        $offset = $fault['args']->calcOffset($offset, $wrapFlag);
+        $offset = \cPHP\ary\calcOffset($fault['args'], $offset, $wrapFlag);
 
         if (is_int($offset))
             $this->arg = $offset;

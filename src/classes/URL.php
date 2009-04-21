@@ -34,16 +34,6 @@ class URL
 {
 
     /**
-     * Used by parseQuery, this flag will prevent the keys from being decoded
-     */
-    const ENCODED_KEYS = 1;
-
-    /**
-     * Used by parseQuery, this flag will prevent the values from being decoded
-     */
-    const ENCODED_VALUES = 2;
-
-    /**
      * The protocol for this link
      */
     private $scheme;
@@ -125,78 +115,6 @@ class URL
     }
 
     /**
-     * Given a string representation of a URL query, this return an array of the values
-     *
-     * While a native PHP function exists to perform this function, the native
-     * method has a few aggrivating pitfalls:
-     *
-     * The first is that the default behaviour is to register the data as global
-     * variables. If you want an array of the results, you have to pass in a second argument.
-     *
-     * The second is that it can't handle dots or spaces. These characters will
-     * automatically be replaced with an underscore, even though they are valid
-     * characters
-     *
-     * @param String $query The URL query string to parse
-     * @param Integer $flags Any flags to use during parsing
-     * @return Object Returns a cPHP::Ary object
-     */
-    static public function parseQuery ( $query, $flags = 0 )
-    {
-        $query = \cPHP\strval($query);
-
-        // translate any question marks to ampersands
-        $query = str_replace( "?", "&", $query );
-
-        $query = explode("&", $query);
-
-        $out = new \cPHP\Ary;
-
-        foreach ($query AS $pair) {
-
-            if ( \cPHP\isEmpty($pair) )
-                continue;
-
-            if ( \cPHP\str\contains("=", $pair) )
-                list( $key, $value ) = explode("=", $pair, 2);
-            else
-                list( $key, $value ) = array( $pair, "" );
-
-            // if the key is empty, do nothing with it
-            if ( \cPHP\isEmpty( $key, \cPHP\str\ALLOW_SPACES ) )
-                continue;
-
-            if ( !($flags & self::ENCODED_KEYS) )
-                $key = urldecode( $key );
-
-            if ( !($flags & self::ENCODED_VALUES) )
-                $value = urldecode( $value );
-
-            // Handle multi dimensional values
-            if ( \cPHP\str\contains("[", $key) && \cPHP\str\endsWith( rtrim($key), "]" ) ) {
-
-                $key = new \cPHP\Ary( explode("[", $key) );
-
-                $primary = $key->shift( TRUE );
-
-                $key = $key->collect(function( $index ) {
-                    $index = \cPHP\str\stripTail( rtrim( $index ), "]" );
-                    return  \cPHP\isEmpty($index) ? null : $index;
-                });
-
-                $out->branch( $value, $primary, $key );
-
-            }
-            else {
-                $out->offsetSet( $key, $value );
-            }
-
-        }
-
-        return $out;
-    }
-
-    /**
      * Constructor...
      *
      * @param String $url The initial URL for this instance
@@ -239,7 +157,7 @@ class URL
      */
     protected function getEnv ()
     {
-        return Env::get();
+        return \cPHP\Env::Request();
     }
 
     /**
@@ -1153,13 +1071,13 @@ class URL
     /**
      * Returns the query parsed in to an array
      *
-     * @return Object Returns a cPHP::Ary object
+     * @return array
      */
     public function getParsedQuery ()
     {
         $result = null;
         parse_str( $this->query, $result );
-        return new \cPHP\Ary( $result );
+        return $result;
     }
 
     /**
@@ -1173,8 +1091,8 @@ class URL
      */
     public function setQuery ( $query )
     {
-        if ( \cPHP\Ary::is($query) )
-            $query = \cPHP\Ary::create( $query )->toQuery();
+        if ( is_array($query) )
+            $query = http_build_query( $query );
 
         $query = \cPHP\strval( $query );
 
