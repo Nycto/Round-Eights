@@ -106,7 +106,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->schemeExists() );
     }
 
-    public function isSameScheme_NoEnv ()
+    public function testIsSameScheme_NoEnv ()
     {
         $url = $this->getMock('cPHP\\URL', array("getEnv"));
 
@@ -122,7 +122,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isSameScheme() );
     }
 
-    public function isSameScheme_WithEnv ()
+    public function testIsSameScheme_WithEnv ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -418,7 +418,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->portExists() );
     }
 
-    public function isSamePort_NoEnv ()
+    public function testIsSamePort_NoEnv ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -436,7 +436,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isSamePort() );
     }
 
-    public function isSamePort_WithEnvPort40 ()
+    public function testIsSamePort_WithEnvPort40 ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -454,7 +454,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertTrue( $url->isSamePort() );
     }
 
-    public function isSamePort_WithEnvPort80 ()
+    public function testIsSamePort_WithEnvPort80 ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -705,7 +705,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isSameBase() );
     }
 
-    public function isSameBase_WithEnvPort80 ()
+    public function testIsSameBase_WithEnvPort80 ()
     {
         $url = $this->getMock("cPHP\\URL", array("getEnv"));
         $url->expects( $this->any() )
@@ -726,7 +726,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $url->setPort(80);
         $this->assertFalse( $url->isSameBase() );
 
-        $url->setScheme("example.edu");
+        $url->setHost("example.edu");
         $this->assertTrue( $url->isSameBase() );
 
         $url->clearPort();

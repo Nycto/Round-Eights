@@ -83,7 +83,7 @@ class Form implements \Countable
     public function __construct ()
     {
         // Set the default action URI to the current page
-        $this->action = \cPHP\Env::Request()->url;
+        $this->action = \cPHP\Env::Request()->getURL()->__toString();
     }
 
     /**

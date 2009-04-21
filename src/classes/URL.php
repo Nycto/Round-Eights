@@ -221,12 +221,12 @@ class URL
         if ( !isset($this->scheme) )
             return FALSE;
 
-        $env = $this->getEnv();
+        $link = $this->getEnv()->getURL();
 
-        if ( !isset($env->scheme) )
+        if ( !$link->schemeExists() )
             return FALSE;
 
-        return strcasecmp( $env->scheme, $this->scheme ) == 0 ? TRUE : FALSE;
+        return strcasecmp( $link->getScheme(), $this->scheme ) == 0 ? TRUE : FALSE;
     }
 
     /**
@@ -237,7 +237,7 @@ class URL
     public function fillScheme ()
     {
         $env = $this->getEnv();
-        return $this->setScheme( $env->scheme );
+        return $this->setScheme( $env->getURL()->getScheme() );
     }
 
     /**
@@ -465,13 +465,13 @@ class URL
         if ( !$this->hostExists() )
             return FALSE;
 
-        $env = $this->getEnv();
+        $link = $this->getEnv()->getURL();
 
-        if ( !isset($env->host) )
+        if ( !$link->hostExists() )
             return FALSE;
 
         $localHost = \cPHP\str\stripHead( $this->getHost(), "www." );
-        $envHost = \cPHP\str\stripHead( $env->host, "www." );
+        $envHost = \cPHP\str\stripHead( $link->getHost(), "www." );
 
         if ( strcasecmp($localHost, $envHost) == 0 )
             return TRUE;
@@ -487,7 +487,7 @@ class URL
     public function fillHost ()
     {
         $env = $this->getEnv();
-        return $this->setHost( $env->host );
+        return $this->setHost( $env->getURL()->getHost() );
     }
 
     /**
@@ -545,9 +545,9 @@ class URL
     {
         $port = isset($this->port) ? $this->port : 80;
 
-        $env = $this->getEnv();
+        $link = $this->getEnv()->getURL();
 
-        return $env->port == $port ? TRUE : FALSE;
+        return $link->getPort() == $port ? TRUE : FALSE;
     }
 
     /**
@@ -607,7 +607,7 @@ class URL
     public function fillPort ()
     {
         $env = $this->getEnv();
-        return $this->setPort( $env->port );
+        return $this->setPort( $env->getURL()->getPort() );
     }
 
     /**
@@ -997,7 +997,7 @@ class URL
     public function fillPath ()
     {
         $env = $this->getEnv();
-        $this->setPath( $env->urlPath );
+        $this->setPath( $env->getURL()->getPath() );
         return $this;
     }
 
@@ -1054,7 +1054,7 @@ class URL
     public function fillFauxDir ()
     {
         $env = $this->getEnv();
-        $this->setFauxDir( $env->fauxDir );
+        $this->setFauxDir( $env->getURL()->getFauxDir() );
         return $this;
     }
 
@@ -1133,7 +1133,7 @@ class URL
     public function fillQuery ()
     {
         $env = $this->getEnv();
-        $this->setQuery( $env->query );
+        $this->setQuery( $env->getURL()->getQuery() );
         return $this;
     }
 
