@@ -89,7 +89,7 @@ __halt_compiler();<?php
  * @package Phar
  */
 
-if ( version_compare( phpversion(), '5.3.0alpha3' ) < 0 )
+if ( version_compare( phpversion(), '5.3.0RC1' ) < 0 )
     trigger_error("Could not load commonPHP: PHP version 5.3 required", E_USER_ERROR);
 
 if ( !class_exists('Phar', FALSE) )
