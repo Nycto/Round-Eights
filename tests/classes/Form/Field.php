@@ -237,6 +237,22 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $field->setValue("New Value")
             ->setName("fldName");
 
+        $tag = $field->getTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertSame( "input", $tag->getTag() );
+        $this->assertTrue( isset($tag['name']) );
+        $this->assertSame( "fldName", $tag['name'] );
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( "New Value", $tag['value'] );
+    }
+
+    public function testGetTag_outFilter ()
+    {
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+        $field->setValue("New Value")
+            ->setName("fldName");
+
         $outFilter = $this->getMock("cPHP\iface\Filter", array("filter"));
         $outFilter->expects( $this->once() )
             ->method("filter")
@@ -247,10 +263,6 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
-        $this->assertSame( "input", $tag->getTag() );
-        $this->assertTrue( isset($tag['name']) );
-        $this->assertSame( "fldName", $tag['name'] );
         $this->assertTrue( isset($tag['value']) );
         $this->assertSame( "Filtered New Value", $tag['value'] );
     }

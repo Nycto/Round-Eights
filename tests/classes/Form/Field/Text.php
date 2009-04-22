@@ -39,6 +39,7 @@ class classes_form_field_text extends PHPUnit_Framework_TestCase
         $field->setValue("New Value")
             ->setName("fldName");
 
+
         $tag = $field->getTag();
 
         $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
@@ -52,6 +53,28 @@ class classes_form_field_text extends PHPUnit_Framework_TestCase
 
         $this->assertTrue( isset($tag['type']) );
         $this->assertSame( "text", $tag['type'] );
+    }
+
+    public function testGetTag_outFilter ()
+    {
+        $field = new \cPHP\Form\Field\Text("fld");
+        $field->setValue("New Value")
+            ->setName("fldName");
+
+
+        $outFilter = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $outFilter->expects( $this->once() )
+            ->method("filter")
+            ->with("New Value")
+            ->will( $this->returnValue("Filtered New Value") );
+
+        $field->setOutputFilter($outFilter);
+
+
+        $tag = $field->getTag();
+
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( "Filtered New Value", $tag['value'] );
     }
 
 }

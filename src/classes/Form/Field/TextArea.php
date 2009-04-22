@@ -42,7 +42,7 @@ class TextArea extends \cPHP\Form\Field
     {
         return new \cPHP\Tag(
                 'textarea',
-                $this->getValue(),
+                $this->getForOutput(),
                 array( "name" => $this->getName() )
             );
     }
