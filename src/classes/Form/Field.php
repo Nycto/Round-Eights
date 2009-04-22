@@ -55,6 +55,16 @@ abstract class Field implements \cPHP\iface\Form\Field
     private $filter;
 
     /**
+     * The filter to apply to the data before outputing it to the client
+     *
+     * This allows you to do things like obfuscate credit cards, SSNs, or set
+     * a value that a field should always be equal to.
+     *
+     * @var \cPHP\iface\Filter
+     */
+    private $outFilter;
+
+    /**
      * The validator for this field
      *
      * @var \cPHP\iface\Validator
@@ -124,6 +134,33 @@ abstract class Field implements \cPHP\iface\Form\Field
     public function setFilter( \cPHP\iface\Filter $filter )
     {
         $this->filter = $filter;
+        return $this;
+    }
+
+    /**
+     * Returns the filter loaded in to this instance
+     *
+     * By default, this is set to use a Chain filter
+     *
+     * @return \cPHP\iface\Filter
+     */
+    public function getOutputFilter ()
+    {
+        if ( !($this->outFilter instanceof \cPHP\iface\Filter) )
+            $this->outFilter = new \cPHP\Filter\Chain;
+
+        return $this->outFilter;
+    }
+
+    /**
+     * Sets the output filter
+     *
+     * @param \cPHP\iface\Filter
+     * @return \cPHP\Form\Field Returns a self reference
+     */
+    public function setOutputFilter ( \cPHP\iface\Filter $filter )
+    {
+        $this->outFilter = $filter;
         return $this;
     }
 
@@ -221,6 +258,20 @@ abstract class Field implements \cPHP\iface\Form\Field
     }
 
     /**
+     * Applies the output filter and returns the resultting value
+     *
+     * @return mixed The filtered value
+     */
+    public function getForOutput ()
+    {
+        // Only apply the filter if there is one
+        if ( $this->outFilter instanceof \cPHP\iface\Filter )
+            return $this->outFilter->filter( $this->getValue() );
+        else
+            return $this->getValue();
+    }
+
+    /**
      * Applies the validator to the value in this instance and returns an
      * instance of Validator Results.
      *
@@ -254,7 +305,7 @@ abstract class Field implements \cPHP\iface\Form\Field
                 'input',
                 null,
                 array(
-                        "value" => $this->getValue(),
+                        "value" => $this->getForOutput(),
                         "name" => $this->getName()
                     )
             );
