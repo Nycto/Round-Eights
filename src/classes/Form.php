@@ -78,6 +78,13 @@ class Form implements \Countable
     private $fields = array();
 
     /**
+     * The form level validator
+     *
+     * @var \cPHP\iface\Validator
+     */
+    private $validator;
+
+    /**
      * Constructor... Sets the initial state of the instance
      */
     public function __construct ()
@@ -282,12 +289,101 @@ class Form implements \Countable
     }
 
     /**
+     * Returns the validator loaded in to this instance
+     *
+     * The default validator type is an instance of \cPHP\Validator\Any
+     *
+     * @return \cPHP\iface\Validator
+     */
+    public function getFormValidator ()
+    {
+        if ( !($this->validator instanceof \cPHP\iface\Validator) )
+            $this->validator = new \cPHP\Validator\Any;
+
+        return $this->validator;
+    }
+
+    /**
+     * Sets the validator for this instance
+     *
+     * @param \cPHP\iface\Validator
+     * @return \cPHP\Form Returns a self reference
+     */
+    public function setFormValidator( \cPHP\iface\Validator $validator )
+    {
+        $this->validator = $validator;
+        return $this;
+    }
+
+    /**
+     * Adds another validator to this instance
+     *
+     * This checks to see if the current validator is an instance of
+     * "\cPHP\Validator\All". If it is, then it adds the given validator on to
+     * the list. If it isn't, then it wraps the current validator and the validator
+     * in the instance in an All validator and sets it to the validator for this
+     * instance.
+     *
+     * @param \cPHP\iface\Validator $validator The validator to add to this instance
+     * @return \cPHP\Form Returns a self reference
+     */
+    public function andFormValidator ( \cPHP\iface\Validator $validator )
+    {
+        if ( $this->validator instanceof \cPHP\Validator\All ) {
+            $this->validator->add( $validator );
+        }
+        else {
+            $this->validator = new \cPHP\Validator\All(
+                    $this->validator,
+                    $validator
+                );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Executes the form level validator and returns the results
+     *
+     * This does NOT include the results from each field.
+     *
+     * @result \cPHP\Validator\Results
+     */
+    public function validateForm ()
+    {
+        // If there is no validator, short circuit
+        return $this->getFormValidator()->validate( $this );
+    }
+
+    /**
+     * Runs the form level validation and returns whether the value passes or not
+     *
+     * This does NOT include the results from each field.
+     *
+     * @return Boolean
+     */
+    public function isFormValid ()
+    {
+        // If there is no validator, short circuit and return positive
+        if ( !isset($this->validator) )
+            return TRUE;
+        else
+            return $this->validateForm()->isValid();
+    }
+
+    /**
      * Validates each field and returns whether the form is valid
+     *
+     * This will test for form level validation and whether each field is
+     * individually valid
      *
      * @return Boolean
      */
     public function isValid ()
     {
+        if ( !$this->isFormValid() )
+            return FALSE;
+
         foreach ( $this->fields AS $field ) {
             if ( !$field->isValid() )
                 return FALSE;

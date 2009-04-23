@@ -387,6 +387,142 @@ class classes_form extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGetFormValidator_default ()
+    {
+        $form = new \cPHP\Form;
+
+        $validator = $form->getFormValidator();
+
+        $this->assertThat( $validator, $this->isInstanceOf("cPHP\Validator\Any") );
+
+        $this->assertSame( $validator, $form->getFormValidator() );
+    }
+
+    public function testSetFormValidator ()
+    {
+        $form = new \cPHP\Form;
+
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+
+        $this->assertSame( $form, $form->setFormValidator($validator) );
+
+        $this->assertSame( $validator, $form->getFormValidator() );
+    }
+
+    public function testAndValidator ()
+    {
+        $form = new \cPHP\Form;
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator2 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator3 = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+
+        $form->setFormValidator( $validator );
+        $this->assertSame( $validator, $form->getFormValidator() );
+
+
+        $this->assertSame( $form, $form->andFormValidator( $validator2 ) );
+
+        $all = $form->getFormValidator();
+        $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
+        $this->assertSame(
+                array( $validator, $validator2 ),
+                $all->getValidators()
+            );
+
+
+        $this->assertSame( $form, $form->andFormValidator( $validator3 ) );
+
+        $all = $form->getFormValidator();
+        $this->assertThat( $all, $this->isInstanceOf("cPHP\Validator\All") );
+        $this->assertSame(
+                array( $validator, $validator2, $validator3 ),
+                $all->getValidators()
+            );
+    }
+
+    public function testValidateForm ()
+    {
+        $form = new \cPHP\Form;
+
+        $result = new \cPHP\Validator\Result( $form );
+
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator->expects( $this->once() )
+            ->method("validate")
+            ->with( $this->equalTo($form) )
+            ->will( $this->returnValue($result) );
+
+        $form->setFormValidator( $validator );
+
+        $this->assertSame( $result, $form->validateForm() );
+    }
+
+    public function testIsFormValid_noValidator ()
+    {
+        $form = new \cPHP\Form;
+        $this->assertTrue( $form->isFormValid() );
+    }
+
+    public function testIsFormValid_valid ()
+    {
+        $form = new \cPHP\Form;
+
+        $result = $this->getMock('cPHP\Validator\Result', array('isValid'), array( $form ));
+        $result->expects( $this->once() )
+            ->method("isValid")
+            ->will( $this->returnValue(TRUE) );
+
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator->expects( $this->once() )
+            ->method("validate")
+            ->with( $this->equalTo($form) )
+            ->will( $this->returnValue($result) );
+
+        $form->setFormValidator( $validator );
+
+        $this->assertTrue( $form->isFormValid() );
+    }
+
+    public function testIsFormValid_invalid ()
+    {
+        $form = new \cPHP\Form;
+
+        $result = $this->getMock('cPHP\Validator\Result', array('isValid'), array( $form ));
+        $result->expects( $this->once() )
+            ->method("isValid")
+            ->will( $this->returnValue(FALSE) );
+
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator->expects( $this->once() )
+            ->method("validate")
+            ->with( $this->equalTo($form) )
+            ->will( $this->returnValue($result) );
+
+        $form->setFormValidator( $validator );
+
+        $this->assertFalse( $form->isFormValid() );
+    }
+
+    public function testIsValid_invalidForm ()
+    {
+        $form = new \cPHP\Form;
+
+        $result = $this->getMock('cPHP\Validator\Result', array('isValid'), array( $form ));
+        $result->expects( $this->once() )
+            ->method("isValid")
+            ->will( $this->returnValue(FALSE) );
+
+        $validator = $this->getMock("cPHP\iface\Validator", array("validate", "isValid"));
+        $validator->expects( $this->once() )
+            ->method("validate")
+            ->with( $this->equalTo($form) )
+            ->will( $this->returnValue($result) );
+
+        $form->setFormValidator( $validator );
+
+        $this->assertFalse( $form->isValid() );
+    }
+
     public function testIsValid ()
     {
         $form = new \cPHP\Form;
@@ -432,7 +568,6 @@ class classes_form extends PHPUnit_Framework_TestCase
         $form->addField( $field4 );
 
         $this->assertFalse( $form->isValid() );
-
     }
 
     public function testGetTag ()
