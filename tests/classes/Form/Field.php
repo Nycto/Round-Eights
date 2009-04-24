@@ -73,6 +73,29 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( $filter, $field->getFilter() );
     }
 
+    public function testGetOutputFilter ()
+    {
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+
+        $filter = $field->getOutputFilter();
+
+        $this->assertThat( $filter, $this->isInstanceOf("cPHP\Filter\Chain") );
+
+        $this->assertSame( $filter, $field->getOutputFilter() );
+    }
+
+    public function testSetOutputFilter ()
+    {
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+
+        $filter = $this->getMock("cPHP\iface\Filter", array("filter"));
+
+        $this->assertSame( $field, $field->setOutputFilter($filter) );
+
+        $this->assertSame( $filter, $field->getOutputFilter() );
+        $this->assertSame( $filter, $field->getOutputFilter() );
+    }
+
     public function testGetValidator ()
     {
         $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
@@ -158,8 +181,26 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
         $field->setFilter( new \cPHP\Curry\Call("strtoupper") );
 
+        // the output filter should NOT be called
+        $field->setOutputFilter( new \cPHP\Filter\Digits );
+
         $this->assertSame("NEW VALUE", $field->getValue());
+
         $this->assertSame("New Value", $field->getRawValue());
+    }
+
+    public function testGetForOutput ()
+    {
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+
+        $field->setValue("New 123 Value");
+
+        $field->setFilter( new \cPHP\Filter\Alpha );
+        $field->setOutputFilter( new \cPHP\Curry\Call("strtoupper") );
+
+        $this->assertSame("New 123 Value", $field->getRawValue());
+        $this->assertSame("NewValue", $field->getValue());
+        $this->assertSame("NEWVALUE", $field->getForOutput());
     }
 
     public function testValidate ()
@@ -204,6 +245,26 @@ class classes_form_field extends PHPUnit_Framework_TestCase
         $this->assertSame( "fldName", $tag['name'] );
         $this->assertTrue( isset($tag['value']) );
         $this->assertSame( "New Value", $tag['value'] );
+    }
+
+    public function testGetTag_outFilter ()
+    {
+        $field = $this->getMock("cPHP\Form\Field", array("_mock"), array("fld"));
+        $field->setValue("New Value")
+            ->setName("fldName");
+
+        $outFilter = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $outFilter->expects( $this->once() )
+            ->method("filter")
+            ->with("New Value")
+            ->will( $this->returnValue("Filtered New Value") );
+
+        $field->setOutputFilter($outFilter);
+
+        $tag = $field->getTag();
+
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( "Filtered New Value", $tag['value'] );
     }
 
     public function testToString ()

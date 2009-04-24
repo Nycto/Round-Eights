@@ -50,6 +50,26 @@ class classes_form_field_textarea extends PHPUnit_Framework_TestCase
         $this->assertSame( "New Value", $tag->getContent() );
     }
 
+    public function testGetTag_outFiltered ()
+    {
+        $field = new \cPHP\Form\Field\TextArea("fld");
+        $field->setValue("New Value")
+            ->setName("fldName");
+
+
+        $outFilter = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $outFilter->expects( $this->once() )
+            ->method("filter")
+            ->with("New Value")
+            ->will( $this->returnValue("Filtered New Value") );
+
+        $field->setOutputFilter($outFilter);
+
+        $tag = $field->getTag();
+
+        $this->assertSame( "Filtered New Value", $tag->getContent() );
+    }
+
 }
 
 ?>
