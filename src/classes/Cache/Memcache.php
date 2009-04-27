@@ -26,11 +26,71 @@
 namespace cPHP\Cache;
 
 /**
- * Base hash table object for key/value caches that use a database
+ * Adapter for the Memcache extension to the standardized cache interface
  */
 class Memcache implements \cPHP\iface\Cache
 {
-    
+
+    /**
+     * The host of the Memcache server
+     *
+     * @var String
+     */
+    private $host;
+
+    /**
+     * The port to connect to
+     *
+     * @var Integer
+     */
+    private $port;
+
+    /**
+     * Whether to open a persistent connection
+     *
+     * @var Boolean
+     */
+    private $persistent;
+
+    /**
+     * The connection timeout value in seconds
+     *
+     * @var Integer
+     */
+    private $timeout;
+
+    /**
+     * The actual connection to the server
+     *
+     * @var \Memcache
+     */
+    private $link;
+
+    /**
+     * Constructor...
+     *
+     * @param String $host The host of the Memcache server
+     * @param Integer $port The port to connect to
+     * @param Boolean $persistent Whether to connect with a persistent connection
+     * @param Integer $timeout The connection timeout value in seconds
+     */
+    public function __construct ( $host = "127.0.0.1", $port = 11211, $persistent = FALSE, $timeout = 1 )
+    {
+        $this->host = trim( \cPHP\strval( $host ) );
+        if ( \cPHP\isEmpty($this->host) )
+            throw new \cPHP\Exception\Argument(0, "Memcache Host", "Must not be empty");
+
+        $this->port = intval( $port );
+        if ( $this->port < 0 )
+            throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be at least 0");
+
+        $this->persistent = \cPHP\boolval( $persistent );
+
+        $this->timeout = intval( $timeout );
+        if ( $this->timeout < 0 )
+            throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
+    }
+
 }
 
 ?>
