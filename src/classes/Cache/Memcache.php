@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,35 +20,17 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package FileFinder
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace cPHP\Cache;
 
 /**
- * unit tests
+ * Base hash table object for key/value caches that use a database
  */
-class classes_cache_memcached extends PHPUnit_Framework_TestCase
+class Memcache implements \cPHP\iface\Cache
 {
-
-    public function setUp ()
-    {
-        if ( !extension_loaded('memcache') )
-            $this->markTestSkipped("Memcache extension not loaded");
-
-        // Ensure the proper configuration exists
-        $config = new cPHP_Test_Config(
-                "MEMCACHED",
-                array( "HOST", "PORT" )
-            );
-        $config->test();
-
-        // Test the connection
-        $memcache = new Memcache;
-        if ( !$memcache->connect(MEMCACHED_HOST, MEMCACHED_PORT) )
-            $this->markTestSkipped("Unable to connect to memcached server");
-    }
-
+    
 }
 
 ?>
