@@ -1,6 +1,16 @@
 <?php
 /**
- * Makes commonPHP in to a phar file for distribution
+ * commonPHP library, version [$version]
+ *
+ * This file is a Phar archive of the commonPHP library. For more information on
+ * commonPHP, including downloads, documentation, roadmaps, and news,
+ * visit the website at the following URL:
+ *
+ * http://www.commonPHP.com
+ *
+ * More information about the Phar file format can be found at this URL:
+ *
+ * http://www.php.net/phar
  *
  * @license Artistic License 2.0
  *
@@ -25,28 +35,15 @@
  * @package Package
  */
 
-if ( !Phar::canWrite() )
-    die("Archive creation restricted because of 'phar.readonly' ini setting");
+if ( version_compare( phpversion(), '5.3.0RC1' ) < 0 )
+    trigger_error("Could not load commonPHP: PHP version 5.3 required", E_USER_ERROR);
 
-require_once rtrim( __DIR__, "/" ) .'/../src/commonPHP.php';
+if ( !class_exists('Phar', FALSE) )
+    trigger_error("Could not load commonPHP: Phar class does not exist", E_USER_ERROR);
 
-$phar = new Phar('commonPHP.phar');
+if ( !in_array('phar', stream_get_wrappers()) )
+    trigger_error("Could not load commonPHP: Phar stream is not supported", E_USER_ERROR);
 
-// Add the source directory
-$phar->buildFromDirectory( cPHP_DIR );
+require_once "phar://". __FILE__ ."/commonPHP.php";
 
-if ( Phar::canCompress(Phar::GZ) )
-    $phar->compressFiles(Phar::GZ);
-
-// Add the stub based on the data at the bottom of this file
-$stub = file_get_contents("stub.php");
-$stub = str_replace('[$version]', cPHP_VERSION, $stub);
-
-$phar->setStub( $stub ) ;
-
-echo "Phar file packed\n";
-
-/**
- * Everything below the halt compiler construct will be used as the stub for the phar file
- */
-__halt_compiler();
+__HALT_COMPILER();
