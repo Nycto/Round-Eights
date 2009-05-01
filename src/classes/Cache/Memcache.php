@@ -91,6 +91,158 @@ class Memcache implements \cPHP\iface\Cache
             throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
     }
 
+    /**
+     * Returns a cached value based on it's key
+     *
+     * @param String $key The value to retrieve
+     * @return mixed Returns the cached value
+     */
+    public function get ( $key )
+    {
+
+    }
+
+    /**
+     * Returns a cached value based on it's key
+     *
+     * This returns a cached value in the form of an object. This object will allow
+     * you to run an update on the value with the clause that it shouldn't be
+     * changed if it has changed since it was retrieved. This can be used to
+     * prevent race conditions.
+     *
+     * @param String $key The value to retrieve
+     * @return Object A cPHP\Cache\Value object
+     */
+    public function getForUpdate ( $key )
+    {
+
+    }
+
+    /**
+     * Sets a new caching value, overwriting any existing values
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function set ( $key, $value )
+    {
+
+    }
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param cPHP\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function setIfSame ( \cPHP\Cache\Result $result, $value )
+    {
+
+    }
+
+    /**
+     * Sets a new caching value, but only if that value doesn't exist
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function add ( $key, $value )
+    {
+
+    }
+
+    /**
+     * Sets a new caching value, but only if the value already exists
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to set
+     * @return Object Returns a self reference
+     */
+    public function replace ( $key, $value )
+    {
+
+    }
+
+    /**
+     * Appends a value to the end of an existing cached value.
+     *
+     * If the value doesn't exist, it will be set with the given value
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to append
+     * @return Object Returns a self reference
+     */
+    public function append ( $key, $value )
+    {
+
+    }
+
+    /**
+     * Prepends a value to the end of an existing cached value.
+     *
+     * If the value doesn't exist, it will be set with the given value
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to prepend
+     * @return Object Returns a self reference
+     */
+    public function prepend ( $key, $value )
+    {
+
+    }
+
+    /**
+     * Increments a given value by one
+     *
+     * If a given value isn't numeric, it will be treated as 0
+     *
+     * @param String $key The key for the value
+     * @return Object Returns a self reference
+     */
+    public function increment ( $key )
+    {
+
+    }
+
+    /**
+     * Decrements a given value by one
+     *
+     * If a given value isn't numeric, it will be treated as 0
+     *
+     * @param String $key The key for the value
+     * @return Object Returns a self reference
+     */
+    public function decrement ( $key )
+    {
+
+    }
+
+    /**
+     * Deletes a value from the cache
+     *
+     * @param String $key The value to delete
+     * @return Object Returns a self reference
+     */
+    public function delete ( $key )
+    {
+
+    }
+
+    /**
+     * Deletes all values in the cache
+     *
+     * @return Object Returns a self reference
+     */
+    public function flush ()
+    {
+
+    }
+
 }
 
 ?>
