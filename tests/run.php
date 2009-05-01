@@ -25,12 +25,17 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  */
 
-$test = $_SERVER['argv'][1];
+// Grab the first argument passed in
+$test = realpath( $_SERVER['argv'][1] );
 
+// They shouldn't be able to run this file
 if ( $test == __FILE__ )
     die("This file can not be run as a unit test");
 
 $test = preg_replace('/\.php$/i', '', $test);
+
+// Split the string based on it's forward slashes
+// This will allow us to remove any leading directories that dont belong
 $test = explode("/", $test);
 
 $cutoff = array_search( "src", $test );
@@ -43,13 +48,15 @@ if ( $cutoff === FALSE ) {
         die ( "Could not locate 'src' or 'tests' directory in given file: ". $_SERVER['argv'][1] );
 }
 
+// Remove the leading directories
 $test = array_slice($test, $cutoff + 1);
 
+// Ensure the file they are requesting actually exists
 $file = __DIR__ ."/". implode("/", $test) .".php";
-
 if ( !is_file($file) )
     die("Could not locate unit test file: ". $file);
 
+// Finally... execute phpunit
 system( "phpunit ". implode("_", $test) ." ". $file );
 
 ?>
