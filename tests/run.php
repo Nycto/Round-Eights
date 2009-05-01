@@ -57,6 +57,6 @@ if ( !is_file($file) )
     die("Could not locate unit test file: ". $file);
 
 // Finally... execute phpunit
-system( "phpunit ". implode("_", $test) ." ". $file );
+system( "phpunit ". escapeshellarg( implode("_", $test) ) ." ". escapeshellarg($file) );
 
 ?>
