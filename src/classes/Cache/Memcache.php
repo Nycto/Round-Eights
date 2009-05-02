@@ -190,17 +190,22 @@ class Memcache implements \cPHP\iface\Cache
     /**
      * Returns a cached value based on it's key
      *
-     * This returns a cached value in the form of an object. This object will allow
-     * you to run an update on the value with the clause that it shouldn't be
-     * changed if it has changed since it was retrieved. This can be used to
-     * prevent race conditions.
+     * While the intention of this function is to allow you to only
+     * update if a value has changed, the Memcache extension does
+     * not make this possible. It will be supported by the new
+     * Memcached version, but that is still in beta
      *
      * @param String $key The value to retrieve
-     * @return Object A cPHP\Cache\Value object
+     * @return \cPHP\Cache\Result
      */
     public function getForUpdate ( $key )
     {
-
+        return new \cPHP\Cache\Result(
+                $this,
+                $key,
+                null,
+                $this->get( $key )
+            );
     }
 
     /**
@@ -214,7 +219,17 @@ class Memcache implements \cPHP\iface\Cache
      */
     public function setIfSame ( \cPHP\Cache\Result $result, $value )
     {
+        if ( $result->getCache() !== $this ) {
+            throw new \cPHP\Exception\Argument(
+                0,
+                "Cached Result",
+                "Result cache mismatch"
+            );
+        }
 
+        $this->set( $result->getKey(), $value );
+
+        return $this;
     }
 
     /**
