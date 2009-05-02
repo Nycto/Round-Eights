@@ -25,6 +25,7 @@
  * @package UnitTests
  */
 
+use cPHP\Cache;
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
@@ -51,6 +52,11 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("Unable to connect to Memcached server");
     }
 
+    public function getTestLink ()
+    {
+        return new \cPHP\Cache\Memcache(MEMCACHE_HOST, MEMCACHE_PORT);
+    }
+
     public function testConnect_error ()
     {
         $memcache = new \cPHP\Cache\Memcache("Not a real host", 1234);
@@ -58,6 +64,21 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
             $memcache->connect();
         }
         catch ( \cPHP\Exception\Memcache\Connection $err ) {}
+    }
+
+    public function testIsConnected ()
+    {
+        $memcache = $this->getTestLink();
+
+        $this->assertFalse( $memcache->isConnected() );
+
+        $this->assertSame( $memcache, $memcache->connect() );
+
+        $this->assertTrue( $memcache->isConnected() );
+
+        $this->assertSame( $memcache, $memcache->disconnect() );
+
+        $this->assertFalse( $memcache->isConnected() );
     }
 
 }

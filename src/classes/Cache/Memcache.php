@@ -92,6 +92,26 @@ class Memcache implements \cPHP\iface\Cache
     }
 
     /**
+     * Destructor...
+     *
+     * @return null
+     */
+    public function __destruct ()
+    {
+        $this->disconnect();
+    }
+
+    /**
+     * Returns whether a connection is currently open
+     *
+     * @return Boolean
+     */
+    public function isConnected ()
+    {
+        return isset($this->link);
+    }
+
+    /**
      * Opens the memcache connection
      *
      * @return \cPHP\Cache\Memcache Returns a self reference
@@ -99,7 +119,7 @@ class Memcache implements \cPHP\iface\Cache
     public function connect ()
     {
         // If we are already connected
-        if ( isset($this->link) )
+        if ( $this->isConnected() )
             return $this;
 
         $link = new \Memcache;
@@ -121,6 +141,22 @@ class Memcache implements \cPHP\iface\Cache
 
         // Now that we have verified the connection, save it
         $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * Closes this memcache connection
+     *
+     * @return \cPHP\Cache\Memcache Returns a self reference
+     */
+    function disconnect ()
+    {
+        // Only close the connection if it is open
+        if ( $this->isConnected() ) {
+            $this->link->close();
+            $this->link = null;
+        }
 
         return $this;
     }
