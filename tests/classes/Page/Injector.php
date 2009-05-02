@@ -78,7 +78,7 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
         $context = new \cPHP\Page\Context;
 
         // Set up a page and template that will be injected
-        $tpl1 = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+        $tpl1 = new \cPHP\Template\Blank;
         $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
         $sub1->expects( $this->once() )
             ->method('getContent')
@@ -86,7 +86,7 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($tpl1) );
 
         // Set up a page and template that will be injected
-        $tpl2 = $this->getMock('cPHP\iface\Template', array('display', 'render', '__toString'));
+        $tpl2 = new \cPHP\Template\Blank;
         $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
         $sub2->expects( $this->once() )
             ->method('getContent')
