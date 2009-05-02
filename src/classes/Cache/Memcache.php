@@ -87,8 +87,42 @@ class Memcache implements \cPHP\iface\Cache
         $this->persistent = \cPHP\boolval( $persistent );
 
         $this->timeout = intval( $timeout );
-        if ( $this->timeout < 0 )
+        if ( $this->timeout <= 0 )
             throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
+    }
+
+    /**
+     * Opens the memcache connection
+     *
+     * @return \cPHP\Cache\Memcache Returns a self reference
+     */
+    public function connect ()
+    {
+        // If we are already connected
+        if ( isset($this->link) )
+            return $this;
+
+        $link = new \Memcache;
+
+        // Connect with persistence, if they requested it
+        if ( $this->persistent )
+            $result = @$link->pconnect( $this->host, $this->port, $this->timeout );
+        else
+            $result = @$link->connect( $this->host, $this->port, $this->timeout );
+
+        // If an error occured while connect, translate it to an exception
+        if ( !$result ) {
+            $error = \error_get_last();
+            throw new \cPHP\Exception\Memcache\Connection(
+                    $error['message'],
+                    $error['type']
+                );
+        }
+
+        // Now that we have verified the connection, save it
+        $this->link = $link;
+
+        return $this;
     }
 
     /**

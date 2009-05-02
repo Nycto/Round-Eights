@@ -47,13 +47,17 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
 
         // Test the connection
         $memcache = new Memcache;
-        if ( !@$memcache->connect(MEMCACHE_HOST, MEMCACHE_PORT) )
+        if ( !$memcache->connect(MEMCACHE_HOST, MEMCACHE_PORT) )
             $this->markTestSkipped("Unable to connect to Memcached server");
     }
 
-    public function testConstruct ()
+    public function testConnect_error ()
     {
-        $this->markTestIncomplete();
+        $memcache = new \cPHP\Cache\Memcache("Not a real host", 1234);
+        try {
+            $memcache->connect();
+        }
+        catch ( \cPHP\Exception\Memcache\Connection $err ) {}
     }
 
 }
