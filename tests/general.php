@@ -215,7 +215,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
         $config->test();
 
         // Test the connection
-        $mysqli = new mysqli(
+        $mysqli = @new mysqli(
                 MYSQLI_HOST,
                 MYSQLI_USERNAME,
                 MYSQLI_PASSWORD,
