@@ -101,6 +101,19 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $this->assertSame( "New Data", $memcache->get("unitTest_key") );
     }
 
+    public function testGet_notSet ()
+    {
+        $memcache = $this->getTestLink();
+        $this->assertNull( $memcache->get("unitTest_notSet") );
+    }
+
+    public function testGet_BooleanFalse ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->set("unitTest_key", FALSE);
+        $this->assertFalse( $memcache->get("unitTest_key") );
+    }
+
     public function testGetForUpdate ()
     {
         $memcache = $this->getTestLink();
@@ -128,6 +141,58 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
 
         $memcache->setIfSame( $result, "New Value");
         $this->assertSame( "New Value", $memcache->get("unitTest_key") );
+    }
+
+    public function testDelete ()
+    {
+        $memcache = $this->getTestLink();
+
+        $memcache->set("unitTest_key", "Initial Data");
+
+        $this->assertSame( $memcache, $memcache->delete("unitTest_key") );
+
+        $this->assertNull( $memcache->get("unitTest_key") );
+    }
+
+    public function testAppend ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->delete("unitTest_key");
+
+        $memcache->append("unitTest_key", "first");
+        $this->assertSame("first", $memcache->get("unitTest_key"));
+
+        $memcache->append("unitTest_key", "second");
+        $this->assertSame("firstsecond", $memcache->get("unitTest_key"));
+
+        $memcache->append("unitTest_key", "third");
+        $this->assertSame("firstsecondthird", $memcache->get("unitTest_key"));
+    }
+
+    public function testPrepend ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->delete("unitTest_key");
+
+        $memcache->prepend("unitTest_key", "first");
+        $this->assertSame("first", $memcache->get("unitTest_key"));
+
+        $memcache->prepend("unitTest_key", "second");
+        $this->assertSame("secondfirst", $memcache->get("unitTest_key"));
+
+        $memcache->prepend("unitTest_key", "third");
+        $this->assertSame("thirdsecondfirst", $memcache->get("unitTest_key"));
+    }
+
+    public function testFlush ()
+    {
+        $memcache = $this->getTestLink();
+
+        $memcache->set("unitTest_key", "Value");
+
+        $this->assertSame( $memcache, $memcache->flush() );
+
+        $this->assertNull( $memcache->get("unitTest_key") );
     }
 
 }

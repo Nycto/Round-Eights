@@ -171,7 +171,7 @@ class Memcache implements \cPHP\iface\Cache
     public function set ( $key, $value )
     {
         $this->connect();
-        $this->link->set($key, $value);
+        $this->link->set( $key, serialize($value) );
         return $this;
     }
 
@@ -184,7 +184,21 @@ class Memcache implements \cPHP\iface\Cache
     public function get ( $key )
     {
         $this->connect();
-        return $this->link->get($key);
+        $result = $this->link->get($key);
+
+        if ( $result == FALSE || !is_string($result) )
+            return NULL;
+
+        // Differentiate a serialized FALSE from an unserializable object
+        if ( $result == "b:0;" )
+            return FALSE;
+
+        $result = @unserialize( $result );
+
+        if ( $result === FALSE )
+            return NULL;
+        else
+            return $result;
     }
 
     /**
@@ -215,7 +229,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param cPHP\Cache\Result $result A result object that was returned by
      *      the getForUpdate method
      * @param mixed $value The value to set
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function setIfSame ( \cPHP\Cache\Result $result, $value )
     {
@@ -233,15 +247,30 @@ class Memcache implements \cPHP\iface\Cache
     }
 
     /**
+     * Deletes a value from the cache
+     *
+     * @param String $key The value to delete
+     * @return \cPHP\Cache\Memcache Returns a self reference
+     */
+    public function delete ( $key )
+    {
+        $this->connect();
+        $this->link->delete($key);
+        return $this;
+    }
+
+    /**
      * Sets a new caching value, but only if that value doesn't exist
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function add ( $key, $value )
     {
-
+        $this->connect();
+        $this->link->add( $key, serialize($value) );
+        return $this;
     }
 
     /**
@@ -249,11 +278,13 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function replace ( $key, $value )
     {
-
+        $this->connect();
+        $this->link->replace( $key, $value );
+        return $this;
     }
 
     /**
@@ -263,11 +294,14 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to append
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function append ( $key, $value )
     {
-
+        return $this->set(
+            $key,
+            $this->get($key) . $value
+        );
     }
 
     /**
@@ -277,58 +311,52 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function prepend ( $key, $value )
     {
-
+        return $this->set(
+            $key,
+            $value . $this->get($key)
+        );
     }
 
     /**
      * Increments a given value by one
      *
-     * If a given value isn't numeric, it will be treated as 0
-     *
      * @param String $key The key for the value
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function increment ( $key )
     {
-
+        $this->connect();
+        $this->link->increment($key);
+        return $this;
     }
 
     /**
      * Decrements a given value by one
      *
-     * If a given value isn't numeric, it will be treated as 0
-     *
      * @param String $key The key for the value
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function decrement ( $key )
     {
-
-    }
-
-    /**
-     * Deletes a value from the cache
-     *
-     * @param String $key The value to delete
-     * @return Object Returns a self reference
-     */
-    public function delete ( $key )
-    {
-
+        $this->connect();
+        $this->link->decrement($key);
+        return $this;
     }
 
     /**
      * Deletes all values in the cache
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\Cache\Memcache Returns a self reference
      */
     public function flush ()
     {
-
+        $this->connect();
+        $this->link->flush();
+        return $this;
     }
 
 }
