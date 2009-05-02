@@ -162,6 +162,20 @@ class Memcache implements \cPHP\iface\Cache
     }
 
     /**
+     * Sets a new caching value, overwriting any existing values
+     *
+     * @param String $key The key for the value
+     * @param mixed $value The value to set
+     * @return \cPHP\Cache\Memcache Returns a self reference
+     */
+    public function set ( $key, $value )
+    {
+        $this->connect();
+        $this->link->set($key, $value);
+        return $this;
+    }
+
+    /**
      * Returns a cached value based on it's key
      *
      * @param String $key The value to retrieve
@@ -169,7 +183,8 @@ class Memcache implements \cPHP\iface\Cache
      */
     public function get ( $key )
     {
-
+        $this->connect();
+        return $this->link->get($key);
     }
 
     /**
@@ -184,18 +199,6 @@ class Memcache implements \cPHP\iface\Cache
      * @return Object A cPHP\Cache\Value object
      */
     public function getForUpdate ( $key )
-    {
-
-    }
-
-    /**
-     * Sets a new caching value, overwriting any existing values
-     *
-     * @param String $key The key for the value
-     * @param mixed $value The value to set
-     * @return Object Returns a self reference
-     */
-    public function set ( $key, $value )
     {
 
     }

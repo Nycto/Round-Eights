@@ -81,6 +81,26 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $this->assertFalse( $memcache->isConnected() );
     }
 
+    public function testGet ()
+    {
+        $memcache = $this->getTestLink();
+
+        $this->assertSame(
+                $memcache,
+                $memcache->set("unitTest_key", "Chunk of Data")
+            );
+
+        $this->assertSame( "Chunk of Data", $memcache->get("unitTest_key") );
+
+
+        $this->assertSame(
+                $memcache,
+                $memcache->set("unitTest_key", "New Data")
+            );
+
+        $this->assertSame( "New Data", $memcache->get("unitTest_key") );
+    }
+
 }
 
 ?>
