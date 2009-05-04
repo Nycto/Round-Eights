@@ -48,7 +48,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
 
         // Test the connection
         $memcache = new Memcache;
-        if ( !$memcache->connect(MEMCACHE_HOST, MEMCACHE_PORT) )
+        if ( !@$memcache->connect(MEMCACHE_HOST, MEMCACHE_PORT) )
             $this->markTestSkipped("Unable to connect to Memcached server");
     }
 
