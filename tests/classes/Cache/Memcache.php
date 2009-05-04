@@ -154,6 +154,26 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $this->assertNull( $memcache->get("unitTest_key") );
     }
 
+    public function testAdd ()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testReplace ()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testIncrement ()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testDecrement ()
+    {
+        $this->markTestIncomplete();
+    }
+
     public function testAppend ()
     {
         $memcache = $this->getTestLink();
