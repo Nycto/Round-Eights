@@ -260,7 +260,14 @@ class Memcache implements \cPHP\iface\Cache
     public function add ( $key, $value )
     {
         $this->connect();
-        $this->link->add( $key, $value );
+
+        // @todo Obviously, this is the preferred method. For some odd reason,
+        // though, it wasn't working. I'll have to look into this more.
+        // $this->link->add( $key, $value );
+
+        if ( !$this->get($key) )
+            $this->set( $key, $value );
+
         return $this;
     }
 
@@ -274,7 +281,14 @@ class Memcache implements \cPHP\iface\Cache
     public function replace ( $key, $value )
     {
         $this->connect();
-        $this->link->replace( $key, $value );
+
+        // @todo Obviously, this is the preferred method. For some odd reason,
+        // though, it wasn't working. I'll have to look into this more.
+        // $this->link->replace( $key, $value );
+
+        if ( $this->get($key) )
+            $this->set( $key, $value );
+
         return $this;
     }
 
