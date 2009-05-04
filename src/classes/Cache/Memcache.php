@@ -171,7 +171,7 @@ class Memcache implements \cPHP\iface\Cache
     public function set ( $key, $value )
     {
         $this->connect();
-        $this->link->set( $key, serialize($value) );
+        $this->link->set( $key, $value );
         return $this;
     }
 
@@ -186,16 +186,7 @@ class Memcache implements \cPHP\iface\Cache
         $this->connect();
         $result = $this->link->get($key);
 
-        if ( $result == FALSE || !is_string($result) )
-            return NULL;
-
-        // Differentiate a serialized FALSE from an unserializable object
-        if ( $result == "b:0;" )
-            return FALSE;
-
-        $result = @unserialize( $result );
-
-        if ( $result === FALSE )
+        if ( $result === FALSE || $result === NULL )
             return NULL;
         else
             return $result;
@@ -269,7 +260,7 @@ class Memcache implements \cPHP\iface\Cache
     public function add ( $key, $value )
     {
         $this->connect();
-        $this->link->add( $key, serialize($value) );
+        $this->link->add( $key, $value );
         return $this;
     }
 
