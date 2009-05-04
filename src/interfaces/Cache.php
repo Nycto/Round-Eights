@@ -59,9 +59,10 @@ interface Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function set ( $key, $value );
+    public function set ( $key, $value, $expire = 0 );
 
     /**
      * Sets the value for this key only if the value hasn't changed in the cache
@@ -70,27 +71,30 @@ interface Cache
      * @param cPHP\Cache\Result $result A result object that was returned by
      *      the getForUpdate method
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function setIfSame ( \cPHP\Cache\Result $result, $value );
+    public function setIfSame ( \cPHP\Cache\Result $result, $value, $expire = 0 );
 
     /**
      * Sets a new caching value, but only if that value doesn't exist
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function add ( $key, $value );
+    public function add ( $key, $value, $expire = 0 );
 
     /**
      * Sets a new caching value, but only if the value already exists
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function replace ( $key, $value );
+    public function replace ( $key, $value, $expire = 0 );
 
     /**
      * Appends a value to the end of an existing cached value.
@@ -99,9 +103,10 @@ interface Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to append
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function append ( $key, $value );
+    public function append ( $key, $value, $expire = 0 );
 
     /**
      * Prepends a value to the end of an existing cached value.
@@ -110,9 +115,10 @@ interface Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return Object Returns a self reference
      */
-    public function prepend ( $key, $value );
+    public function prepend ( $key, $value, $expire = 0 );
 
     /**
      * Increments a given value by one

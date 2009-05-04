@@ -130,6 +130,20 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $this->assertNull( $result->getHash() );
     }
 
+    public function testSet_Expire ()
+    {
+        $memcache = $this->getTestLink();
+
+        $this->assertSame(
+                $memcache,
+                $memcache->set("unitTest_key", "Expiring Data", 1)
+            );
+
+        usleep(1250000);
+
+        $this->assertNull( $memcache->get("unitTest_key") );
+    }
+
     public function testSetIfSame ()
     {
         $memcache = $this->getTestLink();

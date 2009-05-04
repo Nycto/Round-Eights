@@ -166,12 +166,13 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function set ( $key, $value )
+    public function set ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        $this->link->set( $key, $value );
+        $this->link->set( $key, $value, false, $expire );
         return $this;
     }
 
@@ -220,9 +221,10 @@ class Memcache implements \cPHP\iface\Cache
      * @param cPHP\Cache\Result $result A result object that was returned by
      *      the getForUpdate method
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function setIfSame ( \cPHP\Cache\Result $result, $value )
+    public function setIfSame ( \cPHP\Cache\Result $result, $value, $expire = 0 )
     {
         if ( $result->getCache() !== $this ) {
             throw new \cPHP\Exception\Argument(
@@ -232,7 +234,7 @@ class Memcache implements \cPHP\iface\Cache
             );
         }
 
-        $this->set( $result->getKey(), $value );
+        $this->set( $result->getKey(), $value, $expire );
 
         return $this;
     }
@@ -255,9 +257,10 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function add ( $key, $value )
+    public function add ( $key, $value, $expire = 0 )
     {
         $this->connect();
 
@@ -266,7 +269,7 @@ class Memcache implements \cPHP\iface\Cache
         // $this->link->add( $key, $value );
 
         if ( !$this->get($key) )
-            $this->set( $key, $value );
+            $this->set( $key, $value, $expire );
 
         return $this;
     }
@@ -276,9 +279,10 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function replace ( $key, $value )
+    public function replace ( $key, $value, $expire = 0 )
     {
         $this->connect();
 
@@ -287,7 +291,7 @@ class Memcache implements \cPHP\iface\Cache
         // $this->link->replace( $key, $value );
 
         if ( $this->get($key) )
-            $this->set( $key, $value );
+            $this->set( $key, $value, $expire );
 
         return $this;
     }
@@ -299,13 +303,15 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to append
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function append ( $key, $value )
+    public function append ( $key, $value, $expire = 0 )
     {
         return $this->set(
             $key,
-            $this->get($key) . $value
+            $this->get($key) . $value,
+            $expire
         );
     }
 
@@ -316,13 +322,15 @@ class Memcache implements \cPHP\iface\Cache
      *
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
+     * @param Integer $expire The lifespan of this cache value, in seconds
      * @return \cPHP\Cache\Memcache Returns a self reference
      */
-    public function prepend ( $key, $value )
+    public function prepend ( $key, $value, $expire = 0 )
     {
         return $this->set(
             $key,
-            $value . $this->get($key)
+            $value . $this->get($key),
+            $expire
         );
     }
 
