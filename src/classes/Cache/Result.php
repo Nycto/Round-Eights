@@ -36,7 +36,7 @@ class Result
     /**
      * The cache this result was pulled from
      *
-     * @var cPHP\iface\Cache
+     * @var \cPHP\iface\Cache
      */
     private $cache;
 
@@ -67,7 +67,7 @@ class Result
     /**
      * Constructor...
      *
-     * @param cPHP\iface\Cache $cache The cache instance this result was pulled from
+     * @param \cPHP\iface\Cache $cache The cache instance this result was pulled from
      * @param String $key The key used to pull this value
      * @param mixed $hash The descriptor of the current value in the cache. This
      *      will allow us to determine whether the value has changed before we
@@ -85,7 +85,7 @@ class Result
     /**
      * Returns the cache object his value was pulled from
      *
-     * @return cPHP\iface\Cache
+     * @return \cPHP\iface\Cache
      */
     public function getCache ()
     {
@@ -126,11 +126,12 @@ class Result
      * Sets the value for this key in the cache
      *
      * @param mixed $value The new value
-     * @return cPHP\Cache\Result Returns a self reference
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @return \cPHP\Cache\Result Returns a self reference
      */
-    public function set ( $value )
+    public function set ( $value, $expire = 0 )
     {
-        $this->cache->set( $this->key, $value );
+        $this->cache->set( $this->key, $value, $expire );
         return $this;
     }
 
@@ -139,11 +140,12 @@ class Result
      * since it was originally pulled
      *
      * @param mixed $value The new value
-     * @return cPHP\Cache\Result Returns a self reference
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @return \cPHP\Cache\Result Returns a self reference
      */
-    public function setIfSame ( $value )
+    public function setIfSame ( $value, $expire = 0 )
     {
-        $this->cache->setIfSame( $this, $value );
+        $this->cache->setIfSame( $this, $value, $expire );
         return $this;
     }
 

@@ -78,11 +78,31 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
         $cache = $this->getTestCache();
         $cache->expects( $this->once() )
             ->method("set")
-            ->with( $this->equalTo("Pi"), $this->equalTo(3.1415) );
+            ->with(
+                    $this->equalTo("Pi"),
+                    $this->equalTo(3.1415),
+                    $this->equalTo(0)
+                );
 
         $result = new \cPHP\Cache\Result( $cache, "Pi", "abc", 3.14);
 
         $this->assertSame( $result, $result->set(3.1415) );
+    }
+
+    public function testSet_expiration ()
+    {
+        $cache = $this->getTestCache();
+        $cache->expects( $this->once() )
+            ->method("set")
+            ->with(
+                    $this->equalTo("Pi"),
+                    $this->equalTo(3.1415),
+                    $this->equalTo(30)
+                );
+
+        $result = new \cPHP\Cache\Result( $cache, "Pi", "abc", 3.14);
+
+        $this->assertSame( $result, $result->set(3.1415, 30) );
     }
 
     public function testSetIfSame ()
@@ -93,9 +113,30 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
 
         $cache->expects( $this->once() )
             ->method("setIfSame")
-            ->with( $this->equalTo( $result ), $this->equalTo(3.1415) );
+            ->with(
+                    $this->equalTo( $result ),
+                    $this->equalTo(3.1415),
+                    $this->equalTo(0)
+                );
 
         $this->assertSame( $result, $result->setIfSame(3.1415) );
+    }
+
+    public function testSetIfSame_expiration ()
+    {
+        $cache = $this->getTestCache();
+
+        $result = new \cPHP\Cache\Result( $cache, "Pi", "abc", 3.14);
+
+        $cache->expects( $this->once() )
+            ->method("setIfSame")
+            ->with(
+                    $this->equalTo( $result ),
+                    $this->equalTo(3.1415),
+                    $this->equalTo(20)
+                );
+
+        $this->assertSame( $result, $result->setIfSame(3.1415, 20) );
     }
 
 }
