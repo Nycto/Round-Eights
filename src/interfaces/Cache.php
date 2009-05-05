@@ -50,7 +50,7 @@ interface Cache
      * prevent race conditions.
      *
      * @param String $key The value to retrieve
-     * @return Object A cPHP\Cache\Value object
+     * @return \cPHP\Cache\Result
      */
     public function getForUpdate ( $key );
 
@@ -60,7 +60,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function set ( $key, $value, $expire = 0 );
 
@@ -72,7 +72,7 @@ interface Cache
      *      the getForUpdate method
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function setIfSame ( \cPHP\Cache\Result $result, $value, $expire = 0 );
 
@@ -82,7 +82,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function add ( $key, $value, $expire = 0 );
 
@@ -92,7 +92,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function replace ( $key, $value, $expire = 0 );
 
@@ -104,7 +104,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to append
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function append ( $key, $value, $expire = 0 );
 
@@ -116,7 +116,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function prepend ( $key, $value, $expire = 0 );
 
@@ -126,7 +126,7 @@ interface Cache
      * If a given value isn't numeric, it will be treated as 0
      *
      * @param String $key The key for the value
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function increment ( $key );
 
@@ -136,7 +136,7 @@ interface Cache
      * If a given value isn't numeric, it will be treated as 0
      *
      * @param String $key The key for the value
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function decrement ( $key );
 
@@ -144,14 +144,14 @@ interface Cache
      * Deletes a value from the cache
      *
      * @param String $key The value to delete
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function delete ( $key );
 
     /**
      * Deletes all values in the cache
      *
-     * @return Object Returns a self reference
+     * @return \cPHP\iface\Cache Returns a self reference
      */
     public function flush ();
 
