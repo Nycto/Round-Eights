@@ -114,6 +114,52 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $this->assertNull( $memcache->get("unitTest_key") );
     }
 
+    public function testYield_inCache ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->set("unitTest_key", "Value");
+
+        $callback = $this->getMock('stdClass', array('__invoke'));
+        $callback->expects( $this->never() )
+            ->method("__invoke");
+
+        $this->assertSame(
+                "Value",
+                $memcache->yield("unitTest_key", 0, $callback)
+            );
+    }
+
+    public function testYield_notCached ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->delete("unitTest_key");
+
+        $callback = $this->getMock('stdClass', array('__invoke'));
+        $callback->expects( $this->once() )
+            ->method("__invoke")
+            ->will( $this->returnValue("Not Cached") );
+
+        $this->assertSame(
+                "Not Cached",
+                $memcache->yield("unitTest_key", 0, $callback)
+            );
+
+        $this->assertSame( "Not Cached", $memcache->get("unitTest_key") );
+    }
+
+    public function testYield_invalidArg ()
+    {
+        $memcache = $this->getTestLink();
+
+        try {
+            $memcache->yield("unitTest_key", 0, "This isnt callable");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must be callable", $err->getMessage() );
+        }
+    }
+
     public function testGetForUpdate ()
     {
         $memcache = $this->getTestLink();

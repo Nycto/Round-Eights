@@ -42,6 +42,19 @@ interface Cache
     public function get ( $key );
 
     /**
+     * Checks the cache for a value and returns it if it exists.
+     * Otherwise, the callback is invoked. The return value is saved
+     * to the cache and returned.
+     *
+     * @param String $key The value to retrieve
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @param Callable $callback The method to invoke if the key
+     * 		doesn't exist in the database
+     * @return mixed Returns the cached value
+     */
+    public function yield ( $key, $expire, $callback );
+
+    /**
      * Returns a cached value based on it's key
      *
      * This returns a cached value in the form of an object. This object will allow
