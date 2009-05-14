@@ -113,7 +113,10 @@ class File implements \cPHP\iface\Stream\In
      */
     public function rewind ()
     {
+        if ( is_resource($this->resource) )
+            fseek($this->resource, 0);
 
+        return $this;
     }
 
 }

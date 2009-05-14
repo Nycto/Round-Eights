@@ -99,7 +99,15 @@ class classes_stream_in_file extends PHPUnit_TestFile_Framework_TestCase
 
     public function testRewind ()
     {
-        $this->markTestIncomplete("To be written");
+        $stream = new \cPHP\Stream\In\File(
+                new \cPHP\FileSys\File( $this->file )
+            );
+
+        $this->assertSame( "This is a ", $stream->read(10) );
+
+        $this->assertSame( $stream, $stream->rewind() );
+
+        $this->assertSame( "This is a ", $stream->read(10) );
     }
 
 }
