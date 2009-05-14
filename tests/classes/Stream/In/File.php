@@ -67,7 +67,29 @@ class classes_stream_in_file extends PHPUnit_TestFile_Framework_TestCase
                 new \cPHP\FileSys\File( $this->file )
             );
 
-        $this->markTestIncomplete("To be written");
+        $this->assertSame( "This is a ", $stream->read(10) );
+        $this->assertTrue( $stream->canRead() );
+
+        $this->assertSame( "string\nof data that ", $stream->read(20) );
+        $this->assertTrue( $stream->canRead() );
+
+        $this->assertSame( "is put\nin ", $stream->read(10) );
+        $this->assertTrue( $stream->canRead() );
+
+        $this->assertSame( "the test file", $stream->read(20) );
+        $this->assertFalse( $stream->canRead() );
+        $this->assertFalse( $stream->canRead() );
+    }
+
+    public function testRead_Zero ()
+    {
+        $stream = new \cPHP\Stream\In\File(
+                new \cPHP\FileSys\File( $this->file )
+            );
+
+        $this->assertSame( "", $stream->read(0) );
+
+        $this->assertSame( "This is a ", $stream->read(10) );
     }
 
     public function testReadAll ()

@@ -71,7 +71,10 @@ class File implements \cPHP\iface\Stream\In
      */
     public function canRead ()
     {
+        if ( !is_resource($this->resource) )
+            return FALSE;
 
+        return feof( $this->resource ) ? FALSE : TRUE;
     }
 
     /**
@@ -82,7 +85,15 @@ class File implements \cPHP\iface\Stream\In
      */
     public function read ( $bytes )
     {
+        if ( !$this->canRead() )
+            return NULL;
 
+        $bytes = max( intval($bytes), 0 );
+
+        if ( $bytes == 0 )
+            return "";
+
+        return fread( $this->resource, $bytes );
     }
 
     /**
