@@ -92,9 +92,34 @@ class classes_stream_in_file extends PHPUnit_TestFile_Framework_TestCase
         $this->assertSame( "This is a ", $stream->read(10) );
     }
 
-    public function testReadAll ()
+    public function testReadAll_fromStart ()
     {
-        $this->markTestIncomplete("To be written");
+        $stream = new \cPHP\Stream\In\File(
+                new \cPHP\FileSys\File( $this->file )
+            );
+
+        $this->assertSame(
+        		"This is a string\n"
+                ."of data that is put\n"
+                ."in the test file",
+                $stream->readAll()
+            );
+    }
+
+    public function testReadAll_fromOffset ()
+    {
+        $stream = new \cPHP\Stream\In\File(
+                new \cPHP\FileSys\File( $this->file )
+            );
+
+        $stream->read(5);
+
+        $this->assertSame(
+        		"is a string\n"
+                ."of data that is put\n"
+                ."in the test file",
+                $stream->readAll()
+            );
     }
 
     public function testRewind ()

@@ -103,7 +103,10 @@ class File implements \cPHP\iface\Stream\In
      */
     public function readAll ()
     {
-
+        if ( $this->canRead() )
+            return stream_get_contents( $this->resource );
+        else
+            return NULL;
     }
 
     /**
