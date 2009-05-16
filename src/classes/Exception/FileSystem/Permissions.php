@@ -28,20 +28,20 @@
 namespace cPHP\Exception\FileSystem;
 
 /**
- * Exception class for errors while reading a file system object
+ * Exception class for file system permissions objects
  */
-class Unreadable extends \cPHP\Exception\FileSystem
+class Permissions extends \cPHP\Exception\FileSystem
 {
 
     /**
      * The title of this exception
      */
-    const TITLE = "Unreadable File System Object Error";
+    const TITLE = "File System Permissions Error";
 
     /**
      * A brief description of this error type
      */
-    const DESCRIPTION = "Errors caused because a file or directory is not readable";
+    const DESCRIPTION = "Errors caused by the permissions of a file or directory";
 
 }
 

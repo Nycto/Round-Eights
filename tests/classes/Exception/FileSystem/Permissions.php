@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_exception_filesystem_unreadable extends PHPUnit_Framework_TestCase
+class classes_exception_filesystem_permissions extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
-        $err = new \cPHP\Exception\FileSystem\Unreadable(
+        $err = new \cPHP\Exception\FileSystem\Permissions(
                 '/path/to/file.txt',
                 'Could not open file',
                 123,

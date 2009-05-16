@@ -56,7 +56,7 @@ class classes_stream_in_file extends PHPUnit_TestFile_Framework_TestCase
             );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Unreadable $err ) {
+        catch ( \cPHP\Exception\FileSystem\Permissions $err ) {
             $this->assertSame( "File is not readable", $err->getMessage() );
         }
     }

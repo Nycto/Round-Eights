@@ -39,7 +39,7 @@ class classes_stream_in_uri extends PHPUnit_TestFile_Framework_TestCase
             new \cPHP\Stream\In\URI( "This is not a file" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Unreadable $err ) {
+        catch ( \cPHP\Exception\FileSystem\Permissions $err ) {
             $this->assertSame(
                     "Could not open URI for reading",
                     $err->getMessage()
@@ -55,7 +55,7 @@ class classes_stream_in_uri extends PHPUnit_TestFile_Framework_TestCase
             new \cPHP\Stream\In\URI( $this->file );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Unreadable $err ) {
+        catch ( \cPHP\Exception\FileSystem\Permissions $err ) {
             $this->assertSame(
                     "Could not open URI for reading",
                     $err->getMessage()

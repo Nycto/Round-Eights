@@ -50,7 +50,7 @@ class URI implements \cPHP\iface\Stream\In
         $this->resource = @fopen( $uri, "r" );
 
         if ( $this->resource === FALSE ) {
-            throw new \cPHP\Exception\FileSystem\Unreadable(
+            throw new \cPHP\Exception\FileSystem\Permissions(
                     $uri,
                     "Could not open URI for reading"
                 );

@@ -41,7 +41,7 @@ class File extends \cPHP\Stream\In\URI
         $file->requirePath();
 
         if ( !$file->isReadable() ) {
-            throw new \cPHP\Exception\FileSystem\Unreadable(
+            throw new \cPHP\Exception\FileSystem\Permissions(
                     $file->getPath(),
                     "File is not readable"
                 );
