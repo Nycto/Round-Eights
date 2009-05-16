@@ -41,7 +41,7 @@ class StdOut implements \cPHP\iface\Stream\Out
      */
     public function write ( $data )
     {
-        echo $data;
+        echo \cPHP\strval( $data );
         unset( $data );
         return $this;
     }
