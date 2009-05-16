@@ -87,7 +87,7 @@ class URI implements \cPHP\iface\Stream\Out
     }
 
     /**
-     * Returns whether there is any more information to read from this stream
+     * Writes a string of data to this stream
      *
      * @param String $data The string of data to to write to this stream
      * @return \cPHP\Stream\Out\URI Returns a self reference
