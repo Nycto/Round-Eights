@@ -127,6 +127,17 @@ class classes_stream_in_uri extends PHPUnit_TestFile_Framework_TestCase
         $this->assertSame( "This is a ", $stream->read(10) );
     }
 
+    public function testClose ()
+    {
+        $stream = new \cPHP\Stream\In\URI( $this->file );
+
+        $this->assertTrue( $stream->canRead() );
+
+        $this->assertSame( $stream, $stream->close() );
+
+        $this->assertFalse( $stream->canRead() );
+    }
+
 }
 
 ?>

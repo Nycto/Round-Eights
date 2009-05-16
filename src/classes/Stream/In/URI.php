@@ -58,6 +58,16 @@ class URI implements \cPHP\iface\Stream\In
     }
 
     /**
+     * Destructor...
+     *
+     * @return null
+     */
+    public function __destruct ()
+    {
+        $this->close();
+    }
+
+    /**
      * Returns whether there is any more information to read from this stream
      *
      * @return Boolean
@@ -105,12 +115,27 @@ class URI implements \cPHP\iface\Stream\In
     /**
      * Rewinds this stream back to the beginning
      *
-     * @return \cPHP\iface\Stream\In Returns a self reference
+     * @return \cPHP\iface\Stream\In\URI Returns a self reference
      */
     public function rewind ()
     {
         if ( is_resource($this->resource) )
             fseek($this->resource, 0);
+
+        return $this;
+    }
+
+    /**
+     * Closes this resource
+     *
+     * @return \cPHP\iface\Stream\In\URI Returns a self reference
+     */
+    public function close ()
+    {
+        if ( is_resource($this->resource) ) {
+            fclose( $this->resource );
+            $this->resource = null;
+        }
 
         return $this;
     }
