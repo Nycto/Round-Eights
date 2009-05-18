@@ -73,6 +73,56 @@ class Tokenize implements \Iterator
         $this->bytes = max( \intval( $bytes ), 1 );
     }
 
+    /**
+     * Returns the current value of the iterator
+     *
+     * @return String
+     */
+    public function current()
+    {
+
+    }
+
+    /**
+     * Increments the iterator to the next value
+     *
+     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
+     */
+    public function next ()
+    {
+
+    }
+
+    /**
+     * Returns the key of the current value
+     *
+     * @return Integer
+     */
+    public function key ()
+    {
+
+    }
+
+    /**
+     * Returns whether the iterator currently has a valid value
+     *
+     * @return Boolean
+     */
+    public function valid ()
+    {
+
+    }
+
+    /**
+     * Restarts the iterator
+     *
+     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
+     */
+    public function rewind ()
+    {
+
+    }
+
 }
 
 ?>
