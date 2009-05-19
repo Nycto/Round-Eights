@@ -36,7 +36,7 @@ class classes_env_response extends PHPUnit_Framework_TestCase
     public function testHeadersSent ()
     {
         $response = new \cPHP\Env\Response;
-        $this->assertBoolean( $response->headersSent() );
+        $this->assertType( "boolean", $response->headersSent() );
     }
 
 }
