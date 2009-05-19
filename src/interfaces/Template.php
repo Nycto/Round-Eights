@@ -22,7 +22,7 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Template
  */
 
 namespace cPHP\iface;
