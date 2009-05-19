@@ -36,7 +36,7 @@ class Tokenize implements \Iterator
      *
      * @var \cPHP\iface\Stream\In
      */
-    private $Stream;
+    private $stream;
 
     /**
      * The delimiter to use when splitting the stream
@@ -53,11 +53,26 @@ class Tokenize implements \Iterator
     private $bytes;
 
     /**
-     * The buffer to read the stream into while we look for the delimiter
+     * The buffer that holds any spill off characters returned while looking
+     * for the next value
      *
      * @var String
      */
-    private $buffer;
+    private $buffer = "";
+
+    /**
+     * The current value of the iterator
+     *
+     * @var String
+     */
+    private $current;
+
+    /**
+     * The current key of the iterator
+     *
+     * @var Integer
+     */
+    private $key;
 
     /**
      * Constructor...
@@ -76,21 +91,11 @@ class Tokenize implements \Iterator
     /**
      * Returns the current value of the iterator
      *
-     * @return String
+     * @return String|NULL Returns NULL if there is no current value
      */
     public function current()
     {
-
-    }
-
-    /**
-     * Increments the iterator to the next value
-     *
-     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
-     */
-    public function next ()
-    {
-
+        return $this->current;
     }
 
     /**
@@ -100,7 +105,67 @@ class Tokenize implements \Iterator
      */
     public function key ()
     {
+        return $this->key;
+    }
 
+    /**
+     * Increments the iterator to the next value
+     *
+     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
+     */
+    public function next ()
+    {
+        // Update the key
+        if ( isset($this->key) )
+            $this->key++;
+        else
+            $this->key = 0;
+
+        // Start with any spill over from the previous read
+        $read = $this->buffer;
+
+        $pos = FALSE;
+
+        // Loop until one of the internal tests breaks
+        while ( TRUE ) {
+
+            $read = ltrim( $read, $this->delim );
+
+            $pos = \strpos( $read, $this->delim );
+
+            // If we found the delmiter among this set of data, then we
+            // can stop reading
+            if ( $pos !== FALSE )
+                break;
+
+            // If we are able to read from the stream, grab the next
+            // few bytes
+            if ( $this->stream->canRead() )
+                $read .= $this->stream->read( $this->bytes );
+            else
+                break;
+        }
+
+        // If the delimiter was found
+        if ( $pos !== FALSE ) {
+            $this->current = substr( $read, 0, $pos );
+            $this->buffer = substr( $read, $pos + strlen($this->delim) );
+        }
+
+        // If there is trailing content...
+        else if ( $read !== "" ) {
+            $this->buffer = "";
+            $this->current = $read;
+        }
+
+        // Otherwise, there is nothing left in this stream
+        else {
+            $this->buffer = "";
+            $this->current = null;
+            $this->key = null;
+        }
+
+        return $this;
     }
 
     /**
@@ -110,7 +175,7 @@ class Tokenize implements \Iterator
      */
     public function valid ()
     {
-
+        return isset( $this->current );
     }
 
     /**
@@ -120,7 +185,16 @@ class Tokenize implements \Iterator
      */
     public function rewind ()
     {
+        // Set the up the initial values for the internal state
+        $this->buffer = "";
+        $this->key = null;
+        $this->current = null;
 
+        // Rewind the stream so it can be re-read
+        $this->stream->rewind();
+
+        // Queue up the first string
+        $this->next();
     }
 
 }

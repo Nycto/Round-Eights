@@ -33,6 +33,109 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 {
 
+    public function testIterate ()
+    {
+        $stream = new \cPHP\Stream\In\String("String\nTo\nSplit");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "\n" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+    }
+
+    public function testIterate_underRead ()
+    {
+        $stream = new \cPHP\Stream\In\String("String\nTo\nSplit", 3);
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "\n" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+
+    }
+
+    public function testLongDelim ()
+    {
+        $stream = new \cPHP\Stream\In\String("StringBREAKToBREAKSplit");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "BREAK" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+    }
+
+    public function testCaseSensitivity ()
+    {
+        $stream = new \cPHP\Stream\In\String("StringBREAKbreakBREAKSplit");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "BREAK" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "break", "Split"),
+                $iter
+            );
+    }
+
+    public function testTrailingDelim ()
+    {
+        $stream = new \cPHP\Stream\In\String("String\nTo\nSplit\n\n");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "\n" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+
+
+        $stream = new \cPHP\Stream\In\String("StringBRBR");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "BR" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String"),
+                $iter
+            );
+    }
+
+    public function testLeadingDelim ()
+    {
+        $stream = new \cPHP\Stream\In\String("\n\nString\nTo\nSplit");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "\n" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String", "To", "Split"),
+                $iter
+            );
+
+
+        $stream = new \cPHP\Stream\In\String("BRBRString");
+
+        $iter = new \cPHP\Iterator\Stream\Tokenize( $stream, "BR" );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+                array("String"),
+                $iter
+            );
+    }
+
 }
 
 ?>
