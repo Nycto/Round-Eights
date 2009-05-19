@@ -554,7 +554,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
             $i++;
 
             if ( $i > $max )
-                return FALSE;
+                break;
 
             $result[ $key ] = $value;
         }
