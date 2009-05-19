@@ -1,7 +1,5 @@
 <?php
 /**
- * Core Template Class
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -28,7 +26,7 @@
 namespace cPHP\iface;
 
 /**
- * Interface to allow classes to be used as templates
+ * Interface for templates
  */
 interface Template
 {

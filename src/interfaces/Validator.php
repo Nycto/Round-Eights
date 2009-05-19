@@ -1,7 +1,5 @@
 <?php
 /**
- * Core Validator interface
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -28,7 +26,7 @@
 namespace cPHP\iface;
 
 /**
- * Basic filter definition
+ * Core validator definition
  */
 interface Validator
 {
