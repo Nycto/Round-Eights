@@ -511,6 +511,13 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
     private $value;
 
     /**
+     * This is a cache to keep from iterating over the same object multiple times
+     *
+     * @var array
+     */
+    private $cache = array();
+
+    /**
      * Asserts that the given value produces the expected result when iterated over
      *
      * @return null
@@ -540,6 +547,12 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
      */
     public function iteratorToArray ( Traversable $iterator )
     {
+        $hash = spl_object_hash( $iterator );
+
+        // First check the cache
+        if ( isset($this->cache[$hash]) )
+            return $this->cache[$hash];
+
         $max = count( $this->value );
 
         // Give them a 25% bonus to make debugging easier
@@ -558,6 +571,8 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
 
             $result[ $key ] = $value;
         }
+
+        $this->cache[$hash] = $result;
 
         return $result;
     }
