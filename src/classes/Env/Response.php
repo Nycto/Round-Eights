@@ -51,6 +51,7 @@ class Response implements \cPHP\iface\Env\Response
      */
     public function setHeader ( $header )
     {
+        // @codeCoverageIgnoreStart
         $file = null;
         $line = null;
 
@@ -64,6 +65,7 @@ class Response implements \cPHP\iface\Env\Response
         header( \cPHP\strval($header) );
 
         return $this;
+        // @codeCoverageIgnoreEnd
     }
 
 }
