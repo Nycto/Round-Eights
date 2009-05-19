@@ -32,6 +32,8 @@ require_once rtrim( __DIR__, "/" ) ."/../src/commonPHP.php";
 
 error_reporting( E_ALL | E_STRICT );
 
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+
 /**
  * Includes the config file and ensures that a set of constants exists
  */
@@ -491,6 +493,121 @@ abstract class PHPUnit_Dir_Framework_TestCase extends PHPUnit_Framework_TestCase
     public function tearDown ()
     {
         $this->delete( $this->dir );
+    }
+
+}
+
+/**
+ * Asserts that the array produced by an iterator are exactly equal to a given value
+ */
+class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
+{
+
+    /**
+     * The value the iterator should produce
+     *
+     * @var array
+     */
+    private $value;
+
+    /**
+     * Asserts that the given value produces the expected result when iterated over
+     *
+     * @return null
+     */
+    static public function assert ( array $expected, $actual )
+    {
+        PHPUnit_Framework_TestCase::assertThat(
+                $actual,
+                new self( $expected )
+            );
+    }
+
+    /**
+     * Constructor...
+     *
+     * @param Array $value The value the iterator should produce
+     */
+    public function __construct( array $value )
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * Turns an iterator into an array while preventing too much iteration
+     *
+     * @return Array
+     */
+    public function iteratorToArray ( Traversable $iterator )
+    {
+        $max = count( $this->value );
+
+        // Give them a 25% bonus to make debugging easier
+        $max *= 1.25;
+
+        $i = 0;
+
+        $result = array();
+
+        foreach ( $iterator AS $key => $value )
+        {
+            $i++;
+
+            if ( $i > $max )
+                return FALSE;
+
+            $result[ $key ] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @return bool
+     */
+    public function evaluate( $other )
+    {
+        if ( !($other instanceof Traversable) )
+            return FALSE;
+
+        return $this->iteratorToArray($other) === $this->value;
+    }
+
+    /**
+     * @param   mixed   $other The value passed to evaluate() which failed the
+     *                         constraint check.
+     * @param   string  $description A string with extra description of what was
+     *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
+     * @return String
+     */
+    protected function customFailureDescription($other, $description, $not)
+    {
+        if ( !($other instanceof Traversable) )
+            return PHPUnit_Util_Type::toString($other) ." is an instance of Traversable";
+
+        $diff = new PHPUnit_Framework_ComparisonFailure_Array(
+        	        $this->value,
+        	        $this->iteratorToArray($other)
+
+            );
+
+        return "Iteration did not produce the expected result:\n"
+            .$diff->toString();
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return "produces". PHPUnit_Util_Type::toString($this->value) ."when iterated over";
     }
 
 }
