@@ -26,10 +26,47 @@
 namespace cPHP\Soap;
 
 /**
- * Parses a soap request and delegates it to the appropriate registered command
+ * Delegates a Soap request to the appropriate registered command
  */
 class Server
 {
+
+    /**
+     * The list of registered commands
+     *
+     * @var array
+     */
+    private $commands = array();
+
+    /**
+     * Returns the list of registered command
+     *
+     * @return array Returns an array of \cPHP\iface\Soap\Command objects
+     */
+    public function getCommandList ()
+    {
+        return $this->commands;
+    }
+
+    /**
+     * Registers a new command
+     *
+     * @param String $title The name of the command this object will handle
+     * @param \cPHP\iface\Soap\Command $command The handler to invoke when
+     * 		this command is encountered
+     * @return \cPHP\Soap\Server Returns a self reference
+     */
+    public function registerCommand ( $title, \cPHP\iface\Soap\Command $command )
+    {
+        $title = \cPHP\str\stripW( $title );
+
+        if ( \cPHP\isEmpty($title) )
+            throw new \cPHP\Exception\Argument(0, "Command Title", "Must not be empty");
+
+        $this->commands[ $title ] = $command;
+
+        return $this;
+    }
 
 }
 
