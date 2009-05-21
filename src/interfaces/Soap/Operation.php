@@ -26,13 +26,13 @@
 namespace cPHP\iface\Soap;
 
 /**
- * Interface for defining a Soap Command
+ * Interface for defining a Soap Operation
  */
-interface Command
+interface Operation
 {
 
     /**
-     * Handles a soap command and returns the builder needed to construct
+     * Handles a soap operation and returns the builder needed to construct
      * the response
      *
      * @param \DOMDocument $doc The DOMDocument of the request

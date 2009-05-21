@@ -59,7 +59,7 @@ class Server
     /**
      * Returns the list of registered operations
      *
-     * @return array Returns an array of \cPHP\iface\Soap\Command objects
+     * @return array Returns an array of \cPHP\iface\Soap\Operation objects
      */
     public function getOperations ()
     {
@@ -70,11 +70,11 @@ class Server
      * Registers a new command
      *
      * @param String $title The name of the operation this object will handle
-     * @param \cPHP\iface\Soap\Command $operation The handler to invoke when
+     * @param \cPHP\iface\Soap\Operation $operation The handler to invoke when
      * 		this command is encountered
      * @return \cPHP\Soap\Server Returns a self reference
      */
-    public function register ( $title, \cPHP\iface\Soap\Command $operation )
+    public function register ( $title, \cPHP\iface\Soap\Operation $operation )
     {
         $title = \cPHP\str\stripW( $title );
 

@@ -38,11 +38,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $soap = new \cPHP\Soap\Server( "uri://example.com" );
         $this->assertSame( array(), $soap->getOperations() );
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Command');
+        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
         $this->assertSame( $soap, $soap->register("one", $cmd) );
         $this->assertSame( array("one" => $cmd), $soap->getOperations() );
 
-        $cmd2 = $this->getMock('\cPHP\iface\Soap\Command');
+        $cmd2 = $this->getMock('\cPHP\iface\Soap\Operation');
         $this->assertSame( $soap, $soap->register("two", $cmd2) );
         $this->assertSame(
                 array("one" => $cmd, "two" => $cmd2),
@@ -61,7 +61,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $soap = new \cPHP\Soap\Server( "uri://example.com" );
         $this->assertSame( array(), $soap->getOperations() );
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Command');
+        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
 
         try {
             $soap->register("  ", $cmd);
@@ -143,7 +143,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testProcess_noCommand ()
+    public function testProcess_noOperation ()
     {
         $doc = new DOMDocument;
         $doc->loadXML(
@@ -164,7 +164,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testProcess_multiCommand ()
+    public function testProcess_multiOperation ()
     {
         $doc = new DOMDocument;
         $doc->loadXML(
@@ -226,7 +226,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
         $response = $this->getMock('\cPHP\iface\XMLBuilder');
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Command');
+        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
         $cmd->expects( $this->once() )
             ->method( 'getResponseBuilder' )
             ->with(
