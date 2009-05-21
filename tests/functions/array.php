@@ -476,6 +476,13 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertSame( 1, \cPHP\ary\first(range(1, 20)) );
     }
 
+    public function testLast ()
+    {
+        $this->assertNull( \cPHP\ary\last(array()) );
+        $this->assertSame( "value", \cPHP\ary\last(array("value")) );
+        $this->assertSame( 20, \cPHP\ary\last(range(1, 20)) );
+    }
+
 }
 
 ?>

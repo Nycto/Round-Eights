@@ -409,4 +409,18 @@ function first ( array $array )
         return reset( $array );
 }
 
+/**
+ * Returns the last element of an array
+ *
+ * @param Array $array The array to return the last element of
+ * @return mixed Returns the last element. Returns NULL if the array is empty.
+ */
+function last ( array $array )
+{
+    if ( count($array) == 0 )
+        return NULL;
+    else
+        return end( $array );
+}
+
 ?>
