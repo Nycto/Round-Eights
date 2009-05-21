@@ -48,8 +48,6 @@ class classes_exception_interrupt_soap extends PHPUnit_Framework_TestCase
                 array(),
                 $err->getData()
             );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }

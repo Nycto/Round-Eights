@@ -35,6 +35,17 @@ class Soap extends \cPHP\Exception\Interrupt
 {
 
     /**
+     * Constructor
+     *
+     * @param Integer $code The error code
+     * @param String $message The error message
+     */
+    public function __construct( $message, $code )
+    {
+        parent::__construct($message, $code);
+    }
+
+    /**
      * The title of this exception
      */
     const TITLE = "Soap Fault Interruption";
