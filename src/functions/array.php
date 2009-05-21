@@ -395,4 +395,18 @@ function without ( array $array, $value )
     return array_diff( $array, $value );
 }
 
+/**
+ * Returns the first element of an array
+ *
+ * @param Array $array The array to return the first element of
+ * @return mixed Returns the first element. Returns NULL if the array is empty.
+ */
+function first ( array $array )
+{
+    if ( count($array) == 0 )
+        return NULL;
+    else
+        return reset( $array );
+}
+
 ?>

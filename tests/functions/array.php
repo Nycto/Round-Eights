@@ -469,6 +469,13 @@ class functions_array extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testFirst ()
+    {
+        $this->assertNull( \cPHP\ary\first(array()) );
+        $this->assertSame( "value", \cPHP\ary\first(array("value")) );
+        $this->assertSame( 1, \cPHP\ary\first(range(1, 20)) );
+    }
+
 }
 
 ?>
