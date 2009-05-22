@@ -39,46 +39,64 @@ abstract class Link implements \cPHP\iface\DB\Link
 
     /**
      * To be overridden, this is the PHP extension required for this interface to work
+     *
+     * @var String
      */
     const PHP_EXTENSION = FALSE;
 
     /**
      * Whether to open a persistent Link
+     *
+     * @var Boolean
      */
     private $persistent = FALSE;
 
     /**
      * Whether to force a new Link
+     *
+     * @var Boolean
      */
     private $forceNew = FALSE;
 
     /**
      * Log-in username
+     *
+     * @var String
      */
     private $username;
 
     /**
      * Log-in password
+     *
+     * @var String
      */
     private $password;
 
     /**
      * Database server to connect to
+     *
+     * @var String
      */
     private $host = "localhost";
 
     /**
      * The server port to connect to
+     *
+     * @var String
      */
     private $port;
 
     /**
      * The database to select
+     *
+     * @var String
      */
     private $database;
 
     /**
      * Once connected, this is the Link resource
+     *
+     * @var Resource
      */
     private $resource;
 
