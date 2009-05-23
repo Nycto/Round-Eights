@@ -45,7 +45,8 @@ interface Link
      *
      * When given a string, it escapes the string and puts quotes around it. When
      * given a number, it returns the number as is. When given a boolean value,
-     * it returns 0 or 1. When given a NULL value, it returns the word NULL as a string.
+     * it returns 0 or 1. When given a NULL value, it returns the word NULL as
+     * a string.
      *
      * If this function is given an array, it will apply itself to every value
      * in the array and return the array.
@@ -59,17 +60,28 @@ interface Link
     /**
      * Escapes a variable to be used in a query
      *
-     * This function works almost exactly like cDB::quote except that it does
+     * This function works almost exactly like quote() except that it does
      * not add quotation marks to strings. It just escapes each value.
      *
      * If this function is given an array, it will apply itself to every value
      * in the array and return that array.
      *
-     * @param mixed $value The value to quote
+     * @param mixed $value The value to escape
      * @param Boolean $allowNull Whether to allow
      * @return String|Array
      */
     public function escape ( $value, $allowNull = TRUE );
+
+    /**
+     * Escapes a string to be used in a query
+     *
+     * If this function is given an array, it will apply itself to every value
+     * in the array and return that array.
+     *
+     * @param String $value The value to escape
+     * @return String|Array
+     */
+    public function escapeString ( $value );
 
 }
 
