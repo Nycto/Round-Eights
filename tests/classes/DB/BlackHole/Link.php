@@ -33,6 +33,27 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
 {
 
+    public function testQuery ()
+    {
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame( $link, $link->query("SELECT * FROM table") );
+    }
+
+    public function testEscapeString ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testEscape ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testQuote ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>

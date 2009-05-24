@@ -26,7 +26,7 @@
 namespace cPHP\DB\BlackHole;
 
 /**
- * BlackHole Database Link
+ * A Database connection that simply throws away any input it is given
  */
 class Link implements \cPHP\iface\DB\Link
 {
@@ -36,11 +36,25 @@ class Link implements \cPHP\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @result Object Returns a result object
+     * @returns \cPHP\DB\BlackHole\Link Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
+        return $this;
+    }
 
+    /**
+     * Escapes a string to be used in a query
+     *
+     * If this function is given an array, it will apply itself to every value
+     * in the array and return that array.
+     *
+     * @param String $value The value to escape
+     * @return String|Array
+     */
+    public function escapeString ( $value )
+    {
+        return addslashes( $value );
     }
 
     /**
@@ -59,7 +73,11 @@ class Link implements \cPHP\iface\DB\Link
      */
     public function quote ( $value, $allowNull = TRUE )
     {
-
+        return self::cleanseValue(
+                $value,
+                $allowNull,
+                array( $this, "escapeString" )
+            );
     }
 
     /**
@@ -77,7 +95,14 @@ class Link implements \cPHP\iface\DB\Link
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-
+        $self = $this;
+        return self::cleanseValue(
+                $value,
+                $allowNull,
+                function ($value) use ( $self ) {
+                    return "'". $self->escapeString($value) ."'";
+                }
+            );
     }
 
 }
