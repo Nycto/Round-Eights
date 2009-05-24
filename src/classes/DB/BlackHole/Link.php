@@ -73,10 +73,13 @@ class Link implements \cPHP\iface\DB\Link
      */
     public function quote ( $value, $allowNull = TRUE )
     {
-        return self::cleanseValue(
+        $self = $this;
+        return \cPHP\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
-                array( $this, "escapeString" )
+                function ($value) use ( $self ) {
+                    return "'". $self->escapeString($value) ."'";
+                }
             );
     }
 
@@ -95,13 +98,10 @@ class Link implements \cPHP\iface\DB\Link
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-        $self = $this;
-        return self::cleanseValue(
+        return \cPHP\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
-                function ($value) use ( $self ) {
-                    return "'". $self->escapeString($value) ."'";
-                }
+                array( $this, "escapeString" )
             );
     }
 

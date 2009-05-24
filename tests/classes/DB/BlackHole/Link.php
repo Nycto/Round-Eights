@@ -47,12 +47,16 @@ class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
 
     public function testEscape ()
     {
-        $this->markTestIncomplete("To be written");
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame( "\\'escape\\'", $link->escape("'escape'") );
+        $this->assertSame( "100", $link->escape(100) );
     }
 
     public function testQuote ()
     {
-        $this->markTestIncomplete("To be written");
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame( "'\\'escape\\''", $link->quote("'escape'") );
+        $this->assertSame( "100", $link->quote(100) );
     }
 
 }
