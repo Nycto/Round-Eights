@@ -115,6 +115,20 @@ abstract class LinkWrap implements \cPHP\iface\DB\Link
         return $this->link->escape( $value, $allowNull );
     }
 
+    /**
+     * Escapes a string to be used in a query
+     *
+     * If this function is given an array, it will apply itself to every value
+     * in the array and return that array.
+     *
+     * @param String $value The value to escape
+     * @return String|Array
+     */
+    public function escapeString ( $value )
+    {
+        return $this->link->escapeString( $value );
+    }
+
 }
 
 ?>

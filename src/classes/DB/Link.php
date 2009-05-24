@@ -116,6 +116,46 @@ abstract class Link implements \cPHP\iface\DB\Link
     }
 
     /**
+     * Prepares a value for a SQL statement
+     *
+     * @param mixed $value The value to prepare
+     * @param Boolean $allowNull Whether NULL is an acceptable value
+     * @param Callback $onString The function to invoke if the value
+     * 		is a string that needs to be escaped
+     * @return String Returns the cleansed value
+     */
+    static public function cleanseValue ( $value, $allowNull, $onString )
+    {
+        if ( !is_callable($onString) )
+            throw new \cPHP\Exception\Argument(0, "onString Callback", "Must be Callable");
+
+        if ( is_array($value) ) {
+            $result = array();
+            foreach ( $value AS $key => $toCleanse ) {
+                $result[ $key ] = self::cleanseValue($toCleanse, $allowNull, $onString);
+            }
+            return $result;
+        }
+
+        $value = \cPHP\reduce($value);
+
+        if (is_bool($value))
+            return $value ? "1" : "0";
+
+        else if ( is_int($value) || is_float($value) )
+            return \strval( $value );
+
+        else if ( is_null($value) )
+            return $allowNull ? "NULL" : call_user_func( $onString, "" );
+
+        else if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
+            return $value;
+
+        else
+            return call_user_func( $onString, $value );
+    }
+
+    /**
      * Constructor...
      *
      * @param mixed $input This can be either a URI or an associative array
@@ -153,14 +193,6 @@ abstract class Link implements \cPHP\iface\DB\Link
      * @return Resource Returns a database connection resource
      */
     abstract protected function rawConnect ();
-
-    /**
-     * Used to escape a string for use in a query.
-     *
-     * @param String $value The string to escape
-     * @return String An escaped version of the string
-     */
-    abstract protected function rawEscape ( $value );
 
     /**
      * Execute a query and return a result object
@@ -678,27 +710,14 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function quote ( $value, $allowNull = TRUE )
     {
-
-        if ( is_array( $value ) )
-            return array_map( array($this, "quote"), $value );
-
-        $value = \cPHP\reduce($value);
-
-        if (is_bool($value))
-            return $value ? "1" : "0";
-
-        else if ( is_int($value) || is_float($value) )
-            return \strval( $value );
-
-        else if ( is_null($value) )
-            return $allowNull ? "NULL" : "''";
-
-        else if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
-            return $value;
-
-        else
-            return "'". $this->rawEscape($value) ."'";
-
+        $self = $this;
+        return self::cleanseValue(
+                $value,
+                $allowNull,
+                function ($value) use ( $self ) {
+                    return "'". $self->escapeString($value) ."'";
+                }
+            );
     }
 
     /**
@@ -716,24 +735,11 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-
-        if ( is_array( $value ) )
-            return array_map( array($this, "escape"), $value );
-
-        $value = \cPHP\reduce($value);
-
-        if (is_bool($value))
-            return $value ? "1" : "0";
-
-        else if ( is_int($value) || is_float($value) )
-            return \strval( $value );
-
-        else if ( is_null($value) )
-            return $allowNull ? "NULL" : "";
-
-        else
-            return $this->rawEscape($value);
-
+        return self::cleanseValue(
+                $value,
+                $allowNull,
+                array( $this, "escapeString" )
+            );
     }
 
 }

@@ -37,7 +37,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "\cPHP\DB\Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected"),
+                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected"),
                 $args
             );
     }
@@ -54,6 +54,73 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $this->assertSame( "db.com", $mock->getHost() );
         $this->assertSame( 42, $mock->getPort() );
+    }
+
+
+    public function testCleanseValue_nonStrings ()
+    {
+        $this->assertSame(
+        		"1",
+                \cPHP\DB\Link::cleanseValue( 1, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"10.5",
+                \cPHP\DB\Link::cleanseValue( 10.5, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"0",
+                \cPHP\DB\Link::cleanseValue( 00, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"1",
+                \cPHP\DB\Link::cleanseValue( true, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"0",
+                \cPHP\DB\Link::cleanseValue( false, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"NULL",
+                \cPHP\DB\Link::cleanseValue( null, true, function () {} )
+            );
+
+        $this->assertSame(
+        		"100",
+                \cPHP\DB\Link::cleanseValue( "100", true, function () {} )
+            );
+
+        $this->assertSame(
+        		"0.5",
+                \cPHP\DB\Link::cleanseValue( "0.5", true, function () {} )
+            );
+
+        $this->assertSame(
+        		".5",
+                \cPHP\DB\Link::cleanseValue( ".5", true, function () {} )
+            );
+
+        $this->assertSame(
+    		"",
+            \cPHP\DB\Link::cleanseValue(
+        		null,
+                false,
+                function ( $value ) { return $value; }
+            )
+        );
+
+        $this->assertSame(
+    		"escaped string",
+            \cPHP\DB\Link::cleanseValue(
+        		"string",
+                false,
+                function ( $value ) { return "escaped ". $value; }
+            )
+        );
     }
 
     public function testIsSelect ()
@@ -435,7 +502,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
         $mock->expects( $this->at( 0 ) )
@@ -453,7 +520,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $mock = $this->getMock(
                 "\cPHP\DB\Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "isConnected", "getLink")
+                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
         $mock->expects( $this->at( 0 ) )
@@ -530,9 +597,11 @@ class classes_db_link extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testQuote ()
+    public function testQuote_nonStrings ()
     {
         $mock = $this->getMockLink();
+        $mock->expects( $this->never() )
+            ->method("quoteString");
 
         $this->assertSame( "1", $mock->quote( 1 ) );
         $this->assertSame( "10.5", $mock->quote( 10.5 ) );
@@ -542,45 +611,69 @@ class classes_db_link extends PHPUnit_Framework_TestCase
         $this->assertSame( "0", $mock->quote( false ) );
 
         $this->assertSame( "NULL", $mock->quote( null ) );
-        $this->assertSame( "''", $mock->quote( null, FALSE ) );
 
+        // Now look for strings that can be treated as numbers
         $this->assertSame( "100", $mock->quote( "100" ) );
         $this->assertSame( "0.5", $mock->quote( "0.5" ) );
         $this->assertSame( ".5", $mock->quote( ".5" ) );
+    }
 
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("+0123.45e6") )
-            ->will( $this->returnValue("+0123.45e6") );
-        $this->assertSame( "'+0123.45e6'", $mock->quote( "+0123.45e6" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("0xFF") )
-            ->will( $this->returnValue("0xFF") );
-        $this->assertSame( "'0xFF'", $mock->quote( "0xFF" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("+5") )
-            ->will( $this->returnValue("+5") );
-        $this->assertSame( "'+5'", $mock->quote( "+5" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("string thing") )
-            ->will( $this->returnValue("string thing") );
-        $this->assertSame( "'string thing'", $mock->quote( "string thing" ) );
-
+    public function testQuote_array ()
+    {
+        $mock = $this->getMockLink();
         $this->assertSame(
                 array("5", "5.5"),
                 $mock->quote(array(5, 5.5))
             );
     }
 
-    public function testEscape ()
+    public function testQuote_Strings ()
     {
         $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("string thing") )
+            ->will( $this->returnValue("quoted thing") );
+        $this->assertSame( "'quoted thing'", $mock->quote( "string thing" ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("") )
+            ->will( $this->returnValue("") );
+        $this->assertSame( "''", $mock->quote( null, FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("+0123.45e6") )
+            ->will( $this->returnValue("+0123.45e6") );
+        $this->assertSame( "'+0123.45e6'", $mock->quote( "+0123.45e6", FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("0xFF") )
+            ->will( $this->returnValue("0xFF") );
+        $this->assertSame( "'0xFF'", $mock->quote( "0xFF", FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("+5") )
+            ->will( $this->returnValue("+5") );
+        $this->assertSame( "'+5'", $mock->quote( "+5", FALSE ) );
+    }
+
+    public function testEscape_nonStrings ()
+    {
+        $mock = $this->getMockLink();
+        $mock->expects( $this->never() )
+            ->method("escapeString");
 
         $this->assertSame( "1", $mock->escape( 1 ) );
         $this->assertSame( "10.5", $mock->escape( 10.5 ) );
@@ -590,54 +683,62 @@ class classes_db_link extends PHPUnit_Framework_TestCase
         $this->assertSame( "0", $mock->escape( false ) );
 
         $this->assertSame( "NULL", $mock->escape( null ) );
-        $this->assertSame( "", $mock->escape( null, FALSE ) );
 
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("100") )
-            ->will( $this->returnValue("100") );
+        // Now look for strings that can be treated as numbers
         $this->assertSame( "100", $mock->escape( "100" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("0.5") )
-            ->will( $this->returnValue("0.5") );
         $this->assertSame( "0.5", $mock->escape( "0.5" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo(".5") )
-            ->will( $this->returnValue(".5") );
         $this->assertSame( ".5", $mock->escape( ".5" ) );
+    }
 
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("+0123.45e6") )
-            ->will( $this->returnValue("+0123.45e6") );
-        $this->assertSame( "+0123.45e6", $mock->escape( "+0123.45e6" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("0xFF") )
-            ->will( $this->returnValue("0xFF") );
-        $this->assertSame( "0xFF", $mock->escape( "0xFF" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("+5") )
-            ->will( $this->returnValue("+5") );
-        $this->assertSame( "+5", $mock->escape( "+5" ) );
-
-        $mock->expects( $this->at(0) )
-            ->method("rawEscape")
-            ->with( $this->equalTo("string thing") )
-            ->will( $this->returnValue("string thing") );
-        $this->assertSame( "string thing", $mock->escape( "string thing" ) );
-
+    public function testEscape_array ()
+    {
+        $mock = $this->getMockLink();
         $this->assertSame(
                 array("5", "5.5"),
                 $mock->escape(array(5, 5.5))
             );
+    }
+
+    public function testEscape_Strings ()
+    {
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("string thing") )
+            ->will( $this->returnValue("escaped thing") );
+        $this->assertSame( "escaped thing", $mock->escape( "string thing" ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("") )
+            ->will( $this->returnValue("") );
+        $this->assertSame( "", $mock->escape( null, FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("+0123.45e6") )
+            ->will( $this->returnValue("+0123.45e6") );
+        $this->assertSame( "+0123.45e6", $mock->escape( "+0123.45e6", FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("0xFF") )
+            ->will( $this->returnValue("0xFF") );
+        $this->assertSame( "0xFF", $mock->escape( "0xFF", FALSE ) );
+
+
+        $mock = $this->getMockLink();
+        $mock->expects( $this->once() )
+            ->method("escapeString")
+            ->with( $this->equalTo("+5") )
+            ->will( $this->returnValue("+5") );
+        $this->assertSame( "+5", $mock->escape( "+5", FALSE ) );
     }
 
 }

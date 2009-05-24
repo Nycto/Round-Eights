@@ -37,7 +37,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock(
                 "\cPHP\DB\Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "getIdentifier")
+                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "getIdentifier")
             );
 
         $link->expects( $this->once() )
@@ -66,7 +66,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock(
                 "\cPHP\DB\Link",
-                array("rawConnect", "rawDisconnect", "rawEscape", "rawQuery", "rawIsConnected", "getIdentifier")
+                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "getIdentifier")
             );
 
         $link->expects( $this->once() )

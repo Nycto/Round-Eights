@@ -58,17 +58,30 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
         $this->assertTrue( $link->isConnected() );
     }
 
-    public function testEscape ()
+    public function testEscapeString ()
     {
         $link = $this->getLink();
 
         // Escape without a connection
-        $this->assertSame("This \\'is\\' a string", $link->escape("This 'is' a string"));
+        $this->assertSame(
+        		"This \\'is\\' a string",
+                $link->escapeString("This 'is' a string")
+            );
 
         $link->getLink();
 
         // Escape WITH a connection
-        $this->assertSame("This \\'is\\' a string", $link->escape("This 'is' a string"));
+        $this->assertSame(
+        		"This \\'is\\' a string",
+                $link->escapeString("This 'is' a string")
+            );
+
+
+        // Escape an array
+        $this->assertSame(
+        		array( "This \\'is\\' a string" ),
+                $link->escapeString( array("This 'is' a string") )
+            );
     }
 
     public function testQuery_read ()

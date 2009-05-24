@@ -35,16 +35,12 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testQuery ()
     {
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
-        $Link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
-
-        $query = new \cPHP\DB\LinkWrap\Querier( $Link );
+        $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->returnValue("Result Set") );
@@ -52,7 +48,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $this->assertSame( "Result Set", $query->query("SELECT * FROM table") );
 
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(5) )
             ->will( $this->returnValue("Result Set") );
@@ -60,7 +56,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $this->assertSame( "Result Set", $query->query("SELECT * FROM table", 5) );
 
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->throwException(
@@ -76,7 +72,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         }
 
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("query")
             ->with(
                     $this->equalTo("SELECT * FROM table"),
@@ -93,14 +89,11 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testBegin ()
     {
-        $Link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
-        $query = new \cPHP\DB\LinkWrap\Querier( $Link );
+        $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
-        $Link->expects( $this->once() )
+        $link->expects( $this->once() )
             ->method("query")
             ->with( $this->equalTo("BEGIN") )
             ->will( $this->returnValue("Result Set") );
@@ -110,14 +103,11 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCommit ()
     {
-        $Link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
-        $query = new \cPHP\DB\LinkWrap\Querier( $Link );
+        $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
-        $Link->expects( $this->once() )
+        $link->expects( $this->once() )
             ->method("query")
             ->with( $this->equalTo("COMMIT") )
             ->will( $this->returnValue("Result Set") );
@@ -127,14 +117,11 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testRollBack ()
     {
-        $Link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
-        $query = new \cPHP\DB\LinkWrap\Querier( $Link );
+        $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
-        $Link->expects( $this->once() )
+        $link->expects( $this->once() )
             ->method("query")
             ->with( $this->equalTo("ROLLBACK") )
             ->will( $this->returnValue("Result Set") );
@@ -144,21 +131,17 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetFieldList ()
     {
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
-        $Link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
-
-        $query = new \cPHP\DB\LinkWrap\Querier( $Link );
+        $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("quote")
             ->with( $this->equalTo("value") )
             ->will( $this->returnValue("'value'") );
 
-        $Link->expects( $this->at(1) )
+        $link->expects( $this->at(1) )
             ->method("quote")
             ->with( $this->equalTo("wakka") )
             ->will( $this->returnValue("'wakka'") );
@@ -168,7 +151,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
                 "`data` = 'value', `label` = 'wakka'"
             );
 
-        $Link->expects( $this->at(0) )
+        $link->expects( $this->at(0) )
             ->method("quote")
             ->with( $this->equalTo(5) )
             ->will( $this->returnValue("5") );
@@ -190,11 +173,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_Errors ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -218,11 +197,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_Success ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -251,11 +226,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_ReturnFalse ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -281,11 +252,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_Errors ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -309,11 +276,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_NoWhere ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -342,11 +305,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_WithWhere ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -375,11 +334,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_WrongResult ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -401,11 +356,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_valid ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -439,11 +390,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_otherRow ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -477,11 +424,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_noResults ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -512,11 +455,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_errors ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -532,11 +471,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_wrongResult ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -558,11 +493,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_nonArray ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",
@@ -587,11 +518,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_noField ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",
@@ -616,11 +543,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_array ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",
@@ -642,11 +565,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_object ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",
@@ -670,11 +589,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_errors ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = new \cPHP\DB\LinkWrap\Querier( $link );
 
@@ -690,11 +605,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_valid ()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",
@@ -713,11 +624,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_withWhere()
     {
-
-        $link = $this->getMock(
-                "\cPHP\iface\DB\Link",
-                array("query", "quote", "escape")
-            );
+        $link = $this->getMock( "\cPHP\iface\DB\Link" );
 
         $query = $this->getMock(
                 "\cPHP\DB\LinkWrap\Querier",

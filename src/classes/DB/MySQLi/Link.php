@@ -90,8 +90,13 @@ class Link extends \cPHP\DB\Link
      * @param String $value The string to escape
      * @return String An escaped version of the string
      */
-    protected function rawEscape ( $value )
+    public function escapeString ( $value )
     {
+        if ( is_array( $value ) )
+            return array_map( array($this, "escapeString"), $value );
+
+        $value = \cPHP\strval($value);
+
         // Don't force a connection just to escape a string
         if ( $this->isConnected() )
             return $this->getLink()->real_escape_string( $value );
