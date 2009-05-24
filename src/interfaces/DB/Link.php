@@ -36,7 +36,7 @@ interface Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @result Object Returns a result object
+     * @returns \cPHP\iface\DB\Link Returns a result object
      */
     public function query ( $query, $flags = 0 );
 
