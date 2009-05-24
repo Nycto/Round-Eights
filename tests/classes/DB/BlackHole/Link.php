@@ -41,7 +41,8 @@ class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
 
     public function testEscapeString ()
     {
-        $this->markTestIncomplete("To be written");
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame( "\\'escape\\'", $link->escapeString("'escape'") );
     }
 
     public function testEscape ()
