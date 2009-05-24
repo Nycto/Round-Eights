@@ -60,7 +60,7 @@ interface Field
      * Applies the validator to the value in this instance and returns an
      * instance of Validator Results.
      *
-     * @result object An instance of validator results
+     * @return object An instance of validator results
      */
     public function validate ();
 

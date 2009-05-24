@@ -277,7 +277,7 @@ abstract class Field implements \cPHP\iface\Form\Field
      *
      * This will apply the validator to the filtered value
      *
-     * @result \cPHP\Validator\Results
+     * @return \cPHP\Validator\Results
      */
     public function validate ()
     {

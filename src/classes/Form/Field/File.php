@@ -82,7 +82,7 @@ class File extends \cPHP\Form\Field
      *
      * This will apply the validator to the filtered value
      *
-     * @result object An instance of validator results
+     * @return object An instance of validator results
      */
     public function validate ()
     {

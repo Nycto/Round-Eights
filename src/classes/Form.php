@@ -347,7 +347,7 @@ class Form implements \Countable
      *
      * This does NOT include the results from each field.
      *
-     * @result \cPHP\Validator\Results
+     * @return \cPHP\Validator\Results
      */
     public function validateForm ()
     {

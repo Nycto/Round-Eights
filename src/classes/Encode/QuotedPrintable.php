@@ -38,7 +38,7 @@ class QuotedPrintable implements \cPHP\iface\Encoder
      * Encodes a string
      *
      * @param mixed $value The value to encode
-     * @result mixed The result of the encoding process
+     * @return mixed The result of the encoding process
      */
     public function encode ( $string )
     {
@@ -49,7 +49,7 @@ class QuotedPrintable implements \cPHP\iface\Encoder
      * Decodes an encoded string
      *
      * @param mixed $value The value to decode
-     * @result mixed The original, unencoded value
+     * @return mixed The original, unencoded value
      */
     public function decode ( $string )
     {

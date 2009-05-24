@@ -35,7 +35,7 @@ interface Validator
      * Takes a value, processes it, and returns an instance of Validator Results
      *
      * @param mixed $value The value to validate
-     * @result object An instance of validator results
+     * @return object An instance of validator results
      */
     public function validate ( $value );
 

@@ -108,7 +108,7 @@ class Link extends \cPHP\DB\Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return Object Returns a \cPHP\DB\Result object
+     * @return \cPHP\DB\Result Returns a result object
      */
     protected function rawQuery ( $query )
     {

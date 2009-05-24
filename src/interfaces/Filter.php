@@ -35,7 +35,7 @@ interface Filter
      * Takes a value, processes it in a standard way and returns the result
      *
      * @param mixed $value The value to filter
-     * @result mixed The result of the filtering process
+     * @return mixed The result of the filtering process
      */
     public function filter ( $value );
 
