@@ -28,7 +28,7 @@ namespace cPHP\iface\MetaDB;
 /**
  * The basic implementation of a database column
  */
-interface Field
+interface Column
 {
 
     /**
