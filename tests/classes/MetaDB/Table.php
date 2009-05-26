@@ -33,6 +33,30 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_metadb_table extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        try {
+            new \cPHP\MetaDB\Table("", "name");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+
+        try {
+            new \cPHP\MetaDB\Table("name", "");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+
+        $this->assertSame( "dbName", $tbl->getDB() );
+        $this->assertSame( "tblName", $tbl->getTable() );
+    }
+
 }
 
 ?>

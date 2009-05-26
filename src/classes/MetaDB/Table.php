@@ -31,6 +31,68 @@ namespace cPHP\MetaDB;
 class Table
 {
 
+    /**
+     * The database this table belongs to
+     *
+     * @var String
+     */
+    private $db;
+
+    /**
+     * The name of this table
+     *
+     * @var String
+     */
+    private $table;
+
+    /**
+     * The columns in this table
+     *
+     * @var array An array of \cPHP\iface\MetaDB\Column objects
+     */
+    private $columns = array();
+
+    /**
+     * Constructor...
+     *
+     * @param String $db The name of the database this table is in
+     * @param String $table The name of the table in the database
+     */
+    public function __construct ( $db, $table )
+    {
+        $db = trim( trim( \cPHP\strval($db) ), "`" );
+        $table = trim( trim( \cPHP\strval($table) ), "`" );
+
+        if ( \cPHP\isEmpty($db) )
+            throw new \cPHP\Exception\Argument( 0, "DB Name", "Must not be empty" );
+
+        if ( \cPHP\isEmpty($table) )
+            throw new \cPHP\Exception\Argument( 1, "Table Name", "Must not be empty" );
+
+        $this->db = $db;
+        $this->table = $table;
+    }
+
+    /**
+     * Returns the name of the database this table is in
+     *
+     * @return String
+     */
+    public function getDB ()
+    {
+        return $this->db;
+    }
+
+    /**
+     * Returns the name of the table
+     *
+     * @return String
+     */
+    public function getTable ()
+    {
+        return $this->table;
+    }
+
 }
 
 ?>
