@@ -53,6 +53,13 @@ class Table
     private $columns = array();
 
     /**
+     * The primary key for this table
+     *
+     * @var \cPHP\iface\MetaDB\Column
+     */
+    private $primary;
+
+    /**
      * Constructor...
      *
      * @param String $db The name of the database this table is in
@@ -113,6 +120,34 @@ class Table
     {
         if ( !in_array($column, $this->columns, true) )
             $this->columns[] = $column;
+
+        return $this;
+    }
+
+    /**
+     * Returns the primary key of this table
+     *
+     * @return \cPHP\iface\MetaDB\Column Returns NULL if no primary
+     * 		key has been set
+     */
+    public function getPrimary ()
+    {
+        return $this->primary;
+    }
+
+    /**
+     * Sets the primary key for this table
+     *
+     * @param \cPHP\iface\MetaDB\Column $column The new primary key
+     * @return \cPHP\MetaDB\Table Returns a self reference
+     */
+    public function setPrimary ( \cPHP\iface\MetaDB\Column $column )
+    {
+        $this->primary = $column;
+
+        // If the primary hasn't been registered yet, add it to the columns
+        if ( !in_array($column, $this->columns, true) )
+            array_unshift( $this->columns, $column );
 
         return $this;
     }

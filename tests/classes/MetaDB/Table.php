@@ -72,8 +72,46 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
 
+
         $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+    }
+
+    public function testPrimary_preRegistered ()
+    {
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $this->assertNull( $tbl->getPrimary() );
+
+        $primary = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->addColumn( $primary ) );
+        $this->assertSame( array( $primary ), $tbl->getColumns() );
+
+        $this->assertSame( $tbl, $tbl->setPrimary( $primary ) );
+        $this->assertSame( $primary, $tbl->getPrimary() );
+        $this->assertSame( array( $primary ), $tbl->getColumns() );
+    }
+
+    public function testPrimary_register ()
+    {
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $this->assertNull( $tbl->getPrimary() );
+
+
+        // Add other fields to the table
+        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
+
+        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->addColumn( $fld2 ) );
+
+        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+
+
+        // Now add the primary key
+        $primary = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->setPrimary( $primary ) );
+        $this->assertSame( $primary, $tbl->getPrimary() );
+        $this->assertSame( array( $primary, $fld1, $fld2 ), $tbl->getColumns() );
     }
 
 }
