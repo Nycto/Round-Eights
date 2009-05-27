@@ -93,6 +93,30 @@ class Table
         return $this->table;
     }
 
+    /**
+     * Returns the columns registered in this table
+     *
+     * @return array Returns an array of \cPHP\iface\MetaDB\Column objects
+     */
+    public function getColumns ()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Adds a new column to this table
+     *
+     * @param \cPHP\iface\MetaDB\Column $column The db column to add
+     * @return \cPHP\MetaDB\Table Returns a self reference
+     */
+    public function addColumn ( \cPHP\iface\MetaDB\Column $column )
+    {
+        if ( !in_array($column, $this->columns, true) )
+            $this->columns[] = $column;
+
+        return $this;
+    }
+
 }
 
 ?>

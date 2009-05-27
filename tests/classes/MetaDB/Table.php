@@ -57,6 +57,25 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertSame( "tblName", $tbl->getTable() );
     }
 
+    public function testAddColumn ()
+    {
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+
+        $this->assertSame( array(), $tbl->getColumns() );
+
+
+        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
+
+        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $this->assertSame( $tbl, $tbl->addColumn( $fld2 ) );
+
+        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+
+        $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
+        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+    }
+
 }
 
 ?>
