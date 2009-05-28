@@ -54,6 +54,13 @@ interface Column
      */
     public function getSelectSQL ();
 
+    /**
+     * Returns the name of this column
+     *
+     * @return String
+     */
+    public function getName ();
+
 }
 
 ?>
