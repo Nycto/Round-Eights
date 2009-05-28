@@ -118,8 +118,20 @@ class Table
      */
     public function addColumn ( \cPHP\iface\MetaDB\Column $column )
     {
-        if ( !in_array($column, $this->columns, true) )
+        if ( !in_array($column, $this->columns, true) ) {
+
+            if ( !is_null( $this->findColumn( $column->getName() ) ) ) {
+                $err = new \cPHP\Exception\Argument(
+                        0,
+                        "Column",
+                        "A column with that name already exists"
+                    );
+                $err->addData("Column Name", $column->getName());
+                throw $err;
+            }
+
             $this->columns[] = $column;
+        }
 
         return $this;
     }

@@ -33,6 +33,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_metadb_table extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test column with the given name
+     *
+     * @return \cPHP\iface\MetaDB\Column
+     */
+    public function getTestColumn ( $name )
+    {
+        $fld = $this->getMock("cPHP\iface\MetaDB\Column");
+        $fld->expects( $this->any() )
+            ->method('getName')
+            ->will( $this->returnValue( $name ) );
+
+        return $fld;
+    }
+
     public function testConstruct ()
     {
         try {
@@ -64,10 +79,10 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $tbl->getColumns() );
 
 
-        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $fld1 = $this->getTestColumn("fld1");
         $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
 
-        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $fld2 = $this->getTestColumn("fld2");
         $this->assertSame( $tbl, $tbl->addColumn( $fld2 ) );
 
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
@@ -77,19 +92,31 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
     }
 
+    public function testAddColumn_conflict ()
+    {
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+
+
+        $fld1 = $this->getTestColumn("name");
+        $tbl->addColumn( $fld1 );
+
+        $fld2 = $this->getTestColumn("name");
+
+        try {
+            $tbl->addColumn( $fld2 );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "A column with that name already exists", $err->getMessage() );
+        }
+    }
+
     public function testFindColumn ()
     {
         $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
 
-        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
-        $fld1->expects( $this->exactly(4) )
-            ->method('getName')
-            ->will( $this->returnValue("userID") );
-
-        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
-        $fld2->expects( $this->exactly(3) )
-            ->method('getName')
-            ->will( $this->returnValue("email") );
+        $fld1 = $this->getTestColumn("userID");
+        $fld2 = $this->getTestColumn("email");
 
         $tbl->addColumn( $fld1 );
         $tbl->addColumn( $fld2 );
@@ -106,7 +133,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
         $this->assertNull( $tbl->getPrimary() );
 
-        $primary = $this->getMock('cPHP\iface\MetaDB\Column');
+        $primary = $this->getTestColumn("primary");
         $this->assertSame( $tbl, $tbl->addColumn( $primary ) );
         $this->assertSame( array( $primary ), $tbl->getColumns() );
 
@@ -122,17 +149,17 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
 
         // Add other fields to the table
-        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
-        $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
+        $fld1 = $this->getTestColumn("fld1");
+        $tbl->addColumn( $fld1 );
 
-        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
-        $this->assertSame( $tbl, $tbl->addColumn( $fld2 ) );
+        $fld2 = $this->getTestColumn("fld2");
+        $tbl->addColumn( $fld2 );
 
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
 
 
         // Now add the primary key
-        $primary = $this->getMock('cPHP\iface\MetaDB\Column');
+        $primary = $this->getTestColumn("");
         $this->assertSame( $tbl, $tbl->setPrimary( $primary ) );
         $this->assertSame( $primary, $tbl->getPrimary() );
         $this->assertSame( array( $primary, $fld1, $fld2 ), $tbl->getColumns() );
