@@ -125,6 +125,25 @@ class Table
     }
 
     /**
+     * Returns the first column with the given name
+     *
+     * @param String $name The name of the column to find
+     * @return \cPHP\iface\MetaDB\Column Returns NULL if the column couldn't
+     * 		be found
+     */
+    public function findColumn ( $name )
+    {
+        $name = trim( \cPHP\strval( $name ) );
+
+        foreach ( $this->columns AS $column ) {
+            if ( $column->getName() == $name )
+                return $column;
+        }
+
+        return NULL;
+    }
+
+    /**
      * Returns the primary key of this table
      *
      * @return \cPHP\iface\MetaDB\Column Returns NULL if no primary

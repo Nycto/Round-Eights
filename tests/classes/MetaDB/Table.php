@@ -77,6 +77,30 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
     }
 
+    public function testFindColumn ()
+    {
+        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+
+        $fld1 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $fld1->expects( $this->exactly(4) )
+            ->method('getName')
+            ->will( $this->returnValue("userID") );
+
+        $fld2 = $this->getMock('cPHP\iface\MetaDB\Column');
+        $fld2->expects( $this->exactly(3) )
+            ->method('getName')
+            ->will( $this->returnValue("email") );
+
+        $tbl->addColumn( $fld1 );
+        $tbl->addColumn( $fld2 );
+
+
+        $this->assertSame( $fld1, $tbl->findColumn( "userID" ) );
+        $this->assertSame( $fld2, $tbl->findColumn( "email" ) );
+        $this->assertNull( $tbl->findColumn( "not a field" ) );
+        $this->assertNull( $tbl->findColumn( "EMAIL" ) );
+    }
+
     public function testPrimary_preRegistered ()
     {
         $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
