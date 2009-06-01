@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,15 +20,15 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package MetaDB
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace cPHP\MetaDB;
 
 /**
- * unit tests
+ * A collection of tables
  */
-class classes_metadb_access extends PHPUnit_Framework_TestCase
+class TableSet
 {
 
 }
