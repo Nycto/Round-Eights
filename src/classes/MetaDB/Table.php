@@ -32,18 +32,25 @@ class Table
 {
 
     /**
+     * The TableSet this table belongs to
+     *
+     * @var \cPHP\MetaDB\TableSet
+     */
+    private $tabelset;
+
+    /**
      * The database this table belongs to
      *
      * @var String
      */
-    private $db;
+    private $dbName;
 
     /**
      * The name of this table
      *
      * @var String
      */
-    private $table;
+    private $tableName;
 
     /**
      * The columns in this table
@@ -62,22 +69,27 @@ class Table
     /**
      * Constructor...
      *
-     * @param String $db The name of the database this table is in
-     * @param String $table The name of the table in the database
+     * @param \cPHP\MetaDB\TableSet $tableset The TableSet this table belongs to
+     * @param String $dbName The name of the database this table is in
+     * @param String $tableName The name of the table in the database
      */
-    public function __construct ( $db, $table )
+    public function __construct ( \cPHP\MetaDB\TableSet $tableset, $dbName, $tableName )
     {
-        $db = trim( trim( \cPHP\strval($db) ), "`" );
-        $table = trim( trim( \cPHP\strval($table) ), "`" );
+        $dbName = trim( trim( \cPHP\strval($dbName) ), "`" );
+        $tableName = trim( trim( \cPHP\strval($tableName) ), "`" );
 
-        if ( \cPHP\isEmpty($db) )
+        if ( \cPHP\isEmpty($dbName) )
             throw new \cPHP\Exception\Argument( 0, "DB Name", "Must not be empty" );
 
-        if ( \cPHP\isEmpty($table) )
+        if ( \cPHP\isEmpty($tableName) )
             throw new \cPHP\Exception\Argument( 1, "Table Name", "Must not be empty" );
 
-        $this->db = $db;
-        $this->table = $table;
+        $this->dbName = $dbName;
+        $this->tableName = $tableName;
+        $this->tableset = $tableset;
+
+        // Add this table to the table set
+        $tableset->addTable( $this );
     }
 
     /**
@@ -85,9 +97,9 @@ class Table
      *
      * @return String
      */
-    public function getDB ()
+    public function getDBName ()
     {
-        return $this->db;
+        return $this->dbName;
     }
 
     /**
@@ -95,9 +107,9 @@ class Table
      *
      * @return String
      */
-    public function getTable ()
+    public function getTableName ()
     {
-        return $this->table;
+        return $this->tableName;
     }
 
     /**

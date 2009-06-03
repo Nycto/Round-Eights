@@ -48,10 +48,35 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         return $fld;
     }
 
+    /**
+     * Returns a test table set
+     *
+     * @return \cPHP\MetaDB\TableSet
+     */
+    public function getTestTableSet ()
+    {
+        $fld = $this->getMock("cPHP\MetaDB\TableSet");
+        return $fld;
+    }
+
+    /**
+     * Returns a test table
+     *
+     * @return \cPHP\MetaDB\Table
+     */
+    public function getTestTable ()
+    {
+        return new \cPHP\MetaDB\Table(
+                $this->getTestTableSet(),
+                "dbName",
+                "tblName"
+            );
+    }
+
     public function testConstruct ()
     {
         try {
-            new \cPHP\MetaDB\Table("", "name");
+            new \cPHP\MetaDB\Table( $this->getTestTableSet(), "", "name" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Argument $err ) {
@@ -59,23 +84,26 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         }
 
         try {
-            new \cPHP\MetaDB\Table("name", "");
+            new \cPHP\MetaDB\Table( $this->getTestTableSet(), "name", "" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \cPHP\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $tbl = new \cPHP\MetaDB\Table(
+                $this->getTestTableSet(),
+                "dbName",
+                "tblName"
+            );
 
-        $this->assertSame( "dbName", $tbl->getDB() );
-        $this->assertSame( "tblName", $tbl->getTable() );
+        $this->assertSame( "dbName", $tbl->getDBName() );
+        $this->assertSame( "tblName", $tbl->getTableName() );
     }
 
     public function testAddColumn ()
     {
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
-
+        $tbl = $this->getTestTable();
         $this->assertSame( array(), $tbl->getColumns() );
 
 
@@ -94,8 +122,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
     public function testAddColumn_conflict ()
     {
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
-
+        $tbl = $this->getTestTable();
 
         $fld1 = $this->getTestColumn("name");
         $tbl->addColumn( $fld1 );
@@ -113,7 +140,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
     public function testFindColumn ()
     {
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $tbl = $this->getTestTable();
 
         $fld1 = $this->getTestColumn("userID");
         $fld2 = $this->getTestColumn("email");
@@ -130,7 +157,8 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
     public function testPrimary_preRegistered ()
     {
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $tbl = $this->getTestTable();
+
         $this->assertNull( $tbl->getPrimary() );
 
         $primary = $this->getTestColumn("primary");
@@ -144,7 +172,8 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
     public function testPrimary_register ()
     {
-        $tbl = new \cPHP\MetaDB\Table("dbName", "tblName");
+        $tbl = $this->getTestTable();
+
         $this->assertNull( $tbl->getPrimary() );
 
 
