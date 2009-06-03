@@ -33,6 +33,79 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_metadb_tableset extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test table
+     *
+     * @return \cPHP\MetaDB\Table
+     */
+    public function getTestTable ( \cPHP\MetaDB\TableSet $set, $name = "tblName" )
+    {
+        return $this->getMock(
+                'cPHP\MetaDB\Table',
+                array( "_mock" ),
+                array( $set, "dbName", $name )
+            );
+    }
+
+    public function testAddTable ()
+    {
+        $set = new \cPHP\MetaDB\TableSet;
+
+        $this->assertSame( array(), $set->getTables() );
+
+        // Add the first table
+        $tbl1 = $this->getTestTable( $set );
+        $this->assertSame( $set, $set->addTable( $tbl1 ) );
+        $this->assertSame(
+                array( "dbName" => array( "tblName" => $tbl1 ) ),
+                $set->getTables()
+            );
+
+        // Add another table
+        $tbl2 = $this->getTestTable( $set, "other" );
+        $this->assertSame( $set, $set->addTable( $tbl2 ) );
+        $this->assertSame(
+                array( "dbName" => array( "tblName" => $tbl1, "other" => $tbl2 ) ),
+                $set->getTables()
+            );
+
+        // Try re-adding the same table
+        $this->assertSame( $set, $set->addTable( $tbl1 ) );
+        $this->assertSame(
+                array( "dbName" => array( "tblName" => $tbl1, "other" => $tbl2 ) ),
+                $set->getTables()
+            );
+
+        // Now try adding a conflicting table
+        try {
+            $set->addTable( $this->getTestTable( $set ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "A table with that name already exists", $err->getMessage() );
+        }
+
+    }
+
+    public function testFindTable ()
+    {
+        $set = new \cPHP\MetaDB\TableSet;
+
+        // Add two tables
+        $tbl1 = $this->getTestTable( $set );
+        $this->assertSame( $set, $set->addTable( $tbl1 ) );
+
+        $tbl2 = $this->getTestTable( $set, "other" );
+        $this->assertSame( $set, $set->addTable( $tbl2 ) );
+
+
+        $this->assertNull( $set->findTable( "notADB", "tble" ) );
+        $this->assertNull( $set->findTable( "dbName", "notATable" ) );
+
+        $this->assertSame( $tbl1, $set->findTable( "dbName", "tblName" ) );
+        $this->assertSame( $tbl2, $set->findTable( "dbName", "other" ) );
+    }
+
 }
 
 ?>
