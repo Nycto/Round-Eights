@@ -33,6 +33,62 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_metadb_column extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * A common TableSet to use when generating test column
+     *
+     * @var \cPHP\MetaDB\TableSet
+     */
+    private $tableSet;
+
+    /**
+     * A common table to use when generating test columns
+     *
+     * @var \cPHP\MetaDB\Column
+     */
+    private $table;
+
+    /**
+     * Sets up the test space
+     *
+     * @return null
+     */
+    public function setUp ()
+    {
+        $this->tableSet = $this->getMock(
+        		"cPHP\MetaDB\TableSet",
+                array("_mock")
+            );
+
+        $this->table = $this->getMock(
+                'cPHP\MetaDB\Table',
+                array( "_mock" ),
+                array( $this->tableSet, "dbName", "tblName" )
+            );
+    }
+
+    /**
+     * Returns a test column
+     *
+     * @param String $name The name of the column
+     * @return \cPHP\MetaDB\Column
+     */
+    public function getTestColumn ( $name )
+    {
+        return $this->getMock(
+                "\cPHP\MetaDB\Column",
+                array( "getSelectSQL", "getInsertSQL", "getUpdateSQL" ),
+                array( $this->table, $name )
+            );
+    }
+
+    public function testConstruction ()
+    {
+        $col = $this->getTestColumn( "col" );
+
+        $this->assertSame( "col", $col->getName() );
+        $this->assertSame( $this->table, $col->getTable() );
+    }
+
 }
 
 ?>
