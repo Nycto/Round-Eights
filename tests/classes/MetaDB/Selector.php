@@ -33,6 +33,50 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_metadb_selector extends PHPUnit_Framework_TestCase
 {
 
+    public function testToSQL_simple ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+
+        $from->expects( $this->once() )
+            ->method( "getSQLFields" )
+            ->will( $this->returnValue(array()) );
+
+        $from->expects( $this->once() )
+            ->method( "getFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\MetaDB\Selector( $from );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."FROM `table`",
+                $select->toSQL()
+            );
+    }
+
+    public function testToSQL_withFieldList ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+
+        $from->expects( $this->once() )
+            ->method( "getSQLFields" )
+            ->will( $this->returnValue(array(
+                    "field1", null, "  ", "fld2"
+                )) );
+
+        $from->expects( $this->once() )
+            ->method( "getFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\MetaDB\Selector( $from );
+
+        $this->assertSame(
+        		"SELECT field1, fld2\n"
+                ."FROM `table`",
+                $select->toSQL()
+            );
+    }
+
 }
 
 ?>

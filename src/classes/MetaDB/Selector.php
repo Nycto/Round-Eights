@@ -31,6 +31,40 @@ namespace cPHP\MetaDB;
 class Selector
 {
 
+    /**
+     * The table to select from
+     *
+     * @var \cPHP\iface\MetaDB\Selectable
+     */
+    private $from;
+
+    /**
+     * Constructor...
+     *
+     * @param \cPHP\iface\MetaDB\Selectable $from The table to select from
+     */
+    public function __construct ( \cPHP\iface\MetaDB\Selectable $from )
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * Returns the SQL this object represents
+     *
+     * @return String
+     */
+    public function toSQL ()
+    {
+        $fields = \cPHP\arrayVal( $this->from->getSQLFields() );
+        $fields = \cPHP\ary\compact( $fields );
+        $fields = count( $fields ) == 0 ? "*" : implode(", ", $fields);
+
+        $sql = "SELECT $fields\n"
+            ."FROM ". $this->from->getFromSQL();
+
+        return $sql;
+    }
+
 }
 
 ?>
