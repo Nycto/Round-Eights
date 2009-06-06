@@ -98,6 +98,27 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getOffset() );
     }
 
+    public function testLimitAccessors ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $obj = new \cPHP\MetaDB\Selector( $from );
+
+        $this->assertFalse( $obj->limitExists() );
+        $this->assertNull( $obj->getLimit() );
+
+        $this->assertSame( $obj, $obj->setLimit( 10 ) );
+        $this->assertTrue( $obj->limitExists() );
+        $this->assertSame( 10, $obj->getLimit() );
+
+        $this->assertSame( $obj, $obj->clearLimit() );
+        $this->assertFalse( $obj->limitExists() );
+        $this->assertNull( $obj->getLimit() );
+
+        $this->assertSame( $obj, $obj->setLimit( -5 ) );
+        $this->assertFalse( $obj->limitExists() );
+        $this->assertNull( $obj->getLimit() );
+    }
+
 }
 
 ?>

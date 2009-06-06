@@ -39,6 +39,13 @@ class Selector
     private $from;
 
     /**
+     * The maximum number of rows to return
+     *
+     * @var Integer
+     */
+    private $limit;
+
+    /**
      * The offset to begin selecting rows from
      *
      * @var Integer
@@ -53,6 +60,53 @@ class Selector
     public function __construct ( \cPHP\iface\MetaDB\Selectable $from )
     {
         $this->from = $from;
+    }
+
+    /**
+     * Returns the Limit
+     *
+     * @return Integer
+     */
+    public function getLimit ()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * Sets the Limit
+     *
+     * @param Integer $limit
+     * @return \cPHP\MetaDB\Selector Returns a self reference
+     */
+    public function setLimit ( $limit )
+    {
+        $this->limit = intval($limit);
+
+        if ( $this->limit <= 0 )
+            $this->limit = null;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the Limit has been set
+     *
+     * @return Boolean
+     */
+    public function limitExists ()
+    {
+        return isset( $this->limit );
+    }
+
+    /**
+     * Clears the currently set Limit
+     *
+     * @return \cPHP\MetaDB\Selector Returns a self reference
+     */
+    public function clearLimit ()
+    {
+        $this->limit = null;
+        return $this;
     }
 
     /**
