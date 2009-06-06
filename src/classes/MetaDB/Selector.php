@@ -39,6 +39,13 @@ class Selector
     private $from;
 
     /**
+     * The offset to begin selecting rows from
+     *
+     * @var Integer
+     */
+    private $offset;
+
+    /**
      * Constructor...
      *
      * @param \cPHP\iface\MetaDB\Selectable $from The table to select from
@@ -46,6 +53,53 @@ class Selector
     public function __construct ( \cPHP\iface\MetaDB\Selectable $from )
     {
         $this->from = $from;
+    }
+
+    /**
+     * Returns the Offset
+     *
+     * @return Integer
+     */
+    public function getOffset ()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * Sets the Offset
+     *
+     * @param Integer $offset
+     * @return \cPHP\MetaDB\Selector Returns a self reference
+     */
+    public function setOffset ( $offset )
+    {
+        $this->offset = intval($offset);
+
+        if ( $this->offset <= 0 )
+            $this->offset = null;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether the Offset has been set
+     *
+     * @return Boolean
+     */
+    public function offsetExists ()
+    {
+        return isset( $this->offset );
+    }
+
+    /**
+     * Clears the currently set Offset
+     *
+     * @return \cPHP\MetaDB\Selector Returns a self reference
+     */
+    public function clearOffset ()
+    {
+        $this->offset = null;
+        return $this;
     }
 
     /**

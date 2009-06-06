@@ -77,6 +77,27 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testOffsetAccessors ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $obj = new \cPHP\MetaDB\Selector( $from );
+
+        $this->assertFalse( $obj->offsetExists() );
+        $this->assertNull( $obj->getOffset() );
+
+        $this->assertSame( $obj, $obj->setOffset( 10 ) );
+        $this->assertTrue( $obj->offsetExists() );
+        $this->assertSame( 10, $obj->getOffset() );
+
+        $this->assertSame( $obj, $obj->clearOffset() );
+        $this->assertFalse( $obj->offsetExists() );
+        $this->assertNull( $obj->getOffset() );
+
+        $this->assertSame( $obj, $obj->setOffset( -5 ) );
+        $this->assertFalse( $obj->offsetExists() );
+        $this->assertNull( $obj->getOffset() );
+    }
+
 }
 
 ?>
