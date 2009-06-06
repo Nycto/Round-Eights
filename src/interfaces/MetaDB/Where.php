@@ -39,7 +39,7 @@ interface Where
     public function toSQL();
 
     /**
-     * Returns the precedence level of this comparison
+     * Returns the precedence level of this clause
      *
      * @return Integer
      */
