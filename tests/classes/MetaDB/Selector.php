@@ -77,6 +77,45 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToSQL_limit ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+
+        $from->expects( $this->once() )
+            ->method( "getFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\MetaDB\Selector( $from );
+        $select->setLimit( 20 );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."FROM `table`\n"
+                ."LIMIT 0, 20",
+                $select->toSQL()
+            );
+    }
+
+    public function testToSQL_offset ()
+    {
+        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+
+        $from->expects( $this->once() )
+            ->method( "getFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\MetaDB\Selector( $from );
+        $select->setLimit( 20 );
+        $select->setOffset( 100 );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."FROM `table`\n"
+                ."LIMIT 100, 20",
+                $select->toSQL()
+            );
+    }
+
     public function testOffsetAccessors ()
     {
         $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );

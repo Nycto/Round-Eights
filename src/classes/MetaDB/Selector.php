@@ -170,6 +170,14 @@ class Selector
         $sql = "SELECT $fields\n"
             ."FROM ". $this->from->getFromSQL();
 
+        if ( $this->limitExists() )
+        {
+            $sql .= "\nLIMIT "
+        		.( $this->offsetExists() ? $this->getOffset() : "0" )
+            	.", ". $this->getLimit();
+        }
+
+
         return $sql;
     }
 
