@@ -55,14 +55,6 @@ interface Column
     public function getSelectSQL ();
 
     /**
-     * Quotes a value for use in a SQL query
-     *
-     * @param mixed $value The value to quote
-     * @return String
-     */
-    public function quote ( $value );
-
-    /**
      * Returns the name of this column
      *
      * @return String
