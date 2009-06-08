@@ -89,6 +89,28 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
         $this->assertSame( $this->table, $col->getTable() );
     }
 
+    public function testQuote ()
+    {
+        $table = $this->getMock(
+                'cPHP\MetaDB\Table',
+                array( "quote" ),
+                array( $this->tableSet, "dbName", "tble2" )
+            );
+
+        $col = $this->getMock(
+                "\cPHP\MetaDB\Column",
+                array( "getSelectSQL", "getInsertSQL", "getUpdateSQL" ),
+                array( $table, "col" )
+            );
+
+        $table->expects( $this->once() )
+            ->method("quote")
+            ->with( $this->equalTo("quoted") )
+            ->will( $this->returnValue("'quoted'") );
+
+        $this->assertSame( "'quoted'", $col->quote("quoted") );
+    }
+
 }
 
 ?>

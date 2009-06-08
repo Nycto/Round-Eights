@@ -84,6 +84,17 @@ abstract class Column implements \cPHP\iface\MetaDB\Column
         return $this->name;
     }
 
+    /**
+     * Quotes a value for use in a SQL query
+     *
+     * @param mixed $value The value to quote
+     * @return String
+     */
+    public function quote ( $value )
+    {
+        return $this->table->quote( $value );
+    }
+
 }
 
 ?>
