@@ -20,21 +20,21 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Selector
+ * @package Query
  */
 
-namespace cPHP;
+namespace cPHP\Query;
 
 /**
  * Builds a Select SQL query
  */
-class Selector
+class Select
 {
 
     /**
      * The table to select from
      *
-     * @var \cPHP\iface\Selector\From
+     * @var \cPHP\iface\Query\From
      */
     private $from;
 
@@ -55,9 +55,9 @@ class Selector
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Selector\From $from The table to select from
+     * @param \cPHP\iface\Query\From $from The table to select from
      */
-    public function __construct ( \cPHP\iface\Selector\From $from )
+    public function __construct ( \cPHP\iface\Query\From $from )
     {
         $this->from = $from;
     }
@@ -76,7 +76,7 @@ class Selector
      * Sets the Limit
      *
      * @param Integer $limit
-     * @return \cPHP\Selector Returns a self reference
+     * @return \cPHP\Query\Select Returns a self reference
      */
     public function setLimit ( $limit )
     {
@@ -101,7 +101,7 @@ class Selector
     /**
      * Clears the currently set Limit
      *
-     * @return \cPHP\Selector Returns a self reference
+     * @return \cPHP\Query\Select Returns a self reference
      */
     public function clearLimit ()
     {
@@ -123,7 +123,7 @@ class Selector
      * Sets the Offset
      *
      * @param Integer $offset
-     * @return \cPHP\Selector Returns a self reference
+     * @return \cPHP\Query\Select Returns a self reference
      */
     public function setOffset ( $offset )
     {
@@ -148,7 +148,7 @@ class Selector
     /**
      * Clears the currently set Offset
      *
-     * @return \cPHP\Selector Returns a self reference
+     * @return \cPHP\Query\Select Returns a self reference
      */
     public function clearOffset ()
     {

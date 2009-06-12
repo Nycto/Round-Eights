@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -20,30 +22,16 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package UnitTests
  */
 
-namespace cPHP\iface\Selector;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * An object that can be selected from using a selector
+ * unit tests
  */
-interface From
+class classes_query_where_compare extends PHPUnit_Framework_TestCase
 {
-
-    /**
-     * Returns an array of field names to select from the database
-     *
-     * @return Array An array of SQL ready fields
-     */
-    public function getSQLFields ();
-
-    /**
-     * Returns the SQL FROM clause
-     *
-     * @return String
-     */
-    public function getFromSQL ();
 
 }
 

@@ -23,33 +23,27 @@
  * @package MetaDB
  */
 
-namespace cPHP\iface\Selector;
+namespace cPHP\iface\Query;
 
 /**
- * A SQL Where Claus
+ * An object that can be selected from using a selector
  */
-interface Where
+interface From
 {
+
+    /**
+     * Returns an array of field names to select from the database
+     *
+     * @return Array An array of SQL ready fields
+     */
+    public function getSQLFields ();
 
     /**
      * Returns the SQL FROM clause
      *
-     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
-     * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toSQL( \cPHP\iface\DB\Link $link );
-
-    /**
-     * Returns the precedence level of this clause
-     *
-     * The number this returns is arbitrary, it's only importance is it's value
-     * relative to other where clauses. A higher value means this clause
-     * has a more important order of operation.
-     *
-     * @return Integer
-     */
-    public function getPrecedence ();
+    public function getFromSQL ();
 
 }
 

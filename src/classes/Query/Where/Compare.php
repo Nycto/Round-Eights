@@ -20,21 +20,21 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Selector
+ * @package Query
  */
 
-namespace cPHP\Selector\Where;
+namespace cPHP\Query\Where;
 
 /**
  * Compares the value in a column to a given value
  */
-abstract class Compare implements \cPHP\iface\Selector\Where
+abstract class Compare implements \cPHP\iface\Query\Where
 {
 
     /**
      * The column being compared
      *
-     * @var \cPHP\iface\Selector\Column
+     * @var \cPHP\iface\Query\Column
      */
     private $column;
 
@@ -48,10 +48,10 @@ abstract class Compare implements \cPHP\iface\Selector\Where
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Selector\Column $column The column being compared
+     * @param \cPHP\iface\Query\Column $column The column being compared
      * @param mixed $value The value to compare the column to
      */
-    public function __construct ( \cPHP\iface\Selector\Column $column, $value )
+    public function __construct ( \cPHP\iface\Query\Column $column, $value )
     {
         $this->column = $column;
         $this->value = $value;
@@ -60,7 +60,7 @@ abstract class Compare implements \cPHP\iface\Selector\Where
     /**
      * Returns the Column being compared
      *
-     * @return \cPHP\iface\Selector\Column
+     * @return \cPHP\iface\Query\Column
      */
     public function getColumn ()
     {

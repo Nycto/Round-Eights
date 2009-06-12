@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of commonPHP.
@@ -22,16 +20,36 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package MetaDB
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+namespace cPHP\iface\Query;
 
 /**
- * unit tests
+ * A SQL Where Claus
  */
-class classes_selector_where_compare extends PHPUnit_Framework_TestCase
+interface Where
 {
+
+    /**
+     * Returns the SQL FROM clause
+     *
+     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
+     * @return String
+     */
+    public function toSQL( \cPHP\iface\DB\Link $link );
+
+    /**
+     * Returns the precedence level of this clause
+     *
+     * The number this returns is arbitrary, it's only importance is it's value
+     * relative to other where clauses. A higher value means this clause
+     * has a more important order of operation.
+     *
+     * @return Integer
+     */
+    public function getPrecedence ();
 
 }
 
