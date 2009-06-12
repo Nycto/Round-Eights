@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * unit tests
  */
-class classes_metadb_selector extends PHPUnit_Framework_TestCase
+class classes_selector extends PHPUnit_Framework_TestCase
 {
 
     public function testToSQL_simple ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
 
         $from->expects( $this->once() )
             ->method( "getSQLFields" )
@@ -45,7 +45,7 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
             ->method( "getFromSQL" )
             ->will( $this->returnValue("`table`") );
 
-        $select = new \cPHP\MetaDB\Selector( $from );
+        $select = new \cPHP\Selector( $from );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -56,7 +56,7 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withFieldList ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
 
         $from->expects( $this->once() )
             ->method( "getSQLFields" )
@@ -68,7 +68,7 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
             ->method( "getFromSQL" )
             ->will( $this->returnValue("`table`") );
 
-        $select = new \cPHP\MetaDB\Selector( $from );
+        $select = new \cPHP\Selector( $from );
 
         $this->assertSame(
         		"SELECT field1, fld2\n"
@@ -79,13 +79,13 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
 
     public function testToSQL_limit ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
 
         $from->expects( $this->once() )
             ->method( "getFromSQL" )
             ->will( $this->returnValue("`table`") );
 
-        $select = new \cPHP\MetaDB\Selector( $from );
+        $select = new \cPHP\Selector( $from );
         $select->setLimit( 20 );
 
         $this->assertSame(
@@ -98,13 +98,13 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
 
     public function testToSQL_offset ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
 
         $from->expects( $this->once() )
             ->method( "getFromSQL" )
             ->will( $this->returnValue("`table`") );
 
-        $select = new \cPHP\MetaDB\Selector( $from );
+        $select = new \cPHP\Selector( $from );
         $select->setLimit( 20 );
         $select->setOffset( 100 );
 
@@ -118,8 +118,8 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
 
     public function testOffsetAccessors ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
-        $obj = new \cPHP\MetaDB\Selector( $from );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
+        $obj = new \cPHP\Selector( $from );
 
         $this->assertFalse( $obj->offsetExists() );
         $this->assertNull( $obj->getOffset() );
@@ -139,8 +139,8 @@ class classes_metadb_selector extends PHPUnit_Framework_TestCase
 
     public function testLimitAccessors ()
     {
-        $from = $this->getMock( "cPHP\iface\MetaDB\Selectable" );
-        $obj = new \cPHP\MetaDB\Selector( $from );
+        $from = $this->getMock( "cPHP\iface\Selector\From" );
+        $obj = new \cPHP\Selector( $from );
 
         $this->assertFalse( $obj->limitExists() );
         $this->assertNull( $obj->getLimit() );

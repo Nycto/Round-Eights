@@ -30,35 +30,8 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_metadb_where_compare extends PHPUnit_Framework_TestCase
+class classes_selector_where_compare extends PHPUnit_Framework_TestCase
 {
-
-    public function testConstruct ()
-    {
-        $col = $this->getMock('cPHP\iface\MetaDB\Column');
-
-        $compare = $this->getMock(
-        		'cPHP\MetaDB\Where\Compare',
-                array("toSQL"),
-                array( $col, "chunk of data" )
-            );
-
-        $this->assertSame( $col, $compare->getColumn() );
-        $this->assertSame( "chunk of data", $compare->getValue() );
-    }
-
-    public function testPrecedence ()
-    {
-        $col = $this->getMock('cPHP\iface\MetaDB\Column');
-
-        $compare = $this->getMock(
-        		'cPHP\MetaDB\Where\Compare',
-                array("toSQL"),
-                array( $col, "chunk of data" )
-            );
-
-        $this->assertSame( 100, $compare->getPrecedence() );
-    }
 
 }
 

@@ -23,7 +23,7 @@
  * @package MetaDB
  */
 
-namespace cPHP\iface\MetaDB;
+namespace cPHP\iface\Selector;
 
 /**
  * A SQL Where Claus
@@ -42,6 +42,10 @@ interface Where
 
     /**
      * Returns the precedence level of this clause
+     *
+     * The number this returns is arbitrary, it's only importance is it's value
+     * relative to other where clauses. A higher value means this clause
+     * has a more important order of operation.
      *
      * @return Integer
      */

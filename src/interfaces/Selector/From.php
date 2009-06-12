@@ -23,12 +23,12 @@
  * @package MetaDB
  */
 
-namespace cPHP\iface\MetaDB;
+namespace cPHP\iface\Selector;
 
 /**
  * An object that can be selected from using a selector
  */
-interface Selectable
+interface From
 {
 
     /**

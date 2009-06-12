@@ -20,21 +20,21 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package Selector
  */
 
-namespace cPHP\MetaDB\Where;
+namespace cPHP\Selector\Where;
 
 /**
  * Compares the value in a column to a given value
  */
-abstract class Compare implements \cPHP\iface\MetaDB\Where
+abstract class Compare implements \cPHP\iface\Selector\Where
 {
 
     /**
      * The column being compared
      *
-     * @var \cPHP\iface\MetaDB\Column
+     * @var \cPHP\iface\Selector\Column
      */
     private $column;
 
@@ -48,10 +48,10 @@ abstract class Compare implements \cPHP\iface\MetaDB\Where
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\MetaDB\Column $column The column being compared
+     * @param \cPHP\iface\Selector\Column $column The column being compared
      * @param mixed $value The value to compare the column to
      */
-    public function __construct ( \cPHP\iface\MetaDB\Column $column, $value )
+    public function __construct ( \cPHP\iface\Selector\Column $column, $value )
     {
         $this->column = $column;
         $this->value = $value;
@@ -60,7 +60,7 @@ abstract class Compare implements \cPHP\iface\MetaDB\Where
     /**
      * Returns the Column being compared
      *
-     * @return \cPHP\iface\MetaDB\Column
+     * @return \cPHP\iface\Selector\Column
      */
     public function getColumn ()
     {

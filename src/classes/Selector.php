@@ -20,13 +20,13 @@
  *
  * @author James Frasca <james@commonphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package Selector
  */
 
-namespace cPHP\MetaDB;
+namespace cPHP;
 
 /**
- * Selects values from a MetaDB table
+ * Builds a Select SQL query
  */
 class Selector
 {
@@ -34,7 +34,7 @@ class Selector
     /**
      * The table to select from
      *
-     * @var \cPHP\iface\MetaDB\Selectable
+     * @var \cPHP\iface\Selector\From
      */
     private $from;
 
@@ -55,9 +55,9 @@ class Selector
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\MetaDB\Selectable $from The table to select from
+     * @param \cPHP\iface\Selector\From $from The table to select from
      */
-    public function __construct ( \cPHP\iface\MetaDB\Selectable $from )
+    public function __construct ( \cPHP\iface\Selector\From $from )
     {
         $this->from = $from;
     }
@@ -76,7 +76,7 @@ class Selector
      * Sets the Limit
      *
      * @param Integer $limit
-     * @return \cPHP\MetaDB\Selector Returns a self reference
+     * @return \cPHP\Selector Returns a self reference
      */
     public function setLimit ( $limit )
     {
@@ -101,7 +101,7 @@ class Selector
     /**
      * Clears the currently set Limit
      *
-     * @return \cPHP\MetaDB\Selector Returns a self reference
+     * @return \cPHP\Selector Returns a self reference
      */
     public function clearLimit ()
     {
@@ -123,7 +123,7 @@ class Selector
      * Sets the Offset
      *
      * @param Integer $offset
-     * @return \cPHP\MetaDB\Selector Returns a self reference
+     * @return \cPHP\Selector Returns a self reference
      */
     public function setOffset ( $offset )
     {
@@ -148,7 +148,7 @@ class Selector
     /**
      * Clears the currently set Offset
      *
-     * @return \cPHP\MetaDB\Selector Returns a self reference
+     * @return \cPHP\Selector Returns a self reference
      */
     public function clearOffset ()
     {
