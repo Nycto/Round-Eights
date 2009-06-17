@@ -32,7 +32,7 @@ class Primitive implements \cPHP\iface\Query\Atom
 {
 
     /**
-     * The value to compare the column to
+     * The primitive value
      *
      * @var mixed
      */
@@ -49,7 +49,7 @@ class Primitive implements \cPHP\iface\Query\Atom
     }
 
     /**
-     * Returns the Value the column will be compared to
+     * Returns the value in this instance
      *
      * @return mixed
      */
