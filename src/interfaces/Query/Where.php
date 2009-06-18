@@ -26,19 +26,19 @@
 namespace cPHP\iface\Query;
 
 /**
- * A SQL Where Claus
+ * A SQL Where Expression
  */
 interface Where
 {
 
     /**
-     * Returns the SQL FROM clause
+     * Returns the SQL Where expression represented by this object
      *
      * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
      * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toSQL( \cPHP\iface\DB\Link $link );
+    public function toWhereSQL( \cPHP\iface\DB\Link $link );
 
     /**
      * Returns the precedence level of this clause
