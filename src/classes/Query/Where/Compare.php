@@ -26,55 +26,55 @@
 namespace cPHP\Query\Where;
 
 /**
- * Compares the value in a column to a given value
+ * Compares two atoms
  */
 abstract class Compare implements \cPHP\iface\Query\Where
 {
 
     /**
-     * The column being compared
+     * The value on the left of the operator
      *
-     * @var \cPHP\iface\Query\Column
+     * @var \cPHP\iface\Query\Atom
      */
-    private $column;
+    private $left;
 
     /**
-     * The value to compare the column to
+     * The value to right of the operator
      *
-     * @var mixed
+     * @var \cPHP\iface\Query\Atom
      */
-    private $value;
+    private $right;
 
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Query\Column $column The column being compared
-     * @param mixed $value The value to compare the column to
+     * @param \cPHP\iface\Query\Atom $left The value on the left of the operator
+     * @param \cPHP\iface\Query\Atom $right The value on the right of the operator
      */
-    public function __construct ( \cPHP\iface\Query\Column $column, $value )
+    public function __construct ( \cPHP\iface\Query\Atom $left, \cPHP\iface\Query\Atom $right )
     {
-        $this->column = $column;
-        $this->value = $value;
+        $this->left = $left;
+        $this->right = $right;
     }
 
     /**
-     * Returns the Column being compared
+     * Returns the value to the left of the operator
      *
-     * @return \cPHP\iface\Query\Column
+     * @return \cPHP\iface\Query\Atom
      */
-    public function getColumn ()
+    public function getLeft ()
     {
-        return $this->column;
+        return $this->left;
     }
 
     /**
-     * Returns the Value the column will be compared to
+     * Returns the value to the right of the operator
      *
-     * @return mixed
+     * @return \cPHP\iface\Query\Atom
      */
-    public function getValue ()
+    public function getRight ()
     {
-        return $this->value;
+        return $this->right;
     }
 
     /**

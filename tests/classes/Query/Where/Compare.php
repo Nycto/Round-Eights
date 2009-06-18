@@ -33,6 +33,35 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_where_compare extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        $left = $this->getMock('cPHP\iface\Query\Atom');
+        $right = $this->getMock('cPHP\iface\Query\Atom');
+
+        $compare = $this->getMock(
+        		'\cPHP\Query\Where\Compare',
+                array( "toSQL" ),
+                array( $left, $right )
+            );
+
+        $this->assertSame( $left, $compare->getLeft() );
+        $this->assertSame( $right, $compare->getRight() );
+    }
+
+    public function testGetPrecedence ()
+    {
+        $left = $this->getMock('cPHP\iface\Query\Atom');
+        $right = $this->getMock('cPHP\iface\Query\Atom');
+
+        $compare = $this->getMock(
+        		'\cPHP\Query\Where\Compare',
+                array( "toSQL" ),
+                array( $left, $right )
+            );
+
+        $this->assertSame( 100, $compare->getPrecedence() );
+    }
+
 }
 
 ?>
