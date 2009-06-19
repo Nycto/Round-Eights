@@ -51,18 +51,13 @@ class classes_query_atom_primitive extends PHPUnit_Framework_TestCase
 
     public function testToAtomSQL ()
     {
-        $link = $this->getMock("cPHP\iface\DB\Link");
-        $link->expects( $this->any() )
-            ->method( "quote" )
-            ->will( $this->returnCallback(function ($value) {
-                return "'". addslashes( strval($value) ) ."'";
-            }));
+        $link = new \cPHP\DB\BlackHole\Link;
 
         $prim = new \cPHP\Query\Atom\Primitive( 20 );
-        $this->assertSame( "'20'", $prim->toAtomSQL( $link ) );
+        $this->assertSame( "20", $prim->toAtomSQL( $link ) );
 
         $prim = new \cPHP\Query\Atom\Primitive( 3.14 );
-        $this->assertSame( "'3.14'", $prim->toAtomSQL( $link ) );
+        $this->assertSame( "3.14", $prim->toAtomSQL( $link ) );
 
         $prim = new \cPHP\Query\Atom\Primitive( "data" );
         $this->assertSame( "'data'", $prim->toAtomSQL( $link ) );
