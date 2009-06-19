@@ -45,12 +45,67 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
         $this->assertSame( "ABC_123", $func->getFunc() );
     }
 
-    public function testToAtomSQL ()
+    public function testConstruct_args ()
+    {
+        $arg1 = $this->getMock('\cPHP\iface\Query\Atom');
+        $arg2 = $this->getMock('\cPHP\iface\Query\Atom');
+
+        $func = new \cPHP\Query\Atom\Func( "func", $arg1, $arg2 );
+        $this->assertSame( "FUNC", $func->getFunc() );
+        $this->assertSame( array( $arg1, $arg2 ), $func->getArgs() );
+    }
+
+    public function testAddArg ()
+    {
+        $func = new \cPHP\Query\Atom\Func( "test" );
+        $this->assertSame( array(), $func->getArgs() );
+
+        $arg1 = $this->getMock('\cPHP\iface\Query\Atom');
+        $this->assertSame( $func, $func->addArg($arg1) );
+        $this->assertSame( array( $arg1 ), $func->getArgs() );
+
+        $arg2 = $this->getMock('\cPHP\iface\Query\Atom');
+        $this->assertSame( $func, $func->addArg($arg2) );
+        $this->assertSame( array( $arg1, $arg2 ), $func->getArgs() );
+
+        $this->assertSame( $func, $func->addArg($arg1) );
+        $this->assertSame( array( $arg1, $arg2, $arg1 ), $func->getArgs() );
+    }
+
+    public function testSetArgs ()
+    {
+        $func = new \cPHP\Query\Atom\Func( "test" );
+        $this->assertSame( array(), $func->getArgs() );
+
+        $arg1 = $this->getMock('\cPHP\iface\Query\Atom');
+        $arg2 = $this->getMock('\cPHP\iface\Query\Atom');
+
+        $this->assertSame(
+                $func,
+                $func->setArgs( array( $arg1, $arg2 ) )
+            );
+        $this->assertSame( array( $arg1, $arg2 ), $func->getArgs() );
+    }
+
+    public function testToAtomSQL_noArgs ()
     {
         $link = $this->getMock("cPHP\iface\DB\Link");
 
         $fld = new \cPHP\Query\Atom\Func("now");
         $this->assertSame( "NOW()", $fld->toAtomSQL( $link ) );
+    }
+
+    public function testToAtomSQL_withArgs ()
+    {
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $fld = new \cPHP\Query\Atom\Func(
+        		"Func",
+                new \cPHP\Query\Atom\Primitive(5),
+                new \cPHP\Query\Atom\Field("fld")
+            );
+
+        $this->assertSame( "FUNC(5, `fld`)", $fld->toAtomSQL( $link ) );
     }
 
 }

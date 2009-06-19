@@ -39,9 +39,17 @@ class Func implements \cPHP\iface\Query\Atom
     private $func;
 
     /**
+     * The list of arguments for the function
+     *
+     * @var array This is a list of \cPHP\iface\Query\Atom objects
+     */
+    private $args = array();
+
+    /**
      * Constructor...
      *
      * @param String $func The function name
+     * @param \cPHP\iface\Query\Atom $args... Any arguments to pass to the function
      */
     public function __construct ( $func )
     {
@@ -52,6 +60,9 @@ class Func implements \cPHP\iface\Query\Atom
             throw new \cPHP\Exception\Argument( 0, "Function Name", "Must not be empty" );
 
         $this->func = $func;
+
+        if ( func_num_args() > 1 )
+            $this->setArgs( func_get_args() );
     }
 
     /**
@@ -65,6 +76,47 @@ class Func implements \cPHP\iface\Query\Atom
     }
 
     /**
+     * Returns the argument list
+     *
+     * @return array An array of \cPHP\iface\Query\Atom objects
+     */
+    public function getArgs ()
+    {
+        return $this->args;
+    }
+
+    /**
+     * Adds an argument to the end of argument list
+     *
+     * @param \cPHP\iface\Query\Atom $arg The argument to add
+     * @return \cPHP\Query\Atom\Func Returns a self reference
+     */
+    public function addArg ( \cPHP\iface\Query\Atom $arg )
+    {
+        $this->args[] = $arg;
+        return $this;
+    }
+
+    /**
+     * Sets the list of arguments to the values contained in an array
+     *
+     * @param array $args An array of \cPHP\iface\Query\Atom objects
+     * @return \cPHP\Query\Atom\Func Returns a self reference
+     */
+    public function setArgs ( array $args )
+    {
+        $this->args = array();
+
+        foreach ( $args AS $arg )
+        {
+            if ( $arg instanceof \cPHP\iface\Query\Atom )
+                $this->args[] = $arg;
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the SQL this atom represents
      *
      * @param \cPHP\iface\DB\Link $link The database connection this atom
@@ -74,7 +126,14 @@ class Func implements \cPHP\iface\Query\Atom
      */
     public function toAtomSQL( \cPHP\iface\DB\Link $link )
     {
-        return $this->func ."()";
+        $args = array();
+
+        foreach( $this->args AS $arg )
+        {
+            $args[] = $arg->toAtomSQL( $link );
+        }
+
+        return $this->func ."(". implode(", ", $args) .")";
     }
 
 }
