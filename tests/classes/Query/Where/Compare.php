@@ -40,7 +40,7 @@ class classes_query_where_compare extends PHPUnit_Framework_TestCase
 
         $compare = $this->getMock(
         		'\cPHP\Query\Where\Compare',
-                array( "toSQL" ),
+                array( "toWhereSQL" ),
                 array( $left, $right )
             );
 
@@ -55,7 +55,7 @@ class classes_query_where_compare extends PHPUnit_Framework_TestCase
 
         $compare = $this->getMock(
         		'\cPHP\Query\Where\Compare',
-                array( "toSQL" ),
+                array( "toWhereSQL" ),
                 array( $left, $right )
             );
 
