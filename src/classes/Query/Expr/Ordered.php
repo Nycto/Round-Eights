@@ -28,7 +28,7 @@ namespace cPHP\Query\Expr;
 /**
  * An ordered field expression
  */
-class Ordered
+class Ordered implements \cPHP\iface\Query\Ordered
 {
 
     /**
