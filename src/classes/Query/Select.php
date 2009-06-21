@@ -39,6 +39,13 @@ class Select
     private $from;
 
     /**
+     * The list of fields to select
+     *
+     * @var array
+     */
+    private $fields = array();
+
+    /**
      * The maximum number of rows to return
      *
      * @var Integer
@@ -51,16 +58,6 @@ class Select
      * @var Integer
      */
     private $offset;
-
-    /**
-     * Constructor...
-     *
-     * @param \cPHP\iface\Query\From $from The table to select from
-     */
-    public function __construct ( \cPHP\iface\Query\From $from )
-    {
-        $this->from = $from;
-    }
 
     /**
      * Returns the Limit
@@ -163,12 +160,13 @@ class Select
      */
     public function toSQL ()
     {
-        $fields = \cPHP\arrayVal( $this->from->getSQLFields() );
-        $fields = \cPHP\ary\compact( $fields );
-        $fields = count( $fields ) == 0 ? "*" : implode(", ", $fields);
+        if ( count($this->fields) <= 0 )
+            $fields = "*";
 
-        $sql = "SELECT $fields\n"
-            ."FROM ". $this->from->getFromSQL();
+        $sql = "SELECT $fields";
+
+        if ( $this->from )
+            $sql .= "\nFROM ". $this->from->getFromSQL();
 
         if ( $this->limitExists() )
         {

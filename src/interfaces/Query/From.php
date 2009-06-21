@@ -32,13 +32,6 @@ interface From
 {
 
     /**
-     * Returns an array of field names to select from the database
-     *
-     * @return Array An array of SQL ready fields
-     */
-    public function getSQLFields ();
-
-    /**
      * Returns the SQL FROM clause
      *
      * @return String
