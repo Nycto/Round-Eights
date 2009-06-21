@@ -62,6 +62,9 @@ class classes_query_atom_primitive extends PHPUnit_Framework_TestCase
         $prim = new \cPHP\Query\Atom\Primitive( "data" );
         $this->assertSame( "'data'", $prim->toAtomSQL( $link ) );
 
+        $prim = new \cPHP\Query\Atom\Primitive( null );
+        $this->assertSame( "NULL", $prim->toAtomSQL( $link ) );
+
 
         $obj = new stdClass;
         $obj->key = "str";
