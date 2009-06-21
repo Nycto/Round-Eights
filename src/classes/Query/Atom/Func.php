@@ -28,7 +28,7 @@ namespace cPHP\Query\Atom;
 /**
  * Represents a func name in a SQL query
  */
-class Func implements \cPHP\iface\Query\Atom
+class Func extends \cPHP\Query\Atom
 {
 
     /**

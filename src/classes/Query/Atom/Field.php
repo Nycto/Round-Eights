@@ -28,7 +28,7 @@ namespace cPHP\Query\Atom;
 /**
  * Represents a field name in a SQL query
  */
-class Field implements \cPHP\iface\Query\Atom
+class Field extends \cPHP\Query\Atom
 {
 
     /**

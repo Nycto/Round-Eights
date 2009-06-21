@@ -23,52 +23,24 @@
  * @package Query
  */
 
-namespace cPHP\Query\Atom;
+namespace cPHP\Query;
 
 /**
- * Represents a primitive value in a SQL query
+ * The base class for Query Atoms
  */
-class Primitive extends \cPHP\Query\Atom
+abstract class Atom implements \cPHP\iface\Query\Atom, \cPHP\iface\Query\Ordered
 {
 
     /**
-     * The primitive value
+     * Returns the SQL string for this expression
      *
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * Constructor...
-     *
-     * @param mixed $value The primitive value in this instance
-     */
-    public function __construct ( $value )
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * Returns the value in this instance
-     *
-     * @return mixed
-     */
-    public function getValue ()
-    {
-        return $this->value;
-    }
-
-    /**
-     * Returns the SQL this atom represents
-     *
-     * @param \cPHP\iface\DB\Link $link The database connection this atom
-     * 		is being created against. This is being passed in for escaping
-     * 		purposes
+     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toAtomSQL( \cPHP\iface\DB\Link $link )
+    public function toOrderedSQL( \cPHP\iface\DB\Link $link )
     {
-        return $link->quote( \cPHP\reduce( $this->value ) );
+        return $this->toAtomSQL( $link );
     }
 
 }
