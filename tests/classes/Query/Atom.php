@@ -46,6 +46,19 @@ class classes_query_atom extends PHPUnit_Framework_TestCase
         $this->assertSame( "fieldName", $atom->toOrderedSQL( $link ) );
     }
 
+    public function testToSelectSQL ()
+    {
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $atom = $this->getMock("cPHP\Query\Atom", array("toAtomSQL"));
+        $atom->expects( $this->once() )
+            ->method( "toAtomSQL" )
+            ->with( $this->equalTo($link) )
+            ->will( $this->returnValue("fieldName") );
+
+        $this->assertSame( "fieldName", $atom->toSelectSQL( $link ) );
+    }
+
 }
 
 ?>

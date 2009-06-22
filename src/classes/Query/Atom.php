@@ -28,7 +28,7 @@ namespace cPHP\Query;
 /**
  * The base class for Query Atoms
  */
-abstract class Atom implements \cPHP\iface\Query\Atom, \cPHP\iface\Query\Ordered
+abstract class Atom implements \cPHP\iface\Query\Atom, \cPHP\iface\Query\Ordered, \cPHP\iface\Query\Selectable
 {
 
     /**
@@ -39,6 +39,18 @@ abstract class Atom implements \cPHP\iface\Query\Atom, \cPHP\iface\Query\Ordered
      * @return String
      */
     public function toOrderedSQL( \cPHP\iface\DB\Link $link )
+    {
+        return $this->toAtomSQL( $link );
+    }
+
+    /**
+     * Returns the SQL string for this expression
+     *
+     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
+     * @return String
+     */
+    public function toSelectSQL( \cPHP\iface\DB\Link $link )
     {
         return $this->toAtomSQL( $link );
     }
