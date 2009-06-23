@@ -110,6 +110,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $select->getOrder() );
     }
 
+    public function testGroupAccessors ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertSame( array(), $select->getGroup() );
+
+        $fld1 = $this->getMock('cPHP\iface\Query\Ordered');
+        $this->assertSame( $select, $select->addGroup( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getGroup() );
+
+        // Ensure you can't add the same field twice
+        $this->assertSame( $select, $select->addGroup( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getGroup() );
+
+        $fld2 = $this->getMock('cPHP\iface\Query\Ordered');
+        $this->assertSame( $select, $select->addGroup( $fld2 ) );
+        $this->assertSame( array( $fld1, $fld2 ), $select->getGroup() );
+
+        $this->assertSame( $select, $select->clearGroup() );
+        $this->assertSame( array(), $select->getGroup() );
+    }
+
     public function testOffsetAccessors ()
     {
         $obj = new \cPHP\Query\Select;

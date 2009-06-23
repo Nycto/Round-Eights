@@ -60,6 +60,13 @@ class Select
     private $order = array();
 
     /**
+     * The list of fields for the GROUP BY clause
+     *
+     * @var array
+     */
+    private $group = array();
+
+    /**
      * The maximum number of rows to return
      *
      * @var Integer
@@ -236,6 +243,41 @@ class Select
     public function clearOrder ()
     {
         $this->order = array();
+        return $this;
+    }
+
+    /**
+     * Returns the Fields that the results will be grouped by
+     *
+     * @return array Returns an array of \cPHP\iface\Query\Ordered objects
+     */
+    public function getGroup ()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Adds a new field to the GROUP BY clause
+     *
+     * @param \cPHP\iface\Query\Ordered $field
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function addGroup ( \cPHP\iface\Query\Ordered $field )
+    {
+        if ( !in_array($field, $this->group, true) )
+            $this->group[] = $field;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the GROUP BY fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearGroup ()
+    {
+        $this->group = array();
         return $this;
     }
 
