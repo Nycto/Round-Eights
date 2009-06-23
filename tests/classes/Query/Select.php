@@ -120,35 +120,26 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("`table`") );
 
         $select = new \cPHP\Query\Select( $from );
+        $link = new \cPHP\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
                 ."FROM `table`",
-                $select->toSQL()
+                $select->toSQL( $link )
             );
     }
 
     public function testToSQL_withFieldList ()
     {
-        $this->markTestIncomplete("To be re-written after code refactor");
-        $from = $this->getMock( "cPHP\iface\Query\From" );
+        $select = new \cPHP\Query\Select;
 
-        $from->expects( $this->once() )
-            ->method( "getSQLFields" )
-            ->will( $this->returnValue(array(
-                    "field1", null, "  ", "fld2"
-                )) );
+        $select->addField( new \cPHP\Query\Atom\Field("field1") );
+        $select->addField( new \cPHP\Query\Atom\Field("fld2") );
 
-        $from->expects( $this->once() )
-            ->method( "getFromSQL" )
-            ->will( $this->returnValue("`table`") );
-
-        $select = new \cPHP\Query\Select( $from );
-
+        $link = new \cPHP\DB\BlackHole\Link;
         $this->assertSame(
-        		"SELECT field1, fld2\n"
-                ."FROM `table`",
-                $select->toSQL()
+        		"SELECT `field1`, `fld2`",
+                $select->toSQL( $link )
             );
     }
 
@@ -157,10 +148,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \cPHP\Query\Select;
         $select->setLimit( 20 );
 
+        $link = new \cPHP\DB\BlackHole\Link;
+
         $this->assertSame(
         		"SELECT *\n"
                 ."LIMIT 0, 20",
-                $select->toSQL()
+                $select->toSQL( $link )
             );
     }
 
@@ -170,10 +163,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select->setLimit( 20 );
         $select->setOffset( 100 );
 
+        $link = new \cPHP\DB\BlackHole\Link;
+
         $this->assertSame(
         		"SELECT *\n"
                 ."LIMIT 100, 20",
-                $select->toSQL()
+                $select->toSQL( $link )
             );
     }
 

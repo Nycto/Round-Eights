@@ -244,14 +244,26 @@ class Select
     /**
      * Returns the SQL this object represents
      *
+     * @param \cPHP\iface\DB\Link $link The database link to use for escaping
      * @return String
      */
-    public function toSQL ()
+    public function toSQL ( \cPHP\iface\DB\Link $link )
     {
-        if ( count($this->fields) <= 0 )
-            $fields = "*";
+        $sql = "SELECT ";
 
-        $sql = "SELECT $fields";
+        if ( count($this->fields) <= 0 ) {
+            $sql .= "*";
+        }
+        else {
+            $sql .= implode(
+        		", ",
+                \cPHP\ary\invoke(
+                    $this->fields,
+                    "toSelectSQL",
+                    $link
+                )
+            );
+        }
 
         if ( $this->from )
             $sql .= "\nFROM ". $this->from->toFromSQL();
