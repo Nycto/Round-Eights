@@ -34,71 +34,6 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_query_select extends PHPUnit_Framework_TestCase
 {
 
-    public function testToSQL_withFrom ()
-    {
-        $from = $this->getMock( "cPHP\iface\Query\From" );
-        $from->expects( $this->once() )
-            ->method( "toFromSQL" )
-            ->will( $this->returnValue("`table`") );
-
-        $select = new \cPHP\Query\Select( $from );
-
-        $this->assertSame(
-        		"SELECT *\n"
-                ."FROM `table`",
-                $select->toSQL()
-            );
-    }
-
-    public function testToSQL_withFieldList ()
-    {
-        $this->markTestIncomplete("To be re-written after code refactor");
-        $from = $this->getMock( "cPHP\iface\Query\From" );
-
-        $from->expects( $this->once() )
-            ->method( "getSQLFields" )
-            ->will( $this->returnValue(array(
-                    "field1", null, "  ", "fld2"
-                )) );
-
-        $from->expects( $this->once() )
-            ->method( "getFromSQL" )
-            ->will( $this->returnValue("`table`") );
-
-        $select = new \cPHP\Query\Select( $from );
-
-        $this->assertSame(
-        		"SELECT field1, fld2\n"
-                ."FROM `table`",
-                $select->toSQL()
-            );
-    }
-
-    public function testToSQL_limit ()
-    {
-        $select = new \cPHP\Query\Select;
-        $select->setLimit( 20 );
-
-        $this->assertSame(
-        		"SELECT *\n"
-                ."LIMIT 0, 20",
-                $select->toSQL()
-            );
-    }
-
-    public function testToSQL_offset ()
-    {
-        $select = new \cPHP\Query\Select;
-        $select->setLimit( 20 );
-        $select->setOffset( 100 );
-
-        $this->assertSame(
-        		"SELECT *\n"
-                ."LIMIT 100, 20",
-                $select->toSQL()
-            );
-    }
-
     public function testFieldAccessors ()
     {
         $select = new \cPHP\Query\Select;
@@ -175,6 +110,71 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( $obj, $obj->setLimit( -5 ) );
         $this->assertFalse( $obj->limitExists() );
         $this->assertNull( $obj->getLimit() );
+    }
+
+    public function testToSQL_withFrom ()
+    {
+        $from = $this->getMock( "cPHP\iface\Query\From" );
+        $from->expects( $this->once() )
+            ->method( "toFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\Query\Select( $from );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."FROM `table`",
+                $select->toSQL()
+            );
+    }
+
+    public function testToSQL_withFieldList ()
+    {
+        $this->markTestIncomplete("To be re-written after code refactor");
+        $from = $this->getMock( "cPHP\iface\Query\From" );
+
+        $from->expects( $this->once() )
+            ->method( "getSQLFields" )
+            ->will( $this->returnValue(array(
+                    "field1", null, "  ", "fld2"
+                )) );
+
+        $from->expects( $this->once() )
+            ->method( "getFromSQL" )
+            ->will( $this->returnValue("`table`") );
+
+        $select = new \cPHP\Query\Select( $from );
+
+        $this->assertSame(
+        		"SELECT field1, fld2\n"
+                ."FROM `table`",
+                $select->toSQL()
+            );
+    }
+
+    public function testToSQL_limit ()
+    {
+        $select = new \cPHP\Query\Select;
+        $select->setLimit( 20 );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."LIMIT 0, 20",
+                $select->toSQL()
+            );
+    }
+
+    public function testToSQL_offset ()
+    {
+        $select = new \cPHP\Query\Select;
+        $select->setLimit( 20 );
+        $select->setOffset( 100 );
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."LIMIT 100, 20",
+                $select->toSQL()
+            );
     }
 
 }
