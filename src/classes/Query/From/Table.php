@@ -133,6 +133,50 @@ class Table implements \cPHP\iface\Query\From
     }
 
     /**
+     * Returns the Alias
+     *
+     * @return String
+     */
+    public function getAlias ()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * Sets the Alias
+     *
+     * @param String $alias
+     * @return \cPHP\Query\From\Table Returns a self reference
+     */
+    public function setAlias ( $alias )
+    {
+        $alias = \cPHP\str\stripW( $alias );
+        $this->alias = $alias ? $alias : null;
+        return $this;
+    }
+
+    /**
+     * Returns whether the Alias has been set
+     *
+     * @return Boolean
+     */
+    public function aliasExists ()
+    {
+        return isset( $this->alias );
+    }
+
+    /**
+     * Clears the currently set Alias
+     *
+     * @return \cPHP\Query\From\Table Returns a self reference
+     */
+    public function clearAlias ()
+    {
+        $this->alias = null;
+        return $this;
+    }
+
+    /**
      * Returns the SQL FROM clause
      *
      * @return String

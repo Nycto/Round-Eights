@@ -76,6 +76,33 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
         $this->assertSame( $obj, $obj->setDatabase( '   db!@#name  ' ) );
         $this->assertTrue( $obj->databaseExists() );
         $this->assertSame( 'dbname', $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( '    ' ) );
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+    }
+
+    public function testAliasAccessors ()
+    {
+        $obj = new \cPHP\Query\From\Table('table');
+        $this->assertFalse( $obj->aliasExists() );
+        $this->assertNull( $obj->getAlias() );
+
+        $this->assertSame( $obj, $obj->setAlias( 'As' ) );
+        $this->assertTrue( $obj->aliasExists() );
+        $this->assertSame( 'As', $obj->getAlias() );
+
+        $this->assertSame( $obj, $obj->clearAlias() );
+        $this->assertFalse( $obj->aliasExists() );
+        $this->assertNull( $obj->getAlias() );
+
+        $this->assertSame( $obj, $obj->setAlias( ' !@# ali as' ) );
+        $this->assertTrue( $obj->aliasExists() );
+        $this->assertSame( 'alias', $obj->getAlias() );
+
+        $this->assertSame( $obj, $obj->setAlias( '   ' ) );
+        $this->assertFalse( $obj->aliasExists() );
+        $this->assertNull( $obj->getAlias() );
     }
 
 }
