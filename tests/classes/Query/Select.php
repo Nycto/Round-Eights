@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Unit Test File
@@ -33,17 +34,11 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_query_select extends PHPUnit_Framework_TestCase
 {
 
-    public function testToSQL_simple ()
+    public function testToSQL_withFrom ()
     {
-        $this->markTestIncomplete("To be re-written after code refactor");
         $from = $this->getMock( "cPHP\iface\Query\From" );
-
         $from->expects( $this->once() )
-            ->method( "getSQLFields" )
-            ->will( $this->returnValue(array()) );
-
-        $from->expects( $this->once() )
-            ->method( "getFromSQL" )
+            ->method( "toFromSQL" )
             ->will( $this->returnValue("`table`") );
 
         $select = new \cPHP\Query\Select( $from );
@@ -102,6 +97,44 @@ class classes_query_select extends PHPUnit_Framework_TestCase
                 ."LIMIT 100, 20",
                 $select->toSQL()
             );
+    }
+
+    public function testFieldAccessors ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertSame( array(), $select->getFields() );
+
+        $fld1 = $this->getMock('cPHP\iface\Query\Selectable');
+        $this->assertSame( $select, $select->addField( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getFields() );
+
+        // Ensure you can't add the same field twice
+        $this->assertSame( $select, $select->addField( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getFields() );
+
+        $fld2 = $this->getMock('cPHP\iface\Query\Selectable');
+        $this->assertSame( $select, $select->addField( $fld2 ) );
+        $this->assertSame( array( $fld1, $fld2 ), $select->getFields() );
+
+        $this->assertSame( $select, $select->clearFields() );
+        $this->assertSame( array(), $select->getFields() );
+    }
+
+    public function testFromAccessors ()
+    {
+        $obj = new \cPHP\Query\Select;
+        $this->assertFalse( $obj->fromExists() );
+        $this->assertNull( $obj->getFrom() );
+
+        $from = $this->getMock('cPHP\iface\Query\From');
+
+        $this->assertSame( $obj, $obj->setFrom( $from ) );
+        $this->assertTrue( $obj->fromExists() );
+        $this->assertSame( $from, $obj->getFrom() );
+
+        $this->assertSame( $obj, $obj->clearFrom() );
+        $this->assertFalse( $obj->fromExists() );
+        $this->assertNull( $obj->getFrom() );
     }
 
     public function testOffsetAccessors ()

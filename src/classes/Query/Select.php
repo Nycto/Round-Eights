@@ -60,6 +60,94 @@ class Select
     private $offset;
 
     /**
+     * Constructor...
+     *
+     * @param \cPHP\iface\Query\From $from The from clause for the query
+     */
+    public function __construct (\cPHP\iface\Query\From $from = null )
+    {
+        if ( $from )
+            $this->setFrom( $from );
+    }
+
+    /**
+     * Returns the From clause for the query
+     *
+     * @return \cPHP\iface\Query\From Returns NULL if no query has been set
+     */
+    public function getFrom ()
+    {
+        return $this->from;
+    }
+
+    /**
+     * Sets the From clause for the query
+     *
+     * @param \cPHP\iface\Query\From $from
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setFrom ( \cPHP\iface\Query\From $from )
+    {
+        $this->from = $from;
+        return $this;
+    }
+
+    /**
+     * Returns whether the From clause has been set
+     *
+     * @return Boolean
+     */
+    public function fromExists ()
+    {
+        return isset( $this->from );
+    }
+
+    /**
+     * Clears the From clause for the query
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearFrom ()
+    {
+        $this->from = null;
+        return $this;
+    }
+
+    /**
+     * Returns the Fields that will be selected
+     *
+     * @return array Returns an array of \cPHP\iface\Query\Selectable objects
+     */
+    public function getFields ()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Adds a new field to the list of select fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function addField ( \cPHP\iface\Query\Selectable $field )
+    {
+        if ( !in_array($field, $this->fields, true) )
+            $this->fields[] = $field;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the select fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearFields ()
+    {
+        $this->fields = array();
+        return $this;
+    }
+
+    /**
      * Returns the Limit
      *
      * @return Integer
@@ -166,7 +254,7 @@ class Select
         $sql = "SELECT $fields";
 
         if ( $this->from )
-            $sql .= "\nFROM ". $this->from->getFromSQL();
+            $sql .= "\nFROM ". $this->from->toFromSQL();
 
         if ( $this->limitExists() )
         {
