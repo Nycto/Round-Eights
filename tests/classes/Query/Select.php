@@ -47,6 +47,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testFoundRows ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertFalse( $select->getFoundRows() );
+
+        $this->assertSame( $select, $select->setFoundRows(TRUE) );
+        $this->assertTrue( $select->getFoundRows() );
+
+        $this->assertSame( $select, $select->setFoundRows(FALSE) );
+        $this->assertFalse( $select->getFoundRows() );
+
+    }
+
     public function testFieldAccessors ()
     {
         $select = new \cPHP\Query\Select;
@@ -210,6 +223,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
         		"SELECT DISTINCT *",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testToSQL_withFoundRows ()
+    {
+        $select = new \cPHP\Query\Select;
+        $select->setFoundRows( TRUE );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT SQL_CALC_FOUND_ROWS *",
                 $select->toSQL( $link )
             );
     }

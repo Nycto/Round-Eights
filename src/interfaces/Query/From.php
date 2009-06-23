@@ -34,9 +34,11 @@ interface From
     /**
      * Returns the SQL FROM clause
      *
+     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toFromSQL ();
+    public function toFromSQL ( \cPHP\iface\DB\Link $link );
 
 }
 

@@ -32,11 +32,18 @@ class Select
 {
 
     /**
-     * Whether the query should be run as distinct
+     * Whether the DISTINCT flag should be set
      *
      * @var Boolean
      */
     private $distinct = FALSE;
+
+    /**
+     * Whether the SQL_CALC_FOUND_ROWS flag should be set
+     *
+     * @var Boolean
+     */
+    private $foundRows = FALSE;
 
     /**
      * The list of fields to select
@@ -125,6 +132,28 @@ class Select
     public function isDistinct ()
     {
         return $this->distinct;
+    }
+
+    /**
+     * Sets whether the SQL_CALC_FOUND_ROWS flag should be set
+     *
+     * @param Boolean $foundRows Whether the foundRows flag should be set
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setFoundRows ( $foundRows )
+    {
+        $this->foundRows = \cPHP\boolVal( $foundRows );
+        return $this;
+    }
+
+    /**
+     * Returns whether the SQL_CALC_FOUND_ROWS flag is set
+     *
+     * @return Boolean
+     */
+    public function getFoundRows ()
+    {
+        return $this->foundRows;
     }
 
     /**
@@ -467,6 +496,9 @@ class Select
         if ( $this->distinct )
             $sql .= "DISTINCT ";
 
+        if ( $this->foundRows )
+            $sql .= "SQL_CALC_FOUND_ROWS ";
+
         if ( count($this->fields) <= 0 ) {
             $sql .= "*";
         }
@@ -478,7 +510,7 @@ class Select
         }
 
         if ( $this->from )
-            $sql .= "\nFROM ". $this->from->toFromSQL();
+            $sql .= "\nFROM ". $this->from->toFromSQL( $link );
 
         if ( $this->where )
             $sql .= "\nWHERE ". $this->where->toWhereSQL( $link );
