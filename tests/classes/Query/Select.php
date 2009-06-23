@@ -131,6 +131,23 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $select->getGroup() );
     }
 
+    public function testHavingAccessors ()
+    {
+        $obj = new \cPHP\Query\Select;
+        $this->assertFalse( $obj->havingExists() );
+        $this->assertNull( $obj->getHaving() );
+
+        $having = $this->getMock('cPHP\iface\Query\Where');
+
+        $this->assertSame( $obj, $obj->setHaving( $having ) );
+        $this->assertTrue( $obj->havingExists() );
+        $this->assertSame( $having, $obj->getHaving() );
+
+        $this->assertSame( $obj, $obj->clearHaving() );
+        $this->assertFalse( $obj->havingExists() );
+        $this->assertNull( $obj->getHaving() );
+    }
+
     public function testOffsetAccessors ()
     {
         $obj = new \cPHP\Query\Select;
@@ -247,6 +264,25 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame(
         		"SELECT *\n"
     			."GROUP BY `field1`, `fld2`",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testToSQL_withHaving ()
+    {
+        $where = $this->getMock( "cPHP\iface\Query\Where" );
+        $where->expects( $this->once() )
+            ->method( "toWhereSQL" )
+            ->will( $this->returnValue("fld = 'value'") );
+
+        $select = new \cPHP\Query\Select;
+        $select->setHaving( $where );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."HAVING fld = 'value'",
                 $select->toSQL( $link )
             );
     }

@@ -67,6 +67,13 @@ class Select
     private $group = array();
 
     /**
+     * The root HAVING clause
+     *
+     * @var \cPHP\iface\Query\Where
+     */
+    private $having;
+
+    /**
      * The maximum number of rows to return
      *
      * @var Integer
@@ -169,7 +176,7 @@ class Select
     }
 
     /**
-     * Returns the Where
+     * Returns the Where clause for the query
      *
      * @return \cPHP\iface\Query\Where
      */
@@ -278,6 +285,49 @@ class Select
     public function clearGroup ()
     {
         $this->group = array();
+        return $this;
+    }
+
+    /**
+     * Returns the Having clause for the query
+     *
+     * @return \cPHP\iface\Query\Where
+     */
+    public function getHaving ()
+    {
+        return $this->having;
+    }
+
+    /**
+     * Sets the Having clause for the query
+     *
+     * @param \cPHP\iface\Query\Where $having
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setHaving ( \cPHP\iface\Query\Where $having )
+    {
+        $this->having = $having;
+        return $this;
+    }
+
+    /**
+     * Returns whether the Having clause has been set
+     *
+     * @return Boolean
+     */
+    public function havingExists ()
+    {
+        return isset( $this->having );
+    }
+
+    /**
+     * Clears the currently set Having clause
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearHaving ()
+    {
+        $this->having = null;
         return $this;
     }
 
@@ -414,6 +464,9 @@ class Select
                 \cPHP\ary\invoke( $this->group, "toOrderedSQL", $link )
             );
         }
+
+        if ( $this->having )
+            $sql .= "\nHAVING ". $this->having->toWhereSQL( $link );
 
         if ( $this->limitExists() )
         {
