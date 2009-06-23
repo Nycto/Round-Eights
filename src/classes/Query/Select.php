@@ -53,6 +53,13 @@ class Select
     private $where;
 
     /**
+     * The list of fields for the ORDER BY clause
+     *
+     * @var array
+     */
+    private $order = array();
+
+    /**
      * The maximum number of rows to return
      *
      * @var Integer
@@ -198,6 +205,41 @@ class Select
     }
 
     /**
+     * Returns the Fields that the results will be ordered by
+     *
+     * @return array Returns an array of \cPHP\iface\Query\Ordered objects
+     */
+    public function getOrder ()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Adds a new field to the ORDER BY clause
+     *
+     * @param \cPHP\iface\Query\Ordered $field
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function addOrder ( \cPHP\iface\Query\Ordered $field )
+    {
+        if ( !in_array($field, $this->order, true) )
+            $this->order[] = $field;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the ORDER BY fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearOrder ()
+    {
+        $this->order = array();
+        return $this;
+    }
+
+    /**
      * Returns the Limit
      *
      * @return Integer
@@ -320,6 +362,17 @@ class Select
 
         if ( $this->where )
             $sql .= "\nWHERE ". $this->where->toWhereSQL( $link );
+
+        if ( count($this->order) > 0 ) {
+            $sql .= "\nORDER BY ". implode(
+        		", ",
+                \cPHP\ary\invoke(
+                    $this->order,
+                    "toOrderedSQL",
+                    $link
+                )
+            );
+        }
 
         if ( $this->limitExists() )
         {

@@ -89,6 +89,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getWhere() );
     }
 
+    public function testOrderAccessors ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertSame( array(), $select->getOrder() );
+
+        $fld1 = $this->getMock('cPHP\iface\Query\Ordered');
+        $this->assertSame( $select, $select->addOrder( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getOrder() );
+
+        // Ensure you can't add the same field twice
+        $this->assertSame( $select, $select->addOrder( $fld1 ) );
+        $this->assertSame( array( $fld1 ), $select->getOrder() );
+
+        $fld2 = $this->getMock('cPHP\iface\Query\Ordered');
+        $this->assertSame( $select, $select->addOrder( $fld2 ) );
+        $this->assertSame( array( $fld1, $fld2 ), $select->getOrder() );
+
+        $this->assertSame( $select, $select->clearOrder() );
+        $this->assertSame( array(), $select->getOrder() );
+    }
+
     public function testOffsetAccessors ()
     {
         $obj = new \cPHP\Query\Select;
@@ -175,6 +196,21 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame(
         		"SELECT *\n"
                 ."WHERE fld = 'value'",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testToSQL_withOrderBy ()
+    {
+        $select = new \cPHP\Query\Select;
+
+        $select->addOrder( new \cPHP\Query\Atom\Field("field1") );
+        $select->addOrder( new \cPHP\Query\Atom\Field("fld2") );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame(
+        		"SELECT *\n"
+    			."ORDER BY `field1`, `fld2`",
                 $select->toSQL( $link )
             );
     }
