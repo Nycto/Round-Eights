@@ -55,6 +55,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $select->getFields() );
     }
 
+    public function testDistinct ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertFalse( $select->isDistinct() );
+
+        $this->assertSame( $select, $select->setDistinct(TRUE) );
+        $this->assertTrue( $select->isDistinct() );
+
+        $this->assertSame( $select, $select->setDistinct(FALSE) );
+        $this->assertFalse( $select->isDistinct() );
+
+    }
+
     public function testFromAccessors ()
     {
         $obj = new \cPHP\Query\Select;
@@ -215,6 +228,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \cPHP\DB\BlackHole\Link;
         $this->assertSame(
         		"SELECT `field1`, `fld2`",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testToSQL_withDistinct ()
+    {
+        $select = new \cPHP\Query\Select;
+        $select->setDistinct( TRUE );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT DISTINCT *",
                 $select->toSQL( $link )
             );
     }

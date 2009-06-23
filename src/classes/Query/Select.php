@@ -39,6 +39,13 @@ class Select
     private $fields = array();
 
     /**
+     * Whether the query should be run as distinct
+     *
+     * @var Boolean
+     */
+    private $distinct = FALSE;
+
+    /**
      * The table to select from
      *
      * @var \cPHP\iface\Query\From
@@ -173,6 +180,28 @@ class Select
     {
         $this->fields = array();
         return $this;
+    }
+
+    /**
+     * Sets whether the DISTINCT flag should be set
+     *
+     * @param Boolean $distinct Whether the distinct flag should be set
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setDistinct ( $distinct )
+    {
+        $this->distinct = \cPHP\boolVal( $distinct );
+        return $this;
+    }
+
+    /**
+     * Returns whether the Distinct flag is set
+     *
+     * @return Boolean
+     */
+    public function isDistinct ()
+    {
+        return $this->distinct;
     }
 
     /**
@@ -434,6 +463,9 @@ class Select
     public function toSQL ( \cPHP\iface\DB\Link $link )
     {
         $sql = "SELECT ";
+
+        if ( $this->distinct )
+            $sql .= "DISTINCT ";
 
         if ( count($this->fields) <= 0 ) {
             $sql .= "*";
