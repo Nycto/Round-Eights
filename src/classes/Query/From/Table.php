@@ -184,9 +184,9 @@ class Table implements \cPHP\iface\Query\From
     public function toFromSQL ()
     {
         return
-            ( $this->database ? $this->database ."." : "" )
-            . $this->table
-            .( $this->alias ? " AS ". $this->alias : "" );
+            ( $this->database ? "`". $this->database ."`." : "" )
+            . "`". $this->table ."`"
+            .( $this->alias ? " AS `". $this->alias ."`" : "" );
     }
 
 }

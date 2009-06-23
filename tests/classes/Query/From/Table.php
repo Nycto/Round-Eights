@@ -50,15 +50,6 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testToFromSQL_tableName ()
-    {
-        $link = new \cPHP\DB\BlackHole\Link;
-
-        $table = new \cPHP\Query\From\Table( "table" );
-
-        $this->assertSame( "table", $table->toFromSQL($link) );
-    }
-
     public function testDatabaseAccessors ()
     {
         $obj = new \cPHP\Query\From\Table('table');
@@ -103,6 +94,23 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
         $this->assertSame( $obj, $obj->setAlias( '   ' ) );
         $this->assertFalse( $obj->aliasExists() );
         $this->assertNull( $obj->getAlias() );
+    }
+
+    public function testToFromSQL ()
+    {
+        $link = new \cPHP\DB\BlackHole\Link;
+        $table = new \cPHP\Query\From\Table( "table" );
+
+        $this->assertSame( "`table`", $table->toFromSQL($link) );
+
+        $table->setAlias("Alias");
+        $this->assertSame( "`table` AS `Alias`", $table->toFromSQL($link) );
+
+        $table->setDatabase("DB");
+        $this->assertSame( "`DB`.`table` AS `Alias`", $table->toFromSQL($link) );
+
+        $table->clearAlias();
+        $this->assertSame( "`DB`.`table`", $table->toFromSQL($link) );
     }
 
 }
