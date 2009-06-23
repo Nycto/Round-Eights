@@ -32,18 +32,18 @@ class Select
 {
 
     /**
-     * The table to select from
-     *
-     * @var \cPHP\iface\Query\From
-     */
-    private $from;
-
-    /**
      * The list of fields to select
      *
      * @var array
      */
     private $fields = array();
+
+    /**
+     * The table to select from
+     *
+     * @var \cPHP\iface\Query\From
+     */
+    private $from;
 
     /**
      * The root WHERE clause
@@ -327,7 +327,6 @@ class Select
         		.( $this->offsetExists() ? $this->getOffset() : "0" )
             	.", ". $this->getLimit();
         }
-
 
         return $sql;
     }
