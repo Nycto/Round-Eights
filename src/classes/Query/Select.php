@@ -32,18 +32,18 @@ class Select
 {
 
     /**
-     * The list of fields to select
-     *
-     * @var array
-     */
-    private $fields = array();
-
-    /**
      * Whether the query should be run as distinct
      *
      * @var Boolean
      */
     private $distinct = FALSE;
+
+    /**
+     * The list of fields to select
+     *
+     * @var array
+     */
+    private $fields = array();
 
     /**
      * The table to select from
@@ -106,6 +106,62 @@ class Select
     }
 
     /**
+     * Sets whether the DISTINCT flag should be set
+     *
+     * @param Boolean $distinct Whether the distinct flag should be set
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setDistinct ( $distinct )
+    {
+        $this->distinct = \cPHP\boolVal( $distinct );
+        return $this;
+    }
+
+    /**
+     * Returns whether the Distinct flag is set
+     *
+     * @return Boolean
+     */
+    public function isDistinct ()
+    {
+        return $this->distinct;
+    }
+
+    /**
+     * Returns the Fields that will be selected
+     *
+     * @return array Returns an array of \cPHP\iface\Query\Selectable objects
+     */
+    public function getFields ()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Adds a new field to the list of select fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function addField ( \cPHP\iface\Query\Selectable $field )
+    {
+        if ( !in_array($field, $this->fields, true) )
+            $this->fields[] = $field;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the select fields
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearFields ()
+    {
+        $this->fields = array();
+        return $this;
+    }
+
+    /**
      * Returns the From clause for the query
      *
      * @return \cPHP\iface\Query\From Returns NULL if no query has been set
@@ -146,62 +202,6 @@ class Select
     {
         $this->from = null;
         return $this;
-    }
-
-    /**
-     * Returns the Fields that will be selected
-     *
-     * @return array Returns an array of \cPHP\iface\Query\Selectable objects
-     */
-    public function getFields ()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Adds a new field to the list of select fields
-     *
-     * @return \cPHP\Query\Select Returns a self reference
-     */
-    public function addField ( \cPHP\iface\Query\Selectable $field )
-    {
-        if ( !in_array($field, $this->fields, true) )
-            $this->fields[] = $field;
-
-        return $this;
-    }
-
-    /**
-     * Clears all the select fields
-     *
-     * @return \cPHP\Query\Select Returns a self reference
-     */
-    public function clearFields ()
-    {
-        $this->fields = array();
-        return $this;
-    }
-
-    /**
-     * Sets whether the DISTINCT flag should be set
-     *
-     * @param Boolean $distinct Whether the distinct flag should be set
-     * @return \cPHP\Query\Select Returns a self reference
-     */
-    public function setDistinct ( $distinct )
-    {
-        $this->distinct = \cPHP\boolVal( $distinct );
-        return $this;
-    }
-
-    /**
-     * Returns whether the Distinct flag is set
-     *
-     * @return Boolean
-     */
-    public function isDistinct ()
-    {
-        return $this->distinct;
     }
 
     /**

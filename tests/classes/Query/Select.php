@@ -34,6 +34,19 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_query_select extends PHPUnit_Framework_TestCase
 {
 
+    public function testDistinct ()
+    {
+        $select = new \cPHP\Query\Select;
+        $this->assertFalse( $select->isDistinct() );
+
+        $this->assertSame( $select, $select->setDistinct(TRUE) );
+        $this->assertTrue( $select->isDistinct() );
+
+        $this->assertSame( $select, $select->setDistinct(FALSE) );
+        $this->assertFalse( $select->isDistinct() );
+
+    }
+
     public function testFieldAccessors ()
     {
         $select = new \cPHP\Query\Select;
@@ -53,19 +66,6 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $select, $select->clearFields() );
         $this->assertSame( array(), $select->getFields() );
-    }
-
-    public function testDistinct ()
-    {
-        $select = new \cPHP\Query\Select;
-        $this->assertFalse( $select->isDistinct() );
-
-        $this->assertSame( $select, $select->setDistinct(TRUE) );
-        $this->assertTrue( $select->isDistinct() );
-
-        $this->assertSame( $select, $select->setDistinct(FALSE) );
-        $this->assertFalse( $select->isDistinct() );
-
     }
 
     public function testFromAccessors ()
@@ -201,19 +201,15 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getLimit() );
     }
 
-    public function testToSQL_withFrom ()
+    public function testToSQL_withDistinct ()
     {
-        $from = $this->getMock( "cPHP\iface\Query\From" );
-        $from->expects( $this->once() )
-            ->method( "toFromSQL" )
-            ->will( $this->returnValue("`table`") );
+        $select = new \cPHP\Query\Select;
+        $select->setDistinct( TRUE );
 
-        $select = new \cPHP\Query\Select( $from );
         $link = new \cPHP\DB\BlackHole\Link;
 
         $this->assertSame(
-        		"SELECT *\n"
-                ."FROM `table`",
+        		"SELECT DISTINCT *",
                 $select->toSQL( $link )
             );
     }
@@ -232,15 +228,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testToSQL_withDistinct ()
+    public function testToSQL_withFrom ()
     {
-        $select = new \cPHP\Query\Select;
-        $select->setDistinct( TRUE );
+        $from = $this->getMock( "cPHP\iface\Query\From" );
+        $from->expects( $this->once() )
+            ->method( "toFromSQL" )
+            ->will( $this->returnValue("`table`") );
 
+        $select = new \cPHP\Query\Select( $from );
         $link = new \cPHP\DB\BlackHole\Link;
 
         $this->assertSame(
-        		"SELECT DISTINCT *",
+        		"SELECT *\n"
+                ."FROM `table`",
                 $select->toSQL( $link )
             );
     }
