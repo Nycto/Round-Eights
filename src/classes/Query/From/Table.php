@@ -89,6 +89,50 @@ class Table implements \cPHP\iface\Query\From
     }
 
     /**
+     * Returns the Database
+     *
+     * @return String
+     */
+    public function getDatabase ()
+    {
+        return $this->database;
+    }
+
+    /**
+     * Sets the Database
+     *
+     * @param String $database
+     * @return \cPHP\Query\From\Table Returns a self reference
+     */
+    public function setDatabase ( $database )
+    {
+        $database = \cPHP\str\stripW( $database );
+        $this->database = $database ? $database : null;
+        return $this;
+    }
+
+    /**
+     * Returns whether the Database has been set
+     *
+     * @return Boolean
+     */
+    public function databaseExists ()
+    {
+        return isset( $this->database );
+    }
+
+    /**
+     * Clears the currently set Database
+     *
+     * @return \cPHP\Query\From\Table Returns a self reference
+     */
+    public function clearDatabase ()
+    {
+        $this->database = null;
+        return $this;
+    }
+
+    /**
      * Returns the SQL FROM clause
      *
      * @return String

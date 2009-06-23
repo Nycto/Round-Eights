@@ -59,6 +59,25 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
         $this->assertSame( "table", $table->toFromSQL($link) );
     }
 
+    public function testDatabaseAccessors ()
+    {
+        $obj = new \cPHP\Query\From\Table('table');
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( "dbase" ) );
+        $this->assertTrue( $obj->databaseExists() );
+        $this->assertSame( "dbase", $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->clearDatabase() );
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( '   db!@#name  ' ) );
+        $this->assertTrue( $obj->databaseExists() );
+        $this->assertSame( 'dbname', $obj->getDatabase() );
+    }
+
 }
 
 ?>
