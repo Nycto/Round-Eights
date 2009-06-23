@@ -46,6 +46,13 @@ class Select
     private $fields = array();
 
     /**
+     * The root WHERE clause
+     *
+     * @var \cPHP\iface\Query\Where
+     */
+    private $where;
+
+    /**
      * The maximum number of rows to return
      *
      * @var Integer
@@ -144,6 +151,49 @@ class Select
     public function clearFields ()
     {
         $this->fields = array();
+        return $this;
+    }
+
+    /**
+     * Returns the Where
+     *
+     * @return \cPHP\iface\Query\Where
+     */
+    public function getWhere ()
+    {
+        return $this->where;
+    }
+
+    /**
+     * Sets the Where clause
+     *
+     * @param \cPHP\iface\Query\Where $where
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function setWhere ( \cPHP\iface\Query\Where $where )
+    {
+        $this->where = $where;
+        return $this;
+    }
+
+    /**
+     * Returns whether the Where clause has been set
+     *
+     * @return Boolean
+     */
+    public function whereExists ()
+    {
+        return isset( $this->where );
+    }
+
+    /**
+     * Clears the currently set Where clause
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function clearWhere ()
+    {
+        $this->where = null;
         return $this;
     }
 
@@ -267,6 +317,9 @@ class Select
 
         if ( $this->from )
             $sql .= "\nFROM ". $this->from->toFromSQL();
+
+        if ( $this->where )
+            $sql .= "\nWHERE ". $this->where->toWhereSQL( $link );
 
         if ( $this->limitExists() )
         {

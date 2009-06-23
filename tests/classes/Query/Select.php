@@ -72,6 +72,23 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getFrom() );
     }
 
+    public function testWhereAccessors ()
+    {
+        $obj = new \cPHP\Query\Select;
+        $this->assertFalse( $obj->whereExists() );
+        $this->assertNull( $obj->getWhere() );
+
+        $where = $this->getMock('cPHP\iface\Query\Where');
+
+        $this->assertSame( $obj, $obj->setWhere( $where ) );
+        $this->assertTrue( $obj->whereExists() );
+        $this->assertSame( $where, $obj->getWhere() );
+
+        $this->assertSame( $obj, $obj->clearWhere() );
+        $this->assertFalse( $obj->whereExists() );
+        $this->assertNull( $obj->getWhere() );
+    }
+
     public function testOffsetAccessors ()
     {
         $obj = new \cPHP\Query\Select;
@@ -139,6 +156,25 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \cPHP\DB\BlackHole\Link;
         $this->assertSame(
         		"SELECT `field1`, `fld2`",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testToSQL_withWhere ()
+    {
+        $where = $this->getMock( "cPHP\iface\Query\Where" );
+        $where->expects( $this->once() )
+            ->method( "toWhereSQL" )
+            ->will( $this->returnValue("fld = 'value'") );
+
+        $select = new \cPHP\Query\Select;
+        $select->setWhere( $where );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT *\n"
+                ."WHERE fld = 'value'",
                 $select->toSQL( $link )
             );
     }
