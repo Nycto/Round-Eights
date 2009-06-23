@@ -36,7 +36,7 @@ interface From
      *
      * @return String
      */
-    public function getFromSQL ();
+    public function toFromSQL ();
 
 }
 

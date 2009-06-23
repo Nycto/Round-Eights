@@ -31,6 +31,76 @@ namespace cPHP\Query\From;
 class Table implements \cPHP\iface\Query\From
 {
 
+    /**
+     * The table name
+     *
+     * @var String
+     */
+    private $table;
+
+    /**
+     * The database name
+     *
+     * @var String
+     */
+    private $database;
+
+    /**
+     * The alias for this table
+     *
+     * @var String
+     */
+    private $alias;
+
+    /**
+     * Constructor...
+     */
+    public function __construct ( $table, $database = null, $alias = null )
+    {
+        $this->setTable( $table );
+    }
+
+    /**
+     * Sets the table name
+     *
+     * @param String $table
+     * @return \cPHP\Query\From\Table Returns a self referencve
+     */
+    public function setTable ( $table )
+    {
+        $table = \cPHP\str\stripW( $table );
+
+        if ( empty($table) )
+            throw new \cPHP\Exception\Argument( 0, "Table Name", "Must not be empty" );
+
+        $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * Returns the Table name
+     *
+     * @return String
+     */
+    public function getTable ()
+    {
+        return $this->table;
+    }
+
+    /**
+     * Returns the SQL FROM clause
+     *
+     * @return String
+     */
+    public function toFromSQL ()
+    {
+        return
+            ( $this->database ? $this->database ."." : "" )
+            . $this->table
+            .( $this->alias ? " AS ". $this->alias : "" );
+    }
+
 }
 
 ?>

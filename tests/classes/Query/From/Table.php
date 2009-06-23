@@ -33,6 +33,32 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_from_table extends PHPUnit_Framework_TestCase
 {
 
+    public function testTableAccessor ()
+    {
+        $table = new \cPHP\Query\From\Table( "table" );
+        $this->assertSame( "table", $table->getTable() );
+
+        $this->assertSame( $table, $table->setTable("!@# table Name") );
+        $this->assertSame( "tableName", $table->getTable() );
+
+        try {
+            $table->setTable("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
+    public function testToFromSQL_tableName ()
+    {
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $table = new \cPHP\Query\From\Table( "table" );
+
+        $this->assertSame( "table", $table->toFromSQL($link) );
+    }
+
 }
 
 ?>
