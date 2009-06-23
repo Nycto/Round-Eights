@@ -391,11 +391,7 @@ class Select
         else {
             $sql .= implode(
         		", ",
-                \cPHP\ary\invoke(
-                    $this->fields,
-                    "toSelectSQL",
-                    $link
-                )
+                \cPHP\ary\invoke( $this->fields, "toSelectSQL", $link )
             );
         }
 
@@ -408,11 +404,14 @@ class Select
         if ( count($this->order) > 0 ) {
             $sql .= "\nORDER BY ". implode(
         		", ",
-                \cPHP\ary\invoke(
-                    $this->order,
-                    "toOrderedSQL",
-                    $link
-                )
+                \cPHP\ary\invoke( $this->order, "toOrderedSQL", $link )
+            );
+        }
+
+        if ( count($this->group) > 0 ) {
+            $sql .= "\nGROUP BY ". implode(
+        		", ",
+                \cPHP\ary\invoke( $this->group, "toOrderedSQL", $link )
             );
         }
 

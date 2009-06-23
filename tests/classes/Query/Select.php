@@ -236,6 +236,21 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToSQL_withGroupBy ()
+    {
+        $select = new \cPHP\Query\Select;
+
+        $select->addGroup( new \cPHP\Query\Atom\Field("field1") );
+        $select->addGroup( new \cPHP\Query\Atom\Field("fld2") );
+
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame(
+        		"SELECT *\n"
+    			."GROUP BY `field1`, `fld2`",
+                $select->toSQL( $link )
+            );
+    }
+
     public function testToSQL_limit ()
     {
         $select = new \cPHP\Query\Select;
