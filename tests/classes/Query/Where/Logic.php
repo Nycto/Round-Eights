@@ -37,7 +37,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
     {
         $logic = $this->getMock(
         		'cPHP\Query\Where\Logic',
-                array( "toWhereSQL", "getPrecedence" )
+                array( "getPrecedence", "getDelimiter" )
             );
 
         $this->assertSame( array(), $logic->getClauses() );
@@ -52,6 +52,48 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $logic, $logic->addClause($where1) );
         $this->assertSame( array( $where1, $where2 ), $logic->getClauses() );
+    }
+
+    public function testToWhereSQL ()
+    {
+        // Put together the logic object
+        $logic = $this->getMock(
+        		'cPHP\Query\Where\Logic',
+                array( "getPrecedence", "getDelimiter" )
+            );
+        $logic->expects( $this->once() )
+            ->method( "getPrecedence" )
+            ->will( $this->returnValue(20) );
+        $logic->expects( $this->once() )
+            ->method( "getDelimiter" )
+            ->will( $this->returnValue( "DELIM" ) );
+
+        // Create a higher precedence WHERE clause
+        $where1 = $this->getMock('cPHP\iface\Query\Where');
+        $where1->expects( $this->once() )
+            ->method( "getPrecedence" )
+            ->will( $this->returnValue(30) );
+        $where1->expects( $this->once() )
+            ->method( "toWhereSQL" )
+            ->will( $this->returnValue( "Where1" ) );
+        $logic->addClause( $where1 );
+
+        // Create a lower precedence WHERE clause
+        $where2 = $this->getMock('cPHP\iface\Query\Where');
+        $where2->expects( $this->once() )
+            ->method( "getPrecedence" )
+            ->will( $this->returnValue(10) );
+        $where2->expects( $this->once() )
+            ->method( "toWhereSQL" )
+            ->will( $this->returnValue( "Where2" ) );
+        $logic->addClause( $where2 );
+
+        // Run the actual conversion
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame(
+        		"Where1 DELIM (Where2)",
+                $logic->toWhereSQL( $link )
+            );
     }
 
 }

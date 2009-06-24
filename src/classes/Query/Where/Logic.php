@@ -72,6 +72,43 @@ abstract class Logic implements \cPHP\iface\Query\Where
         return $this;
     }
 
+    /**
+     * Returns the delimiter that will be used to combine the WHERE clauses
+     *
+     * @return String
+     */
+    abstract protected function getDelimiter ();
+
+    /**
+     * Returns the SQL Where expression represented by this object
+     *
+     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
+     * @return String
+     */
+    public function toWhereSQL( \cPHP\iface\DB\Link $link )
+    {
+        $prec = $this->getPrecedence();
+        $result = array();
+
+        foreach ( $this->clauses AS $clause )
+        {
+            // Wrap the clause in parenthesis if it has lower precedence
+            // For a list of operation precedence, look here:
+            // http://dev.mysql.com/doc/refman/5.4/en/operator-precedence.html
+            if ( $clause->getPrecedence() > $prec )
+                $result[] = $clause->toWhereSQL( $link );
+            else
+                $result[] = "(". trim( $clause->toWhereSQL( $link ) ) .")";
+        }
+
+        // Combine all the sub-clauses with the delimiter
+        return implode(
+        		" ". trim( $this->getDelimiter() ) ." ",
+                $result
+            );
+    }
+
 }
 
 ?>
