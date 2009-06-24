@@ -58,6 +58,8 @@ class Table implements \cPHP\iface\Query\From
     public function __construct ( $table, $database = null, $alias = null )
     {
         $this->setTable( $table );
+        $this->setDatabase( $database );
+        $this->setAlias( $alias );
     }
 
     /**

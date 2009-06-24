@@ -33,6 +33,24 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_from_table extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        $table = new \cPHP\Query\From\Table( "table" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertNull( $table->getDatabase() );
+        $this->assertNull( $table->getAlias() );
+
+        $table = new \cPHP\Query\From\Table( "table", "db" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertNull( $table->getAlias() );
+
+        $table = new \cPHP\Query\From\Table( "table", "db", "t" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertSame( "t", $table->getAlias() );
+    }
+
     public function testTableAccessor ()
     {
         $table = new \cPHP\Query\From\Table( "table" );
