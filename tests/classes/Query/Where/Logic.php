@@ -33,6 +33,47 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_where_logic extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a mock logic object
+     *
+     * @return \cPHP\Query\Where\Logic
+     */
+    public function getTestLogic ()
+    {
+        $logic = $this->getMock(
+        		'cPHP\Query\Where\Logic',
+                array( "getPrecedence", "getDelimiter" )
+            );
+
+        $logic->expects( $this->once() )
+            ->method( "getPrecedence" )
+            ->will( $this->returnValue(20) );
+
+        $logic->expects( $this->once() )
+            ->method( "getDelimiter" )
+            ->will( $this->returnValue( "DELIM" ) );
+
+        return $logic;
+    }
+
+    /**
+     * Returns a test WHERE clause
+     *
+     * @return \cPHP\iface\Query\Where
+     */
+    public function getTestClause ( $precedence, $sql )
+    {
+        $where = $this->getMock('cPHP\iface\Query\Where');
+        $where->expects( $this->any() )
+            ->method( "getPrecedence" )
+            ->will( $this->returnValue( $precedence ) );
+        $where->expects( $this->once() )
+            ->method( "toWhereSQL" )
+            ->will( $this->returnValue( $sql ) );
+
+        return $where;
+    }
+
     public function testClauseAccessors ()
     {
         $logic = $this->getMock(
@@ -54,44 +95,53 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $this->assertSame( array( $where1, $where2 ), $logic->getClauses() );
     }
 
-    public function testToWhereSQL ()
+    public function testToWhereSQL_lowHigh ()
     {
-        // Put together the logic object
-        $logic = $this->getMock(
-        		'cPHP\Query\Where\Logic',
-                array( "getPrecedence", "getDelimiter" )
-            );
-        $logic->expects( $this->once() )
-            ->method( "getPrecedence" )
-            ->will( $this->returnValue(20) );
-        $logic->expects( $this->once() )
-            ->method( "getDelimiter" )
-            ->will( $this->returnValue( "DELIM" ) );
+        $logic = $this->getTestLogic();
 
-        // Create a higher precedence WHERE clause
-        $where1 = $this->getMock('cPHP\iface\Query\Where');
-        $where1->expects( $this->once() )
-            ->method( "getPrecedence" )
-            ->will( $this->returnValue(30) );
-        $where1->expects( $this->once() )
-            ->method( "toWhereSQL" )
-            ->will( $this->returnValue( "Where1" ) );
-        $logic->addClause( $where1 );
-
-        // Create a lower precedence WHERE clause
-        $where2 = $this->getMock('cPHP\iface\Query\Where');
-        $where2->expects( $this->once() )
-            ->method( "getPrecedence" )
-            ->will( $this->returnValue(10) );
-        $where2->expects( $this->once() )
-            ->method( "toWhereSQL" )
-            ->will( $this->returnValue( "Where2" ) );
-        $logic->addClause( $where2 );
+        $logic->addClause( $this->getTestClause( 30, "Higher" ) );
+        $logic->addClause( $this->getTestClause( 10, "Lower" ) );
+        $logic->addClause( $this->getTestClause( 30, "Higher" ) );
+        $logic->addClause( $this->getTestClause( 10, "Lower" ) );
 
         // Run the actual conversion
         $link = new \cPHP\DB\BlackHole\Link;
         $this->assertSame(
-        		"Where1 DELIM (Where2)",
+        		"Higher DELIM (Lower) DELIM Higher DELIM (Lower)",
+                $logic->toWhereSQL( $link )
+            );
+    }
+
+    public function testToWhereSQL_equals ()
+    {
+        $logic = $this->getTestLogic();
+
+        // Create an equal precedence WHERE clause
+        $logic->addClause( $this->getTestClause( 20, "Equals1" ) );
+        $logic->addClause( $this->getTestClause( 20, "Equals2" ) );
+        $logic->addClause( $this->getTestClause( 20, "Equals3" ) );
+
+        // Run the actual conversion
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame(
+        		"Equals1 DELIM Equals2 DELIM Equals3",
+                $logic->toWhereSQL( $link )
+            );
+    }
+
+    public function testToWhereSQL_blank ()
+    {
+        $logic = $this->getTestLogic();
+
+        // Create an equal precedence WHERE clause
+        $logic->addClause( $this->getTestClause( 10, "Lower" ) );
+        $logic->addClause( $this->getTestClause( 20, "   " ) );
+        $logic->addClause( $this->getTestClause( 30, "Higher" ) );
+
+        // Run the actual conversion
+        $link = new \cPHP\DB\BlackHole\Link;
+        $this->assertSame(
+        		"(Lower) DELIM Higher",
                 $logic->toWhereSQL( $link )
             );
     }

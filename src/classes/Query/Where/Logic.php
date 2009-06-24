@@ -93,13 +93,18 @@ abstract class Logic implements \cPHP\iface\Query\Where
 
         foreach ( $this->clauses AS $clause )
         {
+            $sql = trim( $clause->toWhereSQL( $link ) );
+
+            if ( \cPHP\IsEmpty($sql) )
+                continue;
+
             // Wrap the clause in parenthesis if it has lower precedence
             // For a list of operation precedence, look here:
             // http://dev.mysql.com/doc/refman/5.4/en/operator-precedence.html
-            if ( $clause->getPrecedence() > $prec )
-                $result[] = $clause->toWhereSQL( $link );
-            else
-                $result[] = "(". trim( $clause->toWhereSQL( $link ) ) .")";
+            if ( $clause->getPrecedence() < $prec )
+                $sql = "(". $sql .")";
+
+            $result[] = $sql;
         }
 
         // Combine all the sub-clauses with the delimiter
