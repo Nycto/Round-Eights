@@ -67,11 +67,31 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $where->expects( $this->any() )
             ->method( "getPrecedence" )
             ->will( $this->returnValue( $precedence ) );
-        $where->expects( $this->once() )
+        $where->expects( $this->any() )
             ->method( "toWhereSQL" )
             ->will( $this->returnValue( $sql ) );
 
         return $where;
+    }
+
+    public function testConstruct ()
+    {
+        $where1 = $this->getTestClause( 20, "Where" );
+        $where2 = $this->getTestClause( 20, "Where" );
+        $where3 = $this->getTestClause( 20, "Where" );
+
+        $logic = $this->getMock(
+        		'cPHP\Query\Where\Logic',
+                array( "getPrecedence", "getDelimiter" ),
+                array(
+                    $where1, "invalid", $where2, new stdClass, $where3
+                )
+            );
+
+        $this->assertSame(
+                array( $where1, $where2, $where3 ),
+                $logic->getClauses()
+            );
     }
 
     public function testClauseAccessors ()

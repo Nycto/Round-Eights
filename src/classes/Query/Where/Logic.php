@@ -39,6 +39,22 @@ abstract class Logic implements \cPHP\iface\Query\Where
     private $clauses = array();
 
     /**
+     * Constructor...
+     *
+     * @param $clauses... \cPHP\iface\Query\Where Any initial where clauses
+     * 		to set in this instance
+     */
+    public function __construct ()
+    {
+        if ( func_num_args() > 0 ) {
+            foreach ( func_get_args() AS $arg ) {
+                if ( $arg instanceof \cPHP\iface\Query\Where )
+                    $this->addClause( $arg );
+            }
+        }
+    }
+
+    /**
      * Returns the list of WHERE clauses
      *
      * @return array An array of \cPHP\iface\Query\Where objects
