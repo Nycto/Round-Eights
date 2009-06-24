@@ -28,7 +28,7 @@ namespace cPHP\Query\Expr;
 /**
  * An aliased field expression
  */
-class Aliased
+class Aliased implements \cPHP\iface\Query\Selectable
 {
 
     /**
@@ -100,7 +100,7 @@ class Aliased
      * 		purposes
      * @return String
      */
-    public function toAliasedSQL( \cPHP\iface\DB\Link $link )
+    public function toSelectSQL( \cPHP\iface\DB\Link $link )
     {
         return $this->atom->toAtomSQL( $link )
             .( $this->alias ? " AS ". $this->alias : "" );

@@ -58,17 +58,17 @@ class classes_query_Expr_Aliased extends PHPUnit_Framework_TestCase
         $this->assertSame( "Fld", $alias->getAlias() );
     }
 
-    public function testToAliasedSQL ()
+    public function testToSelectSQL ()
     {
         $link = new \cPHP\DB\BlackHole\Link;
 
         $atom = new \cPHP\Query\Atom\Field("fld");
         $alias = new \cPHP\Query\Expr\Aliased( $atom );
 
-        $this->assertSame( "`fld`", $alias->toAliasedSQL( $link ) );
+        $this->assertSame( "`fld`", $alias->toSelectSQL( $link ) );
 
         $alias->setAlias( "wakka");
-        $this->assertSame( "`fld` AS wakka", $alias->toAliasedSQL( $link ) );
+        $this->assertSame( "`fld` AS wakka", $alias->toSelectSQL( $link ) );
 
     }
 
