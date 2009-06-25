@@ -89,6 +89,16 @@ abstract class Logic implements \cPHP\iface\Query\Where
     }
 
     /**
+     * Returns the number of clauses in this instance
+     *
+     * @return Integer
+     */
+    public function countClauses ()
+    {
+        return count( $this->clauses );
+    }
+
+    /**
      * Returns the delimiter that will be used to combine the WHERE clauses
      *
      * @return String

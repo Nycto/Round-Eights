@@ -113,6 +113,30 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $logic, $logic->addClause($where1) );
         $this->assertSame( array( $where1, $where2 ), $logic->getClauses() );
+
+        $this->assertSame( $logic, $logic->clearClauses() );
+        $this->assertSame( array(), $logic->getClauses() );
+    }
+
+    public function testCountClauses ()
+    {
+        $logic = $this->getMock(
+        		'cPHP\Query\Where\Logic',
+                array( "getPrecedence", "getDelimiter" )
+            );
+        $this->assertSame( 0, $logic->countClauses() );
+
+        $logic->addClause( $this->getMock('cPHP\iface\Query\Where') );
+        $this->assertSame( 1, $logic->countClauses() );
+
+        $logic->addClause( $this->getMock('cPHP\iface\Query\Where') );
+        $this->assertSame( 2, $logic->countClauses() );
+
+        $logic->addClause( $this->getMock('cPHP\iface\Query\Where') );
+        $this->assertSame( 3, $logic->countClauses() );
+
+        $logic->clearClauses();
+        $this->assertSame( 0, $logic->countClauses() );
     }
 
     public function testToWhereSQL_lowHigh ()
