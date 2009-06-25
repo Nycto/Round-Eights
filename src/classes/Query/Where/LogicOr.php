@@ -52,7 +52,12 @@ class LogicOr extends \cPHP\Query\Where\Logic
      */
     public function getPrecedence ()
     {
-        return 50;
+        if ( $this->countClauses() != 1 )
+            return 50;
+
+        // If there is only one clause in this instance, then mask the precedence
+        // to reduce the number of parenthesis that are added
+        return \cPHP\ary\first( $this->getClauses() )->getPrecedence();
     }
 
 }

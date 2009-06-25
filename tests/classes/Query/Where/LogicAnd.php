@@ -44,7 +44,7 @@ class classes_query_where_logicand extends PHPUnit_Framework_TestCase
         $where->expects( $this->any() )
             ->method( "getPrecedence" )
             ->will( $this->returnValue( $precedence ) );
-        $where->expects( $this->once() )
+        $where->expects( $this->any() )
             ->method( "toWhereSQL" )
             ->will( $this->returnValue( $sql ) );
 
@@ -54,6 +54,17 @@ class classes_query_where_logicand extends PHPUnit_Framework_TestCase
     public function testGetPrecedence ()
     {
         $and = new \cPHP\Query\Where\LogicAnd;
+        $this->assertSame( 70, $and->getPrecedence() );
+
+        // When there is only one clause, we should be doing some masking
+        $and->addClause( $this->getTestClause(50, "Lower") );
+        $this->assertSame( 50, $and->getPrecedence() );
+
+        // The masking should disappear when there is more than 1
+        $and->addClause( $this->getTestClause(50, "Lower") );
+        $this->assertSame( 70, $and->getPrecedence() );
+
+        $and->addClause( $this->getTestClause(50, "Lower") );
         $this->assertSame( 70, $and->getPrecedence() );
     }
 
