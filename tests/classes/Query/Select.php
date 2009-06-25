@@ -368,6 +368,60 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToSQL_full ()
+    {
+        $select = new \cPHP\Query\Select;
+        $select->setDistinct(TRUE)
+            ->setFoundRows(TRUE)
+            ->addField( new \cPHP\Query\Atom\Func("NOW") )
+            ->addField(
+                new \cPHP\Query\Expr\Aliased(
+                    new \cPHP\Query\Atom\Field("fld2"),
+                    "info"
+                )
+            )
+            ->setFrom(
+                new \cPHP\Query\From\Table("tableName", "db")
+            )
+            ->setWhere(
+                new \cPHP\Query\Where\Equals(
+            		new \cPHP\Query\Atom\Field("fld1"),
+                    new \cPHP\Query\Atom\Primitive( 5 )
+                )
+            )
+            ->addOrder(
+                new \cPHP\Query\Expr\Ordered(
+            		new \cPHP\Query\Atom\Field("fld1"),
+            		"DESC"
+                )
+            )
+            ->addGroup(
+        		new \cPHP\Query\Atom\Field("fld1")
+            )
+            ->setHaving(
+                new \cPHP\Query\Where\Equals(
+            		new \cPHP\Query\Atom\Func("COUNT"),
+                    new \cPHP\Query\Atom\Primitive( 2 )
+                )
+            )
+            ->setLimit( 20 )
+            ->setOffset( 100 );
+
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
+        		."FROM `db`.`tableName`\n"
+        		."WHERE `fld1` = 5\n"
+        		."ORDER BY `fld1` DESC\n"
+        		."GROUP BY `fld1`\n"
+        		."HAVING COUNT() = 2\n"
+                ."LIMIT 100, 20",
+                $select->toSQL( $link )
+            );
+    }
+
 }
 
 ?>
