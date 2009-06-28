@@ -60,19 +60,17 @@ class Field extends \cPHP\Query\Atom
      */
     static public function fromString ( $string )
     {
-        $field = \cPHP\strval( $field );
+        $parsed = \cPHP\Query::parseSQLName( $string );
 
-        // If it doesn't contain a 'dot', then things are simple
-        if ( !\cPHP\str\contains( ".", $field ) )
-            $this->field = "`". trim( $field, "`" ) ."`";
+        $field = new self( array_pop($parsed) );
 
-        // If it has a dot, but no back ticks, we can do some easy escaping
-        else if ( !\cPHP\str\contains( "`", $field ) )
-            $this->field = "`". str_replace(".", "`.`", $field) ."`";
+        if ( count($parsed) > 0 )
+            $field->setTable( array_pop($parsed) );
 
-        // Otherwise, lets just assume they know what they're doing
-        else
-            $this->field = $field;
+        if ( count($parsed) > 0 )
+            $field->setDatabase( array_pop($parsed) );
+
+        return $field;
     }
 
     /**

@@ -35,22 +35,20 @@ class classes_query_atom_field extends PHPUnit_Framework_TestCase
 
     public function testFromString ()
     {
-        $this->markTestIncomplete("To be updated");
+        $fld = \cPHP\Query\Atom\Field::fromString("field");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertNull( $fld->getTable() );
+        $this->assertNull( $fld->getDatabase() );
 
-        $fld = new \cPHP\Query\Atom\Field("field");
-        $this->assertSame( "`field`", $fld->getField() );
+        $fld = \cPHP\Query\Atom\Field::fromString("tbl.field");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertSame( "tbl", $fld->getTable() );
+        $this->assertNull( $fld->getDatabase() );
 
-        $fld = new \cPHP\Query\Atom\Field("`field`");
-        $this->assertSame( "`field`", $fld->getField() );
-
-        $fld = new \cPHP\Query\Atom\Field("db.field");
-        $this->assertSame( "`db`.`field`", $fld->getField() );
-
-        $fld = new \cPHP\Query\Atom\Field("`db`.`field`");
-        $this->assertSame( "`db`.`field`", $fld->getField() );
-
-        $fld = new \cPHP\Query\Atom\Field("`db.name`.`field`");
-        $this->assertSame( "`db.name`.`field`", $fld->getField() );
+        $fld = \cPHP\Query\Atom\Field::fromString("db.tbl.field");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertSame( "tbl", $fld->getTable() );
+        $this->assertSame( "db", $fld->getDatabase() );
     }
 
     public function testConstruct ()
