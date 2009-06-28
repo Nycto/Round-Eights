@@ -33,6 +33,39 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_query extends PHPUnit_Framework_TestCase
 {
 
+    public function testParseSQLName ()
+    {
+        $this->assertSame(
+                array( "part" ),
+                \cPHP\Query::parseSQLName( "part" )
+            );
+
+        $this->assertSame(
+                array( "part" ),
+                \cPHP\Query::parseSQLName( "  `  part  `  " )
+            );
+
+        $this->assertSame(
+                array( "part1", "part2" ),
+                \cPHP\Query::parseSQLName( "part1.part2" )
+            );
+
+        $this->assertSame(
+                array( "part1", "part2", "part3" ),
+                \cPHP\Query::parseSQLName( "   part1   .   part2 . part3  " )
+            );
+
+        $this->assertSame(
+                array( "part1", "part2" ),
+                \cPHP\Query::parseSQLName( "`part1`.`part2`" )
+            );
+
+        $this->assertSame(
+                array( "part1", "part2", "part3" ),
+                \cPHP\Query::parseSQLName( "  `part1`  .  `part2`  .   `part3`  " )
+            );
+    }
+
 }
 
 ?>
