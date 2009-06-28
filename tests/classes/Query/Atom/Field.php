@@ -33,8 +33,10 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_atom_field extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct ()
+    public function testFromString ()
     {
+        $this->markTestIncomplete("To be updated");
+
         $fld = new \cPHP\Query\Atom\Field("field");
         $this->assertSame( "`field`", $fld->getField() );
 
@@ -51,11 +53,101 @@ class classes_query_atom_field extends PHPUnit_Framework_TestCase
         $this->assertSame( "`db.name`.`field`", $fld->getField() );
     }
 
+    public function testConstruct ()
+    {
+        $fld = new \cPHP\Query\Atom\Field("field");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertNull( $fld->getTable() );
+        $this->assertNull( $fld->getDatabase() );
+
+        $fld = new \cPHP\Query\Atom\Field("field", "tbl");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertSame( "tbl", $fld->getTable() );
+        $this->assertNull( $fld->getDatabase() );
+
+        $fld = new \cPHP\Query\Atom\Field("field", "tbl", "db");
+        $this->assertSame( "field", $fld->getField() );
+        $this->assertSame( "tbl", $fld->getTable() );
+        $this->assertSame( "db", $fld->getDatabase() );
+    }
+
+    public function testFieldAccessor ()
+    {
+        $field = new \cPHP\Query\Atom\Field( "field" );
+        $this->assertSame( "field", $field->getField() );
+
+        $this->assertSame( $field, $field->setField("!@# field Name") );
+        $this->assertSame( "fieldName", $field->getField() );
+
+        try {
+            $field->setField("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
+    public function testTableAccessors ()
+    {
+        $obj = new \cPHP\Query\Atom\Field('field');
+        $this->assertFalse( $obj->tableExists() );
+        $this->assertNull( $obj->getTable() );
+
+        $this->assertSame( $obj, $obj->setTable( "tbl" ) );
+        $this->assertTrue( $obj->tableExists() );
+        $this->assertSame( "tbl", $obj->getTable() );
+
+        $this->assertSame( $obj, $obj->clearTable() );
+        $this->assertFalse( $obj->tableExists() );
+        $this->assertNull( $obj->getTable() );
+
+        $this->assertSame( $obj, $obj->setTable( '   tbl!@#name  ' ) );
+        $this->assertTrue( $obj->tableExists() );
+        $this->assertSame( 'tblname', $obj->getTable() );
+
+        $this->assertSame( $obj, $obj->setTable( '    ' ) );
+        $this->assertFalse( $obj->tableExists() );
+        $this->assertNull( $obj->getTable() );
+    }
+
+    public function testDatabaseAccessors ()
+    {
+        $obj = new \cPHP\Query\Atom\Field('field', 'table');
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( "dbase" ) );
+        $this->assertTrue( $obj->databaseExists() );
+        $this->assertSame( "dbase", $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->clearDatabase() );
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( '   db!@#name  ' ) );
+        $this->assertTrue( $obj->databaseExists() );
+        $this->assertSame( 'dbname', $obj->getDatabase() );
+
+        $this->assertSame( $obj, $obj->setDatabase( '    ' ) );
+        $this->assertFalse( $obj->databaseExists() );
+        $this->assertNull( $obj->getDatabase() );
+    }
+
     public function testToAtomSQL ()
     {
         $link = $this->getMock("cPHP\iface\DB\Link");
 
         $fld = new \cPHP\Query\Atom\Field("field");
+        $this->assertSame( "`field`", $fld->toAtomSQL( $link ) );
+
+        $fld = new \cPHP\Query\Atom\Field("field", "tbl");
+        $this->assertSame( "`tbl`.`field`", $fld->toAtomSQL( $link ) );
+
+        $fld = new \cPHP\Query\Atom\Field("field", "tbl", "db");
+        $this->assertSame( "`db`.`tbl`.`field`", $fld->toAtomSQL( $link ) );
+
+        $fld = new \cPHP\Query\Atom\Field("field", null, "db");
         $this->assertSame( "`field`", $fld->toAtomSQL( $link ) );
     }
 
