@@ -33,6 +33,44 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_from_table extends PHPUnit_Framework_TestCase
 {
 
+    public function testFromString ()
+    {
+        $table = \cPHP\Query\From\Table::fromString( "table" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertNull( $table->getDatabase() );
+        $this->assertNull( $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "db.table" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertNull( $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "`db`.`table`" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertNull( $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "table AS Alias" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertNull( $table->getDatabase() );
+        $this->assertSame( "Alias", $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "db.table AS Alias" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertSame( "Alias", $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "`db`.`table` AS Alias" );
+        $this->assertSame( "table", $table->getTable() );
+        $this->assertSame( "db", $table->getDatabase() );
+        $this->assertSame( "Alias", $table->getAlias() );
+
+        $table = \cPHP\Query\From\Table::fromString( "`table AS ` AS Alias" );
+        $this->assertSame( "tableAS", $table->getTable() );
+        $this->assertNull( $table->getDatabase() );
+        $this->assertSame( "Alias", $table->getAlias() );
+    }
+
     public function testConstruct ()
     {
         $table = new \cPHP\Query\From\Table( "table" );
