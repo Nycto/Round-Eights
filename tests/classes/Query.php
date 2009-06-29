@@ -64,6 +64,11 @@ class classes_query extends PHPUnit_Framework_TestCase
                 array( "part1", "part2", "part3" ),
                 \cPHP\Query::parseSQLName( "  `part1`  .  `part2`  .   `part3`  " )
             );
+
+        $this->assertSame(
+                array(),
+                \cPHP\Query::parseSQLName( "  .  .  " )
+            );
     }
 
 }

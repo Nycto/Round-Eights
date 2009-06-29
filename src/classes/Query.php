@@ -64,7 +64,7 @@ class Query
             $result[ $key ] = trim( trim( trim( $part ), "`" ) );
         }
 
-        return $result;
+        return array_filter( $result );
     }
 
 }
