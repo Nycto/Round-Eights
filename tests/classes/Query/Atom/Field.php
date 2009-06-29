@@ -49,6 +49,14 @@ class classes_query_atom_field extends PHPUnit_Framework_TestCase
         $this->assertSame( "field", $fld->getField() );
         $this->assertSame( "tbl", $fld->getTable() );
         $this->assertSame( "db", $fld->getDatabase() );
+
+        try {
+            \cPHP\Query\Atom\Field::fromString("  ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \cPHP\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
     }
 
     public function testConstruct ()
