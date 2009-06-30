@@ -34,7 +34,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_query_select extends PHPUnit_Framework_TestCase
 {
 
-    public function testDistinct ()
+    public function testDistinctAccessors ()
     {
         $select = new \cPHP\Query\Select;
         $this->assertFalse( $select->isDistinct() );
@@ -44,7 +44,14 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $select, $select->setDistinct(FALSE) );
         $this->assertFalse( $select->isDistinct() );
+    }
 
+    public function testDistinct ()
+    {
+        $select = new \cPHP\Query\Select;
+
+        $this->assertSame( $select, $select->distinct() );
+        $this->assertTrue( $select->isDistinct() );
     }
 
     public function testFoundRows ()
@@ -79,6 +86,38 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $select, $select->clearFields() );
         $this->assertSame( array(), $select->getFields() );
+    }
+
+    public function testFields ()
+    {
+        $select = new \cPHP\Query\Select;
+
+        $this->assertSame(
+                $select,
+                $select->fields( "fld1", "tbl.fld2" )
+            );
+
+        $this->assertEquals(
+                array(
+                        new \cPHP\Query\Atom\Field("fld1"),
+                        new \cPHP\Query\Atom\Field("fld2", "tbl")
+                    ),
+                $select->getFields()
+            );
+
+        $this->assertSame(
+                $select,
+                $select->fields( new \cPHP\Query\Atom\Field("fld3") )
+            );
+
+        $this->assertEquals(
+                array(
+                        new \cPHP\Query\Atom\Field("fld1"),
+                        new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                        new \cPHP\Query\Atom\Field("fld3")
+                    ),
+                $select->getFields()
+            );
     }
 
     public function testFromAccessors ()

@@ -135,6 +135,16 @@ class Select
     }
 
     /**
+     * Enables the distinct flag
+     *
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function distinct ()
+    {
+        return $this->setDistinct( TRUE );
+    }
+
+    /**
      * Sets whether the SQL_CALC_FOUND_ROWS flag should be set
      *
      * @param Boolean $foundRows Whether the foundRows flag should be set
@@ -187,6 +197,26 @@ class Select
     public function clearFields ()
     {
         $this->fields = array();
+        return $this;
+    }
+
+    /**
+     * Adds multiple fields at once using a fluent interface
+     *
+     * @param mixed... $fields Any fields to add. This can be a string
+     * 		or an atom.
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function fields ()
+    {
+        foreach ( func_get_args() AS $arg )
+        {
+            if ( !( $arg instanceof \cPHP\iface\Query\Atom ) )
+                $arg = \cPHP\Query\Atom\Field::fromString( $arg );
+
+            $this->addField( $arg );
+        }
+
         return $this;
     }
 
