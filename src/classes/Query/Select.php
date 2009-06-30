@@ -204,14 +204,14 @@ class Select
      * Adds multiple fields at once using a fluent interface
      *
      * @param mixed... $fields Any fields to add. This can be a string
-     * 		or an atom.
+     * 		or a selectable object
      * @return \cPHP\Query\Select Returns a self reference
      */
     public function fields ()
     {
         foreach ( func_get_args() AS $arg )
         {
-            if ( !( $arg instanceof \cPHP\iface\Query\Atom ) )
+            if ( !( $arg instanceof \cPHP\iface\Query\Selectable ) )
                 $arg = \cPHP\Query\Atom\Field::fromString( $arg );
 
             $this->addField( $arg );

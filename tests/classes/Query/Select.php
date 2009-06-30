@@ -105,16 +105,14 @@ class classes_query_select extends PHPUnit_Framework_TestCase
                 $select->getFields()
             );
 
-        $this->assertSame(
-                $select,
-                $select->fields( new \cPHP\Query\Atom\Field("fld3") )
-            );
+        $field = $this->getMock('cPHP\iface\Query\Selectable');
+        $this->assertSame( $select, $select->fields( $field ) );
 
         $this->assertEquals(
                 array(
                         new \cPHP\Query\Atom\Field("fld1"),
                         new \cPHP\Query\Atom\Field("fld2", "tbl"),
-                        new \cPHP\Query\Atom\Field("fld3")
+                        $field
                     ),
                 $select->getFields()
             );
