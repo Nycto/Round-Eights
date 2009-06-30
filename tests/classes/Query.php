@@ -71,6 +71,49 @@ class classes_query extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testParseSQLAlias ()
+    {
+        $this->assertSame(
+                array( null, null ),
+                \cPHP\Query::parseSQLAlias( "  " )
+            );
+
+        $this->assertSame(
+                array( "Expr", null ),
+                \cPHP\Query::parseSQLAlias( "Expr" )
+            );
+
+        $this->assertSame(
+                array( "Expr", "alias" ),
+                \cPHP\Query::parseSQLAlias( "Expr AS alias" )
+            );
+
+        $this->assertSame(
+                array( "`Expr`", "alias" ),
+                \cPHP\Query::parseSQLAlias( "`Expr` AS `alias`" )
+            );
+
+        $this->assertSame(
+                array( "`Expr AS `", "ASalias" ),
+                \cPHP\Query::parseSQLAlias( "`Expr AS ` AS ` AS alias`" )
+            );
+
+        $this->assertSame(
+                array( "Expr", null ),
+                \cPHP\Query::parseSQLAlias( "Expr AS " )
+            );
+
+        $this->assertSame(
+                array( "Expr", "ASalias" ),
+                \cPHP\Query::parseSQLAlias( "Expr AS AS alias" )
+            );
+
+        $this->assertSame(
+                array( "`Expr\\`quoted`", null ),
+                \cPHP\Query::parseSQLAlias( "`Expr\\`quoted` AS " )
+            );
+    }
+
 }
 
 ?>

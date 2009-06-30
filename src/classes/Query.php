@@ -67,6 +67,50 @@ class Query
         return array_filter( $result );
     }
 
+    /**
+     * Parses a string into a SQL expression and it's alias
+     *
+     * @param String $name The SQL string to parse
+     * @return array Returns an array where the first element is the
+     * 		SQL expression and the second is the alias
+     */
+    static public function parseSQLAlias ( $string )
+    {
+        $string = \cPHP\strval( $string );
+
+        // If there is no obvious alias, take an easy out
+        if ( !\cPHP\str\contains(" AS ", $string) ) {
+            $alias = null;
+        }
+
+        // If it doesn't contain any backtics, there is no need to parse
+        else if ( !\cPHP\str\contains("`", $string) ) {
+            list( $string, $alias ) = explode( " AS ", $string, 2 );
+            $alias = trim( $alias );
+        }
+
+        // Otherwise, we need to parse within the context of the backtics
+        else {
+            $parser = new \cPHP\Quoter;
+            list( $string, $alias ) = $parser->clearQuotes()
+                ->setQuote("`")
+                ->parse( $string )
+                ->setIncludeQuoted( FALSE )
+                ->explode(" AS ");
+            $alias = trim( $alias );
+        }
+
+        $string = trim( $string );
+        if ( \cPHP\IsEmpty($string) )
+            $string = null;
+
+        $alias = \cPHP\str\stripW( $alias );
+        if ( \cPHP\IsEmpty($alias) )
+            $alias = null;
+
+        return array( $string, $alias );
+    }
+
 }
 
 ?>

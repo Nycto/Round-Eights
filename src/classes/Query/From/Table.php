@@ -39,27 +39,7 @@ class Table implements \cPHP\iface\Query\From
      */
     static public function fromString ( $string )
     {
-        $string = \cPHP\strval( $string );
-
-        // If there is no obvious alias, take an easy out
-        if ( !\cPHP\str\contains(" AS ", $string) ) {
-            $alias = null;
-        }
-
-        // If it doesn't contain any backtics, there is no need to parse
-        else if ( !\cPHP\str\contains("`", $string) ) {
-            list( $string, $alias ) = explode( " AS ", $string, 2 );
-        }
-
-        // Otherwise, we need to parse within the context of the backtics
-        else {
-            $parser = new \cPHP\Quoter;
-            list( $string, $alias ) = $parser->clearQuotes()
-                ->setQuote("`")
-                ->parse( $string )
-                ->setIncludeQuoted( FALSE )
-                ->explode(" AS ");
-        }
+        list( $string, $alias ) = \cPHP\Query::parseSQLAlias( $string );
 
         // Split the name into the table and database
         $parsed = \cPHP\Query::parseSQLName( $string );
