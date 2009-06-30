@@ -137,6 +137,21 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getFrom() );
     }
 
+    public function testFrom ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $this->assertSame( $obj, $obj->from("db.table") );
+        $this->assertEquals(
+                new \cPHP\Query\From\Table("table", "db"),
+                $obj->getFrom()
+            );
+
+        $table = new \cPHP\Query\From\Table("table", "db");
+        $this->assertSame( $obj, $obj->from( $table ) );
+        $this->assertSame( $table, $obj->getFrom() );
+    }
+
     public function testWhereAccessors ()
     {
         $obj = new \cPHP\Query\Select;

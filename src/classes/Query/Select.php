@@ -264,6 +264,20 @@ class Select
     }
 
     /**
+     * A fluent interface for setting the from value
+     *
+     * @param mixed $from A string or a selectable expression
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function from ( $from )
+    {
+        if ( !($from instanceof \cPHP\iface\Query\From) )
+            $from = \cPHP\Query\From\Table::fromString( $from );
+
+        return $this->setFrom( $from );
+    }
+
+    /**
      * Returns the Where clause for the query
      *
      * @return \cPHP\iface\Query\Where
