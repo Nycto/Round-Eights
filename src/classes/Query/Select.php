@@ -338,7 +338,7 @@ class Select
 
     /**
      * Joins the current where clause with a given where clause using
-     * an and relationship.
+     * an "and" relationship.
      *
      * If the current where clause is already an "and" object, the new
      * clause will simply be appended. Otherwise, a new "and" object will
@@ -355,6 +355,31 @@ class Select
 
         if ( !($this->where instanceof \cPHP\Query\Where\LogicAnd) )
             $this->where = new \cPHP\Query\Where\LogicAnd( $this->where );
+
+        $this->where->addClause( $where );
+
+        return $this;
+    }
+
+    /**
+     * Joins the current where clause with a given where clause using
+     * an "or" relationship.
+     *
+     * If the current where clause is already an "or" object, the new
+     * clause will simply be appended. Otherwise, a new "or" object will
+     * be created and the two will be loaded into it.
+     *
+     * @param \cPHP\iface\Query\Where|String $where This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function orWhere ( $where )
+    {
+        if ( !($where instanceof \cPHP\iface\Query\Where) )
+            $where = new \cPHP\Query\Where\Raw( $where );
+
+        if ( !($this->where instanceof \cPHP\Query\Where\LogicOr) )
+            $this->where = new \cPHP\Query\Where\LogicOr( $this->where );
 
         $this->where->addClause( $where );
 
