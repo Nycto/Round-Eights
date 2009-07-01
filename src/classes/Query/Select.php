@@ -478,6 +478,27 @@ class Select
     }
 
     /**
+     * Adds multiple "Group By" fields at once using a fluent interface
+     *
+     * @param \cPHP\Query\iface\Ordered $fields... Any fields to add.
+     * 		This can be a string or an ordered object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function groupBy ()
+    {
+        foreach ( func_get_args() AS $arg )
+        {
+            // If they didn't give us an object, create one
+            if ( !( $arg instanceof \cPHP\iface\Query\Ordered ) )
+                $arg = \cPHP\Query\Expr\Ordered::fromString( $arg );
+
+            $this->addGroup( $arg );
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the Having clause for the query
      *
      * @return \cPHP\iface\Query\Where
