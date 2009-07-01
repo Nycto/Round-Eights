@@ -96,7 +96,7 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Sets the table name
      *
-     * @param String $table
+     * @param String $table The name of the table
      * @return \cPHP\Query\From\Table Returns a self referencve
      */
     public function setTable ( $table )
@@ -134,7 +134,7 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Sets the Database
      *
-     * @param String $database
+     * @param String $database The name of the database
      * @return \cPHP\Query\From\Table Returns a self reference
      */
     public function setDatabase ( $database )
@@ -178,7 +178,7 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Sets the Alias
      *
-     * @param String $alias
+     * @param String $alias The alias of this field
      * @return \cPHP\Query\From\Table Returns a self reference
      */
     public function setAlias ( $alias )
