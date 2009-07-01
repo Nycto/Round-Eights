@@ -322,6 +322,21 @@ class Select
     }
 
     /**
+     * Sets the where clause in this instance from a mixed source
+     *
+     * @param \cPHP\iface\Query\Where|String $where This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function where ( $where )
+    {
+        if ( !($where instanceof \cPHP\iface\Query\Where) )
+            $where = new \cPHP\Query\Where\Raw( $where );
+
+        return $this->setWhere( $where );
+    }
+
+    /**
      * Returns the Fields that the results will be ordered by
      *
      * @return array Returns an array of \cPHP\iface\Query\Ordered objects

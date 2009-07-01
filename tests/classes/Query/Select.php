@@ -177,6 +177,21 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getWhere() );
     }
 
+    public function testWhere ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $where = $this->getMock('cPHP\iface\Query\Where');
+        $this->assertSame( $obj, $obj->where($where) );
+        $this->assertSame( $where, $obj->getWhere() );
+
+        $this->assertSame( $obj, $obj->where("Field = 'string'") );
+        $this->assertEquals(
+            new \cPHP\Query\Where\Raw("Field = 'string'"),
+            $obj->getWhere()
+        );
+    }
+
     public function testOrderAccessors ()
     {
         $select = new \cPHP\Query\Select;
