@@ -46,6 +46,21 @@ class Aliased implements \cPHP\iface\Query\Selectable
     private $alias;
 
     /**
+     * Instantiates a new instance of this object from a string
+     *
+     * @param String $string The string to parse into an object
+     * @return \cPHP\Query\From\Table
+     */
+    static public function fromString ( $string )
+    {
+        list( $string, $alias ) = \cPHP\Query::parseSQLAlias( $string );
+
+        $atom = \cPHP\Query\Atom\Field::fromString( $string );
+
+        return new self( $atom, $alias );
+    }
+
+    /**
      * Constructor...
      *
      * @param \cPHP\iface\Query\Atom $atom The atom to select

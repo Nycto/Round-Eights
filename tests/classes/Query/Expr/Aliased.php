@@ -33,6 +33,40 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_query_Expr_Aliased extends PHPUnit_Framework_TestCase
 {
 
+    public function testFromString ()
+    {
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Aliased(
+                new \cPHP\Query\Atom\Field("fld"),
+                "Ailee"
+            ),
+            \cPHP\Query\Expr\Aliased::fromString("fld AS Ailee")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Aliased(
+                new \cPHP\Query\Atom\Field("fld")
+            ),
+            \cPHP\Query\Expr\Aliased::fromString("fld")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Aliased(
+                new \cPHP\Query\Atom\Field("fld", "db"),
+                "Ailee"
+            ),
+            \cPHP\Query\Expr\Aliased::fromString("db.fld AS Ailee")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Aliased(
+                new \cPHP\Query\Atom\Field("fld", "db"),
+                "Ailee"
+            ),
+            \cPHP\Query\Expr\Aliased::fromString("`db`.`fld` AS `Ailee`")
+        );
+    }
+
     public function testConstruct ()
     {
         $atom = new \cPHP\Query\Atom\Field("fld");
