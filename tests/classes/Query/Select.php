@@ -490,6 +490,19 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getLimit() );
     }
 
+    public function testLimit ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $this->assertSame( $obj, $obj->limit(100) );
+        $this->assertSame( 100, $obj->getLimit() );
+        $this->assertNull( $obj->getOffset() );
+
+        $this->assertSame( $obj, $obj->limit(20, 50) );
+        $this->assertSame( 20, $obj->getLimit() );
+        $this->assertSame( 50, $obj->getOffset() );
+    }
+
     public function testToSQL_withDistinct ()
     {
         $select = new \cPHP\Query\Select;

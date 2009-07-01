@@ -701,6 +701,18 @@ class Select
     }
 
     /**
+     * Sets the Limit and Offset using a fluent interface
+     *
+     * @param Integer $limit The result limit
+     * @param Integer $offset The result offset
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function limit ( $limit, $offset = 0 )
+    {
+        return $this->setLimit( $limit )->setOffset( $offset );
+    }
+
+    /**
      * Returns the SQL this object represents
      *
      * @param \cPHP\iface\DB\Link $link The database link to use for escaping
