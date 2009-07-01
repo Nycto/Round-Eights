@@ -94,28 +94,38 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 $select,
-                $select->fields( "fld1", "tbl.fld2" )
+                $select->fields( "fld1", "tbl.fld2 AS aylee" )
             );
 
         $this->assertEquals(
-                array(
-                        new \cPHP\Query\Atom\Field("fld1"),
-                        new \cPHP\Query\Atom\Field("fld2", "tbl")
-                    ),
-                $select->getFields()
-            );
+            array(
+                new \cPHP\Query\Expr\Aliased(
+                    new \cPHP\Query\Atom\Field("fld1")
+                ),
+                new \cPHP\Query\Expr\Aliased(
+                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                    "aylee"
+                )
+            ),
+            $select->getFields()
+        );
 
         $field = $this->getMock('cPHP\iface\Query\Selectable');
         $this->assertSame( $select, $select->fields( $field ) );
 
         $this->assertEquals(
-                array(
-                        new \cPHP\Query\Atom\Field("fld1"),
-                        new \cPHP\Query\Atom\Field("fld2", "tbl"),
-                        $field
-                    ),
-                $select->getFields()
-            );
+            array(
+                new \cPHP\Query\Expr\Aliased(
+                    new \cPHP\Query\Atom\Field("fld1")
+                ),
+                new \cPHP\Query\Expr\Aliased(
+                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                    "aylee"
+                ),
+                $field
+            ),
+            $select->getFields()
+        );
     }
 
     public function testFromAccessors ()

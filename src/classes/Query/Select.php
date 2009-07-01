@@ -211,8 +211,9 @@ class Select
     {
         foreach ( func_get_args() AS $arg )
         {
+            // If they didn't give us an object, create one
             if ( !( $arg instanceof \cPHP\iface\Query\Selectable ) )
-                $arg = \cPHP\Query\Atom\Field::fromString( $arg );
+                $arg = \cPHP\Query\Expr\Aliased::fromString( $arg );
 
             $this->addField( $arg );
         }
