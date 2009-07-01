@@ -542,6 +542,71 @@ class Select
     }
 
     /**
+     * Sets the "Having" clause in this instance from a mixed source
+     *
+     * @param \cPHP\iface\Query\Where|String $having This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function having ( $having )
+    {
+        if ( !($having instanceof \cPHP\iface\Query\Where) )
+            $having = new \cPHP\Query\Where\Raw( $having );
+
+        return $this->setHaving( $having );
+    }
+
+    /**
+     * Joins the current "Having" clause with a given "Having" clause using
+     * an "and" relationship.
+     *
+     * If the current "Having" clause is already an "and" object, the new
+     * clause will simply be appended. Otherwise, a new "and" object will
+     * be created and the two will be loaded into it.
+     *
+     * @param \cPHP\iface\Query\Where|String $having This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function andHaving ( $having )
+    {
+        if ( !($having instanceof \cPHP\iface\Query\Where) )
+            $having = new \cPHP\Query\Where\Raw( $having );
+
+        if ( !($this->having instanceof \cPHP\Query\Where\LogicAnd) )
+            $this->having = new \cPHP\Query\Where\LogicAnd( $this->having );
+
+        $this->having->addClause( $having );
+
+        return $this;
+    }
+
+    /**
+     * Joins the current "Having" clause with a given "Having" clause using
+     * an "or" relationship.
+     *
+     * If the current "Having" clause is already an "or" object, the new
+     * clause will simply be appended. Otherwise, a new "or" object will
+     * be created and the two will be loaded into it.
+     *
+     * @param \cPHP\iface\Query\Where|String $having This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function orHaving ( $having )
+    {
+        if ( !($having instanceof \cPHP\iface\Query\Where) )
+            $having = new \cPHP\Query\Where\Raw( $having );
+
+        if ( !($this->having instanceof \cPHP\Query\Where\LogicOr) )
+            $this->having = new \cPHP\Query\Where\LogicOr( $this->having );
+
+        $this->having->addClause( $having );
+
+        return $this;
+    }
+
+    /**
      * Returns the Limit
      *
      * @return Integer

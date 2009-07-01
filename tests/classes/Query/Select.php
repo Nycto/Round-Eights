@@ -383,6 +383,73 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertNull( $obj->getHaving() );
     }
 
+    public function testHaving ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $having = $this->getMock('cPHP\iface\Query\Where');
+        $this->assertSame( $obj, $obj->having($having) );
+        $this->assertSame( $having, $obj->getHaving() );
+
+        $this->assertSame( $obj, $obj->having("Field = 'string'") );
+        $this->assertEquals(
+            new \cPHP\Query\Where\Raw("Field = 'string'"),
+            $obj->getHaving()
+        );
+    }
+
+    public function testAndHaving ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $this->assertSame( $obj, $obj->andHaving("A = B") );
+
+        $and = $obj->getHaving();
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicAnd(
+                        new \cPHP\Query\Where\Raw("A = B")
+                    ),
+                $and
+            );
+
+        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $this->assertSame( $obj, $obj->andHaving( $clause ) );
+        $this->assertSame( $and, $obj->getHaving() );
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicAnd(
+                        new \cPHP\Query\Where\Raw("A = B"),
+                        $clause
+                    ),
+                $and
+            );
+    }
+
+    public function testOrHaving ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $this->assertSame( $obj, $obj->orHaving("A = B") );
+
+        $and = $obj->getHaving();
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicOr(
+                        new \cPHP\Query\Where\Raw("A = B")
+                    ),
+                $and
+            );
+
+        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $this->assertSame( $obj, $obj->orHaving( $clause ) );
+        $this->assertSame( $and, $obj->getHaving() );
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicOr(
+                        new \cPHP\Query\Where\Raw("A = B"),
+                        $clause
+                    ),
+                $and
+            );
+    }
+
     public function testOffsetAccessors ()
     {
         $obj = new \cPHP\Query\Select;
