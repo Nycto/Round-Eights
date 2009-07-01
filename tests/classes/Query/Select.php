@@ -1,3 +1,4 @@
+use cPHP;
 
 <?php
 /**
@@ -706,6 +707,32 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         		."ORDER BY `fld1` DESC\n"
         		."GROUP BY `fld1`\n"
         		."HAVING COUNT() = 2\n"
+                ."LIMIT 100, 20",
+                $select->toSQL( $link )
+            );
+    }
+
+    public function testFluent ()
+    {
+        $select = \cPHP\Query::select()
+            ->distinct()
+            ->fields("fld1", "db.fld2 AS info")
+            ->from("db.tableName")
+            ->where("`fld1` = 5")
+            ->orderBy("sortField DESC")
+            ->groupBy("id")
+            ->having("COUNT(*) = 2")
+            ->limit(20, 100);
+
+        $link = new \cPHP\DB\BlackHole\Link;
+
+        $this->assertSame(
+        		"SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"
+        		."FROM `db`.`tableName`\n"
+        		."WHERE `fld1` = 5\n"
+        		."ORDER BY `sortField` DESC\n"
+        		."GROUP BY `id`\n"
+        		."HAVING COUNT(*) = 2\n"
                 ."LIMIT 100, 20",
                 $select->toSQL( $link )
             );
