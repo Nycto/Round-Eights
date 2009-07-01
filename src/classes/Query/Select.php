@@ -337,6 +337,31 @@ class Select
     }
 
     /**
+     * Joins the current where clause with a given where clause using
+     * an and relationship.
+     *
+     * If the current where clause is already an "and" object, the new
+     * clause will simply be appended. Otherwise, a new "and" object will
+     * be created and the two will be loaded into it.
+     *
+     * @param \cPHP\iface\Query\Where|String $where This will take a string
+     * 		or a Where object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function andWhere ( $where )
+    {
+        if ( !($where instanceof \cPHP\iface\Query\Where) )
+            $where = new \cPHP\Query\Where\Raw( $where );
+
+        if ( !($this->where instanceof \cPHP\Query\Where\LogicAnd) )
+            $this->where = new \cPHP\Query\Where\LogicAnd( $this->where );
+
+        $this->where->addClause( $where );
+
+        return $this;
+    }
+
+    /**
      * Returns the Fields that the results will be ordered by
      *
      * @return array Returns an array of \cPHP\iface\Query\Ordered objects

@@ -192,6 +192,32 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAndWhere ()
+    {
+        $obj = new \cPHP\Query\Select;
+
+        $this->assertSame( $obj, $obj->andWhere("A = B") );
+
+        $and = $obj->getWhere();
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicAnd(
+                        new \cPHP\Query\Where\Raw("A = B")
+                    ),
+                $and
+            );
+
+        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $this->assertSame( $obj, $obj->andWhere( $clause ) );
+        $this->assertSame( $and, $obj->getWhere() );
+        $this->assertEquals(
+                new \cPHP\Query\Where\LogicAnd(
+                        new \cPHP\Query\Where\Raw("A = B"),
+                        $clause
+                    ),
+                $and
+            );
+    }
+
     public function testOrderAccessors ()
     {
         $select = new \cPHP\Query\Select;
