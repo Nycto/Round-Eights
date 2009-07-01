@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package General
  */
 
-namespace cPHP;
+namespace h2o;
 
 // Used by isEmpty to define what is allowed
 const ALLOW_NULL = 1;
@@ -70,11 +70,11 @@ function reduce ($value)
         if (count($value) <= 0)
             return NULL;
         else
-            return \cPHP\reduce(current($value));
+            return \h2o\reduce(current($value));
     }
 
     else if (is_object($value))
-        return \cPHP\reduce(get_object_vars($value));
+        return \h2o\reduce(get_object_vars($value));
 
     else if (is_resource($value))
         return get_resource_type($value);
@@ -120,7 +120,7 @@ function defineIf ($constant, $value)
 function isEmpty ($value, $flags = 0)
 {
 
-    $flags = max(intval(\cPHP\reduce($flags)), 0);
+    $flags = max(intval(\h2o\reduce($flags)), 0);
 
     // Use the default empty function, if we can
     // Note that empty() considers the string '0' to be empty and this function doesn't
@@ -129,24 +129,24 @@ function isEmpty ($value, $flags = 0)
         return empty($value);
 
     if (is_null($value)) {
-        return ($flags & \cPHP\ALLOW_NULL)?FALSE:TRUE;
+        return ($flags & \h2o\ALLOW_NULL)?FALSE:TRUE;
     }
     else if ($value === FALSE) {
-        return ($flags & \cPHP\ALLOW_FALSE)?FALSE:TRUE;
+        return ($flags & \h2o\ALLOW_FALSE)?FALSE:TRUE;
     }
     else if (is_string($value)) {
 
         if ($value == "")
-            return ($flags & \cPHP\ALLOW_BLANK)?FALSE:TRUE;
+            return ($flags & \h2o\ALLOW_BLANK)?FALSE:TRUE;
         else if (trim($value) == "")
-            return ($flags & \cPHP\ALLOW_SPACES)?FALSE:TRUE;
+            return ($flags & \h2o\ALLOW_SPACES)?FALSE:TRUE;
 
     }
     else if (is_numeric($value) && $value == 0) {
-        return ($flags & \cPHP\ALLOW_ZERO)?FALSE:TRUE;
+        return ($flags & \h2o\ALLOW_ZERO)?FALSE:TRUE;
     }
     else if (is_array($value) && count($value) <= 0) {
-        return ($flags & \cPHP\ALLOW_EMPTY_ARRAYS)?FALSE:TRUE;
+        return ($flags & \h2o\ALLOW_EMPTY_ARRAYS)?FALSE:TRUE;
     }
 
     return FALSE;
@@ -161,7 +161,7 @@ function isEmpty ($value, $flags = 0)
  */
 function isVague ($value, $flags = 0)
 {
-    return (is_bool($value) || \cPHP\isEmpty($value, $flags));
+    return (is_bool($value) || \h2o\isEmpty($value, $flags));
 }
 
 /**
@@ -200,7 +200,7 @@ function numVal ($value)
 {
     if (is_int($value) || is_float($value))
         return $value;
-    $value = \cPHP\reduce($value);
+    $value = \h2o\reduce($value);
     return intval($value) == floatval($value)?intval($value):floatval($value);
 }
 
@@ -231,7 +231,7 @@ function strVal ($value)
     if (is_object($value) && in_array("__toString", get_class_methods($value)))
         return \strval( $value->__toString() );
     else
-        return \strval( \cPHP\reduce($value) );
+        return \strval( \h2o\reduce($value) );
 }
 
 /**
@@ -246,7 +246,7 @@ function strVal ($value)
  */
 function indexVal ( $value )
 {
-    $value = \cPHP\reduce( $value );
+    $value = \h2o\reduce( $value );
 
     if ( is_string($value) || is_int($value) )
         return $value;
@@ -255,7 +255,7 @@ function indexVal ( $value )
         return intval($value);
 
     else
-        return \cPHP\strval($value);
+        return \h2o\strval($value);
 }
 
 /**
@@ -309,7 +309,7 @@ function respondTo ($object, $function)
     if (!is_object($object))
         return FALSE;
 
-    $function = \cPHP\strval( $function );
+    $function = \h2o\strval( $function );
 
     return in_array( $function, get_class_methods($object) );
 }

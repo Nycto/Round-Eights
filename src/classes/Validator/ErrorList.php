@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validator
  */
 
-namespace cPHP\Validator;
+namespace h2o\Validator;
 
 /**
  * Helper class for managing a list of errors
@@ -42,14 +42,14 @@ class ErrorList
      * Adds a new error to this instance
      *
      * @param String $message The error message to add
-     * @return \cPHP\Validator\ErrorList Returns a self reference
+     * @return \h2o\Validator\ErrorList Returns a self reference
      */
     public function addError ( $message )
     {
-        $message = \cPHP\strval($message);
+        $message = \h2o\strval($message);
 
-        if ( \cPHP\isEmpty($message) )
-            throw new \cPHP\Exception\Argument( 0, "Error Message", "Must Not Be Empty" );
+        if ( \h2o\isEmpty($message) )
+            throw new \h2o\Exception\Argument( 0, "Error Message", "Must Not Be Empty" );
 
         if ( !in_array($message, $this->errors) )
             $this->errors[] = $message;
@@ -64,13 +64,13 @@ class ErrorList
      * converted to strings and added as errors
      *
      * @param String|Array $errors... Errors to add to this instance
-     * @return \cPHP\Validator\ErrorList Returns a self reference
+     * @return \h2o\Validator\ErrorList Returns a self reference
      */
     public function addErrors ( $errors )
     {
         $errors = func_get_args();
-        $errors = \cPHP\ary\flatten( $errors );
-        $errors = \cPHP\ary\compact( $errors );
+        $errors = \h2o\ary\flatten( $errors );
+        $errors = \h2o\ary\compact( $errors );
         $errors = \array_unique( $errors );
 
         array_walk( $errors, array($this, "addError") );
@@ -91,7 +91,7 @@ class ErrorList
     /**
      * Clears all the errors from
      *
-     * @return \cPHP\Validator\ErrorList Returns a self reference for chaining
+     * @return \h2o\Validator\ErrorList Returns a self reference for chaining
      */
     public function clearErrors ()
     {
@@ -103,7 +103,7 @@ class ErrorList
      * Clears all other errors and sets
      *
      * @param String $message The error message to add
-     * @return \cPHP\Validator\ErrorList Returns a self reference for chaining
+     * @return \h2o\Validator\ErrorList Returns a self reference for chaining
      */
     public function setError ( $message )
     {

@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Template
  */
 
-namespace cPHP\Template;
+namespace h2o\Template;
 
 /**
  * The base class for templates that load a file to display the template
  */
-abstract class File extends \cPHP\Template
+abstract class File extends \h2o\Template
 {
 
     /**
@@ -37,7 +37,7 @@ abstract class File extends \cPHP\Template
      * This will be used by file templates if no specific template is set for
      * the instance.
      *
-     * @var \cPHP\FileFinder
+     * @var \h2o\FileFinder
      */
     static protected $globalFinder;
 
@@ -49,7 +49,7 @@ abstract class File extends \cPHP\Template
      * Also note that if this file finder does not locate the file, the global
      * instance will NOT be called.
      *
-     * @var \cPHP\FileFinder
+     * @var \h2o\FileFinder
      */
     private $finder;
 
@@ -63,7 +63,7 @@ abstract class File extends \cPHP\Template
     /**
      * Returns the global file finder
      *
-     * @return \cPHP\FileFinder|Null Returns the global cPHP\FileFinder object.
+     * @return \h2o\FileFinder|Null Returns the global \h2o\FileFinder object.
      *      Returns NULL if there is no global file finder.
      */
     static public function getGlobalFinder ()
@@ -74,10 +74,10 @@ abstract class File extends \cPHP\Template
     /**
      * Sets the global file finder
      *
-     * @param \cPHP\FileFinder $finder The new global file finder
+     * @param \h2o\FileFinder $finder The new global file finder
      * @return NULL
      */
-    static public function setGlobalFinder ( \cPHP\FileFinder $finder )
+    static public function setGlobalFinder ( \h2o\FileFinder $finder )
     {
         self::$globalFinder = $finder;
     }
@@ -109,7 +109,7 @@ abstract class File extends \cPHP\Template
      */
     public function __construct ( $file = null )
     {
-        if ( !\cPHP\isVague($file) )
+        if ( !\h2o\isVague($file) )
             $this->setFile( $file );
     }
 
@@ -118,7 +118,7 @@ abstract class File extends \cPHP\Template
      *
      * This does not look at the global instance
      *
-     * @return \cPHP\FileFinder|Null Returns a cPHP\FileFinder object. Returns
+     * @return \h2o\FileFinder|Null Returns a \h2o\FileFinder object. Returns
      *      NULL if there is no instance specific file finder.
      */
     public function getFinder ()
@@ -129,10 +129,10 @@ abstract class File extends \cPHP\Template
     /**
      * Sets the file finder for this instance
      *
-     * @param \cPHP\FileFinder $finder The file finder to use
-     * @return \cPHP\Template\File Returns a self reference
+     * @param \h2o\FileFinder $finder The file finder to use
+     * @return \h2o\Template\File Returns a self reference
      */
-    public function setFinder ( \cPHP\FileFinder $finder )
+    public function setFinder ( \h2o\FileFinder $finder )
     {
         $this->finder = $finder;
         return $this;
@@ -154,7 +154,7 @@ abstract class File extends \cPHP\Template
      *
      * This will NOT affect the global finder.
      *
-     * @return \cPHP\Template\File Returns a self reference
+     * @return \h2o\Template\File Returns a self reference
      */
     public function clearFinder ()
     {
@@ -168,7 +168,7 @@ abstract class File extends \cPHP\Template
      * If no finder is set for this instance, the global instance will be returned.
      * Then, if there is no global instance, an exception will be thrown
      *
-     * @return \cPHP\FileFinder Returns a cPHP\FileFinder object
+     * @return \h2o\FileFinder Returns a \h2o\FileFinder object
      */
     public function selectFinder ()
     {
@@ -178,7 +178,7 @@ abstract class File extends \cPHP\Template
         else if ( isset(self::$globalFinder) )
             return self::$globalFinder;
 
-        throw new \cPHP\Exception\Variable(
+        throw new \h2o\Exception\Variable(
                 "FileFinder",
                 "No global or instance level FileFinder has been set"
             );
@@ -188,14 +188,14 @@ abstract class File extends \cPHP\Template
      * Sets the file this template will load
      *
      * @param mixed $file The file to load
-     * @return \cPHP\Template\File Returns a self reference
+     * @return \h2o\Template\File Returns a self reference
      */
     public function setFile ( $file )
     {
-        if ( $file instanceof \cPHP\FileSys\File)
+        if ( $file instanceof \h2o\FileSys\File)
             $this->file = $file;
         else
-            $this->file = new \cPHP\FileSys\File( $file );
+            $this->file = new \h2o\FileSys\File( $file );
 
         return $this;
     }
@@ -203,7 +203,7 @@ abstract class File extends \cPHP\Template
     /**
      * Returns the file this template will load
      *
-     * @return cPHP\FileSys\File|Null Returns a cPHP\FileSys\File object, or NULL
+     * @return \h2o\FileSys\File|Null Returns a \h2o\FileSys\File object, or NULL
      *      if no file has been set.
      */
     public function getFile ()
@@ -224,7 +224,7 @@ abstract class File extends \cPHP\Template
     /**
      * Clears the file from this instance
      *
-     * @return cPHP\Template\File Returns a self reference
+     * @return \h2o\Template\File Returns a self reference
      */
     public function clearFile ()
     {
@@ -235,12 +235,12 @@ abstract class File extends \cPHP\Template
     /**
      * Finds the template file to load
      *
-     * @return \cPHP\FileSys\File Returns a cPHP\FileSys\File object
+     * @return \h2o\FileSys\File Returns a \h2o\FileSys\File object
      */
     public function findFile ()
     {
         if ( !$this->fileExists() )
-            throw new \cPHP\Exception\Variable("File", "No file has been set in template");
+            throw new \h2o\Exception\Variable("File", "No file has been set in template");
 
         return $this->selectFinder()->find( $this->getFile() );
     }

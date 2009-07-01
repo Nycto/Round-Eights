@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Tag
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Allows for the creation, manipulation and display of an HTML tag
@@ -65,7 +65,7 @@ class Tag implements \ArrayAccess
      * @param string $func The function called statically, which will be used as the tag name
      * @param array $args Any args passed to the function call.
      *      Offset 0 will be used as the content, offset 1 as the attributes
-     * @return Object Returns a new \cPHP\Tag object
+     * @return Object Returns a new \h2o\Tag object
      */
     static public function __callStatic ( $func, $args )
     {
@@ -83,16 +83,16 @@ class Tag implements \ArrayAccess
     /**
      * Takes an HTML attribute and strips it down
      *
-     * @throws \cPHP\Exception\Argument Thrown when the attribute name is empty
+     * @throws \h2o\Exception\Argument Thrown when the attribute name is empty
      * @param String $attr The name of the attribute
      * @return String The normalized version of the attribute name
      */
     static public function normalizeAttrName ( $attr )
     {
-        $attr = strtolower( \cPHP\str\stripW($attr) );
+        $attr = strtolower( \h2o\str\stripW($attr) );
 
         if ( empty($attr) )
-            throw new \cPHP\Exception\Argument( 0, "Attribute Name", "Must not be empty" );
+            throw new \h2o\Exception\Argument( 0, "Attribute Name", "Must not be empty" );
 
         return $attr;
     }
@@ -105,7 +105,7 @@ class Tag implements \ArrayAccess
      */
     static public function quoteAttr ($string)
     {
-        return '"'. htmlspecialchars( \cPHP\strval( $string ) ) .'"';
+        return '"'. htmlspecialchars( \h2o\strval( $string ) ) .'"';
     }
 
     /**
@@ -136,14 +136,14 @@ class Tag implements \ArrayAccess
      * Sets the value of the tag in this instance
      *
      * @param String $tag The tag this instance represents
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function setTag ( $tag )
     {
-        $tag = strtolower( \cPHP\str\stripW($tag) );
+        $tag = strtolower( \h2o\str\stripW($tag) );
 
-        if ( \cPHP\isEmpty($tag) )
-            throw new \cPHP\Exception\Argument(0, "Tag", "Must not be empty");
+        if ( \h2o\isEmpty($tag) )
+            throw new \h2o\Exception\Argument(0, "Tag", "Must not be empty");
 
         $this->tag = $tag;
 
@@ -164,11 +164,11 @@ class Tag implements \ArrayAccess
      * Sets the content of this instance
      *
      * @param string $content
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function setContent ( $content )
     {
-        $content = \cPHP\strval($content);
+        $content = \h2o\strval($content);
         $this->content = empty($content) && $content !== "0" ? null : $content;
         return $this;
     }
@@ -177,11 +177,11 @@ class Tag implements \ArrayAccess
      * Adds content to the end of the existing content
      *
      * @param string $content
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function appendContent ( $content )
     {
-        $content = \cPHP\strval($content);
+        $content = \h2o\strval($content);
         if ( !empty($content) || $content === "0" )
             $this->content .= $content;
         return $this;
@@ -200,7 +200,7 @@ class Tag implements \ArrayAccess
     /**
      * Unsets any content in this instance
      *
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function clearContent ()
     {
@@ -212,7 +212,7 @@ class Tag implements \ArrayAccess
      * Sets whether this instance should be rendered as empty
      *
      * @param Boolean $setting
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function setEmpty ( $setting )
     {
@@ -223,7 +223,7 @@ class Tag implements \ArrayAccess
     /**
      * Clears the empty override and reverts to automatic detection
      *
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function clearEmpty ()
     {
@@ -281,11 +281,11 @@ class Tag implements \ArrayAccess
      * @param mixed $value The value of this attribute
      *      Setting this to boolean true (or not passing it as an argument),
      *      marks this attribute as a boolean value
-     * @param \cPHP\Tag Returns a self reference
+     * @param \h2o\Tag Returns a self reference
      */
     public function setAttr ( $attr, $value = TRUE )
     {
-        $this->attrs[ self::normalizeAttrName( $attr ) ] = \cPHP\reduce($value);
+        $this->attrs[ self::normalizeAttrName( $attr ) ] = \h2o\reduce($value);
         return $this;
     }
 
@@ -304,7 +304,7 @@ class Tag implements \ArrayAccess
      * Clears an attribute from being set
      *
      * @param String $attr The attribute to test
-     * @param \cPHP\Tag Returns a self reference
+     * @param \h2o\Tag Returns a self reference
      */
     public function unsetAttr ( $attr )
     {
@@ -331,7 +331,7 @@ class Tag implements \ArrayAccess
      * Imports a list of attributes in to this instance
      *
      * @param Array $attrs The list of attributes to import
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function importAttrs ( array $attrs )
     {
@@ -344,7 +344,7 @@ class Tag implements \ArrayAccess
     /**
      * Removes all attributes from this instance
      *
-     * @return \cPHP\Tag Returns a self reference
+     * @return \h2o\Tag Returns a self reference
      */
     public function clearAttrs ()
     {

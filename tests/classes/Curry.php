@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,33 +35,33 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $curry = \cPHP\Curry::Call("trim");
-        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $curry = \h2o\Curry::Call("trim");
+        $this->assertThat( $curry, $this->isInstanceOf("h2o\\Curry\\Call") );
         $this->assertSame( "trimmed", $curry("  trimmed  ") );
 
 
-        $curry = \cPHP\Curry::Call("rtrim", "-");
-        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $curry = \h2o\Curry::Call("rtrim", "-");
+        $this->assertThat( $curry, $this->isInstanceOf("h2o\\Curry\\Call") );
         $this->assertSame( "--trimmed", $curry("--trimmed--") );
 
 
-        $curry = \cPHP\Curry::Call("str_replace", "!", "original");
-        $this->assertThat( $curry, $this->isInstanceOf("cPHP\\Curry\\Call") );
+        $curry = \h2o\Curry::Call("str_replace", "!", "original");
+        $this->assertThat( $curry, $this->isInstanceOf("h2o\\Curry\\Call") );
         $this->assertSame( "or!g!nal", $curry("i") );
 
 
         try {
-            \cPHP\Curry::ThisIsNotReal();
+            \h2o\Curry::ThisIsNotReal();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame( 'Class could not be found in \\cPHP\\Curry namespace', $err->getMessage() );
+        catch ( \h2o\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\h2o\\Curry namespace', $err->getMessage() );
         }
     }
 
     public function testSet ()
     {
-        $curry = $this->getMock('\cPHP\Curry', array("filter"));
+        $curry = $this->getMock('\h2o\Curry', array("filter"));
 
         $this->assertEquals( array(), $curry->getLeft() );
         $this->assertEquals( array(), $curry->getRight() );
@@ -85,7 +85,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testSetByArray ()
     {
-        $curry = $this->getMock("cPHP\\Curry", array("filter"));
+        $curry = $this->getMock("h2o\\Curry", array("filter"));
 
         $this->assertEquals( array(), $curry->getLeft() );
         $this->assertEquals( array(), $curry->getRight() );
@@ -110,7 +110,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testClearLeftRight ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -137,7 +137,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testClearArgs ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -157,7 +157,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testOffset ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $this->assertEquals( 0, $curry->getOffset() );
 
@@ -176,7 +176,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testLimit ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $this->assertFalse( $curry->issetLimit() );
         $this->assertFalse( $curry->getLimit() );
@@ -200,7 +200,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testClearSlicing ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $curry->setLimit( 1 );
         $curry->setOffset( 1 );
@@ -214,7 +214,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
     public function testClear ()
     {
 
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $curry->setRight("wakka", "peanut");
         $curry->setLeft("bean", "orange");
@@ -233,7 +233,7 @@ class classes_curry extends PHPUnit_Framework_TestCase
 
     public function testCollectArgs ()
     {
-        $curry = $this->getMock("cPHP\Curry", array("filter"));
+        $curry = $this->getMock("h2o\Curry", array("filter"));
 
         $this->assertEquals(
                 array(1, 2, 3),

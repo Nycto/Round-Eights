@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Curry
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * A helper class for Query objects
@@ -41,21 +41,21 @@ class Query
      */
     static public function parseSQLName ( $name )
     {
-        $name = \cPHP\strval( $name );
+        $name = \h2o\strval( $name );
 
         // If it doesn't contain a 'dot', then things are simple
-        if ( !\cPHP\str\contains( ".", $name ) ) {
+        if ( !\h2o\str\contains( ".", $name ) ) {
             $result = array( $name );
         }
 
         // If it has a dot, but no back ticks, take an easy out
-        else if ( !\cPHP\str\contains( "`", $name ) ) {
+        else if ( !\h2o\str\contains( "`", $name ) ) {
             $result = explode( ".", $name );
         }
 
         // Otherwise, we need to do some parsing. Ugh.
         else {
-            $parser = new \cPHP\Quoter;
+            $parser = new \h2o\Quoter;
             $parsed = $parser->clearQuotes()->setQuote("`")->parse( $name );
             $result = $parsed->setIncludeQuoted( FALSE )->explode(".");
         }
@@ -76,22 +76,22 @@ class Query
      */
     static public function parseSQLAlias ( $string )
     {
-        $string = \cPHP\strval( $string );
+        $string = \h2o\strval( $string );
 
         // If there is no obvious alias, take an easy out
-        if ( !\cPHP\str\contains(" AS ", $string) ) {
+        if ( !\h2o\str\contains(" AS ", $string) ) {
             $alias = null;
         }
 
         // If it doesn't contain any backtics, there is no need to parse
-        else if ( !\cPHP\str\contains("`", $string) ) {
+        else if ( !\h2o\str\contains("`", $string) ) {
             list( $string, $alias ) = explode( " AS ", $string, 2 );
             $alias = trim( $alias );
         }
 
         // Otherwise, we need to parse within the context of the backtics
         else {
-            $parser = new \cPHP\Quoter;
+            $parser = new \h2o\Quoter;
             list( $string, $alias ) = $parser->clearQuotes()
                 ->setQuote("`")
                 ->parse( $string )
@@ -101,11 +101,11 @@ class Query
         }
 
         $string = trim( $string );
-        if ( \cPHP\IsEmpty($string) )
+        if ( \h2o\IsEmpty($string) )
             $string = null;
 
-        $alias = \cPHP\str\stripW( $alias );
-        if ( \cPHP\IsEmpty($alias) )
+        $alias = \h2o\str\stripW( $alias );
+        if ( \h2o\IsEmpty($alias) )
             $alias = null;
 
         return array( $string, $alias );
@@ -114,11 +114,11 @@ class Query
     /**
      * Inline instantiation method for Select objects
      *
-     * @return \cPHP\Query\Select
+     * @return \h2o\Query\Select
      */
     static public function select ()
     {
-        return new \cPHP\Query\Select;
+        return new \h2o\Query\Select;
     }
 
 }

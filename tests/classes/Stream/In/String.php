@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_stream_in_string extends PHPUnit_Framework_TestCase
 
     public function testRead_simple ()
     {
-        $stream = new \cPHP\Stream\In\String("Test");
+        $stream = new \h2o\Stream\In\String("Test");
 
         $this->assertSame("T", $stream->read(1));
         $this->assertSame("e", $stream->read(1));
@@ -47,7 +47,7 @@ class classes_stream_in_string extends PHPUnit_Framework_TestCase
 
     public function testRead_multiByte ()
     {
-        $stream = new \cPHP\Stream\In\String(
+        $stream = new \h2o\Stream\In\String(
                 "This is a longer string to read"
             );
 
@@ -66,7 +66,7 @@ class classes_stream_in_string extends PHPUnit_Framework_TestCase
 
     public function testRewind ()
     {
-        $stream = new \cPHP\Stream\In\String( "This is a string" );
+        $stream = new \h2o\Stream\In\String( "This is a string" );
 
         $this->assertSame("This is a ", $stream->read(10));
 
@@ -77,7 +77,7 @@ class classes_stream_in_string extends PHPUnit_Framework_TestCase
 
     public function testReadAll ()
     {
-        $stream = new \cPHP\Stream\In\String( "This is a string" );
+        $stream = new \h2o\Stream\In\String( "This is a string" );
 
         $this->assertSame( "This is a string", $stream->readAll() );
         $this->assertNull( $stream->readAll() );

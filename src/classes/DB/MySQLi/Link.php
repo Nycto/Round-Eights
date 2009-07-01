@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace cPHP\DB\MySQLi;
+namespace h2o\DB\MySQLi;
 
 /**
  * MySQL Database Link
  */
-class Link extends \cPHP\DB\Link
+class Link extends \h2o\DB\Link
 {
 
     /**
@@ -55,7 +55,7 @@ class Link extends \cPHP\DB\Link
 
         if ( !$link ) {
 
-            throw new \cPHP\Exception\DB\Link(
+            throw new \h2o\Exception\DB\Link(
                     mysqli_connect_error(),
                     mysqli_connect_errno(),
                     $this
@@ -95,7 +95,7 @@ class Link extends \cPHP\DB\Link
         if ( is_array( $value ) )
             return array_map( array($this, "escapeString"), $value );
 
-        $value = \cPHP\strval($value);
+        $value = \h2o\strval($value);
 
         // Don't force a connection just to escape a string
         if ( $this->isConnected() )
@@ -108,7 +108,7 @@ class Link extends \cPHP\DB\Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return \cPHP\DB\Result Returns a result object
+     * @return \h2o\DB\Result Returns a result object
      */
     protected function rawQuery ( $query )
     {
@@ -117,12 +117,12 @@ class Link extends \cPHP\DB\Link
         $result = $link->query( $query );
 
         if ( $result === FALSE )
-            throw new \cPHP\Exception\DB\Query( $query, $link->error, $link->errno );
+            throw new \h2o\Exception\DB\Query( $query, $link->error, $link->errno );
 
         if ( self::isSelect($query) )
-            return new \cPHP\DB\MySQLi\Read( $result, $query );
+            return new \h2o\DB\MySQLi\Read( $result, $query );
         else
-            return new \cPHP\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
+            return new \h2o\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
     }
 
     /**

@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Exception
  */
 
-namespace cPHP\Exception;
+namespace h2o\Exception;
 
 /**
  * Exception class to handle bad arguments
  */
-class Argument extends \cPHP\Exception
+class Argument extends \h2o\Exception
 {
 
     /**
@@ -59,16 +59,16 @@ class Argument extends \cPHP\Exception
     {
         $this->setFault($fault);
 
-        if ( !\cPHP\isVague($label) )
+        if ( !\h2o\isVague($label) )
             $this->addData("Arg Label", $label);
 
-        if ( !\cPHP\isVague($message) )
+        if ( !\h2o\isVague($message) )
             $this->message = $message;
 
-        if ( !\cPHP\isVague( $code ) )
+        if ( !\h2o\isVague( $code ) )
             $this->code = $code;
 
-        if (!\cPHP\isVague($arg, \cPHP\ALLOW_ZERO) && $this->getTraceCount() > 0)
+        if (!\h2o\isVague($arg, \h2o\ALLOW_ZERO) && $this->getTraceCount() > 0)
             $this->setArg($arg);
     }
 
@@ -79,7 +79,7 @@ class Argument extends \cPHP\Exception
      * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function setArg ( $offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT )
+    public function setArg ( $offset, $wrapFlag = \h2o\ary\OFFSET_RESTRICT )
     {
         // If the fault isn't set, default to the end of the trace
         if ( !$this->issetFault())
@@ -93,7 +93,7 @@ class Argument extends \cPHP\Exception
         if (count($fault['args']) <= 0)
             return $this->unsetArg();
 
-        $offset = \cPHP\ary\calcOffset($fault['args'], $offset, $wrapFlag);
+        $offset = \h2o\ary\calcOffset($fault['args'], $offset, $wrapFlag);
 
         if (is_int($offset))
             $this->arg = $offset;
@@ -148,7 +148,7 @@ class Argument extends \cPHP\Exception
     {
         parent::setFault($offset);
 
-        if (!\cPHP\isVague($arg, \cPHP\ALLOW_ZERO))
+        if (!\h2o\isVague($arg, \h2o\ALLOW_ZERO))
             $this->setArg( $arg );
 
         else if ( $this->issetArg() )
@@ -203,7 +203,7 @@ class Argument extends \cPHP\Exception
                 .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
                 .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
                 .( $this->issetArg() ? "  Arg Offset: ". $this->getArgOffset() ."\n" : "" )
-                .( $this->issetArg() ? "  Arg Value: ". \cPHP\getDump( $this->getArgData() ) ."\n" : "" )
+                .( $this->issetArg() ? "  Arg Value: ". \h2o\getDump( $this->getArgData() ) ."\n" : "" )
                 .( count($data) > 0 ? "  ". implode("\n  ", $data) ."\n" : "" );
     }
 
@@ -223,13 +223,13 @@ class Argument extends \cPHP\Exception
                 ."<dd>". $value ."</dd>";
 
         return
-            "<div class='cPHP_Exception_Details'>\n"
+            "<div class='h2o_Exception_Details'>\n"
             ."<h3>Details</h3>\n"
             ."<dl>\n"
             .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
             .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>\n":"")
             .( $this->issetArg() ? "<dt>Arg Offset</dt><dd>". $this->getArgOffset() ."</dd>\n" : "" )
-            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". \cPHP\getDump( $this->getArgData() ) ."</dd>\n" : "" )
+            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". \h2o\getDump( $this->getArgData() ) ."</dd>\n" : "" )
             .( count($data) > 0 ? implode("\n", $data) ."\n" : "" )
             ."</dl>\n"
             ."</div>\n";

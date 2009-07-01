@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Curry
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Base class for Argument Currying classes
  */
-abstract class Curry implements \cPHP\iface\Filter
+abstract class Curry implements \h2o\iface\Filter
 {
 
     /**
@@ -61,29 +61,29 @@ abstract class Curry implements \cPHP\iface\Filter
      * Static method for creating a new curry object
      *
      * This takes the called function and looks for a class under
-     * the \cPHP\Curry namespace.
+     * the \h2o\Curry namespace.
      *
      * @param String $curry The curry class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \cPHP\Curry subclass
+     * @return Object Returns a new \h2o\Curry subclass
      */
     static public function __callStatic ( $curry, $args )
     {
-        $curry = "\\cPHP\\Curry\\". trim( \cPHP\strval($curry) );
+        $curry = "\\h2o\\Curry\\". trim( \h2o\strval($curry) );
 
         if ( !class_exists($curry, true) ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                     0,
                     "Curry Class Name",
-                    "Class could not be found in \\cPHP\\Curry namespace"
+                    "Class could not be found in \\h2o\\Curry namespace"
                 );
         }
 
-        if ( !\cPHP\kindOf( $curry, "\\cPHP\\Curry") ) {
-            throw new \cPHP\Exception\Argument(
+        if ( !\h2o\kindOf( $curry, "\\h2o\\Curry") ) {
+            throw new \h2o\Exception\Argument(
                     0,
                     "Curry Class Name",
-                    "Class is not a child of \\cPHP\\Curry"
+                    "Class is not a child of \\h2o\\Curry"
                 );
         }
 

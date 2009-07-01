@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,54 +35,54 @@ class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
     public function testFromString ()
     {
         $this->assertEquals(
-            new \cPHP\Query\Expr\Ordered(
-                new \cPHP\Query\Atom\Field("fld"),
+            new \h2o\Query\Expr\Ordered(
+                new \h2o\Query\Atom\Field("fld"),
                 "ASC"
             ),
-            \cPHP\Query\Expr\Ordered::fromString("fld ASC")
+            \h2o\Query\Expr\Ordered::fromString("fld ASC")
         );
 
         $this->assertEquals(
-            new \cPHP\Query\Expr\Ordered(
-                new \cPHP\Query\Atom\Field("fld")
+            new \h2o\Query\Expr\Ordered(
+                new \h2o\Query\Atom\Field("fld")
             ),
-            \cPHP\Query\Expr\Ordered::fromString("fld")
+            \h2o\Query\Expr\Ordered::fromString("fld")
         );
 
         $this->assertEquals(
-            new \cPHP\Query\Expr\Ordered(
-                new \cPHP\Query\Atom\Field("fld", "db"),
+            new \h2o\Query\Expr\Ordered(
+                new \h2o\Query\Atom\Field("fld", "db"),
                 "DESC"
             ),
-            \cPHP\Query\Expr\Ordered::fromString("db.fld DESC")
+            \h2o\Query\Expr\Ordered::fromString("db.fld DESC")
         );
 
         $this->assertEquals(
-            new \cPHP\Query\Expr\Ordered(
-                new \cPHP\Query\Atom\Field("fld", "db"),
+            new \h2o\Query\Expr\Ordered(
+                new \h2o\Query\Atom\Field("fld", "db"),
                 "desc"
             ),
-            \cPHP\Query\Expr\Ordered::fromString("`db`.`fld` desc")
+            \h2o\Query\Expr\Ordered::fromString("`db`.`fld` desc")
         );
     }
 
     public function testConstruct ()
     {
-        $atom = new \cPHP\Query\Atom\Field("fld");
-        $alias = new \cPHP\Query\Expr\Ordered( $atom );
+        $atom = new \h2o\Query\Atom\Field("fld");
+        $alias = new \h2o\Query\Expr\Ordered( $atom );
         $this->assertSame( $atom, $alias->getAtom() );
         $this->assertNull( $alias->getOrder() );
 
-        $atom = new \cPHP\Query\Atom\Field("fld");
-        $alias = new \cPHP\Query\Expr\Ordered( $atom, "asc" );
+        $atom = new \h2o\Query\Atom\Field("fld");
+        $alias = new \h2o\Query\Expr\Ordered( $atom, "asc" );
         $this->assertSame( $atom, $alias->getAtom() );
         $this->assertSame( "ASC", $alias->getOrder() );
     }
 
     public function testSetOrder()
     {
-        $atom = new \cPHP\Query\Atom\Field("fld");
-        $alias = new \cPHP\Query\Expr\Ordered( $atom );
+        $atom = new \h2o\Query\Atom\Field("fld");
+        $alias = new \h2o\Query\Expr\Ordered( $atom );
 
         $this->assertSame( $alias, $alias->setOrder("ASC") );
         $this->assertSame( "ASC", $alias->getOrder() );
@@ -111,10 +111,10 @@ class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
 
     public function testToOrderedSQL ()
     {
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
-        $atom = new \cPHP\Query\Atom\Field("fld");
-        $alias = new \cPHP\Query\Expr\Ordered( $atom );
+        $atom = new \h2o\Query\Atom\Field("fld");
+        $alias = new \h2o\Query\Expr\Ordered( $atom );
 
         $this->assertSame( "`fld`", $alias->toOrderedSQL( $link ) );
 

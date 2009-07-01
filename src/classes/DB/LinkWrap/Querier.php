@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace cPHP\DB\LinkWrap;
+namespace h2o\DB\LinkWrap;
 
 /**
  * Link wrapper to provide advanced
  */
-class Querier extends \cPHP\DB\LinkWrap
+class Querier extends \h2o\DB\LinkWrap
 {
 
     /**
@@ -42,17 +42,17 @@ class Querier extends \cPHP\DB\LinkWrap
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @return \cPHP\DB\Result Returns a result object
+     * @return \h2o\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
         $flags = intval( $flags );
-        $query = \cPHP\strval($query);
+        $query = \h2o\strval($query);
 
         try {
             return $this->getLink()->query( $query, $flags );
         }
-        catch (\cPHP\Exception\DB\Query $err) {
+        catch (\h2o\Exception\DB\Query $err) {
 
             if ( !( $flags & self::SILENT) ) {
                 $err->shiftFault();
@@ -107,10 +107,10 @@ class Querier extends \cPHP\DB\LinkWrap
      */
     public function getFieldList ( array $fields )
     {
-        $fields = \cPHP\ary\flatten($fields);
+        $fields = \h2o\ary\flatten($fields);
 
         if (count($fields) <= 0)
-            throw new \cPHP\Exception\Argument(0, "Field List", "Must not be empty");
+            throw new \h2o\Exception\Argument(0, "Field List", "Must not be empty");
 
         foreach ($fields AS $name => $value) {
             $fields[$name] = "`". $name ."` = ". $this->quote($value);
@@ -133,10 +133,10 @@ class Querier extends \cPHP\DB\LinkWrap
      */
     public function insert ( $table, $fields, $flags = 0 )
     {
-        $table = \cPHP\strval($table);
+        $table = \h2o\strval($table);
 
-        if ( \cPHP\isEmpty($table) )
-            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \h2o\isEmpty($table) )
+            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
 
@@ -163,16 +163,16 @@ class Querier extends \cPHP\DB\LinkWrap
      */
     public function update ($table, $where, $fields, $flags = 0)
     {
-        $table = \cPHP\strval($table);
+        $table = \h2o\strval($table);
 
-        if ( \cPHP\isEmpty($table) )
-            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \h2o\isEmpty($table) )
+            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
 
-        $where = trim( \cPHP\strval($where) );
+        $where = trim( \h2o\strval($where) );
 
-        if ( !\cPHP\isEmpty($where) )
+        if ( !\h2o\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return $this->query($query, $flags);
@@ -192,10 +192,10 @@ class Querier extends \cPHP\DB\LinkWrap
     {
         $result = $this->query($query, $flags);
 
-        if ( !($result instanceof \cPHP\DB\Result\Read) ) {
-            $err = new \cPHP\Exception\Interaction("Query did not a valid Read result object");
+        if ( !($result instanceof \h2o\DB\Result\Read) ) {
+            $err = new \h2o\Exception\Interaction("Query did not a valid Read result object");
             $err->addData("Query", $query);
-            $err->addData("Returned Result", \cPHP\getDump($result));
+            $err->addData("Returned Result", \h2o\getDump($result));
             throw $err;
         }
 
@@ -221,24 +221,24 @@ class Querier extends \cPHP\DB\LinkWrap
      */
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
-        $field = \cPHP\strval( $field );
+        $field = \h2o\strval( $field );
 
-        if ( \cPHP\isEmpty($field) )
-            throw new \cPHP\Exception\Argument( 0, "Field", "Must not be empty" );
+        if ( \h2o\isEmpty($field) )
+            throw new \h2o\Exception\Argument( 0, "Field", "Must not be empty" );
 
         $result = $this->getRow( $query, $row, $flags );
 
         if ( !is_array($result) && !($result instanceof \ArrayAccess) ) {
-            $err = new \cPHP\Exception\Interaction("Row was not an array or accessable as an array");
+            $err = new \h2o\Exception\Interaction("Row was not an array or accessable as an array");
             $err->addData("Query", $query);
-            $err->addData("Returned Row", \cPHP\getDump($result));
+            $err->addData("Returned Row", \h2o\getDump($result));
             throw $err;
         }
 
         if ( !isset($result[ $field ]) ) {
-            $err = new \cPHP\Exception\Argument( 0, "Field", "Field does not exist in row" );
+            $err = new \h2o\Exception\Argument( 0, "Field", "Field does not exist in row" );
             $err->addData("Query", $query);
-            $err->addData("Returned Row", \cPHP\getDump($result));
+            $err->addData("Returned Row", \h2o\getDump($result));
             throw $err;
         }
 
@@ -258,16 +258,16 @@ class Querier extends \cPHP\DB\LinkWrap
      */
     public function count ($table, $where = FALSE, $flags = 0)
     {
-        $table = \cPHP\strval($table);
+        $table = \h2o\strval($table);
 
-        if ( \cPHP\isEmpty($table) )
-            throw new \cPHP\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \h2o\isEmpty($table) )
+            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
 
-        $where = trim( \cPHP\strval($where) );
+        $where = trim( \h2o\strval($where) );
 
-        if ( !\cPHP\isEmpty($where) )
+        if ( !\h2o\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return intval( $this->getField("cnt", $query, 0, $flags) );

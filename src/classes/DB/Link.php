@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace cPHP\DB;
+namespace h2o\DB;
 
 /**
  * Core Database Connection
@@ -34,7 +34,7 @@ namespace cPHP\DB;
  * setting up the link, performing actions against the resource and
  * automatically disconnecting
  */
-abstract class Link implements \cPHP\iface\DB\Link
+abstract class Link implements \h2o\iface\DB\Link
 {
 
     /**
@@ -108,8 +108,8 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     static public function isSelect ( $query )
     {
-        $query = \cPHP\strval($query);
-        $query = \cPHP\str\stripQuoted($query, array("'", '"', "`"));
+        $query = \h2o\strval($query);
+        $query = \h2o\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
         return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
@@ -127,7 +127,7 @@ abstract class Link implements \cPHP\iface\DB\Link
     static public function cleanseValue ( $value, $allowNull, $onString )
     {
         if ( !is_callable($onString) )
-            throw new \cPHP\Exception\Argument(0, "onString Callback", "Must be Callable");
+            throw new \h2o\Exception\Argument(0, "onString Callback", "Must be Callable");
 
         if ( is_array($value) ) {
             $result = array();
@@ -137,7 +137,7 @@ abstract class Link implements \cPHP\iface\DB\Link
             return $result;
         }
 
-        $value = \cPHP\reduce($value);
+        $value = \h2o\reduce($value);
 
         if (is_bool($value))
             return $value ? "1" : "0";
@@ -164,7 +164,7 @@ abstract class Link implements \cPHP\iface\DB\Link
     {
         // Ensure that the required extension is loaded
         if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
-            throw new \cPHP\Exception\Extension(
+            throw new \h2o\Exception\Extension(
                     static::PHP_EXTENSION,
                     "Extension is not loaded"
                 );
@@ -198,7 +198,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return Object Returns a \cPHP\DB\Result object
+     * @return Object Returns a \h2o\DB\Result object
      */
     abstract protected function rawQuery ( $query );
 
@@ -235,7 +235,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setPersistent ( $setting )
     {
-        $this->persistent = \cPHP\Filter::Boolean()->filter($setting);
+        $this->persistent = \h2o\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -259,7 +259,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setForceNew ( $setting )
     {
-        $this->forceNew = \cPHP\Filter::Boolean()->filter($setting);
+        $this->forceNew = \h2o\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -281,8 +281,8 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setUserName ( $username )
     {
-        $username = \cPHP\strval( $username );
-        $this->username = \cPHP\isEmpty( $username ) ? null : $username;
+        $username = \h2o\strval( $username );
+        $this->username = \h2o\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -325,8 +325,8 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setPassword ( $password )
     {
-        $password = \cPHP\strval( $password );
-        $this->password = \cPHP\isEmpty($password) ? null : $password;
+        $password = \h2o\strval( $password );
+        $this->password = \h2o\isEmpty($password) ? null : $password;
         return $this;
     }
 
@@ -369,8 +369,8 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setHost ( $host )
     {
-        $host = \cPHP\strval( $host );
-        $this->host = \cPHP\isEmpty( $host ) ? null : $host;
+        $host = \h2o\strval( $host );
+        $this->host = \h2o\isEmpty( $host ) ? null : $host;
         return $this;
     }
 
@@ -413,7 +413,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setPort ( $port )
     {
-        $port = intval( \cPHP\reduce( $port ) );
+        $port = intval( \h2o\reduce( $port ) );
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }
@@ -457,8 +457,8 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function setDatabase ( $database )
     {
-        $database = \cPHP\strval( $database );
-        $this->database = \cPHP\isEmpty( $database ) ? null : $database;
+        $database = \h2o\strval( $database );
+        $this->database = \h2o\isEmpty( $database ) ? null : $database;
         return $this;
     }
 
@@ -493,8 +493,8 @@ abstract class Link implements \cPHP\iface\DB\Link
     {
         foreach ( $array AS $key => $value ) {
 
-            $key = "set". strtolower( \cPHP\str\stripW( $key ) );
-            $value = \cPHP\strval( $value );
+            $key = "set". strtolower( \h2o\str\stripW( $key ) );
+            $value = \h2o\strval( $value );
 
             if ( method_exists( $this, $key ) )
                 $this->$key( $value );
@@ -512,14 +512,14 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function fromURI ( $uri )
     {
-        $uri = \cPHP\strval( $uri );
-        $result = \cPHP\Validator::URL()->validate( $uri );
+        $uri = \h2o\strval( $uri );
+        $result = \h2o\Validator::URL()->validate( $uri );
 
         if ( !$result->isValid() )
-            throw new \cPHP\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
+            throw new \h2o\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
 
         $uri = parse_url( $uri );
-        $uri = \cPHP\ary\translateKeys( $uri, array(
+        $uri = \h2o\ary\translateKeys( $uri, array(
                 "user" => "username",
                 "pass" => "password"
             ));
@@ -541,20 +541,20 @@ abstract class Link implements \cPHP\iface\DB\Link
     /**
      * Validates the log-in credentials in preparation to connect
      *
-     * @throws \cPHP\Exception\DB\Link
+     * @throws \h2o\Exception\DB\Link
      *      This will be thrown if any of the required credentials are not set
      * @return Object Returns a self reference
      */
     public function validateCredentials ()
     {
         if ( !$this->userNameExists() )
-            throw new \cPHP\Exception\DB\Link("UserName must be set", 0, $this);
+            throw new \h2o\Exception\DB\Link("UserName must be set", 0, $this);
 
         if ( !$this->hostExists() )
-            throw new \cPHP\Exception\DB\Link("Host must be set", 0, $this);
+            throw new \h2o\Exception\DB\Link("Host must be set", 0, $this);
 
         if ( !$this->databaseExists() )
-            throw new \cPHP\Exception\DB\Link("Database name must be set", 0, $this);
+            throw new \h2o\Exception\DB\Link("Database name must be set", 0, $this);
 
         return $this;
     }
@@ -567,7 +567,7 @@ abstract class Link implements \cPHP\iface\DB\Link
     public function getHostWithPort ()
     {
         if ( !$this->hostExists() )
-            throw new \cPHP\Exception\Interaction("Host must be set");
+            throw new \h2o\Exception\Interaction("Host must be set");
 
         if ( $this->portExists() )
             return $this->host .":". $this->port;
@@ -609,7 +609,7 @@ abstract class Link implements \cPHP\iface\DB\Link
             $result = $this->rawConnect();
 
             if ( !is_resource($result) && !is_object($result) ) {
-                throw new \cPHP\Exception\DB\Link(
+                throw new \h2o\Exception\DB\Link(
                         "Database connector did not return a resource or an object",
                         0,
                         $this
@@ -629,7 +629,7 @@ abstract class Link implements \cPHP\iface\DB\Link
      */
     public function getIdentifier ()
     {
-        if ( preg_match('/^cPHP\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
+        if ( preg_match('/^h2o\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
             $ident = $matches[1];
         else
             $ident = "db";
@@ -652,27 +652,27 @@ abstract class Link implements \cPHP\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @return \cPHP\DB\Result Returns a result object
+     * @return \h2o\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = \cPHP\strval($query);
+        $query = \h2o\strval($query);
 
-        if ( \cPHP\isEmpty($query) )
-            throw new \cPHP\Exception\Argument(0, "Query", "Must not be empty");
+        if ( \h2o\isEmpty($query) )
+            throw new \h2o\Exception\Argument(0, "Query", "Must not be empty");
 
         try {
             $result = $this->rawQuery( $query );
         }
-        catch (\cPHP\Exception\DB\Query $err) {
+        catch (\h2o\Exception\DB\Query $err) {
             $err->shiftFault();
             throw $err;
         }
 
-        if ( !( $result instanceof \cPHP\DB\Result ) ) {
-            throw new \cPHP\Exception\DB\Query(
+        if ( !( $result instanceof \h2o\DB\Result ) ) {
+            throw new \h2o\Exception\DB\Query(
                     $query,
-                    "Query did not return a \cPHP\DB\Result object",
+                    "Query did not return a \h2o\DB\Result object",
                     0,
                     $this
                 );

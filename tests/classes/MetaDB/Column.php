@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,14 +36,14 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     /**
      * A common TableSet to use when generating test column
      *
-     * @var \cPHP\MetaDB\TableSet
+     * @var \h2o\MetaDB\TableSet
      */
     private $tableSet;
 
     /**
      * A common table to use when generating test columns
      *
-     * @var \cPHP\MetaDB\Column
+     * @var \h2o\MetaDB\Column
      */
     private $table;
 
@@ -55,12 +55,12 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     public function setUp ()
     {
         $this->tableSet = $this->getMock(
-        		"cPHP\MetaDB\TableSet",
+        		"h2o\MetaDB\TableSet",
                 array("_mock")
             );
 
         $this->table = $this->getMock(
-                'cPHP\MetaDB\Table',
+                'h2o\MetaDB\Table',
                 array( "_mock" ),
                 array( $this->tableSet, "dbName", "tblName" )
             );
@@ -70,12 +70,12 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
      * Returns a test column
      *
      * @param String $name The name of the column
-     * @return \cPHP\MetaDB\Column
+     * @return \h2o\MetaDB\Column
      */
     public function getTestColumn ( $name )
     {
         return $this->getMock(
-                "\cPHP\MetaDB\Column",
+                "\h2o\MetaDB\Column",
                 array( "getSelectSQL", "getInsertSQL", "getUpdateSQL" ),
                 array( $this->table, $name )
             );

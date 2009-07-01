@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace cPHP\XMLBuilder\Soap;
+namespace h2o\XMLBuilder\Soap;
 
 /**
  * Generates a soap fault node structure
  */
-class Fault implements \cPHP\iface\XMLBuilder
+class Fault implements \h2o\iface\XMLBuilder
 {
 
     /**
@@ -53,15 +53,15 @@ class Fault implements \cPHP\iface\XMLBuilder
      */
     public function __construct ( $code, $reason )
     {
-        $code = \cPHP\strval($code);
+        $code = \h2o\strval($code);
 
-        if ( \cPHP\isEmpty($code) )
-            throw new \cPHP\Exception\Argument(0, "Fault Code", "Must not be empty");
+        if ( \h2o\isEmpty($code) )
+            throw new \h2o\Exception\Argument(0, "Fault Code", "Must not be empty");
 
-        $reason = \cPHP\strval($reason);
+        $reason = \h2o\strval($reason);
 
-        if ( \cPHP\isEmpty($reason) )
-            throw new \cPHP\Exception\Argument(0, "Fault Reason", "Must not be empty");
+        if ( \h2o\isEmpty($reason) )
+            throw new \h2o\Exception\Argument(0, "Fault Reason", "Must not be empty");
 
         $this->code = $code;
         $this->reason = $reason;

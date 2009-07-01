@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Filters
  */
 
-namespace cPHP\Filter;
+namespace h2o\Filter;
 
 /**
  * Applies a given filter to every value in an array, non-recursively
  */
-class Ary extends \cPHP\Filter
+class Ary extends \h2o\Filter
 {
 
     /**
@@ -41,7 +41,7 @@ class Ary extends \cPHP\Filter
      *
      * @param Object The filter to apply to each value in the array
      */
-    public function __construct( \cPHP\iface\Filter $filter )
+    public function __construct( \h2o\iface\Filter $filter )
     {
         $this->setFilter( $filter );
     }
@@ -62,7 +62,7 @@ class Ary extends \cPHP\Filter
      * @param Object The filter to load in to this instance
      * @return Object Returns a self reference
      */
-    public function setFilter ( \cPHP\iface\Filter $filter )
+    public function setFilter ( \h2o\iface\Filter $filter )
     {
         $this->filter = $filter;
         return $this;
@@ -76,7 +76,7 @@ class Ary extends \cPHP\Filter
      */
     public function filter ( $value )
     {
-        $value = \cPHP\arrayVal($value);
+        $value = \h2o\arrayVal($value);
 
         foreach( $value AS $key => $val ) {
             $value[ $key ] = $this->filter->filter( $val );

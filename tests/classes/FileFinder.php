@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,31 +35,31 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $finder = \cPHP\FileFinder::Dir();
-        $this->assertThat( $finder, $this->isInstanceOf("cPHP\\FileFinder\\Dir") );
+        $finder = \h2o\FileFinder::Dir();
+        $this->assertThat( $finder, $this->isInstanceOf("h2o\\FileFinder\\Dir") );
 
 
         try {
-            \cPHP\FileFinder::ThisIsNotReal();
+            \h2o\FileFinder::ThisIsNotReal();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
-            $this->assertSame( 'Class could not be found in \\cPHP\\FileFinder namespace', $err->getMessage() );
+        catch ( \h2o\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\h2o\\FileFinder namespace', $err->getMessage() );
         }
     }
 
     public function testFallbackAccessors ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $this->assertNull( $finder->getFallback() );
         $this->assertFalse( $finder->fallbackExists() );
 
-        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $this->assertSame( $finder, $finder->setFallback($fallback) );
         $this->assertSame( $fallback, $finder->getFallback() );
         $this->assertTrue( $finder->fallbackExists() );
 
-        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback2 = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $this->assertSame( $finder, $finder->setFallback($fallback2) );
         $this->assertSame( $fallback2, $finder->getFallback() );
         $this->assertTrue( $finder->fallbackExists() );
@@ -68,7 +68,7 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
         $this->assertNull( $finder->getFallback() );
         $this->assertFalse( $finder->fallbackExists() );
 
-        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $this->assertSame( $finder, $finder->setFallback($fallback) );
         $this->assertSame( $fallback, $finder->getFallback() );
         $this->assertTrue( $finder->fallbackExists() );
@@ -76,37 +76,37 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFallback_infiniteLoop ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $finder->setFallback( $fallback );
 
-        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback2 = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $fallback->setFallback( $fallback2 );
 
         try {
             $fallback2->setFallback( $finder );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Interaction $err ) {
+        catch ( \h2o\Exception\Interaction $err ) {
             $this->assertSame( "Setting Fallback creates an infinite loop", $err->getMessage() );
         }
     }
 
     public function testGetTopFallback_self ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $this->assertSame( $finder, $finder->getTopFallback() );
     }
 
     public function testGetTopFallback_chain ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $finder->setFallback( $fallback );
 
-        $fallback2 = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback2 = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $fallback->setFallback( $fallback2 );
 
         $this->assertSame( $fallback2, $finder->getTopFallback() );
@@ -115,9 +115,9 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_objFile ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $result = new \cPHP\FileSys\File( '/root/sub/dir/file.php' );
+        $result = new \h2o\FileSys\File( '/root/sub/dir/file.php' );
 
         $finder->expects( $this->once() )
             ->method('internalFind')
@@ -131,9 +131,9 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_objDir ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $result = new \cPHP\FileSys\Dir( '/root/sub/dir/' );
+        $result = new \h2o\FileSys\Dir( '/root/sub/dir/' );
 
         $finder->expects( $this->once() )
             ->method('internalFind')
@@ -147,7 +147,7 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_none ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
         $finder->expects( $this->once() )
             ->method('internalFind')
@@ -159,9 +159,9 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_fallback ()
     {
-        $fallback = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $fallback = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $file = new \cPHP\FileSys\File('/root/sub/dir/file.php');
+        $file = new \h2o\FileSys\File('/root/sub/dir/file.php');
 
         $fallback->expects( $this->once() )
             ->method('internalFind')
@@ -169,7 +169,7 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $file ) );
 
 
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
         $finder->setFallback( $fallback );
 
         $finder->expects( $this->once() )
@@ -183,14 +183,14 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_array ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
         $finder->expects( $this->at(0) )
             ->method('internalFind')
             ->with('file1.php')
             ->will( $this->returnValue( FALSE ) );
 
-        $file = new \cPHP\FileSys\File('/root/sub/dir/file.php');
+        $file = new \h2o\FileSys\File('/root/sub/dir/file.php');
 
         $finder->expects( $this->at(1) )
             ->method('internalFind')
@@ -207,9 +207,9 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_array2 ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
-        $file = new \cPHP\FileSys\File('/root/sub/dir/file.php');
+        $file = new \h2o\FileSys\File('/root/sub/dir/file.php');
 
         $finder->expects( $this->once() )
             ->method('internalFind')
@@ -226,14 +226,14 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
 
     public function testFind_iterator ()
     {
-        $finder = $this->getmock( '\cPHP\FileFinder', array('internalFind') );
+        $finder = $this->getmock( '\h2o\FileFinder', array('internalFind') );
 
         $finder->expects( $this->at(0) )
             ->method('internalFind')
             ->with('file1.php')
             ->will( $this->returnValue( FALSE ) );
 
-        $file = new \cPHP\FileSys\File('/root/sub/dir/file.php');
+        $file = new \h2o\FileSys\File('/root/sub/dir/file.php');
 
         $finder->expects( $this->at(1) )
             ->method('internalFind')

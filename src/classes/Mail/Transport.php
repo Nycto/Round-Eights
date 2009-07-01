@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Mail
  */
 
-namespace cPHP\Mail;
+namespace h2o\Mail;
 
 /**
  * The base class that for objects which handle the actual sending of an email.
@@ -52,12 +52,12 @@ abstract class Transport
      */
     static public function formatAddress ($email, $name = NULL)
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
 
-        if ( !\cPHP\isVague($name) )
-            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+        if ( !\h2o\isVague($name) )
+            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
 
-        if ( \cPHP\isVague($name) )
+        if ( \h2o\isVague($name) )
             return "<". $email .">";
         else
             return '"'. addslashes($name) .'" <'. $email .'>';
@@ -83,10 +83,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of addresses being sent to
      *
-     * @param Object $mail The cPHP\Mail object whose to fields are being formatted
+     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
      * @return String
      */
-    public function getToString ( \cPHP\Mail $mail )
+    public function getToString ( \h2o\Mail $mail )
     {
         return $this->getAddressList( $mail->getTo() );
     }
@@ -94,10 +94,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of CC addresses
      *
-     * @param Object $mail The cPHP\Mail object whose to fields are being formatted
+     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
      * @return String
      */
-    public function getCCString ( \cPHP\Mail $mail )
+    public function getCCString ( \h2o\Mail $mail )
     {
         return $this->getAddressList( $mail->getCC() );
     }
@@ -105,10 +105,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of BCC addresses
      *
-     * @param Object $mail The cPHP\Mail object whose to fields are being formatted
+     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
      * @return String
      */
-    public function getBCCString ( \cPHP\Mail $mail )
+    public function getBCCString ( \h2o\Mail $mail )
     {
         return $this->getAddressList( $mail->getBCC() );
     }
@@ -116,11 +116,11 @@ abstract class Transport
     /**
      * Returns an array of headers that will be sent with this message
      *
-     * @param Object $mail The cPHP\Mail object whose headers should be returned
+     * @param Object $mail The \h2o\Mail object whose headers should be returned
      * @return Array The key is the header name, the value is the value of
      *      the header
      */
-    public function getHeaderList ( \cPHP\Mail $mail )
+    public function getHeaderList ( \h2o\Mail $mail )
     {
         $result = array();
 
@@ -164,12 +164,12 @@ abstract class Transport
     /**
      * Returns an the string of headers that will be sent with this message
      *
-     * @param Object $mail The cPHP\Mail object whose headers should be returned
+     * @param Object $mail The \h2o\Mail object whose headers should be returned
      * @return String A MIME formatted header string
      */
-    public function getHeaderString ( \cPHP\Mail $mail )
+    public function getHeaderString ( \h2o\Mail $mail )
     {
-        $mime = new \cPHP\Encode\MIME;
+        $mime = new \h2o\Encode\MIME;
         $mime->setEOL( self::EOL );
         $mime->setLineLength( self::LINE_LENGTH );
 
@@ -212,15 +212,15 @@ abstract class Transport
     /**
      * Returns the body string for an HTML
      *
-     * @param Object $mail The cPHP\Mail object whose body will be returned
+     * @param Object $mail The \h2o\Mail object whose body will be returned
      * @return String A formatted body email string
      */
-    public function getBody ( \cPHP\Mail $mail )
+    public function getBody ( \h2o\Mail $mail )
     {
         // If both the text and HTML are set...
         if ( $mail->htmlExists() && $mail->textExists() ) {
 
-            $mime = new \cPHP\Encode\MIME;
+            $mime = new \h2o\Encode\MIME;
             $mime->setEOL( self::EOL );
             $mime->setLineLength( self::LINE_LENGTH );
 
@@ -273,7 +273,7 @@ abstract class Transport
      * @param Object $mail The mail object to send
      * @return Null
      */
-    abstract protected function internalSend ( \cPHP\Mail $mail );
+    abstract protected function internalSend ( \h2o\Mail $mail );
 
     /**
      * Method for sending a piece of mail using this transport.
@@ -281,13 +281,13 @@ abstract class Transport
      * @param Object $mail The mail object to send
      * @return Object Returns a self reference
      */
-    public function send ( \cPHP\Mail $mail )
+    public function send ( \h2o\Mail $mail )
     {
         if ( !$mail->fromExists() )
-            throw new \cPHP\Exception\Variable('From Address', '"From" Address must be set to send an email');
+            throw new \h2o\Exception\Variable('From Address', '"From" Address must be set to send an email');
 
         if ( !$mail->hasTos() )
-            throw new \cPHP\Exception\Variable('To Address', '"To" Address must be set to send an email');
+            throw new \h2o\Exception\Variable('To Address', '"To" Address must be set to send an email');
 
         $this->internalSend( $mail );
 

@@ -1,76 +1,76 @@
 <?php
 /**
- * Primary commonPHP include file
+ * Primary raindropPHP include file
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  */
 
-// If cPHP has already been included...
-if ( defined("cPHP_INCLUDED") )
+// If h2o has already been included...
+if ( defined("h2o_INCLUDED") )
     return;
 
 // Define the version
-define("cPHP_VERSION", "0.2.0");
+define("h2o_VERSION", "0.2.0");
 
-// Mark that commonPHP has been included
-define("cPHP_INCLUDED", TRUE);
+// Mark that raindropPHP has been included
+define("h2o_INCLUDED", TRUE);
 
-// mark the location of the commonPHP library
-if ( !defined("cPHP_DIR") ) {
+// mark the location of the raindropPHP library
+if ( !defined("h2o_DIR") ) {
 
     // Detect if this is currently being executed inside a Phar file
     if ( Phar::running() === "" )
-        $commonPHPdir = str_replace("\\", "/", __DIR__);
+        $raindropPHPdir = str_replace("\\", "/", __DIR__);
     else
-        $commonPHPdir = Phar::running();
+        $raindropPHPdir = Phar::running();
 
-    $commonPHPdir = rtrim( $commonPHPdir, "/" ) ."/";
-    define("cPHP_DIR", $commonPHPdir);
-    unset($commonPHPdir);
+    $raindropPHPdir = rtrim( $raindropPHPdir, "/" ) ."/";
+    define("h2o_DIR", $raindropPHPdir);
+    unset($raindropPHPdir);
 
 }
 
-if (!defined("cPHP_DIR_FUNCTIONS"))
-    define("cPHP_DIR_FUNCTIONS", cPHP_DIR ."functions/");
+if (!defined("h2o_DIR_FUNCTIONS"))
+    define("h2o_DIR_FUNCTIONS", h2o_DIR ."functions/");
 
-if (!defined("cPHP_DIR_CLASSES"))
-    define("cPHP_DIR_CLASSES", cPHP_DIR ."classes/");
+if (!defined("h2o_DIR_CLASSES"))
+    define("h2o_DIR_CLASSES", h2o_DIR ."classes/");
 
-if (!defined("cPHP_DIR_INTERFACES"))
-    define("cPHP_DIR_INTERFACES", cPHP_DIR ."interfaces/");
+if (!defined("h2o_DIR_INTERFACES"))
+    define("h2o_DIR_INTERFACES", h2o_DIR ."interfaces/");
 
 /**
  * Include the function files
  */
-require_once cPHP_DIR_FUNCTIONS ."general.php";
-require_once cPHP_DIR_FUNCTIONS ."numbers.php";
-require_once cPHP_DIR_FUNCTIONS ."strings.php";
-require_once cPHP_DIR_FUNCTIONS ."debug.php";
-require_once cPHP_DIR_FUNCTIONS ."array.php";
+require_once h2o_DIR_FUNCTIONS ."general.php";
+require_once h2o_DIR_FUNCTIONS ."numbers.php";
+require_once h2o_DIR_FUNCTIONS ."strings.php";
+require_once h2o_DIR_FUNCTIONS ."debug.php";
+require_once h2o_DIR_FUNCTIONS ."array.php";
 
 /**
  * Register the autoloader
  */
-function cPHP_autoload ( $class ) {
+function h2o_autoload ( $class ) {
 
     $class = explode("\\", $class);
     $class = array_filter( $class );
@@ -79,17 +79,17 @@ function cPHP_autoload ( $class ) {
     $first = reset( $class );
 
     if ( $first == "iface" )
-        $class = cPHP_DIR_INTERFACES . implode( "/", array_slice( $class, 1 ) ) .".php";
+        $class = h2o_DIR_INTERFACES . implode( "/", array_slice( $class, 1 ) ) .".php";
 
     else
-        $class = cPHP_DIR_CLASSES . implode( "/", $class ) .".php";
+        $class = h2o_DIR_CLASSES . implode( "/", $class ) .".php";
 
     if ( file_exists( $class ) )
         require_once $class;
 
 }
 
-spl_autoload_register("cPHP_autoload");
+spl_autoload_register("h2o_autoload");
 
 /**
  * Set up custom exception handling
@@ -97,7 +97,7 @@ spl_autoload_register("cPHP_autoload");
 set_exception_handler(function ( $exception ) {
 
     // If we are running in script mode, we don't need HTML
-    if ( \cPHP\Env::request()->local ) {
+    if ( \h2o\Env::request()->local ) {
         echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
     }
     else {
@@ -118,6 +118,6 @@ set_exception_handler(function ( $exception ) {
 /**
  * Take a snapshot of the environment
  */
-\cPHP\Env::Request();
+\h2o\Env::Request();
 
 ?>

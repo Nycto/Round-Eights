@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileFinder
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * The base File Finder class
@@ -42,17 +42,17 @@ abstract class FileFinder
      *
      * @param String $class The class to instantiate
      * @param Array $args Any arguments to pass to the construcor
-     * @return Object Returns a new cPHP\FileFinder object of the given type
+     * @return Object Returns a new \h2o\FileFinder object of the given type
      */
     static public function __callStatic ( $class, $args )
     {
-        $class = "\\cPHP\\FileFinder\\". trim( \cPHP\strval($class) );
+        $class = "\\h2o\\FileFinder\\". trim( \h2o\strval($class) );
 
         if ( !class_exists( $class, true ) ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                     0,
                     "FileFinder Class Name",
-                    "Class could not be found in \\cPHP\\FileFinder namespace"
+                    "Class could not be found in \\h2o\\FileFinder namespace"
                 );
         }
 
@@ -87,14 +87,14 @@ abstract class FileFinder
      * @param Object $fallback The fallback instance
      * @return Object Returns a self reference
      */
-    public function setFallback ( \cPHP\FileFinder $fallback )
+    public function setFallback ( \h2o\FileFinder $fallback )
     {
         // Ensure that this doesn't form a loop
         $check = $fallback;
         while ( $check->fallbackExists() ) {
             $check = $check->getFallback();
             if ( $check === $this )
-                throw new \cPHP\Exception\Interaction("Setting Fallback creates an infinite loop");
+                throw new \h2o\Exception\Interaction("Setting Fallback creates an infinite loop");
         }
 
         $this->fallback = $fallback;
@@ -153,7 +153,7 @@ abstract class FileFinder
      * @param String|Array $file The file being looked for. If an array is given,
      *      all the values will be tested at this level before moving on to the
      *      fallback.
-     * @return Boolean|Object Returns a cPHP\FileSys\File object if a file is found,
+     * @return Boolean|Object Returns a \h2o\FileSys\File object if a file is found,
      *      Returns FALSE if the file couldn't be found
      */
     public function find ( $file )
@@ -165,11 +165,11 @@ abstract class FileFinder
 
         foreach ( $file AS $current ) {
 
-            $current = ltrim( \cPHP\FileSys::resolvePath( $current ), "/" );
+            $current = ltrim( \h2o\FileSys::resolvePath( $current ), "/" );
 
             $result = $this->internalFind( $current );
 
-            if ( $result instanceof \cPHP\FileSys )
+            if ( $result instanceof \h2o\FileSys )
                 return $result;
 
         }

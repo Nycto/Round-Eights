@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
 
-use cPHP\Cache;
+use h2o\Cache;
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
@@ -40,7 +40,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("Memcache extension not loaded");
 
         // Ensure the proper configuration exists
-        $config = new cPHP_Test_Config(
+        $config = new h2o_Test_Config(
                 "MEMCACHE",
                 array( "HOST", "PORT" )
             );
@@ -54,16 +54,16 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
 
     public function getTestLink ()
     {
-        return new \cPHP\Cache\Memcache(MEMCACHE_HOST, MEMCACHE_PORT);
+        return new \h2o\Cache\Memcache(MEMCACHE_HOST, MEMCACHE_PORT);
     }
 
     public function testConnect_error ()
     {
-        $memcache = new \cPHP\Cache\Memcache("Not a real host", 1234);
+        $memcache = new \h2o\Cache\Memcache("Not a real host", 1234);
         try {
             $memcache->connect();
         }
-        catch ( \cPHP\Exception\Memcache\Connection $err ) {}
+        catch ( \h2o\Exception\Memcache\Connection $err ) {}
     }
 
     public function testIsConnected ()
@@ -155,7 +155,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
             $memcache->yield("unitTest_key", 0, "This isnt callable");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must be callable", $err->getMessage() );
         }
     }
@@ -168,7 +168,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
 
         $result = $memcache->getForUpdate("unitTest_key");
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Cache\Result') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Cache\Result') );
 
         $this->assertSame( $memcache, $result->getCache() );
         $this->assertSame( "unitTest_key", $result->getKey() );
@@ -197,7 +197,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
         $memcache->set("unitTest_key", "Initial Data");
 
         $result = $memcache->getForUpdate("unitTest_key");
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Cache\Result') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Cache\Result') );
 
         $memcache->setIfSame( $result, "New Value");
         $this->assertSame( "New Value", $memcache->get("unitTest_key") );

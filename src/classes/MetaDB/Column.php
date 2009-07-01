@@ -2,39 +2,39 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package MetaDB
  */
 
-namespace cPHP\MetaDB;
+namespace h2o\MetaDB;
 
 /**
  * The base class for a standard column
  */
-abstract class Column implements \cPHP\iface\MetaDB\Column
+abstract class Column implements \h2o\iface\MetaDB\Column
 {
 
     /**
      * The table this column belongs to
      *
-     * @var \cPHP\MetaDB\Table
+     * @var \h2o\MetaDB\Table
      */
     private $table;
 
@@ -48,15 +48,15 @@ abstract class Column implements \cPHP\iface\MetaDB\Column
     /**
      * Constructor...
      *
-     * @param \cPHP\MetaDB\Table $table The table this column belongs to
+     * @param \h2o\MetaDB\Table $table The table this column belongs to
      * @param String $name The name of this column
      */
-    public function __construct ( \cPHP\MetaDB\Table $table, $name )
+    public function __construct ( \h2o\MetaDB\Table $table, $name )
     {
-        $name = trim( trim( \cPHP\strval($name) ), "`" );
+        $name = trim( trim( \h2o\strval($name) ), "`" );
 
-        if ( \cPHP\isEmpty($name) )
-            throw new \cPHP\Exception\Argument( 0, "Column Name", "Must not be empty" );
+        if ( \h2o\isEmpty($name) )
+            throw new \h2o\Exception\Argument( 0, "Column Name", "Must not be empty" );
 
         $this->table = $table;
         $this->name = $name;
@@ -67,7 +67,7 @@ abstract class Column implements \cPHP\iface\MetaDB\Column
     /**
      * Returns the Table this column belongs to
      *
-     * @return \cPHP\MetaDB\Table
+     * @return \h2o\MetaDB\Table
      */
     public function getTable ()
     {

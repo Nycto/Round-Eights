@@ -4,63 +4,63 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * This provides an interface for comparing a value to a set of parameters
  */
-abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\iface\Validator
+abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\Validator
 {
 
     /**
      * Static method for creating a new validator instance
      *
      * This takes the called function and looks for a class under
-     * the \cPHP\Validator namespace.
+     * the \h2o\Validator namespace.
      *
-     * @throws \cPHP\Exception\Argument Thrown if the validator class can't be found
+     * @throws \h2o\Exception\Argument Thrown if the validator class can't be found
      * @param String $validator The validator class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \cPHP\Validator subclass
+     * @return Object Returns a new \h2o\Validator subclass
      */
     static public function __callStatic ( $validator, $args )
     {
-        $validator = "\\cPHP\\Validator\\". trim( \cPHP\strval($validator) );
+        $validator = "\\h2o\\Validator\\". trim( \h2o\strval($validator) );
 
         if ( !class_exists($validator, true) ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                     0,
                     "Validator Class Name",
-                    "Validator could not be found in \cPHP\Validator namespace"
+                    "Validator could not be found in \h2o\Validator namespace"
                 );
         }
 
-        if ( !\cPHP\kindOf( $validator, "\cPHP\iface\Validator") ) {
-            throw new \cPHP\Exception\Argument(
+        if ( !\h2o\kindOf( $validator, "\h2o\iface\Validator") ) {
+            throw new \h2o\Exception\Argument(
                     0,
                     "Validator Class Name",
-                    "Class does not implement \cPHP\iface\Validator"
+                    "Class does not implement \h2o\iface\Validator"
                 );
         }
 
@@ -80,7 +80,7 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
      * Performs the validation and returns the result
      *
      * @param mixed $value The value to validate
-     * @return Object Returns an instance of \cPHP\Validator\Result
+     * @return Object Returns an instance of \h2o\Validator\Result
      */
     public function validate ( $value )
     {
@@ -92,26 +92,26 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
 
         // Normalize the results if it is an array
         if ( \is_array($result) ) {
-            $result = \cPHP\ary\flatten( $result );
-            $result = \array_map( 'cPHP\\strval', $result );
-            $result = \cPHP\ary\compact( $result );
+            $result = \h2o\ary\flatten( $result );
+            $result = \array_map( '\h2o\\strval', $result );
+            $result = \h2o\ary\compact( $result );
         }
 
-        elseif ( $result instanceof \cPHP\Validator\Result )
+        elseif ( $result instanceof \h2o\Validator\Result )
             $result = $result->getErrors();
 
         elseif ( is_null($result) || is_bool($result) || $result === 0 || $result === 0.0 )
             $result = null;
 
         else
-            $result = \cPHP\strval( $result );
+            $result = \h2o\strval( $result );
 
         // Boot up the results of the validation process
-        $output = new \cPHP\Validator\Result( $value );
+        $output = new \h2o\Validator\Result( $value );
 
         // If the internal validator returned a non-empty value
         // (either an array with values or a non-blank string)
-        if ( !\cPHP\isEmpty($result) ) {
+        if ( !\h2o\isEmpty($result) ) {
 
             // If this validator is hooked up with a set of custom error messages,
             // use them instead of what the result returned
@@ -148,7 +148,7 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
 
         if ( !$result->isValid() ) {
 
-            throw new \cPHP\Exception\Data(
+            throw new \h2o\Exception\Data(
                     $value,
                     "Validated Value",
                     $result->getFirstError()
@@ -164,7 +164,7 @@ abstract class Validator extends \cPHP\Validator\ErrorList implements \cPHP\ifac
      *
      * @param mixed $value It will be given the value to validate
      * @return mixed Should return any errors that are encountered.
-     *      This can be an array, a string, a \cPHP\Validator\Result instance
+     *      This can be an array, a string, a \h2o\Validator\Result instance
      */
     abstract protected function process ($value);
 

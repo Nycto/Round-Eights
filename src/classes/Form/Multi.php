@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace cPHP\Form;
+namespace h2o\Form;
 
 /**
  * The core class for HTML form fields that have multiple, distinct, options
  */
-abstract class Multi extends \cPHP\Form\Field
+abstract class Multi extends \h2o\Form\Field
 {
 
     /**
@@ -53,7 +53,7 @@ abstract class Multi extends \cPHP\Form\Field
         parent::__construct($name);
 
         $this->setValidator(
-                new \cPHP\Validator\MultiField( $this )
+                new \h2o\Validator\MultiField( $this )
             );
     }
 
@@ -77,8 +77,8 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function addOption ( $value, $label )
     {
-        $value = \cPHP\indexVal($value);
-        $label = \cPHP\strval( $label );
+        $value = \h2o\indexVal($value);
+        $label = \h2o\strval( $label );
 
         $this->options[ $value ] = $label;
 
@@ -93,7 +93,7 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function hasOption ( $value )
     {
-        $value = \cPHP\indexVal($value);
+        $value = \h2o\indexVal($value);
 
         return array_key_exists( $value, $this->options );
     }
@@ -106,7 +106,7 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function removeOption ( $value )
     {
-        $value = \cPHP\indexVal($value);
+        $value = \h2o\indexVal($value);
 
         if ( $this->hasOption( $value ) )
             unset($this->options[ $value ]);
@@ -122,10 +122,10 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function getOptionLabel ( $value )
     {
-        $value = \cPHP\indexVal($value);
+        $value = \h2o\indexVal($value);
 
         if ( !$this->hasOption( $value ) )
-            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
+            throw new \h2o\Exception\Index($value, "Option Value", "Option does not exist in field");
 
         return $this->options[ $value ];
     }
@@ -149,7 +149,7 @@ abstract class Multi extends \cPHP\Form\Field
      */
     public function importOptions ( array $source )
     {
-        $source = \cPHP\ary\flatten( $source );
+        $source = \h2o\ary\flatten( $source );
 
         foreach ( $source AS $key => $value ) {
             $this->addOption($key, $value);

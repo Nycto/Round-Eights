@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Random
  */
 
-namespace cPHP\Random;
+namespace h2o\Random;
 
 /**
  * Multiply-With-Carry pseudo-random number generator
  */
-class MWC extends \cPHP\Random
+class MWC extends \h2o\Random
 {
 
     /**
@@ -62,12 +62,12 @@ class MWC extends \cPHP\Random
     /**
      * Constructor...
      *
-     * @param \cPHP\Random\Seed $seed The seed to feed into the random number generator
+     * @param \h2o\Random\Seed $seed The seed to feed into the random number generator
      */
-    public function __construct ( \cPHP\Random\Seed $seed )
+    public function __construct ( \h2o\Random\Seed $seed )
     {
         if ( !extension_loaded('bcmath') )
-            throw new \cPHP\Exception\Extension("BC Math extension required");
+            throw new \h2o\Exception\Extension("BC Math extension required");
 
         $this->num = abs( $seed->getInteger() );
 

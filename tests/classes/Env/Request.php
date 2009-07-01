@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -37,14 +37,14 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     {
         $ary = array( "one" => "value", "two" => "" );
 
-        $this->assertTrue( \cPHP\Env\Request::hasKey($ary, "one") );
-        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "two") );
-        $this->assertFalse( \cPHP\Env\Request::hasKey($ary, "three") );
+        $this->assertTrue( \h2o\Env\Request::hasKey($ary, "one") );
+        $this->assertFalse( \h2o\Env\Request::hasKey($ary, "two") );
+        $this->assertFalse( \h2o\Env\Request::hasKey($ary, "three") );
     }
 
     public function testGetPost ()
     {
-        $req = new \cPHP\Env\Request(
+        $req = new \h2o\Env\Request(
                 array(),
                 array( 'one' => 'first', 'two' => 'second' )
             );
@@ -57,7 +57,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetFiles ()
     {
-        $req = new \cPHP\Env\Request(
+        $req = new \h2o\Env\Request(
                 array(),
                 array(),
                 array( 'one' => 'first', 'two' => 'second' )
@@ -71,7 +71,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetGet ()
     {
-        $req = new \cPHP\Env\Request(
+        $req = new \h2o\Env\Request(
                 array( 'QUERY_STRING' => 'one=first&two=second' )
             );
 
@@ -88,10 +88,10 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_empty ()
     {
-        $req = new \cPHP\Env\Request( array(), array(), array() );
+        $req = new \h2o\Env\Request( array(), array(), array() );
 
         $url = $req->getURL();
-        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+        $this->assertThat( $url, $this->isInstanceOf('h2o\URL') );
 
         $this->assertFalse( $url->schemeExists() );
         $this->assertFalse( $url->userNameExists() );
@@ -106,7 +106,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_partial ()
     {
-        $env = new \cPHP\Env\Request(
+        $env = new \h2o\Env\Request(
                 array(
                         "SERVER_PROTOCOL" => "HTTP/1.1",
                         "HTTP_HOST" => "example.com",
@@ -115,7 +115,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
 
         $url = $env->getURL();
-        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+        $this->assertThat( $url, $this->isInstanceOf('h2o\URL') );
 
         $this->assertSame(
                 "http://example.com",
@@ -125,7 +125,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_full ()
     {
-        $env = new \cPHP\Env\Request(
+        $env = new \h2o\Env\Request(
                 array(
                         "SERVER_PROTOCOL" => "HTTP/1.1",
                         "HTTP_HOST" => "example.com",
@@ -137,7 +137,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
 
         $url = $env->getURL();
-        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+        $this->assertThat( $url, $this->isInstanceOf('h2o\URL') );
 
         $this->assertSame(
                 "http://example.com:8080/dir/file.html/test/faux/dirs?query=val",
@@ -147,7 +147,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_IP ()
     {
-        $env = new \cPHP\Env\Request(
+        $env = new \h2o\Env\Request(
                 array(
                         "SERVER_PROTOCOL" => "HTTP/1.1",
                         "SERVER_ADDR" => "127.0.0.1",
@@ -159,7 +159,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
             );
 
         $url = $env->getURL();
-        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+        $this->assertThat( $url, $this->isInstanceOf('h2o\URL') );
 
         $this->assertSame(
                 "http://127.0.0.1:8080/dir/file.html/test/faux/dirs?query=val&other=here",
@@ -169,10 +169,10 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_clone ()
     {
-        $env = new \cPHP\Env\Request;
+        $env = new \h2o\Env\Request;
 
         $url = $env->getURL();
-        $this->assertThat( $url, $this->isInstanceOf('cPHP\URL') );
+        $this->assertThat( $url, $this->isInstanceOf('h2o\URL') );
 
         $this->assertNotSame( $url, $env->getURL() );
         $this->assertNotSame( $url, $env->getURL() );
@@ -181,32 +181,32 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetFile_empty ()
     {
-        $env = new \cPHP\Env\Request;
+        $env = new \h2o\Env\Request;
 
         $this->assertEquals(
-                new \cPHP\FileSys\File,
+                new \h2o\FileSys\File,
                 $env->getFile()
             );
     }
 
     public function testGetFile_full ()
     {
-        $env = new \cPHP\Env\Request(
+        $env = new \h2o\Env\Request(
                 array('SCRIPT_FILENAME' => '/example/path/file.php')
             );
 
         $this->assertEquals(
-                new \cPHP\FileSys\File('/example/path/file.php'),
+                new \h2o\FileSys\File('/example/path/file.php'),
                 $env->getFile()
             );
     }
 
     public function testGetFile_clone ()
     {
-        $env = new \cPHP\Env\Request;
+        $env = new \h2o\Env\Request;
 
         $file = $env->getFile();
-        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertThat( $file, $this->isInstanceOf('h2o\FileSys\File') );
 
         $this->assertNotSame( $file, $env->getFile() );
         $this->assertNotSame( $file, $env->getFile() );
@@ -215,7 +215,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetHeaders ()
     {
-        $req = new \cPHP\Env\Request(
+        $req = new \h2o\Env\Request(
                 array(),
                 array(),
                 array(),
@@ -230,31 +230,31 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testIsCLI ()
     {
-        $req = new \cPHP\Env\Request;
+        $req = new \h2o\Env\Request;
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \cPHP\Env\Request( array(), array(), array(), array(), FALSE );
+        $req = new \h2o\Env\Request( array(), array(), array(), array(), FALSE );
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \cPHP\Env\Request( array(), array(), array(), array(), TRUE );
+        $req = new \h2o\Env\Request( array(), array(), array(), array(), TRUE );
         $this->assertTrue( $req->isCLI() );
     }
 
     public function testIsSecure ()
     {
-        $req = new \cPHP\Env\Request;
+        $req = new \h2o\Env\Request;
         $this->assertFalse( $req->isSecure() );
 
-        $req = new \cPHP\Env\Request( array('HTTPS' => 1) );
+        $req = new \h2o\Env\Request( array('HTTPS' => 1) );
         $this->assertTrue( $req->isSecure() );
 
-        $req = new \cPHP\Env\Request( array('HTTPS' => 'on') );
+        $req = new \h2o\Env\Request( array('HTTPS' => 'on') );
         $this->assertTrue( $req->isSecure() );
 
-        $req = new \cPHP\Env\Request( array('SERVER_PORT' => 443) );
+        $req = new \h2o\Env\Request( array('SERVER_PORT' => 443) );
         $this->assertTrue( $req->isSecure() );
 
-        $req = new \cPHP\Env\Request( array('HTTPS' => 'off') );
+        $req = new \h2o\Env\Request( array('HTTPS' => 'off') );
         $this->assertFalse( $req->isSecure() );
     }
 

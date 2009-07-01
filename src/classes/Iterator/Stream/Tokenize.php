@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Iterator
  */
 
-namespace cPHP\Iterator\Stream;
+namespace h2o\Iterator\Stream;
 
 /**
  * Tokenizes the read value from an input stream
@@ -34,7 +34,7 @@ class Tokenize implements \Iterator
     /**
      * The stream to tokenize
      *
-     * @var \cPHP\iface\Stream\In
+     * @var \h2o\iface\Stream\In
      */
     private $stream;
 
@@ -77,14 +77,14 @@ class Tokenize implements \Iterator
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Stream\In $stream The Input stream to tokenize
+     * @param \h2o\iface\Stream\In $stream The Input stream to tokenize
      * @param String $delim The delimiter to use when splitting the stream
      * @param Integer $bytes The number of bytes to read from the stream at a time
      */
-    public function __construct ( \cPHP\iface\Stream\In $stream, $delim, $bytes = 1024 )
+    public function __construct ( \h2o\iface\Stream\In $stream, $delim, $bytes = 1024 )
     {
         $this->stream = $stream;
-        $this->delim = \cPHP\strval( $delim );
+        $this->delim = \h2o\strval( $delim );
         $this->bytes = max( \intval( $bytes ), 1 );
     }
 
@@ -111,7 +111,7 @@ class Tokenize implements \Iterator
     /**
      * Increments the iterator to the next value
      *
-     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
+     * @return \h2o\Iterator\Stream\Tokenize Returns a self reference
      */
     public function next ()
     {
@@ -181,7 +181,7 @@ class Tokenize implements \Iterator
     /**
      * Restarts the iterator
      *
-     * @return \cPHP\Iterator\Stream\Tokenize Returns a self reference
+     * @return \h2o\Iterator\Stream\Tokenize Returns a self reference
      */
     public function rewind ()
     {

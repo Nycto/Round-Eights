@@ -2,35 +2,35 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace cPHP\Validator;
+namespace h2o\Validator;
 
 /**
  * Validates that a given value does not contain spaces, tabs, or newlines
  *
  * This will return positive for Boolean, Integers, Floats and Null
  */
-class NoSpaces extends \cPHP\Validator
+class NoSpaces extends \h2o\Validator
 {
 
     /**
@@ -47,13 +47,13 @@ class NoSpaces extends \cPHP\Validator
         if ( !is_string($value) )
             return "Must be a string";
 
-        if ( \cPHP\str\contains(' ', $value) )
+        if ( \h2o\str\contains(' ', $value) )
             return "Must not contain any spaces";
 
-        if ( \cPHP\str\contains("\t", $value) )
+        if ( \h2o\str\contains("\t", $value) )
             return "Must not contain any tabs";
 
-        if ( \cPHP\str\contains("\n", $value) || \cPHP\str\contains("\r", $value) )
+        if ( \h2o\str\contains("\n", $value) || \h2o\str\contains("\r", $value) )
             return "Must not contain any new lines";
     }
 

@@ -5,33 +5,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Encoding
  */
 
-namespace cPHP\Encode;
+namespace h2o\Encode;
 
 /**
  * Encodes and decodes strings according to B or Q MIME encoding
  */
-class MIME implements \cPHP\iface\Encoder
+class MIME implements \h2o\iface\Encoder
 {
 
     /**
@@ -119,7 +119,7 @@ class MIME implements \cPHP\iface\Encoder
     static public function stripHeaderName ( $header )
     {
         // Convert it to a string
-        $header = \cPHP\strval( $header );
+        $header = \h2o\strval( $header );
 
         // Remove any non-printable ascii characters
         $header = preg_replace('/[^\x21-\x7E]/', '', $header);
@@ -193,7 +193,7 @@ class MIME implements \cPHP\iface\Encoder
     public function setHeader ( $name )
     {
         $name = self::stripHeaderName( $name );
-        $this->header = \cPHP\isEmpty( $name ) ? null : $name;
+        $this->header = \h2o\isEmpty( $name ) ? null : $name;
         return $this;
     }
 
@@ -245,10 +245,10 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function setInputEncoding ( $charset )
     {
-        $charset = \cPHP\str\stripW($charset, \cPHP\str\ALLOW_DASHES);
+        $charset = \h2o\str\stripW($charset, \h2o\str\ALLOW_DASHES);
 
-        if ( \cPHP\isEmpty($charset) )
-            throw new \cPHP\Exception\Argument(0, "Character Set", "Must not be empty");
+        if ( \h2o\isEmpty($charset) )
+            throw new \h2o\Exception\Argument(0, "Character Set", "Must not be empty");
 
         $this->inEncoding = $charset;
         return $this;
@@ -292,10 +292,10 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function setOutputEncoding ( $charset )
     {
-        $charset = \cPHP\str\stripW($charset, \cPHP\str\ALLOW_DASHES);
+        $charset = \h2o\str\stripW($charset, \h2o\str\ALLOW_DASHES);
 
-        if ( \cPHP\isEmpty($charset) )
-            throw new \cPHP\Exception\Argument(0, "Character Set", "Must not be empty");
+        if ( \h2o\isEmpty($charset) )
+            throw new \h2o\Exception\Argument(0, "Character Set", "Must not be empty");
 
         $this->outEncoding = $charset;
         return $this;
@@ -330,7 +330,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function setEOL ( $eol )
     {
-        $this->eol = \cPHP\strval( $eol );
+        $this->eol = \h2o\strval( $eol );
         return $this;
     }
 
@@ -406,7 +406,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function rawEncode ( $string )
     {
-        $string = \cPHP\strval( $string );
+        $string = \h2o\strval( $string );
 
         // React to the input encoding
         $string = iconv( $this->getInputEncoding(), 'ISO-8859-1', $string );
@@ -457,7 +457,7 @@ class MIME implements \cPHP\iface\Encoder
         // a header defined
 
 
-        $string = \cPHP\strval( $string );
+        $string = \h2o\strval( $string );
 
         // React to the input encoding
         $string = iconv(
@@ -485,7 +485,7 @@ class MIME implements \cPHP\iface\Encoder
 
             // If the header is so long it won't fit on a line (plus one for the colon)
             if ( $this->getLineLength() < strlen($this->getHeader()) + 1 ) {
-                $err = new \cPHP\Exception\Data(
+                $err = new \h2o\Exception\Data(
                         $this->getHeader(),
                         "MIME Header",
                         "Header length exceeds the maximum line length"
@@ -538,7 +538,7 @@ class MIME implements \cPHP\iface\Encoder
 
         // If the required data won't fit on a line, throw an error
         if ( $lineLength <= 0 ) {
-            throw new \cPHP\Exception\Data(
+            throw new \h2o\Exception\Data(
                     $this->getLineLength(),
                     "Max Line Length",
                     "Required content length exceeds the maximum line length"
@@ -566,7 +566,7 @@ class MIME implements \cPHP\iface\Encoder
         // can do a few things the iconv encode method cant: Handle encoding without
         // a header defined, use the underscore as spaces to save on space.
 
-        $string = \cPHP\strval( $string );
+        $string = \h2o\strval( $string );
 
         // React to the input encoding
         $string = iconv(
@@ -591,7 +591,7 @@ class MIME implements \cPHP\iface\Encoder
 
             // If the header is so long it won't fit on a line (plus one for the colon)
             if ( $this->getLineLength() !== FALSE && $this->getLineLength() < strlen($result) + 1 ) {
-                $err = new \cPHP\Exception\Data(
+                $err = new \h2o\Exception\Data(
                         $this->getHeader(),
                         "MIME Header",
                         "Header length exceeds the maximum line length"
@@ -626,7 +626,7 @@ class MIME implements \cPHP\iface\Encoder
         }
 
         if ( $maxLineLength !== FALSE && $maxLineLength <= 0 ) {
-            throw new \cPHP\Exception\Data(
+            throw new \h2o\Exception\Data(
                     $this->getLineLength(),
                     "Max Line Length",
                     "Required content length exceeds the maximum line length"
@@ -720,7 +720,7 @@ class MIME implements \cPHP\iface\Encoder
      */
     public function decode ( $string )
     {
-        $string = \cPHP\strval( $string );
+        $string = \h2o\strval( $string );
 
         // Strip the header name off, if it exists
         $string = preg_replace('/^[\x21-\x7E]+\s*\:/', '', $string);

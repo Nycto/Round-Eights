@@ -4,51 +4,51 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package numeric
  */
 
-namespace cPHP\ary;
+namespace h2o\ary;
 
 /**
  * No wrapping will be perfomed. If the given offset falls outside of the
  * length, FALSE is returned. Negative offsets are allowed
  */
-const OFFSET_NONE = \cPHP\num\OFFSET_NONE;
+const OFFSET_NONE = \h2o\num\OFFSET_NONE;
 
 /**
  * The offset will be wrapped until it fits within the length. Negative
  * offsets are allowed
  */
-const OFFSET_WRAP = \cPHP\num\OFFSET_WRAP;
+const OFFSET_WRAP = \h2o\num\OFFSET_WRAP;
 
 /**
  * The offset will be wrapped once. Anything past the edge after this initial
  * wrap is cut down to the edge. Negative offsets are allowed
  */
-const OFFSET_RESTRICT = \cPHP\num\OFFSET_RESTRICT;
+const OFFSET_RESTRICT = \h2o\num\OFFSET_RESTRICT;
 
 /**
  * The offset is forced to within the length. Negative offsets are NOT allowed
  */
-const OFFSET_LIMIT = \cPHP\num\OFFSET_LIMIT;
+const OFFSET_LIMIT = \h2o\num\OFFSET_LIMIT;
 
 /**
  * For the changeCase method, flag for setting the case to lower case
@@ -121,7 +121,7 @@ function flatten ( array $array, $maxDepth = 1 )
         return $output;
     };
 
-    $maxDepth = max(intval(\cPHP\reduce($maxDepth)), 1);
+    $maxDepth = max(intval(\h2o\reduce($maxDepth)), 1);
 
     return $flatten( $array, $maxDepth, $flatten );
 }
@@ -139,7 +139,7 @@ function flatten ( array $array, $maxDepth = 1 )
 function branch ( array &$array, $value, array $keys )
 {
     // Get the list of keys as a flattened array
-    $keys = \cPHP\ary\flatten($keys);
+    $keys = \h2o\ary\flatten($keys);
 
     if ( count($keys) <= 0 )
         return;
@@ -203,7 +203,7 @@ function translateKeys ( array $array, array $map )
 
         if ( array_key_exists( $key, $map ) ) {
 
-            $map[$key] = \cPHP\indexVal($map[$key]);
+            $map[$key] = \h2o\indexVal($map[$key]);
 
             // Don't overwrite any existing keys
             if ( array_key_exists( $map[$key], $array ) )
@@ -229,15 +229,15 @@ function translateKeys ( array $array, array $map )
  * @param Integer $offset The offset being wrapped
  * @param Integer $wrapFlag How to handle offsets that fall outside of the
  *      length of the list. Allowed values are:
- *          - \cPHP\ary::OFFSET_NONE
- *          - \cPHP\ary::OFFSET_WRAP
- *          - \cPHP\ary::OFFSET_RESTRICT
- *          - \cPHP\ary::OFFSET_LIMIT
+ *          - \h2o\ary::OFFSET_NONE
+ *          - \h2o\ary::OFFSET_WRAP
+ *          - \h2o\ary::OFFSET_RESTRICT
+ *          - \h2o\ary::OFFSET_LIMIT
  * @return Integer Returns the wrapped offset
  */
 function calcOffset ( array $array, $offset, $wrapFlag )
 {
-    return \cPHP\num\offsetWrap(
+    return \h2o\num\offsetWrap(
             count( $array ),
             $offset,
             $wrapFlag
@@ -252,9 +252,9 @@ function calcOffset ( array $array, $offset, $wrapFlag )
  * @param Integer $wrapFlag How to handle offsets outside the array range
  * @return mixed
  */
-function offset ( array $array, $offset, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT )
+function offset ( array $array, $offset, $wrapFlag = \h2o\ary\OFFSET_RESTRICT )
 {
-    $offset = \cPHP\ary\calcOffset( $array, $offset, $wrapFlag );
+    $offset = \h2o\ary\calcOffset( $array, $offset, $wrapFlag );
 
     $sliced = array_slice( $array, $offset, 1 );
 
@@ -284,7 +284,7 @@ function compact ( array $array, $flags = 0 )
                 $value = $compact( $value, $compact );
 
             // Add the value on to the result array only if it isn't empty
-            if ( !\cPHP\isEmpty($value, $flags) )
+            if ( !\h2o\isEmpty($value, $flags) )
                 $output[ $key ] = $value;
 
         }
@@ -309,7 +309,7 @@ function hone ( array $array, $keys )
 {
     $keys = \func_get_args();
     \array_shift($keys);
-    $keys = \cPHP\ary\flatten( $keys );
+    $keys = \h2o\ary\flatten( $keys );
     $keys = \array_unique( $keys );
 
     // get values in the array that do not have the required keys
@@ -354,11 +354,11 @@ function contains ( array $array, $value, $strict = FALSE )
  * @param Array $array The array to iterate over
  * @param String $func The name of the method to invoke
  * @param mixed $args... Any arguments to pass to the method
- * @return Object Returns a new cPHP/Ary object with the results
+ * @return Object Returns a new h2o/Ary object with the results
  */
 function invoke ( array $array, $func )
 {
-    $func = \cPHP\strval($func);
+    $func = \h2o\strval($func);
 
     $out = array();
 
@@ -368,7 +368,7 @@ function invoke ( array $array, $func )
 
     foreach( $array AS $key => $val ) {
 
-        if ( is_object($val) && \cPHP\respondTo($val, $func) ) {
+        if ( is_object($val) && \h2o\respondTo($val, $func) ) {
             $out[$key] = call_user_func_array(
                     array($val, $func),
                     $args

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,26 +35,26 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $tag = new \cPHP\Tag("A");
+        $tag = new \h2o\Tag("A");
 
         $this->assertSame( "a", $tag->getTag() );
         $this->assertNull($tag->getContent());
 
         try {
-            $tag = new \cPHP\Tag("  ");
+            $tag = new \h2o\Tag("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
 
 
-        $tag = new \cPHP\Tag("a", "a snip of content");
+        $tag = new \h2o\Tag("a", "a snip of content");
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
 
 
-        $tag = new \cPHP\Tag("a", "a snip of content", array("href" => "#"));
+        $tag = new \h2o\Tag("a", "a snip of content", array("href" => "#"));
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
         $this->assertSame(array("href" => "#"), $tag->getAttrs());
@@ -62,7 +62,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetTag ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertSame( $tag, $tag->setTag("div") );
         $this->assertSame( "div", $tag->getTag() );
@@ -74,14 +74,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->setTag("");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testSetContent ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -117,7 +117,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testAppendContent ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -153,7 +153,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testClearContent ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -167,7 +167,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testHasContent ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertFalse( $tag->hasContent() );
 
@@ -182,7 +182,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $tag->setContent("Random");
@@ -197,7 +197,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetEmpty ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(FALSE) );
@@ -207,7 +207,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tag->isEmpty() );
 
 
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
         $this->assertFalse( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(TRUE) );
@@ -219,7 +219,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testClearEmpty ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(FALSE) );
@@ -229,7 +229,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tag->isEmpty() );
 
 
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
         $this->assertFalse( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(TRUE) );
@@ -241,21 +241,21 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testNormalizeAttrName ()
     {
-        $this->assertSame( "attr", \cPHP\Tag::normalizeAttrName("Attr") );
-        $this->assertSame( "attr", \cPHP\Tag::normalizeAttrName(" a!@#t tr ") );
+        $this->assertSame( "attr", \h2o\Tag::normalizeAttrName("Attr") );
+        $this->assertSame( "attr", \h2o\Tag::normalizeAttrName(" a!@#t tr ") );
 
         try {
-            \cPHP\Tag::normalizeAttrName("  ");
+            \h2o\Tag::normalizeAttrName("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testGetAttrs ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $tag->setAttr("Rel", "nofollow");
 
@@ -267,7 +267,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testHasAttrs ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertFalse( $tag->hasAttrs() );
 
@@ -278,7 +278,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetAttr ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertSame( $tag, $tag->setAttr("Rel", "nofollow") );
         $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
@@ -311,7 +311,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->setAttr("  ", "empty");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
 
@@ -319,14 +319,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->setAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testAttrExists ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertFalse( $tag->attrExists("class") );
 
@@ -338,14 +338,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->attrExists("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testUnsetAttr ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertSame( $tag, $tag->unsetAttr("rel") );
 
@@ -362,14 +362,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->unsetAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testGetAttr ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertNull( $tag->getAttr("rel") );
 
@@ -381,14 +381,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->getAttr("  ");
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testImportAttrs ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertSame( array(), $tag->getAttrs() );
 
@@ -416,14 +416,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag->importAttrs( array( "rel" => "nofollow", "  " => "link" ) );
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testClearAttrs ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertSame( array(), $tag->getAttrs() );
 
@@ -439,7 +439,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetAccessor ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $tag['Rel'] = "nofollow";
         $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
@@ -454,7 +454,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag['  '] = "link";
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
 
@@ -462,14 +462,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag[] = "link";
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testExistsAccessor ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertFalse( isset($tag["class"]) );
 
@@ -481,14 +481,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             isset($tag["  "]);
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testUnsetAccessor ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         unset( $tag['rel'] );
 
@@ -505,14 +505,14 @@ class classes_tag extends PHPUnit_Framework_TestCase
             unset( $tag['  '] );
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testGetAcessor ()
     {
-        $tag = new \cPHP\Tag("hr");
+        $tag = new \h2o\Tag("hr");
 
         $this->assertNull( $tag["rel"] );
 
@@ -524,27 +524,27 @@ class classes_tag extends PHPUnit_Framework_TestCase
             $tag["  "];
             $this->fail("An expected exception has not been thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertEquals( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testCallStatic ()
     {
-        $tag = \cPHP\Tag::div();
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $tag = \h2o\Tag::div();
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame("div", $tag->getTag());
         $this->assertNull($tag->getContent());
         $this->assertSame(array(), $tag->getAttrs());
 
-        $tag = \cPHP\Tag::strong("words");
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $tag = \h2o\Tag::strong("words");
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame("strong", $tag->getTag());
         $this->assertSame("words", $tag->getContent());
         $this->assertSame(array(), $tag->getAttrs());
 
-        $tag = \cPHP\Tag::a("this is content", array("href" => "#"));
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $tag = \h2o\Tag::a("this is content", array("href" => "#"));
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("this is content", $tag->getContent());
         $this->assertSame(array( "href" => "#" ), $tag->getAttrs());
@@ -552,15 +552,15 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testQuoteAttr ()
     {
-        $this->assertSame( '"test"', \cPHP\Tag::quoteAttr("test") );
-        $this->assertSame( '"test &quot; quote"', \cPHP\Tag::quoteAttr('test " quote') );
-        $this->assertSame( '"test \' quote"', \cPHP\Tag::quoteAttr("test ' quote") );
-        $this->assertSame( '"test \' &quot; quotes"', \cPHP\Tag::quoteAttr("test ' \" quotes") );
+        $this->assertSame( '"test"', \h2o\Tag::quoteAttr("test") );
+        $this->assertSame( '"test &quot; quote"', \h2o\Tag::quoteAttr('test " quote') );
+        $this->assertSame( '"test \' quote"', \h2o\Tag::quoteAttr("test ' quote") );
+        $this->assertSame( '"test \' &quot; quotes"', \h2o\Tag::quoteAttr("test ' \" quotes") );
     }
 
     public function testGetAttrString ()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertSame( "", $tag->getAttrString() );
 
@@ -585,7 +585,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetOpenTag()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertSame( "<a>", $tag->getOpenTag() );
 
@@ -605,7 +605,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetCloseTag()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertSame( "</a>", $tag->getCloseTag() );
 
@@ -625,7 +625,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetEmptyTag()
     {
-        $tag = new \cPHP\Tag("a");
+        $tag = new \h2o\Tag("a");
 
         $this->assertSame( "<a />", $tag->getEmptyTag() );
 
@@ -644,7 +644,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $tag = new \cPHP\Tag("input");
+        $tag = new \h2o\Tag("input");
 
         $this->assertSame( "<input />", $tag->__toString() );
 

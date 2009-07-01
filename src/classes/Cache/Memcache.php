@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileFinder
  */
 
-namespace cPHP\Cache;
+namespace h2o\Cache;
 
 /**
  * Adapter for the Memcache extension to the standardized cache interface
  */
-class Memcache implements \cPHP\iface\Cache
+class Memcache implements \h2o\iface\Cache
 {
 
     /**
@@ -76,19 +76,19 @@ class Memcache implements \cPHP\iface\Cache
      */
     public function __construct ( $host = "127.0.0.1", $port = 11211, $persistent = FALSE, $timeout = 1 )
     {
-        $this->host = trim( \cPHP\strval( $host ) );
-        if ( \cPHP\isEmpty($this->host) )
-            throw new \cPHP\Exception\Argument(0, "Memcache Host", "Must not be empty");
+        $this->host = trim( \h2o\strval( $host ) );
+        if ( \h2o\isEmpty($this->host) )
+            throw new \h2o\Exception\Argument(0, "Memcache Host", "Must not be empty");
 
         $this->port = intval( $port );
         if ( $this->port < 0 )
-            throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be at least 0");
+            throw new \h2o\Exception\Argument(1, "Memcache Port", "Must be at least 0");
 
-        $this->persistent = \cPHP\boolval( $persistent );
+        $this->persistent = \h2o\boolval( $persistent );
 
         $this->timeout = intval( $timeout );
         if ( $this->timeout <= 0 )
-            throw new \cPHP\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
+            throw new \h2o\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
     }
 
     /**
@@ -114,7 +114,7 @@ class Memcache implements \cPHP\iface\Cache
     /**
      * Opens the memcache connection
      *
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function connect ()
     {
@@ -133,7 +133,7 @@ class Memcache implements \cPHP\iface\Cache
         // If an error occured while connect, translate it to an exception
         if ( !$result ) {
             $error = \error_get_last();
-            throw new \cPHP\Exception\Memcache\Connection(
+            throw new \h2o\Exception\Memcache\Connection(
                     $error['message'],
                     $error['type']
                 );
@@ -148,7 +148,7 @@ class Memcache implements \cPHP\iface\Cache
     /**
      * Closes this memcache connection
      *
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     function disconnect ()
     {
@@ -167,7 +167,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function set ( $key, $value, $expire = 0 )
     {
@@ -207,7 +207,7 @@ class Memcache implements \cPHP\iface\Cache
     public function yield ( $key, $expire, $callback )
     {
         if ( !is_callable($callback) )
-            throw new \cPHP\Exception\Argument(2, "Callback", "Must be callable");
+            throw new \h2o\Exception\Argument(2, "Callback", "Must be callable");
 
         $result = $this->get( $key );
 
@@ -228,11 +228,11 @@ class Memcache implements \cPHP\iface\Cache
      * Memcached version, but that is still in beta
      *
      * @param String $key The value to retrieve
-     * @return \cPHP\Cache\Result
+     * @return \h2o\Cache\Result
      */
     public function getForUpdate ( $key )
     {
-        return new \cPHP\Cache\Result(
+        return new \h2o\Cache\Result(
                 $this,
                 $key,
                 null,
@@ -244,16 +244,16 @@ class Memcache implements \cPHP\iface\Cache
      * Sets the value for this key only if the value hasn't changed in the cache
      * since it was originally pulled
      *
-     * @param cPHP\Cache\Result $result A result object that was returned by
+     * @param \h2o\Cache\Result $result A result object that was returned by
      *      the getForUpdate method
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
-    public function setIfSame ( \cPHP\Cache\Result $result, $value, $expire = 0 )
+    public function setIfSame ( \h2o\Cache\Result $result, $value, $expire = 0 )
     {
         if ( $result->getCache() !== $this ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                 0,
                 "Cached Result",
                 "Result cache mismatch"
@@ -269,7 +269,7 @@ class Memcache implements \cPHP\iface\Cache
      * Deletes a value from the cache
      *
      * @param String $key The value to delete
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function delete ( $key )
     {
@@ -284,7 +284,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function add ( $key, $value, $expire = 0 )
     {
@@ -306,7 +306,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function replace ( $key, $value, $expire = 0 )
     {
@@ -330,7 +330,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param String $key The key for the value
      * @param mixed $value The value to append
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function append ( $key, $value, $expire = 0 )
     {
@@ -349,7 +349,7 @@ class Memcache implements \cPHP\iface\Cache
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function prepend ( $key, $value, $expire = 0 )
     {
@@ -364,7 +364,7 @@ class Memcache implements \cPHP\iface\Cache
      * Increments a given value by one
      *
      * @param String $key The key for the value
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function increment ( $key )
     {
@@ -377,7 +377,7 @@ class Memcache implements \cPHP\iface\Cache
      * Decrements a given value by one
      *
      * @param String $key The key for the value
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function decrement ( $key )
     {
@@ -389,7 +389,7 @@ class Memcache implements \cPHP\iface\Cache
     /**
      * Deletes all values in the cache
      *
-     * @return \cPHP\Cache\Memcache Returns a self reference
+     * @return \h2o\Cache\Memcache Returns a self reference
      */
     public function flush ()
     {

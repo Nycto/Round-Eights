@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace cPHP\DB\BlackHole;
+namespace h2o\DB\BlackHole;
 
 /**
  * A Database connection that simply throws away any input it is given
  */
-class Link implements \cPHP\iface\DB\Link
+class Link implements \h2o\iface\DB\Link
 {
 
     /**
@@ -36,7 +36,7 @@ class Link implements \cPHP\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @returns \cPHP\DB\BlackHole\Link Returns a result object
+     * @returns \h2o\DB\BlackHole\Link Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
@@ -74,7 +74,7 @@ class Link implements \cPHP\iface\DB\Link
     public function quote ( $value, $allowNull = TRUE )
     {
         $self = $this;
-        return \cPHP\DB\Link::cleanseValue(
+        return \h2o\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
                 function ($value) use ( $self ) {
@@ -98,7 +98,7 @@ class Link implements \cPHP\iface\DB\Link
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-        return \cPHP\DB\Link::cleanseValue(
+        return \h2o\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
                 array( $this, "escapeString" )

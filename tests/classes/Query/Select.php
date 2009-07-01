@@ -1,28 +1,26 @@
-use cPHP;
-
 <?php
 /**
  * Unit Test File
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -37,7 +35,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testDistinctAccessors ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $this->assertFalse( $select->isDistinct() );
 
         $this->assertSame( $select, $select->setDistinct(TRUE) );
@@ -49,7 +47,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testDistinct ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
         $this->assertSame( $select, $select->distinct() );
         $this->assertTrue( $select->isDistinct() );
@@ -57,7 +55,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFoundRows ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $this->assertFalse( $select->getFoundRows() );
 
         $this->assertSame( $select, $select->setFoundRows(TRUE) );
@@ -70,10 +68,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFieldAccessors ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $this->assertSame( array(), $select->getFields() );
 
-        $fld1 = $this->getMock('cPHP\iface\Query\Selectable');
+        $fld1 = $this->getMock('h2o\iface\Query\Selectable');
         $this->assertSame( $select, $select->addField( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getFields() );
 
@@ -81,7 +79,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( $select, $select->addField( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getFields() );
 
-        $fld2 = $this->getMock('cPHP\iface\Query\Selectable');
+        $fld2 = $this->getMock('h2o\iface\Query\Selectable');
         $this->assertSame( $select, $select->addField( $fld2 ) );
         $this->assertSame( array( $fld1, $fld2 ), $select->getFields() );
 
@@ -91,7 +89,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFields ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
         $this->assertSame(
                 $select,
@@ -100,27 +98,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Aliased(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Aliased(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Aliased(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Aliased(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "aylee"
                 )
             ),
             $select->getFields()
         );
 
-        $field = $this->getMock('cPHP\iface\Query\Selectable');
+        $field = $this->getMock('h2o\iface\Query\Selectable');
         $this->assertSame( $select, $select->fields( $field ) );
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Aliased(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Aliased(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Aliased(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Aliased(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "aylee"
                 ),
                 $field
@@ -131,11 +129,11 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFromAccessors ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
         $this->assertFalse( $obj->fromExists() );
         $this->assertNull( $obj->getFrom() );
 
-        $from = $this->getMock('cPHP\iface\Query\From');
+        $from = $this->getMock('h2o\iface\Query\From');
 
         $this->assertSame( $obj, $obj->setFrom( $from ) );
         $this->assertTrue( $obj->fromExists() );
@@ -148,26 +146,26 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFrom ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->from("db.table") );
         $this->assertEquals(
-                new \cPHP\Query\From\Table("table", "db"),
+                new \h2o\Query\From\Table("table", "db"),
                 $obj->getFrom()
             );
 
-        $table = new \cPHP\Query\From\Table("table", "db");
+        $table = new \h2o\Query\From\Table("table", "db");
         $this->assertSame( $obj, $obj->from( $table ) );
         $this->assertSame( $table, $obj->getFrom() );
     }
 
     public function testWhereAccessors ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
         $this->assertFalse( $obj->whereExists() );
         $this->assertNull( $obj->getWhere() );
 
-        $where = $this->getMock('cPHP\iface\Query\Where');
+        $where = $this->getMock('h2o\iface\Query\Where');
 
         $this->assertSame( $obj, $obj->setWhere( $where ) );
         $this->assertTrue( $obj->whereExists() );
@@ -180,39 +178,39 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testWhere ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
-        $where = $this->getMock('cPHP\iface\Query\Where');
+        $where = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->where($where) );
         $this->assertSame( $where, $obj->getWhere() );
 
         $this->assertSame( $obj, $obj->where("Field = 'string'") );
         $this->assertEquals(
-            new \cPHP\Query\Where\Raw("Field = 'string'"),
+            new \h2o\Query\Where\Raw("Field = 'string'"),
             $obj->getWhere()
         );
     }
 
     public function testAndWhere ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->andWhere("A = B") );
 
         $and = $obj->getWhere();
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicAnd(
-                        new \cPHP\Query\Where\Raw("A = B")
+                new \h2o\Query\Where\LogicAnd(
+                        new \h2o\Query\Where\Raw("A = B")
                     ),
                 $and
             );
 
-        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $clause = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->andWhere( $clause ) );
         $this->assertSame( $and, $obj->getWhere() );
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicAnd(
-                        new \cPHP\Query\Where\Raw("A = B"),
+                new \h2o\Query\Where\LogicAnd(
+                        new \h2o\Query\Where\Raw("A = B"),
                         $clause
                     ),
                 $and
@@ -221,24 +219,24 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testOrWhere ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->orWhere("A = B") );
 
         $and = $obj->getWhere();
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicOr(
-                        new \cPHP\Query\Where\Raw("A = B")
+                new \h2o\Query\Where\LogicOr(
+                        new \h2o\Query\Where\Raw("A = B")
                     ),
                 $and
             );
 
-        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $clause = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->orWhere( $clause ) );
         $this->assertSame( $and, $obj->getWhere() );
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicOr(
-                        new \cPHP\Query\Where\Raw("A = B"),
+                new \h2o\Query\Where\LogicOr(
+                        new \h2o\Query\Where\Raw("A = B"),
                         $clause
                     ),
                 $and
@@ -247,10 +245,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testOrderAccessors ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $this->assertSame( array(), $select->getOrder() );
 
-        $fld1 = $this->getMock('cPHP\iface\Query\Ordered');
+        $fld1 = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->addOrder( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getOrder() );
 
@@ -258,7 +256,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( $select, $select->addOrder( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getOrder() );
 
-        $fld2 = $this->getMock('cPHP\iface\Query\Ordered');
+        $fld2 = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->addOrder( $fld2 ) );
         $this->assertSame( array( $fld1, $fld2 ), $select->getOrder() );
 
@@ -268,7 +266,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testOrderBy ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
         $this->assertSame(
                 $select,
@@ -277,27 +275,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "ASC"
                 )
             ),
             $select->getOrder()
         );
 
-        $field = $this->getMock('cPHP\iface\Query\Ordered');
+        $field = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->orderBy( $field ) );
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "ASC"
                 ),
                 $field
@@ -308,7 +306,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testGroupBy ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
         $this->assertSame(
                 $select,
@@ -317,27 +315,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "ASC"
                 )
             ),
             $select->getGroup()
         );
 
-        $field = $this->getMock('cPHP\iface\Query\Ordered');
+        $field = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->groupBy( $field ) );
 
         $this->assertEquals(
             array(
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld1")
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld1")
                 ),
-                new \cPHP\Query\Expr\Ordered(
-                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                new \h2o\Query\Expr\Ordered(
+                    new \h2o\Query\Atom\Field("fld2", "tbl"),
                     "ASC"
                 ),
                 $field
@@ -348,10 +346,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testGroupAccessors ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $this->assertSame( array(), $select->getGroup() );
 
-        $fld1 = $this->getMock('cPHP\iface\Query\Ordered');
+        $fld1 = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->addGroup( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getGroup() );
 
@@ -359,7 +357,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( $select, $select->addGroup( $fld1 ) );
         $this->assertSame( array( $fld1 ), $select->getGroup() );
 
-        $fld2 = $this->getMock('cPHP\iface\Query\Ordered');
+        $fld2 = $this->getMock('h2o\iface\Query\Ordered');
         $this->assertSame( $select, $select->addGroup( $fld2 ) );
         $this->assertSame( array( $fld1, $fld2 ), $select->getGroup() );
 
@@ -369,11 +367,11 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testHavingAccessors ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
         $this->assertFalse( $obj->havingExists() );
         $this->assertNull( $obj->getHaving() );
 
-        $having = $this->getMock('cPHP\iface\Query\Where');
+        $having = $this->getMock('h2o\iface\Query\Where');
 
         $this->assertSame( $obj, $obj->setHaving( $having ) );
         $this->assertTrue( $obj->havingExists() );
@@ -386,39 +384,39 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testHaving ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
-        $having = $this->getMock('cPHP\iface\Query\Where');
+        $having = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->having($having) );
         $this->assertSame( $having, $obj->getHaving() );
 
         $this->assertSame( $obj, $obj->having("Field = 'string'") );
         $this->assertEquals(
-            new \cPHP\Query\Where\Raw("Field = 'string'"),
+            new \h2o\Query\Where\Raw("Field = 'string'"),
             $obj->getHaving()
         );
     }
 
     public function testAndHaving ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->andHaving("A = B") );
 
         $and = $obj->getHaving();
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicAnd(
-                        new \cPHP\Query\Where\Raw("A = B")
+                new \h2o\Query\Where\LogicAnd(
+                        new \h2o\Query\Where\Raw("A = B")
                     ),
                 $and
             );
 
-        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $clause = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->andHaving( $clause ) );
         $this->assertSame( $and, $obj->getHaving() );
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicAnd(
-                        new \cPHP\Query\Where\Raw("A = B"),
+                new \h2o\Query\Where\LogicAnd(
+                        new \h2o\Query\Where\Raw("A = B"),
                         $clause
                     ),
                 $and
@@ -427,24 +425,24 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testOrHaving ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->orHaving("A = B") );
 
         $and = $obj->getHaving();
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicOr(
-                        new \cPHP\Query\Where\Raw("A = B")
+                new \h2o\Query\Where\LogicOr(
+                        new \h2o\Query\Where\Raw("A = B")
                     ),
                 $and
             );
 
-        $clause = $this->getMock('cPHP\iface\Query\Where');
+        $clause = $this->getMock('h2o\iface\Query\Where');
         $this->assertSame( $obj, $obj->orHaving( $clause ) );
         $this->assertSame( $and, $obj->getHaving() );
         $this->assertEquals(
-                new \cPHP\Query\Where\LogicOr(
-                        new \cPHP\Query\Where\Raw("A = B"),
+                new \h2o\Query\Where\LogicOr(
+                        new \h2o\Query\Where\Raw("A = B"),
                         $clause
                     ),
                 $and
@@ -453,7 +451,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testOffsetAccessors ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertFalse( $obj->offsetExists() );
         $this->assertNull( $obj->getOffset() );
@@ -473,7 +471,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testLimitAccessors ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertFalse( $obj->limitExists() );
         $this->assertNull( $obj->getLimit() );
@@ -493,7 +491,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testLimit ()
     {
-        $obj = new \cPHP\Query\Select;
+        $obj = new \h2o\Query\Select;
 
         $this->assertSame( $obj, $obj->limit(100) );
         $this->assertSame( 100, $obj->getLimit() );
@@ -506,10 +504,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withDistinct ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setDistinct( TRUE );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT DISTINCT *",
@@ -519,10 +517,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withFoundRows ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setFoundRows( TRUE );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT SQL_CALC_FOUND_ROWS *",
@@ -532,12 +530,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withFieldList ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
-        $select->addField( new \cPHP\Query\Atom\Field("field1") );
-        $select->addField( new \cPHP\Query\Atom\Field("fld2") );
+        $select->addField( new \h2o\Query\Atom\Field("field1") );
+        $select->addField( new \h2o\Query\Atom\Field("fld2") );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
         $this->assertSame(
         		"SELECT `field1`, `fld2`",
                 $select->toSQL( $link )
@@ -546,13 +544,13 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withFrom ()
     {
-        $from = $this->getMock( "cPHP\iface\Query\From" );
+        $from = $this->getMock( "h2o\iface\Query\From" );
         $from->expects( $this->once() )
             ->method( "toFromSQL" )
             ->will( $this->returnValue("`table`") );
 
-        $select = new \cPHP\Query\Select( $from );
-        $link = new \cPHP\DB\BlackHole\Link;
+        $select = new \h2o\Query\Select( $from );
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
@@ -563,15 +561,15 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withWhere ()
     {
-        $where = $this->getMock( "cPHP\iface\Query\Where" );
+        $where = $this->getMock( "h2o\iface\Query\Where" );
         $where->expects( $this->once() )
             ->method( "toWhereSQL" )
             ->will( $this->returnValue("fld = 'value'") );
 
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setWhere( $where );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
@@ -582,12 +580,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withOrderBy ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
-        $select->addOrder( new \cPHP\Query\Atom\Field("field1") );
-        $select->addOrder( new \cPHP\Query\Atom\Field("fld2") );
+        $select->addOrder( new \h2o\Query\Atom\Field("field1") );
+        $select->addOrder( new \h2o\Query\Atom\Field("fld2") );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
         $this->assertSame(
         		"SELECT *\n"
     			."ORDER BY `field1`, `fld2`",
@@ -597,12 +595,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withGroupBy ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
 
-        $select->addGroup( new \cPHP\Query\Atom\Field("field1") );
-        $select->addGroup( new \cPHP\Query\Atom\Field("fld2") );
+        $select->addGroup( new \h2o\Query\Atom\Field("field1") );
+        $select->addGroup( new \h2o\Query\Atom\Field("fld2") );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
         $this->assertSame(
         		"SELECT *\n"
     			."GROUP BY `field1`, `fld2`",
@@ -612,15 +610,15 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_withHaving ()
     {
-        $where = $this->getMock( "cPHP\iface\Query\Where" );
+        $where = $this->getMock( "h2o\iface\Query\Where" );
         $where->expects( $this->once() )
             ->method( "toWhereSQL" )
             ->will( $this->returnValue("fld = 'value'") );
 
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setHaving( $where );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
@@ -631,10 +629,10 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_limit ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setLimit( 20 );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
@@ -645,11 +643,11 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_offset ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setLimit( 20 );
         $select->setOffset( 100 );
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT *\n"
@@ -660,45 +658,45 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testToSQL_full ()
     {
-        $select = new \cPHP\Query\Select;
+        $select = new \h2o\Query\Select;
         $select->setDistinct(TRUE)
             ->setFoundRows(TRUE)
-            ->addField( new \cPHP\Query\Atom\Func("NOW") )
+            ->addField( new \h2o\Query\Atom\Func("NOW") )
             ->addField(
-                new \cPHP\Query\Expr\Aliased(
-                    new \cPHP\Query\Atom\Field("fld2"),
+                new \h2o\Query\Expr\Aliased(
+                    new \h2o\Query\Atom\Field("fld2"),
                     "info"
                 )
             )
             ->setFrom(
-                new \cPHP\Query\From\Table("tableName", "db")
+                new \h2o\Query\From\Table("tableName", "db")
             )
             ->setWhere(
-                new \cPHP\Query\Where\Equals(
-            		new \cPHP\Query\Atom\Field("fld1"),
-                    new \cPHP\Query\Atom\Primitive( 5 )
+                new \h2o\Query\Where\Equals(
+            		new \h2o\Query\Atom\Field("fld1"),
+                    new \h2o\Query\Atom\Primitive( 5 )
                 )
             )
             ->addOrder(
-                new \cPHP\Query\Expr\Ordered(
-            		new \cPHP\Query\Atom\Field("fld1"),
+                new \h2o\Query\Expr\Ordered(
+            		new \h2o\Query\Atom\Field("fld1"),
             		"DESC"
                 )
             )
             ->addGroup(
-        		new \cPHP\Query\Atom\Field("fld1")
+        		new \h2o\Query\Atom\Field("fld1")
             )
             ->setHaving(
-                new \cPHP\Query\Where\Equals(
-            		new \cPHP\Query\Atom\Func("COUNT"),
-                    new \cPHP\Query\Atom\Primitive( 2 )
+                new \h2o\Query\Where\Equals(
+            		new \h2o\Query\Atom\Func("COUNT"),
+                    new \h2o\Query\Atom\Primitive( 2 )
                 )
             )
             ->setLimit( 20 )
             ->setOffset( 100 );
 
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
@@ -714,7 +712,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
     public function testFluent ()
     {
-        $select = \cPHP\Query::select()
+        $select = \h2o\Query::select()
             ->distinct()
             ->fields("fld1", "db.fld2 AS info")
             ->from("db.tableName")
@@ -724,7 +722,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->having("COUNT(*) = 2")
             ->limit(20, 100);
 
-        $link = new \cPHP\DB\BlackHole\Link;
+        $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame(
         		"SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"

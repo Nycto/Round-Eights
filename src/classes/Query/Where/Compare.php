@@ -2,56 +2,56 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace cPHP\Query\Where;
+namespace h2o\Query\Where;
 
 /**
  * Compares two atoms
  */
-abstract class Compare implements \cPHP\iface\Query\Where
+abstract class Compare implements \h2o\iface\Query\Where
 {
 
     /**
      * The value on the left of the operator
      *
-     * @var \cPHP\iface\Query\Atom
+     * @var \h2o\iface\Query\Atom
      */
     private $left;
 
     /**
      * The value to right of the operator
      *
-     * @var \cPHP\iface\Query\Atom
+     * @var \h2o\iface\Query\Atom
      */
     private $right;
 
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Query\Atom $left The value on the left of the operator
-     * @param \cPHP\iface\Query\Atom $right The value on the right of the operator
+     * @param \h2o\iface\Query\Atom $left The value on the left of the operator
+     * @param \h2o\iface\Query\Atom $right The value on the right of the operator
      */
-    public function __construct ( \cPHP\iface\Query\Atom $left, \cPHP\iface\Query\Atom $right )
+    public function __construct ( \h2o\iface\Query\Atom $left, \h2o\iface\Query\Atom $right )
     {
         $this->left = $left;
         $this->right = $right;
@@ -60,7 +60,7 @@ abstract class Compare implements \cPHP\iface\Query\Where
     /**
      * Returns the value to the left of the operator
      *
-     * @return \cPHP\iface\Query\Atom
+     * @return \h2o\iface\Query\Atom
      */
     public function getLeft ()
     {
@@ -70,7 +70,7 @@ abstract class Compare implements \cPHP\iface\Query\Where
     /**
      * Returns the value to the right of the operator
      *
-     * @return \cPHP\iface\Query\Atom
+     * @return \h2o\iface\Query\Atom
      */
     public function getRight ()
     {

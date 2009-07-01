@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -65,7 +65,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testClosure ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value != "tonic" )
                 return "Value must be tonic";
         });
@@ -82,7 +82,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testFunction ()
     {
-        $valid = new \cPHP\Validator\Callback("stub_validator_callback_func");
+        $valid = new \h2o\Validator\Callback("stub_validator_callback_func");
 
         $this->assertTrue( $valid->isValid("cheese") );
 
@@ -96,7 +96,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testStaticMethod ()
     {
-        $valid = new \cPHP\Validator\Callback(array(__CLASS__, "staticCallbackTest"));
+        $valid = new \h2o\Validator\Callback(array(__CLASS__, "staticCallbackTest"));
 
         $this->assertTrue( $valid->isValid("jelly") );
 
@@ -110,7 +110,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testInstanceMethod ()
     {
-        $valid = new \cPHP\Validator\Callback(array($this, "instanceCallbackTest"));
+        $valid = new \h2o\Validator\Callback(array($this, "instanceCallbackTest"));
 
         $this->assertTrue( $valid->isValid("milk") );
 
@@ -124,7 +124,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testInvokableObject ()
     {
-        $valid = new \cPHP\Validator\Callback($this);
+        $valid = new \h2o\Validator\Callback($this);
 
         $this->assertTrue( $valid->isValid("sugar") );
 
@@ -138,7 +138,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testArrayResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return array("Must be <= 10", array("Greater than 10"));
             return array("", NULL);
@@ -156,7 +156,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testAryResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return array("Must be <= 10", "Greater than 10");
             return array();
@@ -174,7 +174,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testTraversableResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return new ArrayIterator(array("Must be <= 10", "Greater than 10"));
             return new ArrayIterator;
@@ -192,8 +192,8 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testResultObjectResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
-            $result = new \cPHP\Validator\Result($value);
+        $valid = new \h2o\Validator\Callback(function ($value) {
+            $result = new \h2o\Validator\Result($value);
             if ( $value > 10 )
                 $result->addError("Error one")->addError("error two");
             return $result;
@@ -211,7 +211,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testStringResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return "Error";
             return "   ";
@@ -229,7 +229,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testFloatResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return 1.505;
             return 0.0;
@@ -247,7 +247,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testIntegerResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return 99;
             return 0;
@@ -265,7 +265,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testNullResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             return null;
         });
 
@@ -274,7 +274,7 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
     public function testBoolResult ()
     {
-        $valid = new \cPHP\Validator\Callback(function ($value) {
+        $valid = new \h2o\Validator\Callback(function ($value) {
             if ( $value > 10 )
                 return TRUE;
             return FALSE;

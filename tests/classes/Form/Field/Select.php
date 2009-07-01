@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetOptionList ()
     {
-        $field = new \cPHP\Form\Field\Select("fld");
+        $field = new \h2o\Form\Field\Select("fld");
 
         $this->assertSame("", $field->getOptionList());
 
@@ -60,12 +60,12 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_noOptions ()
     {
-        $field = new \cPHP\Form\Field\Select("fld");
+        $field = new \h2o\Form\Field\Select("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -76,14 +76,14 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_withOptions ()
     {
-        $field = new \cPHP\Form\Field\Select("fld");
+        $field = new \h2o\Form\Field\Select("fld");
         $field->setName("fldName");
         $field->addOption("one", "Single");
         $field->addOption("two", "Double");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );

@@ -2,56 +2,56 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace cPHP\XMLBuilder;
+namespace h2o\XMLBuilder;
 
 /**
  * Builds a parent node, then builds a set of children and appends them to the parent
  */
-class Append implements \cPHP\iface\XMLBuilder
+class Append implements \h2o\iface\XMLBuilder
 {
 
     /**
      * The builder to use for constructing the parent element
      *
-     * @var \cPHP\iface\XMLBuilder
+     * @var \h2o\iface\XMLBuilder
      */
     private $parent;
 
     /**
      * The builders to use for generating the child nodes
      *
-     * @var array An array of \cPHP\iface\XMLBuilder object
+     * @var array An array of \h2o\iface\XMLBuilder object
      */
     private $children = array();
 
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\XMLBuilder $parent The builder to use for constructing
+     * @param \h2o\iface\XMLBuilder $parent The builder to use for constructing
      *      the parent element
      */
-    public function __construct ( \cPHP\iface\XMLBuilder $parent )
+    public function __construct ( \h2o\iface\XMLBuilder $parent )
     {
         $this->parent = $parent;
     }
@@ -59,11 +59,11 @@ class Append implements \cPHP\iface\XMLBuilder
     /**
      * Adds a new builder whose results will be appended to the parent
      *
-     * @param \cPHP\iface\XMLBuilder $child The builder to use to construct this
+     * @param \h2o\iface\XMLBuilder $child The builder to use to construct this
      *      child element
-     * @return \cPHP\XMLBuilder\Append Returns a self reference
+     * @return \h2o\XMLBuilder\Append Returns a self reference
      */
-    public function addChild ( \cPHP\iface\XMLBuilder $child )
+    public function addChild ( \h2o\iface\XMLBuilder $child )
     {
         $this->children[] = $child;
         return $this;
@@ -77,12 +77,12 @@ class Append implements \cPHP\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $parent = \cPHP\XMLBuilder::buildNode( $this->parent, $doc );
+        $parent = \h2o\XMLBuilder::buildNode( $this->parent, $doc );
 
         foreach ( $this->children AS $child ) {
 
             $parent->appendChild(
-                    \cPHP\XMLBuilder::buildNode( $child, $doc )
+                    \h2o\XMLBuilder::buildNode( $child, $doc )
                 );
 
         }

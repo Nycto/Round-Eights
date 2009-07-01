@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace cPHP\Query\Atom;
+namespace h2o\Query\Atom;
 
 /**
  * Represents a field name in a SQL query
  */
-class Field extends \cPHP\Query\Atom
+class Field extends \h2o\Query\Atom
 {
 
     /**
@@ -56,11 +56,11 @@ class Field extends \cPHP\Query\Atom
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \cPHP\Query\Atom\Field
+     * @return \h2o\Query\Atom\Field
      */
     static public function fromString ( $string )
     {
-        $parsed = \cPHP\Query::parseSQLName( $string );
+        $parsed = \h2o\Query::parseSQLName( $string );
 
         $field = new self( array_pop($parsed) );
 
@@ -105,14 +105,14 @@ class Field extends \cPHP\Query\Atom
      * Sets the field name
      *
      * @param String $field
-     * @return \cPHP\Query\Atom\Field Returns a self referencve
+     * @return \h2o\Query\Atom\Field Returns a self referencve
      */
     public function setField ( $field )
     {
-        $field = \cPHP\str\stripW( $field );
+        $field = \h2o\str\stripW( $field );
 
         if ( empty($field) )
-            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must not be empty" );
+            throw new \h2o\Exception\Argument( 0, "Field Name", "Must not be empty" );
 
         $this->field = $field;
 
@@ -133,11 +133,11 @@ class Field extends \cPHP\Query\Atom
      * Sets the Table name
      *
      * @param String $table
-     * @return \cPHP\Query\Atom\Field Returns a self reference
+     * @return \h2o\Query\Atom\Field Returns a self reference
      */
     public function setTable ( $table )
     {
-        $table = \cPHP\str\stripW( $table );
+        $table = \h2o\str\stripW( $table );
         $this->table = $table ? $table : null;
         return $this;
     }
@@ -155,7 +155,7 @@ class Field extends \cPHP\Query\Atom
     /**
      * Clears the currently set Table name
      *
-     * @return \cPHP\Query\Atom\Field Returns a self reference
+     * @return \h2o\Query\Atom\Field Returns a self reference
      */
     public function clearTable ()
     {
@@ -177,11 +177,11 @@ class Field extends \cPHP\Query\Atom
      * Sets the Database name
      *
      * @param String $database
-     * @return \cPHP\Query\Atom\Field Returns a self reference
+     * @return \h2o\Query\Atom\Field Returns a self reference
      */
     public function setDatabase ( $database )
     {
-        $database = \cPHP\str\stripW( $database );
+        $database = \h2o\str\stripW( $database );
         $this->database = $database ? $database : null;
         return $this;
     }
@@ -199,7 +199,7 @@ class Field extends \cPHP\Query\Atom
     /**
      * Clears the currently set Database name
      *
-     * @return \cPHP\Query\Atom\Field Returns a self reference
+     * @return \h2o\Query\Atom\Field Returns a self reference
      */
     public function clearDatabase ()
     {
@@ -210,12 +210,12 @@ class Field extends \cPHP\Query\Atom
     /**
      * Returns the SQL this atom represents
      *
-     * @param \cPHP\iface\DB\Link $link The database connection this atom
+     * @param \h2o\iface\DB\Link $link The database connection this atom
      * 		is being created against. This is being passed in for escaping
      * 		purposes
      * @return String
      */
-    public function toAtomSQL( \cPHP\iface\DB\Link $link )
+    public function toAtomSQL( \h2o\iface\DB\Link $link )
     {
         return
             ( $this->table && $this->database ? "`". $this->database ."`." : "" )

@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace cPHP\Query\From;
+namespace h2o\Query\From;
 
 /**
  * Represents a single table to select from
  */
-class Table implements \cPHP\iface\Query\From
+class Table implements \h2o\iface\Query\From
 {
 
     /**
@@ -56,14 +56,14 @@ class Table implements \cPHP\iface\Query\From
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \cPHP\Query\From\Table
+     * @return \h2o\Query\From\Table
      */
     static public function fromString ( $string )
     {
-        list( $string, $alias ) = \cPHP\Query::parseSQLAlias( $string );
+        list( $string, $alias ) = \h2o\Query::parseSQLAlias( $string );
 
         // Split the name into the table and database
-        $parsed = \cPHP\Query::parseSQLName( $string );
+        $parsed = \h2o\Query::parseSQLName( $string );
 
         // Instantiate with the table name
         $field = new self( array_pop($parsed) );
@@ -97,14 +97,14 @@ class Table implements \cPHP\iface\Query\From
      * Sets the table name
      *
      * @param String $table The name of the table
-     * @return \cPHP\Query\From\Table Returns a self referencve
+     * @return \h2o\Query\From\Table Returns a self referencve
      */
     public function setTable ( $table )
     {
-        $table = \cPHP\str\stripW( $table );
+        $table = \h2o\str\stripW( $table );
 
         if ( empty($table) )
-            throw new \cPHP\Exception\Argument( 0, "Table Name", "Must not be empty" );
+            throw new \h2o\Exception\Argument( 0, "Table Name", "Must not be empty" );
 
         $this->table = $table;
 
@@ -135,11 +135,11 @@ class Table implements \cPHP\iface\Query\From
      * Sets the Database
      *
      * @param String $database The name of the database
-     * @return \cPHP\Query\From\Table Returns a self reference
+     * @return \h2o\Query\From\Table Returns a self reference
      */
     public function setDatabase ( $database )
     {
-        $database = \cPHP\str\stripW( $database );
+        $database = \h2o\str\stripW( $database );
         $this->database = $database ? $database : null;
         return $this;
     }
@@ -157,7 +157,7 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Clears the currently set Database
      *
-     * @return \cPHP\Query\From\Table Returns a self reference
+     * @return \h2o\Query\From\Table Returns a self reference
      */
     public function clearDatabase ()
     {
@@ -179,11 +179,11 @@ class Table implements \cPHP\iface\Query\From
      * Sets the Alias
      *
      * @param String $alias The alias of this field
-     * @return \cPHP\Query\From\Table Returns a self reference
+     * @return \h2o\Query\From\Table Returns a self reference
      */
     public function setAlias ( $alias )
     {
-        $alias = \cPHP\str\stripW( $alias );
+        $alias = \h2o\str\stripW( $alias );
         $this->alias = $alias ? $alias : null;
         return $this;
     }
@@ -201,7 +201,7 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Clears the currently set Alias
      *
-     * @return \cPHP\Query\From\Table Returns a self reference
+     * @return \h2o\Query\From\Table Returns a self reference
      */
     public function clearAlias ()
     {
@@ -212,11 +212,11 @@ class Table implements \cPHP\iface\Query\From
     /**
      * Returns the SQL FROM clause
      *
-     * @param \cPHP\iface\DB\Link $link The database connection this WHERE clause
+     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
      * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toFromSQL ( \cPHP\iface\DB\Link $link )
+    public function toFromSQL ( \h2o\iface\DB\Link $link )
     {
         return
             ( $this->database ? "`". $this->database ."`." : "" )

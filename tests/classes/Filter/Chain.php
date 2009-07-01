@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,10 +35,10 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
 
     public function testAdd ()
     {
-        $mock = $this->getMock("cPHP\iface\Filter", array("filter"));
-        $mock2 = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock = $this->getMock("h2o\iface\Filter", array("filter"));
+        $mock2 = $this->getMock("h2o\iface\Filter", array("filter"));
 
-        $filter = new \cPHP\Filter\Chain;
+        $filter = new \h2o\Filter\Chain;
         $this->assertSame( $filter, $filter->add( $mock ) );
         $this->assertSame( array($mock), $filter->getFilters() );
 
@@ -48,19 +48,19 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $mock = $this->getMock("cPHP\iface\Filter", array("filter"));
-        $mock2 = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock = $this->getMock("h2o\iface\Filter", array("filter"));
+        $mock2 = $this->getMock("h2o\iface\Filter", array("filter"));
 
-        $filter = new \cPHP\Filter\Chain( $mock, $mock2 );
+        $filter = new \h2o\Filter\Chain( $mock, $mock2 );
         $this->assertSame( array($mock, $mock2), $filter->getFilters() );
     }
 
     public function testClear ()
     {
-        $mock = $this->getMock("cPHP\iface\Filter", array("filter"));
-        $mock2 = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock = $this->getMock("h2o\iface\Filter", array("filter"));
+        $mock2 = $this->getMock("h2o\iface\Filter", array("filter"));
 
-        $filter = new \cPHP\Filter\Chain( $mock, $mock2 );
+        $filter = new \h2o\Filter\Chain( $mock, $mock2 );
 
         $this->assertSame( array($mock, $mock2), $filter->getFilters() );
 
@@ -70,21 +70,21 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
 
     public function testFilter ()
     {
-        $mock = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock = $this->getMock("h2o\iface\Filter", array("filter"));
 
         $mock->expects($this->once())
             ->method('filter')
             ->with($this->equalTo('Input Value'))
             ->will($this->returnValue('Filtered Value'));
 
-        $filter = new \cPHP\Filter\Chain( $mock );
+        $filter = new \h2o\Filter\Chain( $mock );
 
         $this->assertEquals( "Filtered Value", $filter->filter('Input Value') );
     }
 
     public function testChaining ()
     {
-        $mock = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock = $this->getMock("h2o\iface\Filter", array("filter"));
 
         $mock->expects($this->once())
             ->method('filter')
@@ -92,7 +92,7 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('Result From One'));
 
 
-        $mock2 = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock2 = $this->getMock("h2o\iface\Filter", array("filter"));
 
         $mock2->expects($this->once())
             ->method('filter')
@@ -100,7 +100,7 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('Result From Two'));
 
 
-        $mock3 = $this->getMock("cPHP\iface\Filter", array("filter"));
+        $mock3 = $this->getMock("h2o\iface\Filter", array("filter"));
 
         $mock3->expects($this->once())
             ->method('filter')
@@ -108,7 +108,7 @@ class classes_filter_chain extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('Result From Three'));
 
 
-        $filter = new \cPHP\Filter\Chain( $mock, $mock2, $mock3 );
+        $filter = new \h2o\Filter\Chain( $mock, $mock2, $mock3 );
 
         $this->assertEquals( 'Result From Three', $filter->filter('Input Value') );
     }

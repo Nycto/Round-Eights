@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
     public function testNoDirs ()
     {
-        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+        $mock = $this->getMock( 'h2o\FileFinder\DirList', array("getDirs") );
 
         $mock->expects( $this->once() )
             ->method("getDirs")
@@ -46,19 +46,19 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
     public function testObjectList_simple ()
     {
-        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+        $mock = $this->getMock( 'h2o\FileFinder\DirList', array("getDirs") );
 
         $mock->expects( $this->once() )
             ->method("getDirs")
             ->will( $this->returnValue( array(
-                    new \cPHP\FileSys\Dir("/not/a/real/dir"),
-                    new \cPHP\FileSys\Dir($this->dir),
-                    new \cPHP\FileSys\Dir($this->dir ."/third")
+                    new \h2o\FileSys\Dir("/not/a/real/dir"),
+                    new \h2o\FileSys\Dir($this->dir),
+                    new \h2o\FileSys\Dir($this->dir ."/third")
                 ) ) );
 
         $result = $mock->find( "third/third-one" );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertSame(
                 $this->dir ."/third/third-one",
                 $result->getPath()
@@ -67,7 +67,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
     public function testStringList_simple ()
     {
-        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+        $mock = $this->getMock( 'h2o\FileFinder\DirList', array("getDirs") );
 
         $mock->expects( $this->once() )
             ->method("getDirs")
@@ -79,7 +79,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
         $result = $mock->find( "third/third-one" );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertSame(
                 $this->dir ."/third/third-one",
                 $result->getPath()
@@ -88,7 +88,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
     public function testStringList_withRoot ()
     {
-        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+        $mock = $this->getMock( 'h2o\FileFinder\DirList', array("getDirs") );
 
         $mock->expects( $this->once() )
             ->method("getDirs")
@@ -100,7 +100,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
         $result = $mock->find( "/third-one" );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertSame(
                 $this->dir ."/third/third-one",
                 $result->getPath()
@@ -109,7 +109,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
 
     public function testStringList_notFound ()
     {
-        $mock = $this->getMock( 'cPHP\FileFinder\DirList', array("getDirs") );
+        $mock = $this->getMock( 'h2o\FileFinder\DirList', array("getDirs") );
 
         $mock->expects( $this->once() )
             ->method("getDirs")

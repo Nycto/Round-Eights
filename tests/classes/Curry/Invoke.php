@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,21 +36,21 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
     public function testConstructError ()
     {
         try {
-            new \cPHP\Curry\Invoke( "This is not a valid method" );
+            new \h2o\Curry\Invoke( "This is not a valid method" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Invalid method name", $err->getMessage() );
         }
     }
 
     public function testConstructArgs ()
     {
-        $curry = new \cPHP\Curry\Invoke( "methodName" );
+        $curry = new \h2o\Curry\Invoke( "methodName" );
         $this->assertEquals( array(), $curry->getRight() );
         $this->assertEquals( array(), $curry->getLeft() );
 
-        $curry = new \cPHP\Curry\Invoke( "methodName", "one", "two" );
+        $curry = new \h2o\Curry\Invoke( "methodName", "one", "two" );
         $this->assertEquals( array("one", "two"), $curry->getRight() );
         $this->assertEquals( array(), $curry->getLeft() );
     }
@@ -62,7 +62,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->method('method')
             ->will( $this->returnValue("Result") );
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
         $this->assertSame(
                 "Result",
@@ -80,7 +80,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
                 )
             ->will( $this->returnValue("Result") );
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
         $this->assertSame(
                 "Result",
@@ -99,7 +99,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
                 )
             ->will( $this->returnValue("Result") );
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
         $this->assertSame(
                 "Result",
@@ -124,7 +124,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
         $curry->setLeft("l1", "l2");
         $curry->setRight("r1", "r2");
 
@@ -147,7 +147,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
 
         $this->assertSame(
@@ -171,7 +171,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
         $curry->setLeft("l1");
         $curry->setRight("r1");
 
@@ -195,7 +195,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
 
         $this->assertSame(
@@ -219,7 +219,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
         $curry->setLeft("l1");
         $curry->setRight("r1");
 
@@ -241,7 +241,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
 
 
         $this->assertSame(
@@ -262,7 +262,7 @@ class classes_curry_invoke extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("Result") );
 
 
-        $curry = new \cPHP\Curry\Invoke('method');
+        $curry = new \h2o\Curry\Invoke('method');
         $curry->setLeft("l1");
         $curry->setRight("r1");
 

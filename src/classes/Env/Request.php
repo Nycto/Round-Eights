@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Env
  */
 
-namespace cPHP\Env;
+namespace h2o\Env;
 
 /**
  * Collects information about the current request and allows readonly access to it
  */
-class Request implements \cPHP\iface\Env\Request
+class Request implements \h2o\iface\Env\Request
 {
 
     /**
@@ -76,14 +76,14 @@ class Request implements \cPHP\iface\Env\Request
     /**
      * The URL the client requested
      *
-     * @var \cPHP\URL
+     * @var \h2o\URL
      */
     private $url;
 
     /**
      * The requested file, relative to the file system
      *
-     * @var \cPHP\FileSys\File
+     * @var \h2o\FileSys\File
      */
     private $file;
 
@@ -100,7 +100,7 @@ class Request implements \cPHP\iface\Env\Request
         if ( !array_key_exists($key, $array) )
             return FALSE;
 
-        if ( \cPHP\isEmpty($array[$key]) )
+        if ( \h2o\isEmpty($array[$key]) )
             return FALSE;
 
         return TRUE;
@@ -126,7 +126,7 @@ class Request implements \cPHP\iface\Env\Request
         $this->post = $post;
         $this->files = $files;
         $this->headers = $headers;
-        $this->cli = \cPHP\boolVal( $cli );
+        $this->cli = \h2o\boolVal( $cli );
     }
 
     /**
@@ -148,7 +148,7 @@ class Request implements \cPHP\iface\Env\Request
     {
         // Lazy instantiation
         if ( !isset($this->get) ) {
-            $parser = new \cPHP\QueryParser;
+            $parser = new \h2o\QueryParser;
             $this->get = $parser->parse( $this->server['QUERY_STRING'] );
         }
 
@@ -168,11 +168,11 @@ class Request implements \cPHP\iface\Env\Request
     /**
      * Private method for building the URL object
      *
-     * @return \cPHP\URL
+     * @return \h2o\URL
      */
     private function buildURL ()
     {
-        $url = new \cPHP\URL;
+        $url = new \h2o\URL;
 
         // Get the url Scheme from the server protocol
         if ( self::hasKey($this->server, "SERVER_PROTOCOL") )
@@ -196,7 +196,7 @@ class Request implements \cPHP\iface\Env\Request
 
         // The faux directories
         if ( self::hasKey( $this->server, 'PATH_INFO' ) )
-            $url->setFauxDir( \cPHP\str\head( $this->server['PATH_INFO'], "/" ) );
+            $url->setFauxDir( \h2o\str\head( $this->server['PATH_INFO'], "/" ) );
 
         // Finally, pull the the URL query
         if ( self::hasKey($this->server, 'QUERY_STRING') )
@@ -208,7 +208,7 @@ class Request implements \cPHP\iface\Env\Request
     /**
      * Returns the URL the client requested
      *
-     * @return \cPHP\URL This will return a clone of the url object every
+     * @return \h2o\URL This will return a clone of the url object every
      *      time it is called
      */
     public function getURL ()
@@ -222,12 +222,12 @@ class Request implements \cPHP\iface\Env\Request
     /**
      * Returns the file requested by the client, in the context of the file system
      *
-     * @return \cPHP\FileSys\File
+     * @return \h2o\FileSys\File
      */
     public function getFile ()
     {
         if ( !isset($this->file) ) {
-            $this->file = new \cPHP\FileSys\File;
+            $this->file = new \h2o\FileSys\File;
 
             if ( self::hasKey($this->server, 'SCRIPT_FILENAME') )
                 $this->file->setPath( $this->server['SCRIPT_FILENAME'] );

@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileFinder
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * The base Template class
@@ -41,16 +41,16 @@ abstract class Template
     /**
      * Normalizes a variable name and checks whether it is properly formatted
      *
-     * @throws cPHP\Exception\Argument Thrown if the label is invalid
+     * @throws \h2o\Exception\Argument Thrown if the label is invalid
      * @param String $label The variable name being filtered
      * @return String
      */
     static public function normalizeLabel ( $label )
     {
-        $label = \cPHP\Filter::Variable()->filter( $label );
+        $label = \h2o\Filter::Variable()->filter( $label );
 
-        if ( !\cPHP\Validator::Variable()->isValid( $label ) )
-            throw new \cPHP\Exception\Argument(0, "Label", "Must be a valid PHP variable name");
+        if ( !\h2o\Validator::Variable()->isValid( $label ) )
+            throw new \h2o\Exception\Argument(0, "Label", "Must be a valid PHP variable name");
 
         return $label;
     }
@@ -60,17 +60,17 @@ abstract class Template
      *
      * @param String $class The template class to instantiate
      * @param Array $args Any arguments to pass to the template
-     * @return Object Returns a new cPHP\Template object of the given type
+     * @return Object Returns a new \h2o\Template object of the given type
      */
     static public function __callStatic ( $class, $args )
     {
-        $class = "\\cPHP\\Template\\". trim( \cPHP\strval($class) );
+        $class = "\\h2o\\Template\\". trim( \h2o\strval($class) );
 
         if ( !class_exists( $class, true ) ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                     0,
                     "Template Class Name",
-                    "Class could not be found in \\cPHP\\Template namespace"
+                    "Class could not be found in \\h2o\\Template namespace"
                 );
         }
 
@@ -95,7 +95,7 @@ abstract class Template
      */
     public function __construct ( $import = NULL )
     {
-        if ( !\cPHP\isVague($import) )
+        if ( !\h2o\isVague($import) )
             $this->import( $import );
     }
 
@@ -208,8 +208,8 @@ abstract class Template
 
         if ( array_key_exists( $label, $this->variables ) ) {
             $this->variables[ $label ] =
-                \cPHP\strval( $this->variables[ $label ] )
-                . \cPHP\strval( $value );
+                \h2o\strval( $this->variables[ $label ] )
+                . \h2o\strval( $value );
         }
         else {
             $this->variables[ $label ] = $value;
@@ -243,7 +243,7 @@ abstract class Template
             $values = iterator_to_array( $values );
 
         else if ( !is_array($values) )
-            throw new \cPHP\Exception\Argument(0, "Import Values", "Value can not be imported");
+            throw new \h2o\Exception\Argument(0, "Import Values", "Value can not be imported");
 
         foreach ( $values AS $label => $value ) {
             $this->set( $label, $value );

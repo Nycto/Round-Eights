@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetRadioOptionID ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         $this->assertSame("radio_fld_356a192b79", $field->getRadioOptionID(1));
@@ -46,19 +46,19 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
             $field->getRadioOptionID(4);
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Index $err ) {
+        catch ( \h2o\Exception\Index $err ) {
             $this->assertSame("Option does not exist in field", $err->getMessage());
         }
     }
 
     public function testGetOptionRadioTag_unchecked ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         $tag = $field->getOptionRadioTag(2);
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "input", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -80,13 +80,13 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionRadioTag_checked ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
         $field->setValue( 2 ) ;
 
         $tag = $field->getOptionRadioTag(2);
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "input", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -109,27 +109,27 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionRadioTag_error ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         try {
             $field->getOptionRadioTag(4);
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Index $err ) {
+        catch ( \h2o\Exception\Index $err ) {
             $this->assertSame("Option does not exist in field", $err->getMessage());
         }
     }
 
     public function testGetOptionLabelTag ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
 
         $tag = $field->getOptionLabelTag(2);
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "label", $tag->getTag() );
 
         $this->assertTrue( isset($tag['for']) );
@@ -142,14 +142,14 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
             $field->getOptionLabelTag(4);
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Index $err ) {
+        catch ( \h2o\Exception\Index $err ) {
             $this->assertSame("Option does not exist in field", $err->getMessage());
         }
     }
 
     public function testGetOptionList ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
         $field->setValue(3);
 
@@ -168,12 +168,12 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetTag_noOptions ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "ul", $tag->getTag() );
 
         $this->assertNull($tag->getcontent());
@@ -181,14 +181,14 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetTag_withOptions ()
     {
-        $field = new \cPHP\Form\Field\Radio("fld");
+        $field = new \h2o\Form\Field\Radio("fld");
         $field->setName("fldName");
         $field->addOption("one", "Single");
         $field->addOption("two", "Double");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "ul", $tag->getTag() );
 
         $this->assertSame(

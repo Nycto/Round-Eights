@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Package
  */
 
-// Get the base path for the cPHP files
+// Get the base path for the h2o files
 $base = realpath( rtrim( __DIR__, "/" ) ."/.." ) ."/";
 
 
-// include cPHP
-require_once $base .'/src/commonPHP.php';
+// include h2o
+require_once $base .'/src/raindropPHP.php';
 
 // Create the phar file
 include "make.php";
@@ -41,7 +41,7 @@ $tempDir = rtrim( sys_get_temp_dir(), "/" );
 
 
 // Pull the temporary directory that the package will be pooled in
-$tmp = new \cPHP\FileSys\Dir( $tempDir ."/commonPHP" ) ;
+$tmp = new \h2o\FileSys\Dir( $tempDir ."/raindropPHP" ) ;
 
 
 // Empty the temp dir or create it if it doesn't exist
@@ -59,7 +59,7 @@ $copy = array(
     "tests" => "",
     "INSTALL.txt" => "",
     "LICENSE.txt" => "",
-    "tools/commonPHP.phar" => ""
+    "tools/raindropPHP.phar" => ""
 );
 
 
@@ -89,8 +89,8 @@ if ( $tmp->contains("tests/config.php") ) {
 }
 
 
-$zipFile = new \cPHP\FileSys\File($base ."/tools/commonPHP-". cPHP_VERSION .".zip");
-$targzFile = new \cPHP\FileSys\File($base ."/tools/commonPHP-". cPHP_VERSION .".tar.gz");
+$zipFile = new \h2o\FileSys\File($base ."/tools/raindropPHP-". h2o_VERSION .".zip");
+$targzFile = new \h2o\FileSys\File($base ."/tools/raindropPHP-". h2o_VERSION .".tar.gz");
 
 
 if ( $zipFile->exists() ) {
@@ -110,7 +110,7 @@ system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."zip -r "
         .escapeshellarg( $zipFile->getPath() ) ." "
-        .escapeshellarg( "commonPHP" )
+        .escapeshellarg( "raindropPHP" )
     );
 
 echo "Creating tar.gz archive\n";
@@ -118,7 +118,7 @@ system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."tar -cvzf "
         . escapeshellarg( $targzFile->getPath()  ) ." "
-        .escapeshellarg( "commonPHP" )
+        .escapeshellarg( "raindropPHP" )
     );
 
 

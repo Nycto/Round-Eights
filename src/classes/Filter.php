@@ -4,55 +4,55 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Filters
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Base Filtering class
  */
-abstract class Filter implements \cPHP\iface\Filter
+abstract class Filter implements \h2o\iface\Filter
 {
 
     /**
      * Static method for creating a new filtering instance
      *
      * This takes the called function and looks for a class under
-     * the \cPHP\Filter namespace.
+     * the \h2o\Filter namespace.
      *
-     * @throws \cPHP\Exception\Argument Thrown if the filter class can't be found
+     * @throws \h2o\Exception\Argument Thrown if the filter class can't be found
      * @param String $filter The filter class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \cPHP\Filter subclass
+     * @return Object Returns a new \h2o\Filter subclass
      */
     static public function __callStatic ( $filter, $args )
     {
-        $filter = "\cPHP\\Filter\\". trim( \cPHP\strval($filter) );
+        $filter = "\h2o\\Filter\\". trim( \h2o\strval($filter) );
 
         if ( !class_exists($filter, true) ) {
-            throw new \cPHP\Exception\Argument(
+            throw new \h2o\Exception\Argument(
                     0,
                     "Filter Class Name",
-                    "Filter could not be found in \cPHP\Filter namespace"
+                    "Filter could not be found in \h2o\Filter namespace"
                 );
         }
 

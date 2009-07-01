@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
     public function testSetFilter ()
     {
-        $filter = new \cPHP\Filter\AryOffset;
+        $filter = new \h2o\Filter\AryOffset;
 
-        $intFilter = new \cPHP\Filter\Integer;
+        $intFilter = new \h2o\Filter\Integer;
         $this->assertEquals(
                 $filter,
                 $filter->setFilter( 50, $intFilter )
@@ -49,7 +49,7 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
             );
 
 
-        $boolFilter = new \cPHP\Filter\Boolean;
+        $boolFilter = new \h2o\Filter\Boolean;
         $this->assertEquals(
                 $filter,
                 $filter->setFilter( 50, $boolFilter )
@@ -73,14 +73,14 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
     public function testImport ()
     {
-        $filter = new \cPHP\Filter\AryOffset;
+        $filter = new \h2o\Filter\AryOffset;
 
-        $filter1 = new \cPHP\Filter\Number;
-        $filter2 = new \cPHP\Filter\URL;
+        $filter1 = new \h2o\Filter\Number;
+        $filter2 = new \h2o\Filter\URL;
 
         $filter->import(array(
-                5 => new \cPHP\Filter\Number,
-                "index" => new \cPHP\Filter\URL
+                5 => new \h2o\Filter\Number,
+                "index" => new \h2o\Filter\URL
             ));
 
         $this->assertEquals(
@@ -94,10 +94,10 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $filter1 = new \cPHP\Filter\Number;
-        $filter2 = new \cPHP\Filter\URL;
+        $filter1 = new \h2o\Filter\Number;
+        $filter2 = new \h2o\Filter\URL;
 
-        $filter = new \cPHP\Filter\AryOffset(array(
+        $filter = new \h2o\Filter\AryOffset(array(
                 5 => $filter1,
                 "index" => $filter2
             ));
@@ -113,9 +113,9 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
     public function testFilter ()
     {
-        $filter = new \cPHP\Filter\AryOffset(array(
-                1 => new \cPHP\Filter\Number,
-                5 => new \cPHP\Filter\Boolean
+        $filter = new \h2o\Filter\AryOffset(array(
+                1 => new \h2o\Filter\Number,
+                5 => new \h2o\Filter\Boolean
             ));
 
         $this->assertSame(

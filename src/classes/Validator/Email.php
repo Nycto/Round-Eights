@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace cPHP\Validator;
+namespace h2o\Validator;
 
 /**
  * Validates an e-mail address
@@ -42,7 +42,7 @@ namespace cPHP\Validator;
  * As well as the following article:
  * http://www.hm2k.com/posts/what-is-a-valid-email-address
  */
-class Email extends \cPHP\Validator
+class Email extends \h2o\Validator
 {
 
     /**
@@ -53,9 +53,9 @@ class Email extends \cPHP\Validator
      */
     protected function process ( $value )
     {
-        $value = \cPHP\strval( $value );
+        $value = \h2o\strval( $value );
 
-        if ( \cPHP\isEmpty($value) )
+        if ( \h2o\isEmpty($value) )
             return "Email Address must not be empty";
 
         $atCount = substr_count($value, "@");
@@ -65,13 +65,13 @@ class Email extends \cPHP\Validator
         if ( $atCount > 1 )
             return "Email Address must only contain one 'at' (@) symbol";
 
-        if ( \cPHP\str\contains(" ", $value) )
+        if ( \h2o\str\contains(" ", $value) )
             return "Email Address must not contain spaces";
 
-        if ( \cPHP\str\contains("\n", $value) || \cPHP\str\contains("\r", $value) )
+        if ( \h2o\str\contains("\n", $value) || \h2o\str\contains("\r", $value) )
             return "Email Address must not contain line breaks";
 
-        if ( \cPHP\str\contains("\t", $value) )
+        if ( \h2o\str\contains("\t", $value) )
             return "Email Address must not contain tabs";
 
         if ( preg_match('/\.\.+/', $value) )
@@ -80,17 +80,17 @@ class Email extends \cPHP\Validator
         if ( preg_match('/[^a-z0-9'. preg_quote('!#$%&\'*+-/=?^_`{|}~@.[]', '/') .']/i', $value) )
             return "Email Address contains invalid characters";
 
-        if ( \cPHP\str\endsWith($value, ".") )
+        if ( \h2o\str\endsWith($value, ".") )
             return "Email Address must not end with a period";
 
 
         list( $local, $domain ) = explode("@", $value);
 
-        if ( \cPHP\str\startsWith($local, ".") )
+        if ( \h2o\str\startsWith($local, ".") )
             return "Email Address must not start with a period";
 
         // This is hard to describe to a user, so just give them a vague description
-        if ( \cPHP\str\endsWith($local, ".") )
+        if ( \h2o\str\endsWith($local, ".") )
             return "Email Address is not valid";
 
         if ( strlen($local) > 64 || strlen($domain) > 255 )

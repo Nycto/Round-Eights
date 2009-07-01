@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,12 +35,12 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
 
     public function testPageAccessors ()
     {
-        $page = new \cPHP\Page\Injector(
-                $this->getMock('cPHP\Template', array('display'))
+        $page = new \h2o\Page\Injector(
+                $this->getMock('h2o\Template', array('display'))
             );
 
-        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
-        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub1 = $this->getMock('h2o\iface\Page', array('getContent'));
+        $sub2 = $this->getMock('h2o\iface\Page', array('getContent'));
 
         $this->assertEquals( array(), $page->getPages() );
 
@@ -71,23 +71,23 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent ()
     {
-        $tpl = $this->getMock('cPHP\Template', array('display', 'set'));
+        $tpl = $this->getMock('h2o\Template', array('display', 'set'));
 
-        $page = new \cPHP\Page\Injector( $tpl );
+        $page = new \h2o\Page\Injector( $tpl );
 
-        $context = new \cPHP\Page\Context;
+        $context = new \h2o\Page\Context;
 
         // Set up a page and template that will be injected
-        $tpl1 = new \cPHP\Template\Blank;
-        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $tpl1 = new \h2o\Template\Blank;
+        $sub1 = $this->getMock('h2o\iface\Page', array('getContent'));
         $sub1->expects( $this->once() )
             ->method('getContent')
             ->with( $this->equalTo($context) )
             ->will( $this->returnValue($tpl1) );
 
         // Set up a page and template that will be injected
-        $tpl2 = new \cPHP\Template\Blank;
-        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $tpl2 = new \h2o\Template\Blank;
+        $sub2 = $this->getMock('h2o\iface\Page', array('getContent'));
         $sub2->expects( $this->once() )
             ->method('getContent')
             ->with( $this->equalTo($context) )
@@ -114,15 +114,15 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent_empty ()
     {
-        $tpl = $this->getMock('cPHP\Template', array('display', 'set'));
+        $tpl = $this->getMock('h2o\Template', array('display', 'set'));
 
-        $page = new \cPHP\Page\Injector( $tpl );
+        $page = new \h2o\Page\Injector( $tpl );
 
         $tpl->expects( $this->never() )
             ->method('set');
 
         // Run the test
-        $this->assertSame( $tpl, $page->getContent( new \cPHP\Page\Context ) );
+        $this->assertSame( $tpl, $page->getContent( new \h2o\Page\Context ) );
     }
 
 }

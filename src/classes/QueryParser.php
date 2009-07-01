@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query Parser
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Parses a URL query string into an array
@@ -73,14 +73,14 @@ class QueryParser
     /**
      * The filter to apply to the keys before returning them
      *
-     * @var \cPHP\iface\Filter
+     * @var \h2o\iface\Filter
      */
     private $keyFilter;
 
     /**
      * The filter to apply to the values before returning them
      *
-     * @var \cPHP\iface\Filter
+     * @var \h2o\iface\Filter
      */
     private $valueFilter;
 
@@ -89,7 +89,7 @@ class QueryParser
      */
     public function __construct ()
     {
-        $filter = new \cPHP\Curry\Call('urldecode');
+        $filter = new \h2o\Curry\Call('urldecode');
 
         $this->keyFilter = $filter;
         $this->valueFilter = $filter;
@@ -109,14 +109,14 @@ class QueryParser
      * Sets the delimiter used to separate each key/value pair
      *
      * @param String $delim The new delimiter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function setOuterDelim ( $delim )
     {
-        $delim = \cPHP\strval($delim);
+        $delim = \h2o\strval($delim);
 
-        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
-            throw new \cPHP\Exception\Argument(0, "Outer Delimiter", "Must not be empty");
+        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
+            throw new \h2o\Exception\Argument(0, "Outer Delimiter", "Must not be empty");
 
         $this->outerDelim = $delim;
 
@@ -137,14 +137,14 @@ class QueryParser
      * Returns the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function setInnerDelim ( $delim )
     {
-        $delim = \cPHP\strval($delim);
+        $delim = \h2o\strval($delim);
 
-        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
-            throw new \cPHP\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
+        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
+            throw new \h2o\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
 
         $this->innerDelim = $delim;
 
@@ -165,13 +165,13 @@ class QueryParser
      * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function setStartDelim ( $delim )
     {
-        $delim = \cPHP\strval($delim);
+        $delim = \h2o\strval($delim);
 
-        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
+        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
             $delim = null;
 
         $this->startDelim = $delim;
@@ -192,7 +192,7 @@ class QueryParser
     /**
      * Clears the starting delimiter from this instance
      *
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function clearStartDelim ()
     {
@@ -214,13 +214,13 @@ class QueryParser
      * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function setEndDelim ( $delim )
     {
-        $delim = \cPHP\strval($delim);
+        $delim = \h2o\strval($delim);
 
-        if ( \cPHP\isEmpty($delim, \cPHP\ALLOW_SPACES) )
+        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
             $delim = null;
 
         $this->endDelim = $delim;
@@ -241,7 +241,7 @@ class QueryParser
     /**
      * Clears the ending delimiter from this instance
      *
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function clearEndDelim ()
     {
@@ -263,14 +263,14 @@ class QueryParser
      * Sets the reglar expression used to extract sub-keys from the keys
      *
      * @param String $regex The new regular expression
-     * @return \cPHP\QueryParser Returns a self reference
+     * @return \h2o\QueryParser Returns a self reference
      */
     public function setSubRegEx ( $regex )
     {
-        $regex = \cPHP\strval($regex);
+        $regex = \h2o\strval($regex);
 
-        if ( \cPHP\isEmpty($regex) )
-            throw new \cPHP\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
+        if ( \h2o\isEmpty($regex) )
+            throw new \h2o\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
 
         $this->subRegEx = $regex;
 
@@ -280,7 +280,7 @@ class QueryParser
     /**
      * Returns the filter that will be applied to the keys
      *
-     * @return \cPHP\iface\Filter
+     * @return \h2o\iface\Filter
      */
     public function getKeyFilter ()
     {
@@ -290,10 +290,10 @@ class QueryParser
     /**
      * Sets the filter that will be applied to the keys
      *
-     * @param \cPHP\iface\Filter $filter The new Filter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @param \h2o\iface\Filter $filter The new Filter
+     * @return \h2o\QueryParser Returns a self reference
      */
-    public function setKeyFilter ( \cPHP\iface\Filter $filter )
+    public function setKeyFilter ( \h2o\iface\Filter $filter )
     {
         $this->keyFilter = $filter;
         return $this;
@@ -302,7 +302,7 @@ class QueryParser
     /**
      * Returns the filter that will be applied to the values
      *
-     * @return \cPHP\iface\Filter
+     * @return \h2o\iface\Filter
      */
     public function getValueFilter ()
     {
@@ -312,10 +312,10 @@ class QueryParser
     /**
      * Sets the filter that will be applied to the values
      *
-     * @param \cPHP\iface\Filter $filter The new Filter
-     * @return \cPHP\QueryParser Returns a self reference
+     * @param \h2o\iface\Filter $filter The new Filter
+     * @return \h2o\QueryParser Returns a self reference
      */
-    public function setValueFilter ( \cPHP\iface\Filter $filter )
+    public function setValueFilter ( \h2o\iface\Filter $filter )
     {
         $this->valueFilter = $filter;
         return $this;
@@ -347,7 +347,7 @@ class QueryParser
             $result = array();
 
         if ( !isset($matches[1]) ) {
-            $err = new \cPHP\Exception\Interaction("Sub-Key RegEx did not return a sub-pattern");
+            $err = new \h2o\Exception\Interaction("Sub-Key RegEx did not return a sub-pattern");
             $err->addData("Sub-Key RegEx", $this->subRegEx);
             throw $err;
         }
@@ -355,7 +355,7 @@ class QueryParser
         // Loop through the matched sub-patterns
         foreach ( $matches[1] AS $subKey ) {
 
-            if ( \cPHP\isEmpty($subKey[0], \cPHP\ALLOW_SPACES) )
+            if ( \h2o\isEmpty($subKey[0], \h2o\ALLOW_SPACES) )
                 $result[] = null;
             else
                 $result[] = $subKey[0];
@@ -372,14 +372,14 @@ class QueryParser
      */
     public function parse ( $query )
     {
-        $query = \cPHP\strval($query);
+        $query = \h2o\strval($query);
 
         // Grab everything after the starting delimiter
-        if ( \cPHP\str\contains($this->startDelim, $query) )
+        if ( \h2o\str\contains($this->startDelim, $query) )
             $query = substr($query, strpos($query, $this->startDelim) + 1);
 
         // Cut off everything after the ending delimiter
-        if ( \cPHP\str\contains($this->endDelim, $query) )
+        if ( \h2o\str\contains($this->endDelim, $query) )
             $query = substr($query, 0, strpos($query, $this->endDelim) );
 
         // Split the query into its pairs
@@ -391,17 +391,17 @@ class QueryParser
         foreach ($query AS $pair) {
 
             // Skip over empty pairs
-            if ( \cPHP\isEmpty($pair) )
+            if ( \h2o\isEmpty($pair) )
                 continue;
 
             // split the pair up into its key and value
-            if ( \cPHP\str\contains($this->innerDelim, $pair) )
+            if ( \h2o\str\contains($this->innerDelim, $pair) )
                 list( $key, $value ) = explode($this->innerDelim, $pair, 2);
             else
                 list( $key, $value ) = array( $pair, "" );
 
             // if the key is empty, do nothing with it
-            if ( \cPHP\isEmpty( $key, \cPHP\ALLOW_SPACES ) )
+            if ( \h2o\isEmpty( $key, \h2o\ALLOW_SPACES ) )
                 continue;
 
             // Apply the filters to the key and value
@@ -412,7 +412,7 @@ class QueryParser
             $key = $this->parseKey( $key );
 
             // Add the branch to the result array
-            \cPHP\ary\branch( $result, $value, $key );
+            \h2o\ary\branch( $result, $value, $key );
         }
 
         return $result;

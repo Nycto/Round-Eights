@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,60 +35,60 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
     public function testInt2Ordinal ()
     {
-        $this->assertEquals( "1st", \cPHP\str\int2Ordinal(1) );
-        $this->assertEquals( "2nd", \cPHP\str\int2Ordinal(2) );
-        $this->assertEquals( "3rd", \cPHP\str\int2Ordinal(3) );
-        $this->assertEquals( "4th", \cPHP\str\int2Ordinal(4) );
-        $this->assertEquals( "5th", \cPHP\str\int2Ordinal(5) );
-        $this->assertEquals( "6th", \cPHP\str\int2Ordinal(6) );
-        $this->assertEquals( "7th", \cPHP\str\int2Ordinal(7) );
-        $this->assertEquals( "8th", \cPHP\str\int2Ordinal(8) );
-        $this->assertEquals( "9th", \cPHP\str\int2Ordinal(9) );
-        $this->assertEquals( "10th", \cPHP\str\int2Ordinal(10) );
+        $this->assertEquals( "1st", \h2o\str\int2Ordinal(1) );
+        $this->assertEquals( "2nd", \h2o\str\int2Ordinal(2) );
+        $this->assertEquals( "3rd", \h2o\str\int2Ordinal(3) );
+        $this->assertEquals( "4th", \h2o\str\int2Ordinal(4) );
+        $this->assertEquals( "5th", \h2o\str\int2Ordinal(5) );
+        $this->assertEquals( "6th", \h2o\str\int2Ordinal(6) );
+        $this->assertEquals( "7th", \h2o\str\int2Ordinal(7) );
+        $this->assertEquals( "8th", \h2o\str\int2Ordinal(8) );
+        $this->assertEquals( "9th", \h2o\str\int2Ordinal(9) );
+        $this->assertEquals( "10th", \h2o\str\int2Ordinal(10) );
 
-        $this->assertEquals( "11th", \cPHP\str\int2Ordinal(11) );
-        $this->assertEquals( "12th", \cPHP\str\int2Ordinal(12) );
-        $this->assertEquals( "13th", \cPHP\str\int2Ordinal(13) );
-        $this->assertEquals( "14th", \cPHP\str\int2Ordinal(14) );
-        $this->assertEquals( "15th", \cPHP\str\int2Ordinal(15) );
-        $this->assertEquals( "16th", \cPHP\str\int2Ordinal(16) );
-        $this->assertEquals( "17th", \cPHP\str\int2Ordinal(17) );
-        $this->assertEquals( "18th", \cPHP\str\int2Ordinal(18) );
-        $this->assertEquals( "19th", \cPHP\str\int2Ordinal(19) );
-        $this->assertEquals( "20th", \cPHP\str\int2Ordinal(20) );
+        $this->assertEquals( "11th", \h2o\str\int2Ordinal(11) );
+        $this->assertEquals( "12th", \h2o\str\int2Ordinal(12) );
+        $this->assertEquals( "13th", \h2o\str\int2Ordinal(13) );
+        $this->assertEquals( "14th", \h2o\str\int2Ordinal(14) );
+        $this->assertEquals( "15th", \h2o\str\int2Ordinal(15) );
+        $this->assertEquals( "16th", \h2o\str\int2Ordinal(16) );
+        $this->assertEquals( "17th", \h2o\str\int2Ordinal(17) );
+        $this->assertEquals( "18th", \h2o\str\int2Ordinal(18) );
+        $this->assertEquals( "19th", \h2o\str\int2Ordinal(19) );
+        $this->assertEquals( "20th", \h2o\str\int2Ordinal(20) );
 
-        $this->assertEquals( "21st", \cPHP\str\int2Ordinal(21) );
-        $this->assertEquals( "22nd", \cPHP\str\int2Ordinal(22) );
-        $this->assertEquals( "23rd", \cPHP\str\int2Ordinal(23) );
-        $this->assertEquals( "24th", \cPHP\str\int2Ordinal(24) );
-        $this->assertEquals( "25th", \cPHP\str\int2Ordinal(25) );
-        $this->assertEquals( "30th", \cPHP\str\int2Ordinal(30) );
+        $this->assertEquals( "21st", \h2o\str\int2Ordinal(21) );
+        $this->assertEquals( "22nd", \h2o\str\int2Ordinal(22) );
+        $this->assertEquals( "23rd", \h2o\str\int2Ordinal(23) );
+        $this->assertEquals( "24th", \h2o\str\int2Ordinal(24) );
+        $this->assertEquals( "25th", \h2o\str\int2Ordinal(25) );
+        $this->assertEquals( "30th", \h2o\str\int2Ordinal(30) );
 
-        $this->assertEquals( "-1st", \cPHP\str\int2Ordinal(-1) );
-        $this->assertEquals( "-2nd", \cPHP\str\int2Ordinal(-2) );
-        $this->assertEquals( "-3rd", \cPHP\str\int2Ordinal(-3) );
-        $this->assertEquals( "-4th", \cPHP\str\int2Ordinal(-4) );
-        $this->assertEquals( "-5th", \cPHP\str\int2Ordinal(-5) );
-        $this->assertEquals( "-9th", \cPHP\str\int2Ordinal(-9) );
-        $this->assertEquals( "-10th", \cPHP\str\int2Ordinal(-10) );
+        $this->assertEquals( "-1st", \h2o\str\int2Ordinal(-1) );
+        $this->assertEquals( "-2nd", \h2o\str\int2Ordinal(-2) );
+        $this->assertEquals( "-3rd", \h2o\str\int2Ordinal(-3) );
+        $this->assertEquals( "-4th", \h2o\str\int2Ordinal(-4) );
+        $this->assertEquals( "-5th", \h2o\str\int2Ordinal(-5) );
+        $this->assertEquals( "-9th", \h2o\str\int2Ordinal(-9) );
+        $this->assertEquals( "-10th", \h2o\str\int2Ordinal(-10) );
     }
 
     public function testContains ()
     {
-        $this->assertTrue( \cPHP\str\contains(' In ', 'Check In this string') );
-        $this->assertFalse( \cPHP\str\contains('not in', 'Check In this string') );
+        $this->assertTrue( \h2o\str\contains(' In ', 'Check In this string') );
+        $this->assertFalse( \h2o\str\contains('not in', 'Check In this string') );
 
-        $this->assertTrue( \cPHP\str\contains(' In ', 'Check In this string', TRUE) );
-        $this->assertFalse( \cPHP\str\contains('not in', 'Check In this string', TRUE) );
+        $this->assertTrue( \h2o\str\contains(' In ', 'Check In this string', TRUE) );
+        $this->assertFalse( \h2o\str\contains('not in', 'Check In this string', TRUE) );
 
-        $this->assertTrue( \cPHP\str\contains(' in ', 'Check In this string', TRUE) );
-        $this->assertFalse( \cPHP\str\contains('not in', 'Check In this string', TRUE) );
+        $this->assertTrue( \h2o\str\contains(' in ', 'Check In this string', TRUE) );
+        $this->assertFalse( \h2o\str\contains('not in', 'Check In this string', TRUE) );
 
-        $this->assertTrue( \cPHP\str\contains(' In ', 'Check In this string', FALSE) );
-        $this->assertFalse( \cPHP\str\contains('not in', 'Check In this string', FALSE) );
+        $this->assertTrue( \h2o\str\contains(' In ', 'Check In this string', FALSE) );
+        $this->assertFalse( \h2o\str\contains('not in', 'Check In this string', FALSE) );
 
-        $this->assertFalse( \cPHP\str\contains(' in ', 'Check In this string', FALSE) );
-        $this->assertFalse( \cPHP\str\contains('not in', 'Check In this string', FALSE) );
+        $this->assertFalse( \h2o\str\contains(' in ', 'Check In this string', FALSE) );
+        $this->assertFalse( \h2o\str\contains('not in', 'Check In this string', FALSE) );
     }
 
     public function testOffsets ()
@@ -96,40 +96,40 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(0, 8, 52, 60, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string' )
+                \h2o\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string' )
             );
 
         $this->assertEquals(
                 array(0, 8, 52, 60, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', TRUE )
+                \h2o\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', TRUE )
             );
 
         $this->assertEquals(
                 array(8, 52, 70),
-                \cPHP\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
+                \h2o\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
         $this->assertEquals(
                 array(0, 60),
-                \cPHP\str\offsets( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
+                \h2o\str\offsets( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
         $this->assertEquals(
                 array(),
-                \cPHP\str\offsets( 'Not in Haystack', 'Stringy string with multiple occurances of the word string, Stringity string' )
+                \h2o\str\offsets( 'Not in Haystack', 'Stringy string with multiple occurances of the word string, Stringity string' )
             );
 
         $this->assertEquals(
                 array(),
-                \cPHP\str\offsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
+                \h2o\str\offsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
             );
 
     }
 
     public function testOffsetsException ()
     {
-        $this->setExpectedException('\cPHP\Exception\Argument');
-        \cPHP\str\offsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
+        $this->setExpectedException('\h2o\Exception\Argument');
+        \h2o\str\offsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
     }
 
     public function testNPos ()
@@ -137,47 +137,47 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 0,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0 )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0 )
             );
 
         $this->assertEquals(
                 52,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 2 )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 2 )
             );
 
         $this->assertEquals(
                 70,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1 )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1 )
             );
 
         $this->assertEquals(
                 52,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -3 )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -3 )
             );
 
         $this->assertEquals(
                 8,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
             );
 
         $this->assertEquals(
                 52,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 1, FALSE )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 1, FALSE )
             );
 
         $this->assertEquals(
                 70,
-                \cPHP\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
+                \h2o\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
             );
 
         $this->assertEquals(
                 0,
-                \cPHP\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
+                \h2o\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
             );
 
         $this->assertEquals(
                 60,
-                \cPHP\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
+                \h2o\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
             );
 
     }
@@ -187,7 +187,7 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'This is A String with Some odd Capitals',
-            \cPHP\str\unshout( "This is A STRING wiTH SoMe odd CAPITALs" )
+            \h2o\str\unshout( "This is A STRING wiTH SoMe odd CAPITALs" )
         );
 
     }
@@ -196,38 +196,38 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 "123abc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc")
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc")
             );
         $this->assertEquals(
                 "  1 23 a bc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \cPHP\str\ALLOW_SPACES)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \h2o\str\ALLOW_SPACES)
             );
         $this->assertEquals(
                 "  1_ 23 a bc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \cPHP\str\ALLOW_SPACES | \cPHP\str\ALLOW_UNDERSCORES)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \h2o\str\ALLOW_SPACES | \h2o\str\ALLOW_UNDERSCORES)
             );
         $this->assertEquals(
                 "12\n3ab\rc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \cPHP\str\ALLOW_NEWLINES)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \h2o\str\ALLOW_NEWLINES)
             );
         $this->assertEquals(
                 "12\n3ab\rc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \cPHP\str\ALLOW_NEWLINES)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \h2o\str\ALLOW_NEWLINES)
             );
         $this->assertEquals(
                 "123\tabc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \cPHP\str\ALLOW_TABS)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \h2o\str\ALLOW_TABS)
             );
         $this->assertEquals(
                 "123-abc",
-                \cPHP\str\stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", \cPHP\str\ALLOW_DASHES)
+                \h2o\str\stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", \h2o\str\ALLOW_DASHES)
             );
 
         $chars = implode("", array_map( 'chr', range(0, 255) ));
         $this->assertSame(
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
                 ."\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
-                \cPHP\str\stripW($chars, \cPHP\str\ALLOW_ASCII)
+                \h2o\str\stripW($chars, \h2o\str\ALLOW_ASCII)
             );
     }
 
@@ -235,56 +235,56 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 "start T tytyty yyyy end",
-                \cPHP\str\stripRepeats('start TTT ttytyty yyyy end', 't')
+                \h2o\str\stripRepeats('start TTT ttytyty yyyy end', 't')
             );
 
         $this->assertEquals(
                 "start TTT tty yyyy end",
-                \cPHP\str\stripRepeats('start TTT ttytyty yyyy end', 'ty')
+                \h2o\str\stripRepeats('start TTT ttytyty yyyy end', 'ty')
             );
 
         $this->assertEquals(
                 "start TTT tytyty yyyy end",
-                \cPHP\str\stripRepeats('start TTT ttytyty yyyy end', 't', FALSE)
+                \h2o\str\stripRepeats('start TTT ttytyty yyyy end', 't', FALSE)
             );
 
         $this->assertEquals(
                 "start T ttytyty yyyy end",
-                \cPHP\str\stripRepeats('start TTT ttytyty yyyy end', 'T', FALSE)
+                \h2o\str\stripRepeats('start TTT ttytyty yyyy end', 'T', FALSE)
             );
 
         $this->assertEquals(
                 "start T tyty yyyy end",
-                \cPHP\str\stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
+                \h2o\str\stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
             );
     }
 
     public function testStripRepeats_Exception ()
     {
-        $this->setExpectedException('\cPHP\Exception\Argument');
-        \cPHP\str\stripRepeats( 'Stringy string with multiple occurances of the word string, Stringity string', '' );
+        $this->setExpectedException('\h2o\Exception\Argument');
+        \h2o\str\stripRepeats( 'Stringy string with multiple occurances of the word string, Stringity string', '' );
     }
 
     public function testTruncateWords ()
     {
         $this->assertEquals(
                 "string with so...ds that ne...ed down",
-                \cPHP\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10)
+                \h2o\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10)
             );
 
         $this->assertEquals(
                 "string with so...s that ne...d down",
-                \cPHP\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6)
+                \h2o\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6)
             );
 
         $this->assertEquals(
                 "string with so..ds that ne..ed down",
-                \cPHP\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6, '..')
+                \h2o\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6, '..')
             );
 
         $this->assertEquals(
                 "string with someverylongwords that needtobetrimmed down",
-                \cPHP\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 20 )
+                \h2o\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 20 )
             );
     }
 
@@ -292,12 +292,12 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 "This  with quotes",
-                \cPHP\str\stripQuoted( "This 'is a string' with\"\" quotes" )
+                \h2o\str\stripQuoted( "This 'is a string' with\"\" quotes" )
             );
 
         $this->assertEquals(
                 "This  withot",
-                \cPHP\str\stripQuoted( "This /is a string& with/ qu&ot&es", array('/', '&') )
+                \h2o\str\stripQuoted( "This /is a string& with/ qu&ot&es", array('/', '&') )
             );
     }
 
@@ -306,98 +306,98 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 2,
-                \cPHP\str\substr_icount( 'This Is A Test', 'is' )
+                \h2o\str\substr_icount( 'This Is A Test', 'is' )
             );
 
         $this->assertEquals(
                 2,
-                \cPHP\str\substr_icount( 'This Is A Test', 'Is' )
+                \h2o\str\substr_icount( 'This Is A Test', 'Is' )
             );
 
         $this->assertEquals(
                 2,
-                \cPHP\str\substr_icount( 'This Is A Test', 'IS' )
+                \h2o\str\substr_icount( 'This Is A Test', 'IS' )
             );
 
         $this->assertEquals(
                 1,
-                \cPHP\str\substr_icount( 'This Is A Test', 'is', 3 )
+                \h2o\str\substr_icount( 'This Is A Test', 'is', 3 )
             );
 
         $this->assertEquals(
                 0,
-                \cPHP\str\substr_icount( 'This Is A Test', 'is', 3, 3 )
+                \h2o\str\substr_icount( 'This Is A Test', 'is', 3, 3 )
             );
     }
 
     public function testStartsWith ()
     {
-        $this->assertTrue( \cPHP\str\startsWith('string with content', 'string') );
-        $this->assertTrue( \cPHP\str\startsWith('string with content', 'String') );
+        $this->assertTrue( \h2o\str\startsWith('string with content', 'string') );
+        $this->assertTrue( \h2o\str\startsWith('string with content', 'String') );
 
-        $this->assertTrue( \cPHP\str\startsWith('string with content', 'string', TRUE) );
-        $this->assertTrue( \cPHP\str\startsWith('string with content', 'String', TRUE) );
+        $this->assertTrue( \h2o\str\startsWith('string with content', 'string', TRUE) );
+        $this->assertTrue( \h2o\str\startsWith('string with content', 'String', TRUE) );
 
-        $this->assertTrue( \cPHP\str\startsWith('string with content', 'string', FALSE) );
+        $this->assertTrue( \h2o\str\startsWith('string with content', 'string', FALSE) );
 
-        $this->assertFalse( \cPHP\str\startsWith('string with content', 'String', FALSE) );
-        $this->assertFalse( \cPHP\str\startsWith('string with content', 'strn', FALSE) );
+        $this->assertFalse( \h2o\str\startsWith('string with content', 'String', FALSE) );
+        $this->assertFalse( \h2o\str\startsWith('string with content', 'strn', FALSE) );
     }
 
     public function testEndsWith ()
     {
-        $this->assertTrue( \cPHP\str\endsWith('string with content', 'content') );
-        $this->assertTrue( \cPHP\str\endsWith('string with content', 'Content') );
+        $this->assertTrue( \h2o\str\endsWith('string with content', 'content') );
+        $this->assertTrue( \h2o\str\endsWith('string with content', 'Content') );
 
-        $this->assertTrue( \cPHP\str\endsWith('string with content', 'content', TRUE) );
-        $this->assertTrue( \cPHP\str\endsWith('string with content', 'Content', TRUE) );
+        $this->assertTrue( \h2o\str\endsWith('string with content', 'content', TRUE) );
+        $this->assertTrue( \h2o\str\endsWith('string with content', 'Content', TRUE) );
 
-        $this->assertTrue( \cPHP\str\endsWith('string with content', 'content', FALSE) );
+        $this->assertTrue( \h2o\str\endsWith('string with content', 'content', FALSE) );
 
-        $this->assertFalse( \cPHP\str\endsWith('string with content', 'Content', FALSE) );
-        $this->assertFalse( \cPHP\str\endsWith('string with content', 'contnt', FALSE) );
+        $this->assertFalse( \h2o\str\endsWith('string with content', 'Content', FALSE) );
+        $this->assertFalse( \h2o\str\endsWith('string with content', 'contnt', FALSE) );
     }
 
     public function testTail ()
     {
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('string', 'tail')
+                \h2o\str\tail('string', 'tail')
             );
 
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('stringtail', 'tail')
+                \h2o\str\tail('stringtail', 'tail')
             );
 
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('string', 'tail', TRUE)
+                \h2o\str\tail('string', 'tail', TRUE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('stringtail', 'tail', TRUE)
+                \h2o\str\tail('stringtail', 'tail', TRUE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('string', 'tail', FALSE)
+                \h2o\str\tail('string', 'tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringtail',
-                \cPHP\str\tail('stringtail', 'tail', FALSE)
+                \h2o\str\tail('stringtail', 'tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringtailTail',
-                \cPHP\str\tail('stringtail', 'Tail', FALSE)
+                \h2o\str\tail('stringtail', 'Tail', FALSE)
             );
 
         $this->assertEquals(
                 'stringTail',
-                \cPHP\str\tail('stringTail', 'Tail', FALSE)
+                \h2o\str\tail('stringTail', 'Tail', FALSE)
             );
     }
 
@@ -405,52 +405,52 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with content", "ent" )
+                \h2o\str\stripTail( "string with content", "ent" )
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with cont", "ent" )
+                \h2o\str\stripTail( "string with cont", "ent" )
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with content", "ent", TRUE )
+                \h2o\str\stripTail( "string with content", "ent", TRUE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with content", "ENT", TRUE )
+                \h2o\str\stripTail( "string with content", "ENT", TRUE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with cont", "ent", TRUE)
+                \h2o\str\stripTail( "string with cont", "ent", TRUE)
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with content", "ent", FALSE )
+                \h2o\str\stripTail( "string with content", "ent", FALSE )
             );
 
         $this->assertEquals(
                 'string with content',
-                \cPHP\str\stripTail( "string with content", "Ent", FALSE )
+                \h2o\str\stripTail( "string with content", "Ent", FALSE )
             );
 
         $this->assertEquals(
                 'string with cont',
-                \cPHP\str\stripTail( "string with cont", "ent", FALSE)
+                \h2o\str\stripTail( "string with cont", "ent", FALSE)
             );
 
         $this->assertEquals(
                 '',
-                \cPHP\str\stripTail( "string", "string", TRUE )
+                \h2o\str\stripTail( "string", "string", TRUE )
             );
 
         $this->assertEquals(
                 'string',
-                \cPHP\str\stripTail( "string", "" )
+                \h2o\str\stripTail( "string", "" )
             );
     }
 
@@ -458,42 +458,42 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('string', 'head')
+                \h2o\str\head('string', 'head')
             );
 
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('headstring', 'head')
+                \h2o\str\head('headstring', 'head')
             );
 
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('string', 'head', TRUE)
+                \h2o\str\head('string', 'head', TRUE)
             );
 
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('headstring', 'head', TRUE)
+                \h2o\str\head('headstring', 'head', TRUE)
             );
 
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('string', 'head', FALSE)
+                \h2o\str\head('string', 'head', FALSE)
             );
 
         $this->assertEquals(
                 'headstring',
-                \cPHP\str\head('headstring', 'head', FALSE)
+                \h2o\str\head('headstring', 'head', FALSE)
             );
 
         $this->assertEquals(
                 'Headheadstring',
-                \cPHP\str\head('headstring', 'Head', FALSE)
+                \h2o\str\head('headstring', 'Head', FALSE)
             );
 
         $this->assertEquals(
                 'Headstring',
-                \cPHP\str\head('Headstring', 'Head', FALSE)
+                \h2o\str\head('Headstring', 'Head', FALSE)
             );
     }
 
@@ -501,52 +501,52 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "ing with content", "str" )
+                \h2o\str\stripHead( "ing with content", "str" )
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "ing with content", "str" )
+                \h2o\str\stripHead( "ing with content", "str" )
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "ing with content", "str", TRUE )
+                \h2o\str\stripHead( "ing with content", "str", TRUE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "string with content", "STR", TRUE )
+                \h2o\str\stripHead( "string with content", "STR", TRUE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "ing with content", "str", TRUE)
+                \h2o\str\stripHead( "ing with content", "str", TRUE)
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "string with content", "str", FALSE )
+                \h2o\str\stripHead( "string with content", "str", FALSE )
             );
 
         $this->assertEquals(
                 'string with content',
-                \cPHP\str\stripHead( "string with content", "Str", FALSE )
+                \h2o\str\stripHead( "string with content", "Str", FALSE )
             );
 
         $this->assertEquals(
                 'ing with content',
-                \cPHP\str\stripHead( "ing with content", "str", FALSE)
+                \h2o\str\stripHead( "ing with content", "str", FALSE)
             );
 
         $this->assertEquals(
                 '',
-                \cPHP\str\stripHead( "string", "string", TRUE )
+                \h2o\str\stripHead( "string", "string", TRUE )
             );
 
         $this->assertEquals(
                 'string',
-                \cPHP\str\stripHead( "string", "" )
+                \h2o\str\stripHead( "string", "" )
             );
     }
 
@@ -554,83 +554,83 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 '/dir/file',
-                \cPHP\str\weld('/dir', 'file', '/')
+                \h2o\str\weld('/dir', 'file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                \cPHP\str\weld('/dir/', 'file', '/')
+                \h2o\str\weld('/dir/', 'file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                \cPHP\str\weld('/dir', '/file', '/')
+                \h2o\str\weld('/dir', '/file', '/')
             );
 
         $this->assertEquals(
                 '/dir/file',
-                \cPHP\str\weld('/dir/', '/file', '/')
+                \h2o\str\weld('/dir/', '/file', '/')
             );
 
         $this->assertEquals(
                 'onEleven',
-                \cPHP\str\weld('one', 'eleven', 'E')
+                \h2o\str\weld('one', 'eleven', 'E')
             );
 
         $this->assertEquals(
                 'onEleven',
-                \cPHP\str\weld('one', 'eleven', 'E', TRUE)
+                \h2o\str\weld('one', 'eleven', 'E', TRUE)
             );
 
         $this->assertEquals(
                 'oneEeleven',
-                \cPHP\str\weld('one', 'eleven', 'E', FALSE)
+                \h2o\str\weld('one', 'eleven', 'E', FALSE)
             );
     }
 
     public function testPartition ()
     {
-        $this->assertSame( array(), \cPHP\str\partition("", 5, 10, 12) );
+        $this->assertSame( array(), \h2o\str\partition("", 5, 10, 12) );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 5, 10, 12)
+                \h2o\str\partition("This is a string to split", 5, 10, 12)
             );
 
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", array( 5, 10 ), 12)
+                \h2o\str\partition("This is a string to split", array( 5, 10 ), 12)
             );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", -10, 5, 10, 12)
+                \h2o\str\partition("This is a string to split", -10, 5, 10, 12)
             );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 0, 5, 10, 12)
+                \h2o\str\partition("This is a string to split", 0, 5, 10, 12)
             );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 12, 10, 5)
+                \h2o\str\partition("This is a string to split", 12, 10, 5)
             );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition("This is a string to split", 5, 10, 12, 10)
+                \h2o\str\partition("This is a string to split", 5, 10, 12, 10)
             );
 
         $this->assertSame(
                 array( "This ", "is a ", "st", "ring to split" ),
-                \cPHP\str\partition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )
+                \h2o\str\partition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )
             );
 
         $this->assertSame(
                 array( "T", "his is a string to spli", "t" ),
-                \cPHP\str\partition( "This is a string to split", 0, 1, 24, 25 )
+                \h2o\str\partition( "This is a string to split", 0, 1, 24, 25 )
             );
     }
 
@@ -638,32 +638,32 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
                 0,
-                \cPHP\str\compare('Test', 'test', TRUE)
+                \h2o\str\compare('Test', 'test', TRUE)
             );
 
         $this->assertEquals(
                 -6,
-                \cPHP\str\compare('Not The Same', 'test', TRUE)
+                \h2o\str\compare('Not The Same', 'test', TRUE)
             );
 
         $this->assertEquals(
                 16,
-                \cPHP\str\compare('test', 'Different Than', TRUE)
+                \h2o\str\compare('test', 'Different Than', TRUE)
             );
 
         $this->assertEquals(
                 0,
-                \cPHP\str\compare('The Same', 'The Same', FALSE)
+                \h2o\str\compare('The Same', 'The Same', FALSE)
             );
 
         $this->assertEquals(
                 -1,
-                \cPHP\str\compare('Test', 'test', FALSE)
+                \h2o\str\compare('Test', 'test', FALSE)
             );
 
         $this->assertEquals(
                 1,
-                \cPHP\str\compare('Casesensitive', 'CaseSensitivE', FALSE)
+                \h2o\str\compare('Casesensitive', 'CaseSensitivE', FALSE)
             );
     }
 
@@ -672,66 +672,66 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
                 "wrap data wrap",
-                \cPHP\str\enclose( " data ", "wrap" )
+                \h2o\str\enclose( " data ", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                \cPHP\str\enclose( "wrap data ", "wrap" )
+                \h2o\str\enclose( "wrap data ", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                \cPHP\str\enclose( " data wrap", "wrap" )
+                \h2o\str\enclose( " data wrap", "wrap" )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                \cPHP\str\enclose( "wrap data wrap", "wrap" )
+                \h2o\str\enclose( "wrap data wrap", "wrap" )
             );
 
 
 
         $this->assertEquals(
                 "Wrap data Wrap",
-                \cPHP\str\enclose( " data ", "Wrap", TRUE )
+                \h2o\str\enclose( " data ", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "wrap data Wrap",
-                \cPHP\str\enclose( "wrap data ", "Wrap", TRUE )
+                \h2o\str\enclose( "wrap data ", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "Wrap data wrap",
-                \cPHP\str\enclose( " data wrap", "Wrap", TRUE )
+                \h2o\str\enclose( " data wrap", "Wrap", TRUE )
             );
 
         $this->assertEquals(
                 "wrap data wrap",
-                \cPHP\str\enclose( "wrap data wrap", "Wrap", TRUE )
+                \h2o\str\enclose( "wrap data wrap", "Wrap", TRUE )
             );
 
 
 
         $this->assertEquals(
                 "Wrap data Wrap",
-                \cPHP\str\enclose( " data ", "Wrap", FALSE )
+                \h2o\str\enclose( " data ", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrapwrap data Wrap",
-                \cPHP\str\enclose( "wrap data ", "Wrap", FALSE )
+                \h2o\str\enclose( "wrap data ", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrap data wrapWrap",
-                \cPHP\str\enclose( " data wrap", "Wrap", FALSE )
+                \h2o\str\enclose( " data wrap", "Wrap", FALSE )
             );
 
         $this->assertEquals(
                 "Wrapwrap data wrapWrap",
-                \cPHP\str\enclose( "wrap data wrap", "Wrap", FALSE )
+                \h2o\str\enclose( "wrap data wrap", "Wrap", FALSE )
             );
     }
 
@@ -739,42 +739,42 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals (
                 "Not long enough",
-                \cPHP\str\truncate ( "Not long enough", 30 )
+                \h2o\str\truncate ( "Not long enough", 30 )
             );
 
         $this->assertEquals (
                 "too long ...own good",
-                \cPHP\str\truncate ( "too long for it's own good", 20 )
+                \h2o\str\truncate ( "too long for it's own good", 20 )
             );
 
         $this->assertEquals (
                 "too long -- own good",
-                \cPHP\str\truncate ( "too long for it's own good", 20, "--" )
+                \h2o\str\truncate ( "too long for it's own good", 20, "--" )
             );
     }
 
     public function testPluralize ()
     {
-        $this->assertEquals( "tests", \cPHP\str\pluralize("test") );
-        $this->assertEquals( "   tests   ", \cPHP\str\pluralize("   test   ") );
+        $this->assertEquals( "tests", \h2o\str\pluralize("test") );
+        $this->assertEquals( "   tests   ", \h2o\str\pluralize("   test   ") );
 
-        $this->assertEquals( "tries", \cPHP\str\pluralize("try") );
-        $this->assertEquals( "   tries   ", \cPHP\str\pluralize("   try   ") );
+        $this->assertEquals( "tries", \h2o\str\pluralize("try") );
+        $this->assertEquals( "   tries   ", \h2o\str\pluralize("   try   ") );
 
-        $this->assertEquals( "TESTS", \cPHP\str\pluralize("TEST") );
-        $this->assertEquals( "TRIES", \cPHP\str\pluralize("TRY") );
+        $this->assertEquals( "TESTS", \h2o\str\pluralize("TEST") );
+        $this->assertEquals( "TRIES", \h2o\str\pluralize("TRY") );
 
-        $this->assertEquals( "test", \cPHP\str\pluralize("test", 1) );
-        $this->assertEquals( "try", \cPHP\str\pluralize("try", 1) );
+        $this->assertEquals( "test", \h2o\str\pluralize("test", 1) );
+        $this->assertEquals( "try", \h2o\str\pluralize("try", 1) );
 
-        $this->assertEquals( "tests", \cPHP\str\pluralize("test", 5) );
-        $this->assertEquals( "tries", \cPHP\str\pluralize("try", 5) );
+        $this->assertEquals( "tests", \h2o\str\pluralize("test", 5) );
+        $this->assertEquals( "tries", \h2o\str\pluralize("try", 5) );
     }
 
     public function testPluralizeException ()
     {
-        $this->setExpectedException('\cPHP\Exception\Argument');
-        \cPHP\str\pluralize( '' );
+        $this->setExpectedException('\h2o\Exception\Argument');
+        \h2o\str\pluralize( '' );
     }
 
 }

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,10 +35,10 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testGetLink ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
@@ -48,10 +48,10 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testGetTopLink_shallow ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
@@ -61,16 +61,16 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testGetTopLink_deep ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock1 = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
 
         $mock2 = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $mock1 )
             );
@@ -80,10 +80,10 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testQuery ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
@@ -98,10 +98,10 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testQuote ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
@@ -123,10 +123,10 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testEscape()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );
@@ -148,7 +148,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
 
     public function testEscapeString ()
     {
-        $link = $this->getMock( "\cPHP\iface\DB\Link" );
+        $link = $this->getMock( "\h2o\iface\DB\Link" );
 
         $link->expects( $this->once() )
             ->method( "escapeString" )
@@ -156,7 +156,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("escaped") );
 
         $mock = $this->getMock(
-                "\cPHP\DB\LinkWrap",
+                "\h2o\DB\LinkWrap",
                 array("_mock"),
                 array( $link )
             );

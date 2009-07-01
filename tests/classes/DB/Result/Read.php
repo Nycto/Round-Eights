@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * This is a stub used to test the iteration
  */
-class stub_db_result_read extends \cPHP\DB\Result\Read
+class stub_db_result_read extends \h2o\DB\Result\Read
 {
 
     /**
@@ -102,7 +102,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testHasResult_None ()
     {
         $mock = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array("not a resource", "SELECT * FROM table")
             );
@@ -115,7 +115,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testHasResult_Object ()
     {
         $mock = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array( $this->getMock("MockResult"), "SELECT * FROM table")
             );
@@ -128,7 +128,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testFree_noResult ()
     {
         $mock = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array("not a resource", "SELECT * FROM table")
             );
@@ -142,7 +142,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testFree_fakedResult ()
     {
         $mock = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree", "hasResult"),
                 array("not a resource", "SELECT * FROM table")
             );
@@ -160,7 +160,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testDestruct ()
     {
         $mock = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree", "hasResult"),
                 array("not a resource", "SELECT * FROM table")
             );
@@ -178,7 +178,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testCount_valid ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -196,7 +196,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testCount_invalid ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -214,7 +214,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testGetFields_valid ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -231,7 +231,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testGetFields_invalid ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -248,7 +248,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testIsField ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -268,7 +268,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testFieldCount ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -283,7 +283,7 @@ class classes_db_result_read extends PHPUnit_Framework_TestCase
     public function testSeek ()
     {
         $read = $this->getMock(
-                "\cPHP\DB\Result\Read",
+                "\h2o\DB\Result\Read",
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );

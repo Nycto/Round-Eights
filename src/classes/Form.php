@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Collects a list of form fields and allows them to be manipulated as a group
@@ -80,7 +80,7 @@ class Form implements \Countable
     /**
      * The form level validator
      *
-     * @var \cPHP\iface\Validator
+     * @var \h2o\iface\Validator
      */
     private $validator;
 
@@ -90,7 +90,7 @@ class Form implements \Countable
     public function __construct ()
     {
         // Set the default action URI to the current page
-        $this->action = \cPHP\Env::Request()->getURL()->__toString();
+        $this->action = \h2o\Env::Request()->getURL()->__toString();
     }
 
     /**
@@ -111,10 +111,10 @@ class Form implements \Countable
      */
     public function setAction ( $url )
     {
-        $url = \cPHP\Filter::URL()->filter( $url );
+        $url = \h2o\Filter::URL()->filter( $url );
 
-        if ( !\cPHP\Validator::URL( \cPHP\Validator\URL::ALLOW_RELATIVE )->isValid( $url ) )
-            throw new \cPHP\Exception\Argument( 0, "Form Action", "Must be a valid URL" );
+        if ( !\h2o\Validator::URL( \h2o\Validator\URL::ALLOW_RELATIVE )->isValid( $url ) )
+            throw new \h2o\Exception\Argument( 0, "Form Action", "Must be a valid URL" );
 
         $this->action = $url;
 
@@ -139,10 +139,10 @@ class Form implements \Countable
      */
     public function setMethod ( $method )
     {
-        $method = \cPHP\str\stripW( $method );
+        $method = \h2o\str\stripW( $method );
 
-        if ( \cPHP\isEmpty($method) )
-            throw new \cPHP\Exception\Argument( 0, "Submit Method", "Must not be empty" );
+        if ( \h2o\isEmpty($method) )
+            throw new \h2o\Exception\Argument( 0, "Submit Method", "Must not be empty" );
 
         $this->method = $method;
 
@@ -167,10 +167,10 @@ class Form implements \Countable
      */
     public function setEncoding ( $encoding )
     {
-        $encoding = trim( \cPHP\strval( $encoding ) );
+        $encoding = trim( \h2o\strval( $encoding ) );
 
-        if ( \cPHP\isEmpty($encoding) )
-            throw new \cPHP\Exception\Argument( 0, "Form Encoding", "Must not be empty" );
+        if ( \h2o\isEmpty($encoding) )
+            throw new \h2o\Exception\Argument( 0, "Form Encoding", "Must not be empty" );
 
         $this->encoding = $encoding;
 
@@ -193,10 +193,10 @@ class Form implements \Countable
      * @param Object $field The field being added
      * @return Object Returns a self reference
      */
-    public function addField ( \cPHP\iface\Form\Field $field )
+    public function addField ( \h2o\iface\Form\Field $field )
     {
         // ensure there aren't any duplicates
-        if ( !\cPHP\ary\contains($this->fields, $field, TRUE) )
+        if ( !\h2o\ary\contains($this->fields, $field, TRUE) )
             $this->fields[] = $field;
 
         return $this;
@@ -231,10 +231,10 @@ class Form implements \Countable
      */
     public function find ( $name )
     {
-        $name = \cPHP\Filter::Variable()->filter( $name );
+        $name = \h2o\Filter::Variable()->filter( $name );
 
-        if ( !\cPHP\Validator::Variable()->isValid( $name ) )
-            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\h2o\Validator::Variable()->isValid( $name ) )
+            throw new \h2o\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         foreach ( $this->fields AS $field ) {
             if ( $field->getName() == $name )
@@ -270,7 +270,7 @@ class Form implements \Countable
      * the field value to null.
      *
      * @param array $source
-     * @return \cPHP\Form Returns a self reference
+     * @return \h2o\Form Returns a self reference
      */
     public function fill ( array $source )
     {
@@ -291,14 +291,14 @@ class Form implements \Countable
     /**
      * Returns the validator loaded in to this instance
      *
-     * The default validator type is an instance of \cPHP\Validator\Any
+     * The default validator type is an instance of \h2o\Validator\Any
      *
-     * @return \cPHP\iface\Validator
+     * @return \h2o\iface\Validator
      */
     public function getFormValidator ()
     {
-        if ( !($this->validator instanceof \cPHP\iface\Validator) )
-            $this->validator = new \cPHP\Validator\Any;
+        if ( !($this->validator instanceof \h2o\iface\Validator) )
+            $this->validator = new \h2o\Validator\Any;
 
         return $this->validator;
     }
@@ -306,10 +306,10 @@ class Form implements \Countable
     /**
      * Sets the validator for this instance
      *
-     * @param \cPHP\iface\Validator
-     * @return \cPHP\Form Returns a self reference
+     * @param \h2o\iface\Validator
+     * @return \h2o\Form Returns a self reference
      */
-    public function setFormValidator( \cPHP\iface\Validator $validator )
+    public function setFormValidator( \h2o\iface\Validator $validator )
     {
         $this->validator = $validator;
         return $this;
@@ -319,21 +319,21 @@ class Form implements \Countable
      * Adds another validator to this instance
      *
      * This checks to see if the current validator is an instance of
-     * "\cPHP\Validator\All". If it is, then it adds the given validator on to
+     * "\h2o\Validator\All". If it is, then it adds the given validator on to
      * the list. If it isn't, then it wraps the current validator and the validator
      * in the instance in an All validator and sets it to the validator for this
      * instance.
      *
-     * @param \cPHP\iface\Validator $validator The validator to add to this instance
-     * @return \cPHP\Form Returns a self reference
+     * @param \h2o\iface\Validator $validator The validator to add to this instance
+     * @return \h2o\Form Returns a self reference
      */
-    public function andFormValidator ( \cPHP\iface\Validator $validator )
+    public function andFormValidator ( \h2o\iface\Validator $validator )
     {
-        if ( $this->validator instanceof \cPHP\Validator\All ) {
+        if ( $this->validator instanceof \h2o\Validator\All ) {
             $this->validator->add( $validator );
         }
         else {
-            $this->validator = new \cPHP\Validator\All(
+            $this->validator = new \h2o\Validator\All(
                     $this->validator,
                     $validator
                 );
@@ -347,7 +347,7 @@ class Form implements \Countable
      *
      * This does NOT include the results from each field.
      *
-     * @return \cPHP\Validator\Results
+     * @return \h2o\Validator\Results
      */
     public function validateForm ()
     {
@@ -392,13 +392,13 @@ class Form implements \Countable
     }
 
     /**
-     * Returns a \cPHP\Tag object that represents this instance
+     * Returns a \h2o\Tag object that represents this instance
      *
-     * @return Object A \cPHP\Tag object
+     * @return Object A \h2o\Tag object
      */
     public function getTag()
     {
-        return new \cPHP\Tag(
+        return new \h2o\Tag(
                 'form',
                 null,
                 array(
@@ -431,7 +431,7 @@ class Form implements \Countable
         return array_filter(
                 $this->fields,
                 function ( $field ) {
-                    return ($field instanceof \cPHP\Form\Field\Hidden);
+                    return ($field instanceof \h2o\Form\Field\Hidden);
                 }
             );
     }
@@ -445,7 +445,7 @@ class Form implements \Countable
     {
         return implode(
                 "",
-                \cPHP\ary\invoke($this->getHidden(), "__toString")
+                \h2o\ary\invoke($this->getHidden(), "__toString")
             );
     }
 

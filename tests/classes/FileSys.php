@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,29 +35,29 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $filesys = \cPHP\FileSys::File();
-        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\File') );
+        $filesys = \h2o\FileSys::File();
+        $this->assertThat( $filesys, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertNull( $filesys->getPath() );
 
-        $filesys = \cPHP\FileSys::Dir();
-        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $filesys = \h2o\FileSys::Dir();
+        $this->assertThat( $filesys, $this->isInstanceOf('h2o\FileSys\Dir') );
         $this->assertNull( $filesys->getPath() );
 
-        $filesys = \cPHP\FileSys::File("/dir/to/file.php");
-        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\File') );
+        $filesys = \h2o\FileSys::File("/dir/to/file.php");
+        $this->assertThat( $filesys, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertSame( "/dir/to/file.php", $filesys->getPath() );
 
-        $filesys = \cPHP\FileSys::Dir("/dir/path/");
-        $this->assertThat( $filesys, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $filesys = \h2o\FileSys::Dir("/dir/path/");
+        $this->assertThat( $filesys, $this->isInstanceOf('h2o\FileSys\Dir') );
         $this->assertSame( "/dir/path/", $filesys->getPath() );
 
         try {
-            \cPHP\FileSys::NotARealClass();
+            \h2o\FileSys::NotARealClass();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame(
-                    "Class could not be found in \cPHP\FileSys namespace",
+                    "Class could not be found in \h2o\FileSys namespace",
                     $err->getMessage()
                 );
         }
@@ -65,35 +65,35 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
     public function testCreate ()
     {
-        $dir = \cPHP\FileSys::create( __DIR__ );
-        $this->assertThat( $dir, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $dir = \h2o\FileSys::create( __DIR__ );
+        $this->assertThat( $dir, $this->isInstanceOf('h2o\FileSys\Dir') );
         $this->assertEquals( __DIR__ ."/", $dir->getPath() );
 
-        $newDir = \cPHP\FileSys::create( $dir );
-        $this->assertThat( $newDir, $this->isInstanceOf('cPHP\FileSys\Dir') );
+        $newDir = \h2o\FileSys::create( $dir );
+        $this->assertThat( $newDir, $this->isInstanceOf('h2o\FileSys\Dir') );
         $this->assertNotSame( $dir, $newDir );
         $this->assertEquals( __DIR__ ."/", $newDir->getPath() );
 
 
-        $file = \cPHP\FileSys::create( __FILE__ );
-        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $file = \h2o\FileSys::create( __FILE__ );
+        $this->assertThat( $file, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertEquals( __FILE__, $file->getPath() );
 
-        $newFile = \cPHP\FileSys::create( $file );
-        $this->assertThat( $newFile, $this->isInstanceOf('cPHP\FileSys\File') );
+        $newFile = \h2o\FileSys::create( $file );
+        $this->assertThat( $newFile, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertNotSame( $file, $newFile );
         $this->assertEquals( __FILE__, $newFile->getPath() );
 
 
-        $file = \cPHP\FileSys::create( "/path/to/the/abyss" );
-        $this->assertThat( $file, $this->isInstanceOf('cPHP\FileSys\File') );
+        $file = \h2o\FileSys::create( "/path/to/the/abyss" );
+        $this->assertThat( $file, $this->isInstanceOf('h2o\FileSys\File') );
         $this->assertEquals( "/path/to/the/abyss", $file->getPath() );
     }
 
     public function getTestObject ()
     {
         return $this->getMock(
-                "\\cPHP\\FileSys",
+                "\\h2o\\FileSys",
                 array("getPath", "setPath", "exists")
             );
     }
@@ -160,7 +160,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->requirePath();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -284,7 +284,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getCTime();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -302,7 +302,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $cTime = $mock->getCTime();
 
-        $this->assertThat( $cTime, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $cTime, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
     }
 
@@ -319,7 +319,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $cTime = $mock->getCTime();
 
-        $this->assertThat( $cTime, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $cTime, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
     }
 
@@ -334,7 +334,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getATime();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -352,7 +352,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getATime();
 
-        $this->assertThat( $time, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -369,7 +369,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getATime();
 
-        $this->assertThat( $time, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -384,7 +384,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getMTime();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -402,7 +402,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getMTime();
 
-        $this->assertThat( $time, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -419,7 +419,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getMTime();
 
-        $this->assertThat( $time, $this->isInstanceOf("cPHP\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf("h2o\DateTime") );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -438,7 +438,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getGroupID();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -492,7 +492,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getOwnerID();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -546,7 +546,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
             $mock->getPerms();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\FileSystem\Missing $err ) {
+        catch ( \h2o\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
@@ -587,32 +587,32 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
     public function testResolvePath ()
     {
-        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/test.php') );
-        $this->assertSame( '/test.php', \cPHP\FileSys::resolvePath('/test.php') );
-        $this->assertSame( 'c:/test.php', \cPHP\FileSys::resolvePath('c:/test.php') );
-        $this->assertSame( 'c:/dir/test.php', \cPHP\FileSys::resolvePath('c:\\dir\\test.php') );
+        $this->assertSame( 'test.php', \h2o\FileSys::resolvePath('test.php') );
+        $this->assertSame( 'dir/test.php', \h2o\FileSys::resolvePath('dir/test.php') );
+        $this->assertSame( '/test.php', \h2o\FileSys::resolvePath('/test.php') );
+        $this->assertSame( 'c:/test.php', \h2o\FileSys::resolvePath('c:/test.php') );
+        $this->assertSame( 'c:/dir/test.php', \h2o\FileSys::resolvePath('c:\\dir\\test.php') );
 
-        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('../test.php') );
-        $this->assertSame( '/test.php', \cPHP\FileSys::resolvePath('///////test.php') );
-        $this->assertSame( 'test.php', \cPHP\FileSys::resolvePath('./test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/./test.php') );
-        $this->assertSame( 'dir/test.php', \cPHP\FileSys::resolvePath('dir/sub/../test.php') );
+        $this->assertSame( 'test.php', \h2o\FileSys::resolvePath('../test.php') );
+        $this->assertSame( '/test.php', \h2o\FileSys::resolvePath('///////test.php') );
+        $this->assertSame( 'test.php', \h2o\FileSys::resolvePath('./test.php') );
+        $this->assertSame( 'dir/test.php', \h2o\FileSys::resolvePath('dir/./test.php') );
+        $this->assertSame( 'dir/test.php', \h2o\FileSys::resolvePath('dir/sub/../test.php') );
 
-        $this->assertSame( '/test', \cPHP\FileSys::resolvePath('/../test') );
-        $this->assertSame( '/test/', \cPHP\FileSys::resolvePath('/../.././../test/') );
-        $this->assertSame( '/1/2', \cPHP\FileSys::resolvePath('/1/2/3/4/5/6/../../../..') );
+        $this->assertSame( '/test', \h2o\FileSys::resolvePath('/../test') );
+        $this->assertSame( '/test/', \h2o\FileSys::resolvePath('/../.././../test/') );
+        $this->assertSame( '/1/2', \h2o\FileSys::resolvePath('/1/2/3/4/5/6/../../../..') );
 
-        $this->assertSame( '', \cPHP\FileSys::resolvePath('') );
-        $this->assertSame( '/', \cPHP\FileSys::resolvePath('/') );
-        $this->assertSame( 'c:/', \cPHP\FileSys::resolvePath('c:/') );
-        $this->assertSame( 'D:/', \cPHP\FileSys::resolvePath('D:\\') );
+        $this->assertSame( '', \h2o\FileSys::resolvePath('') );
+        $this->assertSame( '/', \h2o\FileSys::resolvePath('/') );
+        $this->assertSame( 'c:/', \h2o\FileSys::resolvePath('c:/') );
+        $this->assertSame( 'D:/', \h2o\FileSys::resolvePath('D:\\') );
     }
 
     public function getResolveTest ( $original, $resolved, $cwd = "/" )
     {
         $mock = $this->getMock(
-                "\cPHP\FileSys",
+                "\h2o\FileSys",
                 array("getPath", "setPath", "exists", "getCWD")
             );
 

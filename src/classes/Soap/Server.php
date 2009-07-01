@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Soap
  */
 
-namespace cPHP\Soap;
+namespace h2o\Soap;
 
 /**
  * Delegates a Soap request to the appropriate registered command
@@ -53,13 +53,13 @@ class Server
      */
     public function __construct ( $namespace )
     {
-        $this->namespace = trim( \cPHP\strval( $namespace ) );
+        $this->namespace = trim( \h2o\strval( $namespace ) );
     }
 
     /**
      * Returns the list of registered operations
      *
-     * @return array Returns an array of \cPHP\iface\Soap\Operation objects
+     * @return array Returns an array of \h2o\iface\Soap\Operation objects
      */
     public function getOperations ()
     {
@@ -70,16 +70,16 @@ class Server
      * Registers a new command
      *
      * @param String $title The name of the operation this object will handle
-     * @param \cPHP\iface\Soap\Operation $operation The handler to invoke when
+     * @param \h2o\iface\Soap\Operation $operation The handler to invoke when
      * 		this command is encountered
-     * @return \cPHP\Soap\Server Returns a self reference
+     * @return \h2o\Soap\Server Returns a self reference
      */
-    public function register ( $title, \cPHP\iface\Soap\Operation $operation )
+    public function register ( $title, \h2o\iface\Soap\Operation $operation )
     {
-        $title = \cPHP\str\stripW( $title );
+        $title = \h2o\str\stripW( $title );
 
-        if ( \cPHP\isEmpty($title) )
-            throw new \cPHP\Exception\Argument(0, "Command Title", "Must not be empty");
+        if ( \h2o\isEmpty($title) )
+            throw new \h2o\Exception\Argument(0, "Command Title", "Must not be empty");
 
         $this->operations[ $title ] = $operation;
 
@@ -89,7 +89,7 @@ class Server
     /**
      * Returns the Soap command element from a given DOM Document
      *
-     * @throws \cPHP\Exception\Interrupt\Soap This is thrown if any error
+     * @throws \h2o\Exception\Interrupt\Soap This is thrown if any error
      * 		is encountered while parsing the documet
      * @param DOMDocument $doc The document to parse as a soap request
      * @return DOMElement The command element
@@ -97,7 +97,7 @@ class Server
     private function getOperationElem ( \DOMDocument $doc )
     {
         if ( !$doc->hasChildNodes() ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Empty XML Document",
                 1000
             );
@@ -109,7 +109,7 @@ class Server
 
         // Look for the soap envelope
         if ( $xpath->evaluate("count(/soap:Envelope)") == 0 ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Could not find soap envelope",
                 1001
             );
@@ -120,7 +120,7 @@ class Server
 
         // Look for the soap body
         if ( $bodyCount == 0 ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Could not find soap body",
                 1002
             );
@@ -128,7 +128,7 @@ class Server
 
         // Ensure there aren't multiple soap bodies
         if ( $bodyCount > 1 ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Multiple soap body elements found",
                 1003
             );
@@ -138,7 +138,7 @@ class Server
 
         // Look for the soap command tag
         if ( $cmdCount == 0 ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Could not find soap operation element",
                 1004
             );
@@ -146,7 +146,7 @@ class Server
 
         // Ensure there aren't multiple commands
         if ( $cmdCount > 1 ) {
-            throw new \cPHP\Exception\Interrupt\Soap(
+            throw new \h2o\Exception\Interrupt\Soap(
             	"Multiple soap operation elements found",
                 1005
             );
@@ -164,7 +164,7 @@ class Server
      * In the event of an error, a Soap Fault builder will be returned.
      *
      * @param \DOMDocument $doc The document to process
-     * @return \cPHP\iface\XMLBuilder Returns the builder needed to construct
+     * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
      * 		the response
      */
     public function process ( \DOMDocument $doc )
@@ -177,11 +177,11 @@ class Server
             $tag = $cmd->tagName;
 
             // If the tag is namespaced, just grab the local part
-            if ( \cPHP\str\contains(":", $tag) )
-                $tag = \cPHP\ary\last( explode(":", $tag) );
+            if ( \h2o\str\contains(":", $tag) )
+                $tag = \h2o\ary\last( explode(":", $tag) );
 
             if ( !isset($this->operations[ $tag ]) ) {
-                throw new \cPHP\Exception\Interrupt\Soap(
+                throw new \h2o\Exception\Interrupt\Soap(
                         "Invalid soap operation",
                         1006
                     );
@@ -190,8 +190,8 @@ class Server
             return $this->operations[ $tag ]->getResponseBuilder( $doc, $cmd );
 
         }
-        catch ( \cPHP\Exception\Interrupt\Soap $err ) {
-            return new \cPHP\XMLBuilder\Soap\Fault(
+        catch ( \h2o\Exception\Interrupt\Soap $err ) {
+            return new \h2o\XMLBuilder\Soap\Fault(
                     $err->getCode(),
                     $err->getMessage()
                 );

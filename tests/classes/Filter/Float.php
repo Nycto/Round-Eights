@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testInteger ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
         $this->assertSame( 1.0, $filter->filter(1) );
         $this->assertSame( 20.0, $filter->filter(20) );
         $this->assertSame( -10.0, $filter->filter(-10) );
@@ -44,14 +44,14 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testBoolean ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
         $this->assertSame( 1.0, $filter->filter(TRUE) );
         $this->assertSame( 0.0, $filter->filter(FALSE) );
     }
 
     public function testFloat ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
         $this->assertSame( 1.0, $filter->filter(1.0) );
         $this->assertSame( .5, $filter->filter(.5) );
         $this->assertSame( 20.25, $filter->filter(20.25) );
@@ -61,13 +61,13 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testNull ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
         $this->assertSame( 0.0, $filter->filter(NULL) );
     }
 
     public function testIntegerString ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
 
         $this->assertSame( 0.0, $filter->filter("Some String") );
         $this->assertSame( 20.0, $filter->filter("20") );
@@ -81,7 +81,7 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testFloatString ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
 
         $this->assertSame( 20.0, $filter->filter("20.0") );
         $this->assertSame( -20.04, $filter->filter("-20.04") );
@@ -92,7 +92,7 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testArray ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
 
         $this->assertSame( 50.5, $filter->filter( array(50.5) ) );
         $this->assertSame( 0.0, $filter->filter( array() ) );
@@ -100,7 +100,7 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
 
     public function testObject ()
     {
-        $filter = new \cPHP\Filter\Float;
+        $filter = new \h2o\Filter\Float;
 
         $this->assertSame( 1.0, $filter->filter( $this->getMock("stub_random_obj") ) );
     }

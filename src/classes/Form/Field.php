@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace cPHP\Form;
+namespace h2o\Form;
 
 /**
  * The base class for HTML form fields
  */
-abstract class Field implements \cPHP\iface\Form\Field
+abstract class Field implements \h2o\iface\Form\Field
 {
 
     /**
@@ -50,7 +50,7 @@ abstract class Field implements \cPHP\iface\Form\Field
     /**
      * The filter to apply to any data that is fed in to this field
      *
-     * @var \cPHP\iface\Filter
+     * @var \h2o\iface\Filter
      */
     private $filter;
 
@@ -60,14 +60,14 @@ abstract class Field implements \cPHP\iface\Form\Field
      * This allows you to do things like obfuscate credit cards, SSNs, or set
      * a value that a field should always be equal to.
      *
-     * @var \cPHP\iface\Filter
+     * @var \h2o\iface\Filter
      */
     private $outFilter;
 
     /**
      * The validator for this field
      *
-     * @var \cPHP\iface\Validator
+     * @var \h2o\iface\Validator
      */
     private $validator;
 
@@ -95,14 +95,14 @@ abstract class Field implements \cPHP\iface\Form\Field
      * Sets the name of this field
      *
      * @param String $name The field name
-     * @return \cPHP\Form\Field Returns a self reference
+     * @return \h2o\Form\Field Returns a self reference
      */
     public function setName( $name )
     {
-        $name = \cPHP\Filter::Variable()->filter( $name );
+        $name = \h2o\Filter::Variable()->filter( $name );
 
-        if ( !\cPHP\Validator::Variable()->isValid( $name ) )
-            throw new \cPHP\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\h2o\Validator::Variable()->isValid( $name ) )
+            throw new \h2o\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         $this->name = $name;
 
@@ -115,12 +115,12 @@ abstract class Field implements \cPHP\iface\Form\Field
      * If no filter has been explicitly set, this will create a new chain
      * filter, save it to this instance and return a reference to it
      *
-     * @return \cPHP\iface\Filter
+     * @return \h2o\iface\Filter
      */
     public function getFilter ()
     {
-        if ( !($this->filter instanceof \cPHP\iface\Filter) )
-            $this->filter = new \cPHP\Filter\Chain;
+        if ( !($this->filter instanceof \h2o\iface\Filter) )
+            $this->filter = new \h2o\Filter\Chain;
 
         return $this->filter;
     }
@@ -128,10 +128,10 @@ abstract class Field implements \cPHP\iface\Form\Field
     /**
      * Sets the filter for this instance
      *
-     * @param \cPHP\iface\Filter An object that implements the \cPHP\iface\Filter interface
-     * @return \cPHP\Form\Field Returns a self reference
+     * @param \h2o\iface\Filter An object that implements the \h2o\iface\Filter interface
+     * @return \h2o\Form\Field Returns a self reference
      */
-    public function setFilter( \cPHP\iface\Filter $filter )
+    public function setFilter( \h2o\iface\Filter $filter )
     {
         $this->filter = $filter;
         return $this;
@@ -142,12 +142,12 @@ abstract class Field implements \cPHP\iface\Form\Field
      *
      * By default, this is set to use a Chain filter
      *
-     * @return \cPHP\iface\Filter
+     * @return \h2o\iface\Filter
      */
     public function getOutputFilter ()
     {
-        if ( !($this->outFilter instanceof \cPHP\iface\Filter) )
-            $this->outFilter = new \cPHP\Filter\Chain;
+        if ( !($this->outFilter instanceof \h2o\iface\Filter) )
+            $this->outFilter = new \h2o\Filter\Chain;
 
         return $this->outFilter;
     }
@@ -155,10 +155,10 @@ abstract class Field implements \cPHP\iface\Form\Field
     /**
      * Sets the output filter
      *
-     * @param \cPHP\iface\Filter
-     * @return \cPHP\Form\Field Returns a self reference
+     * @param \h2o\iface\Filter
+     * @return \h2o\Form\Field Returns a self reference
      */
-    public function setOutputFilter ( \cPHP\iface\Filter $filter )
+    public function setOutputFilter ( \h2o\iface\Filter $filter )
     {
         $this->outFilter = $filter;
         return $this;
@@ -170,12 +170,12 @@ abstract class Field implements \cPHP\iface\Form\Field
      * If no validator has been explicitly set, this will create a new "Any"
      * validator, save it to this instance and return a reference to it
      *
-     * @return \cPHP\iface\Validator
+     * @return \h2o\iface\Validator
      */
     public function getValidator ()
     {
-        if ( !($this->validator instanceof \cPHP\iface\Validator) )
-            $this->validator = new \cPHP\Validator\Any;
+        if ( !($this->validator instanceof \h2o\iface\Validator) )
+            $this->validator = new \h2o\Validator\Any;
 
         return $this->validator;
     }
@@ -183,10 +183,10 @@ abstract class Field implements \cPHP\iface\Form\Field
     /**
      * Sets the validator for this instance
      *
-     * @param \cPHP\iface\Validator A validator object
-     * @return \cPHP\Form\Field Returns a self reference
+     * @param \h2o\iface\Validator A validator object
+     * @return \h2o\Form\Field Returns a self reference
      */
-    public function setValidator( \cPHP\iface\Validator $validator )
+    public function setValidator( \h2o\iface\Validator $validator )
     {
         $this->validator = $validator;
         return $this;
@@ -200,16 +200,16 @@ abstract class Field implements \cPHP\iface\Form\Field
      * then it wraps the current validator and the validator in the instance in
      * an All validator and sets it to the validator for this instance.
      *
-     * @param \cPHP\iface\Validator $validator The validator to add to this instance
-     * @return \cPHP\Form\Field Returns a self reference
+     * @param \h2o\iface\Validator $validator The validator to add to this instance
+     * @return \h2o\Form\Field Returns a self reference
      */
-    public function andValidator ( \cPHP\iface\Validator $validator )
+    public function andValidator ( \h2o\iface\Validator $validator )
     {
-        if ( $this->validator instanceof \cPHP\Validator\All ) {
+        if ( $this->validator instanceof \h2o\Validator\All ) {
             $this->validator->add( $validator );
         }
         else {
-            $this->validator = new \cPHP\Validator\All(
+            $this->validator = new \h2o\Validator\All(
                     $this->validator,
                     $validator
                 );
@@ -232,14 +232,14 @@ abstract class Field implements \cPHP\iface\Form\Field
      * Sets the value for this field
      *
      * This does not apply the filter when saving, however it will convert any
-     * objects or arrays using the \cPHP\reduce function
+     * objects or arrays using the \h2o\reduce function
      *
      * @param mixed $value The value of this field
-     * @return \cPHP\Form\Field Returns a self reference
+     * @return \h2o\Form\Field Returns a self reference
      */
     public function setValue ( $value )
     {
-        $this->value = \cPHP\reduce( $value );
+        $this->value = \h2o\reduce( $value );
         return $this;
     }
 
@@ -251,7 +251,7 @@ abstract class Field implements \cPHP\iface\Form\Field
     public function getValue ()
     {
         // Only apply the filter if there is one
-        if ( $this->filter instanceof \cPHP\iface\Filter )
+        if ( $this->filter instanceof \h2o\iface\Filter )
             return $this->filter->filter( $this->getRawValue() );
         else
             return $this->getRawValue();
@@ -265,7 +265,7 @@ abstract class Field implements \cPHP\iface\Form\Field
     public function getForOutput ()
     {
         // Only apply the filter if there is one
-        if ( $this->outFilter instanceof \cPHP\iface\Filter )
+        if ( $this->outFilter instanceof \h2o\iface\Filter )
             return $this->outFilter->filter( $this->getValue() );
         else
             return $this->getValue();
@@ -277,7 +277,7 @@ abstract class Field implements \cPHP\iface\Form\Field
      *
      * This will apply the validator to the filtered value
      *
-     * @return \cPHP\Validator\Results
+     * @return \h2o\Validator\Results
      */
     public function validate ()
     {
@@ -295,13 +295,13 @@ abstract class Field implements \cPHP\iface\Form\Field
     }
 
     /**
-     * Returns a \cPHP\Tag object that represents this instance
+     * Returns a \h2o\Tag object that represents this instance
      *
-     * @return \cPHP\Tag
+     * @return \h2o\Tag
      */
     public function getTag()
     {
-        return new \cPHP\Tag(
+        return new \h2o\Tag(
                 'input',
                 null,
                 array(

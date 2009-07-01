@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,14 +35,14 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testBoolean ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
         $this->assertTrue( $filter->filter(TRUE) );
         $this->assertFalse( $filter->filter(FALSE) );
     }
 
     public function testInteger ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
         $this->assertTrue( $filter->filter(1) );
         $this->assertTrue( $filter->filter(20) );
         $this->assertTrue( $filter->filter(-10) );
@@ -51,7 +51,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testFloat ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
         $this->assertTrue( $filter->filter(1.0) );
         $this->assertTrue( $filter->filter(.5) );
         $this->assertTrue( $filter->filter(20.5) );
@@ -61,14 +61,14 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testNull ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
 
         $this->assertFalse( $filter->filter(NULL) );
     }
 
     public function testString ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
 
         $this->assertTrue( $filter->filter("t") );
         $this->assertTrue( $filter->filter("T") );
@@ -104,7 +104,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testArray ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
 
         $this->assertTrue( $filter->filter( array(50) ) );
         $this->assertFalse( $filter->filter( array() ) );
@@ -112,7 +112,7 @@ class classes_filter_boolean extends PHPUnit_Framework_TestCase
 
     public function testOther ()
     {
-        $filter = new \cPHP\Filter\Boolean;
+        $filter = new \h2o\Filter\Boolean;
 
         $this->assertTrue( $filter->filter( $this->getMock("stub_spoof") ) );
     }

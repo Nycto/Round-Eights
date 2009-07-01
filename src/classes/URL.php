@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Tag
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Class for parsing, manipulating and outputting URLs
@@ -93,7 +93,7 @@ class URL
     /**
      * Returns a new URL instance with the base pulled from the environment
      *
-     * @return Object Returns a cPHP\URL object
+     * @return Object Returns a \h2o\URL object
      */
     static public function fromBase ()
     {
@@ -105,7 +105,7 @@ class URL
     /**
      * Returns a new URL instance with the entire URL pulled from the environment
      *
-     * @return Object Returns a cPHP\URL object
+     * @return Object Returns a \h2o\URL object
      */
     static public function fromURL ()
     {
@@ -132,8 +132,8 @@ class URL
             $this->setQuery( $url->getQuery() );
             $this->setFragment( $url->getFragment() );
         }
-        else if ( !\cPHP\isVague($url) ) {
-            $this->setURL( \cPHP\strval($url) );
+        else if ( !\h2o\isVague($url) ) {
+            $this->setURL( \h2o\strval($url) );
         }
     }
 
@@ -153,11 +153,11 @@ class URL
      * This method exists strictly for unit testing purposes. By mocking this
      * method you can feed a spoof environment to the rest of the instance
      *
-     * @return Object Returns a \cPHP\Env instance
+     * @return Object Returns a \h2o\Env instance
      */
     protected function getEnv ()
     {
-        return \cPHP\Env::Request();
+        return \h2o\Env::Request();
     }
 
     /**
@@ -182,7 +182,7 @@ class URL
      */
     public function setScheme ( $scheme )
     {
-        $scheme = strtolower( \cPHP\str\stripW($scheme) );
+        $scheme = strtolower( \h2o\str\stripW($scheme) );
         $this->scheme = empty( $scheme ) ? null : $scheme;
         return $this;
     }
@@ -258,8 +258,8 @@ class URL
      */
     public function setUserName ( $username )
     {
-        $username = \cPHP\strval( $username );
-        $this->username = \cPHP\isEmpty( $username ) ? null : $username;
+        $username = \h2o\strval( $username );
+        $this->username = \h2o\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -302,8 +302,8 @@ class URL
      */
     public function setPassword ( $password )
     {
-        $password = \cPHP\strval( $password );
-        $this->password = \cPHP\isEmpty( $password ) ? null : $password;
+        $password = \h2o\strval( $password );
+        $this->password = \h2o\isEmpty( $password ) ? null : $password;
         return $this;
     }
 
@@ -358,9 +358,9 @@ class URL
      */
     public function setUserInfo ( $userInfo )
     {
-        $userInfo = \cPHP\strVal( $userInfo );
+        $userInfo = \h2o\strVal( $userInfo );
 
-        if ( \cPHP\str\contains("@", $userInfo))
+        if ( \h2o\str\contains("@", $userInfo))
             $userInfo = strstr( $userInfo, "@", TRUE );
 
         $userInfo = explode(":", $userInfo, 2);
@@ -417,11 +417,11 @@ class URL
      */
     public function setHost ( $host )
     {
-        $host = \cPHP\strval($host);
+        $host = \h2o\strval($host);
 
         $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
 
-        $host = \cPHP\str\stripRepeats($host, ".");
+        $host = \h2o\str\stripRepeats($host, ".");
         $host = trim($host, ".");
 
         $this->host = empty($host) ? null : $host;
@@ -470,8 +470,8 @@ class URL
         if ( !$link->hostExists() )
             return FALSE;
 
-        $localHost = \cPHP\str\stripHead( $this->getHost(), "www." );
-        $envHost = \cPHP\str\stripHead( $link->getHost(), "www." );
+        $localHost = \h2o\str\stripHead( $this->getHost(), "www." );
+        $envHost = \h2o\str\stripHead( $link->getHost(), "www." );
 
         if ( strcasecmp($localHost, $envHost) == 0 )
             return TRUE;
@@ -634,7 +634,7 @@ class URL
      */
     public function setHostAndPort ( $hostAndPort )
     {
-        $hostAndPort = \cPHP\strval( $hostAndPort );
+        $hostAndPort = \h2o\strval( $hostAndPort );
 
         if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
             $this->setHost( $matches[1] );
@@ -683,9 +683,9 @@ class URL
      */
     public function setBase ( $base )
     {
-        $base = \cPHP\strval( $base );
+        $base = \h2o\strval( $base );
 
-        if ( \cPHP\str\contains("://", $base) ) {
+        if ( \h2o\str\contains("://", $base) ) {
             $this->setScheme( strstr($base, "://", TRUE) );
             $base = substr( strstr($base, "://", FALSE), 3 );
         }
@@ -693,7 +693,7 @@ class URL
             $this->clearScheme();
         }
 
-        if ( \cPHP\str\contains("@", $base) ) {
+        if ( \h2o\str\contains("@", $base) ) {
             $this->setUserInfo( strstr($base, "@", TRUE) );
             $base = substr( strstr($base, "@", FALSE), 1 );
         }
@@ -746,14 +746,14 @@ class URL
      */
     public function setDir ( $directory )
     {
-        $directory = \cPHP\strval( $directory );
+        $directory = \h2o\strval( $directory );
 
-        if ( \cPHP\isEmpty( $directory ) ) {
+        if ( \h2o\isEmpty( $directory ) ) {
             $this->directory = null;
         }
         else {
-            $directory = \cPHP\FileSys::resolvePath( $directory );
-            $directory = \cPHP\str\enclose( $directory, "/" );
+            $directory = \h2o\FileSys::resolvePath( $directory );
+            $directory = \h2o\str\enclose( $directory, "/" );
             $this->directory = $directory;
         }
 
@@ -799,9 +799,9 @@ class URL
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(\cPHP\strval( $filename ));
+        $filename = trim(\h2o\strval( $filename ));
         $filename = rtrim( $filename, "." );
-        $this->filename = \cPHP\isEmpty( $filename ) ? null : $filename;
+        $this->filename = \h2o\isEmpty( $filename ) ? null : $filename;
         return $this;
     }
 
@@ -846,9 +846,9 @@ class URL
      */
     public function setExt ( $extension )
     {
-        $extension = trim(\cPHP\strval( $extension ));
+        $extension = trim(\h2o\strval( $extension ));
         $extension = ltrim( $extension, "." );
-        $this->extension = \cPHP\isEmpty( $extension ) ? null : $extension;
+        $this->extension = \h2o\isEmpty( $extension ) ? null : $extension;
         return $this;
     }
 
@@ -889,7 +889,7 @@ class URL
         if ( !$this->extExists() )
             return $this->getFilename();
 
-        return \cPHP\str\weld(
+        return \h2o\str\weld(
                 $this->getFilename(),
                 $this->getExt(),
                 "."
@@ -904,7 +904,7 @@ class URL
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(\cPHP\strval( $basename ));
+        $basename = trim(\h2o\strval( $basename ));
         $basename = pathinfo( $basename );
 
         if ( isset($basename['filename']) )
@@ -943,7 +943,7 @@ class URL
      */
     public function setPath ( $path )
     {
-        $path = trim(\cPHP\strval( $path ));
+        $path = trim(\h2o\strval( $path ));
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -1019,9 +1019,9 @@ class URL
      */
     public function setFauxDir ( $fauxDir )
     {
-        $fauxDir = \cPHP\strval( $fauxDir );
-        $this->fauxDir = \cPHP\isEmpty( $fauxDir )
-            ? null : \cPHP\str\head($fauxDir, "/");
+        $fauxDir = \h2o\strval( $fauxDir );
+        $this->fauxDir = \h2o\isEmpty( $fauxDir )
+            ? null : \h2o\str\head($fauxDir, "/");
         return $this;
     }
 
@@ -1094,9 +1094,9 @@ class URL
         if ( is_array($query) )
             $query = http_build_query( $query );
 
-        $query = \cPHP\strval( $query );
+        $query = \h2o\strval( $query );
 
-        if ( \cPHP\isEmpty($query, \cPHP\ALLOW_SPACES) )
+        if ( \h2o\isEmpty($query, \h2o\ALLOW_SPACES) )
             $this->query = null;
         else
             $this->query = $query;
@@ -1155,8 +1155,8 @@ class URL
      */
     public function setFragment ( $fragment )
     {
-        $fragment = \cPHP\strval( $fragment );
-        $this->fragment = \cPHP\isEmpty( $fragment, \cPHP\ALLOW_SPACES ) ? null : $fragment;
+        $fragment = \h2o\strval( $fragment );
+        $this->fragment = \h2o\isEmpty( $fragment, \h2o\ALLOW_SPACES ) ? null : $fragment;
         return $this;
     }
 
@@ -1209,7 +1209,7 @@ class URL
         if ( $this->fragmentExists() )
             $result .= "#". $this->getFragment();
 
-        return \cPHP\isEmpty( $result, \cPHP\ALLOW_SPACES ) ? null : $result;
+        return \h2o\isEmpty( $result, \h2o\ALLOW_SPACES ) ? null : $result;
     }
 
     /**
@@ -1221,7 +1221,7 @@ class URL
     {
         $url = $this->getBase() . $this->getRelative();
 
-        return \cPHP\isEmpty( $url, \cPHP\ALLOW_SPACES ) ? null : $url;
+        return \h2o\isEmpty( $url, \h2o\ALLOW_SPACES ) ? null : $url;
     }
 
     /**
@@ -1232,7 +1232,7 @@ class URL
      */
     public function setURL ( $url )
     {
-        $url = \cPHP\strval($url);
+        $url = \h2o\strval($url);
 
         $parsed = parse_url( $url );
 

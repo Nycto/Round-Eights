@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_page_raw extends PHPUnit_Framework_TestCase
 
     public function testPageAccessors ()
     {
-        $page = new \cPHP\Page\Raw;
+        $page = new \h2o\Page\Raw;
 
         $this->assertNull( $page->getData() );
         $this->assertFalse( $page->dataExists() );
@@ -60,22 +60,22 @@ class classes_page_raw extends PHPUnit_Framework_TestCase
 
     public function testGetContent_empty ()
     {
-        $page = new \cPHP\Page\Raw;
+        $page = new \h2o\Page\Raw;
 
-        $result = $page->getContent( new \cPHP\Page\Context );
+        $result = $page->getContent( new \h2o\Page\Context );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Raw') );
-        $this->assertNull( $result->getContent( new \cPHP\Page\Context ) );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Template\Raw') );
+        $this->assertNull( $result->getContent( new \h2o\Page\Context ) );
     }
 
     public function testGetContent_data ()
     {
-        $page = new \cPHP\Page\Raw;
+        $page = new \h2o\Page\Raw;
         $page->setData( "Chunk of data" );
 
-        $result = $page->getContent( new \cPHP\Page\Context );
+        $result = $page->getContent( new \h2o\Page\Context );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Raw') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Template\Raw') );
 
         $this->assertSame( "Chunk of data", $result->getContent() );
     }

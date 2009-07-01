@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,24 +36,24 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
     public function testRandom ()
     {
         $this->assertThat(
-                \cPHP\Random\Seed::random(),
-                $this->isInstanceOf("cPHP\Random\Seed")
+                \h2o\Random\Seed::random(),
+                $this->isInstanceOf("h2o\Random\Seed")
             );
 
         $this->assertNotEquals(
-                \cPHP\Random\Seed::random()->getSource(),
-                \cPHP\Random\Seed::random()->getSource()
+                \h2o\Random\Seed::random()->getSource(),
+                \h2o\Random\Seed::random()->getSource()
             );
 
         $this->assertNotEquals(
-                \cPHP\Random\Seed::random()->getSource(),
-                \cPHP\Random\Seed::random()->getSource()
+                \h2o\Random\Seed::random()->getSource(),
+                \h2o\Random\Seed::random()->getSource()
             );
     }
 
     public function testSourceAccessors ()
     {
-        $seed = new \cPHP\Random\Seed("Initial value");
+        $seed = new \h2o\Random\Seed("Initial value");
 
         $this->assertSame( "Initial value", $seed->getSource() );
 
@@ -78,7 +78,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
 
     public function testGetString ()
     {
-        $seed = new \cPHP\Random\Seed("Initial value");
+        $seed = new \h2o\Random\Seed("Initial value");
         $this->assertSame( "fcb1ddc45496d5bd9bbb1d0e3e24a58c56f33281", $seed->getString() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
@@ -105,7 +105,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
         if ( !extension_loaded("bcmath") )
             $this->markTestSkipped("BCMath extension is not enabled");
 
-        $seed = new \cPHP\Random\Seed("Initial value");
+        $seed = new \h2o\Random\Seed("Initial value");
         $this->assertSame( 1011282668, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
@@ -132,7 +132,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
         if ( !extension_loaded("bcmath") )
             $this->markTestSkipped("BCMath extension is not enabled");
 
-        $seed = new \cPHP\Random\Seed("Initial value");
+        $seed = new \h2o\Random\Seed("Initial value");
         $this->assertSame( 0.47091518923217, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddError ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
 
@@ -57,12 +57,12 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
             $result->addError("");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \cPHP\Exception\Argument $err ) {}
+        catch ( \h2o\Exception\Argument $err ) {}
     }
 
     public function testAddErrors ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addErrors("Error Message") );
         $this->assertEquals(
@@ -85,7 +85,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testAddDuplicateError ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $this->assertSame( $result, $result->addError("This is an error message") );
         $this->assertSame( $result, $result->addError("This is an error message") );
@@ -98,7 +98,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testClearErrors ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -114,7 +114,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testSetErrors ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $result->addError("This is an error message");
 
@@ -133,7 +133,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testHasErrors ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $this->assertFalse( $result->hasErrors() );
 
@@ -148,7 +148,7 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
     public function testGetFirstError ()
     {
-        $result = new \cPHP\Validator\ErrorList;
+        $result = new \h2o\Validator\ErrorList;
 
         $this->assertNull( $result->getFirstError() );
 

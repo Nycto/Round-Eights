@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -41,12 +41,12 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextInteger ()
     {
-        $seed = $this->getMock('cPHP\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('h2o\Random\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );
 
-        $random = new \cPHP\Random\CMWC( $seed );
+        $random = new \h2o\Random\CMWC( $seed );
 
         $this->assertSame( 186686213, $random->nextInteger() );
         $this->assertSame( 654266915, $random->nextInteger() );
@@ -62,12 +62,12 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextFloat ()
     {
-        $seed = $this->getMock('cPHP\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('h2o\Random\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );
 
-        $random = new \cPHP\Random\CMWC( $seed );
+        $random = new \h2o\Random\CMWC( $seed );
 
         $this->assertSame( 0.08693254230867, $random->nextFloat() );
         $this->assertSame( 0.30466677402364, $random->nextFloat() );
@@ -83,12 +83,12 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextString ()
     {
-        $seed = $this->getMock('cPHP\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('h2o\Random\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );
 
-        $random = new \cPHP\Random\CMWC( $seed );
+        $random = new \h2o\Random\CMWC( $seed );
 
         $this->assertSame( "04dd7aa1d307ff02ee6498eba252e959b3936c29", $random->nextString() );
         $this->assertSame( "0e007079b76d2b526f9774746fb845d0ced6919c", $random->nextString() );

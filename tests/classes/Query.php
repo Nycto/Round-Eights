@@ -4,28 +4,27 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
 
-use cPHP;
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
@@ -38,37 +37,37 @@ class classes_query extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(
                 array( "part" ),
-                \cPHP\Query::parseSQLName( "part" )
+                \h2o\Query::parseSQLName( "part" )
             );
 
         $this->assertSame(
                 array( "part" ),
-                \cPHP\Query::parseSQLName( "  `  part  `  " )
+                \h2o\Query::parseSQLName( "  `  part  `  " )
             );
 
         $this->assertSame(
                 array( "part1", "part2" ),
-                \cPHP\Query::parseSQLName( "part1.part2" )
+                \h2o\Query::parseSQLName( "part1.part2" )
             );
 
         $this->assertSame(
                 array( "part1", "part2", "part3" ),
-                \cPHP\Query::parseSQLName( "   part1   .   part2 . part3  " )
+                \h2o\Query::parseSQLName( "   part1   .   part2 . part3  " )
             );
 
         $this->assertSame(
                 array( "part1", "part2" ),
-                \cPHP\Query::parseSQLName( "`part1`.`part2`" )
+                \h2o\Query::parseSQLName( "`part1`.`part2`" )
             );
 
         $this->assertSame(
                 array( "part1", "part2", "part3" ),
-                \cPHP\Query::parseSQLName( "  `part1`  .  `part2`  .   `part3`  " )
+                \h2o\Query::parseSQLName( "  `part1`  .  `part2`  .   `part3`  " )
             );
 
         $this->assertSame(
                 array(),
-                \cPHP\Query::parseSQLName( "  .  .  " )
+                \h2o\Query::parseSQLName( "  .  .  " )
             );
     }
 
@@ -76,50 +75,50 @@ class classes_query extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(
                 array( null, null ),
-                \cPHP\Query::parseSQLAlias( "  " )
+                \h2o\Query::parseSQLAlias( "  " )
             );
 
         $this->assertSame(
                 array( "Expr", null ),
-                \cPHP\Query::parseSQLAlias( "Expr" )
+                \h2o\Query::parseSQLAlias( "Expr" )
             );
 
         $this->assertSame(
                 array( "Expr", "alias" ),
-                \cPHP\Query::parseSQLAlias( "Expr AS alias" )
+                \h2o\Query::parseSQLAlias( "Expr AS alias" )
             );
 
         $this->assertSame(
                 array( "`Expr`", "alias" ),
-                \cPHP\Query::parseSQLAlias( "`Expr` AS `alias`" )
+                \h2o\Query::parseSQLAlias( "`Expr` AS `alias`" )
             );
 
         $this->assertSame(
                 array( "`Expr AS `", "ASalias" ),
-                \cPHP\Query::parseSQLAlias( "`Expr AS ` AS ` AS alias`" )
+                \h2o\Query::parseSQLAlias( "`Expr AS ` AS ` AS alias`" )
             );
 
         $this->assertSame(
                 array( "Expr", null ),
-                \cPHP\Query::parseSQLAlias( "Expr AS " )
+                \h2o\Query::parseSQLAlias( "Expr AS " )
             );
 
         $this->assertSame(
                 array( "Expr", "ASalias" ),
-                \cPHP\Query::parseSQLAlias( "Expr AS AS alias" )
+                \h2o\Query::parseSQLAlias( "Expr AS AS alias" )
             );
 
         $this->assertSame(
                 array( "`Expr\\`quoted`", null ),
-                \cPHP\Query::parseSQLAlias( "`Expr\\`quoted` AS " )
+                \h2o\Query::parseSQLAlias( "`Expr\\`quoted` AS " )
             );
     }
 
     public function testSelect ()
     {
         $this->assertThat(
-                \cPHP\Query::select(),
-                $this->isInstanceOf("\cPHP\Query\Select")
+                \h2o\Query::select(),
+                $this->isInstanceOf("\h2o\Query\Select")
             );
     }
 

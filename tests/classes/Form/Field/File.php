@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_form_field_file
 
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite;
+        $suite = new h2o_Base_TestSuite;
         $suite->addTestSuite( 'classes_form_field_file_noFile' );
         $suite->addTestSuite( 'classes_form_field_file_withFile' );
         return $suite;
@@ -51,7 +51,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetRawValue_noFile ()
     {
-        $field = $this->getMock("cPHP\Form\Field\File", array("getUploadedFiles"), array("fld"));
+        $field = $this->getMock("h2o\Form\Field\File", array("getUploadedFiles"), array("fld"));
 
         $field->expects( $this->once() )
             ->method("getUploadedFiles")
@@ -62,7 +62,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetRawValue_withFile ()
     {
-        $field = $this->getMock("cPHP\Form\Field\File", array("getUploadedFiles"), array("fld"));
+        $field = $this->getMock("h2o\Form\Field\File", array("getUploadedFiles"), array("fld"));
 
         $field->expects( $this->once() )
             ->method("getUploadedFiles")
@@ -77,7 +77,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
     {
 
         // Set up the FileUpload validator to return an invalid uploaded file
-        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
@@ -88,7 +88,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
 
         // Set up file upload field to use the mock FileUpload validator
-        $field = $this->getMock("cPHP\Form\Field\File", array("getFileUploadValidator"), array("fld"));
+        $field = $this->getMock("h2o\Form\Field\File", array("getFileUploadValidator"), array("fld"));
 
         $field->expects( $this->once() )
             ->method("getFileUploadValidator")
@@ -97,7 +97,7 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
         // Run the simulation
         $result = $field->validate();
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\Validator\Result"));
+        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result"));
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("File exceeds the server's maximum allowed size"),
@@ -108,12 +108,12 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = new \cPHP\Form\Field\File("fld");
+        $field = new \h2o\Form\Field\File("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("cPHP\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
         $this->assertSame( "input", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -137,7 +137,7 @@ class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCa
     {
 
         // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -152,7 +152,7 @@ class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
 
         // Set up file upload field to use the mock validator and mock $_FILES
-        $field = $this->getMock("cPHP\Form\Field\File", array("getUploadedFiles", "getFileUploadValidator"), array("fld"));
+        $field = $this->getMock("h2o\Form\Field\File", array("getUploadedFiles", "getFileUploadValidator"), array("fld"));
 
         $field->expects( $this->once() )
             ->method("getUploadedFiles")
@@ -171,7 +171,7 @@ class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCa
     public function testValidate_otherValidator ()
     {
         // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("cPHP\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -186,10 +186,10 @@ class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
 
         // This result will be returned by the second validator
-        $result = new \cPHP\Validator\Result( $this->file );
+        $result = new \h2o\Validator\Result( $this->file );
 
         // Set up another validator that should receive the filename
-        $otherValid = $this->getMock("cPHP\iface\Validator", array("isValid", "validate"));
+        $otherValid = $this->getMock("h2o\iface\Validator", array("isValid", "validate"));
         $otherValid->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($this->file) )
@@ -198,7 +198,7 @@ class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCa
 
         // Set up the mock field to use the FileUpload validator and mock $_FILES
         $field = $this->getMock(
-                "\cPHP\Form\Field\File",
+                "\h2o\Form\Field\File",
                 array("getUploadedFiles", "getFileUploadValidator"),
                 array("fld")
             );

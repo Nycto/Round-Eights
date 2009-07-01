@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,14 +35,14 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testRegister ()
     {
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $this->assertSame( array(), $soap->getOperations() );
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
+        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
         $this->assertSame( $soap, $soap->register("one", $cmd) );
         $this->assertSame( array("one" => $cmd), $soap->getOperations() );
 
-        $cmd2 = $this->getMock('\cPHP\iface\Soap\Operation');
+        $cmd2 = $this->getMock('\h2o\iface\Soap\Operation');
         $this->assertSame( $soap, $soap->register("two", $cmd2) );
         $this->assertSame(
                 array("one" => $cmd, "two" => $cmd2),
@@ -58,28 +58,28 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testRegister_err ()
     {
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $this->assertSame( array(), $soap->getOperations() );
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
+        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
 
         try {
             $soap->register("  ", $cmd);
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testProcess_emptyDoc ()
     {
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
 
         $result = $soap->process( new DOMDocument );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                 		1000,
                 		"Empty XML Document"
             		),
@@ -92,11 +92,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $doc->loadXML('<tag />');
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                 		1001,
                 		"Could not find soap envelope"
             		),
@@ -109,11 +109,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $doc->loadXML('<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" />');
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                         1002,
                         "Could not find soap body"
                     ),
@@ -131,11 +131,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
     		.'</soap:Envelope>'
         );
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                 		1003,
                 		"Multiple soap body elements found"
                     ),
@@ -152,11 +152,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
     		.'</soap:Envelope>'
         );
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                 		1004,
                 		"Could not find soap operation element"
                     ),
@@ -176,11 +176,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
     		.'</soap:Envelope>'
         );
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                     	1005,
                     	"Multiple soap operation elements found"
                     ),
@@ -199,11 +199,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
     		.'</soap:Envelope>'
         );
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
         $result = $soap->process( $doc );
 
         $this->assertEquals(
-                new \cPHP\XMLBuilder\Soap\Fault(
+                new \h2o\XMLBuilder\Soap\Fault(
                     	1006,
                     	"Invalid soap operation"
                     ),
@@ -222,11 +222,11 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
     		.'</soap:Envelope>'
         );
 
-        $soap = new \cPHP\Soap\Server( "uri://example.com" );
+        $soap = new \h2o\Soap\Server( "uri://example.com" );
 
-        $response = $this->getMock('\cPHP\iface\XMLBuilder');
+        $response = $this->getMock('\h2o\iface\XMLBuilder');
 
-        $cmd = $this->getMock('\cPHP\iface\Soap\Operation');
+        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
         $cmd->expects( $this->once() )
             ->method( 'getResponseBuilder' )
             ->with(

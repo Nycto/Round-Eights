@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,11 +36,11 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     /**
      * Returns a test column with the given name
      *
-     * @return \cPHP\iface\MetaDB\Column
+     * @return \h2o\iface\MetaDB\Column
      */
     public function getTestColumn ( $name )
     {
-        $fld = $this->getMock("cPHP\iface\MetaDB\Column");
+        $fld = $this->getMock("h2o\iface\MetaDB\Column");
         $fld->expects( $this->any() )
             ->method('getName')
             ->will( $this->returnValue( $name ) );
@@ -51,22 +51,22 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     /**
      * Returns a test table set
      *
-     * @return \cPHP\MetaDB\TableSet
+     * @return \h2o\MetaDB\TableSet
      */
     public function getTestTableSet ()
     {
-        $fld = $this->getMock("cPHP\MetaDB\TableSet");
+        $fld = $this->getMock("h2o\MetaDB\TableSet");
         return $fld;
     }
 
     /**
      * Returns a test table
      *
-     * @return \cPHP\MetaDB\Table
+     * @return \h2o\MetaDB\Table
      */
     public function getTestTable ()
     {
-        return new \cPHP\MetaDB\Table(
+        return new \h2o\MetaDB\Table(
                 $this->getTestTableSet(),
                 "dbName",
                 "tblName"
@@ -76,22 +76,22 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         try {
-            new \cPHP\MetaDB\Table( $this->getTestTableSet(), "", "name" );
+            new \h2o\MetaDB\Table( $this->getTestTableSet(), "", "name" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
         try {
-            new \cPHP\MetaDB\Table( $this->getTestTableSet(), "name", "" );
+            new \h2o\MetaDB\Table( $this->getTestTableSet(), "name", "" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
-        $tbl = new \cPHP\MetaDB\Table(
+        $tbl = new \h2o\MetaDB\Table(
                 $this->getTestTableSet(),
                 "dbName",
                 "tblName"
@@ -133,7 +133,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
             $tbl->addColumn( $fld2 );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "A column with that name already exists", $err->getMessage() );
         }
     }

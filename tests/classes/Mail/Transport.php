@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -37,29 +37,29 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(
                 "<test@example.com>",
-                \cPHP\Mail\Transport::formatAddress("test@example.com")
+                \h2o\Mail\Transport::formatAddress("test@example.com")
             );
 
         $this->assertSame(
                 '"Lug MightyChunk" <test@example.com>',
-                \cPHP\Mail\Transport::formatAddress("test@example.com", "Lug MightyChunk")
+                \h2o\Mail\Transport::formatAddress("test@example.com", "Lug MightyChunk")
             );
 
         $this->assertSame(
                 '<test@example.com>',
-                \cPHP\Mail\Transport::formatAddress("test@example.com", chr(5))
+                \h2o\Mail\Transport::formatAddress("test@example.com", chr(5))
             );
 
         $this->assertSame(
                 '"Lug \"MightyChunk\"" <test@example.com>',
-                \cPHP\Mail\Transport::formatAddress("test@example.com", 'Lug "MightyChunk"')
+                \h2o\Mail\Transport::formatAddress("test@example.com", 'Lug "MightyChunk"')
             );
     }
 
     public function testGetToString ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
         $this->assertSame( "", $transport->getToString($mail) );
 
         $mail->addTo("test@example.com");
@@ -84,8 +84,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBCCString ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
         $this->assertSame( "", $transport->getBCCString($mail) );
 
         $mail->addBCC("test@example.com");
@@ -110,9 +110,9 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_sparse ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -134,7 +134,7 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_full ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setFrom("from@example.com", "Jack Test")
             ->addTo("other@example.net", "Jack Snap")
             ->addTo("another@example.org", "Crackle Pop")
@@ -144,7 +144,7 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             ->setSubject("This is a test")
             ->setMessageID("abc123");
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -172,10 +172,10 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_textOnly ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setText("This is some content");
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -197,10 +197,10 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_htmlOnly ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setHTML("This is some content");
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -222,11 +222,11 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_multipart ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setHTML("This is some content");
         $mail->setText("This is some content");
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -253,9 +253,9 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderString_sparse ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderString( $mail );
         $this->assertType('string', $headers);
@@ -272,7 +272,7 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderString_full ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setFrom("from@example.com", "Jack Test")
             ->addTo("other@example.net", "Jack Snap")
             ->addTo("another@example.org", "Crackle Pop")
@@ -282,7 +282,7 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             ->setSubject("This is a test")
             ->setMessageID("abc123");
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderString( $mail );
         $this->assertType('string', $headers);
@@ -305,7 +305,7 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testPrepareContent ()
     {
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $this->assertSame(
                 "This string should not be changed",
@@ -337,8 +337,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_text ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $this->assertSame(
                 "",
@@ -355,8 +355,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_html ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $mail->setHTML("<h1>This is a chunk of text</h1>");
 
@@ -368,8 +368,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_multi ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         $mail->setHTML("<h1>This is a chunk of text</h1>");
         $mail->setText("This is a chunk of text");
@@ -396,14 +396,14 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testSend_incomplete ()
     {
-        $mail = new \cPHP\Mail;
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $mail = new \h2o\Mail;
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
 
         try {
             $transport->send( $mail );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Variable $err ) {
+        catch ( \h2o\Exception\Variable $err ) {
             $this->assertSame( '"From" Address must be set to send an email', $err->getMessage() );
         }
 
@@ -413,18 +413,18 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             $transport->send( $mail );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Variable $err ) {
+        catch ( \h2o\Exception\Variable $err ) {
             $this->assertSame( '"To" Address must be set to send an email', $err->getMessage() );
         }
     }
 
     public function testSend_valid ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setFrom('test@example.com');
         $mail->addTo('destination@example.com');
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
         $transport->expects( $this->once() )
             ->method( 'internalSend' )
             ->with( $this->equalTo($mail) );

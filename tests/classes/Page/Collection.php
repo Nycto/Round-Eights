@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,10 +35,10 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
     public function testPageAccessors ()
     {
-        $page = new \cPHP\Page\Collection;
+        $page = new \h2o\Page\Collection;
 
-        $sub1 = $this->getMock('cPHP\iface\Page', array('getContent'));
-        $sub2 = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub1 = $this->getMock('h2o\iface\Page', array('getContent'));
+        $sub2 = $this->getMock('h2o\iface\Page', array('getContent'));
 
         $this->assertEquals( array(), $page->getPages() );
 
@@ -58,28 +58,28 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
     public function testCreateContent_empty ()
     {
-        $page = new \cPHP\Page\Collection;
+        $page = new \h2o\Page\Collection;
 
-        $result = $page->getContent( new \cPHP\Page\Context );
+        $result = $page->getContent( new \h2o\Page\Context );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Template\Collection') );
 
         $this->assertEquals( array(), $result->getTemplates() );
     }
 
     public function testCreateContent_templates ()
     {
-        $tpl1 = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
-        $tpl2 = $this->getMock('cPHP\iface\Template', array('render', 'display', '__toString'));
+        $tpl1 = $this->getMock('h2o\iface\Template', array('render', 'display', '__toString'));
+        $tpl2 = $this->getMock('h2o\iface\Template', array('render', 'display', '__toString'));
 
 
-        $page = new \cPHP\Page\Collection;
-        $page->addPage( new \cPHP\Page\Template($tpl1) );
-        $page->addPage( new \cPHP\Page\Template($tpl2) );
+        $page = new \h2o\Page\Collection;
+        $page->addPage( new \h2o\Page\Template($tpl1) );
+        $page->addPage( new \h2o\Page\Template($tpl2) );
 
 
-        $result = $page->getContent( new \cPHP\Page\Context );
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
+        $result = $page->getContent( new \h2o\Page\Context );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Template\Collection') );
         $this->assertEquals(
                 array($tpl1, $tpl2),
                 $result->getTemplates()
@@ -93,24 +93,24 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
     public function testCreateContent_string ()
     {
-        $sub = $this->getMock('cPHP\iface\Page', array('getContent'));
+        $sub = $this->getMock('h2o\iface\Page', array('getContent'));
 
         $sub->expects( $this->once() )
             ->method( 'getContent' )
             ->will( $this->returnValue('Chunk of data') );
 
-        $page = new \cPHP\Page\Collection;
+        $page = new \h2o\Page\Collection;
         $page->addPage( $sub );
 
-        $result = $page->getContent( new \cPHP\Page\Context );
+        $result = $page->getContent( new \h2o\Page\Context );
 
-        $this->assertThat( $result, $this->isInstanceOf('cPHP\Template\Collection') );
+        $this->assertThat( $result, $this->isInstanceOf('h2o\Template\Collection') );
 
         $tpls = $result->getTemplates();
         $this->assertSame( 1, count( $tpls ) );
         $this->assertThat(
                 $tpls[0],
-                $this->isInstanceOf('cPHP\Template\Raw')
+                $this->isInstanceOf('h2o\Template\Raw')
             );
         $this->assertSame(
                 "Chunk of data",

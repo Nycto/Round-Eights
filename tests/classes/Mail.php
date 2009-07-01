@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,25 +35,25 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testDefaulTransportAccessors ()
     {
-        $transport = \cPHP\Mail::getDefaultTransport();
-        $this->assertThat( $transport, $this->isInstanceOf('cPHP\Mail\Transport\Mail') );
-        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
-        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
+        $transport = \h2o\Mail::getDefaultTransport();
+        $this->assertThat( $transport, $this->isInstanceOf('h2o\Mail\Transport\Mail') );
+        $this->assertSame( $transport, \h2o\Mail::getDefaultTransport() );
+        $this->assertSame( $transport, \h2o\Mail::getDefaultTransport() );
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
-        $this->assertNull( \cPHP\Mail::setDefaultTransport($transport) );
-        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
-        $this->assertSame( $transport, \cPHP\Mail::getDefaultTransport() );
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
+        $this->assertNull( \h2o\Mail::setDefaultTransport($transport) );
+        $this->assertSame( $transport, \h2o\Mail::getDefaultTransport() );
+        $this->assertSame( $transport, \h2o\Mail::getDefaultTransport() );
     }
 
     public function testTransportAccessors ()
     {
-        $default = \cPHP\Mail::getDefaultTransport();
+        $default = \h2o\Mail::getDefaultTransport();
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertSame( $default, $mail->getTransport() );
 
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend'));
         $this->assertSame( $mail, $mail->setTransport($transport) );
         $this->assertSame( $transport, $mail->getTransport() );
 
@@ -65,7 +65,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->fromNameExists() );
         $this->assertNull( $mail->getFromName() );
@@ -91,7 +91,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->fromExists() );
         $this->assertNull( $mail->getFrom() );
@@ -126,7 +126,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->assertSame( $mail, $mail->setFrom("  ") );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Data $err ) {
+        catch ( \h2o\Exception\Data $err ) {
             $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
     }
@@ -135,7 +135,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertEquals(
                 array(),
                 $mail->getTo()
@@ -201,7 +201,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->assertSame( $mail, $mail->addTo("  ") );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Data $err ) {
+        catch ( \h2o\Exception\Data $err ) {
             $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
@@ -217,7 +217,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertEquals( array(), $mail->getCC() );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
@@ -280,7 +280,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->assertSame( $mail, $mail->addCC("  ") );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Data $err ) {
+        catch ( \h2o\Exception\Data $err ) {
             $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
@@ -296,7 +296,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertEquals( array(), $mail->getBCC() );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
@@ -357,7 +357,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $this->assertSame( $mail, $mail->addBCC("  ") );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Data $err ) {
+        catch ( \h2o\Exception\Data $err ) {
             $this->assertSame( "Email Address must not be empty", $err->getMessage() );
         }
 
@@ -373,7 +373,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->subjectExists() );
         $this->assertNull( $mail->getSubject() );
@@ -399,7 +399,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->messageIDExists() );
         $this->assertNull( $mail->getMessageID() );
@@ -425,7 +425,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->textExists() );
         $this->assertNull( $mail->getText() );
@@ -451,7 +451,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $this->assertFalse( $mail->htmlExists() );
         $this->assertNull( $mail->getHTML() );
@@ -477,7 +477,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertNull( $mail->getFrom() );
     }
 
@@ -485,7 +485,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', 'example');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertNull( $mail->getFrom() );
     }
 
@@ -493,21 +493,21 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', 'test@example.net');
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertSame( 'test@example.net', $mail->getFrom() );
     }
 
     public function testCreate ()
     {
         $this->assertThat(
-                \cPHP\Mail::create(),
-                $this->isInstanceOf('cPHP\Mail')
+                \h2o\Mail::create(),
+                $this->isInstanceOf('h2o\Mail')
             );
     }
 
     public function testAddCustomHeader ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertEquals( array(), $mail->getCustomHeaders() );
 
         $this->assertSame( $mail, $mail->addCustomHeader('X-Test', 'Example Header') );
@@ -540,20 +540,20 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testAddCustomHeader_error ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         try {
             $mail->addCustomHeader( '', 'Value' );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testCustomHeaderExists ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $this->assertFalse( $mail->customHeaderExists('X-Test') );
 
         $mail->addCustomHeader('X-Test', 'value');
@@ -564,14 +564,14 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $mail->customHeaderExists( '' );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testRemoveCustomHeader ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $mail->addCustomHeader('X-Test', 'value');
         $this->assertTrue( $mail->customHeaderExists('X-Test') );
@@ -586,14 +586,14 @@ class classes_mail extends PHPUnit_Framework_TestCase
             $mail->removeCustomHeader( '', 'Value' );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Argument $err ) {
+        catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testClearCustomHeaders ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $mail->addCustomHeader('X-Test', 'value');
         $mail->addCustomHeader('X-Other', 'value');
@@ -606,7 +606,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testGetBoundary ()
     {
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
 
         $boundary = $mail->getBoundary();
 
@@ -632,9 +632,9 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testSend ()
     {
-        $transport = $this->getMock('cPHP\Mail\Transport', array('internalSend', 'send'));
+        $transport = $this->getMock('h2o\Mail\Transport', array('internalSend', 'send'));
 
-        $mail = new \cPHP\Mail;
+        $mail = new \h2o\Mail;
         $mail->setTransport( $transport );
 
         $transport->expects( $this->once() )

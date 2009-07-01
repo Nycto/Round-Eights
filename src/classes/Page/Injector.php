@@ -2,41 +2,41 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Page
  */
 
-namespace cPHP\Page;
+namespace h2o\Page;
 
 /**
  * Accepts a Template and a list of pages. When this instance is rendered, it
  * will render all the contained pages and inject them as values into the given
  * template
  */
-class Injector implements \cPHP\iface\Page
+class Injector implements \h2o\iface\Page
 {
 
     /**
      * The template that will have pages injected into it.
      *
-     * @var \cPHP\Template
+     * @var \h2o\Template
      */
     private $template;
 
@@ -50,10 +50,10 @@ class Injector implements \cPHP\iface\Page
     /**
      * Constructor...
      *
-     * @param \cPHP\Template $template The template that will have pages injected
+     * @param \h2o\Template $template The template that will have pages injected
      *      into it.
      */
-    public function __construct ( \cPHP\Template $template )
+    public function __construct ( \h2o\Template $template )
     {
         $this->template = $template;
     }
@@ -72,12 +72,12 @@ class Injector implements \cPHP\iface\Page
      * Adds a page to this list of pages to render
      *
      * @param String The variable name to inject this page as
-     * @param cPHP\iface\Page $page The page to add
-     * @return cPHP\Page\Collection Returns a self reference
+     * @param \h2o\iface\Page $page The page to add
+     * @return \h2o\Page\Collection Returns a self reference
      */
-    public function addPage ( $index, \cPHP\iface\Page $page )
+    public function addPage ( $index, \h2o\iface\Page $page )
     {
-        $index = \cPHP\Template::normalizeLabel( $index );
+        $index = \h2o\Template::normalizeLabel( $index );
         $this->pages[ $index ] = $page;
         return $this;
     }
@@ -85,7 +85,7 @@ class Injector implements \cPHP\iface\Page
     /**
      * Resets the list of pages in this instance
      *
-     * @return cPHP\Page\Collection Returns a self reference
+     * @return \h2o\Page\Collection Returns a self reference
      */
     public function clearPages ()
     {
@@ -96,18 +96,18 @@ class Injector implements \cPHP\iface\Page
     /**
      * Returns the core content this page will display
      *
-     * @param cPHP\Page\Context $context A context object which is used by this
+     * @param \h2o\Page\Context $context A context object which is used by this
      *      page to communicate with the root page
-     * @return \cPHP\Template Returns the input template
+     * @return \h2o\Template Returns the input template
      */
-    public function getContent ( \cPHP\Page\Context $context )
+    public function getContent ( \h2o\Page\Context $context )
     {
         foreach ( $this->pages AS $index => $page ) {
 
             $content = $page->getContent( $context );
 
-            if ( !($content instanceof \cPHP\iface\Template) )
-                $content = new \cPHP\Template\Raw( $content );
+            if ( !($content instanceof \h2o\iface\Template) )
+                $content = new \h2o\Template\Raw( $content );
 
             $this->template->set( $index, $content );
 

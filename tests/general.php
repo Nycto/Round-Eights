@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -28,7 +28,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
-require_once rtrim( __DIR__, "/" ) ."/../src/commonPHP.php";
+require_once rtrim( __DIR__, "/" ) ."/../src/raindropPHP.php";
 
 error_reporting( E_ALL | E_STRICT );
 
@@ -37,7 +37,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 /**
  * Includes the config file and ensures that a set of constants exists
  */
-class cPHP_Test_Config
+class h2o_Test_Config
 {
 
     /**
@@ -118,7 +118,7 @@ class cPHP_Test_Config
  *
  * Provides an interface to search and load test suites in a directory
  */
-class cPHP_Base_TestSuite extends PHPUnit_Framework_TestSuite
+class h2o_Base_TestSuite extends PHPUnit_Framework_TestSuite
 {
 
     /**
@@ -210,7 +210,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
             $this->markTestSkipped("MySQLi extension is not loaded");
 
         // Ensure the proper configuration exists
-        $config = new cPHP_Test_Config(
+        $config = new h2o_Test_Config(
                 "MYSQLI",
                 array( "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE" )
             );
@@ -242,7 +242,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Returns and maintains a \cPHP\DB\MySQLi Link
+     * Returns and maintains a \h2o\DB\MySQLi Link
      *
      * This will also create a table and fill it with data, according to the
      * settings in the config.php file
@@ -253,7 +253,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
 
         if ( !isset($link) || !$link->isConnected() ) {
 
-            $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
+            $link = new \h2o\DB\MySQLi\Link( $this->getURI() );
 
             $mysqli = $link->getLink();
 
@@ -325,7 +325,7 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
      */
     public function getTempFileName ()
     {
-        $result = rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_unitTest_". uniqid();
+        $result = rtrim( sys_get_temp_dir(), "/" ) ."/h2o_unitTest_". uniqid();
         $this->cleanup[] = $result;
         return $result;
     }
@@ -405,7 +405,7 @@ abstract class PHPUnit_Dir_Framework_TestCase extends PHPUnit_Framework_TestCase
      */
     public function setUp ()
     {
-        $this->dir = rtrim( sys_get_temp_dir(), "/" ) ."/cPHP_". uniqid();
+        $this->dir = rtrim( sys_get_temp_dir(), "/" ) ."/h2o_". uniqid();
 
         if (!mkdir( $this->dir ))
             $this->markTestSkipped("Unable to create temporary directory: ". $this->dir);

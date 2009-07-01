@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_template_replace
 
     public static function suite()
     {
-        $suite = new cPHP_Base_TestSuite;
+        $suite = new h2o_Base_TestSuite;
         $suite->addTestSuite( 'classes_template_replace_standard' );
         $suite->addTestSuite( 'classes_template_replace_output' );
         return $suite;
@@ -51,7 +51,7 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testTemplateAccessors ()
     {
-        $tpl = new \cPHP\Template\Replace("tpl");
+        $tpl = new \h2o\Template\Replace("tpl");
 
         $this->assertSame( "tpl", $tpl->getTemplate() );
         $this->assertSame( $tpl, $tpl->setTemplate("new template") );
@@ -60,7 +60,7 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testSearchAccessors ()
     {
-        $tpl = new \cPHP\Template\Replace("tpl");
+        $tpl = new \h2o\Template\Replace("tpl");
 
         $this->assertSame( '/(\\\\*)(#\{(.*?)\})/', $tpl->getSearch() );
         $this->assertSame( $tpl, $tpl->setSearch('/replace/') );
@@ -69,7 +69,7 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testRender ()
     {
-        $tpl = new \cPHP\Template\Replace("#{adjective} #{noun} #{verb}");
+        $tpl = new \h2o\Template\Replace("#{adjective} #{noun} #{verb}");
         $tpl->import(array(
                 "adjective" => "quick",
                 "noun" => "fox",
@@ -80,7 +80,7 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testRender_escaped ()
     {
-        $tpl = new \cPHP\Template\Replace('#{test} \\#{test} \\\\#{test} \\\\\\#{test}');
+        $tpl = new \h2o\Template\Replace('#{test} \\#{test} \\\\#{test} \\\\\\#{test}');
         $tpl->set('test', 'value');
 
         $this->assertSame( "value #{test} \\\\value \\\\#{test}", $tpl->render() );
@@ -88,20 +88,20 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testRender_empty ()
     {
-        $tpl = new \cPHP\Template\Replace("The #{adjective} #{noun} #{verb}");
+        $tpl = new \h2o\Template\Replace("The #{adjective} #{noun} #{verb}");
         $this->assertSame( "The   ", $tpl->render() );
     }
 
     public function testRender_recursion ()
     {
-        $tpl = new \cPHP\Template\Replace("#{value}");
+        $tpl = new \h2o\Template\Replace("#{value}");
         $tpl->set('value', $tpl);
         $this->assertSame( "", $tpl->render() );
     }
 
     public function testNewSearch ()
     {
-        $tpl = new \cPHP\Template\Replace('<b><%=bold %></b>');
+        $tpl = new \h2o\Template\Replace('<b><%=bold %></b>');
         $tpl->setSearch("/(\\\\*)(\<%=\s*(\w+)\s*%\>)/");
         $tpl->set('bold', 'STRONG');
 
@@ -110,14 +110,14 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
 
     public function testWrongGroupings ()
     {
-        $tpl = new \cPHP\Template\Replace('replace');
+        $tpl = new \h2o\Template\Replace('replace');
         $tpl->setSearch("/replace/");
 
         try {
             $tpl->render();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\Data $err ) {
+        catch ( \h2o\Exception\Data $err ) {
             $this->assertSame( "Must return at least 3 groupings", $err->getMessage() );
         }
     }
@@ -131,7 +131,7 @@ class classes_template_replace_output extends PHPUnit_Extensions_OutputTestCase
     {
         $this->expectOutputString("The quick fox ran");
 
-        $tpl = new \cPHP\Template\Replace("The #{adjective} #{noun} #{verb}");
+        $tpl = new \h2o\Template\Replace("The #{adjective} #{noun} #{verb}");
         $tpl->import(array(
                 "adjective" => "quick",
                 "noun" => "fox",

@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Mail
  */
 
-namespace cPHP;
+namespace h2o;
 
 /**
  * Collects the details of an e-mail
@@ -36,7 +36,7 @@ class Mail
     /**
      * The default transport class for sending a piece of mail
      *
-     * @var Object A cPHP\Mail\Transport instance
+     * @var Object A \h2o\Mail\Transport instance
      */
     static private $defaultTransport;
 
@@ -45,7 +45,7 @@ class Mail
      *
      * If this value isn't set, the default transport will be used
      *
-     * @var Object A cPHP\Mail\Transport instance
+     * @var Object A \h2o\Mail\Transport instance
      */
     private $transport;
 
@@ -131,10 +131,10 @@ class Mail
     /**
      * Sets the default transport to send mail with
      *
-     * @param Object $transport A cPHP\Mail\Transport object
+     * @param Object $transport A \h2o\Mail\Transport object
      * @return null
      */
-    static public function setDefaultTransport ( \cPHP\Mail\Transport $transport )
+    static public function setDefaultTransport ( \h2o\Mail\Transport $transport )
     {
         self::$defaultTransport = $transport;
     }
@@ -143,14 +143,14 @@ class Mail
      * Returns the default transport that will be used to send mail
      *
      * If no default transport has been sent, this will return an instance of
-     * cPHP\Mail\Transport\Mail
+     * \h2o\Mail\Transport\Mail
      *
-     * @return Object A cPHP\Mail\Transport object
+     * @return Object A \h2o\Mail\Transport object
      */
     static public function getDefaultTransport ()
     {
-        if ( !(self::$defaultTransport instanceof \cPHP\Mail\Transport ) )
-            self::$defaultTransport = new \cPHP\Mail\Transport\Mail;
+        if ( !(self::$defaultTransport instanceof \h2o\Mail\Transport ) )
+            self::$defaultTransport = new \h2o\Mail\Transport\Mail;
 
         return self::$defaultTransport;
     }
@@ -176,8 +176,8 @@ class Mail
         // Get the default source e-mail address from the php.ini file
         $default = ini_get('sendmail_from');
 
-        $default = \cPHP\Filter::Email()->filter( $default );
-        if ( \cPHP\Validator::Email()->isValid( $default ) )
+        $default = \h2o\Filter::Email()->filter( $default );
+        if ( \h2o\Validator::Email()->isValid( $default ) )
             $this->setFrom( $default );
     }
 
@@ -187,7 +187,7 @@ class Mail
      * If no specific transport has been set for this message, the default
      * transport will be used
      *
-     * @return Object Returns a cPHP\Transport instance
+     * @return Object Returns a \h2o\Transport instance
      */
     public function getTransport ()
     {
@@ -200,10 +200,10 @@ class Mail
     /**
      * Sets the transport to send this specific piece of mail with
      *
-     * @param Object $transport A cPHP\Mail\Transport object
+     * @param Object $transport A \h2o\Mail\Transport object
      * @return Object Returns a self reference
      */
-    public function setTransport ( \cPHP\Mail\Transport $transport )
+    public function setTransport ( \h2o\Mail\Transport $transport )
     {
         $this->transport = $transport;
         return $this;
@@ -239,9 +239,9 @@ class Mail
      */
     public function setFromName ( $name )
     {
-        $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
+        $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
 
-        $this->fromName = \cPHP\isEmpty($name) ? NULL : $name;
+        $this->fromName = \h2o\isEmpty($name) ? NULL : $name;
 
         return $this;
     }
@@ -287,12 +287,12 @@ class Mail
      */
     public function setFrom ( $email, $name = FALSE )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         $this->from = $email;
 
-        if ( !\cPHP\isVague( $name ) )
+        if ( !\h2o\isVague( $name ) )
             $this->setFromName( $name );
 
         return $this;
@@ -340,12 +340,12 @@ class Mail
      */
     public function addTo ( $email, $name = FALSE )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
-        if ( !\cPHP\isVague( $name ) ) {
-            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
-            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        if ( !\h2o\isVague( $name ) ) {
+            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
+            $name = \h2o\isEmpty($name) ? NULL : $name;
         }
 
         $to = array(
@@ -377,8 +377,8 @@ class Mail
      */
     public function toExists( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         return isset( $this->to[ $email ] );
     }
@@ -401,8 +401,8 @@ class Mail
      */
     public function removeTo ( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         if ( isset($this->to[ $email ]) )
             unset( $this->to[ $email ] );
@@ -431,12 +431,12 @@ class Mail
      */
     public function addCC ( $email, $name = FALSE )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
-        if ( !\cPHP\isVague( $name ) ) {
-            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
-            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        if ( !\h2o\isVague( $name ) ) {
+            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
+            $name = \h2o\isEmpty($name) ? NULL : $name;
         }
 
         $cc = array(
@@ -468,8 +468,8 @@ class Mail
      */
     public function ccExists ( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         return isset( $this->cc[ $email ] );
     }
@@ -492,8 +492,8 @@ class Mail
      */
     public function removeCC ( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         if ( isset($this->cc[ $email ]) )
             unset( $this->cc[ $email ] );
@@ -522,12 +522,12 @@ class Mail
      */
     public function addBCC ( $email, $name = FALSE )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
-        if ( !\cPHP\isVague( $name ) ) {
-            $name = trim( \cPHP\str\stripW( $name, \cPHP\str\ALLOW_ASCII ) );
-            $name = \cPHP\isEmpty($name) ? NULL : $name;
+        if ( !\h2o\isVague( $name ) ) {
+            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
+            $name = \h2o\isEmpty($name) ? NULL : $name;
         }
 
         $bcc = array(
@@ -559,8 +559,8 @@ class Mail
      */
     public function bccExists ( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         return isset( $this->bcc[ $email ] );
     }
@@ -583,8 +583,8 @@ class Mail
      */
     public function removeBCC ( $email )
     {
-        $email = \cPHP\Filter::Email()->filter( $email );
-        \cPHP\Validator::Email()->ensure( $email );
+        $email = \h2o\Filter::Email()->filter( $email );
+        \h2o\Validator::Email()->ensure( $email );
 
         if ( isset($this->bcc[ $email ]) )
             unset( $this->bcc[ $email ] );
@@ -613,9 +613,9 @@ class Mail
         // Strip out any new lines or tabs
         $subject = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $subject );
 
-        $subject = trim( \cPHP\str\stripW( $subject, \cPHP\str\ALLOW_ASCII ) );
+        $subject = trim( \h2o\str\stripW( $subject, \h2o\str\ALLOW_ASCII ) );
 
-        $this->subject = \cPHP\isEmpty($subject) ? NULL : $subject;
+        $this->subject = \h2o\isEmpty($subject) ? NULL : $subject;
 
         return $this;
     }
@@ -662,9 +662,9 @@ class Mail
         // Strip out any new lines or tabs
         $messageID = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $messageID );
 
-        $messageID = trim( \cPHP\str\stripW( $messageID, \cPHP\str\ALLOW_ASCII ) );
+        $messageID = trim( \h2o\str\stripW( $messageID, \h2o\str\ALLOW_ASCII ) );
 
-        $this->messageID = \cPHP\isEmpty($messageID) ? NULL : $messageID;
+        $this->messageID = \h2o\isEmpty($messageID) ? NULL : $messageID;
 
         return $this;
     }
@@ -713,9 +713,9 @@ class Mail
      */
     public function setText ( $text )
     {
-        $text = trim( \cPHP\strval( $text ) );
+        $text = trim( \h2o\strval( $text ) );
 
-        $this->text = \cPHP\isEmpty($text) ? NULL : $text;
+        $this->text = \h2o\isEmpty($text) ? NULL : $text;
 
         return $this;
     }
@@ -764,9 +764,9 @@ class Mail
      */
     public function setHTML ( $html )
     {
-        $html = trim( \cPHP\strval( $html ) );
+        $html = trim( \h2o\strval( $html ) );
 
-        $this->html = \cPHP\isEmpty($html) ? NULL : $html;
+        $this->html = \h2o\isEmpty($html) ? NULL : $html;
 
         return $this;
     }
@@ -795,7 +795,7 @@ class Mail
     /**
      * Returns the list of custom headers loaded in this e-mail
      *
-     * @return Object Returns a cPHP object where the key is the name of the
+     * @return Object Returns a h2o object where the key is the name of the
      *      header, and the array value is the value of the header
      */
     public function getCustomHeaders ()
@@ -812,12 +812,12 @@ class Mail
      */
     public function addCustomHeader ( $header, $value )
     {
-        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Encode\MIME::stripHeaderName( $header );
 
-        if ( \cPHP\isEmpty($header) )
-            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \h2o\isEmpty($header) )
+            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $this->headers[ $header ] = \cPHP\strval( $value );
+        $this->headers[ $header ] = \h2o\strval( $value );
 
         return $this;
     }
@@ -830,10 +830,10 @@ class Mail
      */
     public function customHeaderExists ( $header )
     {
-        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Encode\MIME::stripHeaderName( $header );
 
-        if ( \cPHP\isEmpty($header) )
-            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \h2o\isEmpty($header) )
+            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
         return isset( $this->headers[$header] );
     }
@@ -846,10 +846,10 @@ class Mail
      */
     public function removeCustomHeader ( $header )
     {
-        $header = \cPHP\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Encode\MIME::stripHeaderName( $header );
 
-        if ( \cPHP\isEmpty($header) )
-            throw new \cPHP\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \h2o\isEmpty($header) )
+            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
         if ( isset( $this->headers[$header] ) )
             unset( $this->headers[$header] );
@@ -882,8 +882,8 @@ class Mail
         // If the boundary has been generated and the string and HTML don't contain
         // it, then there is no need to create another
         while ( !isset($this->boundary)
-                || \cPHP\str\contains($this->boundary, $this->text)
-                || \cPHP\str\contains($this->boundary, $this->html) ) {
+                || \h2o\str\contains($this->boundary, $this->text)
+                || \h2o\str\contains($this->boundary, $this->html) ) {
 
             // The string "=_" can never appear in the quoted printable character
             // encoding format (or base64, for that matter), which ensures that

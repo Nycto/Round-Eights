@@ -1,8 +1,8 @@
 --------------------
-Installing commonPHP
+Installing raindropPHP
 --------------------
 
-commonPHP comes in two flavours, the raw source files and the single file PHP
+raindropPHP comes in two flavours, the raw source files and the single file PHP
 archive. Both are equivilent as far as functionality is concerned.
 
 
@@ -10,12 +10,12 @@ archive. Both are equivilent as far as functionality is concerned.
 Installing the PHP archive
 --------------------------
 
-Included in your download is commonPHP.phar. If you choose this path, this file
+Included in your download is raindropPHP.phar. If you choose this path, this file
 is all you need. Simply copy it to your chosen destination, and include it like
 you would any other file, for example:
 
 <?php
-require_once "/path/to/commonPHP.phar";
+require_once "/path/to/raindropPHP.phar";
 ?>
 
 For more information about phar files, visit the PHP manual here:
@@ -28,10 +28,10 @@ Installing the Source Files
 ---------------------------
 
 Optionally, you may simply copy the "src" directory and all of its contents to
-your code base, and include the contained "commonPHP.php" file, for example:
+your code base, and include the contained "raindropPHP.php" file, for example:
 
 <?php
-require_once "/path/to/src/commonPHP.php";
+require_once "/path/to/src/raindropPHP.php";
 ?>
 
 
@@ -39,5 +39,5 @@ require_once "/path/to/src/commonPHP.php";
 Requirements
 ------------
 
-commonPHP requires version 5.3 or later of PHP. There are a few components that
+raindropPHP requires version 5.3 or later of PHP. There are a few components that
 require specific PHP extensions.

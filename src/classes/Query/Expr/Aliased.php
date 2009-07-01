@@ -2,39 +2,39 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace cPHP\Query\Expr;
+namespace h2o\Query\Expr;
 
 /**
  * An aliased field expression
  */
-class Aliased implements \cPHP\iface\Query\Selectable
+class Aliased implements \h2o\iface\Query\Selectable
 {
 
     /**
      * The atom that will be selected
      *
-     * @var \cPHP\iface\Query\Atom
+     * @var \h2o\iface\Query\Atom
      */
     private $atom;
 
@@ -49,13 +49,13 @@ class Aliased implements \cPHP\iface\Query\Selectable
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \cPHP\Query\Expr\Aliased
+     * @return \h2o\Query\Expr\Aliased
      */
     static public function fromString ( $string )
     {
-        list( $string, $alias ) = \cPHP\Query::parseSQLAlias( $string );
+        list( $string, $alias ) = \h2o\Query::parseSQLAlias( $string );
 
-        $atom = \cPHP\Query\Atom\Field::fromString( $string );
+        $atom = \h2o\Query\Atom\Field::fromString( $string );
 
         return new self( $atom, $alias );
     }
@@ -63,10 +63,10 @@ class Aliased implements \cPHP\iface\Query\Selectable
     /**
      * Constructor...
      *
-     * @param \cPHP\iface\Query\Atom $atom The atom to select
+     * @param \h2o\iface\Query\Atom $atom The atom to select
      * @param String $alias The field name alias, if any
      */
-    public function __construct ( \cPHP\iface\Query\Atom $atom, $alias = null )
+    public function __construct ( \h2o\iface\Query\Atom $atom, $alias = null )
     {
         $this->atom = $atom;
         $this->setAlias( $alias );
@@ -75,7 +75,7 @@ class Aliased implements \cPHP\iface\Query\Selectable
     /**
      * Returns the Atom being aliased
      *
-     * @return \cPHP\iface\Query\Atom
+     * @return \h2o\iface\Query\Atom
      */
     public function getAtom ()
     {
@@ -96,11 +96,11 @@ class Aliased implements \cPHP\iface\Query\Selectable
      * Sets the alias of this field
      *
      * @param String $alias The field name alias
-     * @return \cPHP\Query\Expr\Select Returns a self reference
+     * @return \h2o\Query\Expr\Select Returns a self reference
      */
     public function setAlias ( $alias )
     {
-        $alias = \cPHP\str\stripW( $alias, \cPHP\str\ALLOW_UNDERSCORES );
+        $alias = \h2o\str\stripW( $alias, \h2o\str\ALLOW_UNDERSCORES );
 
         $this->alias = empty($alias) ? NULL : $alias;
 
@@ -110,12 +110,12 @@ class Aliased implements \cPHP\iface\Query\Selectable
     /**
      * Returns the SQL string for this expression
      *
-     * @param \cPHP\iface\DB\Link $link The database connection this atom
+     * @param \h2o\iface\DB\Link $link The database connection this atom
      * 		is being created against. This is being passed in for escaping
      * 		purposes
      * @return String
      */
-    public function toSelectSQL( \cPHP\iface\DB\Link $link )
+    public function toSelectSQL( \h2o\iface\DB\Link $link )
     {
         return $this->atom->toAtomSQL( $link )
             .( $this->alias ? " AS ". $this->alias : "" );

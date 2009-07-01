@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package numeric
  */
 
-namespace cPHP\num;
+namespace h2o\num;
 
 /**
  * Offset wrapping flag. No wrapping will be perfomed. If the given offset falls outside of the
@@ -100,13 +100,13 @@ function negate ($number)
  */
 function between ($value, $lower, $upper, $inclusive = TRUE)
 {
-    $value = \cPHP\numVal($value);
-    $lower = \cPHP\numVal($lower);
-    $upper = \cPHP\numVal($upper);
+    $value = \h2o\numVal($value);
+    $lower = \h2o\numVal($lower);
+    $upper = \h2o\numVal($upper);
 
-    $inclusive = \cPHP\boolVal($inclusive);
+    $inclusive = \h2o\boolVal($inclusive);
     if ($upper < $lower)
-        \cPHP\swap($upper, $lower);
+        \h2o\swap($upper, $lower);
 
     if ($inclusive && ($value < $lower || $value > $upper))
         return FALSE;
@@ -131,14 +131,14 @@ function between ($value, $lower, $upper, $inclusive = TRUE)
  */
 function limit ($value, $low, $high)
 {
-    $value = \cPHP\numVal($value);
-    $low = \cPHP\numVal($low);
-    $high = \cPHP\numVal($high);
+    $value = \h2o\numVal($value);
+    $low = \h2o\numVal($low);
+    $high = \h2o\numVal($high);
 
     if ($low == $high)
         return $low;
     else if ($high < $low)
-        \cPHP\swap($high, $low);
+        \h2o\swap($high, $low);
 
     return max( min($value, $high), $low);
 }
@@ -159,17 +159,17 @@ function limit ($value, $low, $high)
  */
 function intWrap ($value, $lower, $upper)
 {
-    $value = intval( \cPHP\reduce($value) );
-    $lower = intval( \cPHP\reduce($lower) );
-    $upper = intval( \cPHP\reduce($upper) );
+    $value = intval( \h2o\reduce($value) );
+    $lower = intval( \h2o\reduce($lower) );
+    $upper = intval( \h2o\reduce($upper) );
 
     if ($lower == $upper)
         return $lower;
 
     if ($upper < $lower)
-        \cPHP\swap ($upper, $lower);
+        \h2o\swap ($upper, $lower);
 
-    if ( \cPHP\num\between($value, $lower, $upper) )
+    if ( \h2o\num\between($value, $lower, $upper) )
         return $value;
 
     $delta = $upper - $lower + 1;
@@ -199,18 +199,18 @@ function intWrap ($value, $lower, $upper)
  */
 function numWrap ($value, $lower, $upper, $useLower = TRUE)
 {
-    $value = \cPHP\numVal($value);
-    $lower = \cPHP\numVal($lower);
-    $upper = \cPHP\numVal($upper);
-    $useLower = \cPHP\boolVal($useLower);
+    $value = \h2o\numVal($value);
+    $lower = \h2o\numVal($lower);
+    $upper = \h2o\numVal($upper);
+    $useLower = \h2o\boolVal($useLower);
 
     if ($lower == $upper)
         return $lower;
 
     if ($upper < $lower)
-        \cPHP\swap ($upper, $lower);
+        \h2o\swap ($upper, $lower);
 
-    if ( \cPHP\num\between($value, $lower, $upper) ) {
+    if ( \h2o\num\between($value, $lower, $upper) ) {
         $out = $value;
     }
     else {
@@ -260,18 +260,18 @@ function offsetWrap ($length, $offset, $wrapFlag)
     $length = intval( $length );
 
     if ( $length <= 0 )
-        throw new \cPHP\Exception\Index($offset, "Offset", "List is empty");
+        throw new \h2o\Exception\Index($offset, "Offset", "List is empty");
 
-    $offset = intval( \cPHP\reduce($offset) );
+    $offset = intval( \h2o\reduce($offset) );
 
     switch ($wrapFlag) {
 
         default:
-            throw new \cPHP\Exception\Argument(2, "wrapFlag", "Invalid offset wrap flag");
+            throw new \h2o\Exception\Argument(2, "wrapFlag", "Invalid offset wrap flag");
 
-        case \cPHP\num\OFFSET_NONE:
-            if ( !\cPHP\num\between($offset, 0 - $length, $length - 1) )
-                throw new \cPHP\Exception\Index($offset, "Offset", "Offset is out of bounds");
+        case \h2o\num\OFFSET_NONE:
+            if ( !\h2o\num\between($offset, 0 - $length, $length - 1) )
+                throw new \h2o\Exception\Index($offset, "Offset", "Offset is out of bounds");
 
             else if ($offset >= 0)
                 return $offset;
@@ -279,18 +279,18 @@ function offsetWrap ($length, $offset, $wrapFlag)
             else
                 return $length + $offset;
 
-        case \cPHP\num\OFFSET_WRAP:
-            return \cPHP\num\intWrap($offset, 0, $length - 1);
+        case \h2o\num\OFFSET_WRAP:
+            return \h2o\num\intWrap($offset, 0, $length - 1);
 
         case FALSE:
-        case \cPHP\num\OFFSET_RESTRICT:
-            $offset = \cPHP\num\limit($offset, 0 - $length, $length - 1);
+        case \h2o\num\OFFSET_RESTRICT:
+            $offset = \h2o\num\limit($offset, 0 - $length, $length - 1);
             if ($offset < 0)
                 $offset = $length + $offset;
             return $offset;
 
-        case \cPHP\num\OFFSET_LIMIT:
-            return \cPHP\num\limit($offset, 0, $length - 1);
+        case \h2o\num\OFFSET_LIMIT:
+            return \h2o\num\limit($offset, 0, $length - 1);
     }
 
 }

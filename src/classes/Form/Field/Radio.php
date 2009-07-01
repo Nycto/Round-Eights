@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace cPHP\Form\Field;
+namespace h2o\Form\Field;
 
 /**
  * An HTML radio button field list
  */
-class Radio extends \cPHP\Form\Multi
+class Radio extends \h2o\Form\Multi
 {
 
     /**
@@ -43,13 +43,13 @@ class Radio extends \cPHP\Form\Multi
      */
     public function getRadioOptionID ( $value )
     {
-        $value = \cPHP\indexVal( $value );
+        $value = \h2o\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
+            throw new \h2o\Exception\Index($value, "Option Value", "Option does not exist in field");
 
         return "radio_"
-            .\cPHP\str\stripW( $this->getName() )
+            .\h2o\str\stripW( $this->getName() )
             ."_"
             .substr(sha1($value), 0, 10);
     }
@@ -58,16 +58,16 @@ class Radio extends \cPHP\Form\Multi
      * Returns the an HTML tag that represents an individual option's radio button
      *
      * @param String|Integer $value The value of the option whose tag should be returned
-     * @return Object Returns a \cPHP\Tag object
+     * @return Object Returns a \h2o\Tag object
      */
     public function getOptionRadioTag ( $value )
     {
-        $value = \cPHP\indexVal( $value );
+        $value = \h2o\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
+            throw new \h2o\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        $tag = new \cPHP\Tag( 'input' );
+        $tag = new \h2o\Tag( 'input' );
 
         $tag->importAttrs(array(
                 "name" => $this->getName(),
@@ -86,16 +86,16 @@ class Radio extends \cPHP\Form\Multi
      * Returns the an HTML tag that represents an individual option's label
      *
      * @param String|Integer $value The value of the option whose label tag should be returned
-     * @return Object Returns a \cPHP\Tag object
+     * @return Object Returns a \h2o\Tag object
      */
     public function getOptionLabelTag ( $value )
     {
-        $value = \cPHP\indexVal( $value );
+        $value = \h2o\indexVal( $value );
 
         if ( !$this->hasOption($value) )
-            throw new \cPHP\Exception\Index($value, "Option Value", "Option does not exist in field");
+            throw new \h2o\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        return new \cPHP\Tag(
+        return new \h2o\Tag(
                 'label',
                 $this->getOptionLabel( $value ),
                 array( "for" => $this->getRadioOptionID($value) )
@@ -123,13 +123,13 @@ class Radio extends \cPHP\Form\Multi
     }
 
     /**
-     * Returns a \cPHP\Tag object that represents this instance
+     * Returns a \h2o\Tag object that represents this instance
      *
-     * @return Object A \cPHP\Tag object
+     * @return Object A \h2o\Tag object
      */
     public function getTag()
     {
-        return new \cPHP\Tag(
+        return new \h2o\Tag(
                 'ul',
                 $this->getOptionList()
             );

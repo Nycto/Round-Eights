@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package strings
  */
 
-namespace cPHP\str;
+namespace h2o\str;
 
 /**
  * Function constants
@@ -51,7 +51,7 @@ function int2Ordinal ($integer)
 {
     $integer = strval(intval($integer));
 
-    if ( \cPHP\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
+    if ( \h2o\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
 
     switch( substr($integer, -1) ) {
@@ -92,17 +92,17 @@ function contains($needle, $haystack, $ignoreCase = TRUE)
  */
 function offsets ($needle, $haystack, $ignoreCase = TRUE)
 {
-    $ignoreCase = \cPHP\boolVal($ignoreCase);
-    $needle = \cPHP\strVal($needle);
-    $haystack = \cPHP\strVal($haystack);
+    $ignoreCase = \h2o\boolVal($ignoreCase);
+    $needle = \h2o\strVal($needle);
+    $haystack = \h2o\strVal($haystack);
 
     if (empty($needle))
-        throw new \cPHP\Exception\Argument(0, 'needle', 'Must not be empty');
+        throw new \h2o\Exception\Argument(0, 'needle', 'Must not be empty');
 
-    if (!\cPHP\str\contains($needle, $haystack, $ignoreCase))
+    if (!\h2o\str\contains($needle, $haystack, $ignoreCase))
         return array();
 
-    $count = $ignoreCase ? \cPHP\str\substr_icount($haystack, $needle) : substr_count($haystack, $needle);
+    $count = $ignoreCase ? \h2o\str\substr_icount($haystack, $needle) : substr_count($haystack, $needle);
 
     $found = array();
 
@@ -127,14 +127,14 @@ function offsets ($needle, $haystack, $ignoreCase = TRUE)
  * @param Integer $wrapFlag How to handle offset wrapping when the offset, per {@link calcWrapFlag()}.
  * @return Integer Returns the offsets, from 0, of the needle in the haystack
  */
-function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \cPHP\ary\OFFSET_RESTRICT)
+function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \h2o\ary\OFFSET_RESTRICT)
 {
-    $found = \cPHP\str\offsets($needle, $haystack, $ignoreCase);
+    $found = \h2o\str\offsets($needle, $haystack, $ignoreCase);
 
     if (count($found) <= 0)
         return FALSE;
     else
-        return \cPHP\ary\offset($found, $offset, $wrapFlag);
+        return \h2o\ary\offset($found, $offset, $wrapFlag);
 }
 
 /**
@@ -174,20 +174,20 @@ function unshout ($string)
 function stripW ($string, $flags = 0)
 {
 
-    $flags = max( intval( \cPHP\reduce($flags)), 0 );
+    $flags = max( intval( \h2o\reduce($flags)), 0 );
 
     // ALLOW_ASCII trumps all the other flags
-    if ( $flags & \cPHP\str\ALLOW_ASCII ) {
+    if ( $flags & \h2o\str\ALLOW_ASCII ) {
         return preg_replace( '/[^\x20-\x7E]/', '', strval($string) );
     }
     else {
         return preg_replace(
                 "/[^a-z0-9"
-                .($flags & \cPHP\str\ALLOW_TABS?"\t":"")
-                .($flags & \cPHP\str\ALLOW_NEWLINES?"\n\r":"")
-                .($flags & \cPHP\str\ALLOW_SPACES?" ":"")
-                .($flags & \cPHP\str\ALLOW_UNDERSCORES?"_":"")
-                .($flags & \cPHP\str\ALLOW_DASHES?'\-':"")
+                .($flags & \h2o\str\ALLOW_TABS?"\t":"")
+                .($flags & \h2o\str\ALLOW_NEWLINES?"\n\r":"")
+                .($flags & \h2o\str\ALLOW_SPACES?" ":"")
+                .($flags & \h2o\str\ALLOW_UNDERSCORES?"_":"")
+                .($flags & \h2o\str\ALLOW_DASHES?'\-':"")
                 ."]/i",
                 NULL,
                 $string
@@ -208,7 +208,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 
     if (is_array($repeated) ) {
 
-        $repeated = \cPHP\ary\flatten($repeated);
+        $repeated = \h2o\ary\flatten($repeated);
         $repeated = array_map('strval', $repeated);
 
         foreach( $repeated AS $key => $value ) {
@@ -220,8 +220,8 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote(strval($repeated), '/');
     }
 
-    if ( \cPHP\isEmpty( $repeated ) )
-        throw new \cPHP\Exception\Argument(1, 'Repeated', 'Must not be empty');
+    if ( \h2o\isEmpty( $repeated ) )
+        throw new \h2o\Exception\Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
             '/('. $repeated .')\1+/'. ($ignoreCase?'i':''),
@@ -243,7 +243,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
     $string = strval($string);
-    if ( \cPHP\isEmpty($string) )
+    if ( \h2o\isEmpty($string) )
         return '';
 
     $glue = strval( $glue );
@@ -252,7 +252,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
     $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
-    if ( \cPHP\isVague($trimTo) || intval($trimTo) <= 0 )
+    if ( \h2o\isVague($trimTo) || intval($trimTo) <= 0 )
         $trimTo = ceil($maxLength * (2 / 3));
 
     // The trimTo length can't be greater than the max length
@@ -290,14 +290,14 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     $string = strval($string);
 
-    $quotes = \cPHP\arrayVal( $quotes );
-    $quotes = \cPHP\ary\flatten( $quotes );
+    $quotes = \h2o\arrayVal( $quotes );
+    $quotes = \h2o\ary\flatten( $quotes );
     $quotes = \array_map( 'trim', $quotes );
     $quotes = \array_unique($quotes);
-    $quotes = \cPHP\ary\compact($quotes);
+    $quotes = \h2o\ary\compact($quotes);
 
     $quoteString = array_map(
-            \cPHP\Curry::Call("preg_quote")->setRight("/")->setLimit(1),
+            \h2o\Curry::Call("preg_quote")->setRight("/")->setLimit(1),
             $quotes
         );
     $quoteString = implode("|", $quoteString);
@@ -371,7 +371,7 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
 
     $stringHead = substr($string, 0, strlen($head));
 
-    return \cPHP\str\compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
+    return \h2o\str\compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 
@@ -396,7 +396,7 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
 
     $stringTail = substr($string, 0 - strlen($tail));
 
-    return \cPHP\str\compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
+    return \h2o\str\compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
 
 }
 /**
@@ -416,7 +416,7 @@ function tail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    return !\cPHP\str\endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
+    return !\h2o\str\endsWith($string, $tail, $ignoreCase) ? $string.$tail : $string;
 }
 
 /**
@@ -436,7 +436,7 @@ function stripTail ($string, $tail, $ignoreCase = TRUE)
     if (empty($tail))
         return $string;
 
-    if ( \cPHP\str\endsWith($string, $tail, $ignoreCase))
+    if ( \h2o\str\endsWith($string, $tail, $ignoreCase))
         $string = substr($string, 0, 0 - strlen($tail));
 
     if ($string === FALSE)
@@ -461,7 +461,7 @@ function head ($string, $head, $ignoreCase = TRUE)
     if (empty($head))
         return $string;
 
-    return !\cPHP\str\startsWith($string, $head, $ignoreCase)?$head . $string:$string;
+    return !\h2o\str\startsWith($string, $head, $ignoreCase)?$head . $string:$string;
 }
 
 /**
@@ -474,14 +474,14 @@ function head ($string, $head, $ignoreCase = TRUE)
  */
 function stripHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = \cPHP\strval( \cPHP\reduce($string) );
-    $head = \cPHP\strval( \cPHP\reduce($head) );
+    $string = \h2o\strval( \h2o\reduce($string) );
+    $head = \h2o\strval( \h2o\reduce($head) );
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
         return $string;
 
-    if (\cPHP\str\startsWith($string, $head, $ignoreCase))
+    if (\h2o\str\startsWith($string, $head, $ignoreCase))
         $string = substr($string, strlen($head));
 
     if ($string === FALSE)
@@ -504,16 +504,16 @@ function stripHead ($string, $head, $ignoreCase = TRUE)
  */
 function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
 {
-    $string1 = \cPHP\strval($string1);
-    $string2 = \cPHP\strval($string2);
-    $glue = \cPHP\strval($glue);
+    $string1 = \h2o\strval($string1);
+    $string2 = \h2o\strval($string2);
+    $glue = \h2o\strval($glue);
 
-    if ( \cPHP\isVague($glue, \cPHP\str\ALLOW_SPACES))
+    if ( \h2o\isVague($glue, \h2o\str\ALLOW_SPACES))
         return $string1 . $string2;
 
-    return \cPHP\str\stripTail($string1, $glue, $ignoreCase)
+    return \h2o\str\stripTail($string1, $glue, $ignoreCase)
         .$glue
-        .\cPHP\str\stripHead($string2, $glue, $ignoreCase);
+        .\h2o\str\stripHead($string2, $glue, $ignoreCase);
 
 }
 
@@ -528,14 +528,14 @@ function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
  */
 function partition ($string, $offsets)
 {
-    $string = \cPHP\strval($string);
+    $string = \h2o\strval($string);
 
     if (strlen($string) <= 0)
         return array();
 
     $offsets = func_get_args();
     array_shift($offsets);
-    $offsets = \cPHP\ary\flatten( $offsets );
+    $offsets = \h2o\ary\flatten( $offsets );
     $offsets = \array_map( "intval", $offsets );
     $offsets = \array_unique( $offsets );
     sort( $offsets );
@@ -566,8 +566,8 @@ function partition ($string, $offsets)
 function compare ($string1, $string2, $ignoreCase = TRUE)
 {
     return $ignoreCase ?
-        strcasecmp( \cPHP\strval($string1), \cPHP\strval($string2) ) :
-        strcmp( \cPHP\strval($string1), \cPHP\strval($string2) );
+        strcasecmp( \h2o\strval($string1), \h2o\strval($string2) ) :
+        strcmp( \h2o\strval($string1), \h2o\strval($string2) );
 }
 
 /**
@@ -580,8 +580,8 @@ function compare ($string1, $string2, $ignoreCase = TRUE)
  */
 function enclose ($string, $enclose, $ignoreCase = TRUE)
 {
-    return \cPHP\str\tail(
-            \cPHP\str\head($string, $enclose, $ignoreCase),
+    return \h2o\str\tail(
+            \h2o\str\head($string, $enclose, $ignoreCase),
             $enclose,
             $ignoreCase
         );
@@ -625,10 +625,10 @@ function truncate ($string, $maxLength, $delimiter = '...')
  */
 function pluralize ( $string, $count = 2 )
 {
-    $string = \cPHP\strval($string);
+    $string = \h2o\strval($string);
 
-    if ( \cPHP\isEmpty( trim($string) ) )
-        throw new \cPHP\Exception\Argument(0, "String", "Must not be empty");
+    if ( \h2o\isEmpty( trim($string) ) )
+        throw new \h2o\Exception\Argument(0, "String", "Must not be empty");
 
     if ( $count == 1 )
         return $string;

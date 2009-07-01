@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testSetContent ()
     {
-        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(null));
+        $section = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array(null));
 
         $this->assertNull( $section->getContent() );
 
@@ -46,7 +46,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testClearContent ()
     {
-        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(null));
+        $section = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array(null));
 
         $this->assertNull( $section->getContent() );
 
@@ -61,7 +61,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testContentExists ()
     {
-        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(null));
+        $section = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array(null));
 
         $this->assertFalse( $section->contentExists() );
 
@@ -80,7 +80,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(null));
+        $section = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array(null));
 
         $this->assertTrue( $section->isEmpty() );
 
@@ -89,7 +89,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
         $section->setContent("  ");
         $this->assertTrue( $section->isEmpty() );
-        $this->assertFalse( $section->isEmpty( \cPHP\ALLOW_SPACES ) );
+        $this->assertFalse( $section->isEmpty( \h2o\ALLOW_SPACES ) );
 
         $section->setContent("Some piece of content");
         $this->assertFalse( $section->isEmpty() );
@@ -100,7 +100,7 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $section = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array("data"));
+        $section = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array("data"));
         $this->assertSame( "data", $section->getContent() );
     }
 

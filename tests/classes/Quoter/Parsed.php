@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testAddSection ()
     {
-        $mock = $this->getMock("cPHP\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
+        $mock = $this->getMock("h2o\Quoter\Section", array("isQuoted", "__toString"), array(0, null));
 
-        $list = new \cPHP\Quoter\Parsed;
+        $list = new \h2o\Quoter\Parsed;
 
         $this->assertSame( $list, $list->addSection($mock) );
 
@@ -48,10 +48,10 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $list = new \cPHP\Quoter\Parsed;
+        $list = new \h2o\Quoter\Parsed;
 
-        $list->addSection( new \cPHP\Quoter\Section\Unquoted("snippet") );
-        $list->addSection( new \cPHP\Quoter\Section\Quoted("inQuotes", '(', ')') );
+        $list->addSection( new \h2o\Quoter\Section\Unquoted("snippet") );
+        $list->addSection( new \h2o\Quoter\Section\Quoted("inQuotes", '(', ')') );
 
         $this->assertSame( "snippet(inQuotes)", $list->__toString() );
         $this->assertSame( "snippet(inQuotes)", "$list" );
@@ -59,7 +59,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testSetIncludeQuoted ()
     {
-        $list = new \cPHP\Quoter\Parsed;
+        $list = new \h2o\Quoter\Parsed;
 
         $this->assertTrue( $list->getIncludeQuoted() );
 
@@ -74,7 +74,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testSetIncludeUnquoted ()
     {
-        $list = new \cPHP\Quoter\Parsed;
+        $list = new \h2o\Quoter\Parsed;
 
         $this->assertTrue( $list->getIncludeUnquoted() );
 
@@ -89,7 +89,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testExplode_all ()
     {
-        $list = new \cPHP\Quoter;
+        $list = new \h2o\Quoter;
 
         $result = $list->parse( "String with gaps" )->explode(" ");
 
@@ -110,7 +110,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testExplode_noQuoted ()
     {
-        $list = new \cPHP\Quoter;
+        $list = new \h2o\Quoter;
 
         $result = $list->parse( "String with gaps" )
             ->setIncludeQuoted( FALSE )
@@ -151,7 +151,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testExplode_noUnquoted ()
     {
-        $list = new \cPHP\Quoter;
+        $list = new \h2o\Quoter;
 
         $result = $list->parse( "String with gaps" )
             ->setIncludeUnquoted( FALSE )
@@ -191,7 +191,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testExplode_none ()
     {
-        $list = new \cPHP\Quoter;
+        $list = new \h2o\Quoter;
 
         $result = $list->parse( "String with gaps" )
             ->setIncludeQuoted( FALSE )
@@ -217,23 +217,23 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
 
     public function testFilter ()
     {
-        $list = new \cPHP\Quoter;
+        $list = new \h2o\Quoter;
         $parsed = $list->parse("string 'with' quotes")
-            ->filter( new \cPHP\Curry\Call("strtoupper") )
+            ->filter( new \h2o\Curry\Call("strtoupper") )
             ->__toString();
         $this->assertSame( "STRING 'WITH' QUOTES", $parsed );
 
 
         $parsed = $list->parse("string 'with' quotes")
             ->setIncludeQuoted(FALSE)
-            ->filter( new \cPHP\Curry\Call("strtoupper") )
+            ->filter( new \h2o\Curry\Call("strtoupper") )
             ->__toString();
         $this->assertSame( "STRING 'with' QUOTES", $parsed );
 
 
         $parsed = $list->parse("string 'with' quotes")
             ->setIncludeUnquoted(FALSE)
-            ->filter( new \cPHP\Curry\Call("strtoupper") )
+            ->filter( new \h2o\Curry\Call("strtoupper") )
             ->__toString();
         $this->assertSame( "string 'WITH' quotes", $parsed );
 
@@ -241,7 +241,7 @@ class classes_quoter_parsed extends PHPUnit_Framework_TestCase
         $parsed = $list->parse("string 'with' quotes")
             ->setIncludeUnquoted(FALSE)
             ->setIncludeQuoted(FALSE)
-            ->filter( new \cPHP\Curry\Call("strtoupper") )
+            ->filter( new \h2o\Curry\Call("strtoupper") )
             ->__toString();
         $this->assertSame( "string 'with' quotes", $parsed );
     }

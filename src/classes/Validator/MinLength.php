@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace cPHP\Validator;
+namespace h2o\Validator;
 
 /**
  * Validates that a given value is the same or longer than a given length
@@ -32,7 +32,7 @@ namespace cPHP\Validator;
  * processing them. Anything else that isn't a string will cause validation to
  * return negative
  */
-class MinLength extends \cPHP\Validator
+class MinLength extends \h2o\Validator
 {
 
     /**
@@ -62,13 +62,13 @@ class MinLength extends \cPHP\Validator
     protected function process ( $value )
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
-            $value = \cPHP\strval($value);
+            $value = \h2o\strval($value);
 
         if ( !is_string($value) )
             return "Must be a string";
 
         if ( strlen($value) < $this->length ) {
-            return \cPHP\str\pluralize(
+            return \h2o\str\pluralize(
                     "Must not be shorter than ". $this->length ." character",
                     $this->length
                 );

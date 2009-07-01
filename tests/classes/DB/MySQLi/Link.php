@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of commonPHP.
+ * This file is part of raindropPHP.
  *
- * commonPHP is free software: you can redistribute it and/or modify
+ * raindropPHP is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * commonPHP is distributed in the hope that it will be useful,
+ * raindropPHP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with commonPHP. If not, see <http://www.commonphp.com/license.php>
+ * along with raindropPHP. If not, see <http://www.raindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@commonphp.com>
+ * @author James Frasca <james@raindropphp.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testConnection_error ()
     {
-        $link = new \cPHP\DB\MySQLi\Link(
+        $link = new \h2o\DB\MySQLi\Link(
                 "db://notMyUsername:SonOfA@". MYSQLI_HOST ."/databasethatisntreal"
             );
 
@@ -43,7 +43,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
             $link->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \cPHP\Exception\DB\Link $err ) {
+        catch ( \h2o\Exception\DB\Link $err ) {
             $this->assertContains(
                     "Access denied for user",
                     $err->getMessage()
@@ -53,7 +53,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testConnection ()
     {
-        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
+        $link = new \h2o\DB\MySQLi\Link( $this->getURI() );
         $this->assertThat( $link->getLink(), $this->isInstanceOf("mysqli") );
         $this->assertTrue( $link->isConnected() );
     }
@@ -90,7 +90,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
         $result = $link->query("SELECT 50 + 10");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\DB\MySQLi\Read") );
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\MySQLi\Read") );
 
         $this->assertSame( "SELECT 50 + 10", $result->getQuery() );
     }
@@ -101,7 +101,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
         $result = $link->query("UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1");
 
-        $this->assertThat( $result, $this->isInstanceOf("cPHP\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
 
         $this->assertSame(
                 "UPDATE ". MYSQLI_TABLE ." SET id = 1 WHERE id = 1",
@@ -111,7 +111,7 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testDisconnect ()
     {
-        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
+        $link = new \h2o\DB\MySQLi\Link( $this->getURI() );
         $link->getLink();
 
         $this->assertTrue( $link->isConnected() );
@@ -123,14 +123,14 @@ class classes_db_mysqli_link extends PHPUnit_MySQLi_Framework_TestCase
 
     public function testGetIdentifier ()
     {
-        $link = new \cPHP\DB\MySQLi\Link( $this->getURI() );
+        $link = new \h2o\DB\MySQLi\Link( $this->getURI() );
 
         $this->assertSame(
                 "MySQLi://root@localhost:3306",
                 $link->getIdentifier()
             );
 
-        $link = new \cPHP\DB\MySQLi\Link;
+        $link = new \h2o\DB\MySQLi\Link;
         $link->clearHost();
 
         $this->assertRegExp(
