@@ -46,6 +46,24 @@ class Ordered implements \cPHP\iface\Query\Ordered
     private $order;
 
     /**
+     * Instantiates a new instance of this object from a string
+     *
+     * @param String $string The string to parse into an object
+     * @return \cPHP\Query\Expr\Ordered
+     */
+    static public function fromString ( $string )
+    {
+        $string = \cPHP\strval( $string );
+
+        preg_match('/^(.*?)(\bASC|\bDESC)?$/i', $string, $matches);
+
+        return new self(
+            \cPHP\Query\Atom\Field::fromString( $matches[1] ),
+            isset($matches[2]) ? $matches[2] : null
+        );
+    }
+
+    /**
      * Constructor...
      *
      * @param \cPHP\iface\Query\Atom $atom The atom being ordered

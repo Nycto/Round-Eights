@@ -32,6 +32,39 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
  */
 class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
 {
+    public function testFromString ()
+    {
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Ordered(
+                new \cPHP\Query\Atom\Field("fld"),
+                "ASC"
+            ),
+            \cPHP\Query\Expr\Ordered::fromString("fld ASC")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Ordered(
+                new \cPHP\Query\Atom\Field("fld")
+            ),
+            \cPHP\Query\Expr\Ordered::fromString("fld")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Ordered(
+                new \cPHP\Query\Atom\Field("fld", "db"),
+                "DESC"
+            ),
+            \cPHP\Query\Expr\Ordered::fromString("db.fld DESC")
+        );
+
+        $this->assertEquals(
+            new \cPHP\Query\Expr\Ordered(
+                new \cPHP\Query\Atom\Field("fld", "db"),
+                "desc"
+            ),
+            \cPHP\Query\Expr\Ordered::fromString("`db`.`fld` desc")
+        );
+    }
 
     public function testConstruct ()
     {
