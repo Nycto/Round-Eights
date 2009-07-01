@@ -265,6 +265,46 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $select->getOrder() );
     }
 
+    public function testOrder ()
+    {
+        $select = new \cPHP\Query\Select;
+
+        $this->assertSame(
+                $select,
+                $select->orderBy( "fld1", "tbl.fld2 ASC" )
+            );
+
+        $this->assertEquals(
+            array(
+                new \cPHP\Query\Expr\Ordered(
+                    new \cPHP\Query\Atom\Field("fld1")
+                ),
+                new \cPHP\Query\Expr\Ordered(
+                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                    "ASC"
+                )
+            ),
+            $select->getOrder()
+        );
+
+        $field = $this->getMock('cPHP\iface\Query\Ordered');
+        $this->assertSame( $select, $select->orderBy( $field ) );
+
+        $this->assertEquals(
+            array(
+                new \cPHP\Query\Expr\Ordered(
+                    new \cPHP\Query\Atom\Field("fld1")
+                ),
+                new \cPHP\Query\Expr\Ordered(
+                    new \cPHP\Query\Atom\Field("fld2", "tbl"),
+                    "ASC"
+                ),
+                $field
+            ),
+            $select->getOrder()
+        );
+    }
+
     public function testGroupAccessors ()
     {
         $select = new \cPHP\Query\Select;

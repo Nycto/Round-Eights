@@ -201,7 +201,7 @@ class Select
     }
 
     /**
-     * Adds multiple fields at once using a fluent interface
+     * Adds multiple select fields at once using a fluent interface
      *
      * @param mixed... $fields Any fields to add. This can be a string
      * 		or a selectable object
@@ -418,6 +418,27 @@ class Select
     public function clearOrder ()
     {
         $this->order = array();
+        return $this;
+    }
+
+    /**
+     * Adds multiple "Order By" fields at once using a fluent interface
+     *
+     * @param \cPHP\Query\iface\Ordered $fields... Any fields to add.
+     * 		This can be a string or an ordered object
+     * @return \cPHP\Query\Select Returns a self reference
+     */
+    public function orderBy ()
+    {
+        foreach ( func_get_args() AS $arg )
+        {
+            // If they didn't give us an object, create one
+            if ( !( $arg instanceof \cPHP\iface\Query\Ordered ) )
+                $arg = \cPHP\Query\Expr\Ordered::fromString( $arg );
+
+            $this->addOrder( $arg );
+        }
+
         return $this;
     }
 
