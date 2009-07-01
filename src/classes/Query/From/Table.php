@@ -32,6 +32,27 @@ class Table implements \cPHP\iface\Query\From
 {
 
     /**
+     * The table name
+     *
+     * @var String
+     */
+    private $table;
+
+    /**
+     * The database name
+     *
+     * @var String
+     */
+    private $database;
+
+    /**
+     * The alias for this table
+     *
+     * @var String
+     */
+    private $alias;
+
+    /**
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
@@ -59,28 +80,11 @@ class Table implements \cPHP\iface\Query\From
     }
 
     /**
-     * The table name
-     *
-     * @var String
-     */
-    private $table;
-
-    /**
-     * The database name
-     *
-     * @var String
-     */
-    private $database;
-
-    /**
-     * The alias for this table
-     *
-     * @var String
-     */
-    private $alias;
-
-    /**
      * Constructor...
+     *
+     * @param String $table The name of this table
+     * @param String $database The database name
+     * @param String $alias The alias to apply to this table
      */
     public function __construct ( $table, $database = null, $alias = null )
     {
