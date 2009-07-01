@@ -49,7 +49,7 @@ class Aliased implements \cPHP\iface\Query\Selectable
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \cPHP\Query\From\Table
+     * @return \cPHP\Query\Expr\Aliased
      */
     static public function fromString ( $string )
     {
