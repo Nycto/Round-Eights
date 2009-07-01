@@ -111,6 +111,16 @@ class Query
         return array( $string, $alias );
     }
 
+    /**
+     * Inline instantiation method for Select objects
+     *
+     * @return \cPHP\Query\Select
+     */
+    static public function select ()
+    {
+        return new \cPHP\Query\Select;
+    }
+
 }
 
 ?>

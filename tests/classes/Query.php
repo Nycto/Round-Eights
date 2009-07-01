@@ -25,6 +25,7 @@
  * @package UnitTests
  */
 
+use cPHP;
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
@@ -111,6 +112,14 @@ class classes_query extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 array( "`Expr\\`quoted`", null ),
                 \cPHP\Query::parseSQLAlias( "`Expr\\`quoted` AS " )
+            );
+    }
+
+    public function testSelect ()
+    {
+        $this->assertThat(
+                \cPHP\Query::select(),
+                $this->isInstanceOf("\cPHP\Query\Select")
             );
     }
 
