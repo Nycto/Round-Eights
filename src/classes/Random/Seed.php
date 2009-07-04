@@ -122,12 +122,9 @@ class Seed
 
         $source = strtolower( $this->getString() );
 
-        // Convert any non-digits to digits
-        $source = strtr(
-                $source,
-                "abcdefghijklmnopqrstuvwxyz",
-                "12345678901234567890123456"
-            );
+        $source = array_map( "hexdec", str_split( $source, 2 ) );
+
+        $source = implode ("", $source);
 
         // Integers can only be so big, so fit the source value into
         // the constraints of PHP
