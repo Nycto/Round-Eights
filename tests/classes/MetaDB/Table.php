@@ -51,12 +51,11 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     /**
      * Returns a test table set
      *
-     * @return \h2o\MetaDB\TableSet
+     * @return \h2o\MetaDB\Set
      */
-    public function getTestTableSet ()
+    public function getTestDB ()
     {
-        $fld = $this->getMock("h2o\MetaDB\TableSet");
-        return $fld;
+        return new \h2o\MetaDB\DB( new \h2o\MetaDB\Set, "dbName" );
     }
 
     /**
@@ -67,8 +66,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     public function getTestTable ()
     {
         return new \h2o\MetaDB\Table(
-                $this->getTestTableSet(),
-                "dbName",
+                $this->getTestDB(),
                 "tblName"
             );
     }
@@ -76,15 +74,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         try {
-            new \h2o\MetaDB\Table( $this->getTestTableSet(), "", "name" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Must not be empty", $err->getMessage() );
-        }
-
-        try {
-            new \h2o\MetaDB\Table( $this->getTestTableSet(), "name", "" );
+            new \h2o\MetaDB\Table( $this->getTestDB(), "" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \h2o\Exception\Argument $err ) {
@@ -92,13 +82,11 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         }
 
         $tbl = new \h2o\MetaDB\Table(
-                $this->getTestTableSet(),
-                "dbName",
+                $this->getTestDB(),
                 "tblName"
             );
 
-        $this->assertSame( "dbName", $tbl->getDBName() );
-        $this->assertSame( "tblName", $tbl->getTableName() );
+        $this->assertSame( "tblName", $tbl->getName() );
     }
 
     public function testAddColumn ()
@@ -113,11 +101,18 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $fld2 = $this->getTestColumn("fld2");
         $this->assertSame( $tbl, $tbl->addColumn( $fld2 ) );
 
-        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+        $this->assertSame(
+                array( "fld1" => $fld1, "fld2" => $fld2 ),
+                $tbl->getColumns()
+            );
 
 
+        // Add a column that already exists
         $this->assertSame( $tbl, $tbl->addColumn( $fld1 ) );
-        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+        $this->assertSame(
+                array( "fld1" => $fld1, "fld2" => $fld2 ),
+                $tbl->getColumns()
+            );
     }
 
     public function testAddColumn_conflict ()
@@ -138,7 +133,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testFindColumn ()
+    public function testGetColumn ()
     {
         $tbl = $this->getTestTable();
 
@@ -149,10 +144,10 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $tbl->addColumn( $fld2 );
 
 
-        $this->assertSame( $fld1, $tbl->findColumn( "userID" ) );
-        $this->assertSame( $fld2, $tbl->findColumn( "email" ) );
-        $this->assertNull( $tbl->findColumn( "not a field" ) );
-        $this->assertNull( $tbl->findColumn( "EMAIL" ) );
+        $this->assertSame( $fld1, $tbl->getColumn( "userID" ) );
+        $this->assertSame( $fld2, $tbl->getColumn( "email" ) );
+        $this->assertNull( $tbl->getColumn( "not a field" ) );
+        $this->assertNull( $tbl->getColumn( "EMAIL" ) );
     }
 
     public function testPrimary_preRegistered ()
@@ -163,11 +158,11 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
 
         $primary = $this->getTestColumn("primary");
         $this->assertSame( $tbl, $tbl->addColumn( $primary ) );
-        $this->assertSame( array( $primary ), $tbl->getColumns() );
+        $this->assertSame( array( "primary" => $primary ), $tbl->getColumns() );
 
         $this->assertSame( $tbl, $tbl->setPrimary( $primary ) );
         $this->assertSame( $primary, $tbl->getPrimary() );
-        $this->assertSame( array( $primary ), $tbl->getColumns() );
+        $this->assertSame( array( "primary" => $primary ), $tbl->getColumns() );
     }
 
     public function testPrimary_register ()
@@ -184,14 +179,20 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $fld2 = $this->getTestColumn("fld2");
         $tbl->addColumn( $fld2 );
 
-        $this->assertSame( array( $fld1, $fld2 ), $tbl->getColumns() );
+        $this->assertSame(
+            array( "fld1" => $fld1, "fld2" => $fld2 ),
+            $tbl->getColumns()
+        );
 
 
         // Now add the primary key
-        $primary = $this->getTestColumn("");
+        $primary = $this->getTestColumn("primary");
         $this->assertSame( $tbl, $tbl->setPrimary( $primary ) );
         $this->assertSame( $primary, $tbl->getPrimary() );
-        $this->assertSame( array( $primary, $fld1, $fld2 ), $tbl->getColumns() );
+        $this->assertSame(
+                array( "primary" => $primary, "fld1" => $fld1, "fld2" => $fld2 ),
+                $tbl->getColumns()
+            );
     }
 
 }

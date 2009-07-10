@@ -32,29 +32,6 @@ interface Column
 {
 
     /**
-     * Returns the SQL needed to insert a value into this field
-     *
-     * @param mixed $value The value being inserted into this field
-     * @return String
-     */
-    public function getInsertSQL ( $value );
-
-    /**
-     * Returns the SQL needed to update a value in this field
-     *
-     * @param mixed $value The new value for the field
-     * @return String
-     */
-    public function getUpdateSQL ( $value );
-
-    /**
-     * Returns the SQL needed to select a value from this field
-     *
-     * @return String
-     */
-    public function getSelectSQL ();
-
-    /**
      * Returns the name of this column
      *
      * @return String

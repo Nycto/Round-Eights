@@ -34,11 +34,18 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * A common TableSet to use when generating test column
+     * A common Set to use when generating test column
      *
-     * @var \h2o\MetaDB\TableSet
+     * @var \h2o\MetaDB\Set
      */
-    private $tableSet;
+    private $set;
+
+    /**
+     * A common Database to use when generating test column
+     *
+     * @var \h2o\MetaDB\DB
+     */
+    private $db;
 
     /**
      * A common table to use when generating test columns
@@ -54,16 +61,9 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
      */
     public function setUp ()
     {
-        $this->tableSet = $this->getMock(
-        		"h2o\MetaDB\TableSet",
-                array("_mock")
-            );
-
-        $this->table = $this->getMock(
-                'h2o\MetaDB\Table',
-                array( "_mock" ),
-                array( $this->tableSet, "dbName", "tblName" )
-            );
+        $this->set = new \h2o\MetaDB\Set;
+        $this->db = new \h2o\MetaDB\DB( $this->set, "dbName" );
+        $this->table = new \h2o\MetaDB\Table( $this->db, "tblName" );
     }
 
     /**

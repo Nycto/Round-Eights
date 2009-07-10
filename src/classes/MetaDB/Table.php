@@ -32,25 +32,18 @@ class Table
 {
 
     /**
-     * The TableSet this table belongs to
+     * The DB this table belongs to
      *
-     * @var \h2o\MetaDB\TableSet
+     * @var \h2o\MetaDB\DB
      */
-    private $tabelset;
-
-    /**
-     * The database this table belongs to
-     *
-     * @var String
-     */
-    private $dbName;
+    private $db;
 
     /**
      * The name of this table
      *
      * @var String
      */
-    private $tableName;
+    private $name;
 
     /**
      * The columns in this table
@@ -69,37 +62,21 @@ class Table
     /**
      * Constructor...
      *
-     * @param \h2o\MetaDB\TableSet $tableset The TableSet this table belongs to
-     * @param String $dbName The name of the database this table is in
-     * @param String $tableName The name of the table in the database
+     * @param \h2o\MetaDB\DB $db The Database this table belongs to
+     * @param String $name The name of the table in the database
      */
-    public function __construct ( \h2o\MetaDB\TableSet $tableset, $dbName, $tableName )
+    public function __construct ( \h2o\MetaDB\DB $db, $name )
     {
-        $dbName = trim( trim( \h2o\strval($dbName) ), "`" );
-        $tableName = trim( trim( \h2o\strval($tableName) ), "`" );
+        $name = trim( trim( \h2o\strval($name) ), "`" );
 
-        if ( \h2o\isEmpty($dbName) )
-            throw new \h2o\Exception\Argument( 0, "DB Name", "Must not be empty" );
-
-        if ( \h2o\isEmpty($tableName) )
+        if ( \h2o\isEmpty($name) )
             throw new \h2o\Exception\Argument( 1, "Table Name", "Must not be empty" );
 
-        $this->dbName = $dbName;
-        $this->tableName = $tableName;
-        $this->tableset = $tableset;
+        $this->name = $name;
+        $this->db = $db;
 
-        // Add this table to the table set
-        $tableset->addTable( $this );
-    }
-
-    /**
-     * Returns the name of the database this table is in
-     *
-     * @return String
-     */
-    public function getDBName ()
-    {
-        return $this->dbName;
+        // Add this table to the db
+        $db->addTable( $this );
     }
 
     /**
@@ -107,9 +84,9 @@ class Table
      *
      * @return String
      */
-    public function getTableName ()
+    public function getName ()
     {
-        return $this->tableName;
+        return $this->name;
     }
 
     /**
@@ -130,21 +107,20 @@ class Table
      */
     public function addColumn ( \h2o\iface\MetaDB\Column $column )
     {
-        if ( !in_array($column, $this->columns, true) ) {
+        // Ensure the column doesn't already exist
+        $found = $this->getColumn( $column->getName() );
 
-            if ( !is_null( $this->findColumn( $column->getName() ) ) ) {
-                $err = new \h2o\Exception\Argument(
-                        0,
-                        "Column",
-                        "A column with that name already exists"
-                    );
-                $err->addData("Column Name", $column->getName());
-                throw $err;
-            }
-
-            $this->columns[] = $column;
+        if ( !is_null( $found ) && $found !== $column ) {
+            $err = new \h2o\Exception\Argument(
+                    0,
+                    "Column",
+                    "A column with that name already exists"
+                );
+            $err->addData("Column Name", $column->getName());
+            throw $err;
         }
 
+        $this->columns[ $column->getName() ] = $column;
         return $this;
     }
 
@@ -155,7 +131,7 @@ class Table
      * @return \h2o\iface\MetaDB\Column Returns NULL if the column couldn't
      * 		be found
      */
-    public function findColumn ( $name )
+    public function getColumn ( $name )
     {
         $name = trim( \h2o\strval( $name ) );
 
@@ -189,8 +165,10 @@ class Table
         $this->primary = $column;
 
         // If the primary hasn't been registered yet, add it to the columns
-        if ( !in_array($column, $this->columns, true) )
-            array_unshift( $this->columns, $column );
+        if ( !in_array($column, $this->columns, true) ) {
+            $this->columns = array( $column->getName() => $column )
+                + $this->columns;
+        }
 
         return $this;
     }
