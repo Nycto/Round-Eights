@@ -1,4 +1,4 @@
 tests/config.php
-tools/raindropPHP.phar
-tools/raindropPHP-*.tar.gz
-tools/raindropPHP-*.zip
+tools/RaindropPHP.phar
+tools/RaindropPHP-*.tar.gz
+tools/RaindropPHP-*.zip
