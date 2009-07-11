@@ -24,6 +24,10 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  */
 
+// Ensure they are running the appropriate PHP version
+if ( version_compare( phpversion(), '5.3.0' ) < 0 )
+    trigger_error("Could not load RaindropPHP: PHP version 5.3 required", E_USER_ERROR);
+
 // If h2o has already been included...
 if ( defined("h2o_INCLUDED") )
     return;

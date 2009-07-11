@@ -35,9 +35,6 @@
  * @package Package
  */
 
-if ( version_compare( phpversion(), '5.3.0RC1' ) < 0 )
-    trigger_error("Could not load RaindropPHP: PHP version 5.3 required", E_USER_ERROR);
-
 if ( !class_exists('Phar', FALSE) )
     trigger_error("Could not load RaindropPHP: Phar class does not exist", E_USER_ERROR);
 
