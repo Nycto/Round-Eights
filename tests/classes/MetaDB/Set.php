@@ -106,6 +106,29 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
         $this->assertSame( $db2, $set->getDB( "other" ) );
     }
 
+    public function testGet ()
+    {
+        $set = new \h2o\MetaDB\Set;
+
+        // Add two databases
+        $db1 = $this->getTestDB( $set, "dbName" );
+        $this->assertSame( $set, $set->addDB( $db1 ) );
+
+        $db2 = $this->getTestDB( $set, "other" );
+        $this->assertSame( $set, $set->addDB( $db2 ) );
+
+        $this->assertSame( $db1, $set->dbName );
+        $this->assertSame( $db2, $set->other );
+
+        try {
+            $set->NotADB;
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Variable $err ) {
+            $this->assertSame( "Database does not exist", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
