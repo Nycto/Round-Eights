@@ -131,6 +131,44 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
         $this->assertNull( $db->getTable( "USERS" ) );
     }
 
+    public function testGet ()
+    {
+        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+
+        // Add two Tables
+        $tbl1 = $this->getTestTable($db, "users");
+        $tbl2 = $this->getTestTable($db, "articles");
+        $db->addTable( $tbl1 );
+        $db->addTable( $tbl2 );
+
+
+        $this->assertSame( $tbl1, $db->users );
+        $this->assertSame( $tbl2, $db->articles );
+
+        try {
+            $db->NotATable;
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Variable $err ) {
+            $this->assertSame( "Table does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testIsset ()
+    {
+        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+
+        // Add two Tables
+        $tbl1 = $this->getTestTable($db, "users");
+        $tbl2 = $this->getTestTable($db, "articles");
+        $db->addTable( $tbl1 );
+        $db->addTable( $tbl2 );
+
+        $this->assertTrue( isset($db->users) );
+        $this->assertTrue( isset($db->articles) );
+        $this->assertFalse( isset($db->notATable) );
+    }
+
 }
 
 ?>
