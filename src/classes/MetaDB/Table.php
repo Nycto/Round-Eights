@@ -173,6 +173,35 @@ class Table
         return $this;
     }
 
+    /**
+     * Class property access to the contained columns
+     *
+     * @throws \h2o\Exception\Variable If the requested column doesn't exist,
+     * 		this exception will be thrown
+     * @param String $name The name of the column to pull
+     * @return \h2o\MetaDB\Column Returns the requested Column
+     */
+    public function __get ( $name )
+    {
+        $db = $this->getColumn( $name );
+
+        if ( !$db )
+            throw new \h2o\Exception\Variable($name, "Column does not exist");
+
+        return $db;
+    }
+
+    /**
+     * Class property access to the contained columns
+     *
+     * @param String $name The name of the column to test
+     * @return Boolean Returns whether a column has been registered
+     */
+    public function __isset ( $name )
+    {
+        return $this->getColumn( $name ) ? TRUE : FALSE;
+    }
+
 }
 
 ?>
