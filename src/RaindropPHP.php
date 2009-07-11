@@ -29,7 +29,7 @@ if ( defined("h2o_INCLUDED") )
     return;
 
 // Define the version
-define("h2o_VERSION", "0.2.0");
+define("h2o_VERSION", "0.3.0dev");
 
 // Mark that RaindropPHP has been included
 define("h2o_INCLUDED", TRUE);
