@@ -129,6 +129,22 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testIsset ()
+    {
+        $set = new \h2o\MetaDB\Set;
+
+        // Add two databases
+        $db1 = $this->getTestDB( $set, "dbName" );
+        $this->assertSame( $set, $set->addDB( $db1 ) );
+
+        $db2 = $this->getTestDB( $set, "other" );
+        $this->assertSame( $set, $set->addDB( $db2 ) );
+
+        $this->assertTrue( isset($set->dbName) );
+        $this->assertTrue( isset($set->other) );
+        $this->assertFalse( isset($set->notADB) );
+    }
+
 }
 
 ?>

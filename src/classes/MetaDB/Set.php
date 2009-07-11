@@ -108,6 +108,17 @@ class Set
         return $db;
     }
 
+    /**
+     * Class property access to the contained databases
+     *
+     * @param String $name The name of the database to test
+     * @return Boolean Returns whether a database has been registered
+     */
+    public function __isset ( $name )
+    {
+        return $this->getDB( $name ) ? TRUE : FALSE;
+    }
+
 }
 
 ?>
