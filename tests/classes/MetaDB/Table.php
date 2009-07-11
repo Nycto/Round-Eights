@@ -195,6 +195,44 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testGet ()
+    {
+        $tbl = $this->getTestTable();
+
+        // Add two columns
+        $fld1 = $this->getTestColumn("userID");
+        $fld2 = $this->getTestColumn("email");
+        $tbl->addColumn( $fld1 );
+        $tbl->addColumn( $fld2 );
+
+
+        $this->assertSame( $fld1, $tbl->userID );
+        $this->assertSame( $fld2, $tbl->email );
+
+        try {
+            $tbl->NotAColumn;
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Variable $err ) {
+            $this->assertSame( "Column does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testIsset ()
+    {
+        $tbl = $this->getTestTable();
+
+        // Add two columns
+        $fld1 = $this->getTestColumn("userID");
+        $fld2 = $this->getTestColumn("email");
+        $tbl->addColumn( $fld1 );
+        $tbl->addColumn( $fld2 );
+
+        $this->assertTrue( isset($tbl->userID) );
+        $this->assertTrue( isset($tbl->email) );
+        $this->assertFalse( isset($tbl->notAColumn) );
+    }
+
 }
 
 ?>

@@ -90,6 +90,35 @@ class Set
         return $this->dbs[$name];
     }
 
+    /**
+     * Class property access to the contained databases
+     *
+     * @throws \h2o\Exception\Variable If the requested database doesn't exist,
+     * 		this exception will be thrown
+     * @param String $name The name of the database to pull
+     * @return \h2o\MetaDB\DB Returns the requested database
+     */
+    public function __get ( $name )
+    {
+        $db = $this->getDB( $name );
+
+        if ( !$db )
+            throw new \h2o\Exception\Variable($name, "Database does not exist");
+
+        return $db;
+    }
+
+    /**
+     * Class property access to the contained databases
+     *
+     * @param String $name The name of the database to test
+     * @return Boolean Returns whether a database has been registered
+     */
+    public function __isset ( $name )
+    {
+        return $this->getDB( $name ) ? TRUE : FALSE;
+    }
+
 }
 
 ?>
