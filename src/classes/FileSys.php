@@ -20,7 +20,7 @@
  * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <james@Raindropphp.com>
+ * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileSystem
  */
