@@ -33,10 +33,46 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
 {
 
-    public function testQuery ()
+    public function testQuery_Select ()
     {
         $link = new \h2o\DB\BlackHole\Link;
-        $this->assertSame( $link, $link->query("SELECT * FROM table") );
+        $result = $link->query("SELECT * FROM table");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\BlackHole\Read") );
+    }
+
+    public function testQuery_Insert ()
+    {
+        $link = new \h2o\DB\BlackHole\Link;
+
+        $result = $link->query("INSERT INTO table VALUES (NULL)");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
+        $this->assertSame( 1, $result->getAffected() );
+        $this->assertSame( 1, $result->getInsertID() );
+
+        $result = $link->query("INSERT INTO table VALUES (NULL)");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
+        $this->assertSame( 1, $result->getAffected() );
+        $this->assertSame( 2, $result->getInsertID() );
+
+        $result = $link->query("INSERT INTO table VALUES (NULL)");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
+        $this->assertSame( 1, $result->getAffected() );
+        $this->assertSame( 3, $result->getInsertID() );
+    }
+
+    public function testQuery_Update ()
+    {
+        $link = new \h2o\DB\BlackHole\Link;
+
+        $result = $link->query("UPDATE table SET field = NULL");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
+        $this->assertSame( 0, $result->getAffected() );
+        $this->assertNull( $result->getInsertID() );
+
+        $result = $link->query("UPDATE table SET field = NULL");
+        $this->assertThat( $result, $this->isInstanceOf("h2o\DB\Result\Write") );
+        $this->assertSame( 0, $result->getAffected() );
+        $this->assertNull( $result->getInsertID() );
     }
 
     public function testEscapeString ()

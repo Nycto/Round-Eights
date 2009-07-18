@@ -30,7 +30,7 @@ namespace h2o\DB\Result;
 /**
  * Database Read Query Results
  */
-abstract class Read extends \h2o\DB\Result implements \Countable, \SeekableIterator
+abstract class Read extends \h2o\DB\Result implements \h2o\iface\DB\Result\Read
 {
 
     /**

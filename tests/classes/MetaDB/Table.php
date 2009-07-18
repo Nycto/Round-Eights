@@ -42,7 +42,7 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
     {
         $fld = $this->getMock("h2o\iface\MetaDB\Column");
         $fld->expects( $this->any() )
-            ->method('getName')
+            ->method('getName', 'toSelectSQL')
             ->will( $this->returnValue( $name ) );
 
         return $fld;
@@ -55,7 +55,8 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
      */
     public function getTestDB ()
     {
-        return new \h2o\MetaDB\DB( new \h2o\MetaDB\Set, "dbName" );
+        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+        return new \h2o\MetaDB\DB( $set, "dbName" );
     }
 
     /**
@@ -231,6 +232,14 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertTrue( isset($tbl->userID) );
         $this->assertTrue( isset($tbl->email) );
         $this->assertFalse( isset($tbl->notAColumn) );
+    }
+
+    public function testToFromSQL ()
+    {
+        $table = $this->getTestTable();
+        $link = new \h2o\DB\BlackHole\Link;
+
+        $this->assertSame( "dbName.tblName", $table->toFromSQL( $link ) );
     }
 
 }

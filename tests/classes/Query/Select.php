@@ -87,6 +87,27 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $select->getFields() );
     }
 
+    public function testSetFields ()
+    {
+        $select = new \h2o\Query\Select;
+        $this->assertSame( array(), $select->getFields() );
+
+        $fld1 = $this->getMock('h2o\iface\Query\Selectable');
+        $fld2 = $this->getMock('h2o\iface\Query\Selectable');
+
+        $this->assertSame( $select, $select->setFields(array($fld1)) );
+        $this->assertSame( array($fld1), $select->getFields() );
+
+        $this->assertSame( $select, $select->setFields(array($fld2)) );
+        $this->assertSame( array($fld2), $select->getFields() );
+
+        $this->assertSame(
+                $select,
+                $select->setFields(array($fld1, "not an object", $fld2))
+            );
+        $this->assertSame( array($fld1, $fld2), $select->getFields() );
+    }
+
     public function testFields ()
     {
         $select = new \h2o\Query\Select;

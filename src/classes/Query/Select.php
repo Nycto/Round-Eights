@@ -201,6 +201,26 @@ class Select
     }
 
     /**
+     * Selts the select field list to the given array
+     *
+     * This will clear out any currently set fields before adding the new ones
+     *
+     * @param Array $fields An array of \h2o\iface\Query\Selectable objects
+     * @return \h2o\Query\Select Returns a self reference
+     */
+    public function setFields ( array $fields )
+    {
+        $this->fields = array();
+
+        foreach ( $fields AS $field ) {
+            if ( $field instanceof \h2o\iface\Query\Selectable )
+                $this->fields[] = $field;
+        }
+
+        return $this;
+    }
+
+    /**
      * Adds multiple select fields at once using a fluent interface
      *
      * @param mixed... $fields Any fields to add. This can be a string

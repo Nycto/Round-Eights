@@ -28,7 +28,7 @@ namespace h2o\MetaDB;
 /**
  * A database table
  */
-class Table
+class Table implements \h2o\iface\Query\From
 {
 
     /**
@@ -200,6 +200,18 @@ class Table
     public function __isset ( $name )
     {
         return $this->getColumn( $name ) ? TRUE : FALSE;
+    }
+
+    /**
+     * Returns the SQL FROM clause
+     *
+     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
+     * @return String
+     */
+    public function toFromSQL ( \h2o\iface\DB\Link $link )
+    {
+        return $this->db->getName() .".". $this->getName();
     }
 
 }

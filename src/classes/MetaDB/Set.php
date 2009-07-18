@@ -32,11 +32,29 @@ class Set
 {
 
     /**
+     * The database connection to run queries against
+     *
+     * @var \h2o\iface\DB\Link
+     */
+    private $link;
+
+    /**
      * The dbs registerd in this set
      *
      * @var array An array of \h2o\MetaDB\DB objects
      */
     private $dbs = array();
+
+    /**
+     * Constructor...
+     *
+     * @param \h2o\iface\DB\Link $link The database connection to run
+     * 		queries against
+     */
+    public function __construct ( \h2o\iface\DB\Link $link )
+    {
+        $this->link = $link;
+    }
 
     /**
      * Returns the DBs registered in this set
@@ -117,6 +135,24 @@ class Set
     public function __isset ( $name )
     {
         return $this->getDB( $name ) ? TRUE : FALSE;
+    }
+
+    /**
+     * Executes the select query and returns the results
+     *
+     * @param \h2o\iface\MetaDB\RowBuilder $builder The builder to
+     * 		use for constructing rows
+     * @param \h2o\Query\Select $query The query to run
+     * @return \h2o\MetaDB\Result
+     */
+    public function select (
+        \h2o\iface\MetaDB\RowBuilder $builder,
+        \h2o\Query\Select $query
+    ) {
+        return new \h2o\MetaDB\Result(
+            $this->link->query( $query->toSQL( $this->link ) ),
+            $builder
+        );
     }
 
 }

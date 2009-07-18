@@ -170,6 +170,37 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testIsInsert ()
+    {
+        $this->assertTrue(
+                \h2o\DB\Link::isInsert("INSERT INTO table SET field = 1")
+            );
+
+        $this->assertTrue(
+                \h2o\DB\Link::isInsert("INSERT INTO table VALUES (1, 2)")
+            );
+
+        $this->assertTrue(
+                \h2o\DB\Link::isInsert(" \n\t  INSERT INTO table SET field = 1")
+            );
+
+        $this->assertTrue(
+                \h2o\DB\Link::isInsert("insert into table set field = 1")
+            );
+
+        $this->assertFalse(
+                \h2o\DB\Link::isInsert("INSERTER")
+            );
+
+        $this->assertFalse(
+                \h2o\DB\Link::isInsert("SELECT * FROM table")
+            );
+
+        $this->assertFalse(
+                \h2o\DB\Link::isInsert("UPDATE table SET field = 1")
+            );
+    }
+
     public function testPersistentAccessors ()
     {
         $mock = $this->getMockLink();

@@ -116,6 +116,21 @@ abstract class Link implements \h2o\iface\DB\Link
     }
 
     /**
+     * Returns whether a query is an INSERT query
+     *
+     * @param String $query The query being tested
+     * @return Boolean
+     */
+    static public function isInsert ( $query )
+    {
+        $query = \h2o\strval($query);
+        $query = \h2o\str\stripQuoted($query, array("'", '"', "`"));
+        $query = trim($query);
+
+        return preg_match("/^\s*INSERT\b/i", $query) ? TRUE : FALSE;
+    }
+
+    /**
      * Prepares a value for a SQL statement
      *
      * @param mixed $value The value to prepare

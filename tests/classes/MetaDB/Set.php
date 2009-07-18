@@ -49,7 +49,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testAddDB ()
     {
-        $set = new \h2o\MetaDB\Set;
+        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
 
         $this->assertSame( array(), $set->getDBs() );
 
@@ -89,7 +89,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testGetDB ()
     {
-        $set = new \h2o\MetaDB\Set;
+        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -108,7 +108,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $set = new \h2o\MetaDB\Set;
+        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -131,7 +131,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testIsset ()
     {
-        $set = new \h2o\MetaDB\Set;
+        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -143,6 +143,26 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
         $this->assertTrue( isset($set->dbName) );
         $this->assertTrue( isset($set->other) );
         $this->assertFalse( isset($set->notADB) );
+    }
+
+    public function testQuery ()
+    {
+        $query = new \h2o\Query\Select;
+        $builder = $this->getMock('\h2o\iface\MetaDB\RowBuilder');
+        $link = new \h2o\DB\BlackHole\Link;
+
+        $selector = new \h2o\MetaDB\Set( $link );
+
+        $result = $selector->select( $builder, $query );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\MetaDB\Result") );
+
+        $this->assertSame( $builder, $result->getRowBuilder() );
+
+        $decorated = $result->getDecorated();
+        $this->assertThat( $decorated, $this->isInstanceOf("h2o\DB\BlackHole\Read") );
+        $this->assertSame( "SELECT *", $decorated->getQuery() );
+
     }
 
 }

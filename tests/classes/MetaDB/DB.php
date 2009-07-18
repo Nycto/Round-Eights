@@ -34,6 +34,16 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
 {
 
     /**
+     * Returns a MetaDB\Set object for testing
+     *
+     * @return \h2o\MetaDB\Set
+     */
+    public function getTestSet ()
+    {
+        return new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+    }
+
+    /**
      * Returns a Mock database table object
      *
      * @return \h2o\MetaDB\Table
@@ -58,21 +68,21 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         try {
-            new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "" );
+            new \h2o\MetaDB\DB( $this->getTestSet(), "" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
 
         $this->assertSame( "dbName", $db->getName() );
     }
 
     public function testAddTable ()
     {
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
         $this->assertSame( array(), $db->getTables() );
 
 
@@ -97,7 +107,7 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
 
     public function testAddTable_conflict ()
     {
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
 
         $tbl1 = $this->getTestTable($db, "name");
         $db->addTable( $tbl1 );
@@ -116,7 +126,7 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
 
     public function testGetTable ()
     {
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
 
         $tbl1 = $this->getTestTable($db, "users");
         $tbl2 = $this->getTestTable($db, "articles");
@@ -133,7 +143,7 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
 
         // Add two Tables
         $tbl1 = $this->getTestTable($db, "users");
@@ -156,7 +166,7 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
 
     public function testIsset ()
     {
-        $db = new \h2o\MetaDB\DB( new h2o\MetaDB\Set, "dbName" );
+        $db = new \h2o\MetaDB\DB( $this->getTestSet(), "dbName" );
 
         // Add two Tables
         $tbl1 = $this->getTestTable($db, "users");

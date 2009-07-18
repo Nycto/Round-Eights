@@ -32,15 +32,31 @@ class Link implements \h2o\iface\DB\Link
 {
 
     /**
+     * An internal counter to keep track of the dished out insert ids
+     *
+     * @var Integer
+     */
+    private $insertID = 0;
+
+    /**
      * Runs a query and returns the result
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @returns \h2o\DB\BlackHole\Link Returns a result object
+     * @returns \h2o\iface\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
-        return $this;
+        $query = strval( $query );
+
+        if ( \h2o\DB\Link::isSelect($query) )
+            return new \h2o\DB\BlackHole\Read( null, $query );
+
+        else if ( \h2o\DB\Link::isInsert($query) )
+            return new \h2o\DB\Result\Write( 1, ++$this->insertID, $query );
+
+        else
+            return new \h2o\DB\Result\Write( 0, null, $query );
     }
 
     /**

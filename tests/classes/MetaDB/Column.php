@@ -61,7 +61,7 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
      */
     public function setUp ()
     {
-        $this->set = new \h2o\MetaDB\Set;
+        $this->set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
         $this->db = new \h2o\MetaDB\DB( $this->set, "dbName" );
         $this->table = new \h2o\MetaDB\Table( $this->db, "tblName" );
     }
@@ -76,7 +76,7 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "\h2o\MetaDB\Column",
-                array( "getSelectSQL", "getInsertSQL", "getUpdateSQL" ),
+                array( "toSelectSQL" ),
                 array( $this->table, $name )
             );
     }

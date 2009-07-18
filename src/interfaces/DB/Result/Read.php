@@ -1,5 +1,7 @@
 <?php
 /**
+ * Database Query Result
+ *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -20,23 +22,52 @@
  *
  * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package Database
  */
 
-namespace h2o\iface\MetaDB;
+namespace h2o\iface\DB\Result;
 
 /**
- * The basic implementation of a database column
+ * Database Read Query Results
  */
-interface Column extends \h2o\iface\Query\Selectable
+interface Read extends \Countable, \SeekableIterator
 {
 
     /**
-     * Returns the name of this column
+     * Returns whether this instance currently holds a valid resource
      *
-     * @return String
+     * @return Boolean
      */
-    public function getName ();
+    public function hasResult ();
+
+    /**
+     * Returns a list of field names returned by the query
+     *
+     * @return Array
+     */
+    public function getFields ();
+
+    /**
+     * Returns whether a field exists in the results
+     *
+     * @param String $field The case-sensitive field name
+     * @return Boolean
+     */
+    public function isField ( $field );
+
+    /**
+     * Returns the number of fields in the result set
+     *
+     * @return Integer
+     */
+    public function fieldCount ();
+
+    /**
+     * Frees the resource in this instance
+     *
+     * @return Object Returns a self reference
+     */
+    public function free ();
 
 }
 
