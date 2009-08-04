@@ -163,6 +163,21 @@ class DB
         return $this->getTable( $name ) ? TRUE : FALSE;
     }
 
+    /**
+     * Executes the select query and returns the results
+     *
+     * @param \h2o\iface\MetaDB\RowBuilder $builder The builder to
+     * 		use for constructing rows
+     * @param \h2o\Query\Select $query The query to run
+     * @return \h2o\MetaDB\Result
+     */
+    public function select (
+        \h2o\iface\MetaDB\RowBuilder $builder,
+        \h2o\Query\Select $query
+    ) {
+        return $this->set->select( $builder, $query );
+    }
+
 }
 
 ?>

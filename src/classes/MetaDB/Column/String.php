@@ -23,20 +23,13 @@
  * @package MetaDB
  */
 
-namespace h2o\iface\MetaDB;
+namespace h2o\MetaDB\Column;
 
 /**
- * The basic implementation of a database column
+ * A string column
  */
-interface Column extends \h2o\iface\Query\Selectable
+class String extends \h2o\MetaDB\Column
 {
-
-    /**
-     * Returns the name of this column
-     *
-     * @return String
-     */
-    public function getName ();
 
     /**
      * Filters a value for this column that was selected from the database
@@ -44,7 +37,10 @@ interface Column extends \h2o\iface\Query\Selectable
      * @param String $value The value of this column selected from the database
      * @return mixed
      */
-    public function filterSelected ( $value );
+    public function filterSelected ( $value )
+    {
+        return strval( $value );
+    }
 
 }
 

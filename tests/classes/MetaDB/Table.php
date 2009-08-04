@@ -90,6 +90,20 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $this->assertSame( "tblName", $tbl->getName() );
     }
 
+    public function testRowBuilder ()
+    {
+        $tbl = new \h2o\MetaDB\Table( $this->getTestDB(), "tblName" );
+
+        $this->assertThat(
+            $tbl->getRowBuilder(),
+            $this->isInstanceOf("h2o\MetaDB\RowBuilder\Generic")
+        );
+
+        $builder = $this->getMock('h2o\iface\MetaDB\RowBuilder');
+        $this->assertSame( $tbl, $tbl->setRowBuilder($builder) );
+        $this->assertSame( $builder, $tbl->getRowBuilder() );
+    }
+
     public function testAddColumn ()
     {
         $tbl = $this->getTestTable();
@@ -240,6 +254,47 @@ class classes_metadb_table extends PHPUnit_Framework_TestCase
         $link = new \h2o\DB\BlackHole\Link;
 
         $this->assertSame( "dbName.tblName", $table->toFromSQL( $link ) );
+    }
+
+    public function testSelect ()
+    {
+        $query = new \h2o\Query\Select;
+        $builder = $this->getMock('h2o\iface\MetaDB\RowBuilder');
+        $response = $this->getMock('h2o\MetaDB\Result', array(), array(), '', FALSE );
+
+        $db = $this->getMock( 'h2o\MetaDB\DB', array(), array(), '', FALSE );
+        $db->expects( $this->once() )
+            ->method('select')
+            ->with( $builder, $query )
+            ->will( $this->returnValue($response) );
+
+        $table = new \h2o\MetaDB\Table( $db, "tblName" );
+        $table->setRowBuilder( $builder );
+
+        $this->assertSame( $response, $table->select( $query ) );
+    }
+
+    public function testWhere ()
+    {
+        $builder = $this->getMock('h2o\iface\MetaDB\RowBuilder');
+        $response = $this->getMock('h2o\MetaDB\Result', array(), array(), '', FALSE );
+
+        $db = $this->getMock( 'h2o\MetaDB\DB', array(), array(), '', FALSE );
+
+        $table = new \h2o\MetaDB\Table( $db, "tblName" );
+        $table->setRowBuilder( $builder );
+
+        $where = new \h2o\Query\Where\Raw("");
+
+        $db->expects( $this->once() )
+            ->method('select')
+            ->with(
+                $this->equalTo( $builder ),
+                $this->isInstanceOf("h2o\Query\Select")
+            )
+            ->will( $this->returnValue($response) );
+
+        $this->assertSame( $response, $table->where( $where ) );
     }
 
 }

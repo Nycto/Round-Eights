@@ -76,7 +76,7 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
                 "\h2o\MetaDB\Column",
-                array( "toSelectSQL" ),
+                array( "filterSelected" ),
                 array( $this->table, $name )
             );
     }
@@ -87,6 +87,18 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
 
         $this->assertSame( "col", $col->getName() );
         $this->assertSame( $this->table, $col->getTable() );
+    }
+
+    public function testToSelectSQL ()
+    {
+        $col = $this->getTestColumn( "col" );
+
+        $link = new \h2o\DB\BlackHole\Link;
+
+        $this->assertSame(
+        	"dbName.tblName.col",
+            $col->toSelectSQL( $link )
+        );
     }
 
 }

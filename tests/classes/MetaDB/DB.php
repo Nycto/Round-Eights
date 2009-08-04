@@ -179,6 +179,32 @@ class classes_metadb_db extends PHPUnit_Framework_TestCase
         $this->assertFalse( isset($db->notATable) );
     }
 
+    public function testSelect ()
+    {
+        $query = new \h2o\Query\Select;
+        $builder = $this->getMock('\h2o\iface\MetaDB\RowBuilder');
+
+        $result = new \h2o\MetaDB\Result(
+            $this->getMock('h2o\iface\DB\Result\Read'),
+            $builder
+        );
+
+        $set = $this->getMock(
+        	'h2o\MetaDB\Set',
+            array(),
+            array( new \h2o\DB\BlackHole\Link )
+        );
+
+        $set->expects( $this->once() )
+            ->method( "select" )
+            ->with( $builder, $query )
+            ->will( $this->returnValue($result) );
+
+        $db = new \h2o\MetaDB\DB( $set, "dbName" );
+
+        $this->assertSame( $result, $db->select( $builder, $query ) );
+    }
+
 }
 
 ?>

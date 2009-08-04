@@ -46,6 +46,13 @@ class Table implements \h2o\iface\Query\From
     private $name;
 
     /**
+     * The row builder to use for queries against this table
+     *
+     * @var \h2o\iface\MetaDB\RowBuilder
+     */
+    private $builder;
+
+    /**
      * The columns in this table
      *
      * @var array An array of \h2o\iface\MetaDB\Column objects
@@ -75,6 +82,9 @@ class Table implements \h2o\iface\Query\From
         $this->name = $name;
         $this->db = $db;
 
+        // Instantiate a default row builder
+        $this->builder = new \h2o\MetaDB\RowBuilder\Generic( $this );
+
         // Add this table to the db
         $db->addTable( $this );
     }
@@ -87,6 +97,28 @@ class Table implements \h2o\iface\Query\From
     public function getName ()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the RowBuilder for this table
+     *
+     * @return \h2o\iface\MetaDB\RowBuilder
+     */
+    public function getRowBuilder ()
+    {
+        return $this->builder;
+    }
+
+    /**
+     * Sets the RowBuilder for this table
+     *
+     * @param \h2o\iface\MetaDB\RowBuilder $builder
+     * @return return_info Returns a self reference
+     */
+    public function setRowBuilder ( \h2o\iface\MetaDB\RowBuilder $builder )
+    {
+        $this->builder = $builder;
+        return $this;
     }
 
     /**
@@ -212,6 +244,33 @@ class Table implements \h2o\iface\Query\From
     public function toFromSQL ( \h2o\iface\DB\Link $link )
     {
         return $this->db->getName() .".". $this->getName();
+    }
+
+    /**
+     * Executes the select query and returns the results
+     *
+     * @param \h2o\Query\Select $query The query to run
+     * @return \h2o\MetaDB\Result
+     */
+    public function select ( \h2o\Query\Select $query )
+    {
+        return $this->db->select( $this->builder, $query );
+    }
+
+    /**
+     * Executes a select against this table using the given WHERE clause
+     *
+     * @param \h2o\iface\Query\Where $where The WHERE clause to run
+     * 		the query with
+     * @return \h2o\MetaDB\Result
+     */
+    public function where ( \h2o\iface\Query\Where $where )
+    {
+        $query = new \h2o\Query\Select( $this );
+        $query->setFields( $this->columns );
+        $query->setWhere( $where );
+
+        return $this->select( $query );
     }
 
 }

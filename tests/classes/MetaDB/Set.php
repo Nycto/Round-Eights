@@ -145,7 +145,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
         $this->assertFalse( isset($set->notADB) );
     }
 
-    public function testQuery ()
+    public function testSelect ()
     {
         $query = new \h2o\Query\Select;
         $builder = $this->getMock('\h2o\iface\MetaDB\RowBuilder');
@@ -162,7 +162,6 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
         $decorated = $result->getDecorated();
         $this->assertThat( $decorated, $this->isInstanceOf("h2o\DB\BlackHole\Read") );
         $this->assertSame( "SELECT *", $decorated->getQuery() );
-
     }
 
 }

@@ -23,28 +23,51 @@
  * @package MetaDB
  */
 
-namespace h2o\iface\MetaDB;
+namespace h2o\MetaDB\RowBuilder;
 
 /**
- * The basic implementation of a database column
+ * The base class for a standard column
  */
-interface Column extends \h2o\iface\Query\Selectable
+class Generic implements \h2o\iface\MetaDB\RowBuilder
 {
 
     /**
-     * Returns the name of this column
+     * The table to build rows for
      *
-     * @return String
+     * @var \h2o\MetaDB\Table
      */
-    public function getName ();
+    private $table;
 
     /**
-     * Filters a value for this column that was selected from the database
+     * Constructor...
      *
-     * @param String $value The value of this column selected from the database
-     * @return mixed
+     * @param \h2o\MetaDB\Table $table The table to build rows for
      */
-    public function filterSelected ( $value );
+    public function __construct ( \h2o\MetaDB\Table $table )
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * Constructs a new row
+     *
+     * @return \h2o\iface\MetaDB\Row
+     */
+    public function create ()
+    {
+
+    }
+
+    /**
+     * Constructs an existing row from an array of data
+     *
+     * @param Array $data The source data
+     * @return \h2o\iface\MetaDB\Row
+     */
+    public function fromArray ( array $data )
+    {
+
+    }
 
 }
 

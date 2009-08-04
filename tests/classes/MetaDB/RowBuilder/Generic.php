@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -20,31 +22,26 @@
  *
  * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package UnitTests
  */
 
-namespace h2o\iface\MetaDB;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * The basic implementation of a database column
+ * unit tests
  */
-interface Column extends \h2o\iface\Query\Selectable
+class classes_metadb_rowbuilder_generic extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Returns the name of this column
-     *
-     * @return String
-     */
-    public function getName ();
+    public function testCreate ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
 
-    /**
-     * Filters a value for this column that was selected from the database
-     *
-     * @param String $value The value of this column selected from the database
-     * @return mixed
-     */
-    public function filterSelected ( $value );
+    public function testFromArray ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
 
 }
 

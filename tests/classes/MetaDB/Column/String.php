@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -20,31 +22,43 @@
  *
  * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package MetaDB
+ * @package UnitTests
  */
 
-namespace h2o\iface\MetaDB;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * The basic implementation of a database column
+ * unit tests
  */
-interface Column extends \h2o\iface\Query\Selectable
+class classes_metadb_column_string extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * Returns the name of this column
+     * Returns a test table
      *
-     * @return String
+     * @return \h2o\MetaDB\Table
      */
-    public function getName ();
+    public function getTestTable ()
+    {
+        return new \h2o\MetaDB\Table(
+            new \h2o\MetaDB\DB(
+                new \h2o\MetaDB\Set(
+                    new \h2o\DB\BlackHole\Link
+                ),
+                "dbName"
+            ),
+            "tblName"
+        );
+    }
 
-    /**
-     * Filters a value for this column that was selected from the database
-     *
-     * @param String $value The value of this column selected from the database
-     * @return mixed
-     */
-    public function filterSelected ( $value );
+    public function testFilterSelected ()
+    {
+        $col = new \h2o\MetaDB\Column\String( $this->getTestTable(), "colName" );
+
+        $this->assertSame( " input ", $col->filterSelected( " input " ) );
+        $this->assertSame( "50", $col->filterSelected( 50 ) );
+        $this->assertSame( "3.14", $col->filterSelected( 3.14 ) );
+    }
 
 }
 

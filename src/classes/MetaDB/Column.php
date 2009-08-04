@@ -84,6 +84,18 @@ abstract class Column implements \h2o\iface\MetaDB\Column
         return $this->name;
     }
 
+    /**
+     * Returns the SQL string for this expression
+     *
+     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
+     * 		is being run against. This is being passed in for escaping purposes
+     * @return String
+     */
+    public function toSelectSQL( \h2o\iface\DB\Link $link )
+    {
+        return $this->table->toFromSQL( $link ) .".". $this->getName();
+    }
+
 }
 
 ?>
