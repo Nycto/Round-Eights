@@ -33,6 +33,50 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_metadb_row_generic extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test column
+     *
+     * @return \h2o\iface\MetaDB\Column
+     */
+    public function getTestColumn ( $name )
+    {
+        $col = $this->getMock('\h2o\iface\MetaDB\Column');
+        $col->expects( $this->any() )
+            ->method( "getName" )
+            ->will( $this->returnValue($name) );
+        return $col;
+    }
+
+    public function testConstruct ()
+    {
+        $col1 = $this->getTestColumn( "uname" );
+        $col1->expects( $this->once() )
+            ->method( "filterSelected" )
+            ->with( $this->equalTo("jack") )
+            ->will( $this->returnValue("JACK") );
+
+        $col2 = $this->getTestColumn( "pword" );
+        $col2->expects( $this->once() )
+            ->method( "filterSelected" )
+            ->with( $this->equalTo("abc123") )
+            ->will( $this->returnValue("ABC123") );
+
+        $row = new \h2o\MetaDB\Row\Generic(
+            array( "uname" => "jack", "noise", "pword" => "abc123" ),
+            array( $col1, $col2, "snow" )
+        );
+
+        $this->assertSame(
+                array("uname" => $col1, "pword" => $col2),
+                $row->getColumns()
+            );
+
+        $this->assertSame(
+                array( "uname" => "JACK", "pword" => "ABC123" ),
+                $row->getValues()
+            );
+    }
+
 }
 
 ?>

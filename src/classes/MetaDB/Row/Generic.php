@@ -31,6 +31,59 @@ namespace h2o\MetaDB\Row;
 class Generic implements \h2o\iface\MetaDB\Row
 {
 
+    /**
+     * The list of values in this Row
+     *
+     * @var Array
+     */
+    private $values = array();
+
+    /**
+     * The list of fields represented by this row
+     *
+     * @var Array
+     */
+    private $columns = array();
+
+    /**
+     * Constructor...
+     *
+     * @param Array $values The list of values in this Row
+     * @param Array $columns The list of fields represented by this row
+     */
+    public function __construct ( array $values, array $columns )
+    {
+        foreach ( $columns AS $column ) {
+            if ( $column instanceof \h2o\iface\MetaDB\Column ) {
+                $name = $column->getName();
+                $this->columns[ $name ] = $column;
+
+                if ( array_key_exists( $name, $values ) )
+                    $this->values[ $name ] = $column->filterSelected( $values[ $name ] );
+            }
+        }
+    }
+
+    /**
+     * Returns the list of values as an indexed array
+     *
+     * @return Array
+     */
+    public function getValues ()
+    {
+        return $this->values;
+    }
+
+    /**
+     * Returns the Columns represented by this row
+     *
+     * @return array
+     */
+    public function getColumns ()
+    {
+        return $this->columns;
+    }
+
 }
 
 ?>
