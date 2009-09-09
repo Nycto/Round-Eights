@@ -47,6 +47,29 @@ class classes_metadb_row_generic extends PHPUnit_Framework_TestCase
         return $col;
     }
 
+    public function getTestRow ()
+    {
+        $col1 = $this->getTestColumn( "uname" );
+        $col1->expects( $this->once() )
+            ->method( "filterSelected" )
+            ->will( $this->returnArgument(0) );
+
+        $col2 = $this->getTestColumn( "pword" );
+        $col2->expects( $this->once() )
+            ->method( "filterSelected" )
+            ->will( $this->returnArgument(0) );
+
+        $col3 = $this->getTestColumn( "mTime" );
+        $col3->expects( $this->once() )
+            ->method( "filterSelected" )
+            ->will( $this->returnArgument(0) );
+
+        return new \h2o\MetaDB\Row\Generic(
+            array( "uname" => "jack", "pword" => "abc123", "mTime" => NULL ),
+            array( $col1, $col2, $col3 )
+        );
+    }
+
     public function testConstruct ()
     {
         $col1 = $this->getTestColumn( "uname" );
@@ -75,6 +98,35 @@ class classes_metadb_row_generic extends PHPUnit_Framework_TestCase
                 array( "uname" => "JACK", "pword" => "ABC123" ),
                 $row->getValues()
             );
+    }
+
+    public function testGet ()
+    {
+        $row = $this->getTestRow();
+
+        $this->assertSame( "jack", $row->uname );
+        $this->assertSame( "abc123", $row->pword );
+        $this->assertNull( $row->mTime );
+
+        try {
+            $row->UNAME;
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Variable $err ) {
+            $this->assertSame( "Undefined column", $err->getMessage() );
+        }
+    }
+
+    public function testIsSet ()
+    {
+        $row = $this->getTestRow();
+
+        $this->assertTrue( isset($row->uname) );
+        $this->assertTrue( isset($row->pword) );
+
+        $this->assertFalse( isset($row->mTime) );
+        $this->assertFalse( isset($row->other) );
+        $this->assertFalse( isset($row->UNAME) );
     }
 
 }

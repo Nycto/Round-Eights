@@ -84,6 +84,31 @@ class Generic implements \h2o\iface\MetaDB\Row
         return $this->columns;
     }
 
+    /**
+     * Provides access to the data in this row as a class property
+     *
+     * @param String $column The column value to access
+     * @return mixed
+     */
+    public function __get ( $column )
+    {
+        if ( array_key_exists($column, $this->values) )
+            return $this->values[ $column ];
+        else
+            throw new \h2o\Exception\Variable($column, "Undefined column");
+    }
+
+    /**
+     * Returns whether a specific column has been set via class a property
+     *
+     * @param String $column The column value to access
+     * @return Boolean
+     */
+    public function __isset ( $column )
+    {
+        return isset( $this->values[$column] );
+    }
+
 }
 
 ?>
