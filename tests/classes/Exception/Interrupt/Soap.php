@@ -33,21 +33,36 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_exception_interrupt_soap extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct ()
+    public function testTranslatePrimeCode ()
     {
-        $err = new \h2o\Exception\Interrupt\Soap(
-                'Interrupted',
-                2020,
-                0
-            );
+        $this->assertSame(
+        	"VersionMismatch",
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("VERSIONMISMATCH")
+        );
 
-        $this->assertEquals( "Interrupted", $err->getMessage() );
-        $this->assertEquals( 2020, $err->getCode() );
+        $this->assertSame(
+        	"MustUnderstand",
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("MustUnderstand")
+        );
 
-        $this->assertEquals(
-                array(),
-                $err->getData()
-            );
+        $this->assertSame(
+        	"DataEncodingUnknown",
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("dataencodingunknown")
+        );
+
+        $this->assertSame(
+        	"Sender",
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("SeNdEr")
+        );
+
+        $this->assertSame(
+        	"Receiver",
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("   Receiver   ")
+        );
+
+        $this->assertNull(
+            h2o\Exception\Interrupt\Soap::translatePrimeCode("Other")
+        );
     }
 
 }

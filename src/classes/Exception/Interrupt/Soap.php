@@ -35,25 +35,62 @@ class Soap extends \h2o\Exception\Interrupt
 {
 
     /**
-     * Constructor
-     *
-     * @param Integer $code The error code
-     * @param String $message The error message
-     */
-    public function __construct( $message, $code )
-    {
-        parent::__construct($message, $code);
-    }
-
-    /**
      * The title of this exception
      */
-    const TITLE = "Soap Fault Interruption";
+    const TITLE = "Soap Fault";
 
     /**
      * A brief description of this error type
      */
-    const DESCRIPTION = "Soap Server Fault Interrupt";
+    const DESCRIPTION = "Soap Server Fault";
+
+    /**
+     * The primary code for this fault
+     *
+     * @var String
+     */
+    private $primeCode;
+
+    /**
+     * The list of subcodes for this fault
+     *
+     * There can be as many subcodes as you want in a fault
+     *
+     * @var array
+     */
+    private $subCodes;
+
+    /**
+     * takes a string and returns the well formatted primary fault code
+     *
+     * @param String $code The primary code to cleanup
+     * @return String
+     */
+    static public function translatePrimeCode ( $code )
+    {
+        $code = trim( strtolower( (string) $code ) );
+
+        $map = array(
+            "versionmismatch" => "VersionMismatch",
+        	"mustunderstand" => "MustUnderstand",
+            "dataencodingunknown" => "DataEncodingUnknown",
+            "sender" => "Sender",
+            "receiver" => "Receiver",
+        );
+
+        return isset($map[ $code ]) ? $map[ $code ] : null;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param String $message The error message
+     * @param Integer $primeCode The primary
+     */
+    public function __construct( $message, $primeCode = null, array $subCodes = array() )
+    {
+        parent::__construct($message, null);
+    }
 
 }
 
