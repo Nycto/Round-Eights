@@ -23,7 +23,7 @@
  * @package Exception
  */
 
-namespace h2o\Exception\Interrupt;
+namespace h2o\Soap;
 
 /**
  * Soap server fault interrupt
@@ -31,7 +31,7 @@ namespace h2o\Exception\Interrupt;
  * This exception is used by the Soap server class to halt server
  * execution and return a soap fault
  */
-class Soap extends \h2o\Exception\Interrupt
+class Fault extends \h2o\Exception\Interrupt
 {
 
     /**
@@ -89,7 +89,40 @@ class Soap extends \h2o\Exception\Interrupt
      */
     public function __construct( $message, $primeCode = null, array $subCodes = array() )
     {
-        parent::__construct($message, null);
+        parent::__construct($message);
+
+        $this->primeCode = self::translatePrimeCode( $primeCode );
+        if ( empty($primeCode) )
+            $this->primeCode = "Sender";
+
+        $this->subCodes = array_values(
+            \h2o\ary\compact(
+                array_map(
+                	'\h2o\str\stripW',
+                    \h2o\ary\flatten( $subCodes )
+                )
+            )
+        );
+    }
+
+    /**
+     * Returns the primary code from this instance
+     *
+     * @return String
+     */
+    public function getPrimeCode ()
+    {
+        return $this->primeCode;
+    }
+
+    /**
+     * Returns the SubCodes from this instance
+     *
+     * @return array Returns an array of strings
+     */
+    public function getSubCodes ()
+    {
+        return $this->subCodes;
     }
 
 }

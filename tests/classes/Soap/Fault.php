@@ -25,44 +25,68 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_exception_interrupt_soap extends PHPUnit_Framework_TestCase
+class classes_Soap_Fault extends PHPUnit_Framework_TestCase
 {
 
     public function testTranslatePrimeCode ()
     {
         $this->assertSame(
         	"VersionMismatch",
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("VERSIONMISMATCH")
+            \h2o\Soap\Fault::translatePrimeCode("VERSIONMISMATCH")
         );
 
         $this->assertSame(
         	"MustUnderstand",
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("MustUnderstand")
+            \h2o\Soap\Fault::translatePrimeCode("MustUnderstand")
         );
 
         $this->assertSame(
         	"DataEncodingUnknown",
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("dataencodingunknown")
+            \h2o\Soap\Fault::translatePrimeCode("dataencodingunknown")
         );
 
         $this->assertSame(
         	"Sender",
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("SeNdEr")
+            \h2o\Soap\Fault::translatePrimeCode("SeNdEr")
         );
 
         $this->assertSame(
         	"Receiver",
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("   Receiver   ")
+            \h2o\Soap\Fault::translatePrimeCode("   Receiver   ")
         );
 
         $this->assertNull(
-            h2o\Exception\Interrupt\Soap::translatePrimeCode("Other")
+            \h2o\Soap\Fault::translatePrimeCode("Other")
         );
+    }
+
+    public function testConstruct_bare ()
+    {
+        $fault = new \h2o\Soap\Fault("Fault!");
+
+        $this->assertSame( "Fault!", $fault->getMessage() );
+        $this->assertSame( 0, $fault->getCode() );
+        $this->assertSame( "Sender", $fault->getPrimeCode() );
+        $this->assertSame( array(), $fault->getSubCodes() );
+    }
+
+    public function testConstruct_full ()
+    {
+        $fault = new \h2o\Soap\Fault(
+    		"Fault!",
+    		"Receiver",
+            array( "Sub Code!", "#two!", "   ", 3)
+        );
+
+        $this->assertSame( "Fault!", $fault->getMessage() );
+        $this->assertSame( 0, $fault->getCode() );
+        $this->assertSame( "Receiver", $fault->getPrimeCode() );
+        $this->assertSame( array("SubCode", "two", "3"), $fault->getSubCodes() );
     }
 
 }
