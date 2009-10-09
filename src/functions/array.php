@@ -354,7 +354,7 @@ function contains ( array $array, $value, $strict = FALSE )
  * @param Array $array The array to iterate over
  * @param String $func The name of the method to invoke
  * @param mixed $args... Any arguments to pass to the method
- * @return Object Returns a new h2o/Ary object with the results
+ * @return Array Returns the resulting array
  */
 function invoke ( array $array, $func )
 {
