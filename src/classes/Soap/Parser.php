@@ -60,13 +60,80 @@ class Parser
     }
 
     /**
-     * Returns whether the document is empty
+     * Counts the number of message nodes in this document
      *
-     * @return Boolean
+     * @return Integer
      */
-    public function isEmpty ()
+    public function countMessages ()
     {
-        return !$this->doc->hasChildNodes();
+        return (int) $this->xpath->evaluate("count(/soap:Envelope/soap:Body/*)");
+    }
+
+    /**
+     * Performs standard checks on the document
+     *
+     * @throws \h2o\Soap\Fault Thrown if any problems are encountered
+     * @return null
+     */
+    public function ensureBasics ()
+    {
+        if ( !$this->doc->hasChildNodes() ) {
+            throw new \h2o\Soap\Fault(
+            	"Document is Empty",
+                "Sender",
+                array("Parser", "EmptyDoc")
+            );
+        }
+
+        // Look for the soap envelope
+        if ( $this->xpath->evaluate("count(/soap:Envelope)") == 0 ) {
+            throw new \h2o\Soap\Fault(
+            	"Could not find a SOAP Envelope node",
+                "Sender",
+                array("Parser", "MissingEnvelope")
+            );
+        }
+
+        // I couldn't resist this variable name.
+        $bodyCount = $this->xpath->evaluate("count(/soap:Envelope/soap:Body)");
+
+        // Look for the soap body
+        if ( $bodyCount == 0 ) {
+            throw new \h2o\Soap\Fault(
+            	"Could not find a SOAP Body node",
+                "Sender",
+                array("Parser", "MissingBody")
+            );
+        }
+
+        // Look for the soap body
+        if ( $bodyCount > 1 ) {
+            throw new \h2o\Soap\Fault(
+            	"Multiple SOAP Body nodes found",
+                "Sender",
+                array("Parser", "MultiBody")
+            );
+        }
+
+        // Ensure there is at least one message
+        if ( $this->countMessages() == 0 ) {
+            throw new \h2o\Soap\Fault(
+            	"No Message Nodes found",
+                "Sender",
+                array("Parser", "NoMessage")
+            );
+        }
+
+        // Count the number of header nodes
+        $headerCount = $this->xpath->evaluate("count(/soap:Envelope/soap:Header)");
+
+        if ( $headerCount > 1 ) {
+            throw new \h2o\Soap\Fault(
+            	"Multiple SOAP Header nodes found",
+                "Sender",
+                array("Parser", "MultiHeader")
+            );
+        }
     }
 
 }

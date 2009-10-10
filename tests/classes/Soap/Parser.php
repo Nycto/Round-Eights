@@ -33,22 +33,163 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_soap_parser extends PHPUnit_Framework_TestCase
 {
 
-    public function testIsEmpty ()
+    public function testCountMessages_none ()
+    {
+        $parser = new \h2o\Soap\Parser( new DOMDocument );
+        $this->assertSame( 0, $parser->countMessages() );
+    }
+
+    public function testCountMessages_found ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+        		    .'<!-- Comment -->'
+        		    .'<msg2:Message xmlns:msg2="test2" />'
+        		    .' Stray Text  '
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+        $this->assertSame( 3, $parser->countMessages() );
+    }
+
+    public function testEnsureBasics_empty ()
     {
         $parser = new \h2o\Soap\Parser( new DOMDocument );
 
-        $this->assertTrue( $parser->isEmpty() );
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Document is Empty", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "EmptyDoc"), $err->getSubCodes() );
+        }
     }
 
-    public function testIsEmpty_NotEmpty ()
+    public function testEnsureBasics_noEnvelope ()
     {
         $doc = new DOMDocument;
         $doc->loadXML("<notEmpty />");
-
         $parser = new \h2o\Soap\Parser( $doc );
 
-        $this->assertFalse( $parser->isEmpty() );
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Could not find a SOAP Envelope node", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "MissingEnvelope"), $err->getSubCodes() );
+        }
     }
+
+    public function testEnsureBasics_noBody ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML('<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" />');
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Could not find a SOAP Body node", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "MissingBody"), $err->getSubCodes() );
+        }
+    }
+
+    public function testEnsureBasics_multiBody ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body />'
+        		.'<soap:Body />'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Multiple SOAP Body nodes found", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "MultiBody"), $err->getSubCodes() );
+        }
+    }
+
+    public function testEnsureBasics_noMessage ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body />'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "No Message Nodes found", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "NoMessage"), $err->getSubCodes() );
+        }
+    }
+
+    public function testEnsureBasics_multiHeader ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Header />'
+        		.'<soap:Header />'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        try {
+            $parser->ensureBasics();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Multiple SOAP Header nodes found", $err->getMessage() );
+            $this->assertSame( "Sender", $err->getPrimeCode() );
+            $this->assertSame( array("Parser", "MultiHeader"), $err->getSubCodes() );
+        }
+    }
+
+    public function testEnsureBasics_valid ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Header />'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $this->assertNull( $parser->ensureBasics() );
+    }
+
 }
 
 ?>
