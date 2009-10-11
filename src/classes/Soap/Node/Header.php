@@ -31,6 +31,26 @@ namespace h2o\Soap\Node;
 class Header extends \h2o\Soap\Node
 {
 
+    /**
+     * Returns the Role URI of this header
+     *
+     * @return String
+     */
+    public function getRole ()
+    {
+        trigger_error("Unimplemented");
+    }
+
+    /**
+     * Returns whether understanding this header is required
+     *
+     * @return Boolean
+     */
+    public function mustUnderstand ()
+    {
+        trigger_error("Unimplemented");
+    }
+
 }
 
 ?>

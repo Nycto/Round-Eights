@@ -33,6 +33,16 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_Soap_Node_Header extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetRole ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testMustUnderstand ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
