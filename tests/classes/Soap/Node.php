@@ -33,6 +33,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Soap_Node extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetNode ()
+    {
+        $elem = new DOMElement("MessageName");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+
+        $this->assertSame( $elem, $node->getElement() );
+    }
+
     public function testGetTag_namespaced ()
     {
         $elem = new DOMElement("msg:MessageName", null, "unit:test");

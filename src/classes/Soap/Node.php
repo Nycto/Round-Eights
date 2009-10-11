@@ -49,6 +49,16 @@ abstract class Node
     }
 
     /**
+     * Returns the DOMElement this node represents
+     *
+     * @return DOMElement
+     */
+    public function getElement ()
+    {
+        return $this->node;
+    }
+
+    /**
      * Returns the name of the tag for this node
      *
      * @return String
