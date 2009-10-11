@@ -112,6 +112,39 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
         $this->assertSame( "four", $result[3]->tagName );
     }
 
+    public function testCount ()
+    {
+        $iterator = new \h2o\Iterator\DOMNodeList(
+            $this->runTestXPath("/doc/*")
+        );
+        $this->assertSame( 4, count($iterator) );
+        $this->assertSame( 4, $iterator->count() );
+
+
+        $iterator = new \h2o\Iterator\DOMNodeList(
+            $this->runTestXPath("/doc")
+        );
+        $this->assertSame( 1, $iterator->count() );
+
+
+        $iterator = new \h2o\Iterator\DOMNodeList(
+            $this->runTestXPath("/none")
+        );
+        $this->assertSame( 0, $iterator->count() );
+    }
+
+    public function testItem_many ()
+    {
+        $iterator = new \h2o\Iterator\DOMNodeList(
+            $this->runTestXPath("/doc/*")
+        );
+        $node = $iterator->item(2);
+        $this->assertThat( $node, $this->isInstanceOf("DOMElement") );
+        $this->assertSame( "three", $node->tagName );
+
+        $this->assertNull( $iterator->item(50) );
+    }
+
 }
 
 ?>

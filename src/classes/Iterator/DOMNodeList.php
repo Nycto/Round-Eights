@@ -28,7 +28,7 @@ namespace h2o\Iterator;
 /**
  * Converts a DOMNodeList into an iterator
  */
-class DOMNodeList implements \Iterator
+class DOMNodeList implements \Iterator, \Countable
 {
 
     /**
@@ -53,6 +53,27 @@ class DOMNodeList implements \Iterator
     public function __construct ( \DOMNodeList $nodelist )
     {
         $this->nodelist = $nodelist;
+    }
+
+    /**
+     * Returns the number of nodes in this list
+     *
+     * @return Integer
+     */
+    public function count ()
+    {
+        return $this->nodelist->length;
+    }
+
+    /**
+     * Returns a specific item from the list
+     *
+     * @param Integer $offset The offset of the item to return
+     * @return DOMNode
+     */
+    public function item ( $offset )
+    {
+        return $this->nodelist->item( $offset );
     }
 
     /**
