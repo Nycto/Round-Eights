@@ -531,6 +531,31 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
     }
 
     /**
+     * Converts an interator to an array while providing a maximum result cap
+     *
+     * @param Integer $max The maximum number of results
+     * @param Traversable $iterator The iterator to convert
+     * @return Array
+     */
+    static public function iteratorToArray ( $max, \Traversable $iterator )
+    {
+        $i = 0;
+
+        $result = array();
+
+        foreach ( $iterator AS $key => $value )
+        {
+            $result[ $key ] = $value;
+
+            $i++;
+            if ( $i > $max )
+                break;
+        }
+
+        return $result;
+    }
+
+    /**
      * Constructor...
      *
      * @param Array $value The value the iterator should produce
@@ -545,7 +570,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
      *
      * @return Array
      */
-    public function iteratorToArray ( Traversable $iterator )
+    public function toArray ( Traversable $iterator )
     {
         $hash = spl_object_hash( $iterator );
 
@@ -558,23 +583,9 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
         // Give them a 25% bonus to make debugging easier
         $max *= 1.25;
 
-        $i = 0;
+        $this->cache[$hash] = self::iteratorToArray( $max, $iterator );
 
-        $result = array();
-
-        foreach ( $iterator AS $key => $value )
-        {
-            $i++;
-
-            if ( $i > $max )
-                break;
-
-            $result[ $key ] = $value;
-        }
-
-        $this->cache[$hash] = $result;
-
-        return $result;
+        return $this->cache[$hash];
     }
 
     /**
@@ -589,7 +600,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
         if ( !($other instanceof Traversable) )
             return FALSE;
 
-        return $this->iteratorToArray($other) === $this->value;
+        return $this->toArray($other) === $this->value;
     }
 
     /**
@@ -607,7 +618,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
 
         $diff = new PHPUnit_Framework_ComparisonFailure_Array(
         	        $this->value,
-        	        $this->iteratorToArray($other)
+        	        $this->toArray($other)
 
             );
 
