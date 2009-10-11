@@ -190,6 +190,87 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertNull( $parser->ensureBasics() );
     }
 
+    public function testGetHeaders_Empty ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Header />'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $result = $parser->getHeaders();
+        $this->assertThat( $result, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
+        );
+    }
+
+    public function testGetHeaders_None ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $result = $parser->getHeaders();
+        $this->assertThat( $result, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
+        );
+    }
+
+    public function testGetHeaders ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Header>'
+        		    .'<msg:First xmlns:msg="test" />'
+        		    .' Stray Text   '
+        		    .'<msg2:Second xmlns:msg2="test2" />'
+        		    .'   <!-- Comment -->  '
+        		.'</soap:Header>'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $iterator = $parser->getHeaders();
+        $this->assertThat( $iterator, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+
+        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            10,
+            $iterator
+        );
+
+        $this->assertSame( 2, count($result) );
+
+        $this->assertArrayHasKey( 0, $result );
+        $this->assertArrayHasKey( 1, $result );
+
+        $this->assertThat( $result[0], $this->isInstanceOf("DOMElement") );
+        $this->assertThat( $result[1], $this->isInstanceOf("DOMElement") );
+
+        $this->assertSame( "msg:First", $result[0]->tagName );
+        $this->assertSame( "msg2:Second", $result[1]->tagName );
+    }
+
 }
 
 ?>

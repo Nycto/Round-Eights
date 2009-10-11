@@ -136,6 +136,20 @@ class Parser
         }
     }
 
+    /**
+     * Returns the list of Soap Header nodes
+     *
+     * @return \h2o\Iterator\DOMNodeList Returns an Iterator with a list
+     * 		of DOMNodes in it
+     */
+    public function getHeaders ()
+    {
+        $this->ensureBasics();
+        return new \h2o\Iterator\DOMNodeList(
+            $this->xpath->query("/soap:Envelope/soap:Header/*")
+        );
+    }
+
 }
 
 ?>
