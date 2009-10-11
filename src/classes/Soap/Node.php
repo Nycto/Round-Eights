@@ -76,7 +76,7 @@ abstract class Node
     /**
      * Returns the Namespace URI of this element
      *
-     * @return String
+     * @return String|NULL Returns NULL if there is no Namespace
      */
     public function getNamespace ()
     {
