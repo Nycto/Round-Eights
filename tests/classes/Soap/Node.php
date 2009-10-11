@@ -68,6 +68,43 @@ class classes_Soap_Node extends PHPUnit_Framework_TestCase
         $this->assertSame( "msg", $node->getPrefix() );
     }
 
+    public function testGetNamespace_none ()
+    {
+        $elem = new DOMElement("MessageName");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertNull( $node->getNamespace() );
+    }
+
+    public function testGetNamespace_namespaced ()
+    {
+        $elem = new DOMElement("msg:MessageName", null, "unit:test");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertSame( "unit:test", $node->getNamespace() );
+    }
+
+    public function testGetNamespace_noPrefix ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElementNS("unit:test", "root");
+        $doc->appendChild( $elem );
+
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertSame( "unit:test", $node->getNamespace() );
+    }
+
+    public function testGetNamespace_default ()
+    {
+        $doc = new DOMDocument;
+        $root = $doc->createElementNS("unit:test", "root");
+        $doc->appendChild( $root );
+
+        $elem = $doc->createElement("child");
+        $root->appendChild( $elem );
+
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertSame( "unit:test", $node->getNamespace() );
+    }
+
 }
 
 ?>

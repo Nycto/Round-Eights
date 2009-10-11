@@ -73,6 +73,16 @@ abstract class Node
         return strstr( $tagName, ":", TRUE );
     }
 
+    /**
+     * Returns the Namespace URI of this element
+     *
+     * @return String
+     */
+    public function getNamespace ()
+    {
+        return $this->node->lookupnamespaceURI( $this->getPrefix() );
+    }
+
 }
 
 ?>
