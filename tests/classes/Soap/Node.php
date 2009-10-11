@@ -36,10 +36,36 @@ class classes_Soap_Node extends PHPUnit_Framework_TestCase
     public function testGetTag_namespaced ()
     {
         $elem = new DOMElement("msg:MessageName", null, "unit:test");
-
         $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
-
         $this->assertSame( "MessageName", $node->getTag() );
+    }
+
+    public function testGetTag_NoNamespaced ()
+    {
+        $elem = new DOMElement("MessageName");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertSame( "MessageName", $node->getTag() );
+    }
+
+    public function testGetPrefix_none ()
+    {
+        $elem = new DOMElement("MessageName");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertNull( $node->getPrefix() );
+    }
+
+    public function testGetPrefix_empty ()
+    {
+        $elem = new DOMElement(":MessageName");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertNull( $node->getPrefix() );
+    }
+
+    public function testGetPrefix_Namespaced ()
+    {
+        $elem = new DOMElement("msg:MessageName", null, "unit:test");
+        $node = $this->getMock( "\h2o\Soap\Node", array('_mock'), array($elem) );
+        $this->assertSame( "msg", $node->getPrefix() );
     }
 
 }

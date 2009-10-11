@@ -58,6 +58,21 @@ abstract class Node
         return preg_replace( '/.*?:/', '', $this->node->tagName );
     }
 
+    /**
+     * Returns the Namespace tag prefix of this element
+     *
+     * @return String|NULL Returns NULL if there is no prefix
+     */
+    public function getPrefix ()
+    {
+        $tagName = ltrim( $this->node->tagName, ":" );
+
+        if ( !\h2o\str\contains(":", $tagName) )
+            return NULL;
+
+        return strstr( $tagName, ":", TRUE );
+    }
+
 }
 
 ?>
