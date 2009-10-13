@@ -36,16 +36,26 @@ abstract class Node
      *
      * @var DOMElement
      */
-    private $node;
+    protected $node;
+
+    /**
+     * The namespace URI to use for any soap envelope elements
+     *
+     * @var String
+     */
+    protected $soapNS;
 
     /**
      * Constructor...
      *
      * @param DOMElement $node The DOM Element this node represents
+     * @param String $soapNS The namespace URI to use for any soap
+     * 		envelope elements
      */
-    public function __construct ( \DOMElement $node )
+    public function __construct ( \DOMElement $node, $soapNS )
     {
         $this->node = $node;
+        $this->soapNS = trim( (string) $soapNS );
     }
 
     /**
@@ -56,6 +66,16 @@ abstract class Node
     public function getElement ()
     {
         return $this->node;
+    }
+
+    /**
+     * Returns the Namespace that will be used to search for soap envelope nodes
+     *
+     * @return String
+     */
+    public function getSoapNS ()
+    {
+        return $this->soapNS;
     }
 
     /**
