@@ -33,9 +33,36 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_Soap_Node_Header extends PHPUnit_Framework_TestCase
 {
 
-    public function testGetRole ()
+    public function testGetRole_none ()
     {
-        $this->markTestIncomplete("To be written");
+        $elem = new DOMElement("MessageName");
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertNull( $node->getRole() );
+    }
+
+    public function testGetRole_nsMismatch ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElement("MessageName");
+        $doc->appendChild( $elem );
+        $elem->setAttributeNS( "not:soap", "sp:role", "role:uri" );
+
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertNull( $node->getRole() );
+    }
+
+    public function testGetRole_found ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElement("MessageName");
+        $doc->appendChild( $elem );
+        $elem->setAttributeNS( "soap:uri", "sp:role", "role:uri" );
+
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertSame( "role:uri", $node->getRole() );
     }
 
     public function testMustUnderstand ()

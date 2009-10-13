@@ -38,7 +38,10 @@ class Header extends \h2o\Soap\Node
      */
     public function getRole ()
     {
-        trigger_error("Unimplemented");
+        if ( $this->node->hasAttributeNS( $this->soapNS, "role" ) )
+            return $this->node->getAttributeNS( $this->soapNS, "role" );
+        else
+            return NULL;
     }
 
     /**
