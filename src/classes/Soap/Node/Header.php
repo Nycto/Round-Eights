@@ -51,7 +51,12 @@ class Header extends \h2o\Soap\Node
      */
     public function mustUnderstand ()
     {
-        trigger_error("Unimplemented");
+        if ( !$this->node->hasAttributeNS( $this->soapNS, "mustUnderstand" ) )
+            return FALSE;
+
+        $value = $this->node->getAttributeNS( $this->soapNS, "mustUnderstand" );
+
+        return \h2o\Filter::Boolean()->filter( $value );
     }
 
 }

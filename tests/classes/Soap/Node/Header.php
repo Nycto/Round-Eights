@@ -65,9 +65,48 @@ class classes_Soap_Node_Header extends PHPUnit_Framework_TestCase
         $this->assertSame( "role:uri", $node->getRole() );
     }
 
-    public function testMustUnderstand ()
+    public function testMustUnderstand_none ()
     {
-        $this->markTestIncomplete("To be written");
+        $elem = new DOMElement("MessageName");
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertFalse( $node->mustUnderstand() );
+    }
+
+    public function testMustUnderstand_nsMismatch ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElement("MessageName");
+        $doc->appendChild( $elem );
+        $elem->setAttributeNS( "not:soap", "sp:mustUnderstand", "true" );
+
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertFalse( $node->mustUnderstand() );
+    }
+
+    public function testMustUnderstand_true ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElement("MessageName");
+        $doc->appendChild( $elem );
+        $elem->setAttributeNS( "soap:uri", "sp:mustUnderstand", "true" );
+
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertTrue( $node->mustUnderstand() );
+    }
+
+    public function testMustUnderstand_false ()
+    {
+        $doc = new DOMDocument;
+        $elem = $doc->createElement("MessageName");
+        $doc->appendChild( $elem );
+        $elem->setAttributeNS( "soap:uri", "sp:mustUnderstand", "false" );
+
+        $node = new \h2o\Soap\Node\Header( $elem, "soap:uri" );
+
+        $this->assertFalse( $node->mustUnderstand() );
     }
 
 }
