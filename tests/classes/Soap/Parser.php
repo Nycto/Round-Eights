@@ -233,7 +233,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetHeaders ()
+    public function testGetHeaders_full ()
     {
         $doc = new DOMDocument;
         $doc->loadXML(
@@ -269,6 +269,67 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
 
         $this->assertSame( "First", $result[0]->getTag() );
         $this->assertSame( "Second", $result[1]->getTag() );
+    }
+
+    public function testGetHeaders_One ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $iterator = $parser->getMessages();
+        $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
+
+        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            10,
+            $iterator
+        );
+
+        $this->assertSame( 1, count($result) );
+        $this->assertArrayHasKey( 0, $result );
+        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Message") );
+        $this->assertSame( "Message", $result[0]->getTag() );
+    }
+
+    public function testGetHeaders_Many ()
+    {
+        $doc = new DOMDocument;
+        $doc->loadXML(
+        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+        		.'<soap:Body>'
+        		    .'<msg:Message xmlns:msg="test" />'
+        		    .' Stray Text   '
+        		    .'   <!-- Comment -->  '
+        		    .'<msg2:Other xmlns:msg2="test" />'
+    		    .'</soap:Body>'
+    		.'</soap:Envelope>'
+        );
+        $parser = new \h2o\Soap\Parser( $doc );
+
+        $iterator = $parser->getMessages();
+        $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
+
+        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            10,
+            $iterator
+        );
+
+        $this->assertSame( 2, count($result) );
+
+        $this->assertArrayHasKey( 0, $result );
+        $this->assertArrayHasKey( 1, $result );
+
+        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Message") );
+        $this->assertThat( $result[1], $this->isInstanceOf("\h2o\Soap\Node\Message") );
+
+        $this->assertSame( "Message", $result[0]->getTag() );
+        $this->assertSame( "Other", $result[1]->getTag() );
     }
 
 }

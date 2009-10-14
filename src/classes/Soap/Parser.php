@@ -147,7 +147,7 @@ class Parser
     /**
      * Returns the list of Soap Header nodes
      *
-     * @return \Iterator
+     * @return \Iterator Returns an Iterator filled with \h2o\Soap\Node\Header objects
      */
     public function getHeaders ()
     {
@@ -161,6 +161,27 @@ class Parser
             ),
             new \h2o\Curry\Call(function ( $node ) use ($ns) {
                 return new \h2o\Soap\Node\Header( $node, $ns );
+            })
+        );
+    }
+
+    /**
+     * Returns the list of Soap Header nodes
+     *
+     * @return \Iterator Returns an Iterator filled with \h2o\Soap\Node\Message objects
+     */
+    public function getMessages ()
+    {
+        $this->ensureBasics();
+
+        $ns = $this->namespace;
+
+        return new \h2o\Iterator\Filter(
+            new \h2o\Iterator\DOMNodeList(
+                $this->xpath->query("/soap:Envelope/soap:Body/*")
+            ),
+            new \h2o\Curry\Call(function ( $node ) use ($ns) {
+                return new \h2o\Soap\Node\Message( $node, $ns );
             })
         );
     }
