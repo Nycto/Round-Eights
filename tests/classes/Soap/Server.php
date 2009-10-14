@@ -33,212 +33,54 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_soap_server extends PHPUnit_Framework_TestCase
 {
 
-    public function testRegister ()
+    public function testAddMessage ()
     {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $this->assertSame( array(), $soap->getOperations() );
+        $soap = new \h2o\Soap\Server;
+        $this->assertSame( array(), $soap->getMessages() );
 
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
-        $this->assertSame( $soap, $soap->register("one", $cmd) );
-        $this->assertSame( array("one" => $cmd), $soap->getOperations() );
-
-        $cmd2 = $this->getMock('\h2o\iface\Soap\Operation');
-        $this->assertSame( $soap, $soap->register("two", $cmd2) );
+        $cmd = $this->getMock('\h2o\iface\Soap\Message');
+        $this->assertSame( $soap, $soap->addMessage("test:uri", "one", $cmd) );
         $this->assertSame(
-                array("one" => $cmd, "two" => $cmd2),
-                $soap->getOperations()
-            );
+            array( "test:uri" => array("one" => $cmd) ),
+            $soap->getMessages()
+        );
 
-        $this->assertSame( $soap, $soap->register("one", $cmd2) );
+        $cmd2 = $this->getMock('\h2o\iface\Soap\Message');
+        $this->assertSame( $soap, $soap->addMessage("test:uri", "two", $cmd2) );
         $this->assertSame(
-                array("one" => $cmd2, "two" => $cmd2),
-                $soap->getOperations()
-            );
+            array( "test:uri" => array("one" => $cmd, "two" => $cmd2) ),
+            $soap->getMessages()
+        );
+
+        $this->assertSame( $soap, $soap->addMessage("other:uri", "one", $cmd2) );
+        $this->assertSame(
+            array(
+            	"test:uri" => array("one" => $cmd, "two" => $cmd2 ),
+                "other:uri" => array("one" => $cmd2 )
+            ),
+            $soap->getMessages()
+        );
     }
 
-    public function testRegister_err ()
+    public function testaddMessage_err ()
     {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $this->assertSame( array(), $soap->getOperations() );
-
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
+        $soap = new \h2o\Soap\Server;
 
         try {
-            $soap->register("  ", $cmd);
+            $soap->addMessage("  ", "test", $this->getMock('\h2o\iface\Soap\Message'));
             $this->fail("An expected exception was not thrown");
         }
         catch ( \h2o\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
-    }
 
-    public function testProcess_emptyDoc ()
-    {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-
-        $result = $soap->process( new DOMDocument );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1000,
-                		"Empty XML Document"
-            		),
-                $result
-            );
-    }
-
-    public function testProcess_noEnvelope ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML('<tag />');
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1001,
-                		"Could not find soap envelope"
-            		),
-                $result
-            );
-    }
-
-    public function testProcess_noBody ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML('<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" />');
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                        1002,
-                        "Could not find soap body"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_multiBody ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1003,
-                		"Multiple soap body elements found"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_noOperation ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1004,
-                		"Could not find soap operation element"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_multiOperation ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        			.'<m:Action2 xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                    	1005,
-                    	"Multiple soap operation elements found"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_invalidOperation ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                    	1006,
-                    	"Invalid soap operation"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_success ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-
-        $response = $this->getMock('\h2o\iface\XMLBuilder');
-
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
-        $cmd->expects( $this->once() )
-            ->method( 'getResponseBuilder' )
-            ->with(
-                    $this->equalTo($doc),
-                    $this->isInstanceOf("DOMElement")
-                )
-            ->will( $this->returnValue($response) );
-
-
-        $soap->register( "Action", $cmd );
-
-        $this->assertSame( $response, $soap->process( $doc ) );
+        try {
+            $soap->addMessage("uri", " ", $this->getMock('\h2o\iface\Soap\Message'));
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
     }
 
 }

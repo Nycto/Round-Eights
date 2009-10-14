@@ -26,136 +26,54 @@
 namespace h2o\Soap;
 
 /**
- * Delegates a Soap request to the appropriate registered command
+ * Delegates a Soap request to the appropriate registered message processors
  */
 class Server
 {
 
     /**
-     * The list of registered commands
+     * The list of registered messages
      *
      * @var array
      */
-    private $operations = array();
+    private $messages = array();
 
     /**
-     * The namespace the command elements will be members of
+     * Returns the list of registered messages
      *
-     * @var String
+     * @return array Returns an array of \h2o\iface\Soap\Message objects
      */
-    private $namespace;
-
-    /**
-     * Constructor...
-     *
-     * @param String $namespace The namespace the command elements will
-     * 		be members of
-     */
-    public function __construct ( $namespace )
+    public function getMessages ()
     {
-        $this->namespace = trim( \h2o\strval( $namespace ) );
+        return $this->messages;
     }
 
     /**
-     * Returns the list of registered operations
+     * Registers a new message processor
      *
-     * @return array Returns an array of \h2o\iface\Soap\Operation objects
-     */
-    public function getOperations ()
-    {
-        return $this->operations;
-    }
-
-    /**
-     * Registers a new command
-     *
-     * @param String $title The name of the operation this object will handle
-     * @param \h2o\iface\Soap\Operation $operation The handler to invoke when
+     * @param String $uri The URI of the message
+     * @param String $name The tag name of the message this object will handle
+     * @param \h2o\iface\Soap\Message $operation The handler to invoke when
      * 		this command is encountered
      * @return \h2o\Soap\Server Returns a self reference
      */
-    public function register ( $title, \h2o\iface\Soap\Operation $operation )
+    public function addMessage ( $uri, $name, \h2o\iface\Soap\Message $message )
     {
-        $title = \h2o\str\stripW( $title );
+        $uri = (string) trim( $uri );
+        $name = \h2o\str\stripW( $name );
 
-        if ( \h2o\isEmpty($title) )
-            throw new \h2o\Exception\Argument(0, "Command Title", "Must not be empty");
+        if ( \h2o\isEmpty($uri) )
+            throw new \h2o\Exception\Argument(0, "Message URI", "Must not be empty");
 
-        $this->operations[ $title ] = $operation;
+        if ( \h2o\isEmpty($name) )
+            throw new \h2o\Exception\Argument(1, "Message Tag Name", "Must not be empty");
+
+        if ( !isset($this->messages[ $uri ]) )
+            $this->messages[ $uri ] = array();
+
+        $this->messages[ $uri ][ $name ] = $message;
 
         return $this;
-    }
-
-    /**
-     * Returns the Soap command element from a given DOM Document
-     *
-     * @throws \h2o\Exception\Interrupt\Soap This is thrown if any error
-     * 		is encountered while parsing the documet
-     * @param DOMDocument $doc The document to parse as a soap request
-     * @return DOMElement The command element
-     */
-    private function getOperationElem ( \DOMDocument $doc )
-    {
-        if ( !$doc->hasChildNodes() ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Empty XML Document",
-                1000
-            );
-        }
-
-        $xpath = new \DOMXPath( $doc );
-        $xpath->registerNamespace("soap", "http://www.w3.org/2001/12/soap-envelope");
-        $xpath->registerNamespace("cmd", $this->namespace);
-
-        // Look for the soap envelope
-        if ( $xpath->evaluate("count(/soap:Envelope)") == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap envelope",
-                1001
-            );
-        }
-
-        // I couldn't resist this variable name.
-        $bodyCount = $xpath->evaluate("count(/soap:Envelope/soap:Body)");
-
-        // Look for the soap body
-        if ( $bodyCount == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap body",
-                1002
-            );
-        }
-
-        // Ensure there aren't multiple soap bodies
-        if ( $bodyCount > 1 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Multiple soap body elements found",
-                1003
-            );
-        }
-
-        $cmdCount = $xpath->evaluate("count(/soap:Envelope/soap:Body/cmd:*)");
-
-        // Look for the soap command tag
-        if ( $cmdCount == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap operation element",
-                1004
-            );
-        }
-
-        // Ensure there aren't multiple commands
-        if ( $cmdCount > 1 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Multiple soap operation elements found",
-                1005
-            );
-        }
-
-        // Pull the command node
-        $cmd = $xpath->query("/soap:Envelope/soap:Body/cmd:*");
-
-        return $cmd->item(0);
     }
 
     /**
