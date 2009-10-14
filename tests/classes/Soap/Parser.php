@@ -271,7 +271,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertSame( "Second", $result[1]->getTag() );
     }
 
-    public function testGetHeaders_One ()
+    public function testGetMessages_One ()
     {
         $doc = new DOMDocument;
         $doc->loadXML(
@@ -297,7 +297,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertSame( "Message", $result[0]->getTag() );
     }
 
-    public function testGetHeaders_Many ()
+    public function testGetMessages_Many ()
     {
         $doc = new DOMDocument;
         $doc->loadXML(
