@@ -46,6 +46,13 @@ class Parser
     private $xpath;
 
     /**
+     * The Namespace to use for the soap nodes
+     *
+     * @var String
+     */
+    private $namespace;
+
+    /**
      * Constructor...
      *
      * @param \DOMDocument $doc The document to parse
@@ -54,9 +61,10 @@ class Parser
     public function __construct ( \DOMDocument $doc, $namespace = "http://www.w3.org/2003/05/soap-envelope" )
     {
         $this->doc = $doc;
+        $this->namespace = (string) $namespace;
 
         $this->xpath = new \DOMXPath( $doc );
-        $this->xpath->registerNamespace("soap", $namespace );
+        $this->xpath->registerNamespace("soap", $this->namespace );
     }
 
     /**
@@ -139,14 +147,21 @@ class Parser
     /**
      * Returns the list of Soap Header nodes
      *
-     * @return \h2o\Iterator\DOMNodeList Returns an Iterator with a list
-     * 		of DOMNodes in it
+     * @return \Iterator
      */
     public function getHeaders ()
     {
         $this->ensureBasics();
-        return new \h2o\Iterator\DOMNodeList(
-            $this->xpath->query("/soap:Envelope/soap:Header/*")
+
+        $ns = $this->namespace;
+
+        return new \h2o\Iterator\Filter(
+            new \h2o\Iterator\DOMNodeList(
+                $this->xpath->query("/soap:Envelope/soap:Header/*")
+            ),
+            new \h2o\Curry\Call(function ( $node ) use ($ns) {
+                return new \h2o\Soap\Node\Header( $node, $ns );
+            })
         );
     }
 

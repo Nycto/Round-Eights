@@ -204,7 +204,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $parser = new \h2o\Soap\Parser( $doc );
 
         $result = $parser->getHeaders();
-        $this->assertThat( $result, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+        $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
             array(),
@@ -225,7 +225,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $parser = new \h2o\Soap\Parser( $doc );
 
         $result = $parser->getHeaders();
-        $this->assertThat( $result, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+        $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
             array(),
@@ -252,7 +252,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $parser = new \h2o\Soap\Parser( $doc );
 
         $iterator = $parser->getHeaders();
-        $this->assertThat( $iterator, $this->isInstanceOf("\h2o\Iterator\DOMNodeList") );
+        $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
 
         $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
             10,
@@ -264,11 +264,11 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 0, $result );
         $this->assertArrayHasKey( 1, $result );
 
-        $this->assertThat( $result[0], $this->isInstanceOf("DOMElement") );
-        $this->assertThat( $result[1], $this->isInstanceOf("DOMElement") );
+        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Header") );
+        $this->assertThat( $result[1], $this->isInstanceOf("\h2o\Soap\Node\Header") );
 
-        $this->assertSame( "msg:First", $result[0]->tagName );
-        $this->assertSame( "msg2:Second", $result[1]->tagName );
+        $this->assertSame( "First", $result[0]->getTag() );
+        $this->assertSame( "Second", $result[1]->getTag() );
     }
 
 }
