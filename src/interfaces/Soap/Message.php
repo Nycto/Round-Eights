@@ -26,22 +26,20 @@
 namespace h2o\iface\Soap;
 
 /**
- * Interface for defining a Soap Operation
+ * The definition for processing a Soap Message
  */
-interface Operation
+interface Message
 {
 
     /**
-     * Handles a soap operation and returns the builder needed to construct
+     * Handles a soap message and returns the builder needed to construct
      * the response
      *
-     * @param \DOMDocument $doc The DOMDocument of the request
-     * @param \DOMElement $node The DOM Node in the request containing
-     * 		the parameters of the command
+     * @param \h2o\Soap\Node\Message $message The Soap message
      * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
      * 		the response
      */
-    public function getResponseBuilder ( \DOMDocument $doc, \DOMElement $node );
+    public function process ( \h2o\Soap\Node\Message $message );
 
 }
 
