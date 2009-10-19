@@ -39,6 +39,53 @@ class Header
     private $headers = array();
 
     /**
+     * The list of roles this server is acting under
+     *
+     * @var Array An array of URIs
+     */
+    private $roles = array();
+
+    /**
+     * Constructor...
+     *
+     * @param String $ultimateURI The URI of the "UltimateReceiver" Soap Role
+     * @param String $nextURI The URI of the "Next" Soap role
+     */
+    public function __construct (
+        $ultimateURI = "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+        $nextURI = "http://www.w3.org/2003/05/soap-envelope/role/next"
+    ) {
+        $this->addRole( $ultimateURI );
+        $this->addRole( $nextURI );
+    }
+
+    /**
+     * Returns the Roles this server acts under
+     *
+     * @return Array Returns an array of URIs as String
+     */
+    public function getRoles ()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Adds a new Role this server acts under
+     *
+     * @param String $role
+     * @return \h2o\Soap\Server\Header Returns a self reference
+     */
+    public function addRole ( $role )
+    {
+        $role = \h2o\Filter::URL()->filter($role);
+
+        if ( !\h2o\isEmpty($role) && !in_array($role, $this->roles) )
+            $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
      * Returns the Headers registered for processing
      *
      * @return Array Returns an array of \h2o\iface\Soap\Header objects

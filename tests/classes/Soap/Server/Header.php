@@ -33,6 +33,47 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 {
 
+    public function testAddRole ()
+    {
+        $soap = new \h2o\Soap\Server\Header;
+        $this->assertSame(
+            array(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+                "http://www.w3.org/2003/05/soap-envelope/role/next"
+            ),
+            $soap->getRoles()
+        );
+
+        $this->assertSame( $soap, $soap->addRole( "  " ) );
+        $this->assertSame(
+            array(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+                "http://www.w3.org/2003/05/soap-envelope/role/next"
+            ),
+            $soap->getRoles()
+        );
+
+        $this->assertSame( $soap, $soap->addRole( "  test :  uri   " ) );
+        $this->assertSame(
+            array(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+                "http://www.w3.org/2003/05/soap-envelope/role/next",
+                "test:uri"
+            ),
+            $soap->getRoles()
+        );
+
+        $this->assertSame( $soap, $soap->addRole( "test:uri" ) );
+        $this->assertSame(
+            array(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+                "http://www.w3.org/2003/05/soap-envelope/role/next",
+                "test:uri"
+            ),
+            $soap->getRoles()
+        );
+    }
+
     public function testAddHeader ()
     {
         $soap = new \h2o\Soap\Server\Header;
