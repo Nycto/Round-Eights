@@ -70,6 +70,22 @@ class Header
     }
 
     /**
+     * Returns whether a URI should be acted upon
+     *
+     * @param String $role The URI of the role being tested
+     * @return Boolean
+     */
+    public function hasRole ( $role )
+    {
+        $role = trim( $role );
+
+        if ( $role === NULL || $role === "" )
+            return TRUE;
+
+        return in_array( \h2o\Filter::URL()->filter($role), $this->roles );
+    }
+
+    /**
      * Adds a new Role this server acts under
      *
      * @param String $role

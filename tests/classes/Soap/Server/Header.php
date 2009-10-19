@@ -74,6 +74,22 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testHasRole ()
+    {
+        $soap = new \h2o\Soap\Server\Header;
+        $soap->addRole( "test:uri" );
+
+        $this->assertTrue( $soap->hasRole("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver") );
+        $this->assertTrue( $soap->hasRole("http://www.w3.org/2003/05/soap-envelope/role/next") );
+        $this->assertTrue( $soap->hasRole("test:uri") );
+        $this->assertTrue( $soap->hasRole("  test : uri  ") );
+        $this->assertTrue( $soap->hasRole(NULL) );
+        $this->assertTrue( $soap->hasRole("") );
+        $this->assertTrue( $soap->hasRole("   ") );
+
+        $this->assertFalse( $soap->hasRole("return/false") );
+    }
+
     public function testAddHeader ()
     {
         $soap = new \h2o\Soap\Server\Header;
