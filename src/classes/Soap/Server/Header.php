@@ -140,6 +140,18 @@ class Header
     }
 
     /**
+     * Returns whether a given URI and header tag are understood by this instance
+     *
+     * @param String $uri The URI of the header to test
+     * @param String $tag The Tag Name of the header to test
+     * @return Boolean
+     */
+    public function understood ( $uri, $tag )
+    {
+        return isset( $this->headers[ (string) $uri ][ (string) $tag ] );
+    }
+
+    /**
      * Processes a soap request through this server
      *
      * @param \h2o\Soap\Parser $parser The soap message to process
