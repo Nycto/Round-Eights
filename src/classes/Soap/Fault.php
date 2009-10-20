@@ -61,6 +61,13 @@ class Fault extends \h2o\Exception\Interrupt
     private $subCodes;
 
     /**
+     * The role associated with the current error
+     *
+     * @var String
+     */
+    private $role;
+
+    /**
      * takes a string and returns the well formatted primary fault code
      *
      * @param String $code The primary code to cleanup
@@ -123,6 +130,29 @@ class Fault extends \h2o\Exception\Interrupt
     public function getSubCodes ()
     {
         return $this->subCodes;
+    }
+
+    /**
+     * Returns the Role that was being processed when this fault was encountered
+     *
+     * @return String The URI of the Role
+     */
+    public function getRole ()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Sets the Role that was being processed when this fault was encountered
+     *
+     * @param String $role The Role URI
+     * @return \h2o\Soap\Fault Returns a self reference
+     */
+    public function setRole ( $role )
+    {
+        $role = \h2o\Filter::URL()->filter( $role );
+        $this->role = empty($role) ? NULL : $role;
+        return $this;
     }
 
 }

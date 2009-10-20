@@ -89,6 +89,15 @@ class classes_Soap_Fault extends PHPUnit_Framework_TestCase
         $this->assertSame( array("SubCode", "two", "3"), $fault->getSubCodes() );
     }
 
+    public function testSetRole ()
+    {
+        $fault = new \h2o\Soap\Fault("Error");
+        $this->assertNull( $fault->getRole() );
+
+        $this->assertSame( $fault, $fault->setRole("test:uri") );
+        $this->assertSame( "test:uri", $fault->getRole() );
+    }
+
 }
 
 ?>
