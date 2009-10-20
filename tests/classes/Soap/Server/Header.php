@@ -33,6 +33,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        $soap = new \h2o\Soap\Server\Header;
+        $this->assertSame(
+            array(
+                "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
+                "http://www.w3.org/2003/05/soap-envelope/role/next"
+            ),
+            $soap->getRoles()
+        );
+
+        $soap = new \h2o\Soap\Server\Header( "one", "two" );
+        $this->assertSame( array( "one", "two" ), $soap->getRoles() );
+    }
+
     public function testAddRole ()
     {
         $soap = new \h2o\Soap\Server\Header;
