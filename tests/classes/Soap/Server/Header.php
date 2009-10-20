@@ -155,20 +155,19 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testUnderstood ()
+    public function testUnderstands ()
     {
         $soap = new \h2o\Soap\Server\Header;
-        $this->assertFalse( $soap->understood("test:uri", "tag") );
-        $this->assertFalse( $soap->understood("uri2", "other") );
+        $this->assertFalse( $soap->understands("test:uri", "tag") );
+        $this->assertFalse( $soap->understands("uri2", "other") );
 
         $soap->addHeader("test:uri", "tag", $this->getMock('\h2o\iface\Soap\Header'));
-        $this->assertTrue( $soap->understood("test:uri", "tag") );
-        $this->assertFalse( $soap->understood("uri2", "other") );
+        $this->assertTrue( $soap->understands("test:uri", "tag") );
+        $this->assertFalse( $soap->understands("uri2", "other") );
 
         $soap->addHeader("uri2", "other", $this->getMock('\h2o\iface\Soap\Header'));
-        $this->assertTrue( $soap->understood("test:uri", "tag") );
-        $this->assertTrue( $soap->understood("uri2", "other") );
-
+        $this->assertTrue( $soap->understands("test:uri", "tag") );
+        $this->assertTrue( $soap->understands("uri2", "other") );
     }
 
 }

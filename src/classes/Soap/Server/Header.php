@@ -146,7 +146,7 @@ class Header
      * @param String $tag The Tag Name of the header to test
      * @return Boolean
      */
-    public function understood ( $uri, $tag )
+    public function understands ( $uri, $tag )
     {
         return isset( $this->headers[ (string) $uri ][ (string) $tag ] );
     }
