@@ -483,6 +483,14 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertSame( 20, \h2o\ary\last(range(1, 20)) );
     }
 
+    public function testIsList ()
+    {
+        $this->assertTrue( \h2o\ary\isList(array( "one", "two" )) );
+        $this->assertFalse( \h2o\ary\isList(array( 5 => "one", 10 => "two" )) );
+        $this->assertFalse( \h2o\ary\isList(array( "one" => "once", "two" => "twice")) );
+        $this->assertTrue( \h2o\ary\isList(array()) );
+    }
+
 }
 
 ?>

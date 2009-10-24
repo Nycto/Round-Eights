@@ -423,4 +423,20 @@ function last ( array $array )
         return end( $array );
 }
 
+/**
+ * Returns whether a given array is considered to be a list
+ *
+ * This means the array meets the following requirements:
+ * - All the keys are integers
+ * - The offsets start from zero
+ * - The incrementing of keys is uninterrupted
+ *
+ * @param array $array
+ * @return Boolean
+ */
+function isList ( array $array )
+{
+    return count(array_diff_key($array, array_keys(array_keys($array)))) === 0;
+}
+
 ?>
