@@ -78,7 +78,7 @@ class Values implements \h2o\iface\XMLBuilder
     {
         $tag = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $tag);
 
-        if ( empty($tag) )
+        if ( \h2o\isEmpty($tag) )
             $tag = "unknown";
 
         else if ( is_numeric($tag) )
@@ -94,44 +94,63 @@ class Values implements \h2o\iface\XMLBuilder
      * Iterates over a set of data and builds it as XML
      *
      * @param \DOMDocument $doc The document being built
-     * @param \DOMNode $parent The parent whose children are being built
+     * @param String $parent The tag name of the parent element
      * @param Array|\Traversable $data An array or a traversable object
      * @return NULL
      */
-    private function iterate ( \DOMDocument $doc, \DOMNode $parent, &$data )
+    private function iterate ( \DOMDocument $doc, $parent, &$data )
     {
-        foreach ( $data AS $key => $value ) {
-            $child = $this->createElement( $doc, $key );
-            $parent->appendChild( $child );
-            $this->build( $doc, $child, $value );
+        if ( is_array($data) && \h2o\ary\isList($data) ) {
+            $node = $doc->createDocumentFragment();
+            foreach ( $data AS $value ) {
+                $node->appendChild(
+                    $this->build( $doc, $parent, $value )
+                );
+            }
         }
+        else {
+            $node = $this->createElement( $doc, $parent );
+            foreach ( $data AS $key => $value ) {
+                $node->appendChild(
+                    $this->build( $doc, $key, $value )
+                );
+            }
+        }
+
+        return $node;
     }
 
     /**
      * Recursively builds an XML tree
      *
      * @param \DOMDocument $doc The document being built
-     * @param \DOMNode $parent The parent whose children are being built
+     * @param String $parent The tag name of the parent element
      * @param Mixed $data The data being pieced together
      * @return NULL
      */
-    private function build ( \DOMDocument $doc, \DOMNode $parent, &$data )
+    private function build ( \DOMDocument $doc, $parent, &$data )
     {
+        if ( \h2o\isEmpty($data) ) {
+            return $this->createElement( $doc, $parent );
+        }
+
         // Primitives
-        if ( \h2o\isBasic( $data ) && $data !== NULL ) {
-            $parent->appendChild(
+        else if ( \h2o\isBasic( $data ) && $data !== NULL ) {
+            $node = $this->createElement( $doc, $parent );
+            $node->appendChild(
                 $doc->createTextNode( (string) $data )
             );
         }
 
         // Handle values that can be iterated over
         else if ( is_array($data) || $data instanceof \Traversable ) {
-            $this->iterate( $doc, $parent, $data );
+            $node = $this->iterate( $doc, $parent, $data );
         }
 
         // If an XML builder was given, handle it
         else if ( $data instanceof \h2o\iface\XMLBuilder ) {
-            $parent->appendChild( $data->buildNode( $doc ) );
+            $node = $this->createElement( $doc, $parent );
+            $node->appendChild( $data->buildNode( $doc ) );
         }
 
         // For other objects...
@@ -139,7 +158,8 @@ class Values implements \h2o\iface\XMLBuilder
 
             // If it is an object that supports "toString"
             if ( \h2o\respondTo($data, "__toString") ) {
-                $parent->appendChild(
+                $node = $this->createElement( $doc, $parent );
+                $node->appendChild(
                     $doc->createTextNode( $data->__toString() )
                 );
             }
@@ -147,9 +167,11 @@ class Values implements \h2o\iface\XMLBuilder
             // Otherwise, iterate over its public properties
             else {
                 $props = get_object_vars( $data );
-                $this->iterate( $doc, $parent, $props );
+                $node = $this->iterate( $doc, $parent, $props );
             }
         }
+
+        return $node;
     }
 
     /**
@@ -160,9 +182,7 @@ class Values implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $parent = $this->createElement( $doc, $this->tag );
-        $this->build( $doc, $parent, $this->data );
-        return $parent;
+        return $this->build( $doc, $this->tag, $this->data );
     }
 
 }
