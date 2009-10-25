@@ -382,9 +382,26 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
          );
     }
 
-    public function testBuildNode_NumericKey ()
+    public function testBuildNode_InvalidKey ()
     {
-        $this->markTestIncomplete("To be written");
+
+        $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"keys",
+            array( "  !! @@ &&" => "val", 26 => "number" )
+        );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<keys><unknown>val</unknown><numeric_26>number</numeric_26></keys>' ."\n",
+            $doc->saveXML()
+         );
     }
 
 }

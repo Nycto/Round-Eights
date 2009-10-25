@@ -76,7 +76,12 @@ class Values implements \h2o\iface\XMLBuilder
      */
     private function createElement ( \DOMDocument $doc, $tag )
     {
-        if ( is_numeric($tag) )
+        $tag = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $tag);
+
+        if ( empty($tag) )
+            $tag = "unknown";
+
+        else if ( is_numeric($tag) )
             $tag = "numeric_". $tag;
 
         if ( empty($this->namespace) )
