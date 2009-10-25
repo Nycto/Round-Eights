@@ -33,20 +33,55 @@ class Values implements \h2o\iface\XMLBuilder
 {
 
     /**
+     * The name of the root tag
+     *
+     * @var String
+     */
+    private $tag;
+
+    /**
      * The source data to generate the XML tree from
      *
      * @var Mixed
      */
-    private $source;
+    private $data;
+
+    /**
+     * The namespace uri to use for the generated nodes
+     *
+     * @var String
+     */
+    private $namespace;
 
     /**
      * Constructor...
      *
-     * @param Mixed $source The source data to generate the XML tree from
+     * @param String $tag The name of the root tag
+     * @param Mixed $data The source data to generate the XML tree from
+     * @param String $namespace The namespace uri to use for the generated nodes
      */
-    public function __construct ( $source )
+    public function __construct ( $tag, $data, $namespace = null )
     {
-        $this->source = $source;
+        $this->tag = $tag;
+        $this->data = $data;
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * Iterates over a set of data and builds it as XML
+     *
+     * @param \DOMDocument $doc The document being built
+     * @param \DOMNode $parent The parent whose children are being built
+     * @param Array|\Traversable $data An array or a traversable object
+     * @return NULL
+     */
+    private function iterate ( \DOMDocument $doc, \DOMNode $parent, &$data )
+    {
+        foreach ( $data AS $key => $value ) {
+            $child = $doc->createElement( $key );
+            $parent->appendChild( $child );
+            $this->build( $doc, $child, $value );
+        }
     }
 
     /**
@@ -57,42 +92,40 @@ class Values implements \h2o\iface\XMLBuilder
      * @param Mixed $data The data being pieced together
      * @return NULL
      */
-    private function iterate ( \DOMDocument $doc, \DOMNode $parent, &$data )
+    private function build ( \DOMDocument $doc, \DOMNode $parent, &$data )
     {
-        foreach ( $data AS $key => $value )
-        {
-            $node = null;
+        // Primitives
+        if ( \h2o\isBasic( $data ) && $data !== NULL ) {
+            $parent->appendChild(
+                $doc->createTextNode( (string) $data )
+            );
+        }
 
-            // If an XML builder was given, handle it
-            if ( $value instanceof \h2o\iface\XMLBuilder ) {
-                $node = $doc->createElement( $key );
-                $node->appendChild( $value->buildNode( $doc ) );
+        // Handle values that can be iterated over
+        else if ( is_array($data) || $data instanceof \Traversable ) {
+            $this->iterate( $doc, $parent, $data );
+        }
+
+        // If an XML builder was given, handle it
+        else if ( $data instanceof \h2o\iface\XMLBuilder ) {
+            $parent->appendChild( $data->buildNode( $doc ) );
+        }
+
+        // For other objects...
+        else if ( is_object($data) ) {
+
+            // If it is an object that supports "toString"
+            if ( \h2o\respondTo($data, "__toString") ) {
+                $parent->appendChild(
+                    $doc->createTextNode( $data->__toString() )
+                );
             }
 
-            // For other objects...
-            else if ( is_object($value) ) {
-
-                // If it is an object that supports "toString"
-                if ( \h2o\respondTo($value, "__toString") )
-                    $node = $doc->createTextNode( $value->__toString() );
-
-                else
-                    $value = get_object_vars( $value );
+            // Otherwise, iterate over its public properties
+            else {
+                $props = get_object_vars( $data );
+                $this->iterate( $doc, $parent, $props );
             }
-
-            // Handle values that can be iterated over
-            if ( is_array($value) || $value instanceof \Traversable ) {
-                $node = $doc->createElement( $key );
-                $this->iterate( $doc, $node, $value );
-            }
-
-            // Primitives
-            else if ( \h2o\isBasic( $value ) ) {
-                $node = $doc->createElement( $key, (string) $value );
-            }
-
-            if ( !empty($node) )
-                $parent->appendChild( $node );
         }
     }
 
@@ -104,50 +137,9 @@ class Values implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        // If an XML builder was given, handle it
-        if ( $this->source instanceof \h2o\iface\XMLBuilder ) {
-            return $this->source->buildNode( $doc );
-        }
-
-        // For other objects...
-        else if ( is_object($this->source) ) {
-
-            // If it is an object that supports "toString"
-            if ( \h2o\respondTo($this->source, "__toString") )
-                return $doc->createTextNode( $this->source->__toString() );
-
-            else
-                $data = get_object_vars( $this->source );
-        }
-
-        else {
-            $data = $this->source;
-        }
-
-        // Handle values that can be iterated over
-        if ( is_array($data) || $data instanceof \Traversable ) {
-            $node = $doc->createDocumentFragment();
-
-            $this->iterate( $doc, $node, $data );
-
-            if( $node->childNodes->length == 1 ) {
-                $first = $node->firstChild;
-                $node->removeChild( $first );
-                return $first;
-            }
-
-            else if ( $node->hasChildNodes() ) {
-                return $node;
-            }
-        }
-
-        // Primitives
-        else if ( \h2o\isBasic( $data ) ) {
-            return $doc->createTextNode( $data );
-        }
-
-        // For anything else, return a default value
-        return $doc->createTextNode("");
+        $parent = $doc->createElement($this->tag);
+        $this->build( $doc, $parent, $this->data );
+        return $parent;
     }
 
 }

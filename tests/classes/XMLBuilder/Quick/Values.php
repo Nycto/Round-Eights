@@ -35,76 +35,111 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_NULL ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( NULL );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "null",  NULL );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
-        $this->assertSame( "", $result->wholeText );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<null/>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_String ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( "test" );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "str",  "test" );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
-        $this->assertSame( "test", $result->wholeText );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<str>test</str>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_Integer ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( 1234 );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "int",  1234 );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
-        $this->assertSame( "1234", $result->wholeText );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<int>1234</int>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_Float ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( 12.34 );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "float",  12.34 );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
-        $this->assertSame( "12.34", $result->wholeText );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<float>12.34</float>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_Boolean ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( TRUE );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "bool",  TRUE );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
-        $this->assertSame( "1", $result->wholeText );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<bool>1</bool>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_ArrayBasic ()
     {
         $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"ary",
             array( "key" => "value", "key2" => "value2" )
         );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMDocumentFragment") );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
 
         $doc->appendChild( $result );
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<key>value</key>' ."\n"
-    		.'<key2>value2</key2>' ."\n",
+    		.'<ary><key>value</key><key2>value2</key2></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -112,6 +147,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_ArrayDepth ()
     {
         $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"ary",
             array( "key" => array( "sub" => array( "child" => "data", "stuff" => "info" ) ) )
         );
 
@@ -124,7 +160,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<key><sub><child>data</child><stuff>info</stuff></sub></key>' ."\n",
+    		.'<ary><key><sub><child>data</child><stuff>info</stuff></sub></key></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -132,6 +168,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_Iterators ()
     {
         $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"iter",
             new ArrayIterator(array(
             	"key" => new ArrayIterator(array(
             		"sub" => new ArrayIterator(array(
@@ -151,24 +188,25 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<key><sub><child>data</child><stuff>info</stuff></sub></key>' ."\n",
+    		.'<iter><key><sub><child>data</child><stuff>info</stuff></sub></key></iter>' ."\n",
             $doc->saveXML()
          );
     }
 
     public function testBuildNode_Empty ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( array() );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "empty",  array() );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMText") );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
 
         $doc->appendChild( $result );
 
         $this->assertSame(
-            '<?xml version="1.0"?>' ."\n\n",
+            '<?xml version="1.0"?>' ."\n"
+            .'<empty/>' ."\n",
             $doc->saveXML()
         );
     }
@@ -184,9 +222,19 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( $subBuilder );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "build",  $subBuilder );
 
-        $this->assertSame( $node, $builder->buildNode($doc) );
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<build><test/></build>' ."\n",
+            $doc->saveXML()
+         );
     }
 
     public function testBuildNode_nestedXMLBuilder ()
@@ -200,7 +248,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( array("parent" => $subBuilder) );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "build",  array("parent" => $subBuilder) );
 
         $result = $builder->buildNode( $doc );
 
@@ -210,12 +258,35 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<parent><test/></parent>' ."\n",
+    		.'<build><parent><test/></parent></build>' ."\n",
             $doc->saveXML()
          );
     }
 
     public function testBuildNode_ObjectProps ()
+    {
+        $obj = new stdClass;
+        $obj->child = "data";
+        $obj->stuff = "info";
+        $obj->two = "blah";
+
+        $builder = new \h2o\XMLBuilder\Quick\Values( "obj",  $obj );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<obj><child>data</child><stuff>info</stuff><two>blah</two></obj>' ."\n",
+            $doc->saveXML()
+         );
+    }
+
+    public function testBuildNode_NestedObjectProps ()
     {
         $obj = new stdClass;
         $obj->key = new stdClass;
@@ -224,21 +295,74 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
         $obj->key->sub->stuff = "info";
         $obj->two = "blah";
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( $obj );
+        $builder = new \h2o\XMLBuilder\Quick\Values( "obj",  $obj );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
 
-        $this->assertThat( $result, $this->isInstanceOf("\DOMDocumentFragment") );
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
 
         $doc->appendChild( $result );
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<key><sub><child>data</child><stuff>info</stuff></sub></key>' ."\n"
-    		.'<two>blah</two>' ."\n",
+    		.'<obj><key><sub><child>data</child><stuff>info</stuff></sub></key><two>blah</two></obj>' ."\n",
             $doc->saveXML()
          );
+    }
+
+    public function testBuildNode_ToString ()
+    {
+        $obj = $this->getMock( 'stdClass', array('__toString') );
+        $obj->expects( $this->once() )
+            ->method( "__toString" )
+            ->will( $this->returnValue( "Data Chunk" ) );
+
+        $builder = new \h2o\XMLBuilder\Quick\Values( "tostr",  $obj );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<tostr>Data Chunk</tostr>' ."\n",
+            $doc->saveXML()
+         );
+    }
+
+    public function testBuildNode_NestedToString ()
+    {
+        $obj = $this->getMock( 'stdClass', array('__toString') );
+        $obj->expects( $this->once() )
+            ->method( "__toString" )
+            ->will( $this->returnValue( "Data Chunk" ) );
+
+        $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"tostr",
+            array( "tag" => $obj )
+        );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<tostr><tag>Data Chunk</tag></tostr>' ."\n",
+            $doc->saveXML()
+         );
+    }
+
+    public function testBuildNode_Namespaced ()
+    {
+        $this->markTestIncomplete("To be written");
     }
 
 }
