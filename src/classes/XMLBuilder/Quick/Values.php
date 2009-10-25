@@ -68,6 +68,24 @@ class Values implements \h2o\iface\XMLBuilder
     }
 
     /**
+     * Creates a tag with the given tag name in the proper namespace
+     *
+     * @param \DOMDocument $doc The document to create the node under
+     * @param String The name of the tag
+     * @return DOMElement
+     */
+    private function createElement ( \DOMDocument $doc, $tag )
+    {
+        if ( is_numeric($tag) )
+            $tag = "numeric_". $tag;
+
+        if ( empty($this->namespace) )
+            return $doc->createElement( $tag );
+        else
+            return $doc->createElementNS( $this->namespace, $tag );
+    }
+
+    /**
      * Iterates over a set of data and builds it as XML
      *
      * @param \DOMDocument $doc The document being built
@@ -78,7 +96,7 @@ class Values implements \h2o\iface\XMLBuilder
     private function iterate ( \DOMDocument $doc, \DOMNode $parent, &$data )
     {
         foreach ( $data AS $key => $value ) {
-            $child = $doc->createElement( $key );
+            $child = $this->createElement( $doc, $key );
             $parent->appendChild( $child );
             $this->build( $doc, $child, $value );
         }
@@ -137,7 +155,7 @@ class Values implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $parent = $doc->createElement($this->tag);
+        $parent = $this->createElement( $doc, $this->tag );
         $this->build( $doc, $parent, $this->data );
         return $parent;
     }

@@ -362,6 +362,28 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Namespaced ()
     {
+        $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"ary",
+            array( "key" => "value" ),
+            "test:uri"
+        );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<ary xmlns="test:uri"><key>value</key></ary>' ."\n",
+            $doc->saveXML()
+         );
+    }
+
+    public function testBuildNode_NumericKey ()
+    {
         $this->markTestIncomplete("To be written");
     }
 
