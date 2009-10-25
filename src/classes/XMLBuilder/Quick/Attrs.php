@@ -68,6 +68,25 @@ class Attrs implements \h2o\iface\XMLBuilder
     }
 
     /**
+     * Prepares a tag or attribute name for use
+     *
+     * @param String $name The string to prepare
+     * @return String
+     */
+    private function normalizeName ( $name )
+    {
+        $name = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $name);
+
+        if ( \h2o\isEmpty($name) )
+            $name = "unknown";
+
+        else if ( is_numeric($name) )
+            $name = "numeric_". $name;
+
+        return $name;
+    }
+
+    /**
      * Creates a tag with the given tag name in the proper namespace
      *
      * @param \DOMDocument $doc The document to create the node under
@@ -76,13 +95,7 @@ class Attrs implements \h2o\iface\XMLBuilder
      */
     private function createElement ( \DOMDocument $doc, $tag )
     {
-        $tag = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $tag);
-
-        if ( \h2o\isEmpty($tag) )
-            $tag = "unknown";
-
-        else if ( is_numeric($tag) )
-            $tag = "numeric_". $tag;
+        $tag = $this->normalizeName( $tag );
 
         if ( empty($this->namespace) )
             return $doc->createElement( $tag );
@@ -100,21 +113,52 @@ class Attrs implements \h2o\iface\XMLBuilder
      */
     private function iterate ( \DOMDocument $doc, $parent, &$data )
     {
-        if ( is_array($data) && \h2o\ary\isList($data) ) {
-            $node = $doc->createDocumentFragment();
-            foreach ( $data AS $value ) {
-                $node->appendChild(
-                    $this->build( $doc, $parent, $value )
+        $node = $this->createElement( $doc, $parent );
+
+        foreach ( $data AS $key => $value ) {
+
+            if ( \h2o\isEmpty($value) ) {
+                continue;
+            }
+
+            // Primitives
+            else if ( \h2o\isBasic( $value ) && $value !== NULL ) {
+                $node->setAttribute(
+                    $this->normalizeName( $key ),
+                    (string) $value
                 );
             }
-        }
-        else {
-            $node = $this->createElement( $doc, $parent );
-            foreach ( $data AS $key => $value ) {
-                $node->appendChild(
-                    $this->build( $doc, $key, $value )
-                );
+
+            // Handle values that can be iterated over
+            else if ( is_array($value) || $value instanceof \Traversable ) {
+                $node->appendChild( $this->iterate( $doc, $key, $value ) );
             }
+
+            // If an XML builder was given, handle it
+            else if ( $value instanceof \h2o\iface\XMLBuilder ) {
+                $child = $this->createElement( $doc, $key );
+                $child->appendChild( $value->buildNode( $doc ) );
+                $node->appendChild( $child );
+            }
+
+            // For other objects...
+            else if ( is_object($value) ) {
+
+                // If it is an object that supports "toString"
+                if ( \h2o\respondTo($value, "__toString") ) {
+                    $node->setAttribute(
+                        $this->normalizeName( $key ),
+                        $value->__toString()
+                    );
+                }
+
+                // Otherwise, iterate over its public properties
+                else {
+                    $props = get_object_vars( $value );
+                    $node->appendChild( $this->iterate( $doc, $key, $props ) );
+                }
+            }
+
         }
 
         return $node;

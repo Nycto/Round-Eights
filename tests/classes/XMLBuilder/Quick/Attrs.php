@@ -168,7 +168,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary><key attr="hprmph"><sub child="data" stuff="info"/></key></ary>' ."\n",
+    		.'<ary><key attr="hrmph"><sub child="data" stuff="info"/></key></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -197,7 +197,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<iter><key attr="hprmph"><sub child="data" stuff="info"/></key></iter>' ."\n",
+    		.'<iter><key attr="hrmph"><sub child="data" stuff="info"/></key></iter>' ."\n",
             $doc->saveXML()
          );
     }
