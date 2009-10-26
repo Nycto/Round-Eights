@@ -29,6 +29,8 @@ namespace h2o\XMLBuilder\Quick;
  * Generates an XML tree from a mixed type, using any key/value pairs as
  * attributes of their parent nodes
  */
+use h2o;
+
 class Attrs extends \h2o\XMLBuilder\Quick
 {
 
@@ -66,7 +68,9 @@ class Attrs extends \h2o\XMLBuilder\Quick
             // If an XML builder was given, handle it
             else if ( $value instanceof \h2o\iface\XMLBuilder ) {
                 $child = $this->createElement( $doc, $key );
-                $child->appendChild( $value->buildNode( $doc ) );
+                $child->appendChild(
+                    \h2o\XMLBuilder::buildNode( $value, $doc )
+                );
                 $node->appendChild( $child );
             }
 

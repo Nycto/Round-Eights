@@ -142,7 +142,9 @@ abstract class Quick implements \h2o\iface\XMLBuilder
         // If an XML builder was given, handle it
         else if ( $data instanceof \h2o\iface\XMLBuilder ) {
             $node = $this->createElement( $doc, $parent );
-            $node->appendChild( $data->buildNode( $doc ) );
+            $node->appendChild(
+                \h2o\XMLBuilder::buildNode( $data, $doc )
+            );
         }
 
         // For other objects...
