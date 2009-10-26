@@ -201,7 +201,7 @@ class Mail
      * Sets the transport to send this specific piece of mail with
      *
      * @param Object $transport A \h2o\Mail\Transport object
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setTransport ( \h2o\Mail\Transport $transport )
     {
@@ -213,7 +213,7 @@ class Mail
      * Clears the specific transport from this instance. This will cause the
      * default transport to be used
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearTransport ()
     {
@@ -235,7 +235,7 @@ class Mail
      * Set the label for the "from" field
      *
      * @param String $name The label being sent from
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setFromName ( $name )
     {
@@ -259,7 +259,7 @@ class Mail
     /**
      * Clears the from label from this instance
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearFromName ()
     {
@@ -283,7 +283,7 @@ class Mail
      *
      * @param String $email The email address
      * @param String $name The label attached to this address
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setFrom ( $email, $name = FALSE )
     {
@@ -311,7 +311,7 @@ class Mail
     /**
      * Clears the "from" address from this instance
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearFrom ()
     {
@@ -336,7 +336,7 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function addTo ( $email, $name = FALSE )
     {
@@ -361,7 +361,7 @@ class Mail
     /**
      * Clears all the addresses from the to field
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearTo ()
     {
@@ -397,7 +397,7 @@ class Mail
      * Removes an e-mail address from the To list
      *
      * @param String $email The email address to remove
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function removeTo ( $email )
     {
@@ -427,7 +427,7 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function addCC ( $email, $name = FALSE )
     {
@@ -452,7 +452,7 @@ class Mail
     /**
      * Clears all the addresses from the cc field
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearCC ()
     {
@@ -488,7 +488,7 @@ class Mail
      * Removes an e-mail address from the CC list
      *
      * @param String $email The email address to remove
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function removeCC ( $email )
     {
@@ -518,7 +518,7 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function addBCC ( $email, $name = FALSE )
     {
@@ -543,7 +543,7 @@ class Mail
     /**
      * Clears all the addresses from the bcc field
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearBCC ()
     {
@@ -579,7 +579,7 @@ class Mail
      * Removes an e-mail address from the BCC list
      *
      * @param String $email The email address to remove
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function removeBCC ( $email )
     {
@@ -606,7 +606,7 @@ class Mail
      * Set the subject of the email
      *
      * @param String $subject The email subject
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setSubject ( $subject )
     {
@@ -633,7 +633,7 @@ class Mail
     /**
      * Clears the subject
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearSubject ()
     {
@@ -655,7 +655,7 @@ class Mail
      * Set the message ID of the email
      *
      * @param String $messageID The email message ID
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setMessageID ( $messageID )
     {
@@ -682,7 +682,7 @@ class Mail
     /**
      * Clears the messageID
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearMessageID ()
     {
@@ -709,7 +709,7 @@ class Mail
      * without HTMl enabled will see the text content.
      *
      * @param String $text The email text
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setText ( $text )
     {
@@ -733,7 +733,7 @@ class Mail
     /**
      * Clears the text
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearText ()
     {
@@ -760,7 +760,7 @@ class Mail
      * without HTML enabled will see the text content.
      *
      * @param String $html The html
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function setHTML ( $html )
     {
@@ -784,7 +784,7 @@ class Mail
     /**
      * Clears the html
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearHTML ()
     {
@@ -795,7 +795,7 @@ class Mail
     /**
      * Returns the list of custom headers loaded in this e-mail
      *
-     * @return Object Returns a h2o object where the key is the name of the
+     * @return Array Returns an array where the key is the name of the
      *      header, and the array value is the value of the header
      */
     public function getCustomHeaders ()
@@ -808,7 +808,7 @@ class Mail
      *
      * @param String $header The name of the header
      * @param String $value The value of the header
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function addCustomHeader ( $header, $value )
     {
@@ -842,7 +842,7 @@ class Mail
      * Clears a custom header from this instance
      *
      * @param String $header The header to remove
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function removeCustomHeader ( $header )
     {
@@ -860,7 +860,7 @@ class Mail
     /**
      * Clears all the custom headers set in this instance
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function clearCustomHeaders ()
     {
@@ -902,7 +902,7 @@ class Mail
     /**
      * Sends this piece of mail
      *
-     * @return Object Returns a self reference
+     * @return \h2o\Mail Returns a self reference
      */
     public function send ()
     {
