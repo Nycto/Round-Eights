@@ -40,9 +40,10 @@ class Attrs extends \h2o\XMLBuilder\Quick
      * @param \DOMDocument $doc The document being built
      * @param String $parent The tag name of the parent element
      * @param Array|\Traversable $data An array or a traversable object
+     * @param Boolean $root Whether the data being parsed is at the root level
      * @return DOMNode Returns the built node
      */
-    protected function iterate ( \DOMDocument $doc, $parent, &$data )
+    protected function iterate ( \DOMDocument $doc, $parent, &$data, $root = FALSE )
     {
         $node = $this->createElement( $doc, $parent );
 
@@ -62,7 +63,7 @@ class Attrs extends \h2o\XMLBuilder\Quick
 
             // Handle values that can be iterated over
             else if ( is_array($value) || $value instanceof \Traversable ) {
-                $node->appendChild( $this->iterate( $doc, $key, $value ) );
+                $node->appendChild( $this->iterate( $doc, $key, $value, FALSE ) );
             }
 
             // If an XML builder was given, handle it
@@ -88,7 +89,7 @@ class Attrs extends \h2o\XMLBuilder\Quick
                 // Otherwise, iterate over its public properties
                 else {
                     $props = get_object_vars( $value );
-                    $node->appendChild( $this->iterate( $doc, $key, $props ) );
+                    $node->appendChild( $this->iterate( $doc, $key, $props, FALSE ) );
                 }
             }
 

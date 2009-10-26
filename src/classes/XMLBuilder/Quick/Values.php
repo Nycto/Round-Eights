@@ -38,15 +38,16 @@ class Values extends \h2o\XMLBuilder\Quick
      * @param \DOMDocument $doc The document being built
      * @param String $parent The tag name of the parent element
      * @param Array|\Traversable $data An array or a traversable object
+     * @param Boolean $root Whether the data being parsed is at the root level
      * @return DOMNode Returns the built node
      */
-    protected function iterate ( \DOMDocument $doc, $parent, &$data )
+    protected function iterate ( \DOMDocument $doc, $parent, &$data, $root = FALSE )
     {
-        if ( is_array($data) && \h2o\ary\isList($data) ) {
+        if ( !$root && is_array($data) && \h2o\ary\isList($data) ) {
             $node = $doc->createDocumentFragment();
             foreach ( $data AS $value ) {
                 $node->appendChild(
-                    $this->build( $doc, $parent, $value )
+                    $this->build( $doc, $parent, $value, FALSE )
                 );
             }
         }
@@ -54,7 +55,7 @@ class Values extends \h2o\XMLBuilder\Quick
             $node = $this->createElement( $doc, $parent );
             foreach ( $data AS $key => $value ) {
                 $node->appendChild(
-                    $this->build( $doc, $key, $value )
+                    $this->build( $doc, $key, $value, FALSE )
                 );
             }
         }

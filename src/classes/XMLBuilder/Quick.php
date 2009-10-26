@@ -108,9 +108,10 @@ abstract class Quick implements \h2o\iface\XMLBuilder
      * @param \DOMDocument $doc The document being built
      * @param String $parent The tag name of the parent element
      * @param Array|\Traversable $data An array or a traversable object
+     * @param Boolean $root Whether the data being parsed is at the root level
      * @return DOMNode Returns the built node
      */
-    abstract protected function iterate ( \DOMDocument $doc, $parent, &$data );
+    abstract protected function iterate ( \DOMDocument $doc, $parent, &$data, $root = FALSE );
 
     /**
      * Recursively builds an XML tree
@@ -118,9 +119,12 @@ abstract class Quick implements \h2o\iface\XMLBuilder
      * @param \DOMDocument $doc The document being built
      * @param String $parent The tag name of the parent element
      * @param Mixed $data The data being pieced together
+     * @param Boolean $root Whether the data being parsed is at the root level
+     * 		This is used during iteration, for example, to ensure lists are
+     * 		created properly
      * @return DOMNode Returns the built node
      */
-    protected function build ( \DOMDocument $doc, $parent, &$data )
+    protected function build ( \DOMDocument $doc, $parent, &$data, $root = FALSE )
     {
         if ( \h2o\isEmpty($data) ) {
             return $this->createElement( $doc, $parent );
@@ -136,7 +140,7 @@ abstract class Quick implements \h2o\iface\XMLBuilder
 
         // Handle values that can be iterated over
         else if ( is_array($data) || $data instanceof \Traversable ) {
-            $node = $this->iterate( $doc, $parent, $data );
+            $node = $this->iterate( $doc, $parent, $data, $root );
         }
 
         // If an XML builder was given, handle it
@@ -161,7 +165,7 @@ abstract class Quick implements \h2o\iface\XMLBuilder
             // Otherwise, iterate over its public properties
             else {
                 $props = get_object_vars( $data );
-                $node = $this->iterate( $doc, $parent, $props );
+                $node = $this->iterate( $doc, $parent, $props, $root );
             }
         }
 
@@ -176,7 +180,7 @@ abstract class Quick implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        return $this->build( $doc, $this->tag, $this->data );
+        return $this->build( $doc, $this->tag, $this->data, TRUE );
     }
 
 }

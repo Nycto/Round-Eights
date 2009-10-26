@@ -340,6 +340,30 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
          );
     }
 
+    public function testBuildNode_RootList ()
+    {
+        $builder = new \h2o\XMLBuilder\Quick\Values(
+        	"list",
+            array(
+            	array( "key" => "value" ),
+            	"string"
+            )
+        );
+
+        $doc = new DOMDocument;
+        $result = $builder->buildNode( $doc );
+
+        $this->assertThat( $result, $this->isInstanceOf("\DOMElement") );
+
+        $doc->appendChild( $result );
+
+        $this->assertSame(
+            '<?xml version="1.0"?>' ."\n"
+    		.'<list><numeric_0><key>value</key></numeric_0><numeric_1>string</numeric_1></list>' ."\n",
+            $doc->saveXML()
+         );
+    }
+
 }
 
 ?>
