@@ -33,45 +33,70 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstructErrs ()
+    public function testBuildNode_basic ()
     {
-        try {
-            new \h2o\XMLBuilder\Soap\Fault( "", "An error was encountered" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame("Must not be empty", $err->getMessage());
-        }
+        $fault = new \h2o\Soap\Fault("Error");
 
-        try {
-            new \h2o\XMLBuilder\Soap\Fault( "Error", "" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame("Must not be empty", $err->getMessage());
-        }
-    }
+        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
 
-    public function testBuildNode ()
-    {
-        $builder = new \h2o\XMLBuilder\Soap\Fault(
-                "Error",
-                "An error was encountered"
-            );
-
-        $doc = new \DOMDocument;
-
-        $builtNode = $builder->buildNode( $doc );
-        $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
-        $this->assertSame( "soap:Fault", $builtNode->tagName );
+        $doc = new DOMDocument;
+        $doc->appendChild( $builder->buildNode( $doc ) );
 
         $this->assertSame(
-                '<soap:Fault xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
-                    .'<soap:Code><soap:Value>Error</soap:Value></soap:Code>'
-                    .'<soap:Reason><soap:Text>An error was encountered</soap:Text></soap:Reason>'
-                .'</soap:Fault>',
-                $doc->saveXML( $builtNode )
-            );
+        	'<?xml version="1.0"?>' ."\n"
+            .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Error</Text></Reason></Fault>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testBuildNode_Role ()
+    {
+        $fault = new \h2o\Soap\Fault("Error");
+        $fault->setRole( "role:uri" );
+
+        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $builder->buildNode( $doc ) );
+
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Error</Text></Reason><Role>role:uri</Role></Fault>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testBuildNode_Subcodes ()
+    {
+        $fault = new \h2o\Soap\Fault("Oops", "mustunderstand", array("one", "two") );
+
+        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $builder->buildNode( $doc ) );
+
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<Fault xmlns="test:uri"><Code><Value>MustUnderstand</Value><Subcode><Value>one</Value><Subcode><Value>two</Value></Subcode></Subcode></Code><Reason><Text>Oops</Text></Reason></Fault>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testBuildNode_Details ()
+    {
+        $fault = new \h2o\Soap\Fault("Oops");
+        $fault->setDetails(array("one" => "once", "two" => "twice"));
+
+        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $builder->buildNode( $doc ) );
+
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Oops</Text></Reason><Details><one>once</one><two>twice</two></Details></Fault>' ."\n",
+            $doc->saveXML()
+        );
     }
 
 }

@@ -32,39 +32,29 @@ class Fault implements \h2o\iface\XMLBuilder
 {
 
     /**
-     * The fault code
+     * The fault whose XML is being built
      *
-     * @var String
+     * @var \h2o\Soap\Fault
      */
-    private $code;
+    private $fault;
 
     /**
-     * The human readable fault reason description
+     * The namespace URI to use for the soap elements
      *
      * @var String
      */
-    private $reason;
+    private $soapURI;
 
     /**
      * Constructor...
      *
-     * @param String $code The fault code
-     * @param String $reason The human readable fault reason description
+     * @param \h2o\Soap\Fault $fault The fault whose XML is being built
+     * @param String $soapURI The namespace URI to use for the soap elements
      */
-    public function __construct ( $code, $reason )
+    public function __construct ( \h2o\Soap\Fault $fault, $soapURI )
     {
-        $code = \h2o\strval($code);
-
-        if ( \h2o\isEmpty($code) )
-            throw new \h2o\Exception\Argument(0, "Fault Code", "Must not be empty");
-
-        $reason = \h2o\strval($reason);
-
-        if ( \h2o\isEmpty($reason) )
-            throw new \h2o\Exception\Argument(0, "Fault Reason", "Must not be empty");
-
-        $this->code = $code;
-        $this->reason = $reason;
+        $this->fault = $fault;
+        $this->soapURI = (string) $soapURI;
     }
 
     /**
@@ -75,25 +65,28 @@ class Fault implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $fault = $doc->createElementNS(
-                "http://www.w3.org/2003/05/soap-envelope",
-                "soap:Fault"
-            );
+        $data = array(
+            "Code" => array( "Value" => $this->fault->getPrimeCode() ),
+            "Reason" => array( "Text" => $this->fault->getMessage() )
+        );
 
-        $code = $doc->createElement("soap:Code");
-        $code->appendChild(
-                $doc->createElement("soap:Value", $this->code)
-            );
+        $parent =& $data[ 'Code' ];
 
-        $reason = $doc->createElement("soap:Reason");
-        $reason->appendChild(
-                $doc->createElement("soap:Text", $this->reason)
-            );
+        foreach ( $this->fault->getSubCodes() AS $subcode )
+        {
+            $parent[  'Subcode' ] = array( "Value" => $subcode );
+            $parent =& $parent[ 'Subcode' ];
+        }
 
-        $fault->appendChild( $code );
-        $fault->appendChild( $reason );
+        if ( !\h2o\isEmpty($this->fault->getRole()) )
+            $data['Role'] = $this->fault->getRole();
 
-        return $fault;
+        if ( !\h2o\isEmpty($this->fault->getDetails()) )
+            $data['Details'] = $this->fault->getDetails();
+
+        $builder = new \h2o\XMLBuilder\Quick\Values( "Fault", $data, $this->soapURI );
+
+        return $builder->buildNode( $doc );
     }
 
 }
