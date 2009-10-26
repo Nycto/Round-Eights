@@ -70,6 +70,10 @@ class XMLBuilder
     /**
      * A helper function for building a node, ensuring a proper value was returned,
      * and then importing it into the document
+     *
+     * @param \h2o\iface\XMLBuilder $builder
+     * @param \DOMDocument $doc The document being built
+     * @return DOMNode
      */
     static public function buildNode ( \h2o\iface\XMLBuilder $builder, \DOMDocument $doc )
     {
