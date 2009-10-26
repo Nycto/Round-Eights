@@ -29,79 +29,8 @@ namespace h2o\XMLBuilder\Quick;
  * Generates an XML tree from a mixed type, using any key/value pairs as
  * attributes of their parent nodes
  */
-class Attrs implements \h2o\iface\XMLBuilder
+class Attrs extends \h2o\XMLBuilder\Quick
 {
-
-    /**
-     * The name of the root tag
-     *
-     * @var String
-     */
-    private $tag;
-
-    /**
-     * The source data to generate the XML tree from
-     *
-     * @var Mixed
-     */
-    private $data;
-
-    /**
-     * The namespace uri to use for the generated nodes
-     *
-     * @var String
-     */
-    private $namespace;
-
-    /**
-     * Constructor...
-     *
-     * @param String $tag The name of the root tag
-     * @param Mixed $data The source data to generate the XML tree from
-     * @param String $namespace The namespace uri to use for the generated nodes
-     */
-    public function __construct ( $tag, $data, $namespace = null )
-    {
-        $this->tag = $tag;
-        $this->data = $data;
-        $this->namespace = $namespace;
-    }
-
-    /**
-     * Prepares a tag or attribute name for use
-     *
-     * @param String $name The string to prepare
-     * @return String
-     */
-    private function normalizeName ( $name )
-    {
-        $name = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $name);
-
-        if ( \h2o\isEmpty($name) )
-            $name = "unknown";
-
-        else if ( is_numeric($name) )
-            $name = "numeric_". $name;
-
-        return $name;
-    }
-
-    /**
-     * Creates a tag with the given tag name in the proper namespace
-     *
-     * @param \DOMDocument $doc The document to create the node under
-     * @param String The name of the tag
-     * @return DOMElement
-     */
-    private function createElement ( \DOMDocument $doc, $tag )
-    {
-        $tag = $this->normalizeName( $tag );
-
-        if ( empty($this->namespace) )
-            return $doc->createElement( $tag );
-        else
-            return $doc->createElementNS( $this->namespace, $tag );
-    }
 
     /**
      * Iterates over a set of data and builds it as XML
@@ -109,9 +38,9 @@ class Attrs implements \h2o\iface\XMLBuilder
      * @param \DOMDocument $doc The document being built
      * @param String $parent The tag name of the parent element
      * @param Array|\Traversable $data An array or a traversable object
-     * @return NULL
+     * @return DOMNode Returns the built node
      */
-    private function iterate ( \DOMDocument $doc, $parent, &$data )
+    protected function iterate ( \DOMDocument $doc, $parent, &$data )
     {
         $node = $this->createElement( $doc, $parent );
 
@@ -124,7 +53,7 @@ class Attrs implements \h2o\iface\XMLBuilder
             // Primitives
             else if ( \h2o\isBasic( $value ) && $value !== NULL ) {
                 $node->setAttribute(
-                    $this->normalizeName( $key ),
+                    self::normalizeName( $key ),
                     (string) $value
                 );
             }
@@ -147,7 +76,7 @@ class Attrs implements \h2o\iface\XMLBuilder
                 // If it is an object that supports "toString"
                 if ( \h2o\respondTo($value, "__toString") ) {
                     $node->setAttribute(
-                        $this->normalizeName( $key ),
+                        self::normalizeName( $key ),
                         $value->__toString()
                     );
                 }
@@ -162,71 +91,6 @@ class Attrs implements \h2o\iface\XMLBuilder
         }
 
         return $node;
-    }
-
-    /**
-     * Recursively builds an XML tree
-     *
-     * @param \DOMDocument $doc The document being built
-     * @param String $parent The tag name of the parent element
-     * @param Mixed $data The data being pieced together
-     * @return NULL
-     */
-    private function build ( \DOMDocument $doc, $parent, &$data )
-    {
-        if ( \h2o\isEmpty($data) ) {
-            return $this->createElement( $doc, $parent );
-        }
-
-        // Primitives
-        else if ( \h2o\isBasic( $data ) && $data !== NULL ) {
-            $node = $this->createElement( $doc, $parent );
-            $node->appendChild(
-                $doc->createTextNode( (string) $data )
-            );
-        }
-
-        // Handle values that can be iterated over
-        else if ( is_array($data) || $data instanceof \Traversable ) {
-            $node = $this->iterate( $doc, $parent, $data );
-        }
-
-        // If an XML builder was given, handle it
-        else if ( $data instanceof \h2o\iface\XMLBuilder ) {
-            $node = $this->createElement( $doc, $parent );
-            $node->appendChild( $data->buildNode( $doc ) );
-        }
-
-        // For other objects...
-        else if ( is_object($data) ) {
-
-            // If it is an object that supports "toString"
-            if ( \h2o\respondTo($data, "__toString") ) {
-                $node = $this->createElement( $doc, $parent );
-                $node->appendChild(
-                    $doc->createTextNode( $data->__toString() )
-                );
-            }
-
-            // Otherwise, iterate over its public properties
-            else {
-                $props = get_object_vars( $data );
-                $node = $this->iterate( $doc, $parent, $props );
-            }
-        }
-
-        return $node;
-    }
-
-    /**
-     * Creates and returns a new node to attach to a document
-     *
-     * @param \DOMDocument $doc The root document this node is being created for
-     * @return \DOMElement Returns the created node
-     */
-    public function buildNode ( \DOMDocument $doc )
-    {
-        return $this->build( $doc, $this->tag, $this->data );
     }
 
 }
