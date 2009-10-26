@@ -68,6 +68,13 @@ class Fault extends \h2o\Exception\Interrupt
     private $role;
 
     /**
+     * Any random details associated with this fault
+     *
+     * @var Array
+     */
+    private $details = array();
+
+    /**
      * takes a string and returns the well formatted primary fault code
      *
      * @param String $code The primary code to cleanup
@@ -153,6 +160,28 @@ class Fault extends \h2o\Exception\Interrupt
         $role = \h2o\Filter::URL()->filter( $role );
         $this->role = empty($role) ? NULL : $role;
         return $this;
+    }
+
+    /**
+     * Sets an array of details to send back in the fault
+     *
+     * @param array $details The list of details
+     * @return \h2o\Soap\Fault Return a self reference
+     */
+    public function setDetails ( array $details )
+    {
+        $this->details = $details;
+        return $this;
+    }
+
+    /**
+     * Returns the Details of this fault
+     *
+     * @return array
+     */
+    public function getDetails ()
+    {
+        return $this->details;
     }
 
 }
