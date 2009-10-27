@@ -33,6 +33,18 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
 {
 
+    public function testHasChildren ()
+    {
+        $list = new \h2o\XMLBuilder\Series;
+        $this->assertFalse( $list->hasChildren() );
+
+        $list->addChild( new \h2o\XMLBuilder\Node('one') );
+        $this->assertTrue( $list->hasChildren() );
+
+        $list->addChild( new \h2o\XMLBuilder\Node('one') );
+        $this->assertTrue( $list->hasChildren() );
+    }
+
     public function testBuildNode_empty ()
     {
         $list = new \h2o\XMLBuilder\Series;
@@ -72,6 +84,7 @@ class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
             $doc->saveXML()
         );
     }
+
 }
 
 ?>

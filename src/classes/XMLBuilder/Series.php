@@ -52,6 +52,16 @@ class Series implements \h2o\iface\XMLBuilder
     }
 
     /**
+     * Returns whether there are any children registered in this builder
+     *
+     * @return Boolean
+     */
+    public function hasChildren ()
+    {
+        return count( $this->children ) > 0;
+    }
+
+    /**
      * Creates and returns a new node to attach to a document
      *
      * @param \DOMDocument $doc The root document this node is being created for
