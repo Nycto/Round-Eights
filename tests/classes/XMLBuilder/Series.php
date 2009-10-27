@@ -33,15 +33,20 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
 {
 
-    public function testHasChildren ()
+    public function testChildren ()
     {
         $list = new \h2o\XMLBuilder\Series;
         $this->assertFalse( $list->hasChildren() );
+        $this->assertSame( array(), $list->getChildren() );
 
-        $list->addChild( new \h2o\XMLBuilder\Node('one') );
+        $one = $this->getMock('h2o\iface\XMLBuilder');
+        $this->assertSame( $list, $list->addChild( $one ) );
+        $this->assertSame( array($one), $list->getChildren() );
         $this->assertTrue( $list->hasChildren() );
 
-        $list->addChild( new \h2o\XMLBuilder\Node('one') );
+        $two = $this->getMock('h2o\iface\XMLBuilder');
+        $this->assertSame( $list, $list->addChild( $two ) );
+        $this->assertSame( array($one, $two), $list->getChildren() );
         $this->assertTrue( $list->hasChildren() );
     }
 

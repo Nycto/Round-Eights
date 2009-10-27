@@ -52,6 +52,16 @@ class Series implements \h2o\iface\XMLBuilder
     }
 
     /**
+     * Returns the child XMLBuilders registered in this instance
+     *
+     * @return array Return an array of \h2o\iface\XMLBuilder objects
+     */
+    public function getChildren ()
+    {
+        return $this->children;
+    }
+
+    /**
      * Returns whether there are any children registered in this builder
      *
      * @return Boolean
