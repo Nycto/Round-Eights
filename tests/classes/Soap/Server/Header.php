@@ -33,6 +33,51 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test Header object
+     *
+     * @return \h2o\Soap\Node\Header
+     */
+    public function getTestHeader ( $tag, $namespace, $understand = FALSE, $role = null )
+    {
+        $header = $this->getMock('h2o\Soap\Node\Header', array(), array(), '', FALSE);
+        $header->expects( $this->any() )
+            ->method( "getRole" )
+            ->will( $this->returnValue($role) );
+        $header->expects( $this->any() )
+            ->method( "getTag" )
+            ->will( $this->returnValue($tag) );
+        $header->expects( $this->any() )
+            ->method( "getNamespace" )
+            ->will( $this->returnValue($namespace) );
+        $header->expects( $this->any() )
+            ->method( "mustUnderstand" )
+            ->will( $this->returnValue($understand) );
+        return $header;
+    }
+
+    /**
+     * Returns a test processor
+     *
+     * @return \h2o\iface\Soap\Header
+     */
+    public function getTestProcessor ( $result = NULL )
+    {
+        $hdr = $this->getMock('h2o\iface\Soap\Header', array(), array(), '', FALSE);
+
+        if ( empty($result) ) {
+            $hdr->expects( $this->never() )
+                ->method( "process" );
+        }
+        else {
+            $hdr->expects( $this->any() )
+                ->method( "process" )
+                ->will( $this->returnValue($result) );
+        }
+
+        return $hdr;
+    }
+
     public function testConstruct ()
     {
         $soap = new \h2o\Soap\Server\Header;
@@ -168,6 +213,110 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
         $soap->addHeader("uri2", "other", $this->getMock('\h2o\iface\Soap\Header'));
         $this->assertTrue( $soap->understands("test:uri", "tag") );
         $this->assertTrue( $soap->understands("uri2", "other") );
+    }
+
+    public function testProcess_UnregisteredRole ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser->expects( $this->once() )
+            ->method( "getHeaders" )
+            ->will( $this->returnValue(array(
+                $this->getTestHeader( 'tag', 'uri:ns', TRUE, 'uri:role' )
+            )) );
+
+        $soap = new \h2o\Soap\Server\Header;
+        $soap->process( $parser );
+    }
+
+    public function testProcess_empty ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser->expects( $this->once() )
+            ->method( "getHeaders" )
+            ->will( $this->returnValue(array()) );
+
+        $soap = new \h2o\Soap\Server\Header;
+
+        $result = $soap->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Series") );
+
+        $this->assertFalse( $result->hasChildren() );
+    }
+
+    public function testProcess_wrongRole ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser->expects( $this->once() )
+            ->method( "getHeaders" )
+            ->will( $this->returnValue(array(
+                $this->getTestHeader( 'tag', 'uri:ns', TRUE, "uri:role" )
+            )) );
+
+        $soap = new \h2o\Soap\Server\Header;
+        $result = $soap->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Series") );
+        $this->assertFalse( $result->hasChildren() );
+    }
+
+    public function testProcess_notUnderstood ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser->expects( $this->once() )
+            ->method( "getHeaders" )
+            ->will( $this->returnValue(array(
+                $this->getTestHeader( 'tag', 'uri:ns', TRUE )
+            )) );
+
+        $soap = new \h2o\Soap\Server\Header;
+
+        try {
+            $soap->process( $parser );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $this->assertSame( "Mandatory Soap Header is not understood", $err->getMessage() );
+            $this->assertSame( "MustUnderstand", $err->getPrimeCode() );
+            $this->assertSame( array(), $err->getSubCodes() );
+            $this->assertNull( $err->getRole() );
+            $this->assertSame(
+                array(
+                    "NotUnderstood" => array(
+                    	"Header" => "tag",
+                    	"Namespace" => "uri:ns"
+                    )
+                ),
+                $err->getDetails()
+            );
+
+        }
+    }
+
+    public function testProcess_complete ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser->expects( $this->once() )
+            ->method( "getHeaders" )
+            ->will( $this->returnValue(array(
+                $this->getTestHeader( 'none', 'uri:test', TRUE, "uri:role" ),
+                $this->getTestHeader( 'one', 'uri:test', TRUE ),
+                $this->getTestHeader( 'two', 'uri:test' )
+            )) );
+
+        $soap = new \h2o\Soap\Server\Header;
+
+        $one = $this->getMock('h2o\iface\XMLBuilder');
+        $two = $this->getMock('h2o\iface\XMLBuilder');
+
+        $soap->addHeader( "uri:test", "one", $this->getTestProcessor( $one ) );
+        $soap->addHeader( "other:uri", "one", $this->getTestProcessor() );
+        $soap->addHeader( "uri:test", "two", $this->getTestProcessor( $two ) );
+
+        $result = $soap->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Series") );
+        $this->assertSame( array($one, $two), $result->getChildren() );
     }
 
 }

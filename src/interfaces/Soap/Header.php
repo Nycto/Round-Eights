@@ -37,7 +37,7 @@ interface Header
      * @param \h2o\Soap\Node\Header $header The header being processed
      * @return NULL
      */
-    public function processHeader ( \h2o\Soap\Node\Header $header );
+    public function process ( \h2o\Soap\Node\Header $header );
 
 }
 

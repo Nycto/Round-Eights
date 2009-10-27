@@ -155,12 +155,53 @@ class Header
      * Processes a soap request through this server
      *
      * @param \h2o\Soap\Parser $parser The soap message to process
-     * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
-     * 		the response
+     * @return \h2o\XMLBuilder\Series Returns the builder needed to construct
+     * 		the response headers
      */
     public function process ( \h2o\Soap\Parser $parser )
     {
+        $headers = $parser->getHeaders();
 
+        // Check each header and ensure we understand everything we're supposed to
+        foreach ( $headers AS $header )
+        {
+            // Skip any headers that apply to a different role
+            if ( !$this->hasRole( $header->getRole() ) )
+                continue;
+
+            // For now, skip headers that don't need to be understood
+            if ( !$header->mustUnderstand() )
+                continue;
+
+            if ( !$this->understands($header->getNamespace(), $header->getTag()) )
+            {
+                $fault = new \h2o\Soap\Fault( "Mandatory Soap Header is not understood", "mustunderstand" );
+                $fault->setRole( $header->getRole() );
+                $fault->setDetails( array( "NotUnderstood" => array(
+                    "Header" => $header->getTag(),
+                    "Namespace" => $header->getNamespace()
+                ) ) );
+                throw $fault;
+            }
+        }
+
+        $response = new \h2o\XMLBuilder\Series;
+
+        foreach ( $headers AS $header )
+        {
+            // Skip any headers that apply to a different role
+            if ( !$this->hasRole( $header->getRole() ) )
+                continue;
+
+            $result =
+                $this->headers[ $header->getNamespace() ][ $header->getTag() ]
+                ->process( $header );
+
+            if ( $result instanceof \h2o\iface\XMLBuilder )
+                $response->addChild( $result );
+        }
+
+        return $response;
     }
 
 }
