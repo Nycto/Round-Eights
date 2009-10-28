@@ -46,15 +46,27 @@ class Envelope implements \h2o\iface\XMLBuilder
     private $header;
 
     /**
+     * The namespace to use for soap nodes
+     *
+     * @var String
+     */
+    private $namespace;
+
+    /**
      * Constructor...
      *
      * @param \h2o\iface\XMLBuilder $body The builder to use for generating the soap body
      * @param \h2o\iface\XMLBuilder $header The builder to use for generating the soap header
+     * @param String $namespace The namespace to use for soap elements
      */
-    public function __construct ( \h2o\iface\XMLBuilder $body, \h2o\iface\XMLBuilder $header = null )
-    {
+    public function __construct (
+        \h2o\iface\XMLBuilder $body,
+        \h2o\iface\XMLBuilder $header = null,
+        $namespace = "http://www.w3.org/2003/05/soap-envelope"
+    ) {
         $this->body = $body;
         $this->header = $header;
+        $this->namespace = trim( (string) $namespace );
     }
 
     /**
@@ -66,11 +78,12 @@ class Envelope implements \h2o\iface\XMLBuilder
     public function buildNode ( \DOMDocument $doc )
     {
         // Put together the root soap envelope node with all the needed namespaces
-        $soapEnv = $doc->createElementNS("http://www.w3.org/2003/05/soap-envelope", "soap:Envelope");
+        $soapEnv = $doc->createElementNS($this->namespace, "soap:Envelope");
 
         // Add the soap header, if it has been defined
         if ( $this->header ) {
-            $soapHeader = $doc->createElement("soap:Header");
+            $soapHeader = $doc->createElementNS($this->namespace, "Header");
+
             $soapEnv->appendChild( $soapHeader );
 
             $soapHeader->appendChild(
@@ -79,7 +92,8 @@ class Envelope implements \h2o\iface\XMLBuilder
         }
 
         // Add the soap body node
-        $soapBody = $doc->createElement("soap:Body");
+        $soapBody = $doc->createElementNS($this->namespace, "Body");
+
         $soapEnv->appendChild( $soapBody );
 
         $soapBody->appendChild(

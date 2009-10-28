@@ -49,12 +49,10 @@ class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 
         $builtNode = $builder->buildNode( $doc );
         $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
-        $this->assertSame( "soap:Envelope", $builtNode->tagName );
 
         $this->assertSame(
-                '<soap:Envelope '
-                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
-                        .'<soap:Body><tag/></soap:Body>'
+                '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                    .'<soap:Body><tag/></soap:Body>'
                 .'</soap:Envelope>',
                 $doc->saveXML( $builtNode )
             );
@@ -84,13 +82,36 @@ class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 
         $builtNode = $builder->buildNode( $doc );
         $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
-        $this->assertSame( "soap:Envelope", $builtNode->tagName );
 
         $this->assertSame(
-                '<soap:Envelope '
-                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
-                        .'<soap:Header><head/></soap:Header>'
-                        .'<soap:Body><tag/></soap:Body>'
+                '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                    .'<soap:Header><head/></soap:Header>'
+                    .'<soap:Body><tag/></soap:Body>'
+                .'</soap:Envelope>',
+                $doc->saveXML( $builtNode )
+            );
+    }
+
+    public function testBuildNode_namespace ()
+    {
+        $doc = new \DOMDocument;
+
+        $node = $doc->createElement("tag");
+        $subBuilder = $this->getMock("h2o\iface\XMLBuilder", array("buildNode"));
+        $subBuilder->expects( $this->once() )
+            ->method("buildNode")
+            ->with( $this->isInstanceOf("DOMDocument") )
+            ->will( $this->returnValue($node) );
+
+
+        $builder = new \h2o\XMLBuilder\Soap\Envelope( $subBuilder, null, "test:uri" );
+
+        $builtNode = $builder->buildNode( $doc );
+        $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
+
+        $this->assertSame(
+                '<soap:Envelope xmlns:soap="test:uri">'
+                    .'<soap:Body><tag/></soap:Body>'
                 .'</soap:Envelope>',
                 $doc->saveXML( $builtNode )
             );
