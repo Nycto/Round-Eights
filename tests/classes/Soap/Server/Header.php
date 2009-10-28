@@ -301,7 +301,8 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue(array(
                 $this->getTestHeader( 'none', 'uri:test', TRUE, "uri:role" ),
                 $this->getTestHeader( 'one', 'uri:test', TRUE ),
-                $this->getTestHeader( 'two', 'uri:test' )
+                $this->getTestHeader( 'two', 'uri:test' ),
+                $this->getTestHeader( 'three', 'uri:test' )
             )) );
 
         $soap = new \h2o\Soap\Server\Header;

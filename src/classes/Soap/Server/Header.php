@@ -189,6 +189,9 @@ class Header
 
         foreach ( $headers AS $header )
         {
+            if ( !isset($this->headers[ $header->getNamespace() ][ $header->getTag() ]) )
+                continue;
+
             // Skip any headers that apply to a different role
             if ( !$this->hasRole( $header->getRole() ) )
                 continue;
