@@ -23,12 +23,12 @@
  * @package XMLBuilder
  */
 
-namespace h2o\XMLBuilder;
+namespace h2o\XMLBuilder\Soap;
 
 /**
  * Wraps another XML builder in a soap envelope
  */
-class Soap implements \h2o\iface\XMLBuilder
+class Envelope implements \h2o\iface\XMLBuilder
 {
 
     /**

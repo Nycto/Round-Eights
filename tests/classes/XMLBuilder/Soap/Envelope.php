@@ -25,12 +25,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
  * unit tests
  */
-class classes_xmlbuilder_soap extends PHPUnit_Framework_TestCase
+class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 {
 
     public function testBuildNode ()
@@ -45,7 +45,7 @@ class classes_xmlbuilder_soap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($node) );
 
 
-        $builder = new \h2o\XMLBuilder\Soap( $subBuilder );
+        $builder = new \h2o\XMLBuilder\Soap\Envelope( $subBuilder );
 
         $builtNode = $builder->buildNode( $doc );
         $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
@@ -82,7 +82,7 @@ class classes_xmlbuilder_soap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($head) );
 
 
-        $builder = new \h2o\XMLBuilder\Soap( $subBuilder, $headBuilder );
+        $builder = new \h2o\XMLBuilder\Soap\Envelope( $subBuilder, $headBuilder );
 
         $builtNode = $builder->buildNode( $doc );
         $this->assertThat( $builtNode, $this->isInstanceOf("DOMElement") );
