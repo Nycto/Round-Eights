@@ -32,16 +32,34 @@ class Server
 {
 
     /**
-     * The list of registered messages
+     * The processor for handling soap messages
      *
-     * @var array
+     * @var \h2o\Soap\Server\Messages
      */
-    private $messages = array();
+    private $messages;
+
+    /**
+     * The processor for handling soap headers
+     *
+     * @var \h2o\Soap\Server\Headers
+     */
+    private $headers;
+
+    /**
+     * Constructor...
+     */
+    public function __construct (
+        \h2o\Soap\Server\Messages $message = null,
+        \h2o\Soap\Server\Headers $header = null
+    ) {
+        $this->messages = empty($message) ? new \h2o\Soap\Server\Messages : $message;
+        $this->headers = empty($header) ? new \h2o\Soap\Server\Headers : $header;
+    }
 
     /**
      * Returns the list of registered messages
      *
-     * @return array Returns an array of \h2o\iface\Soap\Message objects
+     * @return \h2o\Soap\Server\Messages
      */
     public function getMessages ()
     {
@@ -49,71 +67,25 @@ class Server
     }
 
     /**
-     * Registers a new message processor
+     * Returns the Headers registered for processing
      *
-     * @param String $uri The URI of the message
-     * @param String $name The tag name of the message this object will handle
-     * @param \h2o\iface\Soap\Message $operation The handler to invoke when
-     * 		this command is encountered
-     * @return \h2o\Soap\Server Returns a self reference
+     * @return \h2o\Soap\Server\Headers
      */
-    public function addMessage ( $uri, $name, \h2o\iface\Soap\Message $message )
+    public function getHeaders ()
     {
-        $uri = (string) trim( $uri );
-        $name = \h2o\str\stripW( $name );
-
-        if ( \h2o\isEmpty($uri) )
-            throw new \h2o\Exception\Argument(0, "Message URI", "Must not be empty");
-
-        if ( \h2o\isEmpty($name) )
-            throw new \h2o\Exception\Argument(1, "Message Tag Name", "Must not be empty");
-
-        if ( !isset($this->messages[ $uri ]) )
-            $this->messages[ $uri ] = array();
-
-        $this->messages[ $uri ][ $name ] = $message;
-
-        return $this;
+        return $this->headers;
     }
 
     /**
-     * Processes a DOMDocument as an soap request
+     * Processes a soap request through this server
      *
-     * In the event of an error, a Soap Fault builder will be returned.
-     *
-     * @param \DOMDocument $doc The document to process
+     * @param \h2o\Soap\Parser $parser The soap message to process
      * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
      * 		the response
      */
-    public function process ( \DOMDocument $doc )
+    public function process ( \h2o\Soap\Parser $parser )
     {
-        try {
 
-            // Extract the soap operation element
-            $cmd = $this->getOperationElem( $doc );
-
-            $tag = $cmd->tagName;
-
-            // If the tag is namespaced, just grab the local part
-            if ( \h2o\str\contains(":", $tag) )
-                $tag = \h2o\ary\last( explode(":", $tag) );
-
-            if ( !isset($this->operations[ $tag ]) ) {
-                throw new \h2o\Exception\Interrupt\Soap(
-                        "Invalid soap operation",
-                        1006
-                    );
-            }
-
-            return $this->operations[ $tag ]->getResponseBuilder( $doc, $cmd );
-
-        }
-        catch ( \h2o\Exception\Interrupt\Soap $err ) {
-            return new \h2o\XMLBuilder\Soap\Fault(
-                    $err->getCode(),
-                    $err->getMessage()
-                );
-        }
     }
 
 }

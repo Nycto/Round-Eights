@@ -33,54 +33,30 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_soap_server extends PHPUnit_Framework_TestCase
 {
 
-    public function testAddMessage ()
+    public function testConstruct_Defaults ()
     {
-        $soap = new \h2o\Soap\Server;
-        $this->assertSame( array(), $soap->getMessages() );
+        $server = new \h2o\Soap\Server;
 
-        $cmd = $this->getMock('\h2o\iface\Soap\Message');
-        $this->assertSame( $soap, $soap->addMessage("test:uri", "one", $cmd) );
-        $this->assertSame(
-            array( "test:uri" => array("one" => $cmd) ),
-            $soap->getMessages()
+        $this->assertThat(
+            $server->getHeaders(),
+            $this->isInstanceOf("h2o\Soap\Server\Headers")
         );
 
-        $cmd2 = $this->getMock('\h2o\iface\Soap\Message');
-        $this->assertSame( $soap, $soap->addMessage("test:uri", "two", $cmd2) );
-        $this->assertSame(
-            array( "test:uri" => array("one" => $cmd, "two" => $cmd2) ),
-            $soap->getMessages()
-        );
-
-        $this->assertSame( $soap, $soap->addMessage("other:uri", "one", $cmd2) );
-        $this->assertSame(
-            array(
-            	"test:uri" => array("one" => $cmd, "two" => $cmd2 ),
-                "other:uri" => array("one" => $cmd2 )
-            ),
-            $soap->getMessages()
+        $this->assertThat(
+            $server->getMessages(),
+            $this->isInstanceOf("h2o\Soap\Server\Messages")
         );
     }
 
-    public function testaddMessage_err ()
+    public function testConstruct_Injected ()
     {
-        $soap = new \h2o\Soap\Server;
+        $headers = new \h2o\Soap\Server\Headers;
+        $messages = new \h2o\Soap\Server\Messages;
 
-        try {
-            $soap->addMessage("  ", "test", $this->getMock('\h2o\iface\Soap\Message'));
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Must not be empty", $err->getMessage() );
-        }
+        $server = new \h2o\Soap\Server( $messages, $headers );
 
-        try {
-            $soap->addMessage("uri", " ", $this->getMock('\h2o\iface\Soap\Message'));
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Must not be empty", $err->getMessage() );
-        }
+        $this->assertSame( $headers, $server->getHeaders() );
+        $this->assertSame( $messages, $server->getMessages() );
     }
 
 }
