@@ -53,9 +53,7 @@ class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 '<soap:Envelope '
-                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope" '
-                    .'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
-                    .'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
                         .'<soap:Body><tag/></soap:Body>'
                 .'</soap:Envelope>',
                 $doc->saveXML( $builtNode )
@@ -90,9 +88,7 @@ class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 '<soap:Envelope '
-                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope" '
-                    .'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
-                    .'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+                    .'xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
                         .'<soap:Header><head/></soap:Header>'
                         .'<soap:Body><tag/></soap:Body>'
                 .'</soap:Envelope>',

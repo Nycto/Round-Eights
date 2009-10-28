@@ -67,8 +67,6 @@ class Envelope implements \h2o\iface\XMLBuilder
     {
         // Put together the root soap envelope node with all the needed namespaces
         $soapEnv = $doc->createElementNS("http://www.w3.org/2003/05/soap-envelope", "soap:Envelope");
-        $soapEnv->setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-        $soapEnv->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
         // Add the soap header, if it has been defined
         if ( $this->header ) {
