@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_Soap_Server_Message extends PHPUnit_Framework_TestCase
+class classes_Soap_Server_Messages extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -74,7 +74,7 @@ class classes_Soap_Server_Message extends PHPUnit_Framework_TestCase
 
     public function testAddMessage ()
     {
-        $soap = new \h2o\Soap\Server\Message;
+        $soap = new \h2o\Soap\Server\Messages;
         $this->assertSame( array(), $soap->getMessages() );
 
         $cmd = $this->getMock('\h2o\iface\Soap\Message');
@@ -103,7 +103,7 @@ class classes_Soap_Server_Message extends PHPUnit_Framework_TestCase
 
     public function testAddMessage_err ()
     {
-        $soap = new \h2o\Soap\Server\Message;
+        $soap = new \h2o\Soap\Server\Messages;
 
         try {
             $soap->addMessage("  ", "test", $this->getMock('\h2o\iface\Soap\Message'));
@@ -129,7 +129,7 @@ class classes_Soap_Server_Message extends PHPUnit_Framework_TestCase
             ->method( "getMessages" )
             ->will( $this->returnValue(array()) );
 
-        $soap = new \h2o\Soap\Server\Message;
+        $soap = new \h2o\Soap\Server\Messages;
 
         $result = $soap->process( $parser );
 
@@ -149,7 +149,7 @@ class classes_Soap_Server_Message extends PHPUnit_Framework_TestCase
                 $this->getTestMessage( 'two', 'uri:test' )
             )) );
 
-        $soap = new \h2o\Soap\Server\Message;
+        $soap = new \h2o\Soap\Server\Messages;
 
         $one = $this->getMock('h2o\iface\XMLBuilder');
         $two = $this->getMock('h2o\iface\XMLBuilder');

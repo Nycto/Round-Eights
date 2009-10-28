@@ -28,7 +28,7 @@ namespace h2o\Soap\Server;
 /**
  * Collects and processes the header element of a soap message
  */
-class Header
+class Headers
 {
 
     /**

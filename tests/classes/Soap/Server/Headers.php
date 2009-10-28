@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
+class classes_Soap_Server_Headers extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -80,7 +80,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $this->assertSame(
             array(
                 "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
@@ -89,13 +89,13 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
             $soap->getRoles()
         );
 
-        $soap = new \h2o\Soap\Server\Header( "one", "two" );
+        $soap = new \h2o\Soap\Server\Headers( "one", "two" );
         $this->assertSame( array( "one", "two" ), $soap->getRoles() );
     }
 
     public function testAddRole ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $this->assertSame(
             array(
                 "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
@@ -136,7 +136,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 
     public function testHasRole ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $soap->addRole( "test:uri" );
 
         $this->assertTrue( $soap->hasRole("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver") );
@@ -152,7 +152,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 
     public function testAddHeader ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $this->assertSame( array(), $soap->getHeaders() );
 
         $cmd = $this->getMock('\h2o\iface\Soap\Header');
@@ -181,7 +181,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 
     public function testAddHeader_err ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
 
         try {
             $soap->addHeader("  ", "test", $this->getMock('\h2o\iface\Soap\Header'));
@@ -202,7 +202,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
 
     public function testUnderstands ()
     {
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $this->assertFalse( $soap->understands("test:uri", "tag") );
         $this->assertFalse( $soap->understands("uri2", "other") );
 
@@ -224,7 +224,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
                 $this->getTestHeader( 'tag', 'uri:ns', TRUE, 'uri:role' )
             )) );
 
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $soap->process( $parser );
     }
 
@@ -235,7 +235,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
             ->method( "getHeaders" )
             ->will( $this->returnValue(array()) );
 
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
 
         $result = $soap->process( $parser );
 
@@ -253,7 +253,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
                 $this->getTestHeader( 'tag', 'uri:ns', TRUE, "uri:role" )
             )) );
 
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
         $result = $soap->process( $parser );
 
         $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Series") );
@@ -269,7 +269,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
                 $this->getTestHeader( 'tag', 'uri:ns', TRUE )
             )) );
 
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
 
         try {
             $soap->process( $parser );
@@ -305,7 +305,7 @@ class classes_Soap_Server_Header extends PHPUnit_Framework_TestCase
                 $this->getTestHeader( 'three', 'uri:test' )
             )) );
 
-        $soap = new \h2o\Soap\Server\Header;
+        $soap = new \h2o\Soap\Server\Headers;
 
         $one = $this->getMock('h2o\iface\XMLBuilder');
         $two = $this->getMock('h2o\iface\XMLBuilder');
