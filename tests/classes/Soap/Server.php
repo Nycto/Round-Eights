@@ -97,6 +97,27 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAddMessage ()
+    {
+        $msg = $this->getMock('h2o\iface\Soap\Message');
+
+        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "addMessage" )
+            ->with(
+                $this->equalTo( "test:uri" ),
+                $this->equalTo( "tag" ),
+                $this->equalTo( $msg )
+            );
+
+        $server = new \h2o\Soap\Server( $messages );
+
+        $this->assertSame(
+            $server,
+            $server->addMessage( "test:uri", "tag", $msg )
+        );
+    }
+
     public function testProcess ()
     {
         $this->markTestIncomplete("To be written");
