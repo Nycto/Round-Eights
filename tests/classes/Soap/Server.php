@@ -74,6 +74,29 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testAddHeader ()
+    {
+        $head = $this->getMock('h2o\iface\Soap\Header');
+
+        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "addHeader" )
+            ->with(
+                $this->equalTo( "test:uri" ),
+                $this->equalTo( "tag" ),
+                $this->equalTo( $head )
+            );
+
+        $messages = new \h2o\Soap\Server\Messages;
+
+        $server = new \h2o\Soap\Server( $messages, $headers );
+
+        $this->assertSame(
+            $server,
+            $server->addHeader( "test:uri", "tag", $head )
+        );
+    }
+
     public function testProcess ()
     {
         $this->markTestIncomplete("To be written");

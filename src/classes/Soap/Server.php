@@ -99,6 +99,21 @@ class Server
     }
 
     /**
+     * Registers a new header processor
+     *
+     * @param String $uri The URI of the header
+     * @param String $name The tag name of the header this object will handle
+     * @param \h2o\iface\Soap\Header $operation The handler to invoke when
+     * 		this command is encountered
+     * @return \h2o\Soap\Server Returns a self reference
+     */
+    public function addHeader ( $uri, $name, \h2o\iface\Soap\Header $header )
+    {
+        $this->headers->addHeader( $uri, $name, $header );
+        return $this;
+    }
+
+    /**
      * Processes a soap request through this server
      *
      * @param \h2o\Soap\Parser $parser The soap message to process
