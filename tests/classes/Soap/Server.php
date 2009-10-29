@@ -118,9 +118,116 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testProcess ()
+    public function testProcess_HeaderFault ()
     {
-        $this->markTestIncomplete("To be written");
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->throwException(
+                new \h2o\Soap\Fault( "Fault" )
+            ) );
+
+        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages->expects( $this->never() )->method( "process" );
+
+        $server = new \h2o\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                .'<soap:Body>'
+                    .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
+                .'</soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testProcess_BodyFault ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(NULL) );
+
+        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->throwException(
+                new \h2o\Soap\Fault( "Fault" )
+            ) );
+
+        $server = new \h2o\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                .'<soap:Body>'
+                    .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
+                .'</soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testProcess_Success ()
+    {
+        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(
+                new \h2o\XMLBuilder\Node("Heading")
+            ) );
+
+        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(
+                new \h2o\XMLBuilder\Node("Content")
+            ) );
+
+        $server = new \h2o\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+            	.'<soap:Header><Heading/></soap:Header>'
+                .'<soap:Body><Content/></soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
     }
 
 }

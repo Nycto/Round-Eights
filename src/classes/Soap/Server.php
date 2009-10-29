@@ -142,6 +142,7 @@ class Server
             $body = $this->messages->process( $parser );
         }
         catch ( \h2o\Soap\Fault $err ) {
+            $headers = null;
             $body = new \h2o\XMLBuilder\Soap\Fault( $err, $this->namespace );
         }
 
