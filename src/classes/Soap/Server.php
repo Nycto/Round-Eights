@@ -46,7 +46,17 @@ class Server
     private $headers;
 
     /**
+     * The namespace to use for soap elements
+     *
+     * @var String
+     */
+    private $namespace = "http://www.w3.org/2003/05/soap-envelope";
+
+    /**
      * Constructor...
+     *
+     * @param \h2o\Soap\Server\Messages $message The message processor
+     * @param \h2o\Soap\Server\Messages $message The header processor
      */
     public function __construct (
         \h2o\Soap\Server\Messages $message = null,
@@ -77,6 +87,18 @@ class Server
     }
 
     /**
+     * Adds a new Role this server acts under
+     *
+     * @param String $role
+     * @return \h2o\Soap\Server Returns a self reference
+     */
+    public function addRole ( $role )
+    {
+        $this->headers->addRole( $role );
+        return $this;
+    }
+
+    /**
      * Processes a soap request through this server
      *
      * @param \h2o\Soap\Parser $parser The soap message to process
@@ -85,7 +107,15 @@ class Server
      */
     public function process ( \h2o\Soap\Parser $parser )
     {
+        try {
+            $headers = $this->headers->process( $parser );
+            $body = $this->messages->process( $parser );
+        }
+        catch ( \h2o\Soap\Fault $err ) {
+            $body = new \h2o\XMLBuilder\Soap\Fault( $err, $this->namespace );
+        }
 
+        return new \h2o\XMLBuilder\Soap\Envelope( $body, $headers, $this->namespace );
     }
 
 }

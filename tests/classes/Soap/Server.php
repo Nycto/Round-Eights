@@ -59,6 +59,26 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $this->assertSame( $messages, $server->getMessages() );
     }
 
+    public function testAddRole ()
+    {
+        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "addRole" )
+            ->with( $this->equalTo("test:uri") );
+
+        $messages = new \h2o\Soap\Server\Messages;
+
+        $server = new \h2o\Soap\Server( $messages, $headers );
+
+        $this->assertSame( $server, $server->addRole( "test:uri" ) );
+
+    }
+
+    public function testProcess ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
