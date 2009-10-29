@@ -55,7 +55,7 @@ class Messages
      * @param String $name The tag name of the message this object will handle
      * @param \h2o\iface\Soap\Message $operation The handler to invoke when
      * 		this command is encountered
-     * @return \h2o\Soap\Server Returns a self reference
+     * @return \h2o\Soap\Server\Messages Returns a self reference
      */
     public function addMessage ( $uri, $name, \h2o\iface\Soap\Message $message )
     {

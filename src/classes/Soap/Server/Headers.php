@@ -118,7 +118,7 @@ class Headers
      * @param String $name The tag name of the header this object will handle
      * @param \h2o\iface\Soap\Header $operation The handler to invoke when
      * 		this command is encountered
-     * @return \h2o\Soap\Server Returns a self reference
+     * @return \h2o\Soap\Server\Headers Returns a self reference
      */
     public function addHeader ( $uri, $name, \h2o\iface\Soap\Header $header )
     {
