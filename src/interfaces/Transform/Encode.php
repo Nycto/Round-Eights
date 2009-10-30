@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -22,36 +20,32 @@
  *
  * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package Encoding
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace h2o\iface\Transform;
 
 /**
- * unit tests
+ * Basic Encoder/Decoder definition
  */
-class classes_encode_base64 extends PHPUnit_Framework_TestCase
+interface Encode
 {
 
-    public function testEncode ()
-    {
-        $encode = new \h2o\Encode\Base64;
+    /**
+     * Encodes a string
+     *
+     * @param mixed $value The value to encode
+     * @return mixed The result of the encoding process
+     */
+    public function encode ( $string );
 
-        $this->assertSame(
-                "VGhpcyBpcyBhIHN0cmluZw==",
-                $encode->encode("This is a string")
-            );
-    }
-
-    public function testDecode ()
-    {
-        $encode = new \h2o\Encode\Base64;
-
-        $this->assertSame(
-                "This is a string",
-                $encode->decode("VGhpcyBpcyBhIHN0cmluZw==")
-            );
-    }
+    /**
+     * Decodes an encoded string
+     *
+     * @param mixed $value The value to decode
+     * @return mixed The original, unencoded value
+     */
+    public function decode ( $string );
 
 }
 

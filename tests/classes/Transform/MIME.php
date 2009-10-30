@@ -30,16 +30,16 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Suite for running both file test suites
  */
-class classes_encode_mime
+class classes_Transform_mime
 {
 
     public static function suite()
     {
         $suite = new h2o_Base_TestSuite;
-        $suite->addTestSuite( 'classes_encode_mime_common' );
-        $suite->addTestSuite( 'classes_encode_mime_rawEncode' );
-        $suite->addTestSuite( 'classes_encode_mime_qEncode' );
-        $suite->addTestSuite( 'classes_encode_mime_bEncode' );
+        $suite->addTestSuite( 'classes_Transform_mime_common' );
+        $suite->addTestSuite( 'classes_Transform_mime_rawEncode' );
+        $suite->addTestSuite( 'classes_Transform_mime_qEncode' );
+        $suite->addTestSuite( 'classes_Transform_mime_bEncode' );
         return $suite;
     }
 
@@ -48,7 +48,7 @@ class classes_encode_mime
 /**
  * unit tests
  */
-class classes_encode_mime_common extends PHPUnit_Framework_TestCase
+class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -62,18 +62,18 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 '!"#$%&\'()*+,-./0123456789;<=>?@ABCDEFGHIJKLMNOP'
                 .'QRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~',
-                \h2o\Encode\MIME::stripHeaderName( $chars )
+                \h2o\Transform\MIME::stripHeaderName( $chars )
             );
     }
 
     public function testCanRawEncode ()
     {
         $chars = implode("", array_map( 'chr', range(32, 126) ));
-        $this->assertTrue( \h2o\Encode\MIME::canRawEncode($chars) );
+        $this->assertTrue( \h2o\Transform\MIME::canRawEncode($chars) );
 
         $chars = array_merge( range(1, 31), range(127, 255) );
         foreach ( $chars AS $char ) {
-            if ( \h2o\Encode\MIME::canRawEncode( chr($char) ) ) {
+            if ( \h2o\Transform\MIME::canRawEncode( chr($char) ) ) {
                 $this->fail(
                         "failed asserting that character with the ascii "
                         ."code ". $char ." can't be raw encoded"
@@ -84,7 +84,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testLineLengthAccessors ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $this->assertSame( 78, $mime->getLineLength() );
 
         $this->assertSame( $mime, $mime->setLineLength(999) );
@@ -111,7 +111,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testHeaderAccessors ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertFalse( $mime->headerExists() );
         $this->assertNull( $mime->getHeader() );
@@ -140,7 +140,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testEolAccessors ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $this->assertSame( "\r\n", $mime->getEOL() );
 
         $this->assertSame( $mime, $mime->setEOL("BREAK") );
@@ -162,7 +162,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testInputEncodingAccessors ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $this->assertSame("ISO-8859-1", $mime->getInputEncoding());
 
         $this->assertSame( $mime, $mime->setInputEncoding("UTF-8") );
@@ -186,7 +186,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testOutputEncodingAccessors ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $this->assertSame("ISO-8859-1", $mime->getOutputEncoding());
 
         $this->assertSame( $mime, $mime->setOutputEncoding("UTF-8") );
@@ -210,7 +210,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testUseRaw ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame( $mime, $mime->useRaw() );
 
@@ -222,7 +222,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testUseB ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame( $mime, $mime->useB() );
 
@@ -234,7 +234,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testUseQ ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame( $mime, $mime->useQ() );
 
@@ -246,7 +246,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testUseAuto ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame( $mime, $mime->useAuto() );
 
@@ -268,7 +268,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 
     public function testDecode ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame(
                 "a string",
@@ -306,7 +306,7 @@ class classes_encode_mime_common extends PHPUnit_Framework_TestCase
 /**
  * Tests for the raw encoding
  */
-class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
+class classes_Transform_mime_rawEncode extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -316,7 +316,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_charStrip ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $chars = implode("", array_map( 'chr', range(1, 255) ));
@@ -330,7 +330,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_whitespace ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -391,7 +391,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_noWrap ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -409,7 +409,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_noHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame(
                 "A short string",
@@ -466,7 +466,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_withHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-Head");
 
         $this->assertSame(
@@ -521,7 +521,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 
     public function test_longHeaderName ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-A-Really-Long-Header-Name-That-Shouldnt-Be-Wrapped");
         $mime->setLineLength(20);
 
@@ -546,7 +546,7 @@ class classes_encode_mime_rawEncode extends PHPUnit_Framework_TestCase
 /**
  * Tests for the 'Q' encoding
  */
-class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
+class classes_Transform_mime_qEncode extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -556,7 +556,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_longHeaderName ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-A-Really-Long-Header-Name");
         $mime->setLineLength(20);
 
@@ -574,7 +574,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_longContent ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(15);
 
         try {
@@ -591,7 +591,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_noWrap ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -610,7 +610,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
     public function test_noFirstLineContent ()
     {
 
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(30);
         $mime->setHeader("X-A-Long-Header-Name");
 
@@ -625,7 +625,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_whitespace ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -645,7 +645,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_noHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame(
                 "=?ISO-8859-1?Q?A_short_string?=",
@@ -671,7 +671,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_withHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-Test");
 
         $this->assertSame(
@@ -699,7 +699,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_changedEOL ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-Test");
         $mime->setEOL("\n");
 
@@ -733,7 +733,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 
     public function test_encoding ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $mime->setOutputEncoding("UTF-8");
@@ -747,7 +747,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
     public function test_characters ()
     {
 
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -787,7 +787,7 @@ class classes_encode_mime_qEncode extends PHPUnit_Framework_TestCase
 /**
  * Tests for the 'B' encoding
  */
-class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
+class classes_Transform_mime_bEncode extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -797,7 +797,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_noWrap ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $this->assertSame(
@@ -815,7 +815,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_charSet ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(0);
 
         $mime->setOutputEncoding("UTF-8");
@@ -828,7 +828,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_noHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
 
         $this->assertSame(
                 "=?ISO-8859-1?B?QSBzaG9ydCBzdHJpbmc=?=",
@@ -855,7 +855,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_wrap_withHeader ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-Test");
 
         $this->assertSame(
@@ -883,7 +883,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_changedEOL ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-Test");
         $mime->setEOL("\n");
 
@@ -907,7 +907,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
 
     public function test_longHeaderName ()
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setHeader("X-A-Really-Long-Header-Name");
         $mime->setLineLength(20);
 
@@ -926,7 +926,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
     public function test_longContent ()
     {
 
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(15);
 
         try {
@@ -944,7 +944,7 @@ class classes_encode_mime_bEncode extends PHPUnit_Framework_TestCase
     public function test_noFirstLineContent ()
     {
 
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setLineLength(30);
         $mime->setHeader("X-A-Long-Header-Name");
 

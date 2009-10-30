@@ -1,5 +1,7 @@
 <?php
 /**
+ * Encodes a string using base 64
+ *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -23,12 +25,12 @@
  * @package Encoding
  */
 
-namespace h2o\iface;
+namespace h2o\Transform;
 
 /**
- * Basic Encoder/Decoder definition
+ * Encodes and decodes strings according to the base 64 specification
  */
-interface Encoder
+class Base64 implements \h2o\iface\Transform\Encode
 {
 
     /**
@@ -37,7 +39,10 @@ interface Encoder
      * @param mixed $value The value to encode
      * @return mixed The result of the encoding process
      */
-    public function encode ( $string );
+    public function encode ( $string )
+    {
+        return base64_encode( \h2o\strval($string) );
+    }
 
     /**
      * Decodes an encoded string
@@ -45,7 +50,10 @@ interface Encoder
      * @param mixed $value The value to decode
      * @return mixed The original, unencoded value
      */
-    public function decode ( $string );
+    public function decode ( $string )
+    {
+        return base64_decode( \h2o\strval($string) );
+    }
 
 }
 

@@ -1,7 +1,6 @@
 <?php
 /**
- * Encodes a string according to the Quoted Printable specifications layed out
- * in rfc 2045, here: http://tools.ietf.org/html/rfc2045
+ * Unit Test File
  *
  * @license Artistic License 2.0
  *
@@ -23,37 +22,35 @@
  *
  * @author James Frasca <James@RaindropPHP.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Encoding
+ * @package UnitTests
  */
 
-namespace h2o\Encode;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Encodes and decodes strings according to the Quoted-Printable specifications
+ * unit tests
  */
-class QuotedPrintable implements \h2o\iface\Encoder
+class classes_Transform_base64 extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Encodes a string
-     *
-     * @param mixed $value The value to encode
-     * @return mixed The result of the encoding process
-     */
-    public function encode ( $string )
+    public function testEncode ()
     {
-        return quoted_printable_encode( \h2o\strval($string) );
+        $encode = new \h2o\Transform\Base64;
+
+        $this->assertSame(
+                "VGhpcyBpcyBhIHN0cmluZw==",
+                $encode->encode("This is a string")
+            );
     }
 
-    /**
-     * Decodes an encoded string
-     *
-     * @param mixed $value The value to decode
-     * @return mixed The original, unencoded value
-     */
-    public function decode ( $string )
+    public function testDecode ()
     {
-        return quoted_printable_decode( \h2o\strval($string) );
+        $encode = new \h2o\Transform\Base64;
+
+        $this->assertSame(
+                "This is a string",
+                $encode->decode("VGhpcyBpcyBhIHN0cmluZw==")
+            );
     }
 
 }

@@ -169,7 +169,7 @@ abstract class Transport
      */
     public function getHeaderString ( \h2o\Mail $mail )
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setEOL( self::EOL );
         $mime->setLineLength( self::LINE_LENGTH );
 
@@ -220,7 +220,7 @@ abstract class Transport
         // If both the text and HTML are set...
         if ( $mail->htmlExists() && $mail->textExists() ) {
 
-            $mime = new \h2o\Encode\MIME;
+            $mime = new \h2o\Transform\MIME;
             $mime->setEOL( self::EOL );
             $mime->setLineLength( self::LINE_LENGTH );
 

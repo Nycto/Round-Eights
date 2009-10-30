@@ -26,12 +26,12 @@
  * @package Encoding
  */
 
-namespace h2o\Encode;
+namespace h2o\Transform;
 
 /**
  * Encodes and decodes strings according to B or Q MIME encoding
  */
-class MIME implements \h2o\iface\Encoder
+class MIME implements \h2o\iface\Transform\Encode
 {
 
     /**

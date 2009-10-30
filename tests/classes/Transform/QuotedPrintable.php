@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_encode_quotedprintable extends PHPUnit_Framework_TestCase
+class classes_Transform_quotedprintable extends PHPUnit_Framework_TestCase
 {
 
     public function testEncode ()
     {
-        $encode = new \h2o\Encode\QuotedPrintable;
+        $encode = new \h2o\Transform\QuotedPrintable;
 
         $this->assertSame(
                 "This is a string",
@@ -63,7 +63,7 @@ class classes_encode_quotedprintable extends PHPUnit_Framework_TestCase
 
     public function testDecode ()
     {
-        $encode = new \h2o\Encode\QuotedPrintable;
+        $encode = new \h2o\Transform\QuotedPrintable;
 
         $this->assertSame(
                 "This is a string",

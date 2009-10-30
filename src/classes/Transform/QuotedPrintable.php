@@ -1,6 +1,7 @@
 <?php
 /**
- * Encodes a string using base 64
+ * Encodes a string according to the Quoted Printable specifications layed out
+ * in rfc 2045, here: http://tools.ietf.org/html/rfc2045
  *
  * @license Artistic License 2.0
  *
@@ -25,12 +26,12 @@
  * @package Encoding
  */
 
-namespace h2o\Encode;
+namespace h2o\Transform;
 
 /**
- * Encodes and decodes strings according to the base 64 specification
+ * Encodes and decodes strings according to the Quoted-Printable specifications
  */
-class Base64 implements \h2o\iface\Encoder
+class QuotedPrintable implements \h2o\iface\Transform\Encode
 {
 
     /**
@@ -41,7 +42,7 @@ class Base64 implements \h2o\iface\Encoder
      */
     public function encode ( $string )
     {
-        return base64_encode( \h2o\strval($string) );
+        return quoted_printable_encode( \h2o\strval($string) );
     }
 
     /**
@@ -52,7 +53,7 @@ class Base64 implements \h2o\iface\Encoder
      */
     public function decode ( $string )
     {
-        return base64_decode( \h2o\strval($string) );
+        return quoted_printable_decode( \h2o\strval($string) );
     }
 
 }
