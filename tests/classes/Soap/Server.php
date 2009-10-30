@@ -230,6 +230,25 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testProcessStream ()
+    {
+        $result = $this->getMock('h2o\XMLBuilder\Soap\Envelope', array(), array(), '', FALSE);
+
+        $server = $this->getMock('h2o\Soap\Server', array('process'));
+        $server->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->isInstanceOf('h2o\Soap\Parser') )
+            ->will( $this->returnValue( $result ) );
+
+        $stream = $this->getMock('h2o\iface\Stream\In');
+        $stream->expects( $this->once() )
+            ->method( "readAll" )
+            ->will( $this->returnValue("<Request/>") );
+
+        $this->assertSame( $result, $server->processStream($stream) );
+
+    }
+
 }
 
 ?>

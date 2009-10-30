@@ -149,6 +149,20 @@ class Server
         return new \h2o\XMLBuilder\Soap\Envelope( $body, $headers, $this->namespace );
     }
 
+    /**
+     * A helper method for processing a stream
+     *
+     * @param \h2o\iface\Stream\In $stream The source data
+     * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
+     * 		the response
+     */
+    public function processStream ( \h2o\iface\Stream\In $stream )
+    {
+        $doc = new \DOMDocument;
+        $doc->loadXML( $stream->readAll() );
+        return $this->process( new \h2o\Soap\Parser($doc) );
+    }
+
 }
 
 ?>
