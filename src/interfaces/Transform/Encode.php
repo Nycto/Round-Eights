@@ -28,25 +28,6 @@ namespace h2o\iface\Transform;
 /**
  * Basic Encoder/Decoder definition
  */
-interface Encode
-{
-
-    /**
-     * Encodes a string
-     *
-     * @param mixed $value The value to encode
-     * @return mixed The result of the encoding process
-     */
-    public function encode ( $string );
-
-    /**
-     * Decodes an encoded string
-     *
-     * @param mixed $value The value to decode
-     * @return mixed The original, unencoded value
-     */
-    public function decode ( $string );
-
-}
+interface Encode extends \h2o\iface\Transform {}
 
 ?>

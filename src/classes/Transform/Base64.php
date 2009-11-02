@@ -39,7 +39,7 @@ class Base64 implements \h2o\iface\Transform\Encode
      * @param mixed $value The value to encode
      * @return mixed The result of the encoding process
      */
-    public function encode ( $string )
+    public function to ( $string )
     {
         return base64_encode( \h2o\strval($string) );
     }
@@ -50,7 +50,7 @@ class Base64 implements \h2o\iface\Transform\Encode
      * @param mixed $value The value to decode
      * @return mixed The original, unencoded value
      */
-    public function decode ( $string )
+    public function from ( $string )
     {
         return base64_decode( \h2o\strval($string) );
     }

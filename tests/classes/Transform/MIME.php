@@ -216,7 +216,7 @@ class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "A samplestring",
-                $mime->encode("A sample\tstring")
+                $mime->to("A sample\tstring")
             );
     }
 
@@ -228,7 +228,7 @@ class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "=?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?=",
-                $mime->encode("A sample\tstring")
+                $mime->to("A sample\tstring")
             );
     }
 
@@ -240,7 +240,7 @@ class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "=?ISO-8859-1?Q?A_sample=09string?=",
-                $mime->encode("A sample\tstring")
+                $mime->to("A sample\tstring")
             );
     }
 
@@ -252,17 +252,17 @@ class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "A sample string",
-                $mime->encode("A sample string")
+                $mime->to("A sample string")
             );
 
         $this->assertSame(
                 "=?ISO-8859-1?Q?A=09sample=09string?=",
-                $mime->encode("A\tsample\tstring")
+                $mime->to("A\tsample\tstring")
             );
 
         $this->assertSame(
                 "=?ISO-8859-1?B?CUEJc3RyaW5nCQ==?=",
-                $mime->encode("\tA\tstring\t")
+                $mime->to("\tA\tstring\t")
             );
     }
 
@@ -272,32 +272,32 @@ class classes_Transform_mime_common extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 "a string",
-                $mime->decode("a string")
+                $mime->from("a string")
             );
 
         $this->assertSame(
                 "A Q Encoded String of data",
-                $mime->decode("=?ISO-8859-1?Q?A_Q_Encoded?= String =?ISO-8859-1?Q?of_data?=")
+                $mime->from("=?ISO-8859-1?Q?A_Q_Encoded?= String =?ISO-8859-1?Q?of_data?=")
             );
 
         $this->assertSame(
                 "its A sample\tstring",
-                $mime->decode("its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?=")
+                $mime->from("its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?=")
             );
 
         $this->assertSame(
                 "test@example.com",
-                $mime->decode("Return-Path: test@example.com  ")
+                $mime->from("Return-Path: test@example.com  ")
             );
 
         $this->assertSame(
                 "A Q Encoded String",
-                $mime->decode("X-Header: =?ISO-8859-1?Q?A_Q_Encoded?= String")
+                $mime->from("X-Header: =?ISO-8859-1?Q?A_Q_Encoded?= String")
             );
 
         $this->assertSame(
                 "its A sample\tstring of stuff",
-                $mime->decode("X-Details:its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?= of stuff")
+                $mime->from("X-Details:its =?ISO-8859-1?B?QSBzYW1wbGUJc3RyaW5n?= of stuff")
             );
     }
 

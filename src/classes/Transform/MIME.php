@@ -686,7 +686,7 @@ class MIME implements \h2o\iface\Transform\Encode
      * @param mixed $value The value to encode
      * @return mixed The result of the encoding process
      */
-    public function encode ( $string )
+    public function to ( $string )
     {
         if ( $this->encoding == self::ENCODE_B )
             return $this->bEncode( $string );
@@ -718,7 +718,7 @@ class MIME implements \h2o\iface\Transform\Encode
      * @param mixed $value The value to decode
      * @return mixed The original, unencoded value
      */
-    public function decode ( $string )
+    public function from ( $string )
     {
         $string = \h2o\strval( $string );
 

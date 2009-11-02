@@ -33,23 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Transform_base64 extends PHPUnit_Framework_TestCase
 {
 
-    public function testEncode ()
+    public function testTo ()
     {
         $encode = new \h2o\Transform\Base64;
 
         $this->assertSame(
                 "VGhpcyBpcyBhIHN0cmluZw==",
-                $encode->encode("This is a string")
+                $encode->to("This is a string")
             );
     }
 
-    public function testDecode ()
+    public function testFrom ()
     {
         $encode = new \h2o\Transform\Base64;
 
         $this->assertSame(
                 "This is a string",
-                $encode->decode("VGhpcyBpcyBhIHN0cmluZw==")
+                $encode->from("VGhpcyBpcyBhIHN0cmluZw==")
             );
     }
 
