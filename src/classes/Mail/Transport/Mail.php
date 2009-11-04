@@ -57,7 +57,7 @@ class Mail extends \h2o\Mail\Transport
      * This method is called indirectly via the send method. Use that method
      * if you want to send a piece of mail
      *
-     * @param Object $mail The mail object to send
+     * @param \h2o\Mail $mail The mail to send
      * @return Null
      */
     protected function internalSend ( \h2o\Mail $mail )

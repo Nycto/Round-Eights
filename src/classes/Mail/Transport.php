@@ -83,7 +83,7 @@ abstract class Transport
     /**
      * Returns the header content string of the list of addresses being sent to
      *
-     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
+     * @param \h2o\Mail $mail The piece of mail whose "to" fields are being formatted
      * @return String
      */
     public function getToString ( \h2o\Mail $mail )
@@ -94,7 +94,7 @@ abstract class Transport
     /**
      * Returns the header content string of the list of CC addresses
      *
-     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
+     * @param \h2o\Mail $mail The piece of mail whose "cc" fields are being formatted
      * @return String
      */
     public function getCCString ( \h2o\Mail $mail )
@@ -105,7 +105,7 @@ abstract class Transport
     /**
      * Returns the header content string of the list of BCC addresses
      *
-     * @param Object $mail The \h2o\Mail object whose to fields are being formatted
+     * @param \h2o\Mail $mail The piece of mail whose to fields are being formatted
      * @return String
      */
     public function getBCCString ( \h2o\Mail $mail )
@@ -116,7 +116,7 @@ abstract class Transport
     /**
      * Returns an array of headers that will be sent with this message
      *
-     * @param Object $mail The \h2o\Mail object whose headers should be returned
+     * @param \h2o\Mail $mail The piece of mail whose headers should be returned
      * @return Array The key is the header name, the value is the value of
      *      the header
      */
@@ -164,7 +164,7 @@ abstract class Transport
     /**
      * Returns an the string of headers that will be sent with this message
      *
-     * @param Object $mail The \h2o\Mail object whose headers should be returned
+     * @param \h2o\Mail $mail The piece of mail whose headers should be returned
      * @return String A MIME formatted header string
      */
     public function getHeaderString ( \h2o\Mail $mail )
@@ -212,7 +212,7 @@ abstract class Transport
     /**
      * Returns the body string for an HTML
      *
-     * @param Object $mail The \h2o\Mail object whose body will be returned
+     * @param \h2o\Mail $mail The piece of mail whose body will be returned
      * @return String A formatted body email string
      */
     public function getBody ( \h2o\Mail $mail )
@@ -270,7 +270,7 @@ abstract class Transport
      * This method is called indirectly via the send method. Use that method
      * if you want to send a piece of mail
      *
-     * @param Object $mail The mail object to send
+     * @param \h2o\Mail $mail The mail to send
      * @return Null
      */
     abstract protected function internalSend ( \h2o\Mail $mail );
@@ -278,8 +278,8 @@ abstract class Transport
     /**
      * Method for sending a piece of mail using this transport.
      *
-     * @param Object $mail The mail object to send
-     * @return Object Returns a self reference
+     * @param \h2o\Mail $mail The mail to send
+     * @return \h2o\Mail\Transport Returns a self reference
      */
     public function send ( \h2o\Mail $mail )
     {

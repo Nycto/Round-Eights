@@ -154,7 +154,7 @@ class classes_filefinder extends PHPUnit_Framework_TestCase
             ->with('sub/dir/file.php')
             ->will( $this->returnValue( FALSE ) );
 
-        $this->assertFalse( $finder->find('sub/dir/file.php') );
+        $this->assertNull( $finder->find('sub/dir/file.php') );
     }
 
     public function testFind_fallback ()

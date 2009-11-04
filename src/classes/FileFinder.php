@@ -34,6 +34,8 @@ abstract class FileFinder
     /**
      * The FileFinder class to fall back on if the file can not be found by
      * this instance
+     *
+     * @var \h2o\FileFinder
      */
     private $fallback;
 
@@ -42,7 +44,7 @@ abstract class FileFinder
      *
      * @param String $class The class to instantiate
      * @param Array $args Any arguments to pass to the construcor
-     * @return Object Returns a new \h2o\FileFinder object of the given type
+     * @return \h2o\FileFinder Returns a new FileFinder of the given type
      */
     static public function __callStatic ( $class, $args )
     {
@@ -72,7 +74,7 @@ abstract class FileFinder
     /**
      * Returns the fallback class for this instance
      *
-     * @return Object|Null Returns a FileFinder instance, or NULL if no fallback
+     * @return \h2o\FileFinder|Null Returns the fallback, or NULL if none
      *      has been set
      */
     public function getFallback ()
@@ -84,8 +86,8 @@ abstract class FileFinder
      * Sets the FileFinder class to fall back on if the file can not be found by
      * this instance
      *
-     * @param Object $fallback The fallback instance
-     * @return Object Returns a self reference
+     * @param \h2o\FileFinder $fallback The fallback instance
+     * @return \h2o\FileFinder Returns a self reference
      */
     public function setFallback ( \h2o\FileFinder $fallback )
     {
@@ -114,7 +116,7 @@ abstract class FileFinder
     /**
      * Clears the fallback from this instance
      *
-     * @return Object Returns a self reference
+     * @return \h2o\FileFinder Returns a self reference
      */
     public function clearFallback ()
     {
@@ -125,7 +127,7 @@ abstract class FileFinder
     /**
      * Returns the top-most file finder in this chain that doesn't have a fallback
      *
-     * @return Object
+     * @return \h2o\FileFinder
      */
     public function getTopFallback ()
     {
@@ -153,8 +155,8 @@ abstract class FileFinder
      * @param String|Array $file The file being looked for. If an array is given,
      *      all the values will be tested at this level before moving on to the
      *      fallback.
-     * @return Boolean|Object Returns a \h2o\FileSys\File object if a file is found,
-     *      Returns FALSE if the file couldn't be found
+     * @return NULL|\h2o\FileSys\File Returns the found file
+     *      Returns NULL if the file couldn't be found
      */
     public function find ( $file )
     {
@@ -178,7 +180,7 @@ abstract class FileFinder
         if ( $this->fallbackExists() )
             return $this->getFallback()->find( $file );
         else
-            return FALSE;
+            return NULL;
 
     }
 
