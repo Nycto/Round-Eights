@@ -109,33 +109,35 @@ class Seed
     /**
      * Returns an integer representation of this seed
      *
-     * Note that to be able to use this method, you must have the BC Math extension
-     * installed. An exception will be thrown if it is not.
-     *
      * @return Integer Returns an integer between zero and the value of the
      *      self::MAX_INT constant
      */
     public function getInteger ()
     {
-        if ( !extension_loaded("bcmath") )
-            throw new \h2o\Exception\Extension("BC Math", "BC Math extension is not loaded");
+        $source = $this->getString();
 
-        $source = strtolower( $this->getString() );
+        $len = strlen($source);
+        $hash = 0;
 
-        $source = array_map( "hexdec", str_split( $source, 2 ) );
+        // Loop over every hex pair
+        for ( $i = 0; $i < $len; $i += 2 )
+        {
+            // Convert the hex pair back to binary
+            $num = hexdec( substr($source, $i, 2) );
 
-        $source = implode ("", $source);
+            // Mutate it to generate the hash
+            // This is the sdbm hash algorithm
+            $hash = $num + ($hash << 6) + ($hash << 16) - $hash;
 
-        // Integers can only be so big, so fit the source value into
-        // the constraints of PHP
-        return \intval( \bcmod($source, self::MAX_INT) );
+            // Ensure it fits within an integer
+            $hash = abs( $hash % self::MAX_INT );
+        }
+
+        return $hash;
     }
 
     /**
      * Returns a float representation of this seed between and including 0 and 1.
-     *
-     * Note that to be able to use this method, you must have the BC Math extension
-     * installed. An exception will be thrown if it is not.
      *
      * @return Float A float value >= 0 and <= 1. This will have precision of up
      *      to 14 decimal places.

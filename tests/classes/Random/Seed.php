@@ -102,56 +102,54 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
 
     public function testGetInteger ()
     {
-        if ( !extension_loaded("bcmath") )
-            $this->markTestSkipped("BCMath extension is not enabled");
-
         $seed = new \h2o\Random\Seed("Initial value");
-        $this->assertSame( 916932496, $seed->getInteger() );
+        $this->assertSame( 1929230368, $seed->getInteger() );
+        $this->assertSame( 1929230368, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
-        $this->assertSame( 223640889, $seed->getInteger() );
+        $this->assertSame( 2051062495, $seed->getInteger() );
+        $this->assertSame( 2051062495, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(array("value")) );
-        $this->assertSame( 361406471, $seed->getInteger() );
+        $this->assertSame( 2097715088, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(NULL) );
-        $this->assertSame( 122581886, $seed->getInteger() );
+        $this->assertSame( 1031720634, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(1.98) );
-        $this->assertSame( 2064395321, $seed->getInteger() );
+        $this->assertSame( 348155489, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(TRUE) );
-        $this->assertSame( 375809508, $seed->getInteger() );
+        $this->assertSame( 34500168, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource( new stdClass ) );
-        $this->assertSame( 1596549548, $seed->getInteger() );
+        $this->assertSame( 1347529798, $seed->getInteger() );
     }
 
     public function testGetFloat ()
     {
-        if ( !extension_loaded("bcmath") )
-            $this->markTestSkipped("BCMath extension is not enabled");
-
         $seed = new \h2o\Random\Seed("Initial value");
-        $this->assertSame( 0.42697996666049, $seed->getFloat() );
+        $this->assertSame( 0.8983678970944, $seed->getFloat() );
+        $this->assertSame( 0.8983678970944, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
-        $this->assertSame( 0.10414090431488, $seed->getFloat() );
+        $this->assertSame( 0.95510040221508, $seed->getFloat() );
+        $this->assertSame( 0.95510040221508, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(array("value")) );
-        $this->assertSame( 0.16829300260558, $seed->getFloat() );
+        $this->assertSame( 0.97682470873782, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(NULL) );
-        $this->assertSame( 0.05708163886195, $seed->getFloat() );
+        $this->assertSame( 0.48043235879412, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(1.98) );
-        $this->assertSame( 0.96130898313658, $seed->getFloat() );
+        $this->assertSame( 0.16212253326649, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(TRUE) );
-        $this->assertSame( 0.17499993935926, $seed->getFloat() );
+        $this->assertSame( 0.01606539265069, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource( new stdClass ) );
-        $this->assertSame( 0.74345131811847, $seed->getFloat() );
+        $this->assertSame( 0.62749246071442, $seed->getFloat() );
     }
 
 }
