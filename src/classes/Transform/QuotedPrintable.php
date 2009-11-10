@@ -1,5 +1,8 @@
 <?php
 /**
+ * Encodes a string according to the Quoted Printable specifications layed out
+ * in rfc 2045, here: http://tools.ietf.org/html/rfc2045
+ *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -23,12 +26,12 @@
  * @package Encoding
  */
 
-namespace h2o\iface;
+namespace h2o\Transform;
 
 /**
- * Basic Encoder/Decoder definition
+ * Encodes and decodes strings according to the Quoted-Printable specifications
  */
-interface Encoder
+class QuotedPrintable implements \h2o\iface\Transform\Encode
 {
 
     /**
@@ -37,7 +40,10 @@ interface Encoder
      * @param mixed $value The value to encode
      * @return mixed The result of the encoding process
      */
-    public function encode ( $string );
+    public function to ( $string )
+    {
+        return quoted_printable_encode( \h2o\strval($string) );
+    }
 
     /**
      * Decodes an encoded string
@@ -45,7 +51,10 @@ interface Encoder
      * @param mixed $value The value to decode
      * @return mixed The original, unencoded value
      */
-    public function decode ( $string );
+    public function from ( $string )
+    {
+        return quoted_printable_decode( \h2o\strval($string) );
+    }
 
 }
 

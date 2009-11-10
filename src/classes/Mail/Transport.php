@@ -169,7 +169,7 @@ abstract class Transport
      */
     public function getHeaderString ( \h2o\Mail $mail )
     {
-        $mime = new \h2o\Encode\MIME;
+        $mime = new \h2o\Transform\MIME;
         $mime->setEOL( self::EOL );
         $mime->setLineLength( self::LINE_LENGTH );
 
@@ -179,7 +179,7 @@ abstract class Transport
 
         foreach ( $headers AS $name => $value ) {
             $mime->setHeader($name);
-            $result[] = $mime->encode( $value );
+            $result[] = $mime->to( $value );
         }
 
         return implode( self::EOL, $result );
@@ -220,7 +220,7 @@ abstract class Transport
         // If both the text and HTML are set...
         if ( $mail->htmlExists() && $mail->textExists() ) {
 
-            $mime = new \h2o\Encode\MIME;
+            $mime = new \h2o\Transform\MIME;
             $mime->setEOL( self::EOL );
             $mime->setLineLength( self::LINE_LENGTH );
 
@@ -228,8 +228,8 @@ abstract class Transport
 
             return
                 "--". $boundary . self::EOL
-                .$mime->setHeader("Content-Type")->encode('text/plain; charset="ISO-8859-1"') . self::EOL
-                .$mime->setHeader("Content-Transfer-Encoding")->encode('7bit') . self::EOL
+                .$mime->setHeader("Content-Type")->to('text/plain; charset="ISO-8859-1"') . self::EOL
+                .$mime->setHeader("Content-Transfer-Encoding")->to('7bit') . self::EOL
 
                 .self::EOL
 
@@ -239,8 +239,8 @@ abstract class Transport
                 .self::EOL
 
                 ."--". $boundary . self::EOL
-                .$mime->setHeader("Content-Type")->encode('text/html; charset="ISO-8859-1"') . self::EOL
-                .$mime->setHeader("Content-Transfer-Encoding")->encode('7bit') . self::EOL
+                .$mime->setHeader("Content-Type")->to('text/html; charset="ISO-8859-1"') . self::EOL
+                .$mime->setHeader("Content-Transfer-Encoding")->to('7bit') . self::EOL
 
                 .self::EOL
 
