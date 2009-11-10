@@ -30,27 +30,52 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_encode_base64 extends PHPUnit_Framework_TestCase
+class classes_Transform_Deflate extends PHPUnit_Framework_TestCase
 {
 
-    public function testEncode ()
+    public function testTo_Zero ()
     {
-        $encode = new \h2o\Encode\Base64;
+        $cmpr = new \h2o\Transform\Deflate( 0 );
 
         $this->assertSame(
-                "VGhpcyBpcyBhIHN0cmluZw==",
-                $encode->encode("This is a string")
-            );
+    		"AQcA+P9UZXN0aW5n",
+            base64_encode($cmpr->to("Testing"))
+        );
     }
 
-    public function testDecode ()
+    public function testTo_Nine ()
     {
-        $encode = new \h2o\Encode\Base64;
+        $cmpr = new \h2o\Transform\Deflate( 9 );
 
         $this->assertSame(
-                "This is a string",
-                $encode->decode("VGhpcyBpcyBhIHN0cmluZw==")
-            );
+    		"C0ktLsnMSwcA",
+            base64_encode($cmpr->to("Testing"))
+        );
+    }
+
+    public function testTo_Default ()
+    {
+        $cmpr = new \h2o\Transform\Deflate;
+
+        $this->assertSame(
+    		"C0ktLsnMS1coQaUB",
+            base64_encode($cmpr->to("Testing testing testing"))
+        );
+    }
+
+    public function testFrom ()
+    {
+        $cmpr = new \h2o\Transform\Deflate;
+
+        $this->assertSame(
+            "Testing testing testing",
+            $cmpr->from( base64_decode("C0ktLsnMS1coQaUB") )
+        );
+
+        $this->assertSame(
+            "Testing",
+            $cmpr->from( base64_decode("C0ktLsnMSwcA") )
+        );
     }
 
 }

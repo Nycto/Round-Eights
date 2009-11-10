@@ -812,7 +812,7 @@ class Mail
      */
     public function addCustomHeader ( $header, $value )
     {
-        $header = \h2o\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Transform\MIME::stripHeaderName( $header );
 
         if ( \h2o\isEmpty($header) )
             throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -830,7 +830,7 @@ class Mail
      */
     public function customHeaderExists ( $header )
     {
-        $header = \h2o\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Transform\MIME::stripHeaderName( $header );
 
         if ( \h2o\isEmpty($header) )
             throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
@@ -846,7 +846,7 @@ class Mail
      */
     public function removeCustomHeader ( $header )
     {
-        $header = \h2o\Encode\MIME::stripHeaderName( $header );
+        $header = \h2o\Transform\MIME::stripHeaderName( $header );
 
         if ( \h2o\isEmpty($header) )
             throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
