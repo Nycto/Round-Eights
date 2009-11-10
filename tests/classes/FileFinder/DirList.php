@@ -41,7 +41,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
             ->method("getDirs")
             ->will( $this->returnValue( array() ) );
 
-        $this->assertFalse( $mock->find( "file/to/find" ) );
+        $this->assertNull( $mock->find( "file/to/find" ) );
     }
 
     public function testObjectList_simple ()
@@ -119,7 +119,7 @@ class classes_filefinder_dirlist extends PHPUnit_Dir_Framework_TestCase
                     $this->dir ."/third"
                 ) ) );
 
-        $this->assertFalse( $mock->find( "file/to/find" ) );
+        $this->assertNull( $mock->find( "file/to/find" ) );
     }
 
 }
