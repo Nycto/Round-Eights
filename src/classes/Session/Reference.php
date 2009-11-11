@@ -1,7 +1,5 @@
 <?php
 /**
- * A "Multiply-With-Carry" pseudo-random number generator
- *
  * @license Artistic License 2.0
  *
  * This file is part of RaindropPHP.
@@ -25,13 +23,30 @@
  * @package Random
  */
 
-namespace h2o\Soap;
+namespace h2o\Session;
 
 /**
  * Provides Session access to an array by reference
  */
 class Reference implements \h2o\iface\Session
 {
+
+    /**
+     * A reference to the array that the data is being stored in
+     *
+     * @var Array
+     */
+    private $ref;
+
+    /**
+     * Constructor...
+     *
+     * @param Array $ref A reference to the array that the data is being stored in
+     */
+    public function __construct ( array &$ref )
+    {
+        $this->ref =& $ref;
+    }
 
     /**
      * Returns a value from the session
@@ -41,7 +56,7 @@ class Reference implements \h2o\iface\Session
      */
     public function get ( $key )
     {
-
+        return isset( $this->ref[$key] ) ? $this->ref[$key] : null;
     }
 
     /**
@@ -53,7 +68,8 @@ class Reference implements \h2o\iface\Session
      */
     public function set ( $key, $value )
     {
-
+        $this->ref[ $key ] = $value;
+        return $this;
     }
 
     /**
@@ -64,7 +80,7 @@ class Reference implements \h2o\iface\Session
      */
     public function exists ( $key )
     {
-
+        return isset( $this->ref[$key] );
     }
 
     /**
@@ -75,7 +91,9 @@ class Reference implements \h2o\iface\Session
      */
     public function clear ( $key )
     {
-
+        if ( array_key_exists( $key, $this->ref ) )
+            unset( $this->ref[$key] );
+        return $this;
     }
 
     /**
@@ -85,7 +103,8 @@ class Reference implements \h2o\iface\Session
      */
     public function clearAll ()
     {
-
+        $this->ref = array();
+        return $this;
     }
 
     /**
@@ -95,7 +114,7 @@ class Reference implements \h2o\iface\Session
      */
     public function getAll ()
     {
-
+        return $this->ref;
     }
 
 }
