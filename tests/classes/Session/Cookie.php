@@ -33,9 +33,44 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * A copy of the cookie data
+     *
+     * @var array
+     */
+    private $cookie;
+
+    /**
+     * Sets up the test scenario
+     *
+     * @return Null
+     */
+    public function setUp ()
+    {
+        $this->cookie = $_COOKIE;
+        $_COOKIE = array();
+    }
+
+    /**
+     * Resets the global state after a test is done
+     *
+     * @return Null
+     */
+    public function tearDown ()
+    {
+        $_COOKIE = $this->cookie;
+    }
+
     public function testGet ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['key'] = "Data";
+        $_COOKIE['key2'] = new stdClass;
+
+        $sess = new \h2o\Session\Cookie;
+
+        $this->assertSame( "Data", $sess->get("key") );
+        $this->assertSame( $_COOKIE['key2'], $sess->get("key2") );
+        $this->assertNull( $sess->get("Not A Key") );
     }
 
     public function testSet ()

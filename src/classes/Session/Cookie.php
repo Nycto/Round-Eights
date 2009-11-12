@@ -32,6 +32,24 @@ class Cookie implements \h2o\iface\Session
 {
 
     /**
+     * A local datastore that keeps a copy of the cookie data
+     *
+     * This exists so that modifications to the cookies can be tracked
+     * without modifying the global variable
+     *
+     * @var Array
+     */
+    private $data = array();
+
+    /**
+     * Constructor...
+     */
+    public function __construct ()
+    {
+        $this->data = $_COOKIE;
+    }
+
+    /**
      * Returns a value from the session
      *
      * @param String $key The key of the value to return
@@ -39,6 +57,7 @@ class Cookie implements \h2o\iface\Session
      */
     public function get ( $key )
     {
+        return isset( $this->data[ $key ] ) ? $this->data[ $key ] : null;
     }
 
     /**
