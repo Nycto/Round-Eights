@@ -80,6 +80,7 @@ class Cookie implements \h2o\iface\Session
      */
     public function exists ( $key )
     {
+        return isset( $this->data[ $key ] );
     }
 
     /**

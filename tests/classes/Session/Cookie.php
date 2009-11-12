@@ -80,7 +80,16 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['key'] = "Data";
+        $_COOKIE['key2'] = new stdClass;
+        $_COOKIE['key3'] = NULL;
+
+        $sess = new \h2o\Session\Cookie;
+
+        $this->assertTrue( $sess->exists("key") );
+        $this->assertTrue( $sess->exists("key2") );
+        $this->assertFalse( $sess->exists("key3") );
+        $this->assertFalse( $sess->exists("Not A Key") );
     }
 
     public function testClear ()
