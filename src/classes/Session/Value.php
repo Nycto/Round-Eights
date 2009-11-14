@@ -81,6 +81,7 @@ class Value
      */
     public function set ( $value )
     {
+        $this->session->set( $this->key, $value );
         return $this;
     }
 
