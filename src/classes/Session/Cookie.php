@@ -42,11 +42,49 @@ class Cookie implements \h2o\iface\Session
     private $data = array();
 
     /**
-     * Constructor...
+     * The unix timestamp representing when the cookies will expire
+     *
+     * @var Integer
      */
-    public function __construct ()
+    private $expire;
+
+    /**
+     * Decodes an cookie value
+     *
+     * @param Mixed $input The input value
+     * @return mixed
+     */
+    static private function decode ( $input )
     {
-        $this->data = $_COOKIE;
+        if ( !is_string($input) )
+            return $input;
+
+        if ( $input === "b:0;" )
+            return FALSE;
+
+        $unsrl = @unserialize( $input );
+
+        return $unsrl === FALSE ? $input : $unsrl;
+    }
+
+    /**
+     * Constructor...
+     *
+     * @param Integer $expire The number of seconds you wish the cookies to survive.
+     * 		If set to 0, the cookies will expire at the end of the user's session.
+     */
+    public function __construct ( $expire = 0 )
+    {
+        foreach ( $_COOKIE AS $key => $value )
+        {
+            $this->data[ $key ] = self::decode( $value );
+        }
+
+        $expire = (int) $expire;
+        if ( $expire != 0 )
+            $expire += time();
+
+        $this->expire = $expire;
     }
 
     /**
@@ -61,6 +99,22 @@ class Cookie implements \h2o\iface\Session
     }
 
     /**
+     * An internal method that simply wraps the setCookie function
+     *
+     * This method exists for unit testing purposes. It can be mocked
+     * to test assertions against the setCookie function
+     *
+     * @param String $key The cookie being set
+     * @param String $value The value of the cookie
+     * @param Integer $expire The expiration time
+     * @return Boolean
+     */
+    protected function setCookie ( $key, $value, $expire )
+    {
+        return setCookie( $key, $value, $expire );
+    }
+
+    /**
      * Sets a value in the session
      *
      * @param String $key The key to set
@@ -69,6 +123,18 @@ class Cookie implements \h2o\iface\Session
      */
     public function set ( $key, $value )
     {
+        if ( $value === NULL )
+            return $this->clear( $key );
+
+        $this->setCookie(
+            $key,
+            is_string($value) || is_int($value) || is_float($value)
+                ? $value : serialize($value),
+            $this->expire
+        );
+
+        $this->data[ $key ] = $value;
+
         return $this;
     }
 
@@ -91,6 +157,8 @@ class Cookie implements \h2o\iface\Session
      */
     public function clear ( $key )
     {
+        $this->setCookie( $key, null, time() - 3600 * 24 );
+        unset( $this->data[$key] );
         return $this;
     }
 
@@ -101,6 +169,10 @@ class Cookie implements \h2o\iface\Session
      */
     public function clearAll ()
     {
+        foreach ( $this->data AS $key => $value )
+        {
+            $this->clear( $key );
+        }
         return $this;
     }
 
@@ -111,6 +183,7 @@ class Cookie implements \h2o\iface\Session
      */
     public function getAll ()
     {
+        return $this->data;
     }
 
 }

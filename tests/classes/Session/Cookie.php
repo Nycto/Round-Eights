@@ -61,21 +61,146 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE = $this->cookie;
     }
 
-    public function testGet ()
+    public function testGet_serialized ()
     {
-        $_COOKIE['key'] = "Data";
-        $_COOKIE['key2'] = new stdClass;
+        $_COOKIE['str'] = serialize( "Data" );
+        $_COOKIE['int'] = serialize( 50 );
+        $_COOKIE['flt'] = serialize( 5.04 );
+        $_COOKIE['t'] = serialize( TRUE );
+        $_COOKIE['f'] = serialize( FALSE );
+        $_COOKIE['null'] = serialize( NULL );
+        $_COOKIE['ary'] = serialize( array(1,2,3) );
+        $_COOKIE['obj'] = serialize( new stdClass );
 
         $sess = new \h2o\Session\Cookie;
 
-        $this->assertSame( "Data", $sess->get("key") );
-        $this->assertSame( $_COOKIE['key2'], $sess->get("key2") );
+        $this->assertSame( "Data", $sess->get("str") );
+        $this->assertSame( 50, $sess->get("int") );
+        $this->assertSame( 5.04, $sess->get("flt") );
+        $this->assertTrue( $sess->get("t") );
+        $this->assertFalse( $sess->get("f") );
+        $this->assertNull( $sess->get("null") );
+        $this->assertSame( array(1,2,3), $sess->get("ary") );
+        $this->assertEquals( new stdClass, $sess->get("obj") );
         $this->assertNull( $sess->get("Not A Key") );
     }
 
-    public function testSet ()
+    public function testGet_NotSerialized ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['str'] = "Data";
+        $_COOKIE['int'] = 50;
+        $_COOKIE['flt'] = 5.04;
+        $_COOKIE['t'] = TRUE;
+        $_COOKIE['f'] = FALSE;
+        $_COOKIE['null'] = NULL;
+        $_COOKIE['ary'] = array(1,2,3);
+        $_COOKIE['obj'] = new stdClass;
+
+        $sess = new \h2o\Session\Cookie;
+
+        $this->assertSame( "Data", $sess->get("str") );
+        $this->assertSame( 50, $sess->get("int") );
+        $this->assertSame( 5.04, $sess->get("flt") );
+        $this->assertTrue( $sess->get("t") );
+        $this->assertFalse( $sess->get("f") );
+        $this->assertNull( $sess->get("null") );
+        $this->assertSame( array(1,2,3), $sess->get("ary") );
+        $this->assertSame( $_COOKIE['obj'], $sess->get("obj") );
+        $this->assertNull( $sess->get("Not A Key") );
+    }
+
+    public function testSet_Expiration ()
+    {
+        $sess = $this->getMock(
+        	'h2o\Session\Cookie',
+            array('setCookie'),
+            array( 50 )
+        );
+
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("index"),
+                $this->equalTo(5050),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() + 50 - 5 ),
+                    $this->lessThan( time() + 50 + 5 )
+                )
+            );
+
+        $this->assertSame( $sess, $sess->set("index", 5050) );
+        $this->assertSame( array("index" => 5050), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testSet_NULL ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->isNull(),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() - (3600 * 24) - 5 ),
+                    $this->lessThan( time() - (3600 * 24) + 5 )
+                )
+            );
+
+        $this->assertSame( $sess, $sess->set("key", NULL) );
+        $this->assertSame( array(), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testSet_String ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("index"),
+                $this->equalTo("Some Value"),
+                $this->equalTo( 0 )
+            );
+
+        $this->assertSame( $sess, $sess->set("index", "Some Value") );
+        $this->assertSame( array("index" => "Some Value"), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testSet_Object ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("index"),
+                $this->equalTo('O:8:"stdClass":0:{}'),
+                $this->equalTo( 0 )
+            );
+
+        $obj = new stdClass;
+        $this->assertSame( $sess, $sess->set("index", $obj) );
+        $this->assertSame( array("index" => $obj), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testSet_Array ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("index"),
+                $this->equalTo('a:3:{i:0;i:1;i:1;i:2;i:2;i:3;}'),
+                $this->equalTo( 0 )
+            );
+
+        $this->assertSame( $sess, $sess->set("index", array(1,2,3)) );
+        $this->assertSame( array("index" => array(1,2,3)), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
     }
 
     public function testExists ()
@@ -94,17 +219,69 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testClear ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['key'] = "Data";
+        $_COOKIE['key3'] = NULL;
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->exactly(3) )
+            ->method( "setCookie" )
+            ->with(
+                $this->matchesRegularExpression('/^(key|key3)$/'),
+                $this->isNull(),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() - (3600 * 24) - 5 ),
+                    $this->lessThan( time() - (3600 * 24) + 5 )
+                )
+            );
+
+        $this->assertSame( $sess, $sess->clear('key') );
+        $this->assertSame( array('key3' => NULL), $sess->getAll() );
+        $this->assertSame( array('key' => 'Data', 'key3' => NULL), $_COOKIE );
+
+        $this->assertSame( $sess, $sess->clear('key') );
+        $this->assertSame( array('key3' => NULL), $sess->getAll() );
+        $this->assertSame( array('key' => 'Data', 'key3' => NULL), $_COOKIE );
+
+        $this->assertSame( $sess, $sess->clear('key3') );
+        $this->assertSame( array(), $sess->getAll() );
+        $this->assertSame( array('key' => 'Data', 'key3' => NULL), $_COOKIE );
     }
 
     public function testClearAll ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['key'] = "Data";
+        $_COOKIE['key3'] = NULL;
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->exactly(2) )
+            ->method( "setCookie" )
+            ->with(
+                $this->matchesRegularExpression('/^(key|key3)$/'),
+                $this->isNull(),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() - (3600 * 24) - 5 ),
+                    $this->lessThan( time() - (3600 * 24) + 5 )
+                )
+            );
+
+        $this->assertSame( $sess, $sess->clearAll() );
+        $this->assertSame( array(), $sess->getAll() );
     }
 
     public function testGetAll ()
     {
-        $this->markTestIncomplete();
+        $_COOKIE['key'] = "Data";
+        $_COOKIE['key3'] = NULL;
+
+        $sess = new \h2o\Session\Cookie;
+
+        $this->assertSame( array('key' => 'Data', 'key3' => NULL), $sess->getAll() );
+
+        $_COOKIE = array();
+
+        $this->assertSame( array('key' => 'Data', 'key3' => NULL), $sess->getAll() );
     }
 
 }
