@@ -33,6 +33,33 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Session_Value extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct_Error ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+
+        try {
+            new \h2o\Session\Value( "   ", $sess );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Argument $err ) {
+            $this->assertSame( "Must be a valid key", $err->getMessage() );
+        }
+    }
+
+    public function testGet ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("idx") )
+            ->will( $this->returnValue("Data") );
+
+        $value = new \h2o\Session\Value( "idx", $sess );
+
+        $this->assertSame( "Data", $value->get() );
+
+    }
+
 }
 
 ?>

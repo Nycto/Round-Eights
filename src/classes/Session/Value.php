@@ -70,6 +70,7 @@ class Value
      */
     public function get ()
     {
+        return $this->session->get( $this->key );
     }
 
     /**
