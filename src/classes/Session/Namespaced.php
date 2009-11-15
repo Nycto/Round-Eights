@@ -135,6 +135,21 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function push ( $key, $value )
     {
+        $root = parent::get( $this->namespace );
+
+        if ( !is_array($root) )
+            $root = array();
+
+        if ( !isset($root[$key]) )
+            $root[$key] = array();
+
+        else if ( !is_array($root[$key]) )
+            $root[$key] = array( $root[$key] );
+
+        $root[$key][] = $value;
+
+        parent::set( $this->namespace, $root );
+
         return $this;
     }
 

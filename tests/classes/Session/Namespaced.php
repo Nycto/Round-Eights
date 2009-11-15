@@ -194,9 +194,61 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertSame( $ns, $ns->clear("key") );
     }
 
-    public function testPush ()
+    public function testPush_NonArray ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "Blah" ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with(
+                $this->equalTo("ns"),
+                $this->equalTo( array("key" => array("Value")) )
+            );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->push("key", "Value") );
+    }
+
+    public function testPush_NonArrayValue ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "key" => "Blah" ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with(
+                $this->equalTo("ns"),
+                $this->equalTo( array("key" => array("Blah", "Value")) )
+            );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->push("key", "Value") );
+    }
+
+    public function testPush_Array ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "key" => array("Blah") ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with(
+                $this->equalTo("ns"),
+                $this->equalTo( array("key" => array("Blah", "Value")) )
+            );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->push("key", "Value") );
     }
 
     public function testPop ()
