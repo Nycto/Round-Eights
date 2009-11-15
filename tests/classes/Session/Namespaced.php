@@ -206,7 +206,14 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
 
     public function testClearAll ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo(array()) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->clearAll() );
     }
 
     public function testGetAll_Array ()

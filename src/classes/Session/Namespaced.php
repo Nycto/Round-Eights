@@ -166,6 +166,7 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function clearAll ()
     {
+        parent::set( $this->namespace, array() );
         return $this;
     }
 
