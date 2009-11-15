@@ -203,6 +203,130 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $_COOKIE );
     }
 
+    public function testPush_New ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->equalTo('a:1:{i:0;s:3:"new";}'),
+                $this->equalTo( 0 )
+            );
+
+        $this->assertSame( $sess, $sess->push("key", "new") );
+        $this->assertSame( array( "key" => array( "new" ) ), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testPush_NonArray ()
+    {
+        $_COOKIE['key'] = "Data";
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->equalTo('a:2:{i:0;s:4:"Data";i:1;s:3:"new";}'),
+                $this->equalTo( 0 )
+            );
+
+        $this->assertSame( $sess, $sess->push("key", "new") );
+        $this->assertSame( array( "key" => array( "Data", "new" ) ), $sess->getAll() );
+        $this->assertSame( array( "key" => "Data" ), $_COOKIE );
+    }
+
+    public function testPush_Array ()
+    {
+        $_COOKIE['key'] = array( "Data" );
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->equalTo('a:2:{i:0;s:4:"Data";i:1;s:3:"new";}'),
+                $this->equalTo( 0 )
+            );
+
+        $this->assertSame( $sess, $sess->push("key", "new") );
+        $this->assertSame( array( "key" => array( "Data", "new" ) ), $sess->getAll() );
+        $this->assertSame( array( "key" => array("Data") ), $_COOKIE );
+    }
+
+    public function testPop_NotSet ()
+    {
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->never() )->method( "setCookie" );
+
+        $this->assertNull( $sess->pop("key") );
+        $this->assertSame( array(), $sess->getAll() );
+        $this->assertSame( array(), $_COOKIE );
+    }
+
+    public function testPop_NonArray ()
+    {
+        $_COOKIE['key'] = "Data";
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->isNull(),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() - (3600 * 24) - 5 ),
+                    $this->lessThan( time() - (3600 * 24) + 5 )
+                )
+            );
+
+        $this->assertSame( "Data", $sess->pop("key") );
+        $this->assertSame( array(), $sess->getAll() );
+        $this->assertSame( array( "key" => "Data" ), $_COOKIE );
+    }
+
+    public function testPop_ToEmpty ()
+    {
+        $_COOKIE['key'] = array( "Data" );
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->isNull(),
+                $this->logicalAnd(
+                    $this->isType("integer"),
+                    $this->greaterThan( time() - (3600 * 24) - 5 ),
+                    $this->lessThan( time() - (3600 * 24) + 5 )
+                )
+            );
+
+        $this->assertSame( "Data", $sess->pop("key") );
+        $this->assertSame( array(), $sess->getAll() );
+        $this->assertSame( array( "key" => array( "Data" ) ), $_COOKIE );
+    }
+
+    public function testPop_Array ()
+    {
+        $_COOKIE['key'] = array( "1st", "2nd" );
+
+        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess->expects( $this->once() )
+            ->method( "setCookie" )
+            ->with(
+                $this->equalTo("key"),
+                $this->equalTo('a:1:{i:0;s:3:"1st";}'),
+                $this->equalTo(0)
+            );
+
+        $this->assertSame( "2nd", $sess->pop("key") );
+        $this->assertSame( array( "key" => array( "1st" ) ), $sess->getAll() );
+        $this->assertSame( array( "key" => array( "1st", "2nd" ) ), $_COOKIE );
+    }
+
     public function testExists ()
     {
         $_COOKIE['key'] = "Data";

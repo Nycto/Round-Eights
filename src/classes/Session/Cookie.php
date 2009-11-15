@@ -161,6 +161,58 @@ class Cookie implements \h2o\iface\Session
         unset( $this->data[$key] );
         return $this;
     }
+    /**
+     * Treats the key as an array and pushes a new value onto the end of it
+     *
+     * @param String $key The key to push on to
+     * @param Mixed $value The value to push
+     * @return \h2o\iface\Session Returns a self reference
+     */
+    public function push ( $key, $value )
+    {
+        if ( !isset($this->data[$key]) )
+            $temp = array();
+
+        else if ( !is_array($this->data[$key]) )
+            $temp = array( $this->data[$key] );
+
+        else
+            $temp = $this->data[$key];
+
+        $temp[] = $value;
+
+        $this->set( $key, $temp );
+
+        return $this;
+    }
+
+    /**
+     * Treats the key as an array and pops value from the end of it
+     *
+     * @param String $key The key to pop a value off of
+     * @return Mixed Returns the popped value
+     */
+    public function pop ( $key )
+    {
+        if ( !isset($this->data[$key]) )
+            return NULL;
+
+        if ( !is_array($this->data[$key]) ) {
+            $result = $this->data[$key];
+            $this->clear( $key );
+        }
+        else {
+            $temp = $this->data[$key];
+            $result = array_pop( $temp );
+
+            if ( empty($temp) )
+                $this->clear( $key );
+            else
+                $this->set( $key, $temp );
+        }
+
+        return $result;
+    }
 
     /**
      * Removes all values from the session
