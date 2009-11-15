@@ -103,6 +103,59 @@ class Transform extends \h2o\Session\Decorator
     }
 
     /**
+     * Treats the key as an array and pushes a new value onto the end of it
+     *
+     * @param String $key The key to push on to
+     * @param Mixed $value The value to push
+     * @return \h2o\iface\Session Returns a self reference
+     */
+    public function push ( $key, $value )
+    {
+        if ( !$this->exists( $key ) )
+            $current = array();
+        else
+            $current = $this->get( $key );
+
+        if ( !is_array($current) )
+            $current = array($current);
+
+        $current[] = $value;
+
+        $this->set( $key, $current );
+
+        return $this;
+    }
+
+    /**
+     * Treats the key as an array and pops value from the end of it
+     *
+     * @param String $key The key to pop a value off of
+     * @return Mixed Returns the popped value
+     */
+    public function pop ( $key )
+    {
+        if ( !$this->exists($key) )
+            return NULL;
+
+        $current = $this->get( $key );
+
+        if ( !is_array($current) ) {
+            $result = $current;
+            $this->clear( $key );
+        }
+        else {
+            $result = array_pop( $current );
+
+            if ( empty($current) )
+                $this->clear( $key );
+            else
+                $this->set( $key, $current );
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns all the values in the session
      *
      * @return Array
