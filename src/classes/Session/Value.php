@@ -106,6 +106,28 @@ class Value
         return $this;
     }
 
+    /**
+     * Treats the session value as an array and pushes a new value onto the end of it
+     *
+     * @param Mixed $value The value to push
+     * @return \h2o\Session\Value Returns a self reference
+     */
+    public function push ( $value )
+    {
+        $this->session->push( $this->key, $value );
+        return $this;
+    }
+
+    /**
+     * Treats the session value as an array and pops value from the end of it
+     *
+     * @return Mixed Returns the popped value
+     */
+    public function pop ()
+    {
+        return $this->session->pop( $this->key );
+    }
+
 }
 
 ?>
