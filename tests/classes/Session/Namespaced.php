@@ -33,6 +33,58 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct_Error ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+
+        try {
+            new \h2o\Session\Namespaced( "   ", $sess );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \h2o\Exception\Argument $err ) {
+            $this->assertSame( "Must be a valid key", $err->getMessage() );
+        }
+    }
+
+    public function testGet_NonArray ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "Blah" ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertNull( $ns->get("key") );
+    }
+
+    public function testGet_NotFound ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( Array() ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertNull( $ns->get("key") );
+    }
+
+    public function testGet_Found ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( Array( "key" => "Data" ) ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( "Data", $ns->get("key") );
+    }
+
 }
 
 ?>
