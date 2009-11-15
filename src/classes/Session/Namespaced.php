@@ -101,6 +101,8 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function exists ( $key )
     {
+        $root = parent::get( $this->namespace );
+        return isset($root[$key]);
     }
 
     /**

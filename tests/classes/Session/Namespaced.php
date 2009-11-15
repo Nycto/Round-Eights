@@ -122,7 +122,17 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->exactly(3) )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "key" => "Data", "key2" => NULL ) ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertTrue( $ns->exists("key") );
+        $this->assertFalse( $ns->exists("NonKey") );
+        $this->assertFalse( $ns->exists("key2") );
     }
 
     public function testClear ()
