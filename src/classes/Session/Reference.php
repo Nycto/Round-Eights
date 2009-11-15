@@ -39,6 +39,22 @@ class Reference implements \h2o\iface\Session
     private $ref;
 
     /**
+     * Builds an instance from the global session object
+     *
+     * @param String $namespace The namespace to use within the global instance
+     * @return \h2o\Session\Reference
+     */
+    static public function fromSession ( $namespace )
+    {
+        @session_start();
+
+        if ( !isset($_SESSION[ $namespace ]) || !is_array($_SESSION[ $namespace ]) )
+            $_SESSION[ $namespace ] = array();
+
+        return new self( $_SESSION[ $namespace ] );
+    }
+
+    /**
      * Constructor...
      *
      * @param Array $ref A reference to the array that the data is being stored in

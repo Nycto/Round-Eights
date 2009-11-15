@@ -33,6 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Session_Reference extends PHPUnit_Framework_TestCase
 {
 
+    public function testFromSession ()
+    {
+        @session_start();
+
+        $local = $_SESSION;
+        $_SESSION = array();
+
+        $sess = \h2o\Session\Reference::fromSession("ns");
+        $this->assertThat( $sess, $this->isInstanceOf("h2o\Session\Reference") );
+        $this->assertSame( array( "ns" => array() ), $_SESSION );
+
+        $sess->set("i", "v");
+        $this->assertSame( array( "ns" => array("i" => "v") ), $_SESSION );
+
+        $_SESSION = $local;
+    }
+
     public function testGet ()
     {
         $obj = new stdClass;
