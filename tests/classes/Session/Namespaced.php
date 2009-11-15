@@ -85,6 +85,41 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertSame( "Data", $ns->get("key") );
     }
 
+    public function testSet ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testExists ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testClear ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testPush ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testPop ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testClearAll ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
+    public function testGetAll ()
+    {
+        $this->markTestIncomplete("To be written");
+    }
+
 }
 
 ?>
