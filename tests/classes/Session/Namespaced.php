@@ -251,9 +251,87 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertSame( $ns, $ns->push("key", "Value") );
     }
 
-    public function testPop ()
+    public function testPop_NonArray ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "Blah" ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo( array() ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertNull( $ns->pop("key") );
+    }
+
+    public function testPop_NonExisting ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array() ) );
+        $sess->expects( $this->never() )->method( "set" );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertNull( $ns->pop("key") );
+    }
+
+    public function testPop_NonArrayValue ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "i" => "v", "key" => "Blah" ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo( array("i" => "v") ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( "Blah", $ns->pop("key") );
+    }
+
+    public function testPop_ToEmpty ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "i" => "v", "key" => array("Blah") ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo( array("i" => "v") ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( "Blah", $ns->pop("key") );
+    }
+
+    public function testPop_Array ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue(
+                array( "i" => "v", "key" => array("1st", "2nd") )
+            ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with(
+                $this->equalTo("ns"),
+                $this->equalTo( array("i" => "v", "key" => array("1st")) )
+            );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( "2nd", $ns->pop("key") );
     }
 
     public function testClearAll ()

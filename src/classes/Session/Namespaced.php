@@ -161,6 +161,30 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function pop ( $key )
     {
+        $root = parent::get( $this->namespace );
+
+        if ( !is_array($root) ) {
+            parent::set( $this->namespace, array() );
+            return NULL;
+        }
+
+        else if ( !isset($root[$key]) ) {
+            return NULL;
+        }
+
+        if ( !is_array($root[$key]) ) {
+            $result = $root[$key];
+            unset( $root[$key] );
+        }
+        else {
+            $result = array_pop( $root[$key] );
+            if ( empty($root[$key]) )
+                unset( $root[$key] );
+        }
+
+        parent::set( $this->namespace, $root );
+
+        return $result;
     }
 
     /**
