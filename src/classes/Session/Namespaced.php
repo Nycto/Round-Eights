@@ -64,10 +64,10 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function get ( $key )
     {
-        $value = parent::get( $this->namespace );
+        $root = parent::get( $this->namespace );
 
-        if ( is_array($value) && isset($value[$key]) )
-            return $value[$key];
+        if ( is_array($root) && isset($root[$key]) )
+            return $root[$key];
         else
             return NULL;
     }
@@ -81,6 +81,15 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function set ( $key, $value )
     {
+        $root = parent::get( $this->namespace );
+
+        if ( !is_array($root) )
+            $root = array();
+
+        $root[$key] = $value;
+
+        parent::set( $this->namespace, $root );
+
         return $this;
     }
 

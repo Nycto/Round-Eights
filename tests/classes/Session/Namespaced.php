@@ -85,9 +85,39 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertSame( "Data", $ns->get("key") );
     }
 
-    public function testSet ()
+    public function testSet_NonArray ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "Blah" ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo(array("key" => "Value")) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->set("key", "Value") );
+    }
+
+    public function testSet_Array ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "key" => "over", "key2" => "data" ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with(
+                $this->equalTo("ns"),
+                $this->equalTo(array( "key" => "Value", "key2" => "data" ))
+            );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->set("key", "Value") );
     }
 
     public function testExists ()
