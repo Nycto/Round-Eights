@@ -102,7 +102,7 @@ class Namespaced extends \h2o\Session\Decorator
     public function exists ( $key )
     {
         $root = parent::get( $this->namespace );
-        return isset($root[$key]);
+        return is_array($root) && isset($root[$key]);
     }
 
     /**
@@ -113,6 +113,16 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function clear ( $key )
     {
+        $root = parent::get( $this->namespace );
+
+        if ( !is_array($root) ) {
+            parent::set( $this->namespace, array() );
+        }
+        else if ( array_key_exists( $key, $root) ) {
+            unset( $root[$key] );
+            parent::set( $this->namespace, $root );
+        }
+
         return $this;
     }
 
@@ -145,6 +155,8 @@ class Namespaced extends \h2o\Session\Decorator
      */
     public function getAll ()
     {
+        $root = parent::get( $this->namespace );
+        return is_array($root) ? $root : array();
     }
 
     /**

@@ -120,7 +120,7 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertSame( $ns, $ns->set("key", "Value") );
     }
 
-    public function testExists ()
+    public function testExists_Array ()
     {
         $sess = $this->getMock('h2o\iface\Session');
         $sess->expects( $this->exactly(3) )
@@ -135,9 +135,63 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->assertFalse( $ns->exists("key2") );
     }
 
-    public function testClear ()
+    public function testExists_NonArray ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "String" ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertFalse( $ns->exists("key") );
+    }
+
+    public function testClear_NonArray ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "String" ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo(array()) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->clear("key") );
+    }
+
+    public function testClear_Array ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "key" => "Value", "i" => "v" ) ) );
+        $sess->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo("ns"), $this->equalTo(array( "i" => "v" )) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->clear("key") );
+    }
+
+    public function testClear_NonExisting ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "i" => "v" ) ) );
+        $sess->expects( $this->never() )->method( "set" );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( $ns, $ns->clear("key") );
     }
 
     public function testPush ()
@@ -155,9 +209,30 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
         $this->markTestIncomplete("To be written");
     }
 
-    public function testGetAll ()
+    public function testGetAll_Array ()
     {
-        $this->markTestIncomplete("To be written");
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( array( "i" => "v" ) ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( array( "i" => "v" ), $ns->getAll() );
+    }
+
+    public function testGetAll_NonArray ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "get" )
+            ->with( $this->equalTo("ns") )
+            ->will( $this->returnValue( "Blah" ) );
+
+        $ns = new \h2o\Session\Namespaced( "ns", $sess );
+
+        $this->assertSame( array(), $ns->getAll() );
     }
 
 }
