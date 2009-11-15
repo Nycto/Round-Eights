@@ -113,6 +113,48 @@ class Reference implements \h2o\iface\Session
     }
 
     /**
+     * Treats the key as an array and pushes a new value onto the end of it
+     *
+     * @param String $key The key to push on to
+     * @param Mixed $value The value to push
+     * @return \h2o\iface\Session Returns a self reference
+     */
+    public function push ( $key, $value )
+    {
+        if ( !isset($this->ref[$key]) )
+            $this->ref[$key] = array();
+
+        else if ( !is_array($this->ref[$key]) )
+            $this->ref[$key] = array( $this->ref[$key] );
+
+        $this->ref[$key][] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Treats the key as an array and pops value from the end of it
+     *
+     * @param String $key The key to pop a value off of
+     * @return Mixed Returns the popped value
+     */
+    public function pop ( $key )
+    {
+        if ( !isset($this->ref[$key]) )
+            return NULL;
+
+        if ( !is_array($this->ref[$key]) )
+            $result = $this->ref[$key];
+        else
+            $result = array_pop( $this->ref[$key] );
+
+        if ( !is_array($this->ref[$key]) || empty($this->ref[$key]) )
+            unset( $this->ref[$key] );
+
+        return $result;
+    }
+
+    /**
      * Removes all values from the session
      *
      * @return \h2o\iface\Session Returns a self reference

@@ -99,6 +99,59 @@ class classes_Session_Reference extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $data );
     }
 
+    public function testPush_existing ()
+    {
+        $data = array( "key" => "Data" );
+        $sess = new \h2o\Session\Reference( $data );
+
+        $this->assertSame( $sess, $sess->push("key", "new") );
+        $this->assertSame( array( "key" => array( "Data", "new" ) ), $data );
+
+        $this->assertSame( $sess, $sess->push("key", "2nd") );
+        $this->assertSame( array( "key" => array( "Data", "new", "2nd" ) ), $data );
+    }
+
+    public function testPush_new ()
+    {
+        $data = array();
+        $sess = new \h2o\Session\Reference( $data );
+
+        $this->assertSame( $sess, $sess->push("key", "new") );
+        $this->assertSame( array( "key" => array( "new" ) ), $data );
+
+        $this->assertSame( $sess, $sess->push("key", "2nd") );
+        $this->assertSame( array( "key" => array( "new", "2nd" ) ), $data );
+    }
+
+    public function testPop_None ()
+    {
+        $data = array();
+        $sess = new \h2o\Session\Reference( $data );
+
+        $this->assertNull( $sess->pop("key") );
+    }
+
+    public function testPop_NonArray ()
+    {
+        $data = array( "key" => "Data" );
+        $sess = new \h2o\Session\Reference( $data );
+
+        $this->assertSame( "Data", $sess->pop("key") );
+        $this->assertSame( array(), $data );
+    }
+
+    public function testPop_Array ()
+    {
+        $data = array( "key" => array( "1st", "2nd" ) );
+        $sess = new \h2o\Session\Reference( $data );
+
+        $this->assertSame( "2nd", $sess->pop("key") );
+        $this->assertSame( array( "key" => array( "1st" ) ), $data );
+
+        $this->assertSame( "1st", $sess->pop("key") );
+        $this->assertSame( array(), $data );
+    }
+
     public function testClearAll ()
     {
         $data = array( "key" => "Data", "key2" => NULL );
