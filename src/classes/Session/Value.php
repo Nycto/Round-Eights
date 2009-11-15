@@ -92,6 +92,7 @@ class Value
      */
     public function exists ()
     {
+        return $this->session->exists( $this->key );
     }
 
     /**
@@ -101,6 +102,7 @@ class Value
      */
     public function clear ()
     {
+        $this->session->clear( $this->key );
         return $this;
     }
 

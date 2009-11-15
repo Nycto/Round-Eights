@@ -72,6 +72,31 @@ class classes_Session_Value extends PHPUnit_Framework_TestCase
         $this->assertSame( $value, $value->set( "Data" ) );
     }
 
+    public function testExists ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "exists" )
+            ->with( $this->equalTo("idx") )
+            ->will( $this->returnValue( TRUE ) );
+
+        $value = new \h2o\Session\Value( "idx", $sess );
+
+        $this->assertTrue( $value->exists() );
+    }
+
+    public function testClear ()
+    {
+        $sess = $this->getMock('h2o\iface\Session');
+        $sess->expects( $this->once() )
+            ->method( "clear" )
+            ->with( $this->equalTo("idx") );
+
+        $value = new \h2o\Session\Value( "idx", $sess );
+
+        $this->assertSame( $value, $value->clear() );
+    }
+
 }
 
 ?>
