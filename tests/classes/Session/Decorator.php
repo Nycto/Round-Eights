@@ -83,6 +83,31 @@ class classes_Session_Decorator extends PHPUnit_Framework_TestCase
         $this->assertSame( $sess, $sess->clear("key") );
     }
 
+    public function testPush ()
+    {
+        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped->expects( $this->once() )
+            ->method( "push" )
+            ->with( $this->equalTo("key"), $this->equalTo("Data") );
+
+        $sess = $this->getMock('h2o\Session\Decorator', array('_mock'), array($wrapped));
+
+        $this->assertSame( $sess, $sess->push("key", "Data") );
+    }
+
+    public function testPop ()
+    {
+        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped->expects( $this->once() )
+            ->method( "pop" )
+            ->with( $this->equalTo("key") )
+            ->will( $this->returnValue("Data") );
+
+        $sess = $this->getMock('h2o\Session\Decorator', array('_mock'), array($wrapped));
+
+        $this->assertSame( "Data", $sess->pop("key") );
+    }
+
     public function testClearAll ()
     {
         $wrapped = $this->getMock('h2o\iface\Session');
