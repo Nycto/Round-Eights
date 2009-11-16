@@ -23,7 +23,7 @@
  * @package Tag
  */
 
-namespace r8;
+namespace r8\HTML;
 
 /**
  * Allows for the creation, manipulation and display of an HTML tag
@@ -37,8 +37,10 @@ class Tag implements \ArrayAccess
 
     /**
      * The tag that this instance represents
+     *
+     * @var String
      */
-    protected $tag;
+    private $tag;
 
     /**
      * Whether or not this tag is empty.
@@ -46,18 +48,24 @@ class Tag implements \ArrayAccess
      * This is actually an override. The class will try to determine if a tag
      * should be empty by looking at whether it has content and, then the type
      * of tag.
+     *
+     * @var Boolean
      */
-    protected $empty;
+    private $empty;
 
     /**
      * The attributes for this tag
+     *
+     * @var Array
      */
-    protected $attrs = array();
+    private $attrs = array();
 
     /**
      * The content of this tag
+     *
+     * @var Mixed
      */
-    protected $content;
+    private $content;
 
     /**
      * Allows a tag instance to be created by calling a method with the tag name.
@@ -65,7 +73,7 @@ class Tag implements \ArrayAccess
      * @param string $func The function called statically, which will be used as the tag name
      * @param array $args Any args passed to the function call.
      *      Offset 0 will be used as the content, offset 1 as the attributes
-     * @return Object Returns a new \r8\Tag object
+     * @return \r8\HTML\Tag
      */
     static public function __callStatic ( $func, $args )
     {
@@ -136,7 +144,7 @@ class Tag implements \ArrayAccess
      * Sets the value of the tag in this instance
      *
      * @param String $tag The tag this instance represents
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function setTag ( $tag )
     {
@@ -164,7 +172,7 @@ class Tag implements \ArrayAccess
      * Sets the content of this instance
      *
      * @param string $content
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function setContent ( $content )
     {
@@ -177,7 +185,7 @@ class Tag implements \ArrayAccess
      * Adds content to the end of the existing content
      *
      * @param string $content
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function appendContent ( $content )
     {
@@ -200,7 +208,7 @@ class Tag implements \ArrayAccess
     /**
      * Unsets any content in this instance
      *
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function clearContent ()
     {
@@ -212,7 +220,7 @@ class Tag implements \ArrayAccess
      * Sets whether this instance should be rendered as empty
      *
      * @param Boolean $setting
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function setEmpty ( $setting )
     {
@@ -223,7 +231,7 @@ class Tag implements \ArrayAccess
     /**
      * Clears the empty override and reverts to automatic detection
      *
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function clearEmpty ()
     {
@@ -251,7 +259,6 @@ class Tag implements \ArrayAccess
                 $this->tag,
                 array('area', 'base', 'br', 'frame', 'hr', 'img', 'input', 'link', 'meta', 'param')
             );
-
     }
 
     /**
@@ -281,7 +288,7 @@ class Tag implements \ArrayAccess
      * @param mixed $value The value of this attribute
      *      Setting this to boolean true (or not passing it as an argument),
      *      marks this attribute as a boolean value
-     * @param \r8\Tag Returns a self reference
+     * @param \r8\HTML\Tag Returns a self reference
      */
     public function setAttr ( $attr, $value = TRUE )
     {
@@ -304,7 +311,7 @@ class Tag implements \ArrayAccess
      * Clears an attribute from being set
      *
      * @param String $attr The attribute to test
-     * @param \r8\Tag Returns a self reference
+     * @param \r8\HTML\Tag Returns a self reference
      */
     public function unsetAttr ( $attr )
     {
@@ -331,7 +338,7 @@ class Tag implements \ArrayAccess
      * Imports a list of attributes in to this instance
      *
      * @param Array $attrs The list of attributes to import
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function importAttrs ( array $attrs )
     {
@@ -344,7 +351,7 @@ class Tag implements \ArrayAccess
     /**
      * Removes all attributes from this instance
      *
-     * @return \r8\Tag Returns a self reference
+     * @return \r8\HTML\Tag Returns a self reference
      */
     public function clearAttrs ()
     {

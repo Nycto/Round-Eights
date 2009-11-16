@@ -25,23 +25,23 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_tag extends PHPUnit_Framework_TestCase
+class classes_HTML_Tag extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
-        $tag = new \r8\Tag("A");
+        $tag = new \r8\HTML\Tag("A");
 
         $this->assertSame( "a", $tag->getTag() );
         $this->assertNull($tag->getContent());
 
         try {
-            $tag = new \r8\Tag("  ");
+            $tag = new \r8\HTML\Tag("  ");
             $this->fail("An expected exception has not been thrown");
         }
         catch ( \r8\Exception\Argument $err ) {
@@ -49,12 +49,12 @@ class classes_tag extends PHPUnit_Framework_TestCase
         }
 
 
-        $tag = new \r8\Tag("a", "a snip of content");
+        $tag = new \r8\HTML\Tag("a", "a snip of content");
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
 
 
-        $tag = new \r8\Tag("a", "a snip of content", array("href" => "#"));
+        $tag = new \r8\HTML\Tag("a", "a snip of content", array("href" => "#"));
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("a snip of content", $tag->getContent());
         $this->assertSame(array("href" => "#"), $tag->getAttrs());
@@ -62,7 +62,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetTag ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertSame( $tag, $tag->setTag("div") );
         $this->assertSame( "div", $tag->getTag() );
@@ -81,7 +81,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetContent ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -117,7 +117,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testAppendContent ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -153,7 +153,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testClearContent ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertNull( $tag->getContent() );
 
@@ -167,7 +167,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testHasContent ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertFalse( $tag->hasContent() );
 
@@ -182,7 +182,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $tag->setContent("Random");
@@ -197,7 +197,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetEmpty ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(FALSE) );
@@ -207,7 +207,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tag->isEmpty() );
 
 
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
         $this->assertFalse( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(TRUE) );
@@ -219,7 +219,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testClearEmpty ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
         $this->assertTrue( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(FALSE) );
@@ -229,7 +229,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tag->isEmpty() );
 
 
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
         $this->assertFalse( $tag->isEmpty() );
 
         $this->assertSame( $tag, $tag->setEmpty(TRUE) );
@@ -241,11 +241,11 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testNormalizeAttrName ()
     {
-        $this->assertSame( "attr", \r8\Tag::normalizeAttrName("Attr") );
-        $this->assertSame( "attr", \r8\Tag::normalizeAttrName(" a!@#t tr ") );
+        $this->assertSame( "attr", \r8\HTML\Tag::normalizeAttrName("Attr") );
+        $this->assertSame( "attr", \r8\HTML\Tag::normalizeAttrName(" a!@#t tr ") );
 
         try {
-            \r8\Tag::normalizeAttrName("  ");
+            \r8\HTML\Tag::normalizeAttrName("  ");
             $this->fail("An expected exception has not been thrown");
         }
         catch ( \r8\Exception\Argument $err ) {
@@ -255,7 +255,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetAttrs ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $tag->setAttr("Rel", "nofollow");
 
@@ -267,7 +267,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testHasAttrs ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertFalse( $tag->hasAttrs() );
 
@@ -278,7 +278,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetAttr ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertSame( $tag, $tag->setAttr("Rel", "nofollow") );
         $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
@@ -326,7 +326,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testAttrExists ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertFalse( $tag->attrExists("class") );
 
@@ -345,7 +345,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testUnsetAttr ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertSame( $tag, $tag->unsetAttr("rel") );
 
@@ -369,7 +369,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetAttr ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertNull( $tag->getAttr("rel") );
 
@@ -388,7 +388,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testImportAttrs ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertSame( array(), $tag->getAttrs() );
 
@@ -423,7 +423,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testClearAttrs ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertSame( array(), $tag->getAttrs() );
 
@@ -439,7 +439,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testSetAccessor ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $tag['Rel'] = "nofollow";
         $this->assertSame( array("rel" => "nofollow"), $tag->getAttrs() );
@@ -469,7 +469,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testExistsAccessor ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertFalse( isset($tag["class"]) );
 
@@ -488,7 +488,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testUnsetAccessor ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         unset( $tag['rel'] );
 
@@ -512,7 +512,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetAcessor ()
     {
-        $tag = new \r8\Tag("hr");
+        $tag = new \r8\HTML\Tag("hr");
 
         $this->assertNull( $tag["rel"] );
 
@@ -531,20 +531,20 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $tag = \r8\Tag::div();
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $tag = \r8\HTML\Tag::div();
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame("div", $tag->getTag());
         $this->assertNull($tag->getContent());
         $this->assertSame(array(), $tag->getAttrs());
 
-        $tag = \r8\Tag::strong("words");
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $tag = \r8\HTML\Tag::strong("words");
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame("strong", $tag->getTag());
         $this->assertSame("words", $tag->getContent());
         $this->assertSame(array(), $tag->getAttrs());
 
-        $tag = \r8\Tag::a("this is content", array("href" => "#"));
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $tag = \r8\HTML\Tag::a("this is content", array("href" => "#"));
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame("a", $tag->getTag());
         $this->assertSame("this is content", $tag->getContent());
         $this->assertSame(array( "href" => "#" ), $tag->getAttrs());
@@ -552,15 +552,15 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testQuoteAttr ()
     {
-        $this->assertSame( '"test"', \r8\Tag::quoteAttr("test") );
-        $this->assertSame( '"test &quot; quote"', \r8\Tag::quoteAttr('test " quote') );
-        $this->assertSame( '"test \' quote"', \r8\Tag::quoteAttr("test ' quote") );
-        $this->assertSame( '"test \' &quot; quotes"', \r8\Tag::quoteAttr("test ' \" quotes") );
+        $this->assertSame( '"test"', \r8\HTML\Tag::quoteAttr("test") );
+        $this->assertSame( '"test &quot; quote"', \r8\HTML\Tag::quoteAttr('test " quote') );
+        $this->assertSame( '"test \' quote"', \r8\HTML\Tag::quoteAttr("test ' quote") );
+        $this->assertSame( '"test \' &quot; quotes"', \r8\HTML\Tag::quoteAttr("test ' \" quotes") );
     }
 
     public function testGetAttrString ()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertSame( "", $tag->getAttrString() );
 
@@ -585,7 +585,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetOpenTag()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertSame( "<a>", $tag->getOpenTag() );
 
@@ -605,7 +605,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetCloseTag()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertSame( "</a>", $tag->getCloseTag() );
 
@@ -625,7 +625,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testGetEmptyTag()
     {
-        $tag = new \r8\Tag("a");
+        $tag = new \r8\HTML\Tag("a");
 
         $this->assertSame( "<a />", $tag->getEmptyTag() );
 
@@ -644,7 +644,7 @@ class classes_tag extends PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $tag = new \r8\Tag("input");
+        $tag = new \r8\HTML\Tag("input");
 
         $this->assertSame( "<input />", $tag->__toString() );
 

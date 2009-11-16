@@ -58,7 +58,7 @@ class Radio extends \r8\Form\Multi
      * Returns the an HTML tag that represents an individual option's radio button
      *
      * @param String|Integer $value The value of the option whose tag should be returned
-     * @return Object Returns a \r8\Tag object
+     * @return Object Returns a \r8\HTML\Tag object
      */
     public function getOptionRadioTag ( $value )
     {
@@ -67,7 +67,7 @@ class Radio extends \r8\Form\Multi
         if ( !$this->hasOption($value) )
             throw new \r8\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        $tag = new \r8\Tag( 'input' );
+        $tag = new \r8\HTML\Tag( 'input' );
 
         $tag->importAttrs(array(
                 "name" => $this->getName(),
@@ -86,7 +86,7 @@ class Radio extends \r8\Form\Multi
      * Returns the an HTML tag that represents an individual option's label
      *
      * @param String|Integer $value The value of the option whose label tag should be returned
-     * @return Object Returns a \r8\Tag object
+     * @return Object Returns a \r8\HTML\Tag object
      */
     public function getOptionLabelTag ( $value )
     {
@@ -95,7 +95,7 @@ class Radio extends \r8\Form\Multi
         if ( !$this->hasOption($value) )
             throw new \r8\Exception\Index($value, "Option Value", "Option does not exist in field");
 
-        return new \r8\Tag(
+        return new \r8\HTML\Tag(
                 'label',
                 $this->getOptionLabel( $value ),
                 array( "for" => $this->getRadioOptionID($value) )
@@ -123,13 +123,13 @@ class Radio extends \r8\Form\Multi
     }
 
     /**
-     * Returns a \r8\Tag object that represents this instance
+     * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return Object A \r8\Tag object
+     * @return Object A \r8\HTML\Tag object
      */
     public function getTag()
     {
-        return new \r8\Tag(
+        return new \r8\HTML\Tag(
                 'ul',
                 $this->getOptionList()
             );

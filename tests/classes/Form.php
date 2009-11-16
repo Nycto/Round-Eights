@@ -579,7 +579,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
         $tag = $form->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame( "form", $tag->getTag() );
 
         $this->assertTrue( isset($tag['method']) );

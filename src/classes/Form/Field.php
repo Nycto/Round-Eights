@@ -295,13 +295,13 @@ abstract class Field implements \r8\iface\Form\Field
     }
 
     /**
-     * Returns a \r8\Tag object that represents this instance
+     * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return \r8\Tag
+     * @return \r8\HTML\Tag
      */
     public function getTag()
     {
-        return new \r8\Tag(
+        return new \r8\HTML\Tag(
                 'input',
                 null,
                 array(

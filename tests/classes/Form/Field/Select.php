@@ -65,7 +65,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );
@@ -83,7 +83,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame( "select", $tag->getTag() );
 
         $this->assertTrue( isset($tag['name']) );

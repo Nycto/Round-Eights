@@ -239,7 +239,7 @@ class classes_form_field extends PHPUnit_Framework_TestCase
 
         $tag = $field->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
         $this->assertSame( "input", $tag->getTag() );
         $this->assertTrue( isset($tag['name']) );
         $this->assertSame( "fldName", $tag['name'] );

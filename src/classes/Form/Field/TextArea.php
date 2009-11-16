@@ -34,13 +34,13 @@ class TextArea extends \r8\Form\Field
 {
 
     /**
-     * Returns a \r8\Tag object that represents this instance
+     * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return Object A \r8\Tag object
+     * @return Object A \r8\HTML\Tag object
      */
     public function getTag()
     {
-        return new \r8\Tag(
+        return new \r8\HTML\Tag(
                 'textarea',
                 $this->getForOutput(),
                 array( "name" => $this->getName() )
