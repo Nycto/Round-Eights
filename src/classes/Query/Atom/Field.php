@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace h2o\Query\Atom;
+namespace r8\Query\Atom;
 
 /**
  * Represents a field name in a SQL query
  */
-class Field extends \h2o\Query\Atom
+class Field extends \r8\Query\Atom
 {
 
     /**
@@ -56,11 +56,11 @@ class Field extends \h2o\Query\Atom
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \h2o\Query\Atom\Field
+     * @return \r8\Query\Atom\Field
      */
     static public function fromString ( $string )
     {
-        $parsed = \h2o\Query::parseSQLName( $string );
+        $parsed = \r8\Query::parseSQLName( $string );
 
         $field = new self( array_pop($parsed) );
 
@@ -105,14 +105,14 @@ class Field extends \h2o\Query\Atom
      * Sets the field name
      *
      * @param String $field
-     * @return \h2o\Query\Atom\Field Returns a self referencve
+     * @return \r8\Query\Atom\Field Returns a self referencve
      */
     public function setField ( $field )
     {
-        $field = \h2o\str\stripW( $field );
+        $field = \r8\str\stripW( $field );
 
         if ( empty($field) )
-            throw new \h2o\Exception\Argument( 0, "Field Name", "Must not be empty" );
+            throw new \r8\Exception\Argument( 0, "Field Name", "Must not be empty" );
 
         $this->field = $field;
 
@@ -133,11 +133,11 @@ class Field extends \h2o\Query\Atom
      * Sets the Table name
      *
      * @param String $table
-     * @return \h2o\Query\Atom\Field Returns a self reference
+     * @return \r8\Query\Atom\Field Returns a self reference
      */
     public function setTable ( $table )
     {
-        $table = \h2o\str\stripW( $table );
+        $table = \r8\str\stripW( $table );
         $this->table = $table ? $table : null;
         return $this;
     }
@@ -155,7 +155,7 @@ class Field extends \h2o\Query\Atom
     /**
      * Clears the currently set Table name
      *
-     * @return \h2o\Query\Atom\Field Returns a self reference
+     * @return \r8\Query\Atom\Field Returns a self reference
      */
     public function clearTable ()
     {
@@ -177,11 +177,11 @@ class Field extends \h2o\Query\Atom
      * Sets the Database name
      *
      * @param String $database
-     * @return \h2o\Query\Atom\Field Returns a self reference
+     * @return \r8\Query\Atom\Field Returns a self reference
      */
     public function setDatabase ( $database )
     {
-        $database = \h2o\str\stripW( $database );
+        $database = \r8\str\stripW( $database );
         $this->database = $database ? $database : null;
         return $this;
     }
@@ -199,7 +199,7 @@ class Field extends \h2o\Query\Atom
     /**
      * Clears the currently set Database name
      *
-     * @return \h2o\Query\Atom\Field Returns a self reference
+     * @return \r8\Query\Atom\Field Returns a self reference
      */
     public function clearDatabase ()
     {
@@ -210,12 +210,12 @@ class Field extends \h2o\Query\Atom
     /**
      * Returns the SQL this atom represents
      *
-     * @param \h2o\iface\DB\Link $link The database connection this atom
+     * @param \r8\iface\DB\Link $link The database connection this atom
      * 		is being created against. This is being passed in for escaping
      * 		purposes
      * @return String
      */
-    public function toAtomSQL( \h2o\iface\DB\Link $link )
+    public function toAtomSQL( \r8\iface\DB\Link $link )
     {
         return
             ( $this->table && $this->database ? "`". $this->database ."`." : "" )

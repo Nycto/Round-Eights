@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace h2o\XMLBuilder;
+namespace r8\XMLBuilder;
 
 /**
  * Base class for
  */
-abstract class Quick implements \h2o\iface\XMLBuilder
+abstract class Quick implements \r8\iface\XMLBuilder
 {
 
     /**
@@ -62,7 +62,7 @@ abstract class Quick implements \h2o\iface\XMLBuilder
     {
         $name = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $name);
 
-        if ( \h2o\isEmpty($name) )
+        if ( \r8\isEmpty($name) )
             $name = "unknown";
 
         else if ( is_numeric($name) )
@@ -126,12 +126,12 @@ abstract class Quick implements \h2o\iface\XMLBuilder
      */
     protected function build ( \DOMDocument $doc, $parent, &$data, $root = FALSE )
     {
-        if ( \h2o\isEmpty($data) ) {
+        if ( \r8\isEmpty($data) ) {
             return $this->createElement( $doc, $parent );
         }
 
         // Primitives
-        else if ( \h2o\isBasic( $data ) && $data !== NULL ) {
+        else if ( \r8\isBasic( $data ) && $data !== NULL ) {
             $node = $this->createElement( $doc, $parent );
             $node->appendChild(
                 $doc->createTextNode( (string) $data )
@@ -144,10 +144,10 @@ abstract class Quick implements \h2o\iface\XMLBuilder
         }
 
         // If an XML builder was given, handle it
-        else if ( $data instanceof \h2o\iface\XMLBuilder ) {
+        else if ( $data instanceof \r8\iface\XMLBuilder ) {
             $node = $this->createElement( $doc, $parent );
             $node->appendChild(
-                \h2o\XMLBuilder::buildNode( $data, $doc )
+                \r8\XMLBuilder::buildNode( $data, $doc )
             );
         }
 
@@ -155,7 +155,7 @@ abstract class Quick implements \h2o\iface\XMLBuilder
         else if ( is_object($data) ) {
 
             // If it is an object that supports "toString"
-            if ( \h2o\respondTo($data, "__toString") ) {
+            if ( \r8\respondTo($data, "__toString") ) {
                 $node = $this->createElement( $doc, $parent );
                 $node->appendChild(
                     $doc->createTextNode( $data->__toString() )

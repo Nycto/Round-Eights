@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,14 +36,14 @@ class classes_form extends PHPUnit_Framework_TestCase
     public function getMockField ()
     {
         return $this->getMock(
-                "\h2o\iface\Form\Field",
+                '\r8\iface\Form\Field',
                 array("getName", "getValue", "setValue", "validate", "isValid")
             );
     }
 
     public function testSetAction ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( $form, $form->setAction("/file.php") );
         $this->assertSame( "/file.php", $form->getAction() );
@@ -57,7 +57,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testSetMethod()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( "POST", $form->getMethod() );
 
@@ -68,14 +68,14 @@ class classes_form extends PHPUnit_Framework_TestCase
             $form->setMethod("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
 
     public function testSetEncoding ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( "application/x-www-form-urlencoded", $form->getEncoding() );
 
@@ -86,14 +86,14 @@ class classes_form extends PHPUnit_Framework_TestCase
             $form->setEncoding("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
     }
 
     public function testGetAddField ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( array(), $form->getFields() );
 
@@ -116,7 +116,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testClearFields ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $field1 = $this->getMockField();
         $form->addField($field1);
@@ -133,7 +133,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testCount ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $this->assertSame( 0, $form->count() );
         $this->assertSame( 0, count($form) );
 
@@ -166,7 +166,7 @@ class classes_form extends PHPUnit_Framework_TestCase
             ->method("getName")
             ->will( $this->returnValue("fldTwo") );
 
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $form->addField( $field1 )->addField( $field2 );
 
         $this->assertSame( $field1, $form->find("fldOne") );
@@ -178,7 +178,7 @@ class classes_form extends PHPUnit_Framework_TestCase
              $form->find("123");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must be a valid PHP variable name", $err->getMessage());
         }
 
@@ -186,7 +186,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testAnyIn ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertFalse(
                 $form->anyIn(array( "fldOne" => "value", "fldThree" => "other" ))
@@ -226,7 +226,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_array ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -264,7 +264,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_Ary ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -306,7 +306,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_ArrayIterator ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -348,7 +348,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testFill_ArrayObect ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $field1 = $this->getMockField();
         $field1->expects( $this->any() )
@@ -389,20 +389,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetFormValidator_default ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $validator = $form->getFormValidator();
 
-        $this->assertThat( $validator, $this->isInstanceOf("h2o\Validator\Any") );
+        $this->assertThat( $validator, $this->isInstanceOf("r8\Validator\Any") );
 
         $this->assertSame( $validator, $form->getFormValidator() );
     }
 
     public function testSetFormValidator ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
 
         $this->assertSame( $form, $form->setFormValidator($validator) );
 
@@ -411,10 +411,10 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testAndValidator ()
     {
-        $form = new \h2o\Form;
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
-        $validator2 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
-        $validator3 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $form = new \r8\Form;
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator3 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
 
         $form->setFormValidator( $validator );
         $this->assertSame( $validator, $form->getFormValidator() );
@@ -423,7 +423,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $form->andFormValidator( $validator2 ) );
 
         $all = $form->getFormValidator();
-        $this->assertThat( $all, $this->isInstanceOf("h2o\Validator\All") );
+        $this->assertThat( $all, $this->isInstanceOf("r8\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2 ),
                 $all->getValidators()
@@ -433,7 +433,7 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( $form, $form->andFormValidator( $validator3 ) );
 
         $all = $form->getFormValidator();
-        $this->assertThat( $all, $this->isInstanceOf("h2o\Validator\All") );
+        $this->assertThat( $all, $this->isInstanceOf("r8\Validator\All") );
         $this->assertSame(
                 array( $validator, $validator2, $validator3 ),
                 $all->getValidators()
@@ -442,11 +442,11 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testValidateForm ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
-        $result = new \h2o\Validator\Result( $form );
+        $result = new \r8\Validator\Result( $form );
 
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -459,20 +459,20 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testIsFormValid_noValidator ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $this->assertTrue( $form->isFormValid() );
     }
 
     public function testIsFormValid_valid ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
-        $result = $this->getMock('h2o\Validator\Result', array('isValid'), array( $form ));
+        $result = $this->getMock('r8\Validator\Result', array('isValid'), array( $form ));
         $result->expects( $this->once() )
             ->method("isValid")
             ->will( $this->returnValue(TRUE) );
 
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -485,14 +485,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testIsFormValid_invalid ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
-        $result = $this->getMock('h2o\Validator\Result', array('isValid'), array( $form ));
+        $result = $this->getMock('r8\Validator\Result', array('isValid'), array( $form ));
         $result->expects( $this->once() )
             ->method("isValid")
             ->will( $this->returnValue(FALSE) );
 
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -505,14 +505,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testIsValid_invalidForm ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
-        $result = $this->getMock('h2o\Validator\Result', array('isValid'), array( $form ));
+        $result = $this->getMock('r8\Validator\Result', array('isValid'), array( $form ));
         $result->expects( $this->once() )
             ->method("isValid")
             ->will( $this->returnValue(FALSE) );
 
-        $validator = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -525,7 +525,7 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testIsValid ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertTrue( $form->isValid() );
 
@@ -572,14 +572,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $form->setMethod("get");
         $form->setEncoding('multipart/form-data');
         $form->setAction('/dir/file.php');
 
         $tag = $form->getTag();
 
-        $this->assertThat( $tag, $this->isInstanceOf("h2o\Tag") );
+        $this->assertThat( $tag, $this->isInstanceOf("r8\Tag") );
         $this->assertSame( "form", $tag->getTag() );
 
         $this->assertTrue( isset($tag['method']) );
@@ -595,7 +595,7 @@ class classes_form extends PHPUnit_Framework_TestCase
     public function testToString ()
     {
 
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $form->setMethod("get");
         $form->setEncoding('multipart/form-data');
         $form->setAction('/dir/file.php');
@@ -613,14 +613,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetHidden ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( array(), $form->getHidden() );
 
 
-        $field1 = new \h2o\Form\Field\Hidden("fld1");
-        $field2 = new \h2o\Form\Field\Text("fld2");
-        $field3 = new \h2o\Form\Field\Hidden("fld3");
+        $field1 = new \r8\Form\Field\Hidden("fld1");
+        $field2 = new \r8\Form\Field\Text("fld2");
+        $field3 = new \r8\Form\Field\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )
@@ -631,14 +631,14 @@ class classes_form extends PHPUnit_Framework_TestCase
 
     public function testGetHiddenHTML ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
 
         $this->assertSame( "", $form->getHiddenHTML() );
 
 
-        $field1 = new \h2o\Form\Field\Hidden("fld1");
-        $field2 = new \h2o\Form\Field\Text("fld2");
-        $field3 = new \h2o\Form\Field\Hidden("fld3");
+        $field1 = new \r8\Form\Field\Hidden("fld1");
+        $field2 = new \r8\Form\Field\Text("fld2");
+        $field3 = new \r8\Form\Field\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )

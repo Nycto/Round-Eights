@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,53 +35,53 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
 
     public function testNoValidators ()
     {
-        $all = new \h2o\Validator\All;
+        $all = new \r8\Validator\All;
 
         $result = $all->validate("example value");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
 
     public function testInvalidResult ()
     {
-        $valid = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue("This is an invalid result") );
 
-        $all = new \h2o\Validator\All( $valid );
+        $all = new \r8\Validator\All( $valid );
         $this->assertEquals( array($valid), $all->getValidators() );
 
         try {
             $all->validate("example value");
             $this->fail('An expected exception has not been raised.');
         }
-        catch ( \h2o\Exception\Data $err ) {}
+        catch ( \r8\Exception\Data $err ) {}
     }
 
     public function testValid ()
     {
 
-        $valid1 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
-            ->will( $this->returnValue( new \h2o\Validator\Result("example value") ) );
+            ->will( $this->returnValue( new \r8\Validator\Result("example value") ) );
 
-        $valid2 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
-            ->will( $this->returnValue( new \h2o\Validator\Result("example value") ) );
+            ->will( $this->returnValue( new \r8\Validator\Result("example value") ) );
 
 
-        $all = new \h2o\Validator\All( $valid1, $valid2 );
+        $all = new \r8\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
@@ -89,21 +89,21 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testOneInvalid ()
     {
 
-        $result1 = new \h2o\Validator\Result("example value");
+        $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $all = new \h2o\Validator\All( $valid1 );
+        $all = new \r8\Validator\All( $valid1 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),
@@ -115,31 +115,31 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testMultipleInvalid ()
     {
 
-        $result1 = new \h2o\Validator\Result("example value");
+        $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $result2 = new \h2o\Validator\Result("example value");
+        $result2 = new \r8\Validator\Result("example value");
         $result2->addError("This is another Error");
 
-        $valid2 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new \h2o\Validator\All( $valid1, $valid2 );
+        $all = new \r8\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error", "This is another Error"),
@@ -151,31 +151,31 @@ class classes_validator_all extends PHPUnit_Framework_TestCase
     public function testDuplicateErrors ()
     {
 
-        $result1 = new \h2o\Validator\Result("example value");
+        $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
 
-        $result2 = new \h2o\Validator\Result("example value");
+        $result2 = new \r8\Validator\Result("example value");
         $result2->addError("This is an Error");
 
-        $valid2 = $this->getMock("h2o\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result2 ) );
 
 
-        $all = new \h2o\Validator\All( $valid1, $valid2 );
+        $all = new \r8\Validator\All( $valid1, $valid2 );
 
         $result = $all->validate("example value");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals(
                 array("This is an Error"),

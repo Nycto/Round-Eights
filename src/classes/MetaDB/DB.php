@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package MetaDB
  */
 
-namespace h2o\MetaDB;
+namespace r8\MetaDB;
 
 /**
  * A database
@@ -34,7 +34,7 @@ class DB
     /**
      * The TableSet this table belongs to
      *
-     * @var \h2o\MetaDB\Set
+     * @var \r8\MetaDB\Set
      */
     private $set;
 
@@ -48,22 +48,22 @@ class DB
     /**
      * The tables in this database
      *
-     * @var array An array of \h2o\iface\MetaDB\Tables objects
+     * @var array An array of \r8\iface\MetaDB\Tables objects
      */
     private $tables = array();
 
     /**
      * Constructor...
      *
-     * @param \h2o\MetaDB\Set $set The TableSet this table belongs to
+     * @param \r8\MetaDB\Set $set The TableSet this table belongs to
      * @param String $name The name of the database
      */
-    public function __construct ( \h2o\MetaDB\Set $set, $name )
+    public function __construct ( \r8\MetaDB\Set $set, $name )
     {
-        $name = trim( trim( \h2o\strval($name) ), "`" );
+        $name = trim( trim( \r8\strval($name) ), "`" );
 
-        if ( \h2o\isEmpty($name) )
-            throw new \h2o\Exception\Argument( 0, "DB Name", "Must not be empty" );
+        if ( \r8\isEmpty($name) )
+            throw new \r8\Exception\Argument( 0, "DB Name", "Must not be empty" );
 
         $this->name = $name;
         $this->set = $set;
@@ -85,7 +85,7 @@ class DB
     /**
      * Returns the Tables registered in this database
      *
-     * @return array Returns an array of \h2o\MetaDB\Table objects
+     * @return array Returns an array of \r8\MetaDB\Table objects
      */
     public function getTables ()
     {
@@ -95,16 +95,16 @@ class DB
     /**
      * Registers a new table in this database
      *
-     * @param \h2o\MetaDB\Table $table The table to register
-     * @return \h2o\MetaDB\DB Returns a self reference
+     * @param \r8\MetaDB\Table $table The table to register
+     * @return \r8\MetaDB\DB Returns a self reference
      */
-    public function addTable ( \h2o\MetaDB\Table $table )
+    public function addTable ( \r8\MetaDB\Table $table )
     {
         // Ensure the table doesn't already exist
         $found = $this->getTable( $table->getName() );
 
         if ( !is_null( $found ) && $found !== $table ) {
-            $err = new \h2o\Exception\Argument(
+            $err = new \r8\Exception\Argument(
                     0,
                     "Table",
                     "A table with that name already exists"
@@ -121,12 +121,12 @@ class DB
      * Returns a registered table from its name
      *
      * @param String $name The table name to search in
-     * @return \h2o\MetaDB\Table Returns the found table, or NULL if the table
+     * @return \r8\MetaDB\Table Returns the found table, or NULL if the table
      * 		doesn't exist
      */
     public function getTable ( $name )
     {
-        $name = trim( trim( \h2o\strval($name) ), "`" );
+        $name = trim( trim( \r8\strval($name) ), "`" );
 
         if ( !isset( $this->tables[$name] ) )
             return NULL;
@@ -137,17 +137,17 @@ class DB
     /**
      * Class property access to the contained tables
      *
-     * @throws \h2o\Exception\Variable If the requested table doesn't exist,
+     * @throws \r8\Exception\Variable If the requested table doesn't exist,
      * 		this exception will be thrown
      * @param String $name The name of the table to pull
-     * @return \h2o\MetaDB\Table Returns the requested Table
+     * @return \r8\MetaDB\Table Returns the requested Table
      */
     public function __get ( $name )
     {
         $db = $this->getTable( $name );
 
         if ( !$db )
-            throw new \h2o\Exception\Variable($name, "Table does not exist");
+            throw new \r8\Exception\Variable($name, "Table does not exist");
 
         return $db;
     }
@@ -166,14 +166,14 @@ class DB
     /**
      * Executes the select query and returns the results
      *
-     * @param \h2o\iface\MetaDB\RowBuilder $builder The builder to
+     * @param \r8\iface\MetaDB\RowBuilder $builder The builder to
      * 		use for constructing rows
-     * @param \h2o\Query\Select $query The query to run
-     * @return \h2o\MetaDB\Result
+     * @param \r8\Query\Select $query The query to run
+     * @return \r8\MetaDB\Result
      */
     public function select (
-        \h2o\iface\MetaDB\RowBuilder $builder,
-        \h2o\Query\Select $query
+        \r8\iface\MetaDB\RowBuilder $builder,
+        \r8\Query\Select $query
     ) {
         return $this->set->select( $builder, $query );
     }

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
 
     public function testCountMessages_none ()
     {
-        $parser = new \h2o\Soap\Parser( new DOMDocument );
+        $parser = new \r8\Soap\Parser( new DOMDocument );
         $this->assertSame( 0, $parser->countMessages() );
     }
 
@@ -53,19 +53,19 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
         $this->assertSame( 3, $parser->countMessages() );
     }
 
     public function testEnsureBasics_empty ()
     {
-        $parser = new \h2o\Soap\Parser( new DOMDocument );
+        $parser = new \r8\Soap\Parser( new DOMDocument );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "Document is Empty", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "EmptyDoc"), $err->getSubCodes() );
@@ -76,13 +76,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML("<notEmpty />");
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "Could not find a SOAP Envelope node", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "MissingEnvelope"), $err->getSubCodes() );
@@ -93,13 +93,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML('<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" />');
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "Could not find a SOAP Body node", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "MissingBody"), $err->getSubCodes() );
@@ -115,13 +115,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         		.'<soap:Body />'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "Multiple SOAP Body nodes found", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "MultiBody"), $err->getSubCodes() );
@@ -136,13 +136,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         		.'<soap:Body />'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "No Message Nodes found", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "NoMessage"), $err->getSubCodes() );
@@ -161,13 +161,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         try {
             $parser->ensureBasics();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Soap\Fault $err ) {
+        catch ( \r8\Soap\Fault $err ) {
             $this->assertSame( "Multiple SOAP Header nodes found", $err->getMessage() );
             $this->assertSame( "Sender", $err->getPrimeCode() );
             $this->assertSame( array("Parser", "MultiHeader"), $err->getSubCodes() );
@@ -185,7 +185,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $this->assertNull( $parser->ensureBasics() );
     }
@@ -201,7 +201,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $result = $parser->getHeaders();
         $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
@@ -222,7 +222,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $result = $parser->getHeaders();
         $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
@@ -249,7 +249,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $iterator = $parser->getHeaders();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
@@ -264,8 +264,8 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 0, $result );
         $this->assertArrayHasKey( 1, $result );
 
-        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Header") );
-        $this->assertThat( $result[1], $this->isInstanceOf("\h2o\Soap\Node\Header") );
+        $this->assertThat( $result[0], $this->isInstanceOf('\r8\Soap\Node\Header') );
+        $this->assertThat( $result[1], $this->isInstanceOf('\r8\Soap\Node\Header') );
 
         $this->assertSame( "First", $result[0]->getTag() );
         $this->assertSame( "Second", $result[1]->getTag() );
@@ -281,7 +281,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $iterator = $parser->getMessages();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
@@ -293,7 +293,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
 
         $this->assertSame( 1, count($result) );
         $this->assertArrayHasKey( 0, $result );
-        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Message") );
+        $this->assertThat( $result[0], $this->isInstanceOf('\r8\Soap\Node\Message') );
         $this->assertSame( "Message", $result[0]->getTag() );
     }
 
@@ -310,7 +310,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     		    .'</soap:Body>'
     		.'</soap:Envelope>'
         );
-        $parser = new \h2o\Soap\Parser( $doc );
+        $parser = new \r8\Soap\Parser( $doc );
 
         $iterator = $parser->getMessages();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
@@ -325,8 +325,8 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 0, $result );
         $this->assertArrayHasKey( 1, $result );
 
-        $this->assertThat( $result[0], $this->isInstanceOf("\h2o\Soap\Node\Message") );
-        $this->assertThat( $result[1], $this->isInstanceOf("\h2o\Soap\Node\Message") );
+        $this->assertThat( $result[0], $this->isInstanceOf('\r8\Soap\Node\Message') );
+        $this->assertThat( $result[1], $this->isInstanceOf('\r8\Soap\Node\Message') );
 
         $this->assertSame( "Message", $result[0]->getTag() );
         $this->assertSame( "Other", $result[1]->getTag() );

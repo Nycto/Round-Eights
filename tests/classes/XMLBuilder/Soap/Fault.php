@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_basic ()
     {
-        $fault = new \h2o\Soap\Fault("Error");
+        $fault = new \r8\Soap\Fault("Error");
 
-        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+        $builder = new \r8\XMLBuilder\Soap\Fault( $fault, "test:uri" );
 
         $doc = new DOMDocument;
         $doc->appendChild( $builder->buildNode( $doc ) );
@@ -51,10 +51,10 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Role ()
     {
-        $fault = new \h2o\Soap\Fault("Error");
+        $fault = new \r8\Soap\Fault("Error");
         $fault->setRole( "role:uri" );
 
-        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+        $builder = new \r8\XMLBuilder\Soap\Fault( $fault, "test:uri" );
 
         $doc = new DOMDocument;
         $doc->appendChild( $builder->buildNode( $doc ) );
@@ -68,9 +68,9 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Subcodes ()
     {
-        $fault = new \h2o\Soap\Fault("Oops", "mustunderstand", array("one", "two") );
+        $fault = new \r8\Soap\Fault("Oops", "mustunderstand", array("one", "two") );
 
-        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+        $builder = new \r8\XMLBuilder\Soap\Fault( $fault, "test:uri" );
 
         $doc = new DOMDocument;
         $doc->appendChild( $builder->buildNode( $doc ) );
@@ -84,10 +84,10 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Details ()
     {
-        $fault = new \h2o\Soap\Fault("Oops");
+        $fault = new \r8\Soap\Fault("Oops");
         $fault->setDetails(array("one" => "once", "two" => "twice"));
 
-        $builder = new \h2o\XMLBuilder\Soap\Fault( $fault, "test:uri" );
+        $builder = new \r8\XMLBuilder\Soap\Fault( $fault, "test:uri" );
 
         $doc = new DOMDocument;
         $doc->appendChild( $builder->buildNode( $doc ) );

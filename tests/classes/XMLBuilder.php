@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -39,7 +39,7 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $node = new DOMElement("tag");
 
-        $newNode = \h2o\XMLBuilder::importNode( $doc, $node );
+        $newNode = \r8\XMLBuilder::importNode( $doc, $node );
 
         $this->assertNotSame( $newNode, $node );
         $this->assertSame( $doc, $newNode->ownerDocument );
@@ -52,7 +52,7 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $node = $doc->createElement("tag");
 
-        $newNode = \h2o\XMLBuilder::importNode( $doc, $node );
+        $newNode = \r8\XMLBuilder::importNode( $doc, $node );
 
         $this->assertSame( $newNode, $node );
     }
@@ -63,13 +63,13 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $node = $doc->createElement("tag");
 
-        $builder = $this->getMock("h2o\iface\XMLBuilder", array("buildNode"));
+        $builder = $this->getMock("r8\iface\XMLBuilder", array("buildNode"));
         $builder->expects( $this->once() )
             ->method("buildNode")
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $built = \h2o\XMLBuilder::buildNode( $builder, $doc );
+        $built = \r8\XMLBuilder::buildNode( $builder, $doc );
 
         $this->assertSame( $node, $built );
     }
@@ -80,13 +80,13 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $node = new \DOMElement("tag");
 
-        $builder = $this->getMock("h2o\iface\XMLBuilder", array("buildNode"));
+        $builder = $this->getMock("r8\iface\XMLBuilder", array("buildNode"));
         $builder->expects( $this->once() )
             ->method("buildNode")
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $built = \h2o\XMLBuilder::buildNode( $builder, $doc );
+        $built = \r8\XMLBuilder::buildNode( $builder, $doc );
 
         $this->assertNotSame( $node, $built );
         $this->assertThat( $built, $this->isInstanceOf("DOMElement") );
@@ -97,17 +97,17 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
     {
         $doc = new \DOMDocument;
 
-        $builder = $this->getMock("h2o\iface\XMLBuilder", array("buildNode"));
+        $builder = $this->getMock("r8\iface\XMLBuilder", array("buildNode"));
         $builder->expects( $this->once() )
             ->method("buildNode")
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue("invalid result") );
 
         try {
-            \h2o\XMLBuilder::buildNode( $builder, $doc );
+            \r8\XMLBuilder::buildNode( $builder, $doc );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame(
                     "XMLBuilder did not return a DOMNode object",
                     $err->getMessage()
@@ -121,13 +121,13 @@ class classes_xmlbuilder extends PHPUnit_Framework_TestCase
 
         $node = $doc->createElement("tag");
 
-        $subBuilder = $this->getMock("h2o\iface\XMLBuilder", array("buildNode"));
+        $subBuilder = $this->getMock("r8\iface\XMLBuilder", array("buildNode"));
         $subBuilder->expects( $this->once() )
             ->method("buildNode")
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $builder = new \h2o\XMLBuilder($doc, $subBuilder);
+        $builder = new \r8\XMLBuilder($doc, $subBuilder);
 
         $this->assertSame( $doc, $builder->buildDoc() );
 

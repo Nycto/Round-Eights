@@ -5,33 +5,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Encoding
  */
 
-namespace h2o\Transform;
+namespace r8\Transform;
 
 /**
  * Encodes and decodes strings according to B or Q MIME encoding
  */
-class MIME implements \h2o\iface\Transform\Encode
+class MIME implements \r8\iface\Transform\Encode
 {
 
     /**
@@ -119,7 +119,7 @@ class MIME implements \h2o\iface\Transform\Encode
     static public function stripHeaderName ( $header )
     {
         // Convert it to a string
-        $header = \h2o\strval( $header );
+        $header = \r8\strval( $header );
 
         // Remove any non-printable ascii characters
         $header = preg_replace('/[^\x21-\x7E]/', '', $header);
@@ -193,7 +193,7 @@ class MIME implements \h2o\iface\Transform\Encode
     public function setHeader ( $name )
     {
         $name = self::stripHeaderName( $name );
-        $this->header = \h2o\isEmpty( $name ) ? null : $name;
+        $this->header = \r8\isEmpty( $name ) ? null : $name;
         return $this;
     }
 
@@ -245,10 +245,10 @@ class MIME implements \h2o\iface\Transform\Encode
      */
     public function setInputEncoding ( $charset )
     {
-        $charset = \h2o\str\stripW($charset, \h2o\str\ALLOW_DASHES);
+        $charset = \r8\str\stripW($charset, \r8\str\ALLOW_DASHES);
 
-        if ( \h2o\isEmpty($charset) )
-            throw new \h2o\Exception\Argument(0, "Character Set", "Must not be empty");
+        if ( \r8\isEmpty($charset) )
+            throw new \r8\Exception\Argument(0, "Character Set", "Must not be empty");
 
         $this->inEncoding = $charset;
         return $this;
@@ -292,10 +292,10 @@ class MIME implements \h2o\iface\Transform\Encode
      */
     public function setOutputEncoding ( $charset )
     {
-        $charset = \h2o\str\stripW($charset, \h2o\str\ALLOW_DASHES);
+        $charset = \r8\str\stripW($charset, \r8\str\ALLOW_DASHES);
 
-        if ( \h2o\isEmpty($charset) )
-            throw new \h2o\Exception\Argument(0, "Character Set", "Must not be empty");
+        if ( \r8\isEmpty($charset) )
+            throw new \r8\Exception\Argument(0, "Character Set", "Must not be empty");
 
         $this->outEncoding = $charset;
         return $this;
@@ -330,7 +330,7 @@ class MIME implements \h2o\iface\Transform\Encode
      */
     public function setEOL ( $eol )
     {
-        $this->eol = \h2o\strval( $eol );
+        $this->eol = \r8\strval( $eol );
         return $this;
     }
 
@@ -406,7 +406,7 @@ class MIME implements \h2o\iface\Transform\Encode
      */
     public function rawEncode ( $string )
     {
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         // React to the input encoding
         $string = iconv( $this->getInputEncoding(), 'ISO-8859-1', $string );
@@ -457,7 +457,7 @@ class MIME implements \h2o\iface\Transform\Encode
         // a header defined
 
 
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         // React to the input encoding
         $string = iconv(
@@ -485,7 +485,7 @@ class MIME implements \h2o\iface\Transform\Encode
 
             // If the header is so long it won't fit on a line (plus one for the colon)
             if ( $this->getLineLength() < strlen($this->getHeader()) + 1 ) {
-                $err = new \h2o\Exception\Data(
+                $err = new \r8\Exception\Data(
                         $this->getHeader(),
                         "MIME Header",
                         "Header length exceeds the maximum line length"
@@ -538,7 +538,7 @@ class MIME implements \h2o\iface\Transform\Encode
 
         // If the required data won't fit on a line, throw an error
         if ( $lineLength <= 0 ) {
-            throw new \h2o\Exception\Data(
+            throw new \r8\Exception\Data(
                     $this->getLineLength(),
                     "Max Line Length",
                     "Required content length exceeds the maximum line length"
@@ -566,7 +566,7 @@ class MIME implements \h2o\iface\Transform\Encode
         // can do a few things the iconv encode method cant: Handle encoding without
         // a header defined, use the underscore as spaces to save on space.
 
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         // React to the input encoding
         $string = iconv(
@@ -591,7 +591,7 @@ class MIME implements \h2o\iface\Transform\Encode
 
             // If the header is so long it won't fit on a line (plus one for the colon)
             if ( $this->getLineLength() !== FALSE && $this->getLineLength() < strlen($result) + 1 ) {
-                $err = new \h2o\Exception\Data(
+                $err = new \r8\Exception\Data(
                         $this->getHeader(),
                         "MIME Header",
                         "Header length exceeds the maximum line length"
@@ -626,7 +626,7 @@ class MIME implements \h2o\iface\Transform\Encode
         }
 
         if ( $maxLineLength !== FALSE && $maxLineLength <= 0 ) {
-            throw new \h2o\Exception\Data(
+            throw new \r8\Exception\Data(
                     $this->getLineLength(),
                     "Max Line Length",
                     "Required content length exceeds the maximum line length"
@@ -720,7 +720,7 @@ class MIME implements \h2o\iface\Transform\Encode
      */
     public function from ( $string )
     {
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         // Strip the header name off, if it exists
         $string = preg_replace('/^[\x21-\x7E]+\s*\:/', '', $string);

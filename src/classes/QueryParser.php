@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query Parser
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Parses a URL query string into an array
@@ -73,14 +73,14 @@ class QueryParser
     /**
      * The filter to apply to the keys before returning them
      *
-     * @var \h2o\iface\Filter
+     * @var \r8\iface\Filter
      */
     private $keyFilter;
 
     /**
      * The filter to apply to the values before returning them
      *
-     * @var \h2o\iface\Filter
+     * @var \r8\iface\Filter
      */
     private $valueFilter;
 
@@ -89,7 +89,7 @@ class QueryParser
      */
     public function __construct ()
     {
-        $filter = new \h2o\Curry\Call('urldecode');
+        $filter = new \r8\Curry\Call('urldecode');
 
         $this->keyFilter = $filter;
         $this->valueFilter = $filter;
@@ -109,14 +109,14 @@ class QueryParser
      * Sets the delimiter used to separate each key/value pair
      *
      * @param String $delim The new delimiter
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function setOuterDelim ( $delim )
     {
-        $delim = \h2o\strval($delim);
+        $delim = \r8\strval($delim);
 
-        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
-            throw new \h2o\Exception\Argument(0, "Outer Delimiter", "Must not be empty");
+        if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
+            throw new \r8\Exception\Argument(0, "Outer Delimiter", "Must not be empty");
 
         $this->outerDelim = $delim;
 
@@ -137,14 +137,14 @@ class QueryParser
      * Returns the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function setInnerDelim ( $delim )
     {
-        $delim = \h2o\strval($delim);
+        $delim = \r8\strval($delim);
 
-        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
-            throw new \h2o\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
+        if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
+            throw new \r8\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
 
         $this->innerDelim = $delim;
 
@@ -165,13 +165,13 @@ class QueryParser
      * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function setStartDelim ( $delim )
     {
-        $delim = \h2o\strval($delim);
+        $delim = \r8\strval($delim);
 
-        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
+        if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             $delim = null;
 
         $this->startDelim = $delim;
@@ -192,7 +192,7 @@ class QueryParser
     /**
      * Clears the starting delimiter from this instance
      *
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function clearStartDelim ()
     {
@@ -214,13 +214,13 @@ class QueryParser
      * Sets the delimiter used to separate the key and value within a pair
      *
      * @param String $delim The new delimiter
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function setEndDelim ( $delim )
     {
-        $delim = \h2o\strval($delim);
+        $delim = \r8\strval($delim);
 
-        if ( \h2o\isEmpty($delim, \h2o\ALLOW_SPACES) )
+        if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             $delim = null;
 
         $this->endDelim = $delim;
@@ -241,7 +241,7 @@ class QueryParser
     /**
      * Clears the ending delimiter from this instance
      *
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function clearEndDelim ()
     {
@@ -263,14 +263,14 @@ class QueryParser
      * Sets the reglar expression used to extract sub-keys from the keys
      *
      * @param String $regex The new regular expression
-     * @return \h2o\QueryParser Returns a self reference
+     * @return \r8\QueryParser Returns a self reference
      */
     public function setSubRegEx ( $regex )
     {
-        $regex = \h2o\strval($regex);
+        $regex = \r8\strval($regex);
 
-        if ( \h2o\isEmpty($regex) )
-            throw new \h2o\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
+        if ( \r8\isEmpty($regex) )
+            throw new \r8\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
 
         $this->subRegEx = $regex;
 
@@ -280,7 +280,7 @@ class QueryParser
     /**
      * Returns the filter that will be applied to the keys
      *
-     * @return \h2o\iface\Filter
+     * @return \r8\iface\Filter
      */
     public function getKeyFilter ()
     {
@@ -290,10 +290,10 @@ class QueryParser
     /**
      * Sets the filter that will be applied to the keys
      *
-     * @param \h2o\iface\Filter $filter The new Filter
-     * @return \h2o\QueryParser Returns a self reference
+     * @param \r8\iface\Filter $filter The new Filter
+     * @return \r8\QueryParser Returns a self reference
      */
-    public function setKeyFilter ( \h2o\iface\Filter $filter )
+    public function setKeyFilter ( \r8\iface\Filter $filter )
     {
         $this->keyFilter = $filter;
         return $this;
@@ -302,7 +302,7 @@ class QueryParser
     /**
      * Returns the filter that will be applied to the values
      *
-     * @return \h2o\iface\Filter
+     * @return \r8\iface\Filter
      */
     public function getValueFilter ()
     {
@@ -312,10 +312,10 @@ class QueryParser
     /**
      * Sets the filter that will be applied to the values
      *
-     * @param \h2o\iface\Filter $filter The new Filter
-     * @return \h2o\QueryParser Returns a self reference
+     * @param \r8\iface\Filter $filter The new Filter
+     * @return \r8\QueryParser Returns a self reference
      */
-    public function setValueFilter ( \h2o\iface\Filter $filter )
+    public function setValueFilter ( \r8\iface\Filter $filter )
     {
         $this->valueFilter = $filter;
         return $this;
@@ -347,7 +347,7 @@ class QueryParser
             $result = array();
 
         if ( !isset($matches[1]) ) {
-            $err = new \h2o\Exception\Interaction("Sub-Key RegEx did not return a sub-pattern");
+            $err = new \r8\Exception\Interaction("Sub-Key RegEx did not return a sub-pattern");
             $err->addData("Sub-Key RegEx", $this->subRegEx);
             throw $err;
         }
@@ -355,7 +355,7 @@ class QueryParser
         // Loop through the matched sub-patterns
         foreach ( $matches[1] AS $subKey ) {
 
-            if ( \h2o\isEmpty($subKey[0], \h2o\ALLOW_SPACES) )
+            if ( \r8\isEmpty($subKey[0], \r8\ALLOW_SPACES) )
                 $result[] = null;
             else
                 $result[] = $subKey[0];
@@ -372,14 +372,14 @@ class QueryParser
      */
     public function parse ( $query )
     {
-        $query = \h2o\strval($query);
+        $query = \r8\strval($query);
 
         // Grab everything after the starting delimiter
-        if ( \h2o\str\contains($this->startDelim, $query) )
+        if ( \r8\str\contains($this->startDelim, $query) )
             $query = substr($query, strpos($query, $this->startDelim) + 1);
 
         // Cut off everything after the ending delimiter
-        if ( \h2o\str\contains($this->endDelim, $query) )
+        if ( \r8\str\contains($this->endDelim, $query) )
             $query = substr($query, 0, strpos($query, $this->endDelim) );
 
         // Split the query into its pairs
@@ -391,17 +391,17 @@ class QueryParser
         foreach ($query AS $pair) {
 
             // Skip over empty pairs
-            if ( \h2o\isEmpty($pair) )
+            if ( \r8\isEmpty($pair) )
                 continue;
 
             // split the pair up into its key and value
-            if ( \h2o\str\contains($this->innerDelim, $pair) )
+            if ( \r8\str\contains($this->innerDelim, $pair) )
                 list( $key, $value ) = explode($this->innerDelim, $pair, 2);
             else
                 list( $key, $value ) = array( $pair, "" );
 
             // if the key is empty, do nothing with it
-            if ( \h2o\isEmpty( $key, \h2o\ALLOW_SPACES ) )
+            if ( \r8\isEmpty( $key, \r8\ALLOW_SPACES ) )
                 continue;
 
             // Apply the filters to the key and value
@@ -412,7 +412,7 @@ class QueryParser
             $key = $this->parseKey( $key );
 
             // Add the branch to the result array
-            \h2o\ary\branch( $result, $value, $key );
+            \r8\ary\branch( $result, $value, $key );
         }
 
         return $result;

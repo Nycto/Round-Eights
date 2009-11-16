@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -37,21 +37,21 @@ class classes_template extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(
                 "VariableName",
-                \h2o\Template::normalizeLabel("Variable Name")
+                \r8\Template::normalizeLabel("Variable Name")
             );
 
         try {
-            \h2o\Template::normalizeLabel("50Label");
+            \r8\Template::normalizeLabel("50Label");
             $this->fail('An expected exception was not thrown');
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
 
     public function testSet ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->set('var', 'value') );
@@ -76,7 +76,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testRemove ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->remove('doesnt Exist') );
@@ -101,7 +101,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertFalse( $tpl->exists('var') );
 
         $tpl->set('var', 'value');
@@ -113,7 +113,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
 
         $this->assertNull( $tpl->get('var') );
 
@@ -135,7 +135,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testAdd ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->add('var', 'value') );
@@ -159,7 +159,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testClear ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
 
         $this->assertSame( $tpl, $tpl->clear() );
         $this->assertEquals( array(), $tpl->getValues() );
@@ -178,7 +178,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testAppend ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertEquals( array(), $tpl->getValues() );
 
         $this->assertSame( $tpl, $tpl->append('var', 'value') );
@@ -208,7 +208,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_array ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( array('var' => 'value', 'other' => 3.1415) )
@@ -221,7 +221,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_Ary ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( array('var' => 'value', 'other' => 3.1415) )
@@ -234,7 +234,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_Iterable ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertSame(
                 $tpl,
                 $tpl->import( new ArrayIterator( array('var' => 'value', 'other' => 3.1415) ) )
@@ -247,7 +247,7 @@ class classes_template extends PHPUnit_Framework_TestCase
         $obj->var = "value";
         $obj->other = 3.1415;
 
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $this->assertSame( $tpl, $tpl->import( $obj ) );
         $this->assertEquals(
                 array('var' => 'value', 'other' => 3.1415),
@@ -257,33 +257,33 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testImport_notImportable ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
 
         try {
             $tpl->import( "String" );
             $this->fail('An expected exception was not thrown');
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Value can not be imported", $err->getMessage() );
         }
     }
 
     public function testImport_badLabel ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
 
         try {
             $tpl->import( array("50" => "String") );
             $this->fail('An expected exception was not thrown');
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
 
     public function testRender ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $tpl->expects( $this->once() )
             ->method("display")
             ->will( $this->returnCallback(function () {
@@ -295,7 +295,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
         $tpl->expects( $this->once() )
             ->method("display")
             ->will( $this->returnCallback(function () {
@@ -307,7 +307,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testOverLoading ()
     {
-        $tpl = $this->getMock( 'h2o\Template', array("display") );
+        $tpl = $this->getMock( 'r8\Template', array("display") );
 
         $this->assertEquals( array(), $tpl->getValues() );
         $this->assertNull( $tpl->var );
@@ -354,7 +354,7 @@ class classes_template extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         $tpl = $this->getMock(
-                'h2o\Template',
+                'r8\Template',
                 array("display"),
                 array(  array('var' => 'value', 'pi' => 3.1415) )
                 );
@@ -366,7 +366,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
 
         $tpl2 = $this->getMock(
-                'h2o\Template',
+                'r8\Template',
                 array("display"),
                 array( $tpl )
                 );
@@ -378,7 +378,7 @@ class classes_template extends PHPUnit_Framework_TestCase
 
 
         $tpl = $this->getMock(
-                'h2o\Template',
+                'r8\Template',
                 array("display"),
                 array( array('var' => 'value', 'pi' => 3.1415) )
                 );
@@ -391,25 +391,25 @@ class classes_template extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $obj = \h2o\Template::Raw();
-        $this->assertThat( $obj, $this->isInstanceOf("h2o\\Template\\Raw") );
+        $obj = \r8\Template::Raw();
+        $this->assertThat( $obj, $this->isInstanceOf("r8\\Template\\Raw") );
 
 
-        $obj = \h2o\Template::Raw("content");
-        $this->assertThat( $obj, $this->isInstanceOf("h2o\\Template\\Raw") );
+        $obj = \r8\Template::Raw("content");
+        $this->assertThat( $obj, $this->isInstanceOf("r8\\Template\\Raw") );
         $this->assertSame( "content", $obj->getContent() );
 
 
-        $obj = \h2o\Template::Raw("content", "garbage");
-        $this->assertThat( $obj, $this->isInstanceOf("h2o\\Template\\Raw") );
+        $obj = \r8\Template::Raw("content", "garbage");
+        $this->assertThat( $obj, $this->isInstanceOf("r8\\Template\\Raw") );
         $this->assertSame( "content", $obj->getContent() );
 
         try {
-            \h2o\Template::ThisIsNotReal();
+            \r8\Template::ThisIsNotReal();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( 'Class could not be found in \\h2o\\Template namespace', $err->getMessage() );
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( 'Class could not be found in \\r8\\Template namespace', $err->getMessage() );
         }
     }
 

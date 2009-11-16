@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_ArrayBasic ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"ary",
             array( "key" => "value", "key2" => "value2" )
         );
@@ -56,7 +56,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_ArrayDepth ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"ary",
             array( "key" => array( "sub" => array( "child" => "data", "stuff" => "info" ) ) )
         );
@@ -77,7 +77,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Iterators ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"iter",
             new ArrayIterator(array(
             	"key" => new ArrayIterator(array(
@@ -105,7 +105,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Empty ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values( "empty",  array() );
+        $builder = new \r8\XMLBuilder\Quick\Values( "empty",  array() );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
@@ -126,13 +126,13 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $node = $doc->createElement("test");
 
-        $subBuilder = $this->getMock('h2o\iface\XMLBuilder');
+        $subBuilder = $this->getMock('r8\iface\XMLBuilder');
         $subBuilder->expects( $this->once() )
             ->method( "buildNode" )
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( "build",  $subBuilder );
+        $builder = new \r8\XMLBuilder\Quick\Values( "build",  $subBuilder );
 
         $result = $builder->buildNode( $doc );
 
@@ -152,13 +152,13 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $node = $doc->createElement("test");
 
-        $subBuilder = $this->getMock('\h2o\iface\XMLBuilder');
+        $subBuilder = $this->getMock('\r8\iface\XMLBuilder');
         $subBuilder->expects( $this->once() )
             ->method( "buildNode" )
             ->with( $this->isInstanceOf("DOMDocument") )
             ->will( $this->returnValue($node) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( "build",  array("parent" => $subBuilder) );
+        $builder = new \r8\XMLBuilder\Quick\Values( "build",  array("parent" => $subBuilder) );
 
         $result = $builder->buildNode( $doc );
 
@@ -180,7 +180,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
         $obj->stuff = "info";
         $obj->two = "blah";
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( "obj",  $obj );
+        $builder = new \r8\XMLBuilder\Quick\Values( "obj",  $obj );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
@@ -205,7 +205,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
         $obj->key->sub->stuff = "info";
         $obj->two = "blah";
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( "obj",  $obj );
+        $builder = new \r8\XMLBuilder\Quick\Values( "obj",  $obj );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
@@ -228,7 +228,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
             ->method( "__toString" )
             ->will( $this->returnValue( "Data Chunk" ) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values( "tostr",  $obj );
+        $builder = new \r8\XMLBuilder\Quick\Values( "tostr",  $obj );
 
         $doc = new DOMDocument;
         $result = $builder->buildNode( $doc );
@@ -251,7 +251,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
             ->method( "__toString" )
             ->will( $this->returnValue( "Data Chunk" ) );
 
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"tostr",
             array( "tag" => $obj )
         );
@@ -272,7 +272,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_Namespaced ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"ary",
             array( "key" => "value" ),
             "test:uri"
@@ -294,7 +294,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_InvalidKey ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"keys",
             array( "  !! @@ &&" => "val", 26 => "number" )
         );
@@ -315,7 +315,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_List ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"list",
             array(
                 "item" => array(
@@ -342,7 +342,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
     public function testBuildNode_RootList ()
     {
-        $builder = new \h2o\XMLBuilder\Quick\Values(
+        $builder = new \r8\XMLBuilder\Quick\Values(
         	"list",
             array(
             	array( "key" => "value" ),

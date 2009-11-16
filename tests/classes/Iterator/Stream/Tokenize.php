@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testIterate ()
     {
-        $stream = new \h2o\Stream\In\String("String\nTo\nSplit");
+        $stream = new \r8\Stream\In\String("String\nTo\nSplit");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "\n" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "To", "Split"),
@@ -57,9 +57,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testIterate_underRead ()
     {
-        $stream = new \h2o\Stream\In\String("String\nTo\nSplit", 3);
+        $stream = new \r8\Stream\In\String("String\nTo\nSplit", 3);
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "\n" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "To", "Split"),
@@ -70,9 +70,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testLongDelim ()
     {
-        $stream = new \h2o\Stream\In\String("StringBREAKToBREAKSplit");
+        $stream = new \r8\Stream\In\String("StringBREAKToBREAKSplit");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "BREAK" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BREAK" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "To", "Split"),
@@ -82,9 +82,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testCaseSensitivity ()
     {
-        $stream = new \h2o\Stream\In\String("StringBREAKbreakBREAKSplit");
+        $stream = new \r8\Stream\In\String("StringBREAKbreakBREAKSplit");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "BREAK" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BREAK" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "break", "Split"),
@@ -94,9 +94,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testTrailingDelim ()
     {
-        $stream = new \h2o\Stream\In\String("String\nTo\nSplit\n\n");
+        $stream = new \r8\Stream\In\String("String\nTo\nSplit\n\n");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "\n" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "To", "Split"),
@@ -104,9 +104,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
             );
 
 
-        $stream = new \h2o\Stream\In\String("StringBRBR");
+        $stream = new \r8\Stream\In\String("StringBRBR");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "BR" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BR" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String"),
@@ -116,9 +116,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
     public function testLeadingDelim ()
     {
-        $stream = new \h2o\Stream\In\String("\n\nString\nTo\nSplit");
+        $stream = new \r8\Stream\In\String("\n\nString\nTo\nSplit");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "\n" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String", "To", "Split"),
@@ -126,9 +126,9 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
             );
 
 
-        $stream = new \h2o\Stream\In\String("BRBRString");
+        $stream = new \r8\Stream\In\String("BRBRString");
 
-        $iter = new \h2o\Iterator\Stream\Tokenize( $stream, "BR" );
+        $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BR" );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
                 array("String"),

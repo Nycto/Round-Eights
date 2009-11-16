@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Curry
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Base class for Argument Currying classes
  */
-abstract class Curry implements \h2o\iface\Filter
+abstract class Curry implements \r8\iface\Filter
 {
 
     /**
@@ -61,29 +61,29 @@ abstract class Curry implements \h2o\iface\Filter
      * Static method for creating a new curry object
      *
      * This takes the called function and looks for a class under
-     * the \h2o\Curry namespace.
+     * the \r8\Curry namespace.
      *
      * @param String $curry The curry class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \h2o\Curry subclass
+     * @return Object Returns a new \r8\Curry subclass
      */
     static public function __callStatic ( $curry, $args )
     {
-        $curry = "\\h2o\\Curry\\". trim( \h2o\strval($curry) );
+        $curry = "\\r8\\Curry\\". trim( \r8\strval($curry) );
 
         if ( !class_exists($curry, true) ) {
-            throw new \h2o\Exception\Argument(
+            throw new \r8\Exception\Argument(
                     0,
                     "Curry Class Name",
-                    "Class could not be found in \\h2o\\Curry namespace"
+                    "Class could not be found in \\r8\\Curry namespace"
                 );
         }
 
-        if ( !\h2o\kindOf( $curry, "\\h2o\\Curry") ) {
-            throw new \h2o\Exception\Argument(
+        if ( !\r8\kindOf( $curry, "\\r8\\Curry") ) {
+            throw new \r8\Exception\Argument(
                     0,
                     "Curry Class Name",
-                    "Class is not a child of \\h2o\\Curry"
+                    "Class is not a child of \\r8\\Curry"
                 );
         }
 

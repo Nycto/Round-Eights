@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Mail
  */
 
-namespace h2o\Mail;
+namespace r8\Mail;
 
 /**
  * The base class that for objects which handle the actual sending of an email.
@@ -52,12 +52,12 @@ abstract class Transport
      */
     static public function formatAddress ($email, $name = NULL)
     {
-        $email = \h2o\Filter::Email()->filter( $email );
+        $email = \r8\Filter::Email()->filter( $email );
 
-        if ( !\h2o\isVague($name) )
-            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
+        if ( !\r8\isVague($name) )
+            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
 
-        if ( \h2o\isVague($name) )
+        if ( \r8\isVague($name) )
             return "<". $email .">";
         else
             return '"'. addslashes($name) .'" <'. $email .'>';
@@ -83,10 +83,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of addresses being sent to
      *
-     * @param \h2o\Mail $mail The piece of mail whose "to" fields are being formatted
+     * @param \r8\Mail $mail The piece of mail whose "to" fields are being formatted
      * @return String
      */
-    public function getToString ( \h2o\Mail $mail )
+    public function getToString ( \r8\Mail $mail )
     {
         return $this->getAddressList( $mail->getTo() );
     }
@@ -94,10 +94,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of CC addresses
      *
-     * @param \h2o\Mail $mail The piece of mail whose "cc" fields are being formatted
+     * @param \r8\Mail $mail The piece of mail whose "cc" fields are being formatted
      * @return String
      */
-    public function getCCString ( \h2o\Mail $mail )
+    public function getCCString ( \r8\Mail $mail )
     {
         return $this->getAddressList( $mail->getCC() );
     }
@@ -105,10 +105,10 @@ abstract class Transport
     /**
      * Returns the header content string of the list of BCC addresses
      *
-     * @param \h2o\Mail $mail The piece of mail whose to fields are being formatted
+     * @param \r8\Mail $mail The piece of mail whose to fields are being formatted
      * @return String
      */
-    public function getBCCString ( \h2o\Mail $mail )
+    public function getBCCString ( \r8\Mail $mail )
     {
         return $this->getAddressList( $mail->getBCC() );
     }
@@ -116,11 +116,11 @@ abstract class Transport
     /**
      * Returns an array of headers that will be sent with this message
      *
-     * @param \h2o\Mail $mail The piece of mail whose headers should be returned
+     * @param \r8\Mail $mail The piece of mail whose headers should be returned
      * @return Array The key is the header name, the value is the value of
      *      the header
      */
-    public function getHeaderList ( \h2o\Mail $mail )
+    public function getHeaderList ( \r8\Mail $mail )
     {
         $result = array();
 
@@ -164,12 +164,12 @@ abstract class Transport
     /**
      * Returns an the string of headers that will be sent with this message
      *
-     * @param \h2o\Mail $mail The piece of mail whose headers should be returned
+     * @param \r8\Mail $mail The piece of mail whose headers should be returned
      * @return String A MIME formatted header string
      */
-    public function getHeaderString ( \h2o\Mail $mail )
+    public function getHeaderString ( \r8\Mail $mail )
     {
-        $mime = new \h2o\Transform\MIME;
+        $mime = new \r8\Transform\MIME;
         $mime->setEOL( self::EOL );
         $mime->setLineLength( self::LINE_LENGTH );
 
@@ -212,15 +212,15 @@ abstract class Transport
     /**
      * Returns the body string for an HTML
      *
-     * @param \h2o\Mail $mail The piece of mail whose body will be returned
+     * @param \r8\Mail $mail The piece of mail whose body will be returned
      * @return String A formatted body email string
      */
-    public function getBody ( \h2o\Mail $mail )
+    public function getBody ( \r8\Mail $mail )
     {
         // If both the text and HTML are set...
         if ( $mail->htmlExists() && $mail->textExists() ) {
 
-            $mime = new \h2o\Transform\MIME;
+            $mime = new \r8\Transform\MIME;
             $mime->setEOL( self::EOL );
             $mime->setLineLength( self::LINE_LENGTH );
 
@@ -270,24 +270,24 @@ abstract class Transport
      * This method is called indirectly via the send method. Use that method
      * if you want to send a piece of mail
      *
-     * @param \h2o\Mail $mail The mail to send
+     * @param \r8\Mail $mail The mail to send
      * @return Null
      */
-    abstract protected function internalSend ( \h2o\Mail $mail );
+    abstract protected function internalSend ( \r8\Mail $mail );
 
     /**
      * Method for sending a piece of mail using this transport.
      *
-     * @param \h2o\Mail $mail The mail to send
-     * @return \h2o\Mail\Transport Returns a self reference
+     * @param \r8\Mail $mail The mail to send
+     * @return \r8\Mail\Transport Returns a self reference
      */
-    public function send ( \h2o\Mail $mail )
+    public function send ( \r8\Mail $mail )
     {
         if ( !$mail->fromExists() )
-            throw new \h2o\Exception\Variable('From Address', '"From" Address must be set to send an email');
+            throw new \r8\Exception\Variable('From Address', '"From" Address must be set to send an email');
 
         if ( !$mail->hasTos() )
-            throw new \h2o\Exception\Variable('To Address', '"To" Address must be set to send an email');
+            throw new \r8\Exception\Variable('To Address', '"To" Address must be set to send an email');
 
         $this->internalSend( $mail );
 

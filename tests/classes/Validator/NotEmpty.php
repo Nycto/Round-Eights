@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,7 +36,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
     public function testInvalid_noFlags ()
     {
 
-        $validator = new \h2o\Validator\NotEmpty;
+        $validator = new \r8\Validator\NotEmpty;
 
         $result = $validator->validate("");
         $this->assertFalse( $result->isValid() );
@@ -84,7 +84,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
     public function testInvalid_flags ()
     {
-        $validator = new \h2o\Validator\NotEmpty( \h2o\ALLOW_BLANK );
+        $validator = new \r8\Validator\NotEmpty( \r8\ALLOW_BLANK );
         $this->assertTrue( $validator->isValid("") );
 
         $result = $validator->validate("    ");
@@ -95,7 +95,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new \h2o\Validator\NotEmpty( \h2o\ALLOW_NULL );
+        $validator = new \r8\Validator\NotEmpty( \r8\ALLOW_NULL );
         $this->assertTrue( $validator->isValid(NULL) );
 
         $result = $validator->validate(0);
@@ -106,7 +106,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
             );
 
 
-        $validator = new \h2o\Validator\NotEmpty( \h2o\ALLOW_FALSE );
+        $validator = new \r8\Validator\NotEmpty( \r8\ALLOW_FALSE );
         $this->assertTrue( $validator->isValid(FALSE) );
 
         $result = $validator->validate(array());
@@ -120,7 +120,7 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new \h2o\Validator\NotEmpty;
+        $validator = new \r8\Validator\NotEmpty;
 
         $this->assertTrue( $validator->isValid("0") );
         $this->assertTrue( $validator->isValid("this is not empty") );

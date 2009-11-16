@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Soap
  */
 
-namespace h2o\Soap\Server;
+namespace r8\Soap\Server;
 
 /**
  * Collects and processes the message elements of a soap request
@@ -41,7 +41,7 @@ class Messages
     /**
      * Returns the Messages registered for processing
      *
-     * @return Array Returns an array of \h2o\iface\Soap\Message objects
+     * @return Array Returns an array of \r8\iface\Soap\Message objects
      */
     public function getMessages ()
     {
@@ -53,20 +53,20 @@ class Messages
      *
      * @param String $uri The URI of the message
      * @param String $name The tag name of the message this object will handle
-     * @param \h2o\iface\Soap\Message $operation The handler to invoke when
+     * @param \r8\iface\Soap\Message $operation The handler to invoke when
      * 		this command is encountered
-     * @return \h2o\Soap\Server\Messages Returns a self reference
+     * @return \r8\Soap\Server\Messages Returns a self reference
      */
-    public function addMessage ( $uri, $name, \h2o\iface\Soap\Message $message )
+    public function addMessage ( $uri, $name, \r8\iface\Soap\Message $message )
     {
         $uri = (string) trim( $uri );
-        $name = \h2o\str\stripW( $name );
+        $name = \r8\str\stripW( $name );
 
-        if ( \h2o\isEmpty($uri) )
-            throw new \h2o\Exception\Argument(0, "Message URI", "Must not be empty");
+        if ( \r8\isEmpty($uri) )
+            throw new \r8\Exception\Argument(0, "Message URI", "Must not be empty");
 
-        if ( \h2o\isEmpty($name) )
-            throw new \h2o\Exception\Argument(1, "Message Tag Name", "Must not be empty");
+        if ( \r8\isEmpty($name) )
+            throw new \r8\Exception\Argument(1, "Message Tag Name", "Must not be empty");
 
         if ( !isset($this->messages[ $uri ]) )
             $this->messages[ $uri ] = array();
@@ -79,15 +79,15 @@ class Messages
     /**
      * Processes a soap request through this server
      *
-     * @param \h2o\Soap\Parser $parser The soap message to process
-     * @return \h2o\XMLBuilder\Series Returns the builder needed to construct
+     * @param \r8\Soap\Parser $parser The soap message to process
+     * @return \r8\XMLBuilder\Series Returns the builder needed to construct
      * 		the response messages
      */
-    public function process ( \h2o\Soap\Parser $parser )
+    public function process ( \r8\Soap\Parser $parser )
     {
         $messages = $parser->getMessages();
 
-        $response = new \h2o\XMLBuilder\Series;
+        $response = new \r8\XMLBuilder\Series;
 
         foreach ( $messages AS $message )
         {
@@ -98,7 +98,7 @@ class Messages
                 $this->messages[ $message->getNamespace() ][ $message->getTag() ]
                 ->process( $message );
 
-            if ( $result instanceof \h2o\iface\XMLBuilder )
+            if ( $result instanceof \r8\iface\XMLBuilder )
                 $response->addChild( $result );
         }
 

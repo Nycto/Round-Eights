@@ -2,53 +2,53 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace h2o\Query\Where;
+namespace r8\Query\Where;
 
 /**
  * Combines multiple where expressions with a logical clause
  */
-abstract class Logic implements \h2o\iface\Query\Where
+abstract class Logic implements \r8\iface\Query\Where
 {
 
     /**
      * The list of WHERE clauses to combine
      *
-     * @var array An array of \h2o\iface\Query\Where objects
+     * @var array An array of \r8\iface\Query\Where objects
      */
     private $clauses = array();
 
     /**
      * Constructor...
      *
-     * @param $clauses... \h2o\iface\Query\Where Any initial where clauses
+     * @param $clauses... \r8\iface\Query\Where Any initial where clauses
      * 		to set in this instance
      */
     public function __construct ()
     {
         if ( func_num_args() > 0 ) {
             foreach ( func_get_args() AS $arg ) {
-                if ( $arg instanceof \h2o\iface\Query\Where )
+                if ( $arg instanceof \r8\iface\Query\Where )
                     $this->addClause( $arg );
             }
         }
@@ -57,7 +57,7 @@ abstract class Logic implements \h2o\iface\Query\Where
     /**
      * Returns the list of WHERE clauses
      *
-     * @return array An array of \h2o\iface\Query\Where objects
+     * @return array An array of \r8\iface\Query\Where objects
      */
     public function getClauses ()
     {
@@ -66,10 +66,10 @@ abstract class Logic implements \h2o\iface\Query\Where
 
     /**
      * Adds a new WHERE clause to the list
-     * @param \h2o\iface\Query\Where $where The WHERE clause to add
-     * @return \h2o\Query\Where\Logic Returns a self reference
+     * @param \r8\iface\Query\Where $where The WHERE clause to add
+     * @return \r8\Query\Where\Logic Returns a self reference
      */
-    public function addClause ( \h2o\iface\Query\Where $where )
+    public function addClause ( \r8\iface\Query\Where $where )
     {
         if ( !in_array( $where, $this->clauses, true) )
             $this->clauses[] = $where;
@@ -80,7 +80,7 @@ abstract class Logic implements \h2o\iface\Query\Where
     /**
      * Clears all the Where clauses out of the list
      *
-     * @return \h2o\Query\Where\Logic Returns a self reference
+     * @return \r8\Query\Where\Logic Returns a self reference
      */
     public function clearClauses ()
     {
@@ -108,11 +108,11 @@ abstract class Logic implements \h2o\iface\Query\Where
     /**
      * Returns the SQL Where expression represented by this object
      *
-     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
+     * @param \r8\iface\DB\Link $link The database connection this WHERE clause
      * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toWhereSQL( \h2o\iface\DB\Link $link )
+    public function toWhereSQL( \r8\iface\DB\Link $link )
     {
         $prec = $this->getPrecedence();
         $result = array();
@@ -121,7 +121,7 @@ abstract class Logic implements \h2o\iface\Query\Where
         {
             $sql = trim( $clause->toWhereSQL( $link ) );
 
-            if ( \h2o\IsEmpty($sql) )
+            if ( \r8\IsEmpty($sql) )
                 continue;
 
             // Wrap the clause in parenthesis if it has lower precedence

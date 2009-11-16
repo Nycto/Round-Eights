@@ -2,52 +2,52 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Random
  */
 
-namespace h2o\Session;
+namespace r8\Session;
 
 /**
  * Applies a string transformation to values being saved in a session
  */
-class Transform extends \h2o\Session\Decorator
+class Transform extends \r8\Session\Decorator
 {
 
     /**
      * The transformation to apply to values as the enter and leave this session
      *
-     * @var \h2o\iface\Transform
+     * @var \r8\iface\Transform
      */
     private $transform;
 
     /**
      * Constructor...
      *
-     * @param \h2o\iface\Transform $transform The transformation to apply to
+     * @param \r8\iface\Transform $transform The transformation to apply to
      * 		values as the enter and leave this session
-     * @param \h2o\iface\Session $decorated The object being decorated
+     * @param \r8\iface\Session $decorated The object being decorated
      */
     public function __construct (
-        \h2o\iface\Transform $transform,
-        \h2o\iface\Session $decorated
+        \r8\iface\Transform $transform,
+        \r8\iface\Session $decorated
     ) {
         parent::__construct( $decorated );
         $this->transform = $transform;
@@ -89,7 +89,7 @@ class Transform extends \h2o\Session\Decorator
      *
      * @param String $key The key to set
      * @param Mixed $value The value to save
-     * @return \h2o\iface\Session Returns a self reference
+     * @return \r8\iface\Session Returns a self reference
      */
     public function set ( $key, $value )
     {
@@ -107,7 +107,7 @@ class Transform extends \h2o\Session\Decorator
      *
      * @param String $key The key to push on to
      * @param Mixed $value The value to push
-     * @return \h2o\iface\Session Returns a self reference
+     * @return \r8\iface\Session Returns a self reference
      */
     public function push ( $key, $value )
     {

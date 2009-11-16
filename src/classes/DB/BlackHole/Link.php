@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace h2o\DB\BlackHole;
+namespace r8\DB\BlackHole;
 
 /**
  * A Database connection that simply throws away any input it is given
  */
-class Link implements \h2o\iface\DB\Link
+class Link implements \r8\iface\DB\Link
 {
 
     /**
@@ -43,20 +43,20 @@ class Link implements \h2o\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @returns \h2o\iface\DB\Result Returns a result object
+     * @returns \r8\iface\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
         $query = strval( $query );
 
-        if ( \h2o\DB\Link::isSelect($query) )
-            return new \h2o\DB\BlackHole\Read( null, $query );
+        if ( \r8\DB\Link::isSelect($query) )
+            return new \r8\DB\BlackHole\Read( null, $query );
 
-        else if ( \h2o\DB\Link::isInsert($query) )
-            return new \h2o\DB\Result\Write( 1, ++$this->insertID, $query );
+        else if ( \r8\DB\Link::isInsert($query) )
+            return new \r8\DB\Result\Write( 1, ++$this->insertID, $query );
 
         else
-            return new \h2o\DB\Result\Write( 0, null, $query );
+            return new \r8\DB\Result\Write( 0, null, $query );
     }
 
     /**
@@ -90,7 +90,7 @@ class Link implements \h2o\iface\DB\Link
     public function quote ( $value, $allowNull = TRUE )
     {
         $self = $this;
-        return \h2o\DB\Link::cleanseValue(
+        return \r8\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
                 function ($value) use ( $self ) {
@@ -114,7 +114,7 @@ class Link implements \h2o\iface\DB\Link
      */
     public function escape ( $value, $allowNull = TRUE )
     {
-        return \h2o\DB\Link::cleanseValue(
+        return \r8\DB\Link::cleanseValue(
                 $value,
                 $allowNull,
                 array( $this, "escapeString" )

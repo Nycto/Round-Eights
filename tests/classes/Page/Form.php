@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,18 +36,18 @@ class classes_page_form extends PHPUnit_Framework_TestCase
     public function getTestPage ()
     {
         return $this->getMock(
-                'h2o\iface\Page',
+                'r8\iface\Page',
                 array('getContent')
             );
     }
 
     public function testConstruct ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $display = $this->getTestPage();
         $success = $this->getTestPage();
 
-        $page = new \h2o\Page\Form( $form, $display, $success );
+        $page = new \r8\Page\Form( $form, $display, $success );
 
         $this->assertSame( $form, $page->getForm() );
         $this->assertSame( $display, $page->getDisplay() );
@@ -56,8 +56,8 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testInitialsAccess ()
     {
-        $page = new \h2o\Page\Form(
-                new \h2o\Form,
+        $page = new \r8\Page\Form(
+                new \r8\Form,
                 $this->getTestPage(),
                 $this->getTestPage()
             );
@@ -70,8 +70,8 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testSourceAccess ()
     {
-        $page = new \h2o\Page\Form(
-                new \h2o\Form,
+        $page = new \r8\Page\Form(
+                new \r8\Form,
                 $this->getTestPage(),
                 $this->getTestPage()
             );
@@ -84,7 +84,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testGetPage_display ()
     {
-        $form = $this->getMock( 'h2o\Form', array('anyIn', 'fill') );
+        $form = $this->getMock( 'r8\Form', array('anyIn', 'fill') );
 
         $form->expects( $this->once() )
             ->method('anyIn')
@@ -99,7 +99,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
         $display = $this->getTestPage();
         $success = $this->getTestPage();
 
-        $page = new \h2o\Page\Form( $form, $display, $success );
+        $page = new \r8\Page\Form( $form, $display, $success );
         $page->setInitials( array('field' => 'value') );
         $page->setSource(array());
 
@@ -108,7 +108,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testGetPage_invalid ()
     {
-        $form = $this->getMock( 'h2o\Form', array('fill', 'anyIn', 'isValid') );
+        $form = $this->getMock( 'r8\Form', array('fill', 'anyIn', 'isValid') );
 
         $form->expects( $this->once() )
             ->method('anyIn')
@@ -127,7 +127,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
         $display = $this->getTestPage();
         $success = $this->getTestPage();
 
-        $page = new \h2o\Page\Form( $form, $display, $success );
+        $page = new \r8\Page\Form( $form, $display, $success );
         $page->setInitials( array('field' => 'value') );
         $page->setSource( array('source' => 'data') );
 
@@ -136,7 +136,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testGetPage_valid ()
     {
-        $form = $this->getMock( 'h2o\Form', array('fill', 'anyIn', 'isValid') );
+        $form = $this->getMock( 'r8\Form', array('fill', 'anyIn', 'isValid') );
 
         $form->expects( $this->once() )
             ->method('anyIn')
@@ -155,7 +155,7 @@ class classes_page_form extends PHPUnit_Framework_TestCase
         $display = $this->getTestPage();
         $success = $this->getTestPage();
 
-        $page = new \h2o\Page\Form( $form, $display, $success );
+        $page = new \r8\Page\Form( $form, $display, $success );
         $page->setInitials( array('field' => 'value') );
         $page->setSource( array('source' => 'data') );
 
@@ -164,12 +164,12 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
     public function testGetContent ()
     {
-        $form = new \h2o\Form;
+        $form = new \r8\Form;
         $display = $this->getTestPage();
         $success = $this->getTestPage();
 
         $page = $this->getMock(
-                'h2o\Page\Form',
+                'r8\Page\Form',
                 array('getPage'),
                 array( $form, $display, $success )
             );
@@ -178,9 +178,9 @@ class classes_page_form extends PHPUnit_Framework_TestCase
             ->method( 'getPage' )
             ->will( $this->returnValue($display) );
 
-        $context = new \h2o\Page\Context;
+        $context = new \r8\Page\Context;
 
-        $tpl = $this->getMock('h2o\iface\Template', array('display', 'render', '__toString'));
+        $tpl = $this->getMock('r8\iface\Template', array('display', 'render', '__toString'));
 
         $display->expects( $this->once() )
             ->method( 'getContent' )

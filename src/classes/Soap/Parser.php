@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace h2o\Soap;
+namespace r8\Soap;
 
 /**
  * Parses out the various parts of a soap request
@@ -80,13 +80,13 @@ class Parser
     /**
      * Performs standard checks on the document
      *
-     * @throws \h2o\Soap\Fault Thrown if any problems are encountered
+     * @throws \r8\Soap\Fault Thrown if any problems are encountered
      * @return null
      */
     public function ensureBasics ()
     {
         if ( !$this->doc->hasChildNodes() ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"Document is Empty",
                 "Sender",
                 array("Parser", "EmptyDoc")
@@ -95,7 +95,7 @@ class Parser
 
         // Look for the soap envelope
         if ( $this->xpath->evaluate("count(/soap:Envelope)") == 0 ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"Could not find a SOAP Envelope node",
                 "Sender",
                 array("Parser", "MissingEnvelope")
@@ -107,7 +107,7 @@ class Parser
 
         // Look for the soap body
         if ( $bodyCount == 0 ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"Could not find a SOAP Body node",
                 "Sender",
                 array("Parser", "MissingBody")
@@ -116,7 +116,7 @@ class Parser
 
         // Look for the soap body
         if ( $bodyCount > 1 ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"Multiple SOAP Body nodes found",
                 "Sender",
                 array("Parser", "MultiBody")
@@ -125,7 +125,7 @@ class Parser
 
         // Ensure there is at least one message
         if ( $this->countMessages() == 0 ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"No Message Nodes found",
                 "Sender",
                 array("Parser", "NoMessage")
@@ -136,7 +136,7 @@ class Parser
         $headerCount = $this->xpath->evaluate("count(/soap:Envelope/soap:Header)");
 
         if ( $headerCount > 1 ) {
-            throw new \h2o\Soap\Fault(
+            throw new \r8\Soap\Fault(
             	"Multiple SOAP Header nodes found",
                 "Sender",
                 array("Parser", "MultiHeader")
@@ -147,7 +147,7 @@ class Parser
     /**
      * Returns the list of Soap Header nodes
      *
-     * @return \Iterator Returns an Iterator filled with \h2o\Soap\Node\Header objects
+     * @return \Iterator Returns an Iterator filled with \r8\Soap\Node\Header objects
      */
     public function getHeaders ()
     {
@@ -155,12 +155,12 @@ class Parser
 
         $ns = $this->namespace;
 
-        return new \h2o\Iterator\Filter(
-            new \h2o\Iterator\DOMNodeList(
+        return new \r8\Iterator\Filter(
+            new \r8\Iterator\DOMNodeList(
                 $this->xpath->query("/soap:Envelope/soap:Header/*")
             ),
-            new \h2o\Curry\Call(function ( $node ) use ($ns) {
-                return new \h2o\Soap\Node\Header( $node, $ns );
+            new \r8\Curry\Call(function ( $node ) use ($ns) {
+                return new \r8\Soap\Node\Header( $node, $ns );
             })
         );
     }
@@ -168,7 +168,7 @@ class Parser
     /**
      * Returns the list of Soap Header nodes
      *
-     * @return \Iterator Returns an Iterator filled with \h2o\Soap\Node\Message objects
+     * @return \Iterator Returns an Iterator filled with \r8\Soap\Node\Message objects
      */
     public function getMessages ()
     {
@@ -176,12 +176,12 @@ class Parser
 
         $ns = $this->namespace;
 
-        return new \h2o\Iterator\Filter(
-            new \h2o\Iterator\DOMNodeList(
+        return new \r8\Iterator\Filter(
+            new \r8\Iterator\DOMNodeList(
                 $this->xpath->query("/soap:Envelope/soap:Body/*")
             ),
-            new \h2o\Curry\Call(function ( $node ) use ($ns) {
-                return new \h2o\Soap\Node\Message( $node, $ns );
+            new \r8\Curry\Call(function ( $node ) use ($ns) {
+                return new \r8\Soap\Node\Message( $node, $ns );
             })
         );
     }

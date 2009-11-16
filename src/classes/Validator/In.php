@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace h2o\Validator;
+namespace r8\Validator;
 
 /**
  * Returns whether the validated value is in a preset list
  */
-class In extends \h2o\Validator
+class In extends \r8\Validator
 {
 
     /**
@@ -52,7 +52,7 @@ class In extends \h2o\Validator
      * Sets the list of valid values
      *
      * @param Array $list The list of valid values
-     * @return \h2o\Validator\In Returns a self reference
+     * @return \r8\Validator\In Returns a self reference
      */
     public function setList ( array $list )
     {
@@ -86,7 +86,7 @@ class In extends \h2o\Validator
      * Adds a value to the list of valid values
      *
      * @param mixed $value The value to add
-     * @return \h2o\Validator\In Returns a self reference
+     * @return \r8\Validator\In Returns a self reference
      */
     public function add ( $value )
     {
@@ -100,11 +100,11 @@ class In extends \h2o\Validator
      * Removes a value to the list of valid options
      *
      * @param mixed $value The value to remove
-     * @return \h2o\Validator\In Returns a self reference
+     * @return \r8\Validator\In Returns a self reference
      */
     public function remove ( $value )
     {
-        $this->list = array_values( \h2o\ary\without($this->list, $value ) );
+        $this->list = array_values( \r8\ary\without($this->list, $value ) );
         return $this;
     }
 

@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Stream
  */
 
-namespace h2o\Stream\Out;
+namespace r8\Stream\Out;
 
 /**
  * Provides a Stream interface for a URI string
  */
-class URI implements \h2o\iface\Stream\Out
+class URI implements \r8\iface\Stream\Out
 {
 
     /**
@@ -46,7 +46,7 @@ class URI implements \h2o\iface\Stream\Out
      */
     public function __construct ( $uri, $append = FALSE )
     {
-        $uri = \h2o\strval( $uri );
+        $uri = \r8\strval( $uri );
 
         $this->resource = @fopen(
                 $uri,
@@ -54,7 +54,7 @@ class URI implements \h2o\iface\Stream\Out
             );
 
         if ( $this->resource === FALSE ) {
-            throw new \h2o\Exception\FileSystem\Permissions(
+            throw new \r8\Exception\FileSystem\Permissions(
                     $uri,
                     "Could not open URI for writing"
                 );
@@ -74,7 +74,7 @@ class URI implements \h2o\iface\Stream\Out
     /**
      * Closes this resource
      *
-     * @return \h2o\iface\Stream\In\URI Returns a self reference
+     * @return \r8\iface\Stream\In\URI Returns a self reference
      */
     public function close ()
     {
@@ -90,11 +90,11 @@ class URI implements \h2o\iface\Stream\Out
      * Writes a string of data to this stream
      *
      * @param String $data The string of data to to write to this stream
-     * @return \h2o\Stream\Out\URI Returns a self reference
+     * @return \r8\Stream\Out\URI Returns a self reference
      */
     public function write ( $data )
     {
-        $data = \h2o\strval( $data );
+        $data = \r8\strval( $data );
 
         if ( is_resource($this->resource) )
             fwrite( $this->resource, $data );

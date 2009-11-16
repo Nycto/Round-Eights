@@ -2,39 +2,39 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package MetaDB
  */
 
-namespace h2o\MetaDB;
+namespace r8\MetaDB;
 
 /**
  * The base class for a standard column
  */
-abstract class Column implements \h2o\iface\MetaDB\Column
+abstract class Column implements \r8\iface\MetaDB\Column
 {
 
     /**
      * The table this column belongs to
      *
-     * @var \h2o\MetaDB\Table
+     * @var \r8\MetaDB\Table
      */
     private $table;
 
@@ -48,15 +48,15 @@ abstract class Column implements \h2o\iface\MetaDB\Column
     /**
      * Constructor...
      *
-     * @param \h2o\MetaDB\Table $table The table this column belongs to
+     * @param \r8\MetaDB\Table $table The table this column belongs to
      * @param String $name The name of this column
      */
-    public function __construct ( \h2o\MetaDB\Table $table, $name )
+    public function __construct ( \r8\MetaDB\Table $table, $name )
     {
-        $name = trim( trim( \h2o\strval($name) ), "`" );
+        $name = trim( trim( \r8\strval($name) ), "`" );
 
-        if ( \h2o\isEmpty($name) )
-            throw new \h2o\Exception\Argument( 0, "Column Name", "Must not be empty" );
+        if ( \r8\isEmpty($name) )
+            throw new \r8\Exception\Argument( 0, "Column Name", "Must not be empty" );
 
         $this->table = $table;
         $this->name = $name;
@@ -67,7 +67,7 @@ abstract class Column implements \h2o\iface\MetaDB\Column
     /**
      * Returns the Table this column belongs to
      *
-     * @return \h2o\MetaDB\Table
+     * @return \r8\MetaDB\Table
      */
     public function getTable ()
     {
@@ -87,11 +87,11 @@ abstract class Column implements \h2o\iface\MetaDB\Column
     /**
      * Returns the SQL string for this expression
      *
-     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
+     * @param \r8\iface\DB\Link $link The database connection this WHERE clause
      * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toSelectSQL( \h2o\iface\DB\Link $link )
+    public function toSelectSQL( \r8\iface\DB\Link $link )
     {
         return $this->table->toFromSQL( $link ) .".". $this->getName();
     }

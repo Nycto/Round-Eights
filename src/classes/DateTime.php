@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package DateTime
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Class for interacting with dates and times
@@ -72,7 +72,7 @@ class DateTime
      */
     static public function setDefaultFormat ($format)
     {
-        self::$defaultFormat = \h2o\strval($format);
+        self::$defaultFormat = \r8\strval($format);
     }
 
     /**
@@ -96,12 +96,12 @@ class DateTime
     static public function normalizeUnit ( $unit )
     {
 
-        $unit = strtolower( \h2o\str\stripW( $unit ) );
-        $unit = \h2o\str\stripTail( $unit, "s" );
+        $unit = strtolower( \r8\str\stripW( $unit ) );
+        $unit = \r8\str\stripTail( $unit, "s" );
 
         switch ( $unit ) {
             default:
-                throw new \h2o\Exception\Argument(1, "Units", "Invalid time unit");
+                throw new \r8\Exception\Argument(1, "Units", "Invalid time unit");
 
             case "second":
             case "minute":
@@ -143,7 +143,7 @@ class DateTime
         if ( is_float($datetime) )
             $datetime = number_format($datetime, 0, '.', '');
 
-        $datetime = \h2o\strval( $datetime );
+        $datetime = \r8\strval( $datetime );
 
 
         $year = '(?:[1-9][0-9]{3})';
@@ -173,7 +173,7 @@ class DateTime
      */
     public function __construct ( $input = NULL )
     {
-        if (func_num_args() > 0 && !\h2o\isVague($input) )
+        if (func_num_args() > 0 && !\r8\isVague($input) )
             $this->interpret( $input );
 
     }
@@ -217,14 +217,14 @@ class DateTime
     public function setArray ( array $time )
     {
         $time = array_change_key_case($time, CASE_LOWER);
-        $time = \h2o\ary\translateKeys(
+        $time = \r8\ary\translateKeys(
                 $time,
                 array(
                         "day" => "mday",
                         "month" => "mon"
                     )
             );
-        $time = \h2o\ary\hone( $time, 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
+        $time = \r8\ary\hone( $time, 'seconds', 'minutes', 'hours', 'mday', 'mon', 'year');
 
         if ( isset($this->time) )
             $time += getdate( $this->time );
@@ -251,14 +251,14 @@ class DateTime
      *
      * The returned value is per the getdate() array format.
      *
-     * Note that this will throw a \h2o\Exception\Variable if this instance doesn't contain a time
+     * Note that this will throw a \r8\Exception\Variable if this instance doesn't contain a time
      *
      * @return Array Returns an array as "getdate()" would
      */
     public function getArray ()
     {
         if ( !isset($this->time) )
-            throw new \h2o\Exception\Variable('time', 'No time has been set for this instance');
+            throw new \r8\Exception\Variable('time', 'No time has been set for this instance');
         return getdate( $this->time );
     }
 
@@ -272,10 +272,10 @@ class DateTime
      */
     public function setSQL ( $datetime )
     {
-        $datetime = \h2o\str\stripW($datetime);
+        $datetime = \r8\str\stripW($datetime);
 
         if ( !self::isSQL($datetime) )
-            throw new \h2o\Exception\Argument(0, "SQL Date/Time", "Invalid SQL date time");
+            throw new \r8\Exception\Argument(0, "SQL Date/Time", "Invalid SQL date time");
 
         $result = preg_match(
                 '/^'
@@ -325,9 +325,9 @@ class DateTime
      */
     public function setString ( $string )
     {
-        $string = strtotime( \h2o\strval( $string ) );
+        $string = strtotime( \r8\strval( $string ) );
         if ($string === FALSE)
-            throw new \h2o\Exception\Argument(0, "Date/Time String", "Unable to parse string to a valid time");
+            throw new \r8\Exception\Argument(0, "Date/Time String", "Unable to parse string to a valid time");
         return $this->setTimeStamp( $string );
     }
 
@@ -354,7 +354,7 @@ class DateTime
      */
     public function setFormat( $format )
     {
-        $this->format = \h2o\strval( $format );
+        $this->format = \r8\strval( $format );
         return $this;
     }
 
@@ -378,12 +378,12 @@ class DateTime
     public function getFormatted ($format = FALSE)
     {
         if ( !isset($this->time) )
-            throw new \h2o\Exception\Variable('time', 'No time has been set for this instance');
+            throw new \r8\Exception\Variable('time', 'No time has been set for this instance');
 
         if ( isVague($format) )
             $format = $this->getFormat();
         else
-            $format = \h2o\strval( $format );
+            $format = \r8\strval( $format );
 
         return date( $format, $this->time );
     }
@@ -400,7 +400,7 @@ class DateTime
         }
         // This will be thrown if no time is currently set in this instance.
         // We catch it because toString isn't allowed to throw exceptions
-        catch ( \h2o\Exception\Variable $err ) {
+        catch ( \r8\Exception\Variable $err ) {
             return "";
         }
     }
@@ -438,7 +438,7 @@ class DateTime
 
         else {
 
-            $input = \h2o\strval( $input );
+            $input = \r8\strval( $input );
 
             if ( self::isSQL( $input ) )
                 $this->setSQL( $input );
@@ -464,11 +464,11 @@ class DateTime
     public function add ( $value, $unit )
     {
         if ( !isset($this->time) )
-            throw new \h2o\Exception\Variable('time', 'No time has been set for this instance');
+            throw new \r8\Exception\Variable('time', 'No time has been set for this instance');
 
-        $value = \h2o\numval( $value );
+        $value = \r8\numval( $value );
 
-        $unit = \h2o\DateTime::normalizeUnit($unit);
+        $unit = \r8\DateTime::normalizeUnit($unit);
 
         if ( $value == 0 )
             return $this;
@@ -476,7 +476,7 @@ class DateTime
         switch ( $unit ) {
 
             default:
-                throw new \h2o\Exception\Argument(1, "Units", "Invalid time unit");
+                throw new \r8\Exception\Argument(1, "Units", "Invalid time unit");
 
             case self::UNIT_MONTHS:
                 $unit = "mon";
@@ -546,18 +546,18 @@ class DateTime
     public function get ( $unit )
     {
         if ( !isset($this->time) )
-            throw new \h2o\Exception\Variable('time', 'No time has been set for this instance');
+            throw new \r8\Exception\Variable('time', 'No time has been set for this instance');
 
         try {
             $unit = self::normalizeUnit( $unit );
         }
-        catch ( \h2o\Exception\Argument $err ) {}
+        catch ( \r8\Exception\Argument $err ) {}
 
         $ary = $this->getArray();
 
         switch ( $unit ) {
             default:
-                throw new \h2o\Exception\Argument(0, "Unit", "Invalid time unit");
+                throw new \r8\Exception\Argument(0, "Unit", "Invalid time unit");
             case "second":
                 return $ary['seconds'];
             case "minute":
@@ -593,7 +593,7 @@ class DateTime
         switch ( self::normalizeUnit( $unit ) ) {
 
             default:
-                throw new \h2o\Exception\Argument(0, "Unit", "Invalid time unit");
+                throw new \r8\Exception\Argument(0, "Unit", "Invalid time unit");
 
             case "second":
                 return $this->setArray( array('seconds' => $value) );

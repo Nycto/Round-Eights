@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_filesys_dir
 
     public static function suite()
     {
-        $suite = new h2o_Base_TestSuite;
-        $suite->addTestSuite( 'classes_filesystem_dir_noData' );
-        $suite->addTestSuite( 'classes_filesystem_dir_withData' );
+        $suite = new r8_Base_TestSuite;
+        $suite->addTestSuite( 'classes_filesys_dir_noData' );
+        $suite->addTestSuite( 'classes_filesys_dir_withData' );
         return $suite;
     }
 
@@ -46,12 +46,12 @@ class classes_filesys_dir
 /**
  * unit tests that don't require temporary files/directories to be created
  */
-class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
+class classes_filesys_dir_noData extends PHPUnit_Framework_TestCase
 {
 
     public function testSetGetPath ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         $this->assertNull( $dir->getRawDir() );
         $this->assertFalse( $dir->dirExists() );
@@ -74,7 +74,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testExists ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         $dir->setPath( __DIR__ );
         $this->assertTrue( $dir->exists() );
@@ -88,7 +88,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetBasename ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
         $this->assertNull( $dir->getBasename() );
 
         $dir->setPath( "/dir/to/path" );
@@ -103,12 +103,12 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile ()
     {
-        $dir = new \h2o\FileSys\Dir( sys_get_temp_dir() );
+        $dir = new \r8\FileSys\Dir( sys_get_temp_dir() );
 
         // No settings
         $file = $dir->getUniqueFile();
 
-        $this->assertThat( $file, $this->isInstanceOf("h2o\FileSys\File") );
+        $this->assertThat( $file, $this->isInstanceOf("r8\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertFalse( $file->extExists() );
 
@@ -120,27 +120,27 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile_prefix ()
     {
-        $dir = new \h2o\FileSys\Dir( sys_get_temp_dir() );
+        $dir = new \r8\FileSys\Dir( sys_get_temp_dir() );
 
-        $file = $dir->getUniqueFile("h2o_");
+        $file = $dir->getUniqueFile("r8_");
 
-        $this->assertThat( $file, $this->isInstanceOf("h2o\FileSys\File") );
+        $this->assertThat( $file, $this->isInstanceOf("r8\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertFalse( $file->extExists() );
 
-        $this->assertSame( 19, strlen( $file->getFileName() ) );
-        $this->assertRegExp( '/^h2o_[a-z0-9]{15}$/i', $file->getFileName() );
+        $this->assertSame( 18, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^r8_[a-z0-9]{15}$/i', $file->getFileName() );
 
         $this->assertFalse( $file->exists() );
     }
 
     public function testGetUniqueFile_ext ()
     {
-        $dir = new \h2o\FileSys\Dir( sys_get_temp_dir() );
+        $dir = new \r8\FileSys\Dir( sys_get_temp_dir() );
 
         $file = $dir->getUniqueFile( null, "php" );
 
-        $this->assertThat( $file, $this->isInstanceOf("h2o\FileSys\File") );
+        $this->assertThat( $file, $this->isInstanceOf("r8\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertSame( "php", $file->getExt() );
 
@@ -152,23 +152,23 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testGetUniqueFile_moreEntropy ()
     {
-        $dir = new \h2o\FileSys\Dir( sys_get_temp_dir() );
+        $dir = new \r8\FileSys\Dir( sys_get_temp_dir() );
 
-        $file = $dir->getUniqueFile( "h2o_", "php", TRUE );
+        $file = $dir->getUniqueFile( "r8_", "php", TRUE );
 
-        $this->assertThat( $file, $this->isInstanceOf("h2o\FileSys\File") );
+        $this->assertThat( $file, $this->isInstanceOf("r8\FileSys\File") );
         $this->assertSame( $dir->getRawDir(), $file->getRawDir() );
         $this->assertSame( "php", $file->getExt() );
 
-        $this->assertSame( 36, strlen( $file->getFileName() ) );
-        $this->assertRegExp( '/^h2o_[a-z0-9]{32}$/i', $file->getFileName() );
+        $this->assertSame( 35, strlen( $file->getFileName() ) );
+        $this->assertRegExp( '/^r8_[a-z0-9]{32}$/i', $file->getFileName() );
 
         $this->assertFalse( $file->exists() );
     }
 
     public function testIncludeDotsAccessors ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
         $this->assertTrue( $dir->getIncludeDots() );
 
         $this->assertSame( $dir, $dir->setIncludeDots(FALSE) );
@@ -186,26 +186,26 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testIteration_missing ()
     {
-        $dir = new \h2o\FileSys\Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new \r8\FileSys\Dir("/path/to/a/dir/that/isnt/real");
 
         try {
             foreach( $dir AS $item ) {}
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem\Missing $err ) {
+        catch ( \r8\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
     }
 
     public function testIteration_noRewind ()
     {
-        $dir = new \h2o\FileSys\Dir("/path/to/a/dir/that/isnt/real");
+        $dir = new \r8\FileSys\Dir("/path/to/a/dir/that/isnt/real");
 
         try {
             $dir->current();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
@@ -215,7 +215,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
             $dir->current();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
@@ -223,7 +223,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
             $dir->key();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
@@ -231,7 +231,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
             $dir->hasChildren();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
@@ -239,7 +239,7 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
             $dir->getChildren();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Iteration has not been rewound", $err->getMessage() );
         }
 
@@ -247,9 +247,9 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 
     public function testTemp ()
     {
-        $dir = \h2o\FileSys\Dir::getTemp();
+        $dir = \r8\FileSys\Dir::getTemp();
 
-        $this->assertThat( $dir, $this->isInstanceOf("h2o\FileSys\Dir") );
+        $this->assertThat( $dir, $this->isInstanceOf("r8\FileSys\Dir") );
         $this->assertSame(
                 rtrim( sys_get_temp_dir(), "/" ),
                 rtrim( $dir->getPath(), "/" )
@@ -261,12 +261,12 @@ class classes_filesystem_dir_noData extends PHPUnit_Framework_TestCase
 /**
  * unit tests that use temporary files/directories
  */
-class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
+class classes_filesys_dir_withData extends PHPUnit_Dir_Framework_TestCase
 {
 
     public function testToArray ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $list = $dir->toArray();
 
@@ -281,10 +281,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
         foreach ( $list AS $item ) {
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
 
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
         }
@@ -307,7 +307,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testToArray_noDots ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         $dir->setIncludeDots(FALSE);
 
         $list = $dir->toArray();
@@ -323,10 +323,10 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
         foreach ( $list AS $item ) {
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
 
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
         }
@@ -347,13 +347,13 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testMake ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         try {
             $dir->make();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Variable $err ) {
+        catch ( \r8\Exception\Variable $err ) {
             $this->assertSame( "No Path has been set", $err->getMessage() );
         }
 
@@ -368,27 +368,27 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testMake_noPerms ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir ."/this/is/a/new/dir" );
+        $dir = new \r8\FileSys\Dir( $this->dir ."/this/is/a/new/dir" );
         chmod( $this->dir, 0000 );
 
         try {
             $dir->make();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem $err ) {
+        catch ( \r8\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to create directory", $err->getMessage() );
         }
     }
 
     public function testPurge ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         try {
             $dir->purge();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem\Missing $err ) {
+        catch ( \r8\Exception\FileSystem\Missing $err ) {
             $this->assertSame( "Path does not exist", $err->getMessage() );
         }
 
@@ -403,35 +403,35 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testPurge_cantOpenDir ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         chmod( $this->dir, 0000 );
 
         try {
             $dir->purge();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem $err ) {
+        catch ( \r8\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to open directory", $err->getMessage() );
         }
     }
 
     public function testPurge_cantDeleteDir ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         chmod( $this->dir ."/second", 4440 );
 
         try {
             $dir->purge();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem $err ) {
+        catch ( \r8\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to delete path", $err->getMessage() );
         }
     }
 
     public function testDelete ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir ."/first" );
+        $dir = new \r8\FileSys\Dir( $this->dir ."/first" );
 
         $this->assertSame( $dir, $dir->delete() );
         $this->assertFalse( is_dir($dir) );
@@ -442,13 +442,13 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testDelete_filled ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         try {
             $dir->delete();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem $err ) {
+        catch ( \r8\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to delete directory", $err->getMessage() );
         }
 
@@ -457,13 +457,13 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testContains ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         try {
             $dir->contains("file");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Variable $err ) {
+        catch ( \r8\Exception\Variable $err ) {
             $this->assertSame( "No directory has been set for this instance", $err->getMessage() );
         }
 
@@ -472,13 +472,13 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
         $this->assertTrue( $dir->contains("first") );
         $this->assertTrue( $dir->contains("third/fourth/") );
         $this->assertTrue( $dir->contains("./third/fourth/") );
-        $this->assertTrue( $dir->contains( new \h2o\FileSys\Dir("third") ) );
+        $this->assertTrue( $dir->contains( new \r8\FileSys\Dir("third") ) );
 
         $this->assertTrue( $dir->contains("one") );
         $this->assertTrue( $dir->contains("second/second-one") );
         $this->assertTrue( $dir->contains("third/fourth/fourth-one") );
         $this->assertTrue( $dir->contains("./one") );
-        $this->assertTrue( $dir->contains( new \h2o\FileSys\File("third/fourth/fourth-one") ) );
+        $this->assertTrue( $dir->contains( new \r8\FileSys\File("third/fourth/fourth-one") ) );
 
         $this->assertTrue( $dir->contains( $this->dir ) );
 
@@ -488,83 +488,83 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testGetSubPath_noDir ()
     {
-        $dir = new \h2o\FileSys\Dir;
+        $dir = new \r8\FileSys\Dir;
 
         try {
             $dir->getSubPath("file");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Variable $err ) {
+        catch ( \r8\Exception\Variable $err ) {
             $this->assertSame( "No directory has been set for this instance", $err->getMessage() );
         }
     }
 
     public function testGetSubPath_dirs ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $result = $dir->getSubPath("first");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\Dir') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\Dir') );
         $this->assertSame( $this->dir ."/first/", $result->getPath() );
 
         $result = $dir->getSubPath("third/fourth/");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\Dir') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\Dir') );
         $this->assertSame( $this->dir ."/third/fourth/", $result->getPath() );
 
         $result = $dir->getSubPath("./third/fourth/");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\Dir') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\Dir') );
         $this->assertSame( $this->dir ."/third/fourth/", $result->getPath() );
 
-        $result = $dir->getSubPath( new \h2o\FileSys\Dir("third") );
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\Dir') );
+        $result = $dir->getSubPath( new \r8\FileSys\Dir("third") );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\Dir') );
         $this->assertSame( $this->dir ."/third/", $result->getPath() );
 
         $result = $dir->getSubPath( $this->dir );
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\Dir') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\Dir') );
         $this->assertSame( $this->dir ."/", $result->getPath() );
     }
 
     public function testGetSubPath_files ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $result = $dir->getSubPath("one");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/one", $result->getPath() );
 
         $result = $dir->getSubPath("second/second-one");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/second/second-one", $result->getPath() );
 
         $result = $dir->getSubPath("third/fourth/fourth-one");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/third/fourth/fourth-one", $result->getPath() );
 
         $result = $dir->getSubPath("./one");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/one", $result->getPath() );
 
-        $result = $dir->getSubPath( new \h2o\FileSys\File("third/fourth/fourth-one") );
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $result = $dir->getSubPath( new \r8\FileSys\File("third/fourth/fourth-one") );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/third/fourth/fourth-one", $result->getPath() );
     }
 
     public function testGetSubPath_doesntExist ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $result = $dir->getSubPath("notAFile");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( $this->dir ."/notAFile", $result->getPath() );
 
         $result = $dir->getSubPath("/dir/to/a/non/existant/file");
-        $this->assertThat( $result, $this->isInstanceOf('h2o\FileSys\File') );
+        $this->assertThat( $result, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( "/dir/to/a/non/existant/file", $result->getPath() );
     }
 
     public function testIteration ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $files = array();
         $dirs = array();
@@ -575,9 +575,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -609,7 +609,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testIteration_twice ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         // Iterate through it once
         $i = 0;
@@ -632,9 +632,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -667,7 +667,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testIteration_break ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         // Iterate through it once and break before iteration completes
         $i = 0;
@@ -688,9 +688,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -722,7 +722,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testIteration_NoDots ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         $dir->setIncludeDots( FALSE );
 
         $files = array();
@@ -734,9 +734,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -766,21 +766,21 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testIteration_NoPerms ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         chmod( $dir, 0000 );
 
         try {
             foreach( $dir AS $item ) {}
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\FileSystem $err ) {
+        catch ( \r8\Exception\FileSystem $err ) {
             $this->assertSame( "Unable to open directory for iteration", $err->getMessage() );
         }
     }
 
     public function testRecursiveIteration ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
 
         $files = array();
         $dirs = array();
@@ -791,9 +791,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;
@@ -825,7 +825,7 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
     public function testRecursiveIteration_noDots ()
     {
-        $dir = new \h2o\FileSys\Dir( $this->dir );
+        $dir = new \r8\FileSys\Dir( $this->dir );
         $dir->setIncludeDots( FALSE );
 
         $files = array();
@@ -837,9 +837,9 @@ class classes_filesystem_dir_withData extends PHPUnit_Dir_Framework_TestCase
 
             $keys[] = $key;
 
-            if ( $item instanceof \h2o\FileSys\Dir)
+            if ( $item instanceof \r8\FileSys\Dir)
                 $dirs[] = $item->getBasename();
-            else if ( $item instanceof \h2o\FileSys\File)
+            else if ( $item instanceof \r8\FileSys\File)
                 $files[] = $item->getBasename();
 
             $i++;

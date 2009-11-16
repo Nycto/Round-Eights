@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Exception
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * The base exception class
@@ -90,7 +90,7 @@ class Exception extends \Exception
     {
         parent::__construct($message, $code);
 
-        if ( !\h2o\isVague($fault, \h2o\ALLOW_ZERO) )
+        if ( !\r8\isVague($fault, \r8\ALLOW_ZERO) )
             $this->setFault($fault);
     }
 
@@ -112,13 +112,13 @@ class Exception extends \Exception
      * @param integer $wrapFlag The offset wrapping mode to use
      * @return array A list of the backtrace details at the given offset
      */
-    public function getTraceByOffset ($offset, $wrapFlag = \h2o\num\OFFSET_RESTRICT)
+    public function getTraceByOffset ($offset, $wrapFlag = \r8\num\OFFSET_RESTRICT)
     {
         $trace = $this->getTrace();
         if (count($trace) <= 0)
             return FALSE;
 
-        return \h2o\ary\offset($trace, $offset, $wrapFlag);
+        return \r8\ary\offset($trace, $offset, $wrapFlag);
     }
 
     /**
@@ -138,7 +138,7 @@ class Exception extends \Exception
      */
     public function issetMessage ()
     {
-        return !\h2o\isEmpty($this->getMessage());
+        return !\r8\isEmpty($this->getMessage());
     }
 
     /**
@@ -148,7 +148,7 @@ class Exception extends \Exception
      */
     public function issetCode ()
     {
-        return !\h2o\isEmpty($this->getCode());
+        return !\r8\isEmpty($this->getCode());
     }
 
     /**
@@ -158,14 +158,14 @@ class Exception extends \Exception
      * @param integer $wrapFlag The offset wrapping mode to use
      * @return object Returns a self reference
      */
-    public function setFault ( $offset, $wrapFlag = \h2o\num\OFFSET_RESTRICT )
+    public function setFault ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
     {
         $trace = $this->getTrace();
 
         if (count($trace) <= 0)
             return $this;
 
-        $this->fault = \h2o\ary\calcOffset($trace, $offset, $wrapFlag);
+        $this->fault = \r8\ary\calcOffset($trace, $offset, $wrapFlag);
 
         return $this;
     }
@@ -210,7 +210,7 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return object Returns a self reference
      */
-    public function shiftFault ($shift = 1, $wrapFlag = \h2o\ary\OFFSET_RESTRICT)
+    public function shiftFault ($shift = 1, $wrapFlag = \r8\ary\OFFSET_RESTRICT)
     {
 
         // Shifting the fault when no fault is set marks it to the end of the list
@@ -228,7 +228,7 @@ class Exception extends \Exception
 
         $fault += $shift;
 
-        $fault = \h2o\ary\calcOffset($trace, $fault, \h2o\ary\OFFSET_RESTRICT);
+        $fault = \r8\ary\calcOffset($trace, $fault, \r8\ary\OFFSET_RESTRICT);
 
         return $this->setFault($fault);
     }
@@ -292,14 +292,14 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String
      */
-    public function getTraceOffsetString ($offset, $wrapFlag = \h2o\ary\OFFSET_RESTRICT)
+    public function getTraceOffsetString ($offset, $wrapFlag = \r8\ary\OFFSET_RESTRICT)
     {
 
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
-            $args[] = \h2o\getDump($arg);
+            $args[] = \r8\getDump($arg);
         }
 
         if ( $trace->keyExists('function') ) {
@@ -330,13 +330,13 @@ class Exception extends \Exception
      * @param Integer $wrapFlag
      * @return String A string of HTML
      */
-    public function getTraceOffsetHTML ($offset, $wrapFlag = \h2o\ary\OFFSET_RESTRICT)
+    public function getTraceOffsetHTML ($offset, $wrapFlag = \r8\ary\OFFSET_RESTRICT)
     {
         $trace = $this->getTraceByOffset($offset, $wrapFlag);
 
         $args = Array();
         foreach ($trace['args'] AS $arg) {
-            $args[] = htmlspecialchars( \h2o\getDump($arg) );
+            $args[] = htmlspecialchars( \r8\getDump($arg) );
         }
 
         if ( $trace->keyExists('function') ) {
@@ -355,19 +355,19 @@ class Exception extends \Exception
         }
 
         return
-            "<dl class='h2o_Exception_TraceItem'>\n"
+            "<dl class='r8_Exception_TraceItem'>\n"
             .( $trace->keyExists('file') ?
-                    "<dt class='h2o_Exception_TraceItem_File'>File</dt>\n"
-                    ."<dd class='h2o_Exception_TraceItem_File'>". htmlspecialchars($trace['file']) ."</dd>\n" : "" )
+                    "<dt class='r8_Exception_TraceItem_File'>File</dt>\n"
+                    ."<dd class='r8_Exception_TraceItem_File'>". htmlspecialchars($trace['file']) ."</dd>\n" : "" )
             .( $trace->keyExists('line') ?
-                    "<dt class='h2o_Exception_TraceItem_Line'>Line</dt>\n"
-                    ."<dd class='h2o_Exception_TraceItem_Line'>". htmlspecialchars($trace['line']) ."</dd>\n" : "" )
+                    "<dt class='r8_Exception_TraceItem_Line'>Line</dt>\n"
+                    ."<dd class='r8_Exception_TraceItem_Line'>". htmlspecialchars($trace['line']) ."</dd>\n" : "" )
             .( $function ?
-                    "<dt class='h2o_Exception_TraceItem_Func'>Function</dt>\n"
-                    ."<dd class='h2o_Exception_TraceItem_Func'>". htmlspecialchars($function) ."</dd>\n" : "" )
+                    "<dt class='r8_Exception_TraceItem_Func'>Function</dt>\n"
+                    ."<dd class='r8_Exception_TraceItem_Func'>". htmlspecialchars($function) ."</dd>\n" : "" )
             .( count($args) > 0 ?
-                    "<dt class='h2o_Exception_TraceItem_Arg'>Arguments</dt>\n"
-                    ."<dd class='h2o_Exception_TraceItem_Arg'>". implode("</dd><dd>", $args) ."</dd>\n" : "" )
+                    "<dt class='r8_Exception_TraceItem_Arg'>Arguments</dt>\n"
+                    ."<dd class='r8_Exception_TraceItem_Arg'>". implode("</dd><dd>", $args) ."</dd>\n" : "" )
             ."</dl>\n";
 
     }
@@ -397,7 +397,7 @@ class Exception extends \Exception
             return NULL;
 
         return
-            "<div class='h2o_Exception_Fault'>\n"
+            "<div class='r8_Exception_Fault'>\n"
             ."<h3>Caused By</h3>\n"
             .$this->getTraceOffsetHTML($fault)
             ."</div>\n";
@@ -439,7 +439,7 @@ class Exception extends \Exception
                 ."<dd>". $value ."</dd>";
 
         return
-            "<div class='h2o_Exception_Details'>\n"
+            "<div class='r8_Exception_Details'>\n"
             ."<h3>Details</h3>\n"
             ."<dl>\n"
             .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
@@ -469,7 +469,7 @@ class Exception extends \Exception
     public function getThrownHTML ()
     {
         return
-            "<div class='h2o_Exception_Thrown'>\n"
+            "<div class='r8_Exception_Thrown'>\n"
             ."<h3>Thrown At:</h3>\n"
             ."<dl>\n"
                 ."<dt>File</dt>\n"
@@ -530,7 +530,7 @@ class Exception extends \Exception
         }
 
         return
-            "<div class='h2o_Exception_Trace'>\n"
+            "<div class='r8_Exception_Trace'>\n"
             ."<h3>Full Stack Trace</h3>\n"
             ."<ol>"
             .$result
@@ -561,7 +561,7 @@ class Exception extends \Exception
     public function getVerboseHTML ()
     {
         return
-            "<div class='h2o_Exception'>\n"
+            "<div class='r8_Exception'>\n"
             ."<h1>Exception Thrown</h1>\n"
             ."<h2>". $this->getClassString() ."</h2>\n"
             .$this->getDetailsHTML()

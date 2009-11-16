@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Soap
  */
 
-namespace h2o\Soap\Server;
+namespace r8\Soap\Server;
 
 /**
  * Collects and processes the header element of a soap message
@@ -82,20 +82,20 @@ class Headers
         if ( $role === NULL || $role === "" )
             return TRUE;
 
-        return in_array( \h2o\Filter::URL()->filter($role), $this->roles );
+        return in_array( \r8\Filter::URL()->filter($role), $this->roles );
     }
 
     /**
      * Adds a new Role this server acts under
      *
      * @param String $role
-     * @return \h2o\Soap\Server\Header Returns a self reference
+     * @return \r8\Soap\Server\Header Returns a self reference
      */
     public function addRole ( $role )
     {
-        $role = \h2o\Filter::URL()->filter($role);
+        $role = \r8\Filter::URL()->filter($role);
 
-        if ( !\h2o\isEmpty($role) && !in_array($role, $this->roles) )
+        if ( !\r8\isEmpty($role) && !in_array($role, $this->roles) )
             $this->roles[] = $role;
 
         return $this;
@@ -104,7 +104,7 @@ class Headers
     /**
      * Returns the Headers registered for processing
      *
-     * @return Array Returns an array of \h2o\iface\Soap\Header objects
+     * @return Array Returns an array of \r8\iface\Soap\Header objects
      */
     public function getHeaders ()
     {
@@ -116,20 +116,20 @@ class Headers
      *
      * @param String $uri The URI of the header
      * @param String $name The tag name of the header this object will handle
-     * @param \h2o\iface\Soap\Header $operation The handler to invoke when
+     * @param \r8\iface\Soap\Header $operation The handler to invoke when
      * 		this command is encountered
-     * @return \h2o\Soap\Server\Headers Returns a self reference
+     * @return \r8\Soap\Server\Headers Returns a self reference
      */
-    public function addHeader ( $uri, $name, \h2o\iface\Soap\Header $header )
+    public function addHeader ( $uri, $name, \r8\iface\Soap\Header $header )
     {
         $uri = (string) trim( $uri );
-        $name = \h2o\str\stripW( $name );
+        $name = \r8\str\stripW( $name );
 
-        if ( \h2o\isEmpty($uri) )
-            throw new \h2o\Exception\Argument(0, "Header URI", "Must not be empty");
+        if ( \r8\isEmpty($uri) )
+            throw new \r8\Exception\Argument(0, "Header URI", "Must not be empty");
 
-        if ( \h2o\isEmpty($name) )
-            throw new \h2o\Exception\Argument(1, "Header Tag Name", "Must not be empty");
+        if ( \r8\isEmpty($name) )
+            throw new \r8\Exception\Argument(1, "Header Tag Name", "Must not be empty");
 
         if ( !isset($this->headers[ $uri ]) )
             $this->headers[ $uri ] = array();
@@ -154,11 +154,11 @@ class Headers
     /**
      * Processes a soap request through this server
      *
-     * @param \h2o\Soap\Parser $parser The soap message to process
-     * @return \h2o\XMLBuilder\Series Returns the builder needed to construct
+     * @param \r8\Soap\Parser $parser The soap message to process
+     * @return \r8\XMLBuilder\Series Returns the builder needed to construct
      * 		the response headers
      */
-    public function process ( \h2o\Soap\Parser $parser )
+    public function process ( \r8\Soap\Parser $parser )
     {
         $headers = $parser->getHeaders();
 
@@ -175,7 +175,7 @@ class Headers
 
             if ( !$this->understands($header->getNamespace(), $header->getTag()) )
             {
-                $fault = new \h2o\Soap\Fault( "Mandatory Soap Header is not understood", "mustunderstand" );
+                $fault = new \r8\Soap\Fault( "Mandatory Soap Header is not understood", "mustunderstand" );
                 $fault->setRole( $header->getRole() );
                 $fault->setDetails( array( "NotUnderstood" => array(
                     "Header" => $header->getTag(),
@@ -185,7 +185,7 @@ class Headers
             }
         }
 
-        $response = new \h2o\XMLBuilder\Series;
+        $response = new \r8\XMLBuilder\Series;
 
         foreach ( $headers AS $header )
         {
@@ -200,7 +200,7 @@ class Headers
                 $this->headers[ $header->getNamespace() ][ $header->getTag() ]
                 ->process( $header );
 
-            if ( $result instanceof \h2o\iface\XMLBuilder )
+            if ( $result instanceof \r8\iface\XMLBuilder )
                 $response->addChild( $result );
         }
 

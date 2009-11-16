@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Env
  */
 
-namespace h2o\Env;
+namespace r8\Env;
 
 /**
  * Collects information about the current request and allows readonly access to it
  */
-class Request implements \h2o\iface\Env\Request
+class Request implements \r8\iface\Env\Request
 {
 
     /**
@@ -76,14 +76,14 @@ class Request implements \h2o\iface\Env\Request
     /**
      * The URL the client requested
      *
-     * @var \h2o\URL
+     * @var \r8\URL
      */
     private $url;
 
     /**
      * The requested file, relative to the file system
      *
-     * @var \h2o\FileSys\File
+     * @var \r8\FileSys\File
      */
     private $file;
 
@@ -100,7 +100,7 @@ class Request implements \h2o\iface\Env\Request
         if ( !array_key_exists($key, $array) )
             return FALSE;
 
-        if ( \h2o\isEmpty($array[$key]) )
+        if ( \r8\isEmpty($array[$key]) )
             return FALSE;
 
         return TRUE;
@@ -126,7 +126,7 @@ class Request implements \h2o\iface\Env\Request
         $this->post = $post;
         $this->files = $files;
         $this->headers = $headers;
-        $this->cli = \h2o\boolVal( $cli );
+        $this->cli = \r8\boolVal( $cli );
     }
 
     /**
@@ -148,7 +148,7 @@ class Request implements \h2o\iface\Env\Request
     {
         // Lazy instantiation
         if ( !isset($this->get) ) {
-            $parser = new \h2o\QueryParser;
+            $parser = new \r8\QueryParser;
             $this->get = $parser->parse( $this->server['QUERY_STRING'] );
         }
 
@@ -168,11 +168,11 @@ class Request implements \h2o\iface\Env\Request
     /**
      * Private method for building the URL object
      *
-     * @return \h2o\URL
+     * @return \r8\URL
      */
     private function buildURL ()
     {
-        $url = new \h2o\URL;
+        $url = new \r8\URL;
 
         // Get the url Scheme from the server protocol
         if ( self::hasKey($this->server, "SERVER_PROTOCOL") )
@@ -196,7 +196,7 @@ class Request implements \h2o\iface\Env\Request
 
         // The faux directories
         if ( self::hasKey( $this->server, 'PATH_INFO' ) )
-            $url->setFauxDir( \h2o\str\head( $this->server['PATH_INFO'], "/" ) );
+            $url->setFauxDir( \r8\str\head( $this->server['PATH_INFO'], "/" ) );
 
         // Finally, pull the the URL query
         if ( self::hasKey($this->server, 'QUERY_STRING') )
@@ -208,7 +208,7 @@ class Request implements \h2o\iface\Env\Request
     /**
      * Returns the URL the client requested
      *
-     * @return \h2o\URL This will return a clone of the url object every
+     * @return \r8\URL This will return a clone of the url object every
      *      time it is called
      */
     public function getURL ()
@@ -222,12 +222,12 @@ class Request implements \h2o\iface\Env\Request
     /**
      * Returns the file requested by the client, in the context of the file system
      *
-     * @return \h2o\FileSys\File
+     * @return \r8\FileSys\File
      */
     public function getFile ()
     {
         if ( !isset($this->file) ) {
-            $this->file = new \h2o\FileSys\File;
+            $this->file = new \r8\FileSys\File;
 
             if ( self::hasKey($this->server, 'SCRIPT_FILENAME') )
                 $this->file->setPath( $this->server['SCRIPT_FILENAME'] );

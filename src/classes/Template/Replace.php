@@ -4,35 +4,35 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileFinder
  */
 
-namespace h2o\Template;
+namespace r8\Template;
 
 /**
  * A basic search and replace template
  *
  * The default replacement string is #{label}
  */
-class Replace extends \h2o\Template
+class Replace extends \r8\Template
 {
 
     /**
@@ -76,7 +76,7 @@ class Replace extends \h2o\Template
      */
     public function setTemplate ( $template )
     {
-        $this->template = \h2o\strval( $template );
+        $this->template = \r8\strval( $template );
         return $this;
     }
 
@@ -103,7 +103,7 @@ class Replace extends \h2o\Template
      */
     public function setSearch ( $search )
     {
-        $this->search = \h2o\strval( $search );
+        $this->search = \r8\strval( $search );
         return $this;
     }
 
@@ -131,7 +131,7 @@ class Replace extends \h2o\Template
 
             // Ensure that the search string returns the proper number of matches
             if ( count($matches) < 4 ) {
-                $err = new \h2o\Exception\Data(
+                $err = new \r8\Exception\Data(
                         $self->search,
                         "Search Regular Expression",
                         "Must return at least 3 groupings"
@@ -150,7 +150,7 @@ class Replace extends \h2o\Template
 
             // Otherwise make the replacement
             else
-                return $matches[1] . \h2o\strval( $self->get( $matches[3] ) );
+                return $matches[1] . \r8\strval( $self->get( $matches[3] ) );
 
         }, $this->template );
     }

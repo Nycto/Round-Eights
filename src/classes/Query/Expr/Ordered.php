@@ -2,39 +2,39 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace h2o\Query\Expr;
+namespace r8\Query\Expr;
 
 /**
  * An ordered field expression
  */
-class Ordered implements \h2o\iface\Query\Ordered
+class Ordered implements \r8\iface\Query\Ordered
 {
 
     /**
      * The atom being sorted
      *
-     * @var \h2o\iface\Query\Atom
+     * @var \r8\iface\Query\Atom
      */
     private $atom;
 
@@ -49,16 +49,16 @@ class Ordered implements \h2o\iface\Query\Ordered
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \h2o\Query\Expr\Ordered
+     * @return \r8\Query\Expr\Ordered
      */
     static public function fromString ( $string )
     {
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         preg_match('/^(.*?)(\bASC|\bDESC)?$/i', $string, $matches);
 
         return new self(
-            \h2o\Query\Atom\Field::fromString( $matches[1] ),
+            \r8\Query\Atom\Field::fromString( $matches[1] ),
             isset($matches[2]) ? $matches[2] : null
         );
     }
@@ -66,10 +66,10 @@ class Ordered implements \h2o\iface\Query\Ordered
     /**
      * Constructor...
      *
-     * @param \h2o\iface\Query\Atom $atom The atom being ordered
+     * @param \r8\iface\Query\Atom $atom The atom being ordered
      * @param String $order The order in which this atom should be sorted
      */
-    public function __construct ( \h2o\iface\Query\Atom $atom, $order = null )
+    public function __construct ( \r8\iface\Query\Atom $atom, $order = null )
     {
         $this->atom = $atom;
         $this->setOrder( $order );
@@ -78,7 +78,7 @@ class Ordered implements \h2o\iface\Query\Ordered
     /**
      * Returns the Atom being ordered
      *
-     * @return \h2o\iface\Query\Atom
+     * @return \r8\iface\Query\Atom
      */
     public function getAtom ()
     {
@@ -99,7 +99,7 @@ class Ordered implements \h2o\iface\Query\Ordered
      * Sets the order in which this atom should be sorted
      *
      * @param String $order The order of the atom
-     * @return \h2o\Query\Expr\Ordered Returns a self reference
+     * @return \r8\Query\Expr\Ordered Returns a self reference
      */
     public function setOrder ( $order )
     {
@@ -112,7 +112,7 @@ class Ordered implements \h2o\iface\Query\Ordered
         }
 
         else {
-            $order = strtoupper( \h2o\str\stripW( $order ) );
+            $order = strtoupper( \r8\str\stripW( $order ) );
 
             if ( $order == "ASC" || $order == "DESC" )
                 $this->order = $order;
@@ -126,12 +126,12 @@ class Ordered implements \h2o\iface\Query\Ordered
     /**
      * Returns the SQL string for this expression
      *
-     * @param \h2o\iface\DB\Link $link The database connection this atom
+     * @param \r8\iface\DB\Link $link The database connection this atom
      * 		is being created against. This is being passed in for escaping
      * 		purposes
      * @return String
      */
-    public function toOrderedSQL( \h2o\iface\DB\Link $link )
+    public function toOrderedSQL( \r8\iface\DB\Link $link )
     {
         return $this->atom->toAtomSQL( $link )
             .( $this->order ? " ". $this->order : "" );

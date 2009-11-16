@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_validator_fileupload
 
     public static function suite()
     {
-        $suite = new h2o_Base_TestSuite;
+        $suite = new r8_Base_TestSuite;
         $suite->addTestSuite( 'classes_validator_fileupload_noFile' );
         $suite->addTestSuite( 'classes_validator_fileupload_emptyFile' );
         $suite->addTestSuite( 'classes_validator_fileupload_withFile' );
@@ -52,20 +52,20 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testInvalidFieldName ()
     {
-        $valid = new \h2o\Validator\FileUpload;
+        $valid = new \r8\Validator\FileUpload;
 
         try {
             $valid->validate("1234");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
         }
     }
 
     public function testNoUploads()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
 
         $result = $valid->validate("fld");
         $this->assertFalse( $result->isValid() );
@@ -77,7 +77,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_iniSize ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_INI_SIZE ))) );
@@ -92,7 +92,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_formSize ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_FORM_SIZE ))) );
@@ -107,7 +107,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_partial ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_PARTIAL ))) );
@@ -122,7 +122,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_noFile ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_FILE ))) );
@@ -137,7 +137,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_noTmp ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_TMP_DIR ))) );
@@ -152,7 +152,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_cantWrite ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_CANT_WRITE ))) );
@@ -167,7 +167,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_extension ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_EXTENSION ))) );
@@ -182,7 +182,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testUploadErrors_other ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array( "error" => 9999 ))) );
@@ -197,7 +197,7 @@ class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
 
     public function testRestrictedFile ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
         $valid->expects( $this->once() )
             ->method("getUploadedFiles")
             ->will( $this->returnValue(array("fld" => array(
@@ -220,7 +220,7 @@ class classes_validator_fileupload_emptyFile extends PHPUnit_EmptyFile_Framework
 
     public function testEmptyFile ()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -250,7 +250,7 @@ class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_T
     {
         chmod($this->file, 0200);
 
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")
@@ -273,7 +273,7 @@ class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_T
 
     public function testValid()
     {
-        $valid = $this->getMock("h2o\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
 
         $valid->expects( $this->once() )
             ->method("isUploadedFile")

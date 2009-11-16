@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Cache
  */
 
-namespace h2o\iface;
+namespace r8\iface;
 
 /**
  * Interface for a key/value caching system
@@ -61,7 +61,7 @@ interface Cache
      * prevent race conditions.
      *
      * @param String $key The value to retrieve
-     * @return \h2o\Cache\Result
+     * @return \r8\Cache\Result
      */
     public function getForUpdate ( $key );
 
@@ -71,7 +71,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function set ( $key, $value, $expire = 0 );
 
@@ -79,13 +79,13 @@ interface Cache
      * Sets the value for this key only if the value hasn't changed in the cache
      * since it was originally pulled
      *
-     * @param \h2o\Cache\Result $result A result object that was returned by
+     * @param \r8\Cache\Result $result A result object that was returned by
      *      the getForUpdate method
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
-    public function setIfSame ( \h2o\Cache\Result $result, $value, $expire = 0 );
+    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 );
 
     /**
      * Sets a new caching value, but only if that value doesn't exist
@@ -93,7 +93,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function add ( $key, $value, $expire = 0 );
 
@@ -103,7 +103,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function replace ( $key, $value, $expire = 0 );
 
@@ -115,7 +115,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to append
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function append ( $key, $value, $expire = 0 );
 
@@ -127,7 +127,7 @@ interface Cache
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function prepend ( $key, $value, $expire = 0 );
 
@@ -137,7 +137,7 @@ interface Cache
      * If a given value isn't numeric, it will be treated as 0
      *
      * @param String $key The key for the value
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function increment ( $key );
 
@@ -147,7 +147,7 @@ interface Cache
      * If a given value isn't numeric, it will be treated as 0
      *
      * @param String $key The key for the value
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function decrement ( $key );
 
@@ -155,14 +155,14 @@ interface Cache
      * Deletes a value from the cache
      *
      * @param String $key The value to delete
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function delete ( $key );
 
     /**
      * Deletes all values in the cache
      *
-     * @return \h2o\iface\Cache Returns a self reference
+     * @return \r8\iface\Cache Returns a self reference
      */
     public function flush ();
 

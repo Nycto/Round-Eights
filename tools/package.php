@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Package
  */
 
-// Get the base path for the h2o files
+// Get the base path for the r8 files
 $base = realpath( rtrim( __DIR__, "/" ) ."/.." ) ."/";
 
 
-// include h2o
-require_once $base .'/src/RaindropPHP.php';
+// include r8
+require_once $base .'/src/RoundEights.php';
 
 // Create the phar file
 include "make.php";
@@ -41,7 +41,7 @@ $tempDir = rtrim( sys_get_temp_dir(), "/" );
 
 
 // Pull the temporary directory that the package will be pooled in
-$tmp = new \h2o\FileSys\Dir( $tempDir ."/RaindropPHP" ) ;
+$tmp = new \r8\FileSys\Dir( $tempDir ."/RoundEights" ) ;
 
 
 // Empty the temp dir or create it if it doesn't exist
@@ -59,7 +59,7 @@ $copy = array(
     "tests" => "",
     "INSTALL.txt" => "",
     "LICENSE.txt" => "",
-    "tools/RaindropPHP.phar" => ""
+    "tools/RoundEights.phar" => ""
 );
 
 
@@ -89,8 +89,8 @@ if ( $tmp->contains("tests/config.php") ) {
 }
 
 
-$zipFile = new \h2o\FileSys\File($base ."/tools/RaindropPHP-". h2o_VERSION .".zip");
-$targzFile = new \h2o\FileSys\File($base ."/tools/RaindropPHP-". h2o_VERSION .".tar.gz");
+$zipFile = new \r8\FileSys\File($base ."/tools/RoundEights-". r8_VERSION .".zip");
+$targzFile = new \r8\FileSys\File($base ."/tools/RoundEights-". r8_VERSION .".tar.gz");
 
 
 if ( $zipFile->exists() ) {
@@ -110,7 +110,7 @@ system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."zip -r "
         .escapeshellarg( $zipFile->getPath() ) ." "
-        .escapeshellarg( "RaindropPHP" )
+        .escapeshellarg( "RoundEights" )
     );
 
 echo "Creating tar.gz archive\n";
@@ -118,7 +118,7 @@ system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."tar -cvzf "
         . escapeshellarg( $targzFile->getPath()  ) ." "
-        .escapeshellarg( "RaindropPHP" )
+        .escapeshellarg( "RoundEights" )
     );
 
 

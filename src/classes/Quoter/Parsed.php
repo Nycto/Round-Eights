@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Quoter
  */
 
-namespace h2o\Quoter;
+namespace r8\Quoter;
 
 /**
  * Representation a collection of parsed string sections
@@ -51,7 +51,7 @@ class Parsed
     /**
      * Returns a list of all the sections in this instance
      *
-     * @return Array Returns an array of \h2o\Quoter\Parsed objects
+     * @return Array Returns an array of \r8\Quoter\Parsed objects
      */
     public function getSections ()
     {
@@ -64,7 +64,7 @@ class Parsed
      * @param Object $section The section being added
      * @return Object Returns a self reference
      */
-    public function addSection( \h2o\Quoter\Section $section )
+    public function addSection( \r8\Quoter\Section $section )
     {
         $this->sections[] = $section;
         return $this;
@@ -163,7 +163,7 @@ class Parsed
      * @param Object $filter The filter to apply
      * @return Object Returns a self reference
      */
-    public function filter ( \h2o\iface\Filter $filter )
+    public function filter ( \r8\iface\Filter $filter )
     {
         if ( !$this->quoted && !$this->unquoted )
             return $this;

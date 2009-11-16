@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -72,7 +72,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['ary'] = serialize( array(1,2,3) );
         $_COOKIE['obj'] = serialize( new stdClass );
 
-        $sess = new \h2o\Session\Cookie;
+        $sess = new \r8\Session\Cookie;
 
         $this->assertSame( "Data", $sess->get("str") );
         $this->assertSame( 50, $sess->get("int") );
@@ -96,7 +96,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['ary'] = array(1,2,3);
         $_COOKIE['obj'] = new stdClass;
 
-        $sess = new \h2o\Session\Cookie;
+        $sess = new \r8\Session\Cookie;
 
         $this->assertSame( "Data", $sess->get("str") );
         $this->assertSame( 50, $sess->get("int") );
@@ -112,7 +112,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     public function testSet_Expiration ()
     {
         $sess = $this->getMock(
-        	'h2o\Session\Cookie',
+        	'r8\Session\Cookie',
             array('setCookie'),
             array( 50 )
         );
@@ -136,7 +136,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testSet_NULL ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -156,7 +156,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testSet_String ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -172,7 +172,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testSet_Object ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -189,7 +189,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testSet_Array ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -205,7 +205,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testPush_New ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -223,7 +223,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     {
         $_COOKIE['key'] = "Data";
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -241,7 +241,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     {
         $_COOKIE['key'] = array( "Data" );
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -257,7 +257,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
     public function testPop_NotSet ()
     {
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->never() )->method( "setCookie" );
 
         $this->assertNull( $sess->pop("key") );
@@ -269,7 +269,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     {
         $_COOKIE['key'] = "Data";
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -291,7 +291,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     {
         $_COOKIE['key'] = array( "Data" );
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -313,7 +313,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     {
         $_COOKIE['key'] = array( "1st", "2nd" );
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->once() )
             ->method( "setCookie" )
             ->with(
@@ -333,7 +333,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['key2'] = new stdClass;
         $_COOKIE['key3'] = NULL;
 
-        $sess = new \h2o\Session\Cookie;
+        $sess = new \r8\Session\Cookie;
 
         $this->assertTrue( $sess->exists("key") );
         $this->assertTrue( $sess->exists("key2") );
@@ -346,7 +346,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['key'] = "Data";
         $_COOKIE['key3'] = NULL;
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->exactly(3) )
             ->method( "setCookie" )
             ->with(
@@ -377,7 +377,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['key'] = "Data";
         $_COOKIE['key3'] = NULL;
 
-        $sess = $this->getMock('h2o\Session\Cookie', array('setCookie'));
+        $sess = $this->getMock('r8\Session\Cookie', array('setCookie'));
         $sess->expects( $this->exactly(2) )
             ->method( "setCookie" )
             ->with(
@@ -399,7 +399,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
         $_COOKIE['key'] = "Data";
         $_COOKIE['key3'] = NULL;
 
-        $sess = new \h2o\Session\Cookie;
+        $sess = new \r8\Session\Cookie;
 
         $this->assertSame( array('key' => 'Data', 'key3' => NULL), $sess->getAll() );
 

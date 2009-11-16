@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,37 +35,37 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testFromString ()
     {
-        $table = \h2o\Query\From\Table::fromString( "table" );
+        $table = \r8\Query\From\Table::fromString( "table" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertNull( $table->getDatabase() );
         $this->assertNull( $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "db.table" );
+        $table = \r8\Query\From\Table::fromString( "db.table" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertNull( $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "`db`.`table`" );
+        $table = \r8\Query\From\Table::fromString( "`db`.`table`" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertNull( $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "table AS Alias" );
+        $table = \r8\Query\From\Table::fromString( "table AS Alias" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertNull( $table->getDatabase() );
         $this->assertSame( "Alias", $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "db.table AS Alias" );
+        $table = \r8\Query\From\Table::fromString( "db.table AS Alias" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertSame( "Alias", $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "`db`.`table` AS Alias" );
+        $table = \r8\Query\From\Table::fromString( "`db`.`table` AS Alias" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertSame( "Alias", $table->getAlias() );
 
-        $table = \h2o\Query\From\Table::fromString( "`table AS ` AS Alias" );
+        $table = \r8\Query\From\Table::fromString( "`table AS ` AS Alias" );
         $this->assertSame( "tableAS", $table->getTable() );
         $this->assertNull( $table->getDatabase() );
         $this->assertSame( "Alias", $table->getAlias() );
@@ -73,17 +73,17 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $table = new \h2o\Query\From\Table( "table" );
+        $table = new \r8\Query\From\Table( "table" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertNull( $table->getDatabase() );
         $this->assertNull( $table->getAlias() );
 
-        $table = new \h2o\Query\From\Table( "table", "db" );
+        $table = new \r8\Query\From\Table( "table", "db" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertNull( $table->getAlias() );
 
-        $table = new \h2o\Query\From\Table( "table", "db", "t" );
+        $table = new \r8\Query\From\Table( "table", "db", "t" );
         $this->assertSame( "table", $table->getTable() );
         $this->assertSame( "db", $table->getDatabase() );
         $this->assertSame( "t", $table->getAlias() );
@@ -91,7 +91,7 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testTableAccessor ()
     {
-        $table = new \h2o\Query\From\Table( "table" );
+        $table = new \r8\Query\From\Table( "table" );
         $this->assertSame( "table", $table->getTable() );
 
         $this->assertSame( $table, $table->setTable("!@# table Name") );
@@ -101,14 +101,14 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
             $table->setTable("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testDatabaseAccessors ()
     {
-        $obj = new \h2o\Query\From\Table('table');
+        $obj = new \r8\Query\From\Table('table');
         $this->assertFalse( $obj->databaseExists() );
         $this->assertNull( $obj->getDatabase() );
 
@@ -131,7 +131,7 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testAliasAccessors ()
     {
-        $obj = new \h2o\Query\From\Table('table');
+        $obj = new \r8\Query\From\Table('table');
         $this->assertFalse( $obj->aliasExists() );
         $this->assertNull( $obj->getAlias() );
 
@@ -154,8 +154,8 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testToFromSQL ()
     {
-        $link = new \h2o\DB\BlackHole\Link;
-        $table = new \h2o\Query\From\Table( "table" );
+        $link = new \r8\DB\BlackHole\Link;
+        $table = new \r8\Query\From\Table( "table" );
 
         $this->assertSame( "`table`", $table->toFromSQL($link) );
 

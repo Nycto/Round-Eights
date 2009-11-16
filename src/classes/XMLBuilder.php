@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Root class for working with XMLBuilders
@@ -44,7 +44,7 @@ class XMLBuilder
     /**
      * The XML Builder that will construct the root node to attach to the document
      *
-     * @var \h2o\iface\XMLBuilder
+     * @var \r8\iface\XMLBuilder
      */
     private $builder;
 
@@ -71,33 +71,33 @@ class XMLBuilder
      * A helper function for building a node, ensuring a proper value was returned,
      * and then importing it into the document
      *
-     * @param \h2o\iface\XMLBuilder $builder
+     * @param \r8\iface\XMLBuilder $builder
      * @param \DOMDocument $doc The document being built
      * @return DOMNode
      */
-    static public function buildNode ( \h2o\iface\XMLBuilder $builder, \DOMDocument $doc )
+    static public function buildNode ( \r8\iface\XMLBuilder $builder, \DOMDocument $doc )
     {
         $built = $builder->buildNode( $doc );
 
         if ( !($built instanceof \DOMNode) ) {
-            $err = new \h2o\Exception\Interaction("XMLBuilder did not return a DOMNode object");
-            $err->addData("Document", \h2o\getDump($doc));
-            $err->addData("Built Node", \h2o\getDump($built));
+            $err = new \r8\Exception\Interaction("XMLBuilder did not return a DOMNode object");
+            $err->addData("Document", \r8\getDump($doc));
+            $err->addData("Built Node", \r8\getDump($built));
             throw $err;
         }
 
         // Ensure the built node is a member of the document
-        return \h2o\XMLBuilder::importNode( $doc, $built );
+        return \r8\XMLBuilder::importNode( $doc, $built );
     }
 
     /**
      * Constructor...
      *
      * @param DOMDocument $doc The DOMDocument to add the built nodes to
-     * @param \h2o\iface\XMLBuilder $builder The XML Builder that will construct
+     * @param \r8\iface\XMLBuilder $builder The XML Builder that will construct
      *      the root node to attach to the document
      */
-    public function __construct ( \DOMDocument $doc, \h2o\iface\XMLBuilder $builder )
+    public function __construct ( \DOMDocument $doc, \r8\iface\XMLBuilder $builder )
     {
         $this->doc = $doc;
         $this->builder = $builder;

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,36 +35,36 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $func = new \h2o\Query\Atom\Func( "now" );
+        $func = new \r8\Query\Atom\Func( "now" );
         $this->assertSame( "NOW", $func->getFunc() );
 
-        $func = new \h2o\Query\Atom\Func( "!@#$ IF   .." );
+        $func = new \r8\Query\Atom\Func( "!@#$ IF   .." );
         $this->assertSame( "IF", $func->getFunc() );
 
-        $func = new \h2o\Query\Atom\Func( "ABC_123" );
+        $func = new \r8\Query\Atom\Func( "ABC_123" );
         $this->assertSame( "ABC_123", $func->getFunc() );
     }
 
     public function testConstruct_args ()
     {
-        $arg1 = $this->getMock('\h2o\iface\Query\Atom');
-        $arg2 = $this->getMock('\h2o\iface\Query\Atom');
+        $arg1 = $this->getMock('\r8\iface\Query\Atom');
+        $arg2 = $this->getMock('\r8\iface\Query\Atom');
 
-        $func = new \h2o\Query\Atom\Func( "func", $arg1, $arg2 );
+        $func = new \r8\Query\Atom\Func( "func", $arg1, $arg2 );
         $this->assertSame( "FUNC", $func->getFunc() );
         $this->assertSame( array( $arg1, $arg2 ), $func->getArgs() );
     }
 
     public function testAddArg ()
     {
-        $func = new \h2o\Query\Atom\Func( "test" );
+        $func = new \r8\Query\Atom\Func( "test" );
         $this->assertSame( array(), $func->getArgs() );
 
-        $arg1 = $this->getMock('\h2o\iface\Query\Atom');
+        $arg1 = $this->getMock('\r8\iface\Query\Atom');
         $this->assertSame( $func, $func->addArg($arg1) );
         $this->assertSame( array( $arg1 ), $func->getArgs() );
 
-        $arg2 = $this->getMock('\h2o\iface\Query\Atom');
+        $arg2 = $this->getMock('\r8\iface\Query\Atom');
         $this->assertSame( $func, $func->addArg($arg2) );
         $this->assertSame( array( $arg1, $arg2 ), $func->getArgs() );
 
@@ -74,11 +74,11 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
 
     public function testSetArgs ()
     {
-        $func = new \h2o\Query\Atom\Func( "test" );
+        $func = new \r8\Query\Atom\Func( "test" );
         $this->assertSame( array(), $func->getArgs() );
 
-        $arg1 = $this->getMock('\h2o\iface\Query\Atom');
-        $arg2 = $this->getMock('\h2o\iface\Query\Atom');
+        $arg1 = $this->getMock('\r8\iface\Query\Atom');
+        $arg2 = $this->getMock('\r8\iface\Query\Atom');
 
         $this->assertSame(
                 $func,
@@ -89,20 +89,20 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
 
     public function testToAtomSQL_noArgs ()
     {
-        $link = $this->getMock("h2o\iface\DB\Link");
+        $link = $this->getMock("r8\iface\DB\Link");
 
-        $fld = new \h2o\Query\Atom\Func("now");
+        $fld = new \r8\Query\Atom\Func("now");
         $this->assertSame( "NOW()", $fld->toAtomSQL( $link ) );
     }
 
     public function testToAtomSQL_withArgs ()
     {
-        $link = new \h2o\DB\BlackHole\Link;
+        $link = new \r8\DB\BlackHole\Link;
 
-        $fld = new \h2o\Query\Atom\Func(
+        $fld = new \r8\Query\Atom\Func(
         		"Func",
-                new \h2o\Query\Atom\Primitive(5),
-                new \h2o\Query\Atom\Field("fld")
+                new \r8\Query\Atom\Primitive(5),
+                new \r8\Query\Atom\Field("fld")
             );
 
         $this->assertSame( "FUNC(5, `fld`)", $fld->toAtomSQL( $link ) );

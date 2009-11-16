@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Exception
  */
 
-namespace h2o\Soap;
+namespace r8\Soap;
 
 /**
  * Soap server fault interrupt
@@ -31,7 +31,7 @@ namespace h2o\Soap;
  * This exception is used by the Soap server class to halt server
  * execution and return a soap fault
  */
-class Fault extends \h2o\Exception\Interrupt
+class Fault extends \r8\Exception\Interrupt
 {
 
     /**
@@ -110,10 +110,10 @@ class Fault extends \h2o\Exception\Interrupt
             $this->primeCode = "Sender";
 
         $this->subCodes = array_values(
-            \h2o\ary\compact(
+            \r8\ary\compact(
                 array_map(
-                	'\h2o\str\stripW',
-                    \h2o\ary\flatten( $subCodes )
+                	'\r8\str\stripW',
+                    \r8\ary\flatten( $subCodes )
                 )
             )
         );
@@ -153,11 +153,11 @@ class Fault extends \h2o\Exception\Interrupt
      * Sets the Role that was being processed when this fault was encountered
      *
      * @param String $role The Role URI
-     * @return \h2o\Soap\Fault Returns a self reference
+     * @return \r8\Soap\Fault Returns a self reference
      */
     public function setRole ( $role )
     {
-        $role = \h2o\Filter::URL()->filter( $role );
+        $role = \r8\Filter::URL()->filter( $role );
         $this->role = empty($role) ? NULL : $role;
         return $this;
     }
@@ -166,7 +166,7 @@ class Fault extends \h2o\Exception\Interrupt
      * Sets an array of details to send back in the fault
      *
      * @param array $details The list of details
-     * @return \h2o\Soap\Fault Return a self reference
+     * @return \r8\Soap\Fault Return a self reference
      */
     public function setDetails ( array $details )
     {

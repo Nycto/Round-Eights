@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Tag
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Class for parsing, manipulating and outputting URLs
@@ -93,7 +93,7 @@ class URL
     /**
      * Returns a new URL instance with the base pulled from the environment
      *
-     * @return Object Returns a \h2o\URL object
+     * @return Object Returns a \r8\URL object
      */
     static public function fromBase ()
     {
@@ -105,7 +105,7 @@ class URL
     /**
      * Returns a new URL instance with the entire URL pulled from the environment
      *
-     * @return Object Returns a \h2o\URL object
+     * @return Object Returns a \r8\URL object
      */
     static public function fromURL ()
     {
@@ -132,8 +132,8 @@ class URL
             $this->setQuery( $url->getQuery() );
             $this->setFragment( $url->getFragment() );
         }
-        else if ( !\h2o\isVague($url) ) {
-            $this->setURL( \h2o\strval($url) );
+        else if ( !\r8\isVague($url) ) {
+            $this->setURL( \r8\strval($url) );
         }
     }
 
@@ -153,11 +153,11 @@ class URL
      * This method exists strictly for unit testing purposes. By mocking this
      * method you can feed a spoof environment to the rest of the instance
      *
-     * @return Object Returns a \h2o\Env instance
+     * @return Object Returns a \r8\Env instance
      */
     protected function getEnv ()
     {
-        return \h2o\Env::Request();
+        return \r8\Env::Request();
     }
 
     /**
@@ -182,7 +182,7 @@ class URL
      */
     public function setScheme ( $scheme )
     {
-        $scheme = strtolower( \h2o\str\stripW($scheme) );
+        $scheme = strtolower( \r8\str\stripW($scheme) );
         $this->scheme = empty( $scheme ) ? null : $scheme;
         return $this;
     }
@@ -258,8 +258,8 @@ class URL
      */
     public function setUserName ( $username )
     {
-        $username = \h2o\strval( $username );
-        $this->username = \h2o\isEmpty( $username ) ? null : $username;
+        $username = \r8\strval( $username );
+        $this->username = \r8\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -302,8 +302,8 @@ class URL
      */
     public function setPassword ( $password )
     {
-        $password = \h2o\strval( $password );
-        $this->password = \h2o\isEmpty( $password ) ? null : $password;
+        $password = \r8\strval( $password );
+        $this->password = \r8\isEmpty( $password ) ? null : $password;
         return $this;
     }
 
@@ -358,9 +358,9 @@ class URL
      */
     public function setUserInfo ( $userInfo )
     {
-        $userInfo = \h2o\strVal( $userInfo );
+        $userInfo = \r8\strVal( $userInfo );
 
-        if ( \h2o\str\contains("@", $userInfo))
+        if ( \r8\str\contains("@", $userInfo))
             $userInfo = strstr( $userInfo, "@", TRUE );
 
         $userInfo = explode(":", $userInfo, 2);
@@ -417,11 +417,11 @@ class URL
      */
     public function setHost ( $host )
     {
-        $host = \h2o\strval($host);
+        $host = \r8\strval($host);
 
         $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
 
-        $host = \h2o\str\stripRepeats($host, ".");
+        $host = \r8\str\stripRepeats($host, ".");
         $host = trim($host, ".");
 
         $this->host = empty($host) ? null : $host;
@@ -470,8 +470,8 @@ class URL
         if ( !$link->hostExists() )
             return FALSE;
 
-        $localHost = \h2o\str\stripHead( $this->getHost(), "www." );
-        $envHost = \h2o\str\stripHead( $link->getHost(), "www." );
+        $localHost = \r8\str\stripHead( $this->getHost(), "www." );
+        $envHost = \r8\str\stripHead( $link->getHost(), "www." );
 
         if ( strcasecmp($localHost, $envHost) == 0 )
             return TRUE;
@@ -634,7 +634,7 @@ class URL
      */
     public function setHostAndPort ( $hostAndPort )
     {
-        $hostAndPort = \h2o\strval( $hostAndPort );
+        $hostAndPort = \r8\strval( $hostAndPort );
 
         if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
             $this->setHost( $matches[1] );
@@ -683,9 +683,9 @@ class URL
      */
     public function setBase ( $base )
     {
-        $base = \h2o\strval( $base );
+        $base = \r8\strval( $base );
 
-        if ( \h2o\str\contains("://", $base) ) {
+        if ( \r8\str\contains("://", $base) ) {
             $this->setScheme( strstr($base, "://", TRUE) );
             $base = substr( strstr($base, "://", FALSE), 3 );
         }
@@ -693,7 +693,7 @@ class URL
             $this->clearScheme();
         }
 
-        if ( \h2o\str\contains("@", $base) ) {
+        if ( \r8\str\contains("@", $base) ) {
             $this->setUserInfo( strstr($base, "@", TRUE) );
             $base = substr( strstr($base, "@", FALSE), 1 );
         }
@@ -746,14 +746,14 @@ class URL
      */
     public function setDir ( $directory )
     {
-        $directory = \h2o\strval( $directory );
+        $directory = \r8\strval( $directory );
 
-        if ( \h2o\isEmpty( $directory ) ) {
+        if ( \r8\isEmpty( $directory ) ) {
             $this->directory = null;
         }
         else {
-            $directory = \h2o\FileSys::resolvePath( $directory );
-            $directory = \h2o\str\enclose( $directory, "/" );
+            $directory = \r8\FileSys::resolvePath( $directory );
+            $directory = \r8\str\enclose( $directory, "/" );
             $this->directory = $directory;
         }
 
@@ -799,9 +799,9 @@ class URL
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(\h2o\strval( $filename ));
+        $filename = trim(\r8\strval( $filename ));
         $filename = rtrim( $filename, "." );
-        $this->filename = \h2o\isEmpty( $filename ) ? null : $filename;
+        $this->filename = \r8\isEmpty( $filename ) ? null : $filename;
         return $this;
     }
 
@@ -846,9 +846,9 @@ class URL
      */
     public function setExt ( $extension )
     {
-        $extension = trim(\h2o\strval( $extension ));
+        $extension = trim(\r8\strval( $extension ));
         $extension = ltrim( $extension, "." );
-        $this->extension = \h2o\isEmpty( $extension ) ? null : $extension;
+        $this->extension = \r8\isEmpty( $extension ) ? null : $extension;
         return $this;
     }
 
@@ -889,7 +889,7 @@ class URL
         if ( !$this->extExists() )
             return $this->getFilename();
 
-        return \h2o\str\weld(
+        return \r8\str\weld(
                 $this->getFilename(),
                 $this->getExt(),
                 "."
@@ -904,7 +904,7 @@ class URL
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(\h2o\strval( $basename ));
+        $basename = trim(\r8\strval( $basename ));
         $basename = pathinfo( $basename );
 
         if ( isset($basename['filename']) )
@@ -943,7 +943,7 @@ class URL
      */
     public function setPath ( $path )
     {
-        $path = trim(\h2o\strval( $path ));
+        $path = trim(\r8\strval( $path ));
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -1019,9 +1019,9 @@ class URL
      */
     public function setFauxDir ( $fauxDir )
     {
-        $fauxDir = \h2o\strval( $fauxDir );
-        $this->fauxDir = \h2o\isEmpty( $fauxDir )
-            ? null : \h2o\str\head($fauxDir, "/");
+        $fauxDir = \r8\strval( $fauxDir );
+        $this->fauxDir = \r8\isEmpty( $fauxDir )
+            ? null : \r8\str\head($fauxDir, "/");
         return $this;
     }
 
@@ -1094,9 +1094,9 @@ class URL
         if ( is_array($query) )
             $query = http_build_query( $query );
 
-        $query = \h2o\strval( $query );
+        $query = \r8\strval( $query );
 
-        if ( \h2o\isEmpty($query, \h2o\ALLOW_SPACES) )
+        if ( \r8\isEmpty($query, \r8\ALLOW_SPACES) )
             $this->query = null;
         else
             $this->query = $query;
@@ -1155,8 +1155,8 @@ class URL
      */
     public function setFragment ( $fragment )
     {
-        $fragment = \h2o\strval( $fragment );
-        $this->fragment = \h2o\isEmpty( $fragment, \h2o\ALLOW_SPACES ) ? null : $fragment;
+        $fragment = \r8\strval( $fragment );
+        $this->fragment = \r8\isEmpty( $fragment, \r8\ALLOW_SPACES ) ? null : $fragment;
         return $this;
     }
 
@@ -1209,7 +1209,7 @@ class URL
         if ( $this->fragmentExists() )
             $result .= "#". $this->getFragment();
 
-        return \h2o\isEmpty( $result, \h2o\ALLOW_SPACES ) ? null : $result;
+        return \r8\isEmpty( $result, \r8\ALLOW_SPACES ) ? null : $result;
     }
 
     /**
@@ -1221,7 +1221,7 @@ class URL
     {
         $url = $this->getBase() . $this->getRelative();
 
-        return \h2o\isEmpty( $url, \h2o\ALLOW_SPACES ) ? null : $url;
+        return \r8\isEmpty( $url, \r8\ALLOW_SPACES ) ? null : $url;
     }
 
     /**
@@ -1232,7 +1232,7 @@ class URL
      */
     public function setURL ( $url )
     {
-        $url = \h2o\strval($url);
+        $url = \r8\strval($url);
 
         $parsed = parse_url( $url );
 

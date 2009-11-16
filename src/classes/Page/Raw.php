@@ -4,33 +4,33 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Page
  */
 
-namespace h2o\Page;
+namespace r8\Page;
 
 /**
  * Takes an input, converts it to a string, and presents it as a page
  */
-class Raw implements \h2o\iface\Page
+class Raw implements \r8\iface\Page
 {
 
     /**
@@ -96,13 +96,13 @@ class Raw implements \h2o\iface\Page
     /**
      * Returns the core content this page will display
      *
-     * @param \h2o\Page\Context $context A context object which is used by this
+     * @param \r8\Page\Context $context A context object which is used by this
      *      page to communicate with the root page
-     * @return \h2o\Template\Raw Returns the template for this page
+     * @return \r8\Template\Raw Returns the template for this page
      */
-    public function getContent ( \h2o\Page\Context $context )
+    public function getContent ( \r8\Page\Context $context )
     {
-        return new \h2o\Template\Raw( $this->data );
+        return new \r8\Template\Raw( $this->data );
     }
 
 }

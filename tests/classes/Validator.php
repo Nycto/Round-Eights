@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function getMockValidator ( $return )
     {
-        $mock = $this->getMock("h2o\Validator", array("process"));
+        $mock = $this->getMock("r8\Validator", array("process"));
         $mock->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo("To Validate") )
@@ -46,23 +46,23 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $validator = \h2o\Validator::Email();
-        $this->assertThat( $validator, $this->isInstanceOf("h2o\Validator\Email") );
+        $validator = \r8\Validator::Email();
+        $this->assertThat( $validator, $this->isInstanceOf("r8\Validator\Email") );
 
         try {
-            \h2o\Validator::ThisIsNotAValidator();
+            \r8\Validator::ThisIsNotAValidator();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Validator could not be found in \h2o\Validator namespace", $err->getMessage() );
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( 'Validator could not be found in \r8\Validator namespace', $err->getMessage() );
         }
 
         try {
-            \h2o\Validator::Result();
+            \r8\Validator::Result();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Class does not implement \h2o\iface\Validator", $err->getMessage() );
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( 'Class does not implement \r8\iface\Validator', $err->getMessage() );
         }
     }
 
@@ -72,7 +72,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
     }
 
@@ -82,7 +82,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("278.09"), $result->getErrors() );
 
@@ -97,7 +97,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("278"), $result->getErrors() );
 
@@ -121,7 +121,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("This is an Error"), $result->getErrors() );
     }
@@ -132,7 +132,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
 
@@ -141,7 +141,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
     }
@@ -152,7 +152,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
 
@@ -160,19 +160,19 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
     }
 
     public function testResultError ()
     {
-        $return = new \h2o\Validator\Result("To Validate");
+        $return = new \r8\Validator\Result("To Validate");
         $return->addErrors("First Error", "Second Error");
         $mock = $this->getMockValidator( $return );
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("First Error", "Second Error"), $result->getErrors() );
 
@@ -180,12 +180,12 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
     public function testEmptyResultError ()
     {
-        $return = new \h2o\Validator\Result("To Validate");
+        $return = new \r8\Validator\Result("To Validate");
         $mock = $this->getMockValidator( $return );
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertTrue( $result->isValid() );
 
     }
@@ -197,7 +197,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
 
         $result = $mock->validate("To Validate");
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Validator\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result") );
         $this->assertFalse( $result->isValid() );
         $this->assertEquals( array("Custom Error Message"), $result->getErrors() );
 
@@ -224,7 +224,7 @@ class classes_validator extends PHPUnit_Framework_TestCase
             $fails->ensure("To Validate");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Data $err ) {
+        catch ( \r8\Exception\Data $err ) {
             $this->assertSame(
                     "This is an error",
                     $err->getMessage()

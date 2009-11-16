@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace h2o\DB\LinkWrap;
+namespace r8\DB\LinkWrap;
 
 /**
  * Link wrapper to provide advanced
  */
-class Querier extends \h2o\DB\LinkWrap
+class Querier extends \r8\DB\LinkWrap
 {
 
     /**
@@ -42,17 +42,17 @@ class Querier extends \h2o\DB\LinkWrap
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @return \h2o\DB\Result Returns a result object
+     * @return \r8\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
         $flags = intval( $flags );
-        $query = \h2o\strval($query);
+        $query = \r8\strval($query);
 
         try {
             return $this->getLink()->query( $query, $flags );
         }
-        catch (\h2o\Exception\DB\Query $err) {
+        catch (\r8\Exception\DB\Query $err) {
 
             if ( !( $flags & self::SILENT) ) {
                 $err->shiftFault();
@@ -107,10 +107,10 @@ class Querier extends \h2o\DB\LinkWrap
      */
     public function getFieldList ( array $fields )
     {
-        $fields = \h2o\ary\flatten($fields);
+        $fields = \r8\ary\flatten($fields);
 
         if (count($fields) <= 0)
-            throw new \h2o\Exception\Argument(0, "Field List", "Must not be empty");
+            throw new \r8\Exception\Argument(0, "Field List", "Must not be empty");
 
         foreach ($fields AS $name => $value) {
             $fields[$name] = "`". $name ."` = ". $this->quote($value);
@@ -133,10 +133,10 @@ class Querier extends \h2o\DB\LinkWrap
      */
     public function insert ( $table, $fields, $flags = 0 )
     {
-        $table = \h2o\strval($table);
+        $table = \r8\strval($table);
 
-        if ( \h2o\isEmpty($table) )
-            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \r8\isEmpty($table) )
+            throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
 
@@ -163,16 +163,16 @@ class Querier extends \h2o\DB\LinkWrap
      */
     public function update ($table, $where, $fields, $flags = 0)
     {
-        $table = \h2o\strval($table);
+        $table = \r8\strval($table);
 
-        if ( \h2o\isEmpty($table) )
-            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \r8\isEmpty($table) )
+            throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
 
-        $where = trim( \h2o\strval($where) );
+        $where = trim( \r8\strval($where) );
 
-        if ( !\h2o\isEmpty($where) )
+        if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return $this->query($query, $flags);
@@ -192,10 +192,10 @@ class Querier extends \h2o\DB\LinkWrap
     {
         $result = $this->query($query, $flags);
 
-        if ( !($result instanceof \h2o\DB\Result\Read) ) {
-            $err = new \h2o\Exception\Interaction("Query did not a valid Read result object");
+        if ( !($result instanceof \r8\DB\Result\Read) ) {
+            $err = new \r8\Exception\Interaction("Query did not a valid Read result object");
             $err->addData("Query", $query);
-            $err->addData("Returned Result", \h2o\getDump($result));
+            $err->addData("Returned Result", \r8\getDump($result));
             throw $err;
         }
 
@@ -221,24 +221,24 @@ class Querier extends \h2o\DB\LinkWrap
      */
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
-        $field = \h2o\strval( $field );
+        $field = \r8\strval( $field );
 
-        if ( \h2o\isEmpty($field) )
-            throw new \h2o\Exception\Argument( 0, "Field", "Must not be empty" );
+        if ( \r8\isEmpty($field) )
+            throw new \r8\Exception\Argument( 0, "Field", "Must not be empty" );
 
         $result = $this->getRow( $query, $row, $flags );
 
         if ( !is_array($result) && !($result instanceof \ArrayAccess) ) {
-            $err = new \h2o\Exception\Interaction("Row was not an array or accessable as an array");
+            $err = new \r8\Exception\Interaction("Row was not an array or accessable as an array");
             $err->addData("Query", $query);
-            $err->addData("Returned Row", \h2o\getDump($result));
+            $err->addData("Returned Row", \r8\getDump($result));
             throw $err;
         }
 
         if ( !isset($result[ $field ]) ) {
-            $err = new \h2o\Exception\Argument( 0, "Field", "Field does not exist in row" );
+            $err = new \r8\Exception\Argument( 0, "Field", "Field does not exist in row" );
             $err->addData("Query", $query);
-            $err->addData("Returned Row", \h2o\getDump($result));
+            $err->addData("Returned Row", \r8\getDump($result));
             throw $err;
         }
 
@@ -258,16 +258,16 @@ class Querier extends \h2o\DB\LinkWrap
      */
     public function count ($table, $where = FALSE, $flags = 0)
     {
-        $table = \h2o\strval($table);
+        $table = \r8\strval($table);
 
-        if ( \h2o\isEmpty($table) )
-            throw new \h2o\Exception\Argument(0, "Table Name", "Must not be empty");
+        if ( \r8\isEmpty($table) )
+            throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
 
-        $where = trim( \h2o\strval($where) );
+        $where = trim( \r8\strval($where) );
 
-        if ( !\h2o\isEmpty($where) )
+        if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
 
         return intval( $this->getField("cnt", $query, 0, $flags) );

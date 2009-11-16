@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,25 +35,25 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testConstruct_Defaults ()
     {
-        $server = new \h2o\Soap\Server;
+        $server = new \r8\Soap\Server;
 
         $this->assertThat(
             $server->getHeaders(),
-            $this->isInstanceOf("h2o\Soap\Server\Headers")
+            $this->isInstanceOf("r8\Soap\Server\Headers")
         );
 
         $this->assertThat(
             $server->getMessages(),
-            $this->isInstanceOf("h2o\Soap\Server\Messages")
+            $this->isInstanceOf("r8\Soap\Server\Messages")
         );
     }
 
     public function testConstruct_Injected ()
     {
-        $headers = new \h2o\Soap\Server\Headers;
-        $messages = new \h2o\Soap\Server\Messages;
+        $headers = new \r8\Soap\Server\Headers;
+        $messages = new \r8\Soap\Server\Messages;
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $this->assertSame( $headers, $server->getHeaders() );
         $this->assertSame( $messages, $server->getMessages() );
@@ -61,14 +61,14 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testAddRole ()
     {
-        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers = $this->getMock('r8\Soap\Server\Headers');
         $headers->expects( $this->once() )
             ->method( "addRole" )
             ->with( $this->equalTo("test:uri") );
 
-        $messages = new \h2o\Soap\Server\Messages;
+        $messages = new \r8\Soap\Server\Messages;
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $this->assertSame( $server, $server->addRole( "test:uri" ) );
 
@@ -76,9 +76,9 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testAddHeader ()
     {
-        $head = $this->getMock('h2o\iface\Soap\Header');
+        $head = $this->getMock('r8\iface\Soap\Header');
 
-        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers = $this->getMock('r8\Soap\Server\Headers');
         $headers->expects( $this->once() )
             ->method( "addHeader" )
             ->with(
@@ -87,9 +87,9 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
                 $this->equalTo( $head )
             );
 
-        $messages = new \h2o\Soap\Server\Messages;
+        $messages = new \r8\Soap\Server\Messages;
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $this->assertSame(
             $server,
@@ -99,9 +99,9 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testAddMessage ()
     {
-        $msg = $this->getMock('h2o\iface\Soap\Message');
+        $msg = $this->getMock('r8\iface\Soap\Message');
 
-        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages = $this->getMock('r8\Soap\Server\Messages');
         $messages->expects( $this->once() )
             ->method( "addMessage" )
             ->with(
@@ -110,7 +110,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
                 $this->equalTo( $msg )
             );
 
-        $server = new \h2o\Soap\Server( $messages );
+        $server = new \r8\Soap\Server( $messages );
 
         $this->assertSame(
             $server,
@@ -120,24 +120,24 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testProcess_HeaderFault ()
     {
-        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
 
-        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers = $this->getMock('r8\Soap\Server\Headers');
         $headers->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo($parser) )
             ->will( $this->throwException(
-                new \h2o\Soap\Fault( "Fault" )
+                new \r8\Soap\Fault( "Fault" )
             ) );
 
-        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages = $this->getMock('r8\Soap\Server\Messages');
         $messages->expects( $this->never() )->method( "process" );
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $result = $server->process( $parser );
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
 
 
         $doc = new DOMDocument;
@@ -155,27 +155,27 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testProcess_BodyFault ()
     {
-        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
 
-        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers = $this->getMock('r8\Soap\Server\Headers');
         $headers->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo($parser) )
             ->will( $this->returnValue(NULL) );
 
-        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages = $this->getMock('r8\Soap\Server\Messages');
         $messages->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo($parser) )
             ->will( $this->throwException(
-                new \h2o\Soap\Fault( "Fault" )
+                new \r8\Soap\Fault( "Fault" )
             ) );
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $result = $server->process( $parser );
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
 
 
         $doc = new DOMDocument;
@@ -193,29 +193,29 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testProcess_Success ()
     {
-        $parser = $this->getMock('h2o\Soap\Parser', array(), array(), '', FALSE);
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
 
-        $headers = $this->getMock('h2o\Soap\Server\Headers');
+        $headers = $this->getMock('r8\Soap\Server\Headers');
         $headers->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo($parser) )
             ->will( $this->returnValue(
-                new \h2o\XMLBuilder\Node("Heading")
+                new \r8\XMLBuilder\Node("Heading")
             ) );
 
-        $messages = $this->getMock('h2o\Soap\Server\Messages');
+        $messages = $this->getMock('r8\Soap\Server\Messages');
         $messages->expects( $this->once() )
             ->method( "process" )
             ->with( $this->equalTo($parser) )
             ->will( $this->returnValue(
-                new \h2o\XMLBuilder\Node("Content")
+                new \r8\XMLBuilder\Node("Content")
             ) );
 
-        $server = new \h2o\Soap\Server( $messages, $headers );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
         $result = $server->process( $parser );
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\XMLBuilder\Soap\Envelope") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
 
 
         $doc = new DOMDocument;
@@ -232,15 +232,15 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
 
     public function testProcessStream ()
     {
-        $result = $this->getMock('h2o\XMLBuilder\Soap\Envelope', array(), array(), '', FALSE);
+        $result = $this->getMock('r8\XMLBuilder\Soap\Envelope', array(), array(), '', FALSE);
 
-        $server = $this->getMock('h2o\Soap\Server', array('process'));
+        $server = $this->getMock('r8\Soap\Server', array('process'));
         $server->expects( $this->once() )
             ->method( "process" )
-            ->with( $this->isInstanceOf('h2o\Soap\Parser') )
+            ->with( $this->isInstanceOf('r8\Soap\Parser') )
             ->will( $this->returnValue( $result ) );
 
-        $stream = $this->getMock('h2o\iface\Stream\In');
+        $stream = $this->getMock('r8\iface\Stream\In');
         $stream->expects( $this->once() )
             ->method( "readAll" )
             ->will( $this->returnValue("<Request/>") );

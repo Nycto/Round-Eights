@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,7 +36,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     public function getMockLink ( $args = array() )
     {
         return $this->getMock(
-                "\h2o\DB\Link",
+                '\r8\DB\Link',
                 array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected"),
                 $args
             );
@@ -61,52 +61,52 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(
         		"1",
-                \h2o\DB\Link::cleanseValue( 1, true, function () {} )
+                \r8\DB\Link::cleanseValue( 1, true, function () {} )
             );
 
         $this->assertSame(
         		"10.5",
-                \h2o\DB\Link::cleanseValue( 10.5, true, function () {} )
+                \r8\DB\Link::cleanseValue( 10.5, true, function () {} )
             );
 
         $this->assertSame(
         		"0",
-                \h2o\DB\Link::cleanseValue( 00, true, function () {} )
+                \r8\DB\Link::cleanseValue( 00, true, function () {} )
             );
 
         $this->assertSame(
         		"1",
-                \h2o\DB\Link::cleanseValue( true, true, function () {} )
+                \r8\DB\Link::cleanseValue( true, true, function () {} )
             );
 
         $this->assertSame(
         		"0",
-                \h2o\DB\Link::cleanseValue( false, true, function () {} )
+                \r8\DB\Link::cleanseValue( false, true, function () {} )
             );
 
         $this->assertSame(
         		"NULL",
-                \h2o\DB\Link::cleanseValue( null, true, function () {} )
+                \r8\DB\Link::cleanseValue( null, true, function () {} )
             );
 
         $this->assertSame(
         		"100",
-                \h2o\DB\Link::cleanseValue( "100", true, function () {} )
+                \r8\DB\Link::cleanseValue( "100", true, function () {} )
             );
 
         $this->assertSame(
         		"0.5",
-                \h2o\DB\Link::cleanseValue( "0.5", true, function () {} )
+                \r8\DB\Link::cleanseValue( "0.5", true, function () {} )
             );
 
         $this->assertSame(
         		".5",
-                \h2o\DB\Link::cleanseValue( ".5", true, function () {} )
+                \r8\DB\Link::cleanseValue( ".5", true, function () {} )
             );
 
         $this->assertSame(
     		"",
-            \h2o\DB\Link::cleanseValue(
+            \r8\DB\Link::cleanseValue(
         		null,
                 false,
                 function ( $value ) { return $value; }
@@ -115,7 +115,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
     		"escaped string",
-            \h2o\DB\Link::cleanseValue(
+            \r8\DB\Link::cleanseValue(
         		"string",
                 false,
                 function ( $value ) { return "escaped ". $value; }
@@ -126,78 +126,78 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     public function testIsSelect ()
     {
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("SELECT * FROM table")
+                \r8\DB\Link::isSelect("SELECT * FROM table")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("    SELECT * FROM table")
+                \r8\DB\Link::isSelect("    SELECT * FROM table")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect(" \r \n \t  SELECT * FROM table")
+                \r8\DB\Link::isSelect(" \r \n \t  SELECT * FROM table")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("  (  SELECT * FROM table )")
+                \r8\DB\Link::isSelect("  (  SELECT * FROM table )")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("(((SELECT * FROM table)))")
+                \r8\DB\Link::isSelect("(((SELECT * FROM table)))")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect(" (  ( ( SELECT * FROM table)))")
+                \r8\DB\Link::isSelect(" (  ( ( SELECT * FROM table)))")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("EXPLAIN SELECT * FROM table")
+                \r8\DB\Link::isSelect("EXPLAIN SELECT * FROM table")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("( (EXPLAIN SELECT * FROM table))")
+                \r8\DB\Link::isSelect("( (EXPLAIN SELECT * FROM table))")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isSelect("( ( EXPLAIN   \n \t SELECT * FROM table))")
+                \r8\DB\Link::isSelect("( ( EXPLAIN   \n \t SELECT * FROM table))")
             );
 
         $this->assertFalse(
-                \h2o\DB\Link::isSelect("UPDATE table SET field = 1")
+                \r8\DB\Link::isSelect("UPDATE table SET field = 1")
             );
 
         $this->assertFalse(
-                \h2o\DB\Link::isSelect("INSERT INTO table SET field = 1")
+                \r8\DB\Link::isSelect("INSERT INTO table SET field = 1")
             );
     }
 
     public function testIsInsert ()
     {
         $this->assertTrue(
-                \h2o\DB\Link::isInsert("INSERT INTO table SET field = 1")
+                \r8\DB\Link::isInsert("INSERT INTO table SET field = 1")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isInsert("INSERT INTO table VALUES (1, 2)")
+                \r8\DB\Link::isInsert("INSERT INTO table VALUES (1, 2)")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isInsert(" \n\t  INSERT INTO table SET field = 1")
+                \r8\DB\Link::isInsert(" \n\t  INSERT INTO table SET field = 1")
             );
 
         $this->assertTrue(
-                \h2o\DB\Link::isInsert("insert into table set field = 1")
+                \r8\DB\Link::isInsert("insert into table set field = 1")
             );
 
         $this->assertFalse(
-                \h2o\DB\Link::isInsert("INSERTER")
+                \r8\DB\Link::isInsert("INSERTER")
             );
 
         $this->assertFalse(
-                \h2o\DB\Link::isInsert("SELECT * FROM table")
+                \r8\DB\Link::isInsert("SELECT * FROM table")
             );
 
         $this->assertFalse(
-                \h2o\DB\Link::isInsert("UPDATE table SET field = 1")
+                \r8\DB\Link::isInsert("UPDATE table SET field = 1")
             );
     }
 
@@ -369,7 +369,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Link $err ) {
+        catch ( \r8\Exception\DB\Link $err ) {
             $this->assertSame( "UserName must be set", $err->getMessage() );
         }
 
@@ -379,7 +379,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Link $err ) {
+        catch ( \r8\Exception\DB\Link $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
 
@@ -389,7 +389,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->validateCredentials();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Link $err ) {
+        catch ( \r8\Exception\DB\Link $err ) {
             $this->assertSame( "Database name must be set", $err->getMessage() );
         }
 
@@ -407,7 +407,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->getHostWithPort();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Host must be set", $err->getMessage() );
         }
 
@@ -445,7 +445,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->fromURI("wakka.com");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "URL is not valid", $err->getMessage() );
         }
 
@@ -482,7 +482,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->getLink();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Link $err ) {
+        catch ( \r8\Exception\DB\Link $err ) {
             $this->assertSame( "Database connector did not return a resource or an object", $err->getMessage() );
         }
     }
@@ -532,7 +532,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
 
         $mock = $this->getMock(
-                "\h2o\DB\Link",
+                '\r8\DB\Link',
                 array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
@@ -550,7 +550,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
     {
 
         $mock = $this->getMock(
-                "\h2o\DB\Link",
+                '\r8\DB\Link',
                 array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
             );
 
@@ -574,7 +574,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument  $err ) {
+        catch ( \r8\Exception\Argument  $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
 
@@ -582,7 +582,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("    ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument  $err ) {
+        catch ( \r8\Exception\Argument  $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
@@ -599,8 +599,8 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Query  $err ) {
-            $this->assertSame( "Query did not return a \h2o\DB\Result object", $err->getMessage() );
+        catch ( \r8\Exception\DB\Query  $err ) {
+            $this->assertSame( "Query did not return a \r8\DB\Result object", $err->getMessage() );
         }
     }
 
@@ -612,7 +612,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("SELECT * FROM table") )
             ->will(
                     $this->throwException(
-                            new \h2o\Exception\DB\Query(
+                            new \r8\Exception\DB\Query(
                                     "SELECT * FROM table",
                                     "Example Exception"
                                 )
@@ -623,7 +623,7 @@ class classes_db_link extends PHPUnit_Framework_TestCase
             $mock->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Query  $err ) {
+        catch ( \r8\Exception\DB\Query  $err ) {
             $this->assertSame( "Example Exception", $err->getMessage() );
         }
     }

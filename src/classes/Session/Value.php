@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Random
  */
 
-namespace h2o\Session;
+namespace r8\Session;
 
 /**
  * Provides blind access to a single session value without the consumer needing to
@@ -42,7 +42,7 @@ class Value
     /**
      * The session to pull and push values to
      *
-     * @var \h2o\iface\Session
+     * @var \r8\iface\Session
      */
     private $session;
 
@@ -50,14 +50,14 @@ class Value
      * Constructor...
      *
      * @param String $key The key to reference within the session
-     * @param \h2o\iface\Session $session The session to pull and push values to
+     * @param \r8\iface\Session $session The session to pull and push values to
      */
-    public function __construct ( $key, \h2o\iface\Session $session )
+    public function __construct ( $key, \r8\iface\Session $session )
     {
-        $key = \h2o\indexVal( $key );
+        $key = \r8\indexVal( $key );
 
-        if ( \h2o\IsEmpty($key) )
-            throw new \h2o\Exception\Argument( 0, "key", "Must be a valid key" );
+        if ( \r8\IsEmpty($key) )
+            throw new \r8\Exception\Argument( 0, "key", "Must be a valid key" );
 
         $this->key = $key;
         $this->session = $session;
@@ -77,7 +77,7 @@ class Value
      * Sets a value in the session
      *
      * @param Mixed $value The value to save
-     * @return \h2o\Session\Value Returns a self reference
+     * @return \r8\Session\Value Returns a self reference
      */
     public function set ( $value )
     {
@@ -98,7 +98,7 @@ class Value
     /**
      * Removes this specific value from the session
      *
-     * @return \h2o\Session\Value Returns a self reference
+     * @return \r8\Session\Value Returns a self reference
      */
     public function clear ()
     {
@@ -110,7 +110,7 @@ class Value
      * Treats the session value as an array and pushes a new value onto the end of it
      *
      * @param Mixed $value The value to push
-     * @return \h2o\Session\Value Returns a self reference
+     * @return \r8\Session\Value Returns a self reference
      */
     public function push ( $value )
     {

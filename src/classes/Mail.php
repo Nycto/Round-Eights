@@ -4,28 +4,28 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Mail
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Collects the details of an e-mail
@@ -36,7 +36,7 @@ class Mail
     /**
      * The default transport class for sending a piece of mail
      *
-     * @var Object A \h2o\Mail\Transport instance
+     * @var Object A \r8\Mail\Transport instance
      */
     static private $defaultTransport;
 
@@ -45,7 +45,7 @@ class Mail
      *
      * If this value isn't set, the default transport will be used
      *
-     * @var Object A \h2o\Mail\Transport instance
+     * @var Object A \r8\Mail\Transport instance
      */
     private $transport;
 
@@ -131,10 +131,10 @@ class Mail
     /**
      * Sets the default transport to send mail with
      *
-     * @param Object $transport A \h2o\Mail\Transport object
+     * @param Object $transport A \r8\Mail\Transport object
      * @return null
      */
-    static public function setDefaultTransport ( \h2o\Mail\Transport $transport )
+    static public function setDefaultTransport ( \r8\Mail\Transport $transport )
     {
         self::$defaultTransport = $transport;
     }
@@ -143,14 +143,14 @@ class Mail
      * Returns the default transport that will be used to send mail
      *
      * If no default transport has been sent, this will return an instance of
-     * \h2o\Mail\Transport\Mail
+     * \r8\Mail\Transport\Mail
      *
-     * @return Object A \h2o\Mail\Transport object
+     * @return Object A \r8\Mail\Transport object
      */
     static public function getDefaultTransport ()
     {
-        if ( !(self::$defaultTransport instanceof \h2o\Mail\Transport ) )
-            self::$defaultTransport = new \h2o\Mail\Transport\Mail;
+        if ( !(self::$defaultTransport instanceof \r8\Mail\Transport ) )
+            self::$defaultTransport = new \r8\Mail\Transport\Mail;
 
         return self::$defaultTransport;
     }
@@ -176,8 +176,8 @@ class Mail
         // Get the default source e-mail address from the php.ini file
         $default = ini_get('sendmail_from');
 
-        $default = \h2o\Filter::Email()->filter( $default );
-        if ( \h2o\Validator::Email()->isValid( $default ) )
+        $default = \r8\Filter::Email()->filter( $default );
+        if ( \r8\Validator::Email()->isValid( $default ) )
             $this->setFrom( $default );
     }
 
@@ -187,7 +187,7 @@ class Mail
      * If no specific transport has been set for this message, the default
      * transport will be used
      *
-     * @return Object Returns a \h2o\Transport instance
+     * @return Object Returns a \r8\Transport instance
      */
     public function getTransport ()
     {
@@ -200,10 +200,10 @@ class Mail
     /**
      * Sets the transport to send this specific piece of mail with
      *
-     * @param Object $transport A \h2o\Mail\Transport object
-     * @return \h2o\Mail Returns a self reference
+     * @param Object $transport A \r8\Mail\Transport object
+     * @return \r8\Mail Returns a self reference
      */
-    public function setTransport ( \h2o\Mail\Transport $transport )
+    public function setTransport ( \r8\Mail\Transport $transport )
     {
         $this->transport = $transport;
         return $this;
@@ -213,7 +213,7 @@ class Mail
      * Clears the specific transport from this instance. This will cause the
      * default transport to be used
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearTransport ()
     {
@@ -235,13 +235,13 @@ class Mail
      * Set the label for the "from" field
      *
      * @param String $name The label being sent from
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setFromName ( $name )
     {
-        $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
+        $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
 
-        $this->fromName = \h2o\isEmpty($name) ? NULL : $name;
+        $this->fromName = \r8\isEmpty($name) ? NULL : $name;
 
         return $this;
     }
@@ -259,7 +259,7 @@ class Mail
     /**
      * Clears the from label from this instance
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearFromName ()
     {
@@ -283,16 +283,16 @@ class Mail
      *
      * @param String $email The email address
      * @param String $name The label attached to this address
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setFrom ( $email, $name = FALSE )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         $this->from = $email;
 
-        if ( !\h2o\isVague( $name ) )
+        if ( !\r8\isVague( $name ) )
             $this->setFromName( $name );
 
         return $this;
@@ -311,7 +311,7 @@ class Mail
     /**
      * Clears the "from" address from this instance
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearFrom ()
     {
@@ -336,16 +336,16 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function addTo ( $email, $name = FALSE )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
-        if ( !\h2o\isVague( $name ) ) {
-            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
-            $name = \h2o\isEmpty($name) ? NULL : $name;
+        if ( !\r8\isVague( $name ) ) {
+            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
         $to = array(
@@ -361,7 +361,7 @@ class Mail
     /**
      * Clears all the addresses from the to field
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearTo ()
     {
@@ -377,8 +377,8 @@ class Mail
      */
     public function toExists( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         return isset( $this->to[ $email ] );
     }
@@ -397,12 +397,12 @@ class Mail
      * Removes an e-mail address from the To list
      *
      * @param String $email The email address to remove
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function removeTo ( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         if ( isset($this->to[ $email ]) )
             unset( $this->to[ $email ] );
@@ -427,16 +427,16 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function addCC ( $email, $name = FALSE )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
-        if ( !\h2o\isVague( $name ) ) {
-            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
-            $name = \h2o\isEmpty($name) ? NULL : $name;
+        if ( !\r8\isVague( $name ) ) {
+            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
         $cc = array(
@@ -452,7 +452,7 @@ class Mail
     /**
      * Clears all the addresses from the cc field
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearCC ()
     {
@@ -468,8 +468,8 @@ class Mail
      */
     public function ccExists ( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         return isset( $this->cc[ $email ] );
     }
@@ -488,12 +488,12 @@ class Mail
      * Removes an e-mail address from the CC list
      *
      * @param String $email The email address to remove
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function removeCC ( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         if ( isset($this->cc[ $email ]) )
             unset( $this->cc[ $email ] );
@@ -518,16 +518,16 @@ class Mail
      *
      * @param String $email The actual email address
      * @param String $name The label for that e-mail address
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function addBCC ( $email, $name = FALSE )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
-        if ( !\h2o\isVague( $name ) ) {
-            $name = trim( \h2o\str\stripW( $name, \h2o\str\ALLOW_ASCII ) );
-            $name = \h2o\isEmpty($name) ? NULL : $name;
+        if ( !\r8\isVague( $name ) ) {
+            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
         $bcc = array(
@@ -543,7 +543,7 @@ class Mail
     /**
      * Clears all the addresses from the bcc field
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearBCC ()
     {
@@ -559,8 +559,8 @@ class Mail
      */
     public function bccExists ( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         return isset( $this->bcc[ $email ] );
     }
@@ -579,12 +579,12 @@ class Mail
      * Removes an e-mail address from the BCC list
      *
      * @param String $email The email address to remove
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function removeBCC ( $email )
     {
-        $email = \h2o\Filter::Email()->filter( $email );
-        \h2o\Validator::Email()->ensure( $email );
+        $email = \r8\Filter::Email()->filter( $email );
+        \r8\Validator::Email()->ensure( $email );
 
         if ( isset($this->bcc[ $email ]) )
             unset( $this->bcc[ $email ] );
@@ -606,16 +606,16 @@ class Mail
      * Set the subject of the email
      *
      * @param String $subject The email subject
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setSubject ( $subject )
     {
         // Strip out any new lines or tabs
         $subject = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $subject );
 
-        $subject = trim( \h2o\str\stripW( $subject, \h2o\str\ALLOW_ASCII ) );
+        $subject = trim( \r8\str\stripW( $subject, \r8\str\ALLOW_ASCII ) );
 
-        $this->subject = \h2o\isEmpty($subject) ? NULL : $subject;
+        $this->subject = \r8\isEmpty($subject) ? NULL : $subject;
 
         return $this;
     }
@@ -633,7 +633,7 @@ class Mail
     /**
      * Clears the subject
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearSubject ()
     {
@@ -655,16 +655,16 @@ class Mail
      * Set the message ID of the email
      *
      * @param String $messageID The email message ID
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setMessageID ( $messageID )
     {
         // Strip out any new lines or tabs
         $messageID = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $messageID );
 
-        $messageID = trim( \h2o\str\stripW( $messageID, \h2o\str\ALLOW_ASCII ) );
+        $messageID = trim( \r8\str\stripW( $messageID, \r8\str\ALLOW_ASCII ) );
 
-        $this->messageID = \h2o\isEmpty($messageID) ? NULL : $messageID;
+        $this->messageID = \r8\isEmpty($messageID) ? NULL : $messageID;
 
         return $this;
     }
@@ -682,7 +682,7 @@ class Mail
     /**
      * Clears the messageID
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearMessageID ()
     {
@@ -709,13 +709,13 @@ class Mail
      * without HTMl enabled will see the text content.
      *
      * @param String $text The email text
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setText ( $text )
     {
-        $text = trim( \h2o\strval( $text ) );
+        $text = trim( \r8\strval( $text ) );
 
-        $this->text = \h2o\isEmpty($text) ? NULL : $text;
+        $this->text = \r8\isEmpty($text) ? NULL : $text;
 
         return $this;
     }
@@ -733,7 +733,7 @@ class Mail
     /**
      * Clears the text
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearText ()
     {
@@ -760,13 +760,13 @@ class Mail
      * without HTML enabled will see the text content.
      *
      * @param String $html The html
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function setHTML ( $html )
     {
-        $html = trim( \h2o\strval( $html ) );
+        $html = trim( \r8\strval( $html ) );
 
-        $this->html = \h2o\isEmpty($html) ? NULL : $html;
+        $this->html = \r8\isEmpty($html) ? NULL : $html;
 
         return $this;
     }
@@ -784,7 +784,7 @@ class Mail
     /**
      * Clears the html
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearHTML ()
     {
@@ -808,16 +808,16 @@ class Mail
      *
      * @param String $header The name of the header
      * @param String $value The value of the header
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function addCustomHeader ( $header, $value )
     {
-        $header = \h2o\Transform\MIME::stripHeaderName( $header );
+        $header = \r8\Transform\MIME::stripHeaderName( $header );
 
-        if ( \h2o\isEmpty($header) )
-            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \r8\isEmpty($header) )
+            throw new \r8\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $this->headers[ $header ] = \h2o\strval( $value );
+        $this->headers[ $header ] = \r8\strval( $value );
 
         return $this;
     }
@@ -830,10 +830,10 @@ class Mail
      */
     public function customHeaderExists ( $header )
     {
-        $header = \h2o\Transform\MIME::stripHeaderName( $header );
+        $header = \r8\Transform\MIME::stripHeaderName( $header );
 
-        if ( \h2o\isEmpty($header) )
-            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \r8\isEmpty($header) )
+            throw new \r8\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
         return isset( $this->headers[$header] );
     }
@@ -842,14 +842,14 @@ class Mail
      * Clears a custom header from this instance
      *
      * @param String $header The header to remove
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function removeCustomHeader ( $header )
     {
-        $header = \h2o\Transform\MIME::stripHeaderName( $header );
+        $header = \r8\Transform\MIME::stripHeaderName( $header );
 
-        if ( \h2o\isEmpty($header) )
-            throw new \h2o\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
+        if ( \r8\isEmpty($header) )
+            throw new \r8\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
         if ( isset( $this->headers[$header] ) )
             unset( $this->headers[$header] );
@@ -860,7 +860,7 @@ class Mail
     /**
      * Clears all the custom headers set in this instance
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function clearCustomHeaders ()
     {
@@ -882,8 +882,8 @@ class Mail
         // If the boundary has been generated and the string and HTML don't contain
         // it, then there is no need to create another
         while ( !isset($this->boundary)
-                || \h2o\str\contains($this->boundary, $this->text)
-                || \h2o\str\contains($this->boundary, $this->html) ) {
+                || \r8\str\contains($this->boundary, $this->text)
+                || \r8\str\contains($this->boundary, $this->html) ) {
 
             // The string "=_" can never appear in the quoted printable character
             // encoding format (or base64, for that matter), which ensures that
@@ -902,7 +902,7 @@ class Mail
     /**
      * Sends this piece of mail
      *
-     * @return \h2o\Mail Returns a self reference
+     * @return \r8\Mail Returns a self reference
      */
     public function send ()
     {

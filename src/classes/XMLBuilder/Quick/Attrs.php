@@ -2,36 +2,36 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace h2o\XMLBuilder\Quick;
+namespace r8\XMLBuilder\Quick;
 
 /**
  * Generates an XML tree from a mixed type, using any key/value pairs as
  * attributes of their parent nodes
  */
-use h2o;
+use r8;
 
-class Attrs extends \h2o\XMLBuilder\Quick
+class Attrs extends \r8\XMLBuilder\Quick
 {
 
     /**
@@ -49,12 +49,12 @@ class Attrs extends \h2o\XMLBuilder\Quick
 
         foreach ( $data AS $key => $value ) {
 
-            if ( \h2o\isEmpty($value) ) {
+            if ( \r8\isEmpty($value) ) {
                 continue;
             }
 
             // Primitives
-            else if ( \h2o\isBasic( $value ) && $value !== NULL ) {
+            else if ( \r8\isBasic( $value ) && $value !== NULL ) {
                 $node->setAttribute(
                     self::normalizeName( $key ),
                     (string) $value
@@ -67,10 +67,10 @@ class Attrs extends \h2o\XMLBuilder\Quick
             }
 
             // If an XML builder was given, handle it
-            else if ( $value instanceof \h2o\iface\XMLBuilder ) {
+            else if ( $value instanceof \r8\iface\XMLBuilder ) {
                 $child = $this->createElement( $doc, $key );
                 $child->appendChild(
-                    \h2o\XMLBuilder::buildNode( $value, $doc )
+                    \r8\XMLBuilder::buildNode( $value, $doc )
                 );
                 $node->appendChild( $child );
             }
@@ -79,7 +79,7 @@ class Attrs extends \h2o\XMLBuilder\Quick
             else if ( is_object($value) ) {
 
                 // If it is an object that supports "toString"
-                if ( \h2o\respondTo($value, "__toString") ) {
+                if ( \r8\respondTo($value, "__toString") ) {
                     $node->setAttribute(
                         self::normalizeName( $key ),
                         $value->__toString()

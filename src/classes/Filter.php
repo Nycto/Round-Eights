@@ -4,55 +4,55 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Filters
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Base Filtering class
  */
-abstract class Filter implements \h2o\iface\Filter
+abstract class Filter implements \r8\iface\Filter
 {
 
     /**
      * Static method for creating a new filtering instance
      *
      * This takes the called function and looks for a class under
-     * the \h2o\Filter namespace.
+     * the \r8\Filter namespace.
      *
-     * @throws \h2o\Exception\Argument Thrown if the filter class can't be found
+     * @throws \r8\Exception\Argument Thrown if the filter class can't be found
      * @param String $filter The filter class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \h2o\Filter subclass
+     * @return Object Returns a new \r8\Filter subclass
      */
     static public function __callStatic ( $filter, $args )
     {
-        $filter = "\h2o\\Filter\\". trim( \h2o\strval($filter) );
+        $filter = '\r8\Filter\\'. trim( \r8\strval($filter) );
 
         if ( !class_exists($filter, true) ) {
-            throw new \h2o\Exception\Argument(
+            throw new \r8\Exception\Argument(
                     0,
                     "Filter Class Name",
-                    "Filter could not be found in \h2o\Filter namespace"
+                    'Filter could not be found in \r8\Filter namespace'
                 );
         }
 

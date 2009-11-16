@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -41,13 +41,13 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
 
     public function testCallInternal ()
     {
-        $callback = new \h2o\Curry\Call("trim");
+        $callback = new \r8\Curry\Call("trim");
         $this->assertEquals( "trimmed", $callback("  trimmed  ") );
     }
 
     public function testCallClosure ()
     {
-        $callback = new \h2o\Curry\Call(function ( $value ) {
+        $callback = new \r8\Curry\Call(function ( $value ) {
             return trim($value);
         });
 
@@ -64,7 +64,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo('argument') )
             ->will( $this->returnValue("called") );
 
-        $callback = new \h2o\Curry\Call( array($hasMethod, "toCall") );
+        $callback = new \r8\Curry\Call( array($hasMethod, "toCall") );
 
         $this->assertSame( "called", $callback("argument") );
     }
@@ -79,7 +79,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo('argument') )
             ->will( $this->returnValue("called") );
 
-        $callback = new \h2o\Curry\Call($invokable);
+        $callback = new \r8\Curry\Call($invokable);
 
         $this->assertSame( "called", $callback("argument") );
 
@@ -87,15 +87,15 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
 
     public function testCallStatic ()
     {
-        $callback = new \h2o\Curry\Call( array(__CLASS__, "staticMethod") );
+        $callback = new \r8\Curry\Call( array(__CLASS__, "staticMethod") );
 
         $this->assertEquals( "called", $callback("argument") );
     }
 
     public function testInstantiateException ()
     {
-        $this->setExpectedException('\h2o\Exception\Argument');
-        $callback = new \h2o\Curry\Call( "ThisIsUnUncallableValue" );
+        $this->setExpectedException('\r8\Exception\Argument');
+        $callback = new \r8\Curry\Call( "ThisIsUnUncallableValue" );
     }
 
     public function testWithArgs ()
@@ -115,7 +115,7 @@ class classes_curry_call extends PHPUnit_Framework_TestCase
                 )
             ->will( $this->returnValue("called") );
 
-        $callback = new \h2o\Curry\Call($invokable);
+        $callback = new \r8\Curry\Call($invokable);
         $callback->setLeft("l1", "l2");
         $callback->setRight("r1", "r2");
 

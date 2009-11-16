@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,23 +36,23 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
     /**
      * Returns a test session
      *
-     * @return \h2o\iface\Session
+     * @return \r8\iface\Session
      */
     public function getTestSession ( $result )
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "get" )
             ->with( $this->equalTo( "key" ) )
             ->will( $this->returnValue( "From Wrapped" ) );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo( "From Wrapped" ) )
             ->will( $this->returnValue( $result ) );
 
-        return new \h2o\Session\Transform($trans, $wrapped);
+        return new \r8\Session\Transform($trans, $wrapped);
     }
 
     public function testGet_String ()
@@ -117,25 +117,25 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
 
     public function testSet ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "set" )
             ->with( $this->equalTo("idx"), $this->equalTo("transformed") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "to" )
             ->with( $this->equalTo( 's:5:"Value";' ) )
             ->will( $this->returnValue( "transformed" ) );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( $sess, $sess->set("idx", "Value") );
     }
 
     public function testPush_None ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -145,21 +145,21 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "set" )
             ->with( $this->equalTo("key"), $this->equalTo("transformed") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->never() )->method( "from" );
         $trans->expects( $this->once() )
             ->method( "to" )
             ->with( $this->equalTo( 'a:1:{i:0;s:5:"value";}' ) )
             ->will( $this->returnValue( "transformed" ) );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( $sess, $sess->push("key", "value") );
     }
 
     public function testPush_NonArray ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -172,7 +172,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "set" )
             ->with( $this->equalTo("key"), $this->equalTo("transformed") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo("From Wrapped") )
@@ -182,14 +182,14 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo( 'a:2:{i:0;s:4:"Blah";i:1;s:5:"value";}' ) )
             ->will( $this->returnValue( "transformed" ) );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( $sess, $sess->push("key", "value") );
     }
 
     public function testPush_Array ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -202,7 +202,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "set" )
             ->with( $this->equalTo("key"), $this->equalTo("transformed") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo("From Wrapped") )
@@ -212,14 +212,14 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo( 'a:3:{i:0;s:3:"1st";i:1;s:3:"2nd";i:2;s:5:"value";}' ) )
             ->will( $this->returnValue( "transformed" ) );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( $sess, $sess->push("key", "value") );
     }
 
     public function testPop_NonExisting ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -227,18 +227,18 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
         $wrapped->expects( $this->never() )->method( "get" );
         $wrapped->expects( $this->never() )->method( "set" );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->never() )->method( "from" );
         $trans->expects( $this->never() )->method( "to" );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertNull( $sess->pop("key") );
     }
 
     public function testPop_NonArray ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -251,21 +251,21 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "clear" )
             ->with( $this->equalTo("key") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo("From Wrapped") )
             ->will( $this->returnValue( serialize("Blah") ) );
         $trans->expects( $this->never() )->method( "to" );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( "Blah", $sess->pop("key") );
     }
 
     public function testPop_ToEmpty ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -278,21 +278,21 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "clear" )
             ->with( $this->equalTo("key") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo("From Wrapped") )
             ->will( $this->returnValue( serialize( array("Blah") ) ) );
         $trans->expects( $this->never() )->method( "to" );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( "Blah", $sess->pop("key") );
     }
 
     public function testPop_Array ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "exists" )
             ->with( $this->equalTo("key") )
@@ -305,7 +305,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "set" )
             ->with( $this->equalTo("key"), $this->equalTo("transformed") );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->once() )
             ->method( "from" )
             ->with( $this->equalTo("From Wrapped") )
@@ -315,14 +315,14 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo('a:1:{i:0;s:3:"1st";}') )
             ->will( $this->returnValue("transformed") );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame( "2nd", $sess->pop("key") );
     }
 
     public function testGetAll ()
     {
-        $wrapped = $this->getMock('h2o\iface\Session');
+        $wrapped = $this->getMock('r8\iface\Session');
         $wrapped->expects( $this->once() )
             ->method( "getAll" )
             ->will( $this->returnValue( array(
@@ -330,7 +330,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             	"key2" => "Wrapped2",
             ) ) );
 
-        $trans = $this->getMock('h2o\iface\Transform');
+        $trans = $this->getMock('r8\iface\Transform');
         $trans->expects( $this->at(0) )
             ->method( "from" )
             ->with( $this->equalTo( "Wrapped1" ) )
@@ -340,7 +340,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo( "Wrapped2" ) )
             ->will( $this->returnValue( "unserializable" ) );
 
-        $sess = new \h2o\Session\Transform($trans, $wrapped);
+        $sess = new \r8\Session\Transform($trans, $wrapped);
 
         $this->assertSame(
             array( "key1" => "Result1", "key2" => NULL),
