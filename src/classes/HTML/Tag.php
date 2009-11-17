@@ -20,7 +20,7 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Tag
+ * @package HTML
  */
 
 namespace r8\HTML;

@@ -50,6 +50,27 @@ class classes_HTML_Javascript extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetTag ()
+    {
+        $js = new \r8\HTML\Javascript("/example.js");
+
+        $tag = $js->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<script type="text/javascript" src="/example.js"></script>',
+            $tag->__toString()
+        );
+
+        $js->setSource("/test.js");
+
+        $tag = $js->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<script type="text/javascript" src="/test.js"></script>',
+            $tag->__toString()
+        );
+    }
+
 }
 
 ?>

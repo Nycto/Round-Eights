@@ -20,7 +20,7 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Tag
+ * @package HTML
  */
 
 namespace r8\HTML;
@@ -70,6 +70,23 @@ class Javascript
     public function getSource ()
     {
         return $this->source;
+    }
+
+    /**
+     * Builds a tag object from the data in this instance
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag ()
+    {
+        return new \r8\HTML\Tag(
+            'script',
+            null,
+            array(
+                "type" => "text/javascript",
+                "src" => $this->source,
+            )
+        );
     }
 
 }
