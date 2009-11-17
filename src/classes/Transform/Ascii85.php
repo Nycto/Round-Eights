@@ -149,6 +149,104 @@ class Ascii85 implements \r8\iface\Transform\Encode
      */
     public function from ( $string )
     {
+        $string = trim( \r8\strval( $string ) );
+        $string = \r8\str\stripHead( $string, "<~" );
+        $string = \r8\str\stripTail( $string, "~>" );
+
+        $length = strlen( $string );
+        $result = "";
+
+        $tuple = 0;
+        $j = 0;
+
+        // Loop over each character in the input
+        for ( $i = 0; $i < $length; $i++ ) {
+
+            $chr = $string[ $i ];
+
+            if ( $j != 0 && ( $chr == "z" || $chr == "y" ) )
+            {
+                $err = new \r8\Exception\Data(
+                    $chr,
+                    "Unexpected Character",
+                    "Misplaced compression character"
+                );
+                $err->addData( "Encoded String", $string );
+                throw $err;
+            }
+
+            switch ( $chr )
+            {
+                // Add this character to the tuple
+                default:
+
+                    // Grab the character code and ensure it is a valid character
+                    $ord = ord( $chr ) - 33;
+                    if ( $ord < 0 || $ord > 84 )
+                    {
+                        $err = new \r8\Exception\Data(
+                            $chr,
+                            "Invalid Character",
+                            "Invalid encoding character"
+                        );
+                        $err->addData( "Encoded String", $string );
+                        throw $err;
+                    }
+
+                    // Integrate this character into the tuple
+                    $tuple += $ord * pow( 85, 4 - $j );
+
+                    // If this isn't the last character in the tuple, move on
+                    if ( $j < 4 && $i != $length - 1 ) {
+                        $j++;
+                    }
+                    else {
+
+                        // Compensate for an incomplete trailing tuple
+                        if ( $j < 4) {
+                            for ( $k = $j; $k <= 3; $k++ ) {
+                                $tuple += 85 * pow( 85, 3 - $k );
+                            }
+                        }
+
+                        // Convert the 32bit integer to binary form
+                        $tuple = str_pad( decbin( $tuple ), 32, "0", STR_PAD_LEFT );
+
+                        // Split the binary into 8 bit segments and convert each back to an integer
+                        $tuple = array_map( "bindec", str_split( $tuple, 8 ) );
+
+                        if ( $j < 4 )
+                            $tuple = array_slice( $tuple, 0, $j );
+
+                        // Convert each int into a character, then combine them
+                        $result .= implode( "", array_map( "chr", $tuple ) );
+
+                        // Reset the tuple to prepare for the next substring
+                        $tuple = 0;
+                        $j = 0;
+                    }
+
+                    break;
+
+                // Handle z compression
+                case "z":
+                    $result .= chr(0) . chr(0) . chr(0) . chr(0);
+                    break;
+
+                // Handle y compression
+                case "y":
+                    $result .= "    ";
+                    break;
+
+                // Skip over white space
+                case "\n": case "\r": case "\t": case " ":
+                case "\x00": case "\f": case "\x1B":
+                    break;
+            }
+
+        }
+
+        return $result;
     }
 
 }

@@ -131,9 +131,116 @@ class classes_Transform_Ascii85 extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFrom ()
+    public function testFrom_Basic ()
     {
-        $this->markTestIncomplete("To be written");
+        $encode = new \r8\Transform\Ascii85;
+
+        $this->assertSame(
+            "This is a test of a longer string to encode",
+            $encode->from(
+                "<~<+oue+DGm>@3BZ'F*&OCAftM)Ci=3(ATAo7FE2)5B-;;7+D#G#De*D~>"
+            )
+        );
+
+        $this->assertSame( "1", $encode->from( "<~0`~>" ) );
+        $this->assertSame( "12", $encode->from( "<~0er~>" ) );
+        $this->assertSame( "123", $encode->from( "<~0etN~>" ) );
+        $this->assertSame( "1234", $encode->from( "<~0etOA~>" ) );
+        $this->assertSame( "12345", $encode->from( "<~0etOA2#~>" ) );
+        $this->assertSame( "123456", $encode->from( "<~0etOA2)Y~>" ) );
+        $this->assertSame( "1234567", $encode->from( "<~0etOA2)[A~>" ) );
+        $this->assertSame( "12345678", $encode->from( "<~0etOA2)[BQ~>" ) );
+    }
+
+    public function testFrom_Unwrapped ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        $this->assertSame(
+            "This is a test of a longer string to encode",
+            $encode->from(
+                "<+oue+DGm>@3BZ'F*&OCAftM)Ci=3(ATAo7FE2)5B-;;7+D#G#De*D"
+            )
+        );
+    }
+
+    public function testFrom_WhiteSpace ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        $this->assertSame( "1234", $encode->from("  <~  0 e t O A  ~>  " ) );
+        $this->assertSame( "1234", $encode->from("\n0\ne\ntOA\n\n" ) );
+        $this->assertSame( "1234", $encode->from("\t0\te\ttOA\t" ) );
+        $this->assertSame( "1234", $encode->from("\r0\re\rtOA\r" ) );
+        $this->assertSame( "1234", $encode->from("\0 0 \0 e \0 tOA \0" ) );
+        $this->assertSame( "1234", $encode->from("\f0\fe\ftOA\f" ) );
+        $this->assertSame( "1234", $encode->from("\x1B 0 \x1B e \x1B tOA \x1B" ) );
+    }
+
+    public function testFrom_ZCompression ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        $this->assertSame( "\0\0\0\0", $encode->from("z" ) );
+
+        $this->assertSame(
+            "1234" . "\0\0\0\0" . "5678",
+            $encode->from("0etOAz2)[BQ" )
+        );
+    }
+
+    public function testFrom_YCompression ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        $this->assertSame( "    ", $encode->from("y" ) );
+
+        $this->assertSame(
+            "1234    5678",
+            $encode->from("0etOAy2)[BQ" )
+        );
+    }
+
+    public function testFrom_UnexpectedCompression ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        try {
+            $encode->from( "0etzO" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Misplaced compression character", $err->getMessage() );
+        }
+
+        try {
+            $encode->from( "0etyO" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Misplaced compression character", $err->getMessage() );
+        }
+    }
+
+    public function testFrom_InvalidCharacter ()
+    {
+        $encode = new \r8\Transform\Ascii85;
+
+        try {
+            $encode->from( "0etvO" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Invalid encoding character", $err->getMessage() );
+        }
+
+        try {
+            $encode->from( "0et\x1FO" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Invalid encoding character", $err->getMessage() );
+        }
     }
 
 }
