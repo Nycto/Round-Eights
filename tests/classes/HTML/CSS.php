@@ -33,6 +33,35 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_HTML_CSS extends PHPUnit_Framework_TestCase
 {
 
+    public function testSource ()
+    {
+        $css = new \r8\HTML\CSS("/example.css");
+        $this->assertSame( "/example.css", $css->getSource() );
+
+        $this->assertSame( $css, $css->setSource("/Other/File.css") );
+        $this->assertSame( "/Other/File.css", $css->getSource() );
+
+        try {
+            $css->setSource("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "URL must not contain spaces", $err->getMessage() );
+        }
+    }
+
+    public function testMedia ()
+    {
+        $css = new \r8\HTML\CSS("/example.css");
+        $this->assertSame( "all", $css->getMedia() );
+
+        $this->assertSame( $css, $css->setMedia("screen, print") );
+        $this->assertSame( "screen, print", $css->getMedia() );
+
+        $this->assertSame( $css, $css->setMedia("   ") );
+        $this->assertSame( "all", $css->getMedia() );
+    }
+
 }
 
 ?>

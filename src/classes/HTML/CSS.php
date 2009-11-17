@@ -31,6 +31,76 @@ namespace r8\HTML;
 class CSS
 {
 
+    /**
+     * The URL of the src file
+     *
+     * @var String
+     */
+    private $src;
+
+    /**
+     * The media type this CSS applies to
+     *
+     * @var String
+     */
+    private $media = "all";
+
+    /**
+     * Constructor...
+     *
+     * @param String $source The URL of the src file
+     */
+    public function __construct ( $source )
+    {
+        $this->setSource( $source );
+    }
+
+    /**
+     * Sets the Source URL of this CSS resource
+     *
+     * @param String $source
+     * @return \r8\HTML\CSS Returns a self reference
+     */
+    public function setSource ( $source )
+    {
+        \r8\Validator::URL( \r8\Validator\URL::ALLOW_RELATIVE )->ensure( $source );
+        $this->source = $source;
+        return $this;
+    }
+
+    /**
+     * Returns the Source URL of this CSS resource
+     *
+     * @return String
+     */
+    public function getSource ()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Sets the Media type this CSS resource applies to
+     *
+     * @param String $media
+     * @return \r8\HTML\CSS Returns a self reference
+     */
+    public function setMedia ( $media )
+    {
+        $media = trim( \r8\strval($media) );
+        $this->media = empty($media) ? "all" : $media;
+        return $this;
+    }
+
+    /**
+     * Returns the Media type this css resource applies to
+     *
+     * @return String
+     */
+    public function getMedia ()
+    {
+        return $this->media;
+    }
+
 }
 
 ?>
