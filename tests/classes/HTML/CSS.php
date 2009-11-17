@@ -62,6 +62,28 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
         $this->assertSame( "all", $css->getMedia() );
     }
 
+    public function testGetTag ()
+    {
+        $css = new \r8\HTML\CSS("/example.css");
+
+        $tag = $css->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<link rel="stylesheet" href="/example.css" type="text/css" media="all" />',
+            $tag->__toString()
+        );
+
+        $css->setSource("/test.css")
+            ->setMedia("print");
+
+        $tag = $css->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<link rel="stylesheet" href="/test.css" type="text/css" media="print" />',
+            $tag->__toString()
+        );
+    }
+
 }
 
 ?>

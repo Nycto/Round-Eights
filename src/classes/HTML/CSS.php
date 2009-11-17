@@ -36,7 +36,7 @@ class CSS
      *
      * @var String
      */
-    private $src;
+    private $source;
 
     /**
      * The media type this CSS applies to
@@ -99,6 +99,25 @@ class CSS
     public function getMedia ()
     {
         return $this->media;
+    }
+
+    /**
+     * Builds a tag object from the data in this instance
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag ()
+    {
+        return new \r8\HTML\Tag(
+            'link',
+            null,
+            array(
+                "rel" => "stylesheet",
+                "href" => $this->source,
+                "type" => "text/css",
+                "media" => $this->media
+            )
+        );
     }
 
 }
