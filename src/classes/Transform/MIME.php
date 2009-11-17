@@ -1,8 +1,5 @@
 <?php
 /**
- * Encodes a string according to the Q or B Encoding specifications layed out
- * in rfc 2047, here: http://tools.ietf.org/html/rfc2047#section-4.2
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -23,13 +20,16 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Encoding
+ * @package Transform
  */
 
 namespace r8\Transform;
 
 /**
  * Encodes and decodes strings according to B or Q MIME encoding
+ *
+ * Encodes a string according to the Q or B Encoding specifications layed out
+ * in rfc 2047, here: http://tools.ietf.org/html/rfc2047#section-4.2
  */
 class MIME implements \r8\iface\Transform\Encode
 {

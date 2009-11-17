@@ -20,7 +20,7 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Encoding
+ * @package Transform
  */
 
 namespace r8\iface;

@@ -1,7 +1,5 @@
 <?php
 /**
- * Encodes a string using base 64
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -22,7 +20,7 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Encoding
+ * @package Transform
  */
 
 namespace r8\Transform;

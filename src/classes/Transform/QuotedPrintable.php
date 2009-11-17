@@ -1,8 +1,5 @@
 <?php
 /**
- * Encodes a string according to the Quoted Printable specifications layed out
- * in rfc 2045, here: http://tools.ietf.org/html/rfc2045
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -23,13 +20,16 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Encoding
+ * @package Transform
  */
 
 namespace r8\Transform;
 
 /**
  * Encodes and decodes strings according to the Quoted-Printable specifications
+ *
+ * Encodes a string according to the Quoted Printable specifications layed out
+ * in rfc 2045, here: http://tools.ietf.org/html/rfc2045
  */
 class QuotedPrintable implements \r8\iface\Transform\Encode
 {
