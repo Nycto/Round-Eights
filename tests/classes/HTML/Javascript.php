@@ -33,6 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_HTML_Javascript extends PHPUnit_Framework_TestCase
 {
 
+    public function testSource ()
+    {
+        $js = new \r8\HTML\Javascript("/example.js");
+        $this->assertSame( "/example.js", $js->getSource() );
+
+        $this->assertSame( $js, $js->setSource("/Other/File.js") );
+        $this->assertSame( "/Other/File.js", $js->getSource() );
+
+        try {
+            $js->setSource("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "URL must not contain spaces", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
