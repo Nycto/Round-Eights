@@ -45,6 +45,28 @@ class classes_HTML_MetaTag extends PHPUnit_Framework_TestCase
         $this->assertSame( "index, follow", $tag->getContent() );
     }
 
+    public function testGetTag ()
+    {
+        $meta = new \r8\HTML\MetaTag("robots", "index, follow");
+
+        $tag = $meta->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<meta name="robots" content="index, follow" />',
+            $tag->__toString()
+        );
+
+        $meta->setName("keywords")
+            ->setContent("blah, stuff");
+
+        $tag = $meta->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame(
+        	'<meta name="keywords" content="blah, stuff" />',
+            $tag->__toString()
+        );
+    }
+
 }
 
 ?>

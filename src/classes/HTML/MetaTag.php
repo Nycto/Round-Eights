@@ -100,6 +100,23 @@ class MetaTag
         return $this->content;
     }
 
+    /**
+     * Builds a tag object from the data in this instance
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag ()
+    {
+        return new \r8\HTML\Tag(
+            'meta',
+            null,
+            array(
+                "name" => $this->name,
+                "content" => $this->content
+            )
+        );
+    }
+
 }
 
 ?>
