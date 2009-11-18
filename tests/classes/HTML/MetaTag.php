@@ -33,6 +33,18 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_HTML_MetaTag extends PHPUnit_Framework_TestCase
 {
 
+    public function testAccessors ()
+    {
+        $tag = new \r8\HTML\MetaTag( "name", "content" );
+        $this->assertSame( "name", $tag->getName() );
+        $this->assertSame( "content", $tag->getContent() );
+
+        $this->assertSame( $tag, $tag->setName("robots") );
+        $this->assertSame( $tag, $tag->setContent("index, follow") );
+        $this->assertSame( "robots", $tag->getName() );
+        $this->assertSame( "index, follow", $tag->getContent() );
+    }
+
 }
 
 ?>

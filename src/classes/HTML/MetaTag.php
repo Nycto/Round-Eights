@@ -31,6 +31,75 @@ namespace r8\HTML;
 class MetaTag
 {
 
+    /**
+     * The name of this meta tag
+     *
+     * @var String
+     */
+    private $name;
+
+    /**
+     * The content of this meta tag
+     *
+     * @var String
+     */
+    private $content;
+
+    /**
+     * Constructor...
+     *
+     * @param
+     */
+    public function __construct ( $name, $content )
+    {
+        $this->setName( $name );
+        $this->setContent( $content );
+    }
+
+    /**
+     * Sets the Name of this MetaTag
+     *
+     * @param String $name
+     * @return \r8\HTML\MetaTag Returns a self reference
+     */
+    public function setName ( $name )
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Returns the Name of this Meta Tag
+     *
+     * @return String
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Sets the Content of this MetaTag
+     *
+     * @param String $content
+     * @return \r8\HTML\MetaTag Returns a self reference
+     */
+    public function setContent ( $content )
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * Returns the Content of this MetaTag
+     *
+     * @return String
+     */
+    public function getContent ()
+    {
+        return $this->content;
+    }
+
 }
 
 ?>
