@@ -39,6 +39,13 @@ class Head
     private $title;
 
     /**
+     * The collection of MetaTags in this Head
+     *
+     * @var Array An array of \r8\HTML\MetaTag objects
+     */
+    private $metatags = array();
+
+    /**
      * Returns the title of the page
      *
      * @return String
@@ -69,6 +76,39 @@ class Head
     public function appendTitle ( $title )
     {
         $this->title .= $title;
+        return $this;
+    }
+
+    /**
+     * Returns the MetaTags in this header
+     *
+     * @return Array An array of \r8\HTML\MetaTag objects
+     */
+    public function getMetaTags ()
+    {
+        return $this->metatags;
+    }
+
+    /**
+     * Adds a new MetaTag to this header
+     *
+     * @param \r8\HTML\MetaTag $metatag
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function addMetaTag ( \r8\HTML\MetaTag $metatag )
+    {
+        $this->metatags[] = $metatag;
+        return $this;
+    }
+
+    /**
+     * Clears all the MetaTags from this instance
+     *
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function clearMetaTags ()
+    {
+        $this->metatags = array();
         return $this;
     }
 

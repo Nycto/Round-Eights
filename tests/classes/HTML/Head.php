@@ -45,6 +45,23 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
         $this->assertSame( "Page Title - SubTitle", $head->getTitle() );
     }
 
+    public function testMetaTags ()
+    {
+        $head = new \r8\HTML\Head;
+        $this->assertSame( array(), $head->getMetaTags() );
+
+        $meta1 = new \r8\HTML\MetaTag("name", "content");
+        $this->assertSame( $head, $head->addMetaTag($meta1) );
+        $this->assertSame( array($meta1), $head->getMetaTags() );
+
+        $meta2 = new \r8\HTML\MetaTag("name", "content");
+        $this->assertSame( $head, $head->addMetaTag($meta2) );
+        $this->assertSame( array($meta1, $meta2), $head->getMetaTags() );
+
+        $this->assertSame( $head, $head->clearMetaTags() );
+        $this->assertSame( array(), $head->getMetaTags() );
+    }
+
 }
 
 ?>
