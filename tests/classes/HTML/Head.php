@@ -62,6 +62,23 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $head->getMetaTags() );
     }
 
+    public function testJavascript ()
+    {
+        $head = new \r8\HTML\Head;
+        $this->assertSame( array(), $head->getJavascript() );
+
+        $js1 = new \r8\HTML\Javascript("test.js");
+        $this->assertSame( $head, $head->addJavascript($js1) );
+        $this->assertSame( array($js1), $head->getJavascript() );
+
+        $js2 = new \r8\HTML\Javascript("example.js");
+        $this->assertSame( $head, $head->addJavascript($js2) );
+        $this->assertSame( array($js1, $js2), $head->getJavascript() );
+
+        $this->assertSame( $head, $head->clearJavascript() );
+        $this->assertSame( array(), $head->getJavascript() );
+    }
+
 }
 
 ?>

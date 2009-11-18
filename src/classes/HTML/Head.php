@@ -46,6 +46,13 @@ class Head
     private $metatags = array();
 
     /**
+     * The javascript to load in this Head
+     *
+     * @var Array An array of \r8\HTML\Javascript objects
+     */
+    private $javascript = array();
+
+    /**
      * Returns the title of the page
      *
      * @return String
@@ -109,6 +116,39 @@ class Head
     public function clearMetaTags ()
     {
         $this->metatags = array();
+        return $this;
+    }
+
+    /**
+     * Returns the Javascript in this header
+     *
+     * @return Array An array of \r8\HTML\Javascript objects
+     */
+    public function getJavascript ()
+    {
+        return $this->javascript;
+    }
+
+    /**
+     * Adds a new Javascript to this header
+     *
+     * @param \r8\HTML\Javascript $javascript
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function addJavascript ( \r8\HTML\Javascript $javascript )
+    {
+        $this->javascript[] = $javascript;
+        return $this;
+    }
+
+    /**
+     * Clears all the Javascript from this instance
+     *
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function clearJavascript ()
+    {
+        $this->javascript = array();
         return $this;
     }
 
