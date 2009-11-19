@@ -27,11 +27,86 @@
 
 require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
+class stub_Enum extends \r8\Enum
+{
+    const ONE = "ONE";
+    const TWO = "TWO";
+    const THREE = "THREE";
+}
+
+class stub_Enum_nonUnique extends \r8\Enum
+{
+    const ONE = "ONE";
+    const UNE = "ONE";
+}
+
+class stub_Enum_Conflict extends \r8\Enum
+{
+    const ONE = "UNE";
+    const UNE = "ONE";
+}
+
 /**
  * unit tests
  */
 class classes_Enum extends PHPUnit_Framework_TestCase
 {
+
+    public function testGetValues_NonInstantiable ()
+    {
+        try {
+            \r8\Enum::getValues();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Interaction $err ) {
+            $this->assertSame( "Enum class is not instantiable", $err->getMessage() );
+        }
+    }
+
+    public function testGetValues_NonUnique ()
+    {
+        try {
+            \stub_Enum_nonUnique::getValues();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Interaction $err ) {
+            $this->assertSame( "Enum values must be unique", $err->getMessage() );
+        }
+    }
+
+    public function testGetValues_Conflict ()
+    {
+        try {
+            \stub_Enum_Conflict::getValues();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Interaction $err ) {
+            $this->assertSame( "Enum contains a conflicting label and value", $err->getMessage() );
+        }
+    }
+
+    public function testGetValues ()
+    {
+        $this->assertSame(
+            array(
+                "ONE" => "ONE",
+                "TWO" => "TWO",
+                "THREE" => "THREE"
+            ),
+            \stub_Enum::getValues()
+        );
+    }
+
+    public function testConstruct_Error ()
+    {
+        try {
+            new \stub_Enum("Invalid value");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Invalid Enum input value", $err->getMessage() );
+        }
+    }
 
 }
 
