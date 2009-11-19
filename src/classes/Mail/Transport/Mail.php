@@ -1,7 +1,5 @@
 <?php
 /**
- * Formats and sends a piece of mail using the built in PHP mail function
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.

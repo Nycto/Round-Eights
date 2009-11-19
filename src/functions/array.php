@@ -22,7 +22,7 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package numeric
+ * @package Array
  */
 
 namespace r8\ary;

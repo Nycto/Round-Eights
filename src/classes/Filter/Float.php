@@ -1,7 +1,5 @@
 <?php
 /**
- * Float filtering class
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -28,7 +26,7 @@
 namespace r8\Filter;
 
 /**
- * Converts a value to a float
+ * Converts a value to a floating point decimal
  */
 class Float extends \r8\Filter
 {

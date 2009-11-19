@@ -1,7 +1,5 @@
 <?php
 /**
- * A "Multiply-With-Carry" pseudo-random number generator
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.

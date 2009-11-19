@@ -53,6 +53,13 @@ class Head
     private $javascript = array();
 
     /**
+     * The CSS to load in this head
+     *
+     * @var Array An array of \r8\HTML\CSS objects
+     */
+    private $css = array();
+
+    /**
      * Returns the title of the page
      *
      * @return String
@@ -149,6 +156,39 @@ class Head
     public function clearJavascript ()
     {
         $this->javascript = array();
+        return $this;
+    }
+
+    /**
+     * Returns the CSS in this header
+     *
+     * @return Array An array of \r8\HTML\CSS objects
+     */
+    public function getCSS ()
+    {
+        return $this->css;
+    }
+
+    /**
+     * Adds a new CSS to this header
+     *
+     * @param \r8\HTML\CSS $css
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function addCSS ( \r8\HTML\CSS $css )
+    {
+        $this->css[] = $css;
+        return $this;
+    }
+
+    /**
+     * Clears all the CSS from this instance
+     *
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function clearCSS ()
+    {
+        $this->css = array();
         return $this;
     }
 

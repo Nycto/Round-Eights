@@ -1,7 +1,5 @@
 <?php
 /**
- * A file upload form field
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.

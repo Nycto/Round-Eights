@@ -79,6 +79,23 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $head->getJavascript() );
     }
 
+    public function testCSS ()
+    {
+        $head = new \r8\HTML\Head;
+        $this->assertSame( array(), $head->getCSS() );
+
+        $css1 = new \r8\HTML\CSS("test.css");
+        $this->assertSame( $head, $head->addCSS($css1) );
+        $this->assertSame( array($css1), $head->getCSS() );
+
+        $css2 = new \r8\HTML\CSS("example.css");
+        $this->assertSame( $head, $head->addCSS($css2) );
+        $this->assertSame( array($css1, $css2), $head->getCSS() );
+
+        $this->assertSame( $head, $head->clearCSS() );
+        $this->assertSame( array(), $head->getCSS() );
+    }
+
 }
 
 ?>

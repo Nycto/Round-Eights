@@ -1,7 +1,5 @@
 <?php
 /**
- * Email filtering class
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -28,7 +26,7 @@
 namespace r8\Filter;
 
 /**
- * Cleans up a EMail address string
+ * EMail Address filter
  */
 class Email extends \r8\Filter
 {

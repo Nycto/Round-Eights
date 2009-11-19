@@ -1,7 +1,5 @@
 <?php
 /**
- * E-Mail detail class
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.

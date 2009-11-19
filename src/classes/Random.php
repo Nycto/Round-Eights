@@ -1,7 +1,5 @@
 <?php
 /**
- * Base class for random number generators
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
