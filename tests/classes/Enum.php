@@ -29,9 +29,9 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 class stub_Enum extends \r8\Enum
 {
-    const ONE = "ONE";
-    const TWO = "TWO";
-    const THREE = "THREE";
+    const ONE = 1;
+    const TWO = 2;
+    const THREE = 3;
 }
 
 class stub_Enum_nonUnique extends \r8\Enum
@@ -88,11 +88,12 @@ class classes_Enum extends PHPUnit_Framework_TestCase
     public function testGetValues ()
     {
         $this->assertSame(
-            array(
-                "ONE" => "ONE",
-                "TWO" => "TWO",
-                "THREE" => "THREE"
-            ),
+            array( "ONE" => 1, "TWO" => 2, "THREE" => 3 ),
+            \stub_Enum::getValues()
+        );
+
+        $this->assertSame(
+            array( "ONE" => 1, "TWO" => 2, "THREE" => 3 ),
             \stub_Enum::getValues()
         );
     }
@@ -106,6 +107,22 @@ class classes_Enum extends PHPUnit_Framework_TestCase
         catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Invalid Enum input value", $err->getMessage() );
         }
+    }
+
+    public function testConstruct_FromLabel ()
+    {
+        $enum = new stub_Enum( "ONE" );
+        $this->assertSame( "ONE", $enum->getLabel() );
+        $this->assertSame( 1, $enum->getValue() );
+        $this->assertSame( "1", "$enum" );
+    }
+
+    public function testConstruct_FromValue ()
+    {
+        $enum = new stub_Enum( 3 );
+        $this->assertSame( "THREE", $enum->getLabel() );
+        $this->assertSame( 3, $enum->getValue() );
+        $this->assertSame( "3", "$enum" );
     }
 
 }

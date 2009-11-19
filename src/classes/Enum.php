@@ -129,10 +129,40 @@ abstract class Enum
         foreach ( static::getValues() AS $label => $value )
         {
             if ( $label == $input || $value == $input )
-                return array( $label, $input );
+                return array( $label, $value );
         }
 
         throw new \r8\Exception\Argument( 0, "input", "Invalid Enum input value" );
+    }
+
+    /**
+     * Returns the label of this enumerable instance
+     *
+     * @return String
+     */
+    public function getLabel ()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Returns the Value of this enumerable instance
+     *
+     * @return mixed
+     */
+    public function getValue ()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Returns the value of this enumerable as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return (string) $this->value;
     }
 
 }
