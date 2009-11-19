@@ -109,6 +109,18 @@ abstract class Enum
     }
 
     /**
+     * Allows enumerable instantiation via static method calls
+     *
+     * @param String $method The Enumerable to create
+     * @param Array $args Any arguments passed to this instance
+     * @return \r8\Enum Returns an Enumerable object
+     */
+    static public function __callStatic ( $method, array $args )
+    {
+        return new static( $method );
+    }
+
+    /**
      * Constructor...
      *
      * @param Mixed $input The Label or Value to derive this enumerable from
@@ -128,7 +140,7 @@ abstract class Enum
     {
         foreach ( static::getValues() AS $label => $value )
         {
-            if ( $label == $input || $value == $input )
+            if ( strcasecmp($label, $input) == 0 || strcasecmp($value, $input) == 0 )
                 return array( $label, $value );
         }
 

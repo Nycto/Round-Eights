@@ -125,6 +125,39 @@ class classes_Enum extends PHPUnit_Framework_TestCase
         $this->assertSame( "3", "$enum" );
     }
 
+    public function testConstruct_CaseInsensitive ()
+    {
+        $enum = new stub_Enum( "one" );
+        $this->assertSame( "ONE", $enum->getLabel() );
+        $this->assertSame( 1, $enum->getValue() );
+        $this->assertSame( "1", "$enum" );
+    }
+
+    public function testCallStatic ()
+    {
+        $enum = stub_Enum::ONE();
+        $this->assertThat( $enum, $this->isInstanceOf('\r8\Enum') );
+        $this->assertSame( "ONE", $enum->getLabel() );
+    }
+
+    public function testCallStatic_CaseInsensitive ()
+    {
+        $enum = stub_Enum::one();
+        $this->assertThat( $enum, $this->isInstanceOf('\r8\Enum') );
+        $this->assertSame( "ONE", $enum->getLabel() );
+    }
+
+    public function testCallStatic_Invalid ()
+    {
+        try {
+            stub_Enum::INVALID();
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Invalid Enum input value", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
