@@ -110,6 +110,33 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $head->getCSS() );
     }
 
+    public function testGetTag_Full ()
+    {
+        $head = new \r8\HTML\Head;
+        $head->setDocType( \r8\HTML\DocType::HTML5() );
+        $head->setTitle("Test");
+        $head->addCSS( new \r8\HTML\CSS("test.css") );
+        $head->addCSS( new \r8\HTML\CSS("example.css") );
+        $head->addJavascript( new \r8\HTML\Javascript("test.js") );
+        $head->addJavascript( new \r8\HTML\Javascript("example.js") );
+        $head->addMetaTag( new \r8\HTML\MetaTag("name", "content") );
+        $head->addMetaTag( new \r8\HTML\MetaTag("robots", "index, follow") );
+
+        $tag = $head->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame( 'head', $tag->getTag() );
+        $this->assertSame(
+            '<title>Test</title>' ."\n"
+            .'<meta name="name" content="content" />' ."\n"
+            .'<meta name="robots" content="index, follow" />' ."\n"
+            .'<link rel="stylesheet" href="test.css" type="text/css" media="all" />' ."\n"
+            .'<link rel="stylesheet" href="example.css" type="text/css" media="all" />' ."\n"
+            .'<script type="text/javascript" src="test.js"></script>' ."\n"
+            .'<script type="text/javascript" src="example.js"></script>',
+            $tag->getContent()
+        );
+    }
+
 }
 
 ?>

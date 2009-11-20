@@ -229,6 +229,42 @@ class Head
         return $this;
     }
 
+    /**
+     * Returns an HTML representation of this Head object
+     *
+     * Note that this does NOT include the DocType. Only the values within
+     * the actual Head tag.
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag ()
+    {
+        $content = array();
+
+        if ( !empty($this->title) )
+            $content[] = "<title>". htmlspecialchars( $this->title ) ."</title>";
+
+        $content = array_merge( $content,
+            array_map( '\r8\strval',
+                \r8\ary\invoke( $this->metatags, "getTag" )
+            )
+        );
+
+        $content = array_merge( $content,
+            array_map( '\r8\strval',
+                \r8\ary\invoke( $this->css, "getTag" )
+            )
+        );
+
+        $content = array_merge( $content,
+            array_map( '\r8\strval',
+                \r8\ary\invoke( $this->javascript, "getTag" )
+            )
+        );
+
+        return new \r8\HTML\Tag( "head", implode( "\n", $content ) );
+    }
+
 }
 
 ?>
