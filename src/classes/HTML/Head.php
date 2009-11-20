@@ -244,20 +244,18 @@ class Head
         if ( !empty($this->title) )
             $content[] = "<title>". htmlspecialchars( $this->title ) ."</title>";
 
-        $content = array_merge( $content,
-            array_map( '\r8\strval',
+        $content = array_merge(
+            $content,
+            array_map(
+            	'\r8\strval',
                 \r8\ary\invoke( $this->metatags, "getTag" )
-            )
-        );
-
-        $content = array_merge( $content,
-            array_map( '\r8\strval',
+            ),
+            array_map(
+            	'\r8\strval',
                 \r8\ary\invoke( $this->css, "getTag" )
-            )
-        );
-
-        $content = array_merge( $content,
-            array_map( '\r8\strval',
+            ),
+            array_map(
+            	'\r8\strval',
                 \r8\ary\invoke( $this->javascript, "getTag" )
             )
         );
