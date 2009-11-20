@@ -137,6 +137,16 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetTag_Empty ()
+    {
+        $head = new \r8\HTML\Head;
+
+        $tag = $head->getTag();
+        $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
+        $this->assertSame( 'head', $tag->getTag() );
+        $this->assertNull( $tag->getContent() );
+    }
+
 }
 
 ?>
