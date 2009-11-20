@@ -33,6 +33,20 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_HTML_Head extends PHPUnit_Framework_TestCase
 {
 
+    public function testDocType ()
+    {
+        $head = new \r8\HTML\Head;
+
+        $this->assertEquals(
+            \r8\HTML\DocType::NONE(),
+            $head->getDocType()
+        );
+
+        $doctype = \r8\HTML\DocType::HTML5();
+        $this->assertSame( $head, $head->setDocType($doctype) );
+        $this->assertSame( $doctype, $head->getDocType() );
+    }
+
     public function testTitle ()
     {
         $head = new \r8\HTML\Head;

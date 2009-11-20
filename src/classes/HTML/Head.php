@@ -32,6 +32,13 @@ class Head
 {
 
     /**
+     * The DocType of the document
+     *
+     * @var \r8\HTML\DocType
+     */
+    private $docType;
+
+    /**
      * The title of the page
      *
      * @var String
@@ -58,6 +65,36 @@ class Head
      * @var Array An array of \r8\HTML\CSS objects
      */
     private $css = array();
+
+    /**
+     * Constructor...
+     */
+    public function __construct ()
+    {
+        $this->docType = \r8\HTML\DocType::NONE();
+    }
+
+    /**
+     * Returns the DocType of this document head
+     *
+     * @return \r8\HTML\DocType
+     */
+    public function getDocType ()
+    {
+        return $this->docType;
+    }
+
+    /**
+     * Sets the DocType of this document head
+     *
+     * @param \r8\HTML\DocType $docType
+     * @return \r8\HTML\Head Returns a self reference
+     */
+    public function setDocType ( \r8\HTML\DocType $docType )
+    {
+        $this->docType = $docType;
+        return $this;
+    }
 
     /**
      * Returns the title of the page
