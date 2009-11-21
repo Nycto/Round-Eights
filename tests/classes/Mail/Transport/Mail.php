@@ -35,62 +35,82 @@ class classes_mail_transport_mail extends PHPUnit_Framework_TestCase
 
     public function testSend_success ()
     {
-        $transport = $this->getMock('r8\Mail\Transport\Mail', array('rawMail'));
+        $format = $this->getMock('\r8\Mail\Formatter');
 
+
+        $transport = $this->getMock('r8\Mail\Transport\Mail', array('rawMail'), array($format));
         $transport->expects( $this->once() )
             ->method("rawMail")
             ->with(
                 $this->equalTo('"Destination" <dest@example.com>'),
                 $this->equalTo("Some Test Email"),
                 $this->equalTo("This is the text"),
-                $this->logicalAnd(
-                    $this->stringContains('From: "Test Acct" <tester@example.net>'),
-                    $this->stringContains('To: "Destination" <dest@example.com>'),
-                    $this->stringContains('Subject: Some Test Email'),
-                    $this->stringContains('Date: '),
-                    $this->stringContains('MIME-Version: 1.0'),
-                    $this->stringContains('Content-Type: text/plain; charset="ISO-8859-1"'),
-                    $this->stringContains('Content-Transfer-Encoding: 7bit')
-                )
+                $this->equalTo('From: "Test Acct" <tester@example.net>')
             )
             ->will( $this->returnValue(TRUE) );
+
 
         $mail = new \r8\Mail( $transport );
         $mail->setFrom("tester@example.net", "Test Acct")
             ->addTo("dest@example.com", "Destination")
             ->setSubject("Some Test Email")
             ->setText("This is the text");
+
+
+        $format->expects( $this->once() )
+            ->method( "getToString" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( '"Destination" <dest@example.com>' ) );
+        $format->expects( $this->once() )
+            ->method( "getBody" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( 'This is the text' ) );
+        $format->expects( $this->once() )
+            ->method( "getHeaderString" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( 'From: "Test Acct" <tester@example.net>' ) );
+
 
         $transport->send( $mail );
     }
 
     public function testSend_fail ()
     {
-        $transport = $this->getMock('r8\Mail\Transport\Mail', array('rawMail'));
+        $format = $this->getMock('\r8\Mail\Formatter');
 
+
+        $transport = $this->getMock('r8\Mail\Transport\Mail', array('rawMail'), array($format));
         $transport->expects( $this->once() )
             ->method("rawMail")
             ->with(
                 $this->equalTo('"Destination" <dest@example.com>'),
                 $this->equalTo("Some Test Email"),
                 $this->equalTo("This is the text"),
-                $this->logicalAnd(
-                    $this->stringContains('From: "Test Acct" <tester@example.net>'),
-                    $this->stringContains('To: "Destination" <dest@example.com>'),
-                    $this->stringContains('Subject: Some Test Email'),
-                    $this->stringContains('Date: '),
-                    $this->stringContains('MIME-Version: 1.0'),
-                    $this->stringContains('Content-Type: text/plain; charset="ISO-8859-1"'),
-                    $this->stringContains('Content-Transfer-Encoding: 7bit')
-                )
+                $this->equalTo('From: "Test Acct" <tester@example.net>')
             )
             ->will( $this->returnValue(FALSE) );
+
 
         $mail = new \r8\Mail( $transport );
         $mail->setFrom("tester@example.net", "Test Acct")
             ->addTo("dest@example.com", "Destination")
             ->setSubject("Some Test Email")
             ->setText("This is the text");
+
+
+        $format->expects( $this->exactly(2) )
+            ->method( "getToString" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( '"Destination" <dest@example.com>' ) );
+        $format->expects( $this->once() )
+            ->method( "getBody" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( 'This is the text' ) );
+        $format->expects( $this->once() )
+            ->method( "getHeaderString" )
+            ->with( $this->equalTo($mail) )
+            ->will( $this->returnValue( 'From: "Test Acct" <tester@example.net>' ) );
+
 
         try {
             $transport->send( $mail );

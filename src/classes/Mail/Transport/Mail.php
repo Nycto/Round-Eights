@@ -32,6 +32,24 @@ class Mail extends \r8\Mail\Transport
 {
 
     /**
+     * The formatter to use for constructing the message parts
+     *
+     * @var \r8\Mail\Formatter
+     */
+    private $formatter;
+
+    /**
+     * Constructor...
+     *
+     * @param \r8\Mail\Formatter $formatter The formatter to use for
+     * 		constructing the message parts
+     */
+    public function __construct ( \r8\Mail\Formatter $formatter )
+    {
+        $this->formatter = $formatter;
+    }
+
+    /**
      * Internal method that simply wraps the mail function. This takes the same
      * parameters and passes them directly through.
      *
@@ -61,10 +79,10 @@ class Mail extends \r8\Mail\Transport
     protected function internalSend ( \r8\Mail $mail )
     {
         $result = $this->rawMail(
-                $this->getToString( $mail ),
+                $this->formatter->getToString( $mail ),
                 $mail->getSubject(),
-                $this->getBody( $mail ),
-                $this->getHeaderString( $mail )
+                $this->formatter->getBody( $mail ),
+                $this->formatter->getHeaderString( $mail )
             );
 
         if ( !$result ) {
@@ -76,7 +94,7 @@ class Mail extends \r8\Mail\Transport
             if ( is_array($phpError) )
                 $err->addData('Error', $phpError['message']);
 
-            $err->addData('To', $this->getToString( $mail ));
+            $err->addData('To', $this->formatter->getToString( $mail ));
             $err->addData('Subject', $mail->getSubject());
 
             if ( $mail->messageIDExists() )
