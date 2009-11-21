@@ -55,7 +55,7 @@ class classes_mail_transport_mail extends PHPUnit_Framework_TestCase
             )
             ->will( $this->returnValue(TRUE) );
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $transport );
         $mail->setFrom("tester@example.net", "Test Acct")
             ->addTo("dest@example.com", "Destination")
             ->setSubject("Some Test Email")
@@ -86,7 +86,7 @@ class classes_mail_transport_mail extends PHPUnit_Framework_TestCase
             )
             ->will( $this->returnValue(FALSE) );
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $transport );
         $mail->setFrom("tester@example.net", "Test Acct")
             ->addTo("dest@example.com", "Destination")
             ->setSubject("Some Test Email")

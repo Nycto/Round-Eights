@@ -32,18 +32,9 @@ class Mail
 {
 
     /**
-     * The default transport class for sending a piece of mail
+     * The transport to use for this message
      *
-     * @var Object A \r8\Mail\Transport instance
-     */
-    static private $defaultTransport;
-
-    /**
-     * If set, this is the specific transport to use for this message
-     *
-     * If this value isn't set, the default transport will be used
-     *
-     * @var Object A \r8\Mail\Transport instance
+     * @var \r8\Mail\Transport
      */
     private $transport;
 
@@ -127,50 +118,15 @@ class Mail
     private $boundary;
 
     /**
-     * Sets the default transport to send mail with
-     *
-     * @param Object $transport A \r8\Mail\Transport object
-     * @return null
-     */
-    static public function setDefaultTransport ( \r8\Mail\Transport $transport )
-    {
-        self::$defaultTransport = $transport;
-    }
-
-    /**
-     * Returns the default transport that will be used to send mail
-     *
-     * If no default transport has been sent, this will return an instance of
-     * \r8\Mail\Transport\Mail
-     *
-     * @return Object A \r8\Mail\Transport object
-     */
-    static public function getDefaultTransport ()
-    {
-        if ( !(self::$defaultTransport instanceof \r8\Mail\Transport ) )
-            self::$defaultTransport = new \r8\Mail\Transport\Mail;
-
-        return self::$defaultTransport;
-    }
-
-    /**
-     * Creates a new mail instance
-     *
-     * @return Object Returns a new mail instance
-     */
-    static public function create ()
-    {
-        return new self;
-    }
-
-    /**
      * Constructor...
      *
      * This will load the default email address for the sender from the
      * 'sendmail_from' php.ini directive.
      */
-    public function __construct ()
+    public function __construct ( \r8\Mail\Transport $transport )
     {
+        $this->transport = $transport;
+
         // Get the default source e-mail address from the php.ini file
         $default = ini_get('sendmail_from');
 
@@ -182,40 +138,22 @@ class Mail
     /**
      * Returns the transport that will be used to send this message.
      *
-     * If no specific transport has been set for this message, the default
-     * transport will be used
-     *
-     * @return Object Returns a \r8\Transport instance
+     * @return \r8\Mail\Transport
      */
     public function getTransport ()
     {
-        if ( isset($this->transport) )
-            return $this->transport;
-        else
-            return self::getDefaultTransport();
+        return $this->transport;
     }
 
     /**
      * Sets the transport to send this specific piece of mail with
      *
-     * @param Object $transport A \r8\Mail\Transport object
+     * @param \r8\Mail\Transport  $transport
      * @return \r8\Mail Returns a self reference
      */
     public function setTransport ( \r8\Mail\Transport $transport )
     {
         $this->transport = $transport;
-        return $this;
-    }
-
-    /**
-     * Clears the specific transport from this instance. This will cause the
-     * default transport to be used
-     *
-     * @return \r8\Mail Returns a self reference
-     */
-    public function clearTransport ()
-    {
-        $this->transport = null;
         return $this;
     }
 

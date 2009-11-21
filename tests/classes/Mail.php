@@ -30,42 +30,36 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_mail extends PHPUnit_Framework_TestCase
+class classes_Mail extends PHPUnit_Framework_TestCase
 {
 
-    public function testDefaulTransportAccessors ()
+    /**
+     * Returns a test transport object
+     *
+     * @return \r8\Mail\Transport
+     */
+    public function getTestTransport ()
     {
-        $transport = \r8\Mail::getDefaultTransport();
-        $this->assertThat( $transport, $this->isInstanceOf('r8\Mail\Transport\Mail') );
-        $this->assertSame( $transport, \r8\Mail::getDefaultTransport() );
-        $this->assertSame( $transport, \r8\Mail::getDefaultTransport() );
-
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
-        $this->assertNull( \r8\Mail::setDefaultTransport($transport) );
-        $this->assertSame( $transport, \r8\Mail::getDefaultTransport() );
-        $this->assertSame( $transport, \r8\Mail::getDefaultTransport() );
+        return $this->getMock('\r8\Mail\Transport', array('internalSend'));
     }
 
     public function testTransportAccessors ()
     {
-        $default = \r8\Mail::getDefaultTransport();
+        $default = $this->getTestTransport();
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $default );
         $this->assertSame( $default, $mail->getTransport() );
 
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $transport = $this->getTestTransport();
         $this->assertSame( $mail, $mail->setTransport($transport) );
         $this->assertSame( $transport, $mail->getTransport() );
-
-        $this->assertSame( $mail, $mail->clearTransport() );
-        $this->assertSame( $default, $mail->getTransport() );
     }
 
     public function testFromNameAccessors ()
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->fromNameExists() );
         $this->assertNull( $mail->getFromName() );
@@ -91,7 +85,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->fromExists() );
         $this->assertNull( $mail->getFrom() );
@@ -135,7 +129,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertEquals(
                 array(),
                 $mail->getTo()
@@ -217,7 +211,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertEquals( array(), $mail->getCC() );
         $this->assertFalse( $mail->ccExists('addr@example.org') );
         $this->assertFalse( $mail->ccExists('test@example.net') );
@@ -296,7 +290,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertEquals( array(), $mail->getBCC() );
         $this->assertFalse( $mail->bccExists('addr@example.org') );
         $this->assertFalse( $mail->bccExists('test@example.net') );
@@ -373,7 +367,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->subjectExists() );
         $this->assertNull( $mail->getSubject() );
@@ -399,7 +393,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->messageIDExists() );
         $this->assertNull( $mail->getMessageID() );
@@ -425,7 +419,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->textExists() );
         $this->assertNull( $mail->getText() );
@@ -451,7 +445,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $this->assertFalse( $mail->htmlExists() );
         $this->assertNull( $mail->getHTML() );
@@ -477,7 +471,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', '');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertNull( $mail->getFrom() );
     }
 
@@ -485,7 +479,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', 'example');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertNull( $mail->getFrom() );
     }
 
@@ -493,21 +487,13 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $this->iniSet('sendmail_from', 'test@example.net');
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertSame( 'test@example.net', $mail->getFrom() );
-    }
-
-    public function testCreate ()
-    {
-        $this->assertThat(
-                \r8\Mail::create(),
-                $this->isInstanceOf('r8\Mail')
-            );
     }
 
     public function testAddCustomHeader ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertEquals( array(), $mail->getCustomHeaders() );
 
         $this->assertSame( $mail, $mail->addCustomHeader('X-Test', 'Example Header') );
@@ -540,7 +526,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testAddCustomHeader_error ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         try {
             $mail->addCustomHeader( '', 'Value' );
@@ -553,7 +539,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testCustomHeaderExists ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $this->assertFalse( $mail->customHeaderExists('X-Test') );
 
         $mail->addCustomHeader('X-Test', 'value');
@@ -571,7 +557,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testRemoveCustomHeader ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $mail->addCustomHeader('X-Test', 'value');
         $this->assertTrue( $mail->customHeaderExists('X-Test') );
@@ -593,7 +579,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testClearCustomHeaders ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $mail->addCustomHeader('X-Test', 'value');
         $mail->addCustomHeader('X-Other', 'value');
@@ -606,7 +592,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
 
     public function testGetBoundary ()
     {
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
 
         $boundary = $mail->getBoundary();
 
@@ -634,7 +620,7 @@ class classes_mail extends PHPUnit_Framework_TestCase
     {
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend', 'send'));
 
-        $mail = new \r8\Mail;
+        $mail = new \r8\Mail( $this->getTestTransport() );
         $mail->setTransport( $transport );
 
         $transport->expects( $this->once() )

@@ -58,8 +58,10 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetToString ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
+
         $this->assertSame( "", $transport->getToString($mail) );
 
         $mail->addTo("test@example.com");
@@ -84,8 +86,10 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBCCString ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
+
+
         $this->assertSame( "", $transport->getBCCString($mail) );
 
         $mail->addBCC("test@example.com");
@@ -110,9 +114,9 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_sparse ()
     {
-        $mail = new \r8\Mail;
-
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -134,7 +138,9 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_full ()
     {
-        $mail = new \r8\Mail;
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
         $mail->setFrom("from@example.com", "Jack Test")
             ->addTo("other@example.net", "Jack Snap")
             ->addTo("another@example.org", "Crackle Pop")
@@ -144,7 +150,6 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             ->setSubject("This is a test")
             ->setMessageID("abc123");
 
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -172,10 +177,11 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_textOnly ()
     {
-        $mail = new \r8\Mail;
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
         $mail->setText("This is some content");
 
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -197,10 +203,10 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_htmlOnly ()
     {
-        $mail = new \r8\Mail;
-        $mail->setHTML("This is some content");
-
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
+        $mail->setHTML("This is some content");
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -222,11 +228,12 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderList_multipart ()
     {
-        $mail = new \r8\Mail;
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
         $mail->setHTML("This is some content");
         $mail->setText("This is some content");
 
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderList( $mail );
         $this->assertArrayHasKey("Date", $headers);
@@ -253,9 +260,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderString_sparse ()
     {
-        $mail = new \r8\Mail;
-
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
 
         $headers = $transport->getHeaderString( $mail );
         $this->assertType('string', $headers);
@@ -272,7 +278,9 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetHeaderString_full ()
     {
-        $mail = new \r8\Mail;
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
         $mail->setFrom("from@example.com", "Jack Test")
             ->addTo("other@example.net", "Jack Snap")
             ->addTo("another@example.org", "Crackle Pop")
@@ -281,8 +289,6 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
             ->addBCC("bcc@example.com")
             ->setSubject("This is a test")
             ->setMessageID("abc123");
-
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
 
         $headers = $transport->getHeaderString( $mail );
         $this->assertType('string', $headers);
@@ -337,8 +343,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_text ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
 
         $this->assertSame(
                 "",
@@ -355,8 +361,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_html ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
 
         $mail->setHTML("<h1>This is a chunk of text</h1>");
 
@@ -368,8 +374,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testGetBody_multi ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
 
         $mail->setHTML("<h1>This is a chunk of text</h1>");
         $mail->setText("This is a chunk of text");
@@ -396,8 +402,8 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testSend_incomplete ()
     {
-        $mail = new \r8\Mail;
         $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+        $mail = new \r8\Mail( $transport );
 
         try {
             $transport->send( $mail );
@@ -420,11 +426,12 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
 
     public function testSend_valid ()
     {
-        $mail = new \r8\Mail;
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = new \r8\Mail( $transport );
         $mail->setFrom('test@example.com');
         $mail->addTo('destination@example.com');
 
-        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
         $transport->expects( $this->once() )
             ->method( 'internalSend' )
             ->with( $this->equalTo($mail) );
