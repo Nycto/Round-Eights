@@ -61,6 +61,16 @@ abstract class Transport
         return $this;
     }
 
+    /**
+     * Returns a new piece of mail that uses this transport
+     *
+     * @return \r8\Mail
+     */
+    public function getMail ()
+    {
+        return new \r8\Mail( $this );
+    }
+
 }
 
 ?>

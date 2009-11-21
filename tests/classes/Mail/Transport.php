@@ -72,6 +72,16 @@ class classes_mail_transport extends PHPUnit_Framework_TestCase
         $this->assertSame( $transport, $transport->send($mail) );
     }
 
+    public function testGetMail ()
+    {
+        $transport = $this->getMock('r8\Mail\Transport', array('internalSend'));
+
+        $mail = $transport->getMail();
+
+        $this->assertThat( $mail, $this->isInstanceOf('\r8\Mail') );
+        $this->assertSame( $transport, $mail->getTransport() );
+    }
+
 }
 
 ?>
