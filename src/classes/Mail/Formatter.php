@@ -167,7 +167,7 @@ class Formatter
      */
     public function getHeaderString ( \r8\Mail $mail )
     {
-        $mime = new \r8\Transform\MIME;
+        $mime = new \r8\Transform\MIME\Auto;
         $mime->setEOL( self::EOL );
         $mime->setLineLength( self::LINE_LENGTH );
 
@@ -217,7 +217,7 @@ class Formatter
         // If both the text and HTML are set...
         if ( $mail->htmlExists() && $mail->textExists() ) {
 
-            $mime = new \r8\Transform\MIME;
+            $mime = new \r8\Transform\MIME\Auto;
             $mime->setEOL( self::EOL );
             $mime->setLineLength( self::LINE_LENGTH );
 
