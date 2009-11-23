@@ -26,18 +26,18 @@
 namespace r8\Filter;
 
 /**
- * EMail Address filter
+ * Cleans up a string in preparation for using it as an e-mail address
+ *
+ * Remove everything except letters, digits and !#$%&'*+-=?^_`{|}~@.[]
  */
 class Email extends \r8\Filter
 {
 
     /**
-     * Cleans up a string in preparation for using it as an e-mail address
-     *
-     * Remove everything except letters, digits and !#$%&'*+-/=?^_`{|}~@.[]
+     * Filters the given value
      *
      * @param mixed $value The value to filter
-     * @return
+     * @return Mixed Returns the filtered value
      */
     public function filter ( $value )
     {

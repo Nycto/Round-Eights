@@ -53,8 +53,8 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
             );
 
         $this->assertEquals(
-                "!#$%&'*+-/=?^_`{|}~@.[]",
-                $filter->filter("!#$%&'*+-/=?^_`{|}~@.[]")
+                "!#$%&'*+-=?^_`{|}~@.[]",
+                $filter->filter("!#$%&'*+-=?^_`{|}~@.[]")
             );
     }
 
@@ -62,7 +62,7 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
     {
         $filter = new \r8\Filter\Email;
 
-        $this->assertEquals("", $filter->filter('"():;<>\'));
+        $this->assertEquals("", $filter->filter('/"():;<>\'));
         $this->assertEquals("", $filter->filter(''));
         $this->assertEquals("", $filter->filter(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»'));
         $this->assertEquals("", $filter->filter('¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâ'));
