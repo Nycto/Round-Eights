@@ -31,13 +31,20 @@ namespace r8\Transform;
  */
 class Verify implements \r8\iface\Transform
 {
-    
+
     /**
      * The Transform being decorated
      *
      * @var \r8\iface\Transform
      */
     private $wrapped;
+
+    /**
+     * The salt to use when generating hashes
+     *
+     * @var \r8\Random\Seed
+     */
+    private $salt;
 
     /**
      * Implementation of the PBKDF2 key derivation function as described in RFC 2898.
@@ -91,11 +98,13 @@ class Verify implements \r8\iface\Transform
     /**
      * Constructor...
      *
-     * @param \r8\iface\Transform $transform The transform object being wrapped
+     * @param \r8\iface\Transform $wrapped The transform object being wrapped
+     * @param \r8\Random\Seed $salt The salt to use for the hashing process
      */
-    public function __construct ( \r8\iface\Transform $transform )
+    public function __construct ( \r8\iface\Transform $wrapped, \r8\Random\Seed $salt )
     {
-        $this->transform = $transform;
+        $this->wrapped = $wrapped;
+        $this->salt = $salt;
     }
 
     /**
@@ -106,6 +115,9 @@ class Verify implements \r8\iface\Transform
      */
     public function to ( $string )
     {
+        $string = \r8\strVal( $string );
+        $transformed = $this->wrapped->to( $string );
+        return self::pbkdf2( $string, $this->salt->getString() ) . $transformed;
     }
 
     /**
@@ -116,6 +128,18 @@ class Verify implements \r8\iface\Transform
      */
     public function from ( $string )
     {
+        $string = \r8\strVal( $string );
+        $mac = substr( $string, 0, 32 );
+
+        if ( strlen($mac) !== 32 )
+            throw new \r8\Exception\Data( $string, "Transform String", "Unable to extract data verification hash" );
+
+        $string = $this->wrapped->from( substr( $string, 32 ) );
+
+        if ( $mac != self::pbkdf2( $string, $this->salt->getString() ) )
+            throw new \r8\Exception\Data( $string, "Transform String", "Data integrity verification failed" );
+
+        return $string;
     }
 
 }

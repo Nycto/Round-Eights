@@ -73,6 +73,94 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
             $this->assertSame( "Derived key length is too long", $err->getMessage() );
         }
     }
+    
+    /**
+     * Returns a test seed that will return the given string
+     *
+     * @return \r8\Random\Seed
+     */
+    public function getTestSeed ( $string )
+    {
+        $seed = $this->getMock('\r8\Random\Seed', array(), array(), '', FALSE);
+        $seed->expects( $this->any() )
+            ->method( "getString" )
+            ->will( $this->returnValue($string) );
+            
+        return $seed;
+    }
+    
+    public function testTo ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Transform');
+        $wrapped->expects( $this->once() )
+            ->method( "to" )
+            ->with( $this->equalTo("unencoded") )
+            ->will( $this->returnValue("encoded") );
+        
+        
+        $seed = $this->getTestSeed("seed data");
+        
+        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        
+        $this->assertSame(
+            "9OgoBpBeCUGP2HMyNf1uHPPYNXJ1bgxZkfNAyjBgX3JlbmNvZGVk",
+            base64_encode( $verify->to("unencoded") )
+        );
+    }
+    
+    public function testFrom ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Transform');
+        $wrapped->expects( $this->once() )
+            ->method( "from" )
+            ->with( $this->equalTo("encoded") )
+            ->will( $this->returnValue("unencoded") );
+        
+        $seed = $this->getTestSeed("seed data");
+        
+        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        
+        $this->assertSame(
+            "unencoded",
+            $verify->from( base64_decode(
+                "9OgoBpBeCUGP2HMyNf1uHPPYNXJ1bgxZkfNAyjBgX3JlbmNvZGVk"
+            ))
+        );
+    }
+    
+    public function testFrom_NoHash ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Transform');
+        $seed = $this->getTestSeed("seed data");
+        
+        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        
+        try {
+            $verify->from( "Not long enough" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Unable to extract data verification hash", $err->getMessage() );
+        }
+    }
+    
+    public function testFrom_Invalid ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Transform');
+        $seed = $this->getTestSeed("seed data");
+        
+        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        
+        try {
+            $verify->from( base64_decode(
+                "8OgoBpBeCUGP2HMyNf1uHPPYNXJ1bgxZkfNAyjBgX3JlbmNvZGVk"
+            ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Data integrity verification failed", $err->getMessage() );
+        }
+    }
 
 }
 
