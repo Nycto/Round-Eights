@@ -86,7 +86,7 @@ class Encrypt implements \r8\iface\Transform\Encrypt
 
         return $resource;
     }
-    
+
     /**
      * Runs the initialization routine on the resource and handles the results
      *
@@ -94,14 +94,14 @@ class Encrypt implements \r8\iface\Transform\Encrypt
      * @param String $iv The initialization vector
      * @return NULL
      */
-    public function initialize ( $resource, $iv )
+    private function initialize ( $resource, $iv )
     {
         $key = substr(
             $this->key->getString(),
             0,
             mcrypt_enc_get_key_size( $resource )
         );
-        
+
         $result = mcrypt_generic_init( $resource, $key, $iv );
 
         if ( $result == -3 )
@@ -124,13 +124,13 @@ class Encrypt implements \r8\iface\Transform\Encrypt
     {
         // Grab the mcrypt resource
         $resource = $this->getResource();
-        
+
         // Create an initialization vector
         $iv = mcrypt_create_iv(
             mcrypt_enc_get_iv_size( $resource ),
             stripos(PHP_OS, "WIN") === FALSE ? MCRYPT_RAND : MCRYPT_DEV_RANDOM
         );
-        
+
         // Apply the IV and key to the resource
         $this->initialize( $resource, $iv );
 
@@ -141,7 +141,7 @@ class Encrypt implements \r8\iface\Transform\Encrypt
         mcrypt_generic_deinit( $resource );
         mcrypt_module_close( $resource );
 
-        // Package the IV along with the encrypted data to make it more portable
+        // Prepend the IV to make the encrypted data more portable
         return $iv . $encrypted;
     }
 
@@ -154,19 +154,19 @@ class Encrypt implements \r8\iface\Transform\Encrypt
     public function from ( $string )
     {
         $string = \r8\strval( $string );
-        
+
         $resource = $this->getResource();
-        
+
         // Pull the IV off the front of the string
         $ivLength = mcrypt_enc_get_iv_size( $resource );
         $iv = substr( $string, 0, $ivLength );
         $string = substr( $string, $ivLength );
-        
+
         if ( strlen($iv) != $ivLength || empty($string) )
             throw new \r8\Exception\Interaction("Unable to derive initialization vector");
-        
+
         $this->initialize( $resource, $iv );
-        
+
         return mdecrypt_generic( $resource, $string );
     }
 

@@ -32,34 +32,34 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 {
-    
+
     public function testEncrypt ()
     {
         $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Input") );
-        
+
         $result = $encrypt->to("oh what a piece of data");
-        
+
         $this->assertType( 'string', $result );
         $this->assertNotEquals( "oh what a piece of data", $result );
         $this->assertSame( 55, strlen($result) );
         $this->assertSame( "oh what a piece of data", $encrypt->from( $result ) );
-        
+
         $this->assertNotEquals( $result, $encrypt->to("oh what a piece of data") );
         $this->assertNotEquals( $result, $encrypt->to("oh what a piece of data") );
         $this->assertNotEquals( $result, $encrypt->to("oh what a piece of data") );
     }
-    
+
     public function testDecrypt ()
     {
         $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Input") );
-        
+
         $this->assertSame(
             "oh what a piece of data",
             $encrypt->from( base64_decode(
                 "n3qkbK3o8GYCatUzy8psadXNjBVZaLNQnveIcYfKLjI83/3oSQn1jtqyQv7ManhdxjpuSYPrmQ=="
             ))
         );
-        
+
         $this->assertSame(
             "oh what a piece of data",
             $encrypt->from( base64_decode(
@@ -67,11 +67,11 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
             ))
         );
     }
-    
+
     public function testDecrypt_WrongKey ()
     {
         $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Different Key") );
-        
+
         $this->assertNotEquals(
             "oh what a piece of data",
             $encrypt->from( base64_decode(
@@ -79,11 +79,11 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
             ))
         );
     }
-    
+
     public function testDecrypt_ShortData ()
     {
         $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Different Key") );
-        
+
         try {
             $encrypt->from( "Bloopity bloop" );
             $this->fail("An expected exception was not thrown");
@@ -92,7 +92,7 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
             $this->assertSame( "Unable to derive initialization vector", $err->getMessage() );
         }
     }
-    
+
 }
 
 ?>
