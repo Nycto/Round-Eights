@@ -53,6 +53,26 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testDOMDocument ()
+    {
+        $builder = new \r8\Template\Builder;
+
+        $this->assertThat(
+            $builder->domDoc( new DOMDocument ),
+            $this->isInstanceOf('\r8\Template\DOMDoc')
+        );
+    }
+
+    public function testRaw ()
+    {
+        $builder = new \r8\Template\Builder;
+
+        $result = $builder->raw( "content" );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Raw') );
+        $this->assertSame( "content", $result->getContent() );
+    }
+
 }
 
 ?>

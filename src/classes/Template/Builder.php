@@ -51,6 +51,28 @@ class Builder
         return new \r8\Template\Collection;
     }
 
+    /**
+     * Builds a new DOMDocument template
+     *
+     * @param \DOMDocument $doc The XML document being rendered
+     * @return \r8\Template\DOMDoc
+     */
+    public function domDoc ( \DOMDocument $doc )
+    {
+        return new \r8\Template\DOMDoc( $doc );
+    }
+
+    /**
+     * Builds a new Raw template
+     *
+     * @param mixed $content The content for this instance
+     * @return \r8\Template\Raw
+     */
+    public function raw ( $content = NULL )
+    {
+        return new \r8\Template\Raw( $content );
+    }
+
 }
 
 ?>
