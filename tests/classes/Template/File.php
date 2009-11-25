@@ -33,102 +33,54 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Template_File extends PHPUnit_Framework_TestCase
 {
 
-    public function getMockTpl ()
+    public function getMockFinder ()
     {
+        return $this->getMock('\r8\FileFinder', array('internalFind'));
+    }
+
+    public function getMockTpl ( \r8\FileFinder $finder = null, $file = null )
+    {
+        if ( empty($finder) )
+            $finder = $this->getMockFinder();
+
+        if ( empty($file) )
+            $file = '/example.txt';
+
         return $this->getMock(
                 'r8\Template\File',
-                array('display')
+                array('display'),
+                array( $finder, $file )
             );
-    }
-
-    public function setUp ()
-    {
-        \r8\Template\File::clearGlobalFinder();
-    }
-
-    public function tearDown ()
-    {
-        \r8\Template\File::clearGlobalFinder();
     }
 
     public function testFinderAccessors ()
     {
-        $tpl = $this->getMockTpl();
-        $this->assertNull( $tpl->getFinder() );
-        $this->assertFalse( $tpl->finderExists() );
+        $finder = $this->getMockFinder();
 
-        $finder = $this->getMock( 'r8\FileFinder', array('internalFind') );
+        $tpl = $this->getMockTpl( $finder );
+
+        $this->assertSame( $finder, $tpl->getFinder() );
+
+        $finder = $this->getMockFinder();
         $this->assertSame( $tpl, $tpl->setFinder( $finder ) );
         $this->assertSame( $finder, $tpl->getFinder() );
-        $this->assertTrue( $tpl->finderExists() );
 
-        $finder2 = $this->getMock( 'r8\FileFinder', array('internalFind') );
+        $finder2 = $this->getMockFinder();
         $this->assertSame( $tpl, $tpl->setFinder( $finder2 ) );
         $this->assertSame( $finder2, $tpl->getFinder() );
-        $this->assertTrue( $tpl->finderExists() );
-
-        $this->assertSame( $tpl, $tpl->clearFinder() );
-        $this->assertNull( $tpl->getFinder() );
-        $this->assertFalse( $tpl->finderExists() );
-    }
-
-    public function testGlobalFinder ()
-    {
-        $this->assertNull( \r8\Template\File::getGlobalFinder() );
-        $this->assertFalse( \r8\Template\File::globalFinderExists() );
-
-        $finder = $this->getMock( 'r8\FileFinder', array('internalFind') );
-        $this->assertNull( \r8\Template\File::setGlobalFinder( $finder ) );
-        $this->assertSame( $finder, \r8\Template\File::getGlobalFinder() );
-        $this->assertTrue( \r8\Template\File::globalFinderExists() );
-
-        $finder2 = $this->getMock( 'r8\FileFinder', array('internalFind') );
-        $this->assertNull( \r8\Template\File::setGlobalFinder( $finder2 ) );
-        $this->assertSame( $finder2, \r8\Template\File::getGlobalFinder() );
-        $this->assertTrue( \r8\Template\File::globalFinderExists() );
-
-        $this->assertNull( \r8\Template\File::clearGlobalFinder() );
-        $this->assertNull( \r8\Template\File::getGlobalFinder() );
-        $this->assertFalse( \r8\Template\File::globalFinderExists() );
-    }
-
-    public function testSelectFinder ()
-    {
-        $tpl = $this->getMockTpl();
-
-        try {
-            $tpl->selectFinder();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Variable $err ) {
-            $this->assertSame("No global or instance level FileFinder has been set", $err->getMessage());
-        }
-
-
-        $globalFinder = $this->getMock( 'r8\FileFinder', array('internalFind') );
-        \r8\Template\File::setGlobalFinder( $globalFinder );
-        $this->assertSame( $globalFinder, $tpl->selectFinder() );
-
-
-        $instFinder = $this->getMock( 'r8\FileFinder', array('internalFind') );
-        $tpl->setFinder( $instFinder );
-        $this->assertSame( $instFinder, $tpl->selectFinder() );
-
-
-        \r8\Template\File::clearGlobalFinder();
-        $this->assertSame( $instFinder, $tpl->selectFinder() );
     }
 
     public function testFileAccessors ()
     {
-        $tpl = $this->getMockTpl();
-        $this->assertNull( $tpl->getFile() );
-        $this->assertFalse( $tpl->fileExists() );
+        $tpl = $this->getMockTpl( null, "/file.php");
+
+        $file = $tpl->getFile();
+        $this->assertThat( $file, $this->isInstanceOf('\r8\FileSys\File') );
+        $this->assertSame( "/file.php", $file->getPath() );
 
 
         // Set the file from a string
         $this->assertSame( $tpl, $tpl->setFile( "/path/to/file.php" ) );
-        $this->assertTrue( $tpl->fileExists() );
 
         $file = $tpl->getFile();
         $this->assertThat( $file, $this->isInstanceOf('\r8\FileSys\File') );
@@ -146,73 +98,30 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
         // Set the file from an object
         $fileObj = new \r8\FileSys\File('/dir/tpl.php');
         $this->assertSame( $tpl, $tpl->setFile( $fileObj ) );
-        $this->assertTrue( $tpl->fileExists() );
         $this->assertSame( $fileObj, $tpl->getFile() );
         $this->assertSame( '/dir/tpl.php', $tpl->getFile()->getPath() );
-
-
-        // Test clearing the file
-        $this->assertSame( $tpl, $tpl->clearFile() );
-        $this->assertNull( $tpl->getFile() );
-        $this->assertFalse( $tpl->fileExists() );
     }
 
     public function testFindFile ()
     {
-        $tpl = $this->getMockTpl();
-
-        try {
-            $tpl->findFile();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Variable $err ) {
-            $this->assertSame("No file has been set in template", $err->getMessage());
-        }
-
         $file = new \r8\FileSys\File('/dir/tpl.php');
-        $tpl->setFile( $file );
 
-        try {
-            $tpl->findFile();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Variable $err ) {
-            $this->assertSame("No global or instance level FileFinder has been set", $err->getMessage());
-        }
-
-        $result = new \r8\FileSys\File('/path/to/tpl.php');
+        $foundFile = new \r8\FileSys\File('/path/to/tpl.php');
 
         $finder = $this->getMock( 'r8\FileFinder', array('internalFind', 'find') );
         $finder->expects( $this->once() )
             ->method('find')
             ->with( $this->equalTo($file) )
-            ->will( $this->returnValue($result) );
+            ->will( $this->returnValue($foundFile) );
 
-        $tpl->setFinder( $finder );
+        $tpl = $this->getMockTpl( $finder, $file );
 
-        $this->assertSame( $result, $tpl->findFile() );
-    }
-
-    public function testConstruct ()
-    {
-        $tpl = $this->getMock(
-                'r8\Template\File',
-                array( 'display' ),
-                array( '/path/to/file.php' )
-            );
-
-        $file = $tpl->getFile();
-        $this->assertThat( $file, $this->isInstanceOf('r8\FileSys\File') );
-        $this->assertSame( '/path/to/file.php', $file->getPath() );
+        $this->assertSame( $foundFile, $tpl->findFile() );
     }
 
     public function testRender ()
     {
-        $tpl = $this->getMock(
-                'r8\Template\File',
-                array( 'display' ),
-                array( '/path/to/file.php' )
-            );
+        $tpl = $this->getMockTpl();
 
         $tpl->expects( $this->once() )
             ->method("display")
@@ -225,11 +134,7 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $tpl = $this->getMock(
-                'r8\Template\File',
-                array( 'display' ),
-                array( '/path/to/file.php' )
-            );
+        $tpl = $this->getMockTpl();
 
         $tpl->expects( $this->once() )
             ->method("display")

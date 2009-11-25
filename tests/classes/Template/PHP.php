@@ -46,6 +46,11 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
         @unlink( $this->file );
     }
 
+    public function getMockFinder ()
+    {
+        return $this->getMock('\r8\FileFinder', array('internalFind'));
+    }
+
     public function testDisplay ()
     {
         file_put_contents(
@@ -55,9 +60,10 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
         $this->expectOutputString("Lorem Ipsum");
 
-        $tpl = new \r8\Template\PHP;
-        $tpl->setFinder( \r8\FileFinder::Dir()->addDir("/") );
-        $tpl->setFile( $this->file );
+        $tpl = new \r8\Template\PHP(
+            \r8\FileFinder::Dir()->addDir("/"),
+            $this->file
+        );
 
         $tpl->set("lorem", "Lorem");
         $tpl->set("ipsum", "Ipsum");
@@ -74,9 +80,10 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
         $this->expectOutputString("Lorem Ipsum");
 
-        $tpl = new \r8\Template\PHP;
-        $tpl->setFinder( \r8\FileFinder::Dir()->addDir("/") );
-        $tpl->setFile( $this->file );
+        $tpl = new \r8\Template\PHP(
+            \r8\FileFinder::Dir()->addDir("/"),
+            $this->file
+        );
 
         $tpl->set("lorem", "Lorem");
         $tpl->set("this", "Ipsum");
