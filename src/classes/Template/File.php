@@ -28,7 +28,7 @@ namespace r8\Template;
 /**
  * The base class for templates that load a file to display the template
  */
-abstract class File extends \r8\Template
+abstract class File extends \r8\Template\Access implements \r8\iface\Template
 {
 
     /**
@@ -243,6 +243,28 @@ abstract class File extends \r8\Template
             throw new \r8\Exception\Variable("File", "No file has been set in template");
 
         return $this->selectFinder()->find( $this->getFile() );
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String Returns the rendered template as a string
+     */
+    public function render ()
+    {
+        ob_start();
+        $this->display();
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
     }
 
 }

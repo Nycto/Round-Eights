@@ -36,8 +36,8 @@ class classes_template_raw
     public static function suite()
     {
         $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_template_raw_standard' );
-        $suite->addTestSuite( 'classes_template_raw_output' );
+        $suite->addTestSuite( 'classes_Template_Raw_Standard' );
+        $suite->addTestSuite( 'classes_Template_Raw_Output' );
         return $suite;
     }
 
@@ -46,7 +46,7 @@ class classes_template_raw
 /**
  * unit tests
  */
-class classes_template_raw_standard extends PHPUnit_Framework_TestCase
+class classes_Template_Raw_Standard extends PHPUnit_Framework_TestCase
 {
 
     public function testContentAccessors ()
@@ -125,7 +125,7 @@ class classes_template_raw_standard extends PHPUnit_Framework_TestCase
 
 }
 
-class classes_template_raw_output extends PHPUnit_Extensions_OutputTestCase
+class classes_Template_Raw_Output extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function testDisplay_string ()

@@ -36,8 +36,8 @@ class classes_template_domdoc
     public static function suite()
     {
         $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_template_domdoc_standard' );
-        $suite->addTestSuite( 'classes_template_domdoc_output' );
+        $suite->addTestSuite( 'classes_template_DOMDoc_Standard' );
+        $suite->addTestSuite( 'classes_template_DOMDoc_Output' );
         return $suite;
     }
 
@@ -46,7 +46,7 @@ class classes_template_domdoc
 /**
  * unit tests
  */
-class classes_template_domdoc_standard extends PHPUnit_Framework_TestCase
+class classes_template_DOMDoc_Standard extends PHPUnit_Framework_TestCase
 {
 
     public function testRender ()
@@ -79,7 +79,7 @@ class classes_template_domdoc_standard extends PHPUnit_Framework_TestCase
 
 }
 
-class classes_template_domdoc_output extends PHPUnit_Extensions_OutputTestCase
+class classes_template_DOMDoc_Output extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function testDisplay_string ()

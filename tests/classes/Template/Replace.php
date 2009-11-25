@@ -30,14 +30,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Test Suite
  */
-class classes_template_replace
+class classes_Template_Replace
 {
 
     public static function suite()
     {
         $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_template_replace_standard' );
-        $suite->addTestSuite( 'classes_template_replace_output' );
+        $suite->addTestSuite( 'classes_Template_Replace_Standard' );
+        $suite->addTestSuite( 'classes_Template_Replace_Output' );
         return $suite;
     }
 
@@ -46,7 +46,7 @@ class classes_template_replace
 /**
  * unit tests
  */
-class classes_template_replace_standard extends PHPUnit_Framework_TestCase
+class classes_Template_Replace_Standard extends PHPUnit_Framework_TestCase
 {
 
     public function testTemplateAccessors ()
@@ -122,9 +122,20 @@ class classes_template_replace_standard extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testToString ()
+    {
+        $tpl = new \r8\Template\Replace("#{adjective} #{noun} #{verb}");
+        $tpl->import(array(
+                "adjective" => "quick",
+                "noun" => "fox",
+                "verb" => "ran"
+            ));
+        $this->assertSame( "quick fox ran", $tpl->__toString() );
+    }
+
 }
 
-class classes_template_replace_output extends PHPUnit_Extensions_OutputTestCase
+class classes_Template_Replace_Output extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function testDisplay ()

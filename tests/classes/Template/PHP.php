@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_template_php extends PHPUnit_Extensions_OutputTestCase
+class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 {
 
     public $file;

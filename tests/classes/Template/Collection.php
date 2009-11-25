@@ -36,8 +36,8 @@ class classes_template_collection
     public static function suite()
     {
         $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_template_collection_standard' );
-        $suite->addTestSuite( 'classes_template_collection_output' );
+        $suite->addTestSuite( 'classes_Template_Collection_Standard' );
+        $suite->addTestSuite( 'classes_Template_Collection_Output' );
         return $suite;
     }
 
@@ -46,7 +46,7 @@ class classes_template_collection
 /**
  * unit tests
  */
-class classes_template_collection_standard extends PHPUnit_Framework_TestCase
+class classes_Template_Collection_Standard extends PHPUnit_Framework_TestCase
 {
 
     public function getMockTpl ()
@@ -141,7 +141,7 @@ class classes_template_collection_standard extends PHPUnit_Framework_TestCase
 
 }
 
-class classes_template_collection_output extends PHPUnit_Extensions_OutputTestCase
+class classes_Template_Collection_Output extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function getMockTpl ()

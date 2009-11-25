@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_template_file extends PHPUnit_Framework_TestCase
+class classes_Template_File extends PHPUnit_Framework_TestCase
 {
 
     public function getMockTpl ()
@@ -204,6 +204,40 @@ class classes_template_file extends PHPUnit_Framework_TestCase
         $file = $tpl->getFile();
         $this->assertThat( $file, $this->isInstanceOf('r8\FileSys\File') );
         $this->assertSame( '/path/to/file.php', $file->getPath() );
+    }
+
+    public function testRender ()
+    {
+        $tpl = $this->getMock(
+                'r8\Template\File',
+                array( 'display' ),
+                array( '/path/to/file.php' )
+            );
+
+        $tpl->expects( $this->once() )
+            ->method("display")
+            ->will( $this->returnCallback(function () {
+                    echo "This is the output";
+                }) );
+
+        $this->assertSame("This is the output", $tpl->render());
+    }
+
+    public function testToString ()
+    {
+        $tpl = $this->getMock(
+                'r8\Template\File',
+                array( 'display' ),
+                array( '/path/to/file.php' )
+            );
+
+        $tpl->expects( $this->once() )
+            ->method("display")
+            ->will( $this->returnCallback(function () {
+                    echo "This is the output";
+                }) );
+
+        $this->assertSame("This is the output", "$tpl");
     }
 
 }
