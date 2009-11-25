@@ -26,9 +26,9 @@
 namespace r8;
 
 /**
- * Provides an interface for easily instantiating templates
+ * A base Template class that provides data access
  */
-abstract class Template
+abstract class Template extends \r8\Template\Access implements \r8\iface\Template
 {
 
     /**

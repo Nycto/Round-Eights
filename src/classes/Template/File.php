@@ -28,7 +28,7 @@ namespace r8\Template;
 /**
  * The base class for templates that load a file to display the template
  */
-abstract class File extends \r8\Template\Access implements \r8\iface\Template
+abstract class File extends \r8\Template
 {
 
     /**

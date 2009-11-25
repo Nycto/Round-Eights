@@ -30,13 +30,13 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_page_injector extends PHPUnit_Framework_TestCase
+class classes_Page_Injector extends PHPUnit_Framework_TestCase
 {
 
     public function testPageAccessors ()
     {
         $page = new \r8\Page\Injector(
-                $this->getMock('r8\Template', array('display'))
+                $this->getMock('r8\Template', array('display', 'render', '__toString'))
             );
 
         $sub1 = $this->getMock('r8\iface\Page', array('getContent'));
@@ -71,7 +71,7 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent ()
     {
-        $tpl = $this->getMock('r8\Template', array('display', 'set'));
+        $tpl = $this->getMock('r8\Template', array('display', 'render', '__toString', 'set'));
 
         $page = new \r8\Page\Injector( $tpl );
 
@@ -114,7 +114,7 @@ class classes_page_injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent_empty ()
     {
-        $tpl = $this->getMock('r8\Template', array('display', 'set'));
+        $tpl = $this->getMock('r8\Template', array('display', 'render', '__toString', 'set'));
 
         $page = new \r8\Page\Injector( $tpl );
 
