@@ -36,7 +36,7 @@ class Collection implements \r8\iface\Template
      *
      * @var Array An array of \r8\iface\Template objects
      */
-    protected $list = array();
+    private $list = array();
 
     /**
      * Returns the list of templates registered in this instance

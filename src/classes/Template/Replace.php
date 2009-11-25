@@ -56,8 +56,9 @@ class Replace extends \r8\Template
      */
     public function __construct ( $template, $import = null )
     {
-        parent::__construct( $import );
         $this->setTemplate( $template );
+        if ( !is_null($import) )
+            $this->import( $import );
     }
 
     /**
@@ -155,6 +156,16 @@ class Replace extends \r8\Template
                 return $matches[1] . \r8\strval( $self->get( $matches[3] ) );
 
         }, $this->template );
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
     }
 
 }

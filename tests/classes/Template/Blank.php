@@ -36,8 +36,8 @@ class classes_template_blank
     public static function suite()
     {
         $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_template_blank_standard' );
-        $suite->addTestSuite( 'classes_template_blank_output' );
+        $suite->addTestSuite( 'classes_Template_Blank_Standard' );
+        $suite->addTestSuite( 'classes_Template_Blank_Output' );
         return $suite;
     }
 
@@ -46,7 +46,7 @@ class classes_template_blank
 /**
  * unit tests
  */
-class classes_template_blank_standard extends PHPUnit_Framework_TestCase
+class classes_Template_Blank_Standard extends PHPUnit_Framework_TestCase
 {
 
     public function testRender ()
@@ -65,7 +65,7 @@ class classes_template_blank_standard extends PHPUnit_Framework_TestCase
 
 }
 
-class classes_template_blank_output extends PHPUnit_Extensions_OutputTestCase
+class classes_Template_Blank_Output extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function testDisplay_string ()

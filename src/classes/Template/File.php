@@ -32,22 +32,7 @@ abstract class File extends \r8\Template
 {
 
     /**
-     * The global file finder class
-     *
-     * This will be used by file templates if no specific template is set for
-     * the instance.
-     *
-     * @var \r8\FileFinder
-     */
-    static protected $globalFinder;
-
-    /**
      * The file finder to use for this instance
-     *
-     * If this is not set, the global finder will be used.
-     *
-     * Also note that if this file finder does not locate the file, the global
-     * instance will NOT be called.
      *
      * @var \r8\FileFinder
      */
@@ -61,65 +46,21 @@ abstract class File extends \r8\Template
     private $file;
 
     /**
-     * Returns the global file finder
-     *
-     * @return \r8\FileFinder|Null Returns the global \r8\FileFinder object.
-     *      Returns NULL if there is no global file finder.
-     */
-    static public function getGlobalFinder ()
-    {
-        return self::$globalFinder;
-    }
-
-    /**
-     * Sets the global file finder
-     *
-     * @param \r8\FileFinder $finder The new global file finder
-     * @return NULL
-     */
-    static public function setGlobalFinder ( \r8\FileFinder $finder )
-    {
-        self::$globalFinder = $finder;
-    }
-
-    /**
-     * Clears the global file finder
-     *
-     * @return null
-     */
-    static public function clearGlobalFinder ()
-    {
-        self::$globalFinder = null;
-    }
-
-    /**
-     * Returns whether a global file finder has been set
-     *
-     * @return Boolean
-     */
-    static public function globalFinderExists ()
-    {
-        return isset( self::$globalFinder );
-    }
-
-    /**
      * Constructor allows you to immediately set the file, if you so desire
      *
+     * @param \r8\FileFinder $finder The file finder to use to find this file
      * @param mixed $file The file this tempalte should load
      */
-    public function __construct ( $file = null )
+    public function __construct ( \r8\FileFinder $finder, $file )
     {
-        if ( !\r8\isVague($file) )
-            $this->setFile( $file );
+        $this->finder = $finder;
+        $this->setFile( $file );
     }
 
     /**
      * Returns the file finder for this instance
      *
-     * This does not look at the global instance
-     *
-     * @return \r8\FileFinder|Null Returns a \r8\FileFinder object. Returns
-     *      NULL if there is no instance specific file finder.
+     * @return \r8\FileFinder|Null
      */
     public function getFinder ()
     {
@@ -136,52 +77,6 @@ abstract class File extends \r8\Template
     {
         $this->finder = $finder;
         return $this;
-    }
-
-    /**
-     * Returns whether this instance has a specific finder set. This does NOT
-     * detect whether a global finder has been set.
-     *
-     * @return Boolean
-     */
-    public function finderExists ()
-    {
-        return isset( $this->finder );
-    }
-
-    /**
-     * Clears the finder from this instance.
-     *
-     * This will NOT affect the global finder.
-     *
-     * @return \r8\Template\File Returns a self reference
-     */
-    public function clearFinder ()
-    {
-        $this->finder = null;
-        return $this;
-    }
-
-    /**
-     * Returns the file finder this instance will use
-     *
-     * If no finder is set for this instance, the global instance will be returned.
-     * Then, if there is no global instance, an exception will be thrown
-     *
-     * @return \r8\FileFinder Returns a \r8\FileFinder object
-     */
-    public function selectFinder ()
-    {
-        if (isset($this->finder))
-            return $this->finder;
-
-        else if ( isset(self::$globalFinder) )
-            return self::$globalFinder;
-
-        throw new \r8\Exception\Variable(
-                "FileFinder",
-                "No global or instance level FileFinder has been set"
-            );
     }
 
     /**
@@ -212,37 +107,35 @@ abstract class File extends \r8\Template
     }
 
     /**
-     * Returns whether a file has been set in this instance
-     *
-     * @return Boolean
-     */
-    public function fileExists ()
-    {
-        return isset( $this->file );
-    }
-
-    /**
-     * Clears the file from this instance
-     *
-     * @return \r8\Template\File Returns a self reference
-     */
-    public function clearFile ()
-    {
-        $this->file = null;
-        return $this;
-    }
-
-    /**
      * Finds the template file to load
      *
      * @return \r8\FileSys\File Returns a \r8\FileSys\File object
      */
     public function findFile ()
     {
-        if ( !$this->fileExists() )
-            throw new \r8\Exception\Variable("File", "No file has been set in template");
+        return $this->finder->find( $this->getFile() );
+    }
 
-        return $this->selectFinder()->find( $this->getFile() );
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String Returns the rendered template as a string
+     */
+    public function render ()
+    {
+        ob_start();
+        $this->display();
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the template and returns it as a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return $this->render();
     }
 
 }
