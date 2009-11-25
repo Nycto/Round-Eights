@@ -47,6 +47,20 @@ class Verify implements \r8\iface\Transform
     private $salt;
 
     /**
+     * The length of the hash to generate
+     *
+     * @var Integer
+     */
+    private $hashLength;
+
+    /**
+     * When set to TRUE, the hash will be hex encoded before prepending it
+     *
+     * @var Boolean
+     */
+    private $readable;
+
+    /**
      * Implementation of the PBKDF2 key derivation function as described in RFC 2898.
      *
      * This is essentially just a really thorough hashing algorithm
@@ -59,7 +73,7 @@ class Verify implements \r8\iface\Transform
      * @param string $salt The hashing salt
      * @param int $keyLength The derived key length (octets)
      * @param int $iterations The number of iterations to perform
-     * @return string Returns the
+     * @return string Returns the hashed value
      */
     static public function pbkdf2 ( $string, $salt, $keyLength = 32, $iterations = 1000 )
     {
@@ -100,11 +114,20 @@ class Verify implements \r8\iface\Transform
      *
      * @param \r8\iface\Transform $wrapped The transform object being wrapped
      * @param \r8\Random\Seed $salt The salt to use for the hashing process
+     * @param Integer $hashLength The length of the hash to generate
+     * @param Boolean $readable When set to TRUE, the hash will be hex encoded
+     * 		before prepending it
      */
-    public function __construct ( \r8\iface\Transform $wrapped, \r8\Random\Seed $salt )
-    {
+    public function __construct (
+        \r8\iface\Transform $wrapped,
+        \r8\Random\Seed $salt,
+        $hashLength = 32,
+        $readable = FALSE
+    ) {
         $this->wrapped = $wrapped;
         $this->salt = $salt;
+        $this->hashLength = max( (int) $hashLength, 1 );
+        $this->readable = (bool) $readable;
     }
 
     /**
@@ -117,7 +140,13 @@ class Verify implements \r8\iface\Transform
     {
         $string = \r8\strVal( $string );
         $transformed = $this->wrapped->to( $string );
-        return self::pbkdf2( $string, $this->salt->getString() ) . $transformed;
+
+        $hash = self::pbkdf2( $string, $this->salt->getString(), $this->hashLength );
+
+        if ( $this->readable )
+            $hash = \bin2hex( $hash );
+
+        return $hash . $transformed;
     }
 
     /**
@@ -129,14 +158,22 @@ class Verify implements \r8\iface\Transform
     public function from ( $string )
     {
         $string = \r8\strVal( $string );
-        $mac = substr( $string, 0, 32 );
 
-        if ( strlen($mac) !== 32 )
+        $hashLength = $this->hashLength * ( $this->readable ? 2 : 1 );
+
+        $mac = substr( $string, 0, $hashLength );
+
+        if ( strlen($mac) !== $hashLength )
             throw new \r8\Exception\Data( $string, "Transform String", "Unable to extract data verification hash" );
 
-        $string = $this->wrapped->from( substr( $string, 32 ) );
+        $string = $this->wrapped->from( substr( $string, $hashLength ) );
 
-        if ( $mac != self::pbkdf2( $string, $this->salt->getString() ) )
+        $compareHash = self::pbkdf2( $string, $this->salt->getString(), $this->hashLength );
+
+        if ( $this->readable )
+            $compareHash = \bin2hex( $compareHash );
+
+        if ( $mac !=  $compareHash )
             throw new \r8\Exception\Data( $string, "Transform String", "Data integrity verification failed" );
 
         return $string;
