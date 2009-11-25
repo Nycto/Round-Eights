@@ -33,9 +33,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Template_Builder extends PHPUnit_Framework_TestCase
 {
 
+    public function getMockFinder ()
+    {
+        return $this->getMock('\r8\FileFinder', array('internalFind'));
+    }
+
     public function testBlank ()
     {
-        $builder = new \r8\Template\Builder;
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
 
         $this->assertThat(
             $builder->blank(),
@@ -45,7 +50,7 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
     public function testCollection ()
     {
-        $builder = new \r8\Template\Builder;
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
 
         $this->assertThat(
             $builder->collection(),
@@ -55,7 +60,7 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
     public function testDOMDocument ()
     {
-        $builder = new \r8\Template\Builder;
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
 
         $this->assertThat(
             $builder->domDoc( new DOMDocument ),
@@ -65,12 +70,42 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
     public function testRaw ()
     {
-        $builder = new \r8\Template\Builder;
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
 
         $result = $builder->raw( "content" );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Raw') );
         $this->assertSame( "content", $result->getContent() );
+    }
+
+    public function testReplace ()
+    {
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
+        $builder->set( "one", 1 );
+        $builder->set( "two", 2 );
+
+        $result = $builder->replace( "Template Content" );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Replace') );
+        $this->assertSame( "Template Content", $result->getTemplate() );
+        $this->assertSame( array( "one" => 1, "two" => 2), $result->getValues() );
+    }
+
+    public function testPHP ()
+    {
+        $finder = $this->getMockFinder();
+        $file = new \r8\FileSys\File('/dir/tpl.php');
+
+        $builder = new \r8\Template\Builder( $finder );
+        $builder->set( "one", 1 );
+        $builder->set( "two", 2 );
+
+        $result = $builder->php( $file );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Template\PHP') );
+        $this->assertSame( $file, $result->getFile() );
+        $this->assertSame( $finder, $result->getFinder() );
+        $this->assertSame( array( "one" => 1, "two" => 2), $result->getValues() );
     }
 
 }

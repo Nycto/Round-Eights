@@ -26,10 +26,28 @@
 namespace r8\Template;
 
 /**
- * A helper object
+ * A helper object for building various templates
  */
-class Builder
+class Builder extends \r8\Template\Access
 {
+
+    /**
+     * The FileFinder to load into any file based templates
+     *
+     * @var \r8\FileFinder
+     */
+    private $fileFinder;
+
+    /**
+     * Constructor...
+     *
+     * @param \r8\FileFinder $fileFinder The FileFinder to load into
+     * 		any file based templates
+     */
+    public function __construct ( \r8\FileFinder $fileFinder )
+    {
+        $this->fileFinder = $fileFinder;
+    }
 
     /**
      * Builds a new blank template
@@ -71,6 +89,32 @@ class Builder
     public function raw ( $content = NULL )
     {
         return new \r8\Template\Raw( $content );
+    }
+
+    /**
+     * Builds a new Replace template
+     *
+     * @param String $template The template string that will be rendered
+     * @return \r8\Template\Replace
+     */
+    public function replace ( $template )
+    {
+        $tpl = new \r8\Template\Replace( $template );
+        $tpl->import( $this->getValues() );
+        return $tpl;
+    }
+
+    /**
+     * Builds a new PHP file template
+     *
+     * @param mixed $file The file this tempalte should load
+     * @return \r8\Template\Replace
+     */
+    public function php ( $file )
+    {
+        $tpl = new \r8\Template\PHP( $this->fileFinder, $file );
+        $tpl->import( $this->getValues() );
+        return $tpl;
     }
 
 }
