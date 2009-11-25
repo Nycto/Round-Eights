@@ -74,7 +74,7 @@ require_once r8_DIR_FUNCTIONS ."array.php";
 /**
  * Register the autoloader
  */
-function r8_autoload ( $class ) {
+spl_autoload_register( function ( $class ) {
 
     $class = explode("\\", $class);
     $class = array_filter( $class );
@@ -91,9 +91,7 @@ function r8_autoload ( $class ) {
     if ( file_exists( $class ) )
         require_once $class;
 
-}
-
-spl_autoload_register("r8_autoload");
+} );
 
 /**
  * Set up custom exception handling
