@@ -25,8 +25,8 @@
  */
 
 // Ensure they are running the appropriate PHP version
-if ( version_compare( phpversion(), '5.3.0' ) < 0 )
-    trigger_error("Could not load Round Eights: PHP version 5.3 required", E_USER_ERROR);
+if ( version_compare( phpversion(), '5.3.1' ) < 0 )
+    trigger_error("Could not load Round Eights: PHP version 5.3.1 required", E_USER_ERROR);
 
 // If r8 has already been included...
 if ( defined("r8_INCLUDED") )
