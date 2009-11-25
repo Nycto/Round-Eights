@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
+class classes_Transform_Verify extends PHPUnit_Framework_TestCase
 {
 
     public function testPbkdf2 ()
