@@ -30,8 +30,28 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Test Suite
  */
-class classes_Template_Builder
+class classes_Template_Builder extends PHPUnit_Framework_TestCase
 {
+
+    public function testBlank ()
+    {
+        $builder = new \r8\Template\Builder;
+
+        $this->assertThat(
+            $builder->blank(),
+            $this->isInstanceOf('\r8\Template\Blank')
+        );
+    }
+
+    public function testCollection ()
+    {
+        $builder = new \r8\Template\Builder;
+
+        $this->assertThat(
+            $builder->collection(),
+            $this->isInstanceOf('\r8\Template\Collection')
+        );
+    }
 
 }
 

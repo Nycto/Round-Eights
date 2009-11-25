@@ -31,6 +31,26 @@ namespace r8\Template;
 class Builder
 {
 
+    /**
+     * Builds a new blank template
+     *
+     * @return \r8\Template\Blank
+     */
+    public function blank ()
+    {
+        return new \r8\Template\Blank;
+    }
+
+    /**
+     * Returns a new Collection template
+     *
+     * @return \r8\Template\Collection
+     */
+    public function collection ()
+    {
+        return new \r8\Template\Collection;
+    }
+
 }
 
 ?>
