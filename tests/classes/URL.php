@@ -30,24 +30,8 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_url extends PHPUnit_Framework_TestCase
+class classes_URL extends PHPUnit_Framework_TestCase
 {
-
-    public function testFromBase ()
-    {
-        $this->assertThat(
-                \r8\URL::fromBase(),
-                $this->isInstanceOf("r8\\URL")
-            );
-    }
-
-    public function testFromURL ()
-    {
-        $this->assertThat(
-                \r8\URL::fromURL(),
-                $this->isInstanceOf("r8\\URL")
-            );
-    }
 
     public function testConstruct ()
     {
@@ -59,12 +43,12 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
 
 
-        $url = new \r8\URL(
-                new \r8\URL("http://example.net:80/test.html")
-            );
+        $url = new \r8\URL( new \r8\URL(
+            	"http://uname:pword@example.net:8011/test.html?test=blah#frag"
+            ));
 
         $this->assertSame(
-                "http://example.net/test.html",
+                "http://uname:pword@example.net:8011/test.html?test=blah#frag",
                 $url->getURL()
             );
     }
@@ -106,64 +90,28 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->schemeExists() );
     }
 
-    public function testIsSameScheme_NoEnv ()
+    public function testIsSameScheme ()
     {
-        $url = $this->getMock('r8\\URL', array("getEnv"));
+        $url = new \r8\URL;
+        $compare = new \r8\URL( "http://www.example.com" );
 
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertFalse( $url->isSameScheme() );
+        $this->assertFalse( $url->isSameScheme( $compare ) );
 
         $url->setScheme("http");
-        $this->assertFalse( $url->isSameScheme() );
-    }
-
-    public function testIsSameScheme_WithEnv ()
-    {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array("SERVER_PROTOCOL" => "HTTP/1.1"))
-                ));
-
-        $this->assertFalse( $url->isSameScheme() );
-
-        $url->setScheme("http");
-        $this->assertTrue( $url->isSameScheme() );
+        $this->assertTrue( $url->isSameScheme( $compare ) );
 
         $url->setScheme("ftp");
-        $this->assertFalse( $url->isSameScheme() );
+        $this->assertFalse( $url->isSameScheme( $compare ) );
     }
 
-    public function testFillScheme ()
+    public function testCopyScheme ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array("SERVER_PROTOCOL" => "SFTP/1.1"))
-                ));
+        $source = new \r8\URL("sftp://example.com");
+        $url = new \r8\URL;
 
         $this->assertFalse( $url->schemeExists() );
-        $this->assertSame( $url, $url->fillScheme() );
+        $this->assertSame( $url, $url->copyScheme( $source ) );
         $this->assertSame( "sftp", $url->getScheme() );
-
-
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertFalse( $url->schemeExists() );
-        $this->assertSame( $url, $url->fillScheme() );
-        $this->assertFalse( $url->schemeExists() );
     }
 
     public function testUserNameAccessors ()
@@ -261,6 +209,21 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertNull($url->getUserInfo() );
 
     }
+    public function testCopyUserInfo ()
+    {
+        $url = new \r8\URL;
+        $this->assertSame( $url, $url->copyUserInfo( new \r8\URL ) );
+
+        $this->assertNull( $url->getUserName() );
+        $this->assertNull( $url->getPassword() );
+
+        $source = new \r8\URL;
+        $source->setUserInfo("uname:pword");
+        $this->assertSame( $url, $url->copyUserInfo( $source ) );
+
+        $this->assertSame( "uname", $url->getUserName() );
+        $this->assertSame( "pword", $url->getPassword() );
+    }
 
     public function testHostAccessors ()
     {
@@ -288,109 +251,71 @@ class classes_url extends PHPUnit_Framework_TestCase
 
     public function testIsSameHost_withSub ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array('HTTP_HOST' => 'sub.example.edu'))
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://sub.example.edu");
 
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
 
         $url->setHost("notTheDomain.com");
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
 
         $url->setHost("example.edu");
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
 
         $url->setHost("sub.example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
 
         $url->setHost("www.sub.example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
     }
 
     public function testIsSameHost_wwwSub ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array('HTTP_HOST' => 'www.example.edu'))
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://www.example.edu");
 
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
 
         $url->setHost("example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
 
         $url->setHost("www.example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
 
         $url->setHost("test.com");
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
     }
 
     public function testIsSameHost_noSub ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array('HTTP_HOST' => 'example.edu'))
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://example.edu");
 
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
 
         $url->setHost("example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
 
         $url->setHost("www.example.edu");
-        $this->assertTrue( $url->isSameHost() );
+        $this->assertTrue( $url->isSameHost( $compare ) );
 
         $url->setHost("test.com");
-        $this->assertFalse( $url->isSameHost() );
+        $this->assertFalse( $url->isSameHost( $compare ) );
     }
 
-    public function testIsSameHost_noEnv ()
+    public function testCopyHost ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        // Since neither the SLD or TLD are set, this defaults to the current domain
-        $this->assertFalse( $url->isSameHost() );
-
-        $url->setHost('sub.example.com');
-        $this->assertFalse( $url->isSameHost() );
-    }
-
-    public function testFillHost ()
-    {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array('HTTP_HOST' => 'example.com'))
-                ));
+        $url = new \r8\URL;
+        $source = new \r8\URL("http://example.com");
 
         $this->assertFalse( $url->hostExists() );
-        $this->assertSame( $url, $url->fillHost() );
+        $this->assertSame( $url, $url->copyHost( $source ) );
         $this->assertSame( "example.com", $url->getHost() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
+        $url = new \r8\URL;
         $this->assertFalse( $url->hostExists() );
-        $this->assertSame( $url, $url->fillHost() );
+        $this->assertSame( $url, $url->copyHost( new \r8\URL ) );
         $this->assertFalse( $url->hostExists() );
     }
 
@@ -418,58 +343,32 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->portExists() );
     }
 
-    public function testIsSamePort_NoEnv ()
+    public function testIsSamePort_Port40 ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://example.edu:40");
 
-        $this->assertFalse( $url->isSamePort() );
+        $this->assertFalse( $url->isSamePort( $compare ) );
 
         $url->setPort(2020);
-        $this->assertFalse( $url->isSamePort() );
-
-        $url->setPort(80);
-        $this->assertFalse( $url->isSamePort() );
-    }
-
-    public function testIsSamePort_WithEnvPort40 ()
-    {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array("SERVER_PORT" => "40"))
-                ));
-
-        $this->assertFalse( $url->isSamePort() );
-
-        $url->setPort(2020);
-        $this->assertFalse( $url->isSamePort() );
+        $this->assertFalse( $url->isSamePort( $compare ) );
 
         $url->setPort(40);
-        $this->assertTrue( $url->isSamePort() );
+        $this->assertTrue( $url->isSamePort( $compare ) );
     }
 
-    public function testIsSamePort_WithEnvPort80 ()
+    public function testIsSamePort_Port80 ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array("SERVER_PORT" => "80"))
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://example.edu:80");
 
-        $this->assertTrue( $url->isSamePort() );
+        $this->assertTrue( $url->isSamePort( $compare ) );
 
         $url->setPort(2020);
-        $this->assertFalse( $url->isSamePort() );
+        $this->assertFalse( $url->isSamePort( $compare ) );
 
         $url->setPort(80);
-        $this->assertTrue( $url->isSamePort() );
+        $this->assertTrue( $url->isSamePort( $compare ) );
     }
 
     public function testIsDefaultPort_empty ()
@@ -537,29 +436,20 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->isDefaultPort() );
     }
 
-    public function testFillPort ()
+    public function testCopyPort ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array("SERVER_PORT" => "2020"))
-                ));
+        $url = new \r8\URL;
+        $source = new \r8\URL;
+        $source->setPort(2020);
 
         $this->assertFalse( $url->portExists() );
-        $this->assertSame( $url, $url->fillPort() );
+        $this->assertSame( $url, $url->copyPort( $source ) );
         $this->assertSame( 2020, $url->getPort() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
+        $url = new \r8\URL;
         $this->assertFalse( $url->portExists() );
-        $this->assertSame( $url, $url->fillPort() );
+        $this->assertSame( $url, $url->copyPort( new \r8\URL ) );
         $this->assertFalse( $url->portExists() );
     }
 
@@ -626,7 +516,7 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame("ftp://example.com", $url->getBase());
 
         $url->clearScheme();
-        $this->assertSame("example.com", $url->getBase());
+        $this->assertSame("//example.com", $url->getBase());
 
         $url->clearHost();
         $this->assertNull( $url->getBase() );
@@ -693,79 +583,50 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertSame( 8080, $url->getPort() );
     }
 
-    public function testIsSameBase_noEnv ()
+    public function testIsSameBase ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
+        $url = new \r8\URL;
+        $compare = new \r8\URL("http://www.example.edu:80");
 
-        $this->assertFalse( $url->isSameBase() );
-    }
-
-    public function testIsSameBase_WithEnvPort80 ()
-    {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                            "SERVER_PROTOCOL" => "HTTP/1.1",
-                            'HTTP_HOST' => 'example.edu',
-                            "SERVER_PORT" => "80"
-                        ))
-                ));
-
-        $this->assertFalse( $url->isSameBase() );
+        $this->assertFalse( $url->isSameBase( $compare ) );
 
         $url->setScheme("http");
-        $this->assertFalse( $url->isSameBase() );
+        $this->assertFalse( $url->isSameBase( $compare ) );
 
         $url->setPort(80);
-        $this->assertFalse( $url->isSameBase() );
+        $this->assertFalse( $url->isSameBase( $compare ) );
 
         $url->setHost("example.edu");
-        $this->assertTrue( $url->isSameBase() );
+        $this->assertTrue( $url->isSameBase( $compare ) );
 
         $url->clearPort();
-        $this->assertTrue( $url->isSameBase() );
+        $this->assertTrue( $url->isSameBase( $compare ) );
     }
 
-    public function testFillBase ()
+    public function testCopyBase ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                            "SERVER_PROTOCOL" => "HTTP/1.1",
-                            'HTTP_HOST' => 'example.edu',
-                            "SERVER_PORT" => "80"
-                        ))
-                ));
+        $source = new \r8\URL("http://example.edu:80");
+        $url = new \r8\URL;
 
         $this->assertFalse( $url->schemeExists() );
         $this->assertFalse( $url->portExists() );
         $this->assertFalse( $url->hostExists() );
-        $this->assertSame( $url, $url->fillBase() );
+
+        $this->assertSame( $url, $url->copyBase( $source ) );
+
         $this->assertSame( "http", $url->getScheme() );
         $this->assertSame( "example.edu", $url->getHost() );
         $this->assertSame( 80, $url->getPort() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
+        $url = new \r8\URL;
 
         $this->assertFalse( $url->schemeExists() );
         $this->assertFalse( $url->portExists() );
         $this->assertFalse( $url->hostExists() );
-        $this->assertSame( $url, $url->fillBase() );
+
+        $this->assertSame( $url, $url->copyBase( new \r8\URL ) );
+
         $this->assertFalse( $url->schemeExists() );
         $this->assertFalse( $url->portExists() );
         $this->assertFalse( $url->hostExists() );
@@ -986,29 +847,17 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->pathExists() );
     }
 
-    public function testFillPath ()
+    public function testCopyPath ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertSame( $url, $url->fillPath() );
+        $url = new \r8\URL;
+        $this->assertSame( $url, $url->copyPath( new \r8\URL ) );
         $this->assertNull( $url->getPath() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                            "SCRIPT_NAME" => "/path/to/file.php",
-                        ))
-                ));
+        $source = new \r8\URL;
+        $source->setPath('/path/to/file.php');
 
-        $this->assertSame( $url, $url->fillPath() );
+        $this->assertSame( $url, $url->copyPath( $source ) );
         $this->assertSame( "/path/to/", $url->getDir() );
         $this->assertSame( "file", $url->getFilename() );
         $this->assertSame( "php", $url->getExt() );
@@ -1038,29 +887,17 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->fauxDirExists() );
     }
 
-    public function testFillFauxDir ()
+    public function testCopyFauxDir ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertSame( $url, $url->fillFauxDir() );
+        $url = new \r8\URL;
+        $this->assertSame( $url, $url->copyFauxDir( new \r8\URL ) );
         $this->assertNull( $url->getFauxDir() );
 
+        $source = new \r8\URL;
+        $source->setFauxDir("/fake/dir");
+        $url = new \r8\URL;
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                            "PATH_INFO" => "/fake/dir",
-                        ))
-                ));
-
-        $this->assertSame( $url, $url->fillFauxDir() );
+        $this->assertSame( $url, $url->copyFauxDir( $source ) );
         $this->assertSame( "/fake/dir", $url->getFauxDir() );
     }
 
@@ -1145,29 +982,17 @@ class classes_url extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function testFillQuery ()
+    public function testCopyQuery ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertSame( $url, $url->fillQuery() );
+        $url = new \r8\URL;
+        $this->assertSame( $url, $url->copyQuery( new \r8\URL ) );
         $this->assertNull( $url->getQuery() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                            "QUERY_STRING" => "var=value"
-                        ))
-                ));
+        $source = new \r8\URL;
+        $source->setQuery("var=value");
 
-        $this->assertSame( $url, $url->fillQuery() );
+        $this->assertSame( $url, $url->copyQuery( $source ) );
         $this->assertSame( "var=value", $url->getQuery() );
     }
 
@@ -1315,36 +1140,21 @@ class classes_url extends PHPUnit_Framework_TestCase
         $this->assertFalse( $url->fragmentExists() );
     }
 
-    public function testFillURL ()
+    public function testCopyURL ()
     {
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array())
-                ));
-
-        $this->assertSame( $url, $url->fillURL() );
+        $url = new \r8\URL;
+        $this->assertSame( $url, $url->copyURL( new \r8\URL ) );
         $this->assertNull( $url->getURL() );
 
 
-        $url = $this->getMock("r8\\URL", array("getEnv"));
-        $url->expects( $this->any() )
-            ->method("getEnv")
-            ->will( $this->returnValue(
-                    new \r8\Env\Request(array(
-                        "HTTP_HOST" => "test.example.com",
-                        "SCRIPT_NAME" => "/path/to/file.php",
-                        "SERVER_PORT" => "40",
-                        "PATH_INFO" => "/test/faux/dirs",
-                        "QUERY_STRING" => "var=value",
-                        "SERVER_PROTOCOL" => "HTTP/1.1"
-                    ))
-                ));
+        $source = new \r8\URL(
+        	"http://uname:pword@test.example.com:40/path/to/file.php?var=value#frag"
+        );
+        $source->setFauxDir("/test/faux/dirs");
 
-        $this->assertSame( $url, $url->fillURL() );
+        $this->assertSame( $url, $url->copyURL( $source ) );
         $this->assertSame(
-                "http://test.example.com:40/path/to/file.php/test/faux/dirs?var=value",
+                "http://uname:pword@test.example.com:40/path/to/file.php/test/faux/dirs?var=value#frag",
                 $url->getURL()
             );
     }

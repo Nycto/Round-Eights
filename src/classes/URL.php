@@ -89,50 +89,16 @@ class URL
     private $fragment;
 
     /**
-     * Returns a new URL instance with the base pulled from the environment
-     *
-     * @return Object Returns a \r8\URL object
-     */
-    static public function fromBase ()
-    {
-        $url = new self;
-        $url->fillBase();
-        return $url;
-    }
-
-    /**
-     * Returns a new URL instance with the entire URL pulled from the environment
-     *
-     * @return Object Returns a \r8\URL object
-     */
-    static public function fromURL ()
-    {
-        $url = new self;
-        $url->fillURL();
-        return $url;
-    }
-
-    /**
      * Constructor...
      *
      * @param String $url The initial URL for this instance
      */
     public function __construct ( $url = null )
     {
-        if ( $url instanceof self ) {
-            $this->setScheme( $url->getScheme() );
-            $this->setUsername( $url->getUserName() );
-            $this->setPassword( $url->getPassword() );
-            $this->setHost( $url->getHost() );
-            $this->setDir( $url->getDir() );
-            $this->setFilename( $url->getFileName() );
-            $this->setExt( $url->getExt() );
-            $this->setQuery( $url->getQuery() );
-            $this->setFragment( $url->getFragment() );
-        }
-        else if ( !\r8\isVague($url) ) {
+        if ( $url instanceof self )
+            $this->copyURL( $url );
+        else if ( !\r8\isVague($url) )
             $this->setURL( \r8\strval($url) );
-        }
     }
 
     /**
@@ -143,19 +109,6 @@ class URL
     public function __toString ()
     {
         return strval( $this->getURL() );
-    }
-
-    /**
-     * Returns the singelton Env instance
-     *
-     * This method exists strictly for unit testing purposes. By mocking this
-     * method you can feed a spoof environment to the rest of the instance
-     *
-     * @return Object Returns a \r8\Env instance
-     */
-    protected function getEnv ()
-    {
-        return \r8\Env::Request();
     }
 
     /**
@@ -176,7 +129,7 @@ class URL
      * Sets the scheme for this instance
      *
      * @param String $scheme
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setScheme ( $scheme )
     {
@@ -188,7 +141,7 @@ class URL
     /**
      * Removes the explicitly set scheme, causing the scheme to revert to the default
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearScheme ()
     {
@@ -207,35 +160,32 @@ class URL
     }
 
     /**
-     * Returns whether the current scheme is the same as the current environment
+     * Returns whether the scheme in this instance is the same as
+     * that of another URL
      *
-     * This will return false if the scheme hasn't been set in either the environment
-     * or this instance
+     * This will return false if the scheme hasn't been set in either
+     * this or the other URL
      *
+     * @param \r8\URL $versus The URL to compare to
      * @return Boolean
      */
-    public function isSameScheme ()
+    public function isSameScheme ( \r8\URL $versus )
     {
-        if ( !isset($this->scheme) )
+        if ( !isset($this->scheme) || !$versus->schemeExists() )
             return FALSE;
 
-        $link = $this->getEnv()->getURL();
-
-        if ( !$link->schemeExists() )
-            return FALSE;
-
-        return strcasecmp( $link->getScheme(), $this->scheme ) == 0 ? TRUE : FALSE;
+        return strcasecmp( $versus->getScheme(), $this->scheme ) == 0 ? TRUE : FALSE;
     }
 
     /**
-     * Sets the scheme in this instance from the environment
+     * Copies the scheme from another URL into this URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillScheme ()
+    public function copyScheme ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        return $this->setScheme( $env->getURL()->getScheme() );
+        return $this->setScheme( $source->getScheme() );
     }
 
     /**
@@ -252,7 +202,7 @@ class URL
      * Sets the username credential
      *
      * @param String $username The username to set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setUserName ( $username )
     {
@@ -274,7 +224,7 @@ class URL
     /**
      * Unsets the currently set username
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearUserName ()
     {
@@ -296,7 +246,7 @@ class URL
      * Sets the password credential
      *
      * @param String $password The password to set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setPassword ( $password )
     {
@@ -318,7 +268,7 @@ class URL
     /**
      * Unsets the currently set password
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearPassword ()
     {
@@ -352,7 +302,7 @@ class URL
      * Sets both the username and password in one swoop
      *
      * @param String $userInfo The credentials being set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setUserInfo ( $userInfo )
     {
@@ -388,12 +338,25 @@ class URL
     /**
      * Unsets both the password and the username
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearUserInfo ()
     {
         $this->username = null;
         $this->password = null;
+        return $this;
+    }
+
+    /**
+     * Sets the user info using another URL as a source
+     *
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
+     */
+    public function copyUserInfo ( \r8\URL $source )
+    {
+        $this->setUserName( $source->getUserName() );
+        $this->setPassword( $source->getPassword() );
         return $this;
     }
 
@@ -411,7 +374,7 @@ class URL
      * Sets the Host
      *
      * @param String $host The host being set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setHost ( $host )
     {
@@ -442,7 +405,7 @@ class URL
     /**
      * Unsets the tld, sld and subdomain
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearHost ()
     {
@@ -452,40 +415,36 @@ class URL
 
     /**
      * Returns whether the host information in this instance is the same as
-     * the host info in the environment
+     * the host info in another URL
      *
      * A null value in the subdomain will be treated as the same as "www"
      *
+     * @param \r8\URL $versus The URL to compare to
      * @return Boolean
      */
-    public function isSameHost ()
+    public function isSameHost ( \r8\URL $versus )
     {
-        if ( !$this->hostExists() )
-            return FALSE;
-
-        $link = $this->getEnv()->getURL();
-
-        if ( !$link->hostExists() )
+        if ( !$this->hostExists() || !$versus->hostExists() )
             return FALSE;
 
         $localHost = \r8\str\stripHead( $this->getHost(), "www." );
-        $envHost = \r8\str\stripHead( $link->getHost(), "www." );
+        $vsHost = \r8\str\stripHead( $versus->getHost(), "www." );
 
-        if ( strcasecmp($localHost, $envHost) == 0 )
+        if ( strcasecmp($localHost, $vsHost) == 0 )
             return TRUE;
         else
             return FALSE;
     }
 
     /**
-     * Sets the host in this instance from the environment
+     * Sets the host in this instance from another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillHost ()
+    public function copyHost ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        return $this->setHost( $env->getURL()->getHost() );
+        return $this->setHost( $source->getHost() );
     }
 
     /**
@@ -502,7 +461,7 @@ class URL
      * Sets the Port
      *
      * @param String $port The port to set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setPort ( $port )
     {
@@ -524,7 +483,7 @@ class URL
     /**
      * Unsets the current port
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearPort ()
     {
@@ -533,19 +492,19 @@ class URL
     }
 
     /**
-     * Returns whether the port in this instance is the same as the port in the environment
+     * Returns whether the port in this instance is the same as the port
+     * in another URL
      *
      * If the port in the instance isn't set, it will be treated as port 80
      *
+     * @param \r8\URL $versus The URL to compare to
      * @return Boolean
      */
-    public function isSamePort ()
+    public function isSamePort ( \r8\URL $versus )
     {
         $port = isset($this->port) ? $this->port : 80;
 
-        $link = $this->getEnv()->getURL();
-
-        return $link->getPort() == $port ? TRUE : FALSE;
+        return $versus->getPort() == $port ? TRUE : FALSE;
     }
 
     /**
@@ -564,48 +523,30 @@ class URL
         if ( !$this->portExists() )
             return TRUE;
 
-        switch ( $this->getScheme() ) {
+        $map = array(
+            'http' => 80,
+        	'https' => 443,
+            'ftp' => 21,
+            'ftps' => 990,
+            'sftp' => 115,
+            'ldap' => 389
+        );
 
-            case 'http':
-                $port = 80;
-                break;
+        if ( !isset( $map[ $this->getScheme() ] ) )
+            return FALSE;
 
-            case 'https':
-                $port = 443;
-                break;
-
-            case 'ftp':
-                $port = 21;
-                break;
-
-            case 'ftps':
-                $port = 990;
-                break;
-
-            case 'sftp':
-                $port = 115;
-                break;
-
-            case 'ldap':
-                $port = 389;
-                break;
-
-            default:
-                return FALSE;
-        }
-
-        return $this->port == $port ? TRUE : FALSE;
+        return $this->port == $map[ $this->getScheme() ] ? TRUE : FALSE;
     }
 
     /**
-     * Sets the port in this instance from the environment
+     * Sets the port in this instance from another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillPort ()
+    public function copyPort ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        return $this->setPort( $env->getURL()->getPort() );
+        return $this->setPort( $source->getPort() );
     }
 
     /**
@@ -628,7 +569,7 @@ class URL
      * Sets the host and the port in one swoop
      *
      * @param String $hostAndPort The host and port string
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setHostAndPort ( $hostAndPort )
     {
@@ -667,8 +608,10 @@ class URL
         if ( $this->userInfoExists() )
             $result = $this->getUserInfo() ."@". $result;
 
+        $result = "//". $result;
+
         if ( $this->schemeExists() )
-            $result = $this->getScheme() ."://". $result;
+            $result = $this->getScheme() .":". $result;
 
         return $result;
     }
@@ -677,7 +620,7 @@ class URL
      * Parses a string into the scheme, userinfo, host and port
      *
      * @param String $base The base of the url
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setBase ( $base )
     {
@@ -705,25 +648,32 @@ class URL
     }
 
     /**
-     * Returns whether the Scheme, host and port are the same as the current environment
+     * Returns whether the Scheme, host and port in this instance are
+     * the same as those in another URL
      *
      * Note that this method ignores the userinfo.
      *
+     * @param \r8\URL $versus The URL to compare to
      * @return Boolean
      */
-    public function isSameBase ()
+    public function isSameBase ( \r8\URL $versus )
     {
-        return $this->isSameHost() && $this->isSameScheme() && $this->isSamePort();
+        return $this->isSameHost( $versus )
+            && $this->isSameScheme( $versus )
+            && $this->isSamePort( $versus );
     }
 
     /**
-     * Sets the scheme, host and port in this instance from the environment
+     * Sets the scheme, host and port in this instance another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillBase ()
+    public function copyBase ( \r8\URL $source )
     {
-        return $this->fillScheme()->fillHost()->fillPort();
+        return $this->copyScheme( $source )
+            ->copyHost( $source )
+            ->copyPort( $source );
     }
 
     /**
@@ -740,7 +690,7 @@ class URL
      * Sets the directory
      *
      * @param String $directory The directory to set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setDir ( $directory )
     {
@@ -771,7 +721,7 @@ class URL
     /**
      * Unsets the currently set directory
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearDir ()
     {
@@ -793,7 +743,7 @@ class URL
      * Sets the filename
      *
      * @param String $filename The new filename
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setFilename ( $filename )
     {
@@ -816,7 +766,7 @@ class URL
     /**
      * Clears the filename
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearFilename ()
     {
@@ -840,7 +790,7 @@ class URL
      * Sets the extension
      *
      * @param String $extension The new extension
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setExt ( $extension )
     {
@@ -863,7 +813,7 @@ class URL
     /**
      * Clears the extension
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearExt ()
     {
@@ -898,7 +848,7 @@ class URL
      * Sets the basename, which is the filename and extension
      *
      * @param String $basename The new basename
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setBasename ( $basename )
     {
@@ -937,7 +887,7 @@ class URL
      * Sets the path that this instance represents
      *
      * @param String $path The new path
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setPath ( $path )
     {
@@ -965,7 +915,7 @@ class URL
     /**
      * Clears the directory, filename and extension at once
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearPath ()
     {
@@ -988,14 +938,14 @@ class URL
     }
 
     /**
-     * Fills the path from the environment
+     * Fills the path from another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillPath ()
+    public function copyPath ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        $this->setPath( $env->getURL()->getPath() );
+        $this->setPath( $source->getPath() );
         return $this;
     }
 
@@ -1013,7 +963,7 @@ class URL
      * Sets the fauxDir
      *
      * @param String $fauxDir The fauxDir to set
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setFauxDir ( $fauxDir )
     {
@@ -1036,7 +986,7 @@ class URL
     /**
      * Unsets the currently set fauxDir
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearFauxDir ()
     {
@@ -1045,14 +995,14 @@ class URL
     }
 
     /**
-     * Fills the faux directories from the environment
+     * Fills the faux directories from another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillFauxDir ()
+    public function copyFauxDir ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        $this->setFauxDir( $env->getURL()->getFauxDir() );
+        $this->setFauxDir( $source->getFauxDir() );
         return $this;
     }
 
@@ -1085,7 +1035,7 @@ class URL
      *      query to that string without encoding it or changing it in any way. If
      *      given an array or an iterable object, it will be collapsed in to a query
      *      string.
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setQuery ( $query )
     {
@@ -1115,7 +1065,7 @@ class URL
     /**
      * Clears the query
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearQuery ()
     {
@@ -1124,14 +1074,14 @@ class URL
     }
 
     /**
-     * Fills the faux directories from the environment
+     * Fills the faux directories from another URL
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillQuery ()
+    public function copyQuery ( \r8\URL $source )
     {
-        $env = $this->getEnv();
-        $this->setQuery( $env->getURL()->getQuery() );
+        $this->setQuery( $source->getQuery() );
         return $this;
     }
 
@@ -1149,7 +1099,7 @@ class URL
      * Sets the fragment
      *
      * @param String $fragment The new fragment
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setFragment ( $fragment )
     {
@@ -1171,7 +1121,7 @@ class URL
     /**
      * Clears the fragment
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearFragment ()
     {
@@ -1226,7 +1176,7 @@ class URL
      * Sets the entire URL at once
      *
      * @param String $url The URL string
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function setURL ( $url )
     {
@@ -1280,7 +1230,7 @@ class URL
     /**
      * Clears all the values from this instance
      *
-     * @return Object Returns a self reference
+     * @return \r8\URL Returns a self reference
      */
     public function clearURL ()
     {
@@ -1301,14 +1251,19 @@ class URL
     /**
      * Sets the entire URL from the source
      *
-     * @return Object Returns a self reference
+     * @param \r8\URL $source The source to copy from
+     * @return \r8\URL Returns a self reference
      */
-    public function fillURL ()
+    public function copyURL ( \r8\URL $source )
     {
-        return $this->fillBase()
-            ->fillPath()
-            ->fillFauxDir()
-            ->fillQuery();
+        $this->copyBase( $source )
+            ->copyUserInfo( $source )
+            ->copyPath( $source )
+            ->copyFauxDir( $source )
+            ->copyQuery( $source );
+
+        $this->setFragment( $source->getFragment() );
+        return $this;
     }
 
 }
