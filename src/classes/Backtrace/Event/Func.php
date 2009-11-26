@@ -20,40 +20,27 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Cache
+ * @package Backtrace
  */
 
-namespace r8\iface\Backtrace;
+namespace r8\Backtrace\Event;
 
 /**
- * The description of a backtrace visitor
+ * A function call event
  */
-interface Visitor
+class Func extends \r8\Backtrace\Event\Named
 {
 
     /**
-     * The visitor callback for a Main event
+     * Invokes the appropriate visitor method
      *
-     * @param \r8\Backtrace\Event\Main $event The event invoking this visit
+     * @param \r8\iface\Backtrace\Visitor $visitor The object to visit
      * @return NULL
      */
-    public function main ( \r8\Backtrace\Event\Main $event );
-
-    /**
-     * The visitor callback for a Closure call
-     *
-     * @param \r8\Backtrace\Event\Closure $event The event invoking this visit
-     * @return NULL
-     */
-    public function closure ( \r8\Backtrace\Event\Closure $event );
-
-    /**
-     * The visitor callback for a Function call
-     *
-     * @param \r8\Backtrace\Event\Func $event The event invoking this visit
-     * @return NULL
-     */
-    public function func ( \r8\Backtrace\Event\Func $event );
+    public function visit ( \r8\iface\Backtrace\Visitor $visitor )
+    {
+        $visitor->func( $this );
+    }
 
 }
 

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,40 +22,33 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Cache
+ * @package UnitTests
  */
 
-namespace r8\iface\Backtrace;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * The description of a backtrace visitor
+ * unit tests
  */
-interface Visitor
+class classes_Backtrace_Event_Func extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * The visitor callback for a Main event
-     *
-     * @param \r8\Backtrace\Event\Main $event The event invoking this visit
-     * @return NULL
-     */
-    public function main ( \r8\Backtrace\Event\Main $event );
+    public function testVisit ()
+    {
+        $main = new \r8\Backtrace\Event\Func(
+            "meth",
+        	"/path/example.php",
+            500,
+            array( TRUE )
+        );
 
-    /**
-     * The visitor callback for a Closure call
-     *
-     * @param \r8\Backtrace\Event\Closure $event The event invoking this visit
-     * @return NULL
-     */
-    public function closure ( \r8\Backtrace\Event\Closure $event );
+        $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "func" )
+            ->with( $this->equalTo($main) );
 
-    /**
-     * The visitor callback for a Function call
-     *
-     * @param \r8\Backtrace\Event\Func $event The event invoking this visit
-     * @return NULL
-     */
-    public function func ( \r8\Backtrace\Event\Func $event );
+        $this->assertNull( $main->visit( $visitor ) );
+    }
 
 }
 
