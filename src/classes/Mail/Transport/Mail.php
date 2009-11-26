@@ -44,9 +44,22 @@ class Mail extends \r8\Mail\Transport
      * @param \r8\Mail\Formatter $formatter The formatter to use for
      * 		constructing the message parts
      */
-    public function __construct ( \r8\Mail\Formatter $formatter )
+    public function __construct ( \r8\Mail\Formatter $formatter = null )
     {
+        if ( $formatter == NULL )
+            $formatter = new \r8\Mail\Formatter;
+
         $this->formatter = $formatter;
+    }
+
+    /**
+     * Returns the Formatter this instance will use to construct mail messages
+     *
+     * @return \r8\Mail\Formatter
+     */
+    public function getFormatter ()
+    {
+        return $this->formatter;
     }
 
     /**

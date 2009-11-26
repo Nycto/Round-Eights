@@ -30,8 +30,17 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_mail_transport_mail extends PHPUnit_Framework_TestCase
+class classes_Mail_Transport_Mail extends PHPUnit_Framework_TestCase
 {
+
+    public function testConstruct ()
+    {
+        $transport = new \r8\Mail\Transport\Mail;
+        $this->assertThat(
+            $transport->getFormatter(),
+            $this->isInstanceOf('\r8\Mail\Formatter')
+        );
+    }
 
     public function testSend_success ()
     {
