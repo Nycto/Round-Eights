@@ -81,6 +81,22 @@ class Error
         return $this;
     }
 
+    /**
+     * Handles an error
+     *
+     * @param \r8\iface\Error $error The error to handle
+     * @return Boolean This method will always return TRUE
+     */
+    public function handle ( \r8\iface\Error $error )
+    {
+        foreach ( $this->handlers AS $handler )
+        {
+            $handler->handle( $error );
+        }
+
+        return TRUE;
+    }
+
 }
 
 ?>

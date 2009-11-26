@@ -58,6 +58,27 @@ class classes_Error extends PHPUnit_Framework_TestCase
         $this->assertSame( array( $handler1, $handler2 ), $error->getHandlers() );
     }
 
+    public function testHandle ()
+    {
+        $error = $this->getMock('\r8\iface\Error');
+
+        $handler1 = $this->getMock('\r8\iface\Error\Handler');
+        $handler1->expects( $this->once() )
+            ->method( "handle" )
+            ->with( $this->equalTo( $error ) );
+
+        $handler2 = $this->getMock('\r8\iface\Error\Handler');
+        $handler2->expects( $this->once() )
+            ->method( "handle" )
+            ->with( $this->equalTo( $error ) );
+
+        $registry = new \r8\Error;
+        $registry->register( $handler1 );
+        $registry->register( $handler2 );
+
+        $this->assertTrue( $registry->handle( $error ) );
+    }
+
 }
 
 ?>
