@@ -31,6 +31,36 @@ namespace r8;
 class Backtrace
 {
 
+    /**
+     * The list of events in this backtrace
+     *
+     * @var Array An array of \r8\Backtrace\Event
+     */
+    private $events = array();
+
+    /**
+     * Returns the Events in this backtrace
+     *
+     * @return Array An array of \r8\Backtrace\Event
+     */
+    public function getEvents ()
+    {
+        return $this->events;
+    }
+
+    /**
+     * Adds a new event onto this backtrace
+     *
+     * @param \r8\Backtrace\Event $event The event to add
+     * @return \r8\Backtrace Returns a self reference
+     */
+    public function addEvent ( \r8\Backtrace\Event $event )
+    {
+        if ( !in_array($event, $this->events, TRUE) )
+            $this->events[] = $event;
+        return $this;
+    }
+
 }
 
 ?>

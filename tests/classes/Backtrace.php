@@ -33,6 +33,37 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_Backtrace extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test event object
+     *
+     * @return \r8\Backtrace\Event
+     */
+    public function getMockEvent ()
+    {
+        return $this->getMock(
+        	'\r8\Backtrace\Event',
+            array('visit'),
+            array( '/path/example.php' )
+        );
+    }
+
+    public function testAddEvent ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $this->assertSame( array(), $backtrace->getEvents() );
+
+        $event1 = $this->getMockEvent();
+        $this->assertSame( $backtrace, $backtrace->addEvent( $event1 ) );
+        $this->assertSame( array($event1), $backtrace->getEvents() );
+
+        $event2 = $this->getMockEvent();
+        $this->assertSame( $backtrace, $backtrace->addEvent( $event2 ) );
+        $this->assertSame( array($event1, $event2), $backtrace->getEvents() );
+
+        $this->assertSame( $backtrace, $backtrace->addEvent( $event1 ) );
+        $this->assertSame( array($event1, $event2), $backtrace->getEvents() );
+    }
+
 }
 
 ?>
