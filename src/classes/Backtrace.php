@@ -71,8 +71,7 @@ class Backtrace
     {
         $visitor->begin( $this );
 
-        foreach ( $this->events AS $event )
-        {
+        foreach ( $this->events AS $event ) {
             $event->visit( $visitor );
         }
 
