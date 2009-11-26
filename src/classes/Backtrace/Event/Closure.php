@@ -26,9 +26,9 @@
 namespace r8\Backtrace\Event;
 
 /**
- * The main node of a backtrace
+ * A call to an unnamed closure
  */
-class Main extends \r8\Backtrace\Event
+class Closure extends \r8\Backtrace\Event\Call
 {
 
     /**
@@ -39,7 +39,7 @@ class Main extends \r8\Backtrace\Event
      */
     public function visit ( \r8\iface\Backtrace\Visitor $visitor )
     {
-        $visitor->main( $this );
+        $visitor->closure( $this );
     }
 
 }

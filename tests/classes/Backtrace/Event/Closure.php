@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,26 +22,31 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Backtrace
+ * @package UnitTests
  */
 
-namespace r8\Backtrace\Event;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * The main node of a backtrace
+ * unit tests
  */
-class Main extends \r8\Backtrace\Event
+class classes_Backtrace_Event_Main extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Invokes the appropriate visitor method
-     *
-     * @param \r8\iface\Backtrace\Visitor $visitor The object to visit
-     * @return NULL
-     */
-    public function visit ( \r8\iface\Backtrace\Visitor $visitor )
+    public function testVisit ()
     {
-        $visitor->main( $this );
+        $main = new \r8\Backtrace\Event\Closure(
+        	"/path/example.php",
+            500,
+            array( TRUE )
+        );
+
+        $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "closure" )
+            ->with( $this->equalTo($main) );
+
+        $this->assertNull( $main->visit( $visitor ) );
     }
 
 }

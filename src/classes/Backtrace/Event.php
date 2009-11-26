@@ -59,7 +59,7 @@ abstract class Event
     }
 
     /**
-     * Invokes the visitor method the appropriate type
+     * Invokes the appropriate visitor method
      *
      * @param \r8\iface\Backtrace\Visitor $visitor The object to visit
      * @return NULL

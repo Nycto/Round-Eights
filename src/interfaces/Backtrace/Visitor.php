@@ -34,10 +34,18 @@ interface Visitor
     /**
      * The visitor callback for a Main event
      *
-     * @param \r8\Backtrace\Event\Main $event The Main event invoking this visit
+     * @param \r8\Backtrace\Event\Main $event The event invoking this visit
      * @return NULL
      */
     public function main ( \r8\Backtrace\Event\Main $event );
+
+    /**
+     * The visitor callback for a Closure call
+     *
+     * @param \r8\Backtrace\Event\Closure $event The event invoking this visit
+     * @return NULL
+     */
+    public function closure ( \r8\Backtrace\Event\Closure $event );
 
 }
 
