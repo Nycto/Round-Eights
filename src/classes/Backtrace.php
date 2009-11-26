@@ -61,6 +61,26 @@ class Backtrace
         return $this;
     }
 
+    /**
+     * Visits all the events in this backtrace
+     *
+     * @param \r8\iface\Backtrace\Visitor $visitor The visitor object
+     * @return \r8\iface\Backtrace\Visitor Returns the input visitor
+     */
+    public function visit ( \r8\iface\Backtrace\Visitor $visitor )
+    {
+        $visitor->begin( $this );
+
+        foreach ( $this->events AS $event )
+        {
+            $event->visit( $visitor );
+        }
+
+        $visitor->end( $this );
+
+        return $visitor;
+    }
+
 }
 
 ?>

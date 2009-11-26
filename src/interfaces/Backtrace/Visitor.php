@@ -32,6 +32,14 @@ interface Visitor
 {
 
     /**
+     * The visitor callback for the beginning of a visit
+     *
+     * @param \r8\Backtrace $backtrace The backtrace being visited
+     * @return NULL
+     */
+    public function begin ( \r8\Backtrace $backtrace );
+
+    /**
      * The visitor callback for a Main event
      *
      * @param \r8\Backtrace\Event\Main $event The event invoking this visit
@@ -70,6 +78,14 @@ interface Visitor
      * @return NULL
      */
     public function staticMethod ( \r8\Backtrace\Event\StaticMethod $event );
+
+    /**
+     * The visitor callback for the ending of a visit
+     *
+     * @param \r8\Backtrace $backtrace The backtrace being visited
+     * @return NULL
+     */
+    public function end ( \r8\Backtrace $backtrace );
 
 }
 

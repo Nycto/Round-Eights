@@ -64,6 +64,27 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( array($event1, $event2), $backtrace->getEvents() );
     }
 
+    public function testVisit ()
+    {
+        $backtrace = new \r8\Backtrace;
+
+        $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
+
+        $event1 = $this->getMockEvent();
+        $event1->expects( $this->once() )
+            ->method( "visit" )
+            ->with( $this->equalTo($visitor) );
+        $backtrace->addEvent( $event1 );
+
+        $event2 = $this->getMockEvent();
+        $event2->expects( $this->once() )
+            ->method( "visit" )
+            ->with( $this->equalTo($visitor) );
+        $backtrace->addEvent( $event2 );
+
+        $this->assertSame( $visitor, $backtrace->visit($visitor) );
+    }
+
 }
 
 ?>
