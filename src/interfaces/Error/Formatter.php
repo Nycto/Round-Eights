@@ -23,41 +23,21 @@
  * @package Cache
  */
 
-namespace r8\iface;
+namespace r8\iface\Error;
 
 /**
- * Describes an error
+ * Describes an error formatter
  */
-interface Error
+interface Formatter
 {
 
     /**
-     * Returns the error code identifying this error
+     * Formats an error as a string
      *
-     * @return Integer
+     * @param \r8\iface\Error $error The error to format
+     * @return String Returns the formatted error
      */
-    public function getCode ();
-
-    /**
-     * Returns the Error Message associated with this error
-     *
-     * @return String
-     */
-    public function getMessage ();
-
-    /**
-     * Returns the file the error occurred in
-     *
-     * @return \r8\FileSys\File
-     */
-    public function getFile ();
-
-    /**
-     * Returns the line number the error occurred on
-     *
-     * @return Integer
-     */
-    public function getLine ();
+    public function format ( \r8\iface\Error $error );
 
 }
 

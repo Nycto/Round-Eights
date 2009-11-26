@@ -23,41 +23,21 @@
  * @package Cache
  */
 
-namespace r8\iface;
+namespace r8\iface\Error;
 
 /**
- * Describes an error
+ * The interface for handling errors
  */
-interface Error
+interface Handler
 {
 
     /**
-     * Returns the error code identifying this error
+     * Handles an error
      *
-     * @return Integer
+     * @param \r8\iface\Error $error The error to handle
+     * @return NULL
      */
-    public function getCode ();
-
-    /**
-     * Returns the Error Message associated with this error
-     *
-     * @return String
-     */
-    public function getMessage ();
-
-    /**
-     * Returns the file the error occurred in
-     *
-     * @return \r8\FileSys\File
-     */
-    public function getFile ();
-
-    /**
-     * Returns the line number the error occurred on
-     *
-     * @return Integer
-     */
-    public function getLine ();
+    public function handle ( \r8\iface\Error $error );
 
 }
 
