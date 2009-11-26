@@ -89,8 +89,7 @@ class Error
      */
     public function handle ( \r8\iface\Error $error )
     {
-        foreach ( $this->handlers AS $handler )
-        {
+        foreach ( $this->handlers AS $handler ) {
             $handler->handle( $error );
         }
 
