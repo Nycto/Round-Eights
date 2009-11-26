@@ -63,6 +63,14 @@ interface Visitor
      */
     public function method ( \r8\Backtrace\Event\Method $event );
 
+    /**
+     * The visitor callback for a Static Method call
+     *
+     * @param \r8\Backtrace\Event\StaticMethod $event The event invoking this visit
+     * @return NULL
+     */
+    public function staticMethod ( \r8\Backtrace\Event\StaticMethod $event );
+
 }
 
 ?>
