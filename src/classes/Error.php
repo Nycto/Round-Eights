@@ -32,11 +32,30 @@ class Error
 {
 
     /**
+     * The global instance of this object
+     *
+     * @var \r8\Error
+     */
+    static private $instance;
+
+    /**
      * The list of registered error handlers
      *
      * @var Array
      */
     private $handlers = array();
+
+    /**
+     * Returns the global instance of this object
+     *
+     * @return \r8\Error
+     */
+    static public function getInstance ()
+    {
+        if ( !isset(self::$instance) )
+            self::$instance = new self;
+        return self::$instance;
+    }
 
     /**
      * Returns the Handlers registered in this instance

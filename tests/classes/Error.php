@@ -33,6 +33,14 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_Error extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetInstance ()
+    {
+        $error = \r8\Error::getInstance();
+        $this->assertThat( $error, $this->isInstanceOf('\r8\Error') );
+        $this->assertSame( $error, \r8\Error::getInstance() );
+        $this->assertSame( $error, \r8\Error::getInstance() );
+    }
+
     public function testRegister ()
     {
         $error = new \r8\Error;
