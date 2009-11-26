@@ -55,6 +55,14 @@ interface Visitor
      */
     public function func ( \r8\Backtrace\Event\Func $event );
 
+    /**
+     * The visitor callback for a Method call
+     *
+     * @param \r8\Backtrace\Event\Method $event The event invoking this visit
+     * @return NULL
+     */
+    public function method ( \r8\Backtrace\Event\Method $event );
+
 }
 
 ?>
