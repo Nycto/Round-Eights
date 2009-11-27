@@ -50,7 +50,13 @@ abstract class Object extends \r8\Backtrace\Event\Named
     public function __construct ( $class, $name, $file, $line, array $args )
     {
         parent::__construct( $name, $file, $line, $args );
-        $this->class = trim( (string) $class );
+
+        $class = trim( (string) $class );
+
+        if ( empty($class) )
+            throw new \r8\Exception\Argument( 0, "Class Name", "Must not be empty" );
+
+        $this->class = $class;
     }
 
     /**

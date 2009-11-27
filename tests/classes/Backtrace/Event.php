@@ -101,6 +101,17 @@ class classes_Backtrace_Event extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testConstruct_Error ()
+    {
+        try {
+            $this->getMock('\r8\Backtrace\Event', array('visit'), array( NULL ));
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
     public function testGetFile ()
     {
         $event = $this->getMock('\r8\Backtrace\Event', array('visit'), array('/path/example.php'));

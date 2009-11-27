@@ -55,7 +55,13 @@ abstract class Call extends \r8\Backtrace\Event
     public function __construct ( $file, $line, array $args )
     {
         parent::__construct( $file );
-        $this->line = (int) $line;
+
+        $line = (int) $line;
+
+        if ( $line <= 0 )
+            throw new \r8\Exception\Argument( 2, "Line Number", "Must be greater than 0" );
+
+        $this->line = $line;
         $this->args = $args;
     }
 

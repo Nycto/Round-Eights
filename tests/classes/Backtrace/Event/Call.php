@@ -50,6 +50,26 @@ class classes_Backtrace_Event_Call extends PHPUnit_Framework_TestCase
         $this->assertSame( array( "arg1", "arg2" ), $event->getArgs() );
     }
 
+    public function testConstruct_Error ()
+    {
+        try {
+            $this->getMock(
+            	'\r8\Backtrace\Event\Call',
+                array('visit'),
+                array(
+                	'/path/example.php',
+                    -5,
+                    array( "arg1", "arg2" )
+                )
+            );
+
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must be greater than 0", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>

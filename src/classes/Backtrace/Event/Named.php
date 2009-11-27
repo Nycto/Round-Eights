@@ -49,7 +49,13 @@ abstract class Named extends \r8\Backtrace\Event\Call
     public function __construct ( $name, $file, $line, array $args )
     {
         parent::__construct( $file, $line, $args );
-        $this->name = trim( (string) $name );
+
+        $name = trim( (string) $name );
+
+        if ( empty($name) )
+            throw new \r8\Exception\Argument( 0, "Function Name", "Must not be empty" );
+
+        $this->name = $name;
     }
 
     /**

@@ -95,7 +95,12 @@ abstract class Event
      */
     public function __construct ( $file )
     {
-        $this->file = trim( (string) $file );
+        $file = trim( (string) $file );
+
+        if ( empty($file) )
+            throw new \r8\Exception\Argument( 0, "File", "Must not be empty" );
+
+        $this->file = $file;
     }
 
     /**

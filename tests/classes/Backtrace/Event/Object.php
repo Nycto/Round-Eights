@@ -54,6 +54,28 @@ class classes_Backtrace_Event_Object extends PHPUnit_Framework_TestCase
         $this->assertSame( array( "arg1", "arg2" ), $event->getArgs() );
     }
 
+    public function testConstruct_Error ()
+    {
+        try {
+            $this->getMock(
+            	'\r8\Backtrace\Event\Object',
+                array('visit'),
+                array(
+                    null,
+                    "Method",
+                	'/path/example.php',
+                    50,
+                    array( "arg1", "arg2" )
+                )
+            );
+
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
 }
 
 ?>
