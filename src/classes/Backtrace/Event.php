@@ -39,6 +39,13 @@ abstract class Event
     private $file;
 
     /**
+     * The line the call was made on
+     *
+     * @var Integer
+     */
+    private $line;
+
+    /**
      * Constructs a new Backtrace event from an array
      *
      * @param Array $backtrace The backtrace event array to build from
@@ -92,15 +99,14 @@ abstract class Event
      * Constructor...
      *
      * @param String $file The file the event occurred within
+     * @param Integer $line The line the call was made on
      */
-    public function __construct ( $file )
+    public function __construct ( $file = null, $line = null )
     {
         $file = trim( (string) $file );
+        $this->file = empty( $file ) ? NULL : $file;
 
-        if ( empty($file) )
-            throw new \r8\Exception\Argument( 0, "File", "Must not be empty" );
-
-        $this->file = $file;
+        $this->line = (int) $line <= 0 ? null : (int) $line;
     }
 
     /**
@@ -111,6 +117,16 @@ abstract class Event
     public function getFile ()
     {
         return $this->file;
+    }
+
+    /**
+     * Returns the Line the call was made on
+     *
+     * @return Integer
+     */
+    public function getLine ()
+    {
+        return $this->line;
     }
 
     /**

@@ -66,6 +66,18 @@ class Backtrace implements \IteratorAggregate, \Countable
     }
 
     /**
+     * Creates a new backtrace from the currenct scope
+     *
+     * @return \r8\Backtrace
+     */
+    static public function create ()
+    {
+        $backtrace = debug_backtrace( FALSE );
+        array_shift( $backtrace );
+        return self::from( $backtrace );
+    }
+
+    /**
      * Returns the Events in this backtrace
      *
      * @return Array An array of \r8\Backtrace\Event
@@ -125,6 +137,17 @@ class Backtrace implements \IteratorAggregate, \Countable
     public function getIterator ()
     {
         return new \ArrayIterator( $this->events );
+    }
+
+    /**
+     * Returns a specific event from this backtrace
+     *
+     * @param Integer $offset The offset of the event to fetch
+     * @return \r8\Backtrace\Event
+     */
+    public function getEvent ( $offset )
+    {
+        return \r8\ary\offset( $this->events, $offset );
     }
 
 }

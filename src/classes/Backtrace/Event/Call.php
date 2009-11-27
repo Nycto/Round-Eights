@@ -32,13 +32,6 @@ abstract class Call extends \r8\Backtrace\Event
 {
 
     /**
-     * The line the call was made on
-     *
-     * @var Integer
-     */
-    private $line;
-
-    /**
      * The arguments passed to this call
      *
      * @var Array
@@ -52,27 +45,10 @@ abstract class Call extends \r8\Backtrace\Event
      * @param Integer $line The line the call was made on
      * @param Array $args The arguments passed in to this call
      */
-    public function __construct ( $file, $line, array $args )
+    public function __construct ( $file = null, $line = null, array $args = array() )
     {
-        parent::__construct( $file );
-
-        $line = (int) $line;
-
-        if ( $line <= 0 )
-            throw new \r8\Exception\Argument( 2, "Line Number", "Must be greater than 0" );
-
-        $this->line = $line;
+        parent::__construct( $file, $line );
         $this->args = $args;
-    }
-
-    /**
-     * Returns the Line the call was made on
-     *
-     * @return Integer
-     */
-    public function getLine ()
-    {
-        return $this->line;
     }
 
     /**
