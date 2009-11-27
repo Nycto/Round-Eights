@@ -33,6 +33,74 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Backtrace_Event extends PHPUnit_Framework_TestCase
 {
 
+    public function testFrom_Closure ()
+    {
+        $result = \r8\Backtrace\Event::from( array(
+            'function' => '{closure}', 'file' => '/path.php',
+            'line' => 145, 'args' => array( "arg" )
+        ));
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Backtrace\Event\Closure') );
+        $this->assertSame( '/path.php', $result->getFile() );
+        $this->assertSame( 145, $result->getLine() );
+        $this->assertSame( array( "arg" ), $result->getArgs() );
+    }
+
+    public function testFrom_Function ()
+    {
+        $result = \r8\Backtrace\Event::from( array(
+            'function' => 'func_name', 'file' => '/path.php',
+            'line' => 145, 'args' => array( "arg" )
+        ));
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Backtrace\Event\Func') );
+        $this->assertSame( 'func_name', $result->getName() );
+        $this->assertSame( '/path.php', $result->getFile() );
+        $this->assertSame( 145, $result->getLine() );
+        $this->assertSame( array( "arg" ), $result->getArgs() );
+    }
+
+    public function testFrom_StaticMethod ()
+    {
+        $result = \r8\Backtrace\Event::from( array(
+            'function' => 'func_name', 'file' => '/path.php', 'type' => '::',
+            'line' => 145, 'args' => array( "arg" ), 'class' => 'example'
+        ));
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Backtrace\Event\StaticMethod') );
+        $this->assertSame( 'example', $result->getClass() );
+        $this->assertSame( 'func_name', $result->getName() );
+        $this->assertSame( '/path.php', $result->getFile() );
+        $this->assertSame( 145, $result->getLine() );
+        $this->assertSame( array( "arg" ), $result->getArgs() );
+    }
+
+    public function testFrom_Method ()
+    {
+        $result = \r8\Backtrace\Event::from( array(
+            'function' => 'func_name', 'file' => '/path.php', 'type' => '->',
+            'line' => 145, 'args' => array( "arg" ), 'class' => 'example'
+        ));
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Backtrace\Event\Method') );
+        $this->assertSame( 'example', $result->getClass() );
+        $this->assertSame( 'func_name', $result->getName() );
+        $this->assertSame( '/path.php', $result->getFile() );
+        $this->assertSame( 145, $result->getLine() );
+        $this->assertSame( array( "arg" ), $result->getArgs() );
+    }
+
+    public function testFrom_Invalid ()
+    {
+        try {
+            \r8\Backtrace\Event::from( array( 'class' => "blah" ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Invalid event format", $err->getMessage() );
+        }
+    }
+
     public function testGetFile ()
     {
         $event = $this->getMock('\r8\Backtrace\Event', array('visit'), array('/path/example.php'));

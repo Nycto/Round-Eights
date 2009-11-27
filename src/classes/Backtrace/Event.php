@@ -39,6 +39,56 @@ abstract class Event
     private $file;
 
     /**
+     * Constructs a new Backtrace event from an array
+     *
+     * @param Array $backtrace The backtrace event array to build from
+     * @return \r8\Backtrace\Event
+     */
+    static public function from ( array $event )
+    {
+        $event = \r8\ary\hone(
+                $event,
+                array( "function", "line", "file", "class", "type", "args" )
+            )
+            + array(
+            	"function" => null, "line" => null, "file" => null,
+                 "class" => null, "type" => null, "args" => array()
+            );
+
+        if ( $event['function'] == '{closure}' ) {
+            return new \r8\Backtrace\Event\Closure(
+                $event['file'], $event['line'],
+                (array) $event['args']
+            );
+        }
+
+        else if ( empty($event['class']) ) {
+            return new \r8\Backtrace\Event\Func(
+                $event['function'], $event['file'],
+                $event['line'], (array) $event['args']
+            );
+        }
+
+        else if ( $event['type'] == '::' ) {
+            return new \r8\Backtrace\Event\StaticMethod(
+                $event['class'], $event['function'], $event['file'],
+                $event['line'], (array) $event['args']
+            );
+        }
+
+        else if ( $event['type'] == '->' ) {
+            return new \r8\Backtrace\Event\Method(
+                $event['class'], $event['function'], $event['file'],
+                $event['line'], (array) $event['args']
+            );
+        }
+
+        else {
+            throw new \r8\Exception\Argument( 0 , "Event Array", "Invalid event format" );
+        }
+    }
+
+    /**
      * Constructor...
      *
      * @param String $file The file the event occurred within
