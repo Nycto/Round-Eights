@@ -28,7 +28,7 @@ namespace r8;
 /**
  * Represents a debug backtrace
  */
-class Backtrace
+class Backtrace implements \IteratorAggregate, \Countable
 {
 
     /**
@@ -37,6 +37,33 @@ class Backtrace
      * @var Array An array of \r8\Backtrace\Event
      */
     private $events = array();
+
+    /**
+     * Constructs a new backtrace from an debug_backtrace array
+     *
+     * @param Array $backtrace The backtrace array to build from
+     * @return \r8\Backtrace
+     */
+    static public function from ( array $backtrace )
+    {
+        $result = new self;
+
+        foreach ( $backtrace AS $event ) {
+            if ( is_array($event) ) {
+                $result->addEvent(
+                    \r8\Backtrace\Event::from( $event )
+                );
+            }
+        }
+
+        $result->addEvent(
+            new \r8\Backtrace\Event\Main(
+                \r8\Env::request()->getFile()->getPath()
+            )
+        );
+
+        return $result;
+    }
 
     /**
      * Returns the Events in this backtrace
@@ -78,6 +105,26 @@ class Backtrace
         $visitor->end( $this );
 
         return $visitor;
+    }
+
+    /**
+     * Returns the number of events registered in this backtrace
+     *
+     * @return Integer
+     */
+    public function count ()
+    {
+        return count( $this->events );
+    }
+
+    /**
+     * Returns an iterator containing the list of events in this backtrace
+     *
+     * @return \Iterator
+     */
+    public function getIterator ()
+    {
+        return new \ArrayIterator( $this->events );
     }
 
 }

@@ -85,6 +85,70 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( $visitor, $backtrace->visit($visitor) );
     }
 
+    public function testCount ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $this->assertSame( 0, count($backtrace) );
+
+        $backtrace->addEvent( $this->getMockEvent() );
+        $this->assertSame( 1, count($backtrace) );
+
+        $backtrace->addEvent( $this->getMockEvent() );
+        $this->assertSame( 2, count($backtrace) );
+
+        $backtrace->addEvent( $this->getMockEvent() );
+        $this->assertSame( 3, count($backtrace) );
+    }
+
+    public function testIterator ()
+    {
+        $backtrace = new \r8\Backtrace;
+
+        $events = array(
+            $this->getMockEvent(),
+            $this->getMockEvent(),
+            $this->getMockEvent()
+        );
+
+        $backtrace->addEvent( $events[0] );
+        $backtrace->addEvent( $events[1] );
+        $backtrace->addEvent( $events[2] );
+
+        PHPUnit_Framework_Constraint_Iterator::assert( $events, $backtrace );
+    }
+
+    public function testFrom ()
+    {
+        $backtrace = \r8\Backtrace::from( array (
+            array ( 'file' => '/tmp/backtrace.php', 'line' => 11,
+    			'function' => '{closure}', 'args' => array () ),
+            array ( 'file' => '/tmp/backtrace.php', 'line' => 16,
+    			'function' => 'stat', 'class' => 'tmp', 'type' => '::',
+    			'args' => array () ),
+            array ( 'file' => '/tmp/backtrace.php', 'line' => 24,
+    			'function' => 'meth', 'class' => 'tmp', 'type' => '->',
+    			'args' => array () ),
+            array ( 'file' => '/tmp/backtrace.php', 'line' => 27,
+    			'function' => 'execute', 'args' => array () ),
+        ) );
+
+        $this->assertThat( $backtrace, $this->isInstanceOf('\r8\Backtrace') );
+
+        $events = PHPUnit_Framework_Constraint_Iterator::iteratorToArray( 5, $backtrace );
+
+        $this->assertArrayHasKey( 0, $events );
+        $this->assertArrayHasKey( 1, $events );
+        $this->assertArrayHasKey( 2, $events );
+        $this->assertArrayHasKey( 3, $events );
+        $this->assertArrayHasKey( 4, $events );
+
+        $this->assertThat( $events[0], $this->isInstanceOf('\r8\Backtrace\Event\Closure') );
+        $this->assertThat( $events[1], $this->isInstanceOf('\r8\Backtrace\Event\StaticMethod') );
+        $this->assertThat( $events[2], $this->isInstanceOf('\r8\Backtrace\Event\Method') );
+        $this->assertThat( $events[3], $this->isInstanceOf('\r8\Backtrace\Event\Func') );
+        $this->assertThat( $events[4], $this->isInstanceOf('\r8\Backtrace\Event\Main') );
+    }
+
 }
 
 ?>
