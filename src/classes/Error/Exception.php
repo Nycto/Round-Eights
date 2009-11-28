@@ -23,55 +23,103 @@
  * @package Error
  */
 
-namespace r8\iface;
+namespace r8\Error;
 
 /**
- * Describes an error
+ * Normalizes an Exception into an Error
  */
-interface Error
+class Exception implements \r8\iface\Error
 {
+
+    /**
+     * The Exception being wrapped
+     *
+     * @var \Exception
+     */
+    private $exception;
+
+    /**
+     * The backtrace that lead up to this exception
+     *
+     * @var \r8\Backtrace
+     */
+    private $backtrace;
+
+    /**
+     * Constructor...
+     *
+     * @param \Exception $exception The exception being wrapped
+     */
+    public function __construct ( \Exception $exception )
+    {
+        $this->exception = $exception;
+    }
 
     /**
      * Returns the error code identifying this error
      *
      * @return Integer
      */
-    public function getCode ();
+    public function getCode ()
+    {
+        return $this->exception->getCode();
+    }
 
     /**
      * Returns the Error Message associated with this error
      *
      * @return String
      */
-    public function getMessage ();
+    public function getMessage ()
+    {
+        return $this->exception->getMessage();
+    }
 
     /**
      * Returns the file the error occurred in
      *
      * @return String
      */
-    public function getFile ();
+    public function getFile ()
+    {
+        return $this->exception->getFile();
+    }
 
     /**
      * Returns the line number the error occurred on
      *
      * @return Integer
      */
-    public function getLine ();
+    public function getLine ()
+    {
+        return $this->exception->getLine();
+    }
 
     /**
      * Returns whether this error should halt execution of the script
      *
      * @return Boolean
      */
-    public function isFatal ();
+    public function isFatal ()
+    {
+        return TRUE;
+    }
 
     /**
      * Returns the backtrace that lead up to this error
      *
      * @return \r8\Backtrace
      */
-    public function getBacktrace ();
+    public function getBacktrace ()
+    {
+        if ( !isset($this->backtrace) ) {
+            $this->backtrace = \r8\Backtrace::from(
+                $this->exception->getTrace()
+            );
+        }
+
+        return $this->backtrace;
+    }
 
 }
 
