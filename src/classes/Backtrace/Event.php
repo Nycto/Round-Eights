@@ -137,6 +137,13 @@ abstract class Event
      */
     abstract public function visit ( \r8\iface\Backtrace\Visitor $visitor );
 
+    /**
+     * Returns the fully resolved name of this event
+     *
+     * @return String
+     */
+    abstract public function getResolvedName ();
+
 }
 
 ?>

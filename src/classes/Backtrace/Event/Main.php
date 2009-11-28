@@ -42,6 +42,16 @@ class Main extends \r8\Backtrace\Event
         $visitor->main( $this );
     }
 
+    /**
+     * Returns the fully resolved name of this event
+     *
+     * @return String
+     */
+    public function getResolvedName ()
+    {
+        return NULL;
+    }
+
 }
 
 ?>

@@ -35,7 +35,7 @@ class classes_Backtrace_Event_Func extends PHPUnit_Framework_TestCase
 
     public function testVisit ()
     {
-        $main = new \r8\Backtrace\Event\Func(
+        $event = new \r8\Backtrace\Event\Func(
             "meth",
         	"/path/example.php",
             500,
@@ -45,9 +45,21 @@ class classes_Backtrace_Event_Func extends PHPUnit_Framework_TestCase
         $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
         $visitor->expects( $this->once() )
             ->method( "func" )
-            ->with( $this->equalTo($main) );
+            ->with( $this->equalTo($event) );
 
-        $this->assertNull( $main->visit( $visitor ) );
+        $this->assertNull( $event->visit( $visitor ) );
+    }
+
+    public function testGetResolvedName ()
+    {
+        $event = new \r8\Backtrace\Event\Func(
+            "meth",
+        	"/path/example.php",
+            500,
+            array( TRUE )
+        );
+
+        $this->assertSame( "meth", $event->getResolvedName() );
     }
 
 }

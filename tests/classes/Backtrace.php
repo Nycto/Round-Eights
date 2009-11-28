@@ -42,7 +42,7 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
         	'\r8\Backtrace\Event',
-            array('visit'),
+            array('visit', 'getResolvedName'),
             array( '/path/example.php' )
         );
     }

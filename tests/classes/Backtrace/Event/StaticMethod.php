@@ -51,6 +51,19 @@ class classes_Backtrace_Event_StaticMethod extends PHPUnit_Framework_TestCase
         $this->assertNull( $main->visit( $visitor ) );
     }
 
+    public function testGetResolvedName ()
+    {
+        $event = new \r8\Backtrace\Event\StaticMethod(
+            "cls",
+            "meth",
+        	"/path/example.php",
+            500,
+            array( TRUE )
+        );
+
+        $this->assertSame( "cls::meth", $event->getResolvedName() );
+    }
+
 }
 
 ?>

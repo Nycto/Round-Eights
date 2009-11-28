@@ -42,6 +42,16 @@ class Closure extends \r8\Backtrace\Event\Call
         $visitor->closure( $this );
     }
 
+    /**
+     * Returns the fully resolved name of this event
+     *
+     * @return String
+     */
+    public function getResolvedName ()
+    {
+        return NULL;
+    }
+
 }
 
 ?>

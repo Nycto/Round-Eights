@@ -35,14 +35,20 @@ class classes_Backtrace_Event_Main extends PHPUnit_Framework_TestCase
 
     public function testVisit ()
     {
-        $main = new \r8\Backtrace\Event\Main( "/path/example.php" );
+        $event = new \r8\Backtrace\Event\Main( "/path/example.php" );
 
         $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
         $visitor->expects( $this->once() )
             ->method( "main" )
-            ->with( $this->equalTo($main) );
+            ->with( $this->equalTo($event) );
 
-        $this->assertNull( $main->visit( $visitor ) );
+        $this->assertNull( $event->visit( $visitor ) );
+    }
+
+    public function testGetResolvedName ()
+    {
+        $event = new \r8\Backtrace\Event\Main( "/path/example.php" );
+        $this->assertNull( $event->getResolvedName() );
     }
 
 }

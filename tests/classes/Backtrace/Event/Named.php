@@ -37,7 +37,7 @@ class classes_Backtrace_Event_Named extends PHPUnit_Framework_TestCase
     {
         $event = $this->getMock(
         	'\r8\Backtrace\Event\Named',
-            array('visit'),
+            array('visit', 'getResolvedName'),
             array(
                 "meth",
             	'/path/example.php',
@@ -57,7 +57,7 @@ class classes_Backtrace_Event_Named extends PHPUnit_Framework_TestCase
         try {
             $this->getMock(
             	'\r8\Backtrace\Event\Named',
-                array('visit'),
+                array('visit', 'getResolvedName'),
                 array(
                     "    ",
                 	'/path/example.php',

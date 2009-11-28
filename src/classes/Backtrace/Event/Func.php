@@ -42,6 +42,16 @@ class Func extends \r8\Backtrace\Event\Named
         $visitor->func( $this );
     }
 
+    /**
+     * Returns the fully resolved name of this event
+     *
+     * @return String
+     */
+    public function getResolvedName ()
+    {
+        return $this->getName();
+    }
+
 }
 
 ?>

@@ -42,6 +42,16 @@ class Method extends \r8\Backtrace\Event\Object
         $visitor->method( $this );
     }
 
+    /**
+     * Returns the fully resolved name of this event
+     *
+     * @return String
+     */
+    public function getResolvedName ()
+    {
+        return $this->getClass() ."->". $this->getName();
+    }
+
 }
 
 ?>

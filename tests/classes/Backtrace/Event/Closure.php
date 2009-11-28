@@ -35,7 +35,7 @@ class classes_Backtrace_Event_Closure extends PHPUnit_Framework_TestCase
 
     public function testVisit ()
     {
-        $main = new \r8\Backtrace\Event\Closure(
+        $event = new \r8\Backtrace\Event\Closure(
         	"/path/example.php",
             500,
             array( TRUE )
@@ -44,9 +44,20 @@ class classes_Backtrace_Event_Closure extends PHPUnit_Framework_TestCase
         $visitor = $this->getMock('\r8\iface\Backtrace\Visitor');
         $visitor->expects( $this->once() )
             ->method( "closure" )
-            ->with( $this->equalTo($main) );
+            ->with( $this->equalTo($event) );
 
-        $this->assertNull( $main->visit( $visitor ) );
+        $this->assertNull( $event->visit( $visitor ) );
+    }
+
+    public function testGetResolvedName ()
+    {
+        $event = new \r8\Backtrace\Event\Closure(
+        	"/path/example.php",
+            500,
+            array( TRUE )
+        );
+
+        $this->assertNull( $event->getResolvedName() );
     }
 
 }
