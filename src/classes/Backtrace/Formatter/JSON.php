@@ -38,7 +38,7 @@ class Log implements \r8\iface\Backtrace\Formatter
      */
     public function prefix ()
     {
-        return "";
+        return "[";
     }
 
     /**
@@ -53,21 +53,16 @@ class Log implements \r8\iface\Backtrace\Formatter
      */
     public function event ( $position, $name, array $args, $file, $line )
     {
-        $result = "[#". $position .": "
-	        .( empty($name) ? "{closure}" : $name ) ."] ";
+        $result = array_filter( array(
+        	"Stack" => $position,
+            "Name" => $name,
+            "Closure" => empty($name),
+            "File" => $file,
+            "Line" => $line,
+            "Args" => array_map('\r8\getDump', $args)
+        ) );
 
-        if ( !empty($file) )
-            $result .= "[File: ". str_replace("]", "\]", $file) ."] ";
-
-        if ( !empty($line) )
-            $result .= "[Line: ". $line ."] ";
-
-        if ( count($args) > 0 ) {
-            $result .= "[Args: "
-                .implode(", ", array_map('\r8\getDump', $args)) ."]";
-        }
-
-        return rtrim( $result ) .", ";
+        return json_encode($result) .", ";
     }
 
     /**
@@ -79,7 +74,11 @@ class Log implements \r8\iface\Backtrace\Formatter
      */
     public function main ( $position, $file )
     {
-        return "[#". $position .": Main: ". $file ."]";
+        return json_encode( array(
+        	"Stack" => $position,
+            "Main" => empty($name),
+            "File" => $file,
+        ) );
     }
 
     /**
@@ -89,7 +88,7 @@ class Log implements \r8\iface\Backtrace\Formatter
      */
     public function suffix ()
     {
-        return "";
+        return "]";
     }
 
 }

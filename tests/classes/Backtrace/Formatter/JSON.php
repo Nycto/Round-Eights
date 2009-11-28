@@ -36,13 +36,13 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
     public function testPrefix ()
     {
         $formatter = new \r8\Backtrace\Formatter\Log;
-        $this->assertSame( "", $formatter->prefix() );
+        $this->assertSame( "[", $formatter->prefix() );
     }
 
     public function testSuffix ()
     {
         $formatter = new \r8\Backtrace\Formatter\Log;
-        $this->assertSame( "", $formatter->suffix() );
+        $this->assertSame( "]", $formatter->suffix() );
     }
 
     public function testEvent_Empty ()
@@ -50,7 +50,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
         $formatter = new \r8\Backtrace\Formatter\Log;
 
         $this->assertSame(
-            "[#1: method], ",
+            '{"Stack":1,"Name":"method"}, ',
             $formatter->event( 1, "method", array(), NULL, NULL )
         );
     }
@@ -60,7 +60,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
         $formatter = new \r8\Backtrace\Formatter\Log;
 
         $this->assertSame(
-            "[#1: {closure}], ",
+            '{"Stack":1,"Closure":true}, ',
             $formatter->event( 1, NULL, array(), NULL, NULL )
         );
     }
@@ -70,7 +70,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
         $formatter = new \r8\Backtrace\Formatter\Log;
 
         $this->assertSame(
-            "[#1: method] [File: example.php] [Line: 25] [Args: string('arg1'), int(2)], ",
+            '{"Stack":1,"Name":"method","File":"example.php","Line":25,"Args":["string(\'arg1\')","int(2)"]}, ',
             $formatter->event( 1, "method", array( "arg1", 2 ), "example.php", 25 )
         );
     }
@@ -80,7 +80,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
         $formatter = new \r8\Backtrace\Formatter\Log;
 
         $this->assertSame(
-            "[#10: Main: example.php]",
+            '{"Stack":10,"Main":true,"File":"example.php"}',
             $formatter->main( 10, "example.php" )
         );
     }
