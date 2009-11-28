@@ -73,6 +73,13 @@ interface Error
      */
     public function getBacktrace ();
 
+    /**
+     * Returns the human readable type of this error
+     *
+     * @return String
+     */
+    public function getType ();
+
 }
 
 ?>

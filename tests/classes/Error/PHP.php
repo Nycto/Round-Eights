@@ -70,6 +70,28 @@ class classes_Error_PHP extends PHPUnit_Framework_TestCase
         $this->assertTrue( $error->isFatal() );
     }
 
+    public function testGetTypes_Known ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $error = new \r8\Error\PHP(
+            "example.php", 123, E_STRICT,
+            "Error Message", $backtrace
+        );
+
+        $this->assertSame( "Strict", $error->getType() );
+    }
+
+    public function testGetTypes_Unknown ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $error = new \r8\Error\PHP(
+            "example.php", 123, 7,
+            "Error Message", $backtrace
+        );
+
+        $this->assertSame( "Unknown Error", $error->getType() );
+    }
+
 }
 
 ?>

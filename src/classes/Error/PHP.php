@@ -42,6 +42,21 @@ class PHP implements \r8\iface\Error
     );
 
     /**
+     * The list of Error types and their human readable equivalent
+     *
+     * @var Array
+     */
+    static private $types = array(
+        E_ERROR => "Error", E_WARNING => "Warning", E_PARSE => "Parse",
+        E_NOTICE => "Notice", E_CORE_ERROR => "Core Error",
+        E_CORE_WARNING => "Core Warning", E_COMPILE_ERROR => "Compile Error",
+        E_COMPILE_WARNING => "Compile Warning", E_USER_ERROR => "User Error",
+        E_USER_WARNING => "User Warning", E_USER_NOTICE => "User Notice",
+        E_STRICT => "Strict", E_RECOVERABLE_ERROR => "Recoverable Error",
+        E_DEPRECATED => "Deprecated", E_USER_DEPRECATED => "User Deprecated",
+    );
+
+    /**
      * The file this error occurred in
      *
      * @var String
@@ -158,6 +173,19 @@ class PHP implements \r8\iface\Error
     public function getBacktrace ()
     {
         return $this->backtrace;
+    }
+
+    /**
+     * Returns the human readable type of this error
+     *
+     * @return String
+     */
+    public function getType ()
+    {
+        if ( isset(self::$types[ $this->code ]) )
+            return self::$types[ $this->code ];
+        else
+            return "Unknown Error";
     }
 
 }
