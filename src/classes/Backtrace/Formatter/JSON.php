@@ -28,7 +28,7 @@ namespace r8\Backtrace\Formatter;
 /**
  * Formats a backtrace for a Log file
  */
-class Log implements \r8\iface\Backtrace\Formatter
+class JSON implements \r8\iface\Backtrace\Formatter
 {
 
     /**

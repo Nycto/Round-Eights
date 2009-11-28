@@ -35,19 +35,19 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
 
     public function testPrefix ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
         $this->assertSame( "[", $formatter->prefix() );
     }
 
     public function testSuffix ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
         $this->assertSame( "]", $formatter->suffix() );
     }
 
     public function testEvent_Empty ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
 
         $this->assertSame(
             '{"Stack":1,"Name":"method"}, ',
@@ -57,7 +57,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
 
     public function testEvent_Closure ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
 
         $this->assertSame(
             '{"Stack":1,"Closure":true}, ',
@@ -67,7 +67,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
 
     public function testEvent_Full ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
 
         $this->assertSame(
             '{"Stack":1,"Name":"method","File":"example.php","Line":25,"Args":["string(\'arg1\')","int(2)"]}, ',
@@ -77,7 +77,7 @@ class classes_Backtrace_Formatter_Log extends PHPUnit_Framework_TestCase
 
     public function testMain ()
     {
-        $formatter = new \r8\Backtrace\Formatter\Log;
+        $formatter = new \r8\Backtrace\Formatter\JSON;
 
         $this->assertSame(
             '{"Stack":10,"Main":true,"File":"example.php"}',
