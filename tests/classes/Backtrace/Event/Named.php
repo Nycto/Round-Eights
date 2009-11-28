@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_Backtrace_Event_Name extends PHPUnit_Framework_TestCase
+class classes_Backtrace_Event_Named extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
