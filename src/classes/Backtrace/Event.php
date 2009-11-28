@@ -130,6 +130,36 @@ abstract class Event
     }
 
     /**
+     * Returns the name of the class this function is a member of
+     *
+     * @return String
+     */
+    public function getClass ()
+    {
+        return NULL;
+    }
+
+    /**
+     * Returns the Name of this function
+     *
+     * @return String
+     */
+    public function getName ()
+    {
+        return NULL;
+    }
+
+    /**
+     * Returns the Arguments passed in on this call
+     *
+     * @return Array
+     */
+    public function getArgs ()
+    {
+        return array();
+    }
+
+    /**
      * Invokes the appropriate visitor method
      *
      * @param \r8\iface\Backtrace\Visitor $visitor The object to visit

@@ -32,12 +32,39 @@ interface Formatter
 {
 
     /**
-     * Formats a backtrace as a string
+     * Returns the string to prepend to the resulted string
      *
-     * @param \r8\Backtrace $backtrace The backtrace being formatted
      * @return String
      */
-    public function format ( \r8\Backtrace $backtrace );
+    public function prefix ();
+
+    /**
+     * Formats a single event from a backtrace and returns the result
+     *
+     * @param Integer $position The position in the stack at which this event occurred
+     * @param String $name The resolved name of this event
+     * @param Array $args Any arguments passed to this event
+     * @param String $file The file this event occurred in
+     * @param Integer $line The line this event occurred on
+     * @return String
+     */
+    public function event ( $position, $name, array $args, $file, $line );
+
+    /**
+     * Formats the main event of this backtrace
+     *
+     * @param Integer $position The position in the stack at which this event occurred
+     * @param String $file The file this event occurred in
+     * @return String
+     */
+    public function main ( $position, $file );
+
+    /**
+     * Returns the string to append to the resulted string
+     *
+     * @return String
+     */
+    public function suffix ();
 
 }
 
