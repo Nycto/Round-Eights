@@ -23,42 +23,13 @@
  * @package Error
  */
 
-namespace r8\Error\formatter;
+namespace r8\Error\Formatter;
 
 /**
  * Formats an error as HTML
  */
-class HTML implements \r8\iface\Error\Formatter
+class HTML extends \r8\Error\Formatter
 {
-
-    /**
-     * The environment of the current request
-     *
-     * @var \r8\iface\Env\Request
-     */
-    private $request;
-
-    /**
-     * The formatter to use for displaying the debug backtrace
-     *
-     * @var \r8\Backtrace\Formatter
-     */
-    private $formatter;
-
-    /**
-     * Constructor...
-     *
-     * @param \r8\iface\Env\Request $request The environment of the current request
-     * @param \r8\Backtrace\Formatter $formatter The formatter to use for displaying
-     *         the debug backtrace
-     */
-    public function __construct (
-        \r8\iface\Env\Request $request,
-        \r8\Backtrace\Formatter $formatter
-    ) {
-        $this->request = $request;
-        $this->formatter = $formatter;
-    }
 
     /**
      * Formats an error as a string
@@ -73,8 +44,8 @@ class HTML implements \r8\iface\Error\Formatter
         $code = htmlspecialchars( $error->getCode() );
         $line = $error->getLine();
         $file = htmlspecialchars( $error->getFile() );
-        $backtrace = $this->formatter->format( $error->getBacktrace() );
-        $uri = htmlspecialchars( $this->request->getURL()->__toString() );
+        $backtrace = $this->getFormatter()->format( $error->getBacktrace() );
+        $uri = htmlspecialchars( $this->getRequest()->getURL()->__toString() );
 
         return <<<END_OF_ERROR
 <table>
