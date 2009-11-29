@@ -46,6 +46,10 @@ class Text extends \r8\Error\Formatter
         $file = htmlspecialchars( $error->getFile() );
         $uri = htmlspecialchars( $this->getRequest()->getURL()->__toString() );
 
+        $formatter = new \r8\Backtrace\Formatter(
+            new \r8\Backtrace\Formatter\Text
+        );
+
         return "\n"
 			."PHP Error Encointered!\n"
             ."Type: ". $type ."\n"
@@ -55,7 +59,7 @@ class Text extends \r8\Error\Formatter
             ."On Line: ". $line ."\n"
             ."URI: ". $uri ."\n"
             ."Backtrace:\n"
-            .$this->getFormatter()->format( $error->getBacktrace() )
+            .$formatter->format( $error->getBacktrace() )
             ."\n\n";
     }
 

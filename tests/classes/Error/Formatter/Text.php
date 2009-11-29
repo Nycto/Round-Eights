@@ -36,10 +36,7 @@ class classes_Error_Formatter_Text extends PHPUnit_Framework_TestCase
     public function testFormat ()
     {
         $formatter = new \r8\Error\Formatter\Text(
-            \r8\Env::request(),
-            new \r8\Backtrace\Formatter(
-                new \r8\Backtrace\Formatter\Text
-            )
+            \r8\Env::request()
         );
 
         $error = new \r8\Error\Exception( new \Exception );

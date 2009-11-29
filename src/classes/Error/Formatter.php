@@ -39,25 +39,12 @@ abstract class Formatter implements \r8\iface\Error\Formatter
     private $request;
 
     /**
-     * The formatter to use for displaying the debug backtrace
-     *
-     * @var \r8\Backtrace\Formatter
-     */
-    private $formatter;
-
-    /**
      * Constructor...
      *
      * @param \r8\iface\Env\Request $request The environment of the current request
-     * @param \r8\Backtrace\Formatter $formatter The formatter to use for displaying
-     *         the debug backtrace
      */
-    public function __construct (
-        \r8\iface\Env\Request $request,
-        \r8\Backtrace\Formatter $formatter
-    ) {
+    public function __construct ( \r8\iface\Env\Request $request ) {
         $this->request = $request;
-        $this->formatter = $formatter;
     }
 
     /**
@@ -68,16 +55,6 @@ abstract class Formatter implements \r8\iface\Error\Formatter
     public function getRequest ()
     {
         return $this->request;
-    }
-
-    /**
-     * Returns the Formatter that will be used to format backtraces
-     *
-     * @return \r8\Backtrace\Formatter
-     */
-    public function getFormatter ()
-    {
-        return $this->formatter;
     }
 
 }

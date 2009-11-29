@@ -61,12 +61,16 @@ class HTML extends \r8\Error\Formatter
                 ."    </tr>\n";
         }
 
+        $formatter = new \r8\Backtrace\Formatter(
+            new \r8\Backtrace\Formatter\HTML
+        );
+
         $result .= "    <tr>\n"
             ."        <th colspan='2'>Backtrace</td>\n"
             ."    </tr>\n"
             ."    <tr>\n"
             ."        <td  colspan='2'>"
-                .rtrim( $this->getFormatter()->format( $error->getBacktrace() ) ) ."\n"
+                .rtrim( $formatter->format( $error->getBacktrace() ) ) ."\n"
             ."       </td>\n"
             ."    </tr>\n"
             ."</table>\n";

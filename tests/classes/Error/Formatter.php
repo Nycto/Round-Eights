@@ -36,16 +36,14 @@ class classes_Error_Formatter extends PHPUnit_Framework_TestCase
     public function testconstruct ()
     {
         $request = $this->getMock('\r8\iface\Env\Request');
-        $backtrace = $this->getMock('\r8\Backtrace\Formatter', array('format'), array(), '', FALSE);
 
         $formatter = $this->getMock(
             '\r8\Error\Formatter',
             array('format'),
-            array( $request, $backtrace )
+            array( $request )
         );
 
         $this->assertSame( $request, $formatter->getRequest() );
-        $this->assertSame( $backtrace, $formatter->getFormatter() );
     }
 
 }
