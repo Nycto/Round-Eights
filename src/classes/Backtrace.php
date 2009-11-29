@@ -150,6 +150,17 @@ class Backtrace implements \IteratorAggregate, \Countable
         return \r8\ary\offset( $this->events, $offset );
     }
 
+    /**
+     * Pops an event off the top of the backtrace
+     *
+     * @return \r8\Backtrace
+     */
+    public function pop ()
+    {
+        array_shift( $this->events );
+        return $this;
+    }
+
 }
 
 ?>

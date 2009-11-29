@@ -135,7 +135,29 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( $events[1], $backtrace->getEvent(1) );
         $this->assertSame( $events[2], $backtrace->getEvent(2) );
         $this->assertSame( $events[2], $backtrace->getEvent(-1) );
+    }
 
+    public function testPop ()
+    {
+        $backtrace = new \r8\Backtrace;
+
+        $events = array(
+            $this->getMockEvent(),
+            $this->getMockEvent(),
+            $this->getMockEvent()
+        );
+
+        $backtrace->addEvent( $events[0] );
+        $backtrace->addEvent( $events[1] );
+        $backtrace->addEvent( $events[2] );
+
+        $this->assertSame( 3, $backtrace->count() );
+        $this->assertSame( $backtrace, $backtrace->pop() );
+
+        $this->assertSame(
+            array( $events[1], $events[2] ),
+            $backtrace->getEvents()
+        );
     }
 
     public function testFrom ()
