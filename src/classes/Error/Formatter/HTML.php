@@ -39,51 +39,39 @@ class HTML extends \r8\Error\Formatter
      */
     public function format ( \r8\iface\Error $error )
     {
-        $type = htmlspecialchars( $error->getType() );
-        $message = htmlspecialchars( $error->getMessage() );
-        $code = htmlspecialchars( $error->getCode() );
-        $line = $error->getLine();
-        $file = htmlspecialchars( $error->getFile() );
-        $backtrace = $this->getFormatter()->format( $error->getBacktrace() );
-        $uri = htmlspecialchars( $this->getRequest()->getURL()->__toString() );
+        $details = array_filter( array(
+            "Type" => $error->getType(),
+        	"Message" => $error->getMessage(),
+            "Code" => $error->getcode(),
+            "In File" => $error->getFile(),
+            "On Line" => $error->getLine(),
+            "URI" => $this->getRequest()->getURL()->__toString()
+        ) );
 
-        return <<<END_OF_ERROR
-<table>
-    <tr>
-        <th colspan='2'>Error Encountered</th>
-    </tr>
-    <tr>
-        <td>Type</td>
-        <td>{$type}</td>
-    </tr>
-    <tr>
-        <td>Message</td>
-        <td>{$message}</td>
-    </tr>
-    <tr>
-        <td>Code</td>
-        <td>{$code}</td>
-    </tr>
-    <tr>
-        <td>In File</td>
-        <td>{$file}</td>
-    </tr>
-    <tr>
-        <td>On Line</td>
-        <td>{$line}</td>
-    </tr>
-    <tr>
-        <td>URI</td>
-        <td>{$uri}</td>
-    </tr>
-    <tr>
-        <th colspan='2'>Backtrace</th>
-    </tr>
-    <tr>
-        <td>{$backtrace}</td>
-    </tr>
-</table>
-END_OF_ERROR;
+        $result = "<table>\n"
+        	."    <tr>\n"
+            ."        <th colspan='2'>Error Encountered</th>\n"
+            ."    </tr>\n";
+
+        foreach ( $details AS $key => $value )
+        {
+            $result .= "    <tr>\n"
+                ."        <th>". $key ."</th>\n"
+                ."        <td>". htmlspecialchars( $value ) ."</td>\n"
+                ."    </tr>\n";
+        }
+
+        $result .= "    <tr>\n"
+            ."        <th colspan='2'>Backtrace</td>\n"
+            ."    </tr>\n"
+            ."    <tr>\n"
+            ."        <td  colspan='2'>"
+                .rtrim( $this->getFormatter()->format( $error->getBacktrace() ) ) ."\n"
+            ."       </td>\n"
+            ."    </tr>\n"
+            ."</table>\n";
+
+        return $result;
     }
 
 }
