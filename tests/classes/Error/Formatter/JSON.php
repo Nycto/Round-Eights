@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,42 +22,30 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Error
+ * @package UnitTests
  */
 
-namespace r8\Error\Formatter;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * Formats an error as Text
+ * unit tests
  */
-class Text extends \r8\Error\Formatter
+class classes_Error_Formatter_JSON extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Formats an error as a string
-     *
-     * @param \r8\iface\Error $error The error to format
-     * @return String Returns the formatted error
-     */
-    public function format ( \r8\iface\Error $error )
+    public function testFormat ()
     {
-        $formatter = new \r8\Backtrace\Formatter(
-            new \r8\Backtrace\Formatter\Text
+        $formatter = new \r8\Error\Formatter\JSON(
+            \r8\Env::request()
         );
 
-        $result = "\n"
-			."PHP Error Encointered!\n";
+        $error = new \r8\Error\Exception( new \Exception );
 
-		foreach ( $this->toArray($error) AS $key => $value )
-		{
-		    $result .= $key .": ". $value ."\n";
-		}
+        $result = $formatter->format( $error );
+        $this->assertType( "string", $result );
+        $this->assertGreaterThan( 0, strlen($result) );
 
-        $result .= "Backtrace:\n"
-            .$formatter->format( $error->getBacktrace() )
-            ."\n\n";
-
-        return $result;
+        $this->assertNotNull( json_decode( $result ) );
     }
 
 }

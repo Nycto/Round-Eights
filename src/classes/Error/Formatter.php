@@ -57,6 +57,25 @@ abstract class Formatter implements \r8\iface\Error\Formatter
         return $this->request;
     }
 
+    /**
+     * Returns the details of this error as an Array
+     *
+     * @param \r8\iface\Error $error The error to format
+     * @return Array
+     */
+    protected function toArray ( \r8\iface\Error $error )
+    {
+        return array_filter( array(
+            "Time" => date("Y-m-d H:i:s"),
+            "Type" => $error->getType(),
+        	"Message" => $error->getMessage(),
+            "Code" => $error->getcode(),
+            "File" => $error->getFile(),
+            "Line" => $error->getLine(),
+            "URI" => $this->getRequest()->getURL()->__toString()
+        ) );
+    }
+
 }
 
 ?>

@@ -26,9 +26,9 @@
 namespace r8\Error\Formatter;
 
 /**
- * Formats an error as HTML
+ * Formats an error as JSON
  */
-class HTML extends \r8\Error\Formatter
+class JSON extends \r8\Error\Formatter
 {
 
     /**
@@ -39,34 +39,22 @@ class HTML extends \r8\Error\Formatter
      */
     public function format ( \r8\iface\Error $error )
     {
-        $result = "<table>\n"
-        	."    <tr>\n"
-            ."        <th colspan='2'>Error Encountered</th>\n"
-            ."    </tr>\n";
-
-        foreach ( $this->toArray( $error ) AS $key => $value )
-        {
-            $result .= "    <tr>\n"
-                ."        <th>". $key ."</th>\n"
-                ."        <td>". htmlspecialchars( $value ) ."</td>\n"
-                ."    </tr>\n";
-        }
-
         $formatter = new \r8\Backtrace\Formatter(
-            new \r8\Backtrace\Formatter\HTML
+            new \r8\Backtrace\Formatter\JSON
         );
 
-        $result .= "    <tr>\n"
-            ."        <th colspan='2'>Backtrace</td>\n"
-            ."    </tr>\n"
-            ."    <tr>\n"
-            ."        <td  colspan='2'>"
-                .rtrim( $formatter->format( $error->getBacktrace() ) ) ."\n"
-            ."       </td>\n"
-            ."    </tr>\n"
-            ."</table>\n";
+        $result = "{";
 
-        return $result;
+		foreach ( $this->toArray($error) AS $key => $value )
+		{
+		    $result .= '"'. $key .'":'. json_encode($value) .", ";
+		}
+
+        $result .= '"Backtrace":'
+            .$formatter->format( $error->getBacktrace() )
+            ."}";
+
+        return $result ;
     }
 
 }
