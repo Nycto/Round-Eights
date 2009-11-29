@@ -121,6 +121,16 @@ class Exception implements \r8\iface\Error
         return $this->backtrace;
     }
 
+    /**
+     * Returns the human readable type of this error
+     *
+     * @return String
+     */
+    public function getType ()
+    {
+        return "Uncaught Exception";
+    }
+
 }
 
 ?>

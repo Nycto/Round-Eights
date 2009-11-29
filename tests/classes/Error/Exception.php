@@ -43,6 +43,7 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
         $this->assertSame( "The Message", $error->getMessage() );
         $this->assertSame( 5050, $error->getCode() );
         $this->assertTrue( $error->isFatal() );
+        $this->assertSame( "Uncaught Exception", $error->getType() );
     }
 
     public function testGetBacktrace ()
