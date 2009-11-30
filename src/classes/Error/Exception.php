@@ -116,6 +116,14 @@ class Exception implements \r8\iface\Error
             $this->backtrace = \r8\Backtrace::from(
                 $this->exception->getTrace()
             );
+            $this->backtrace->unshiftEvent(
+                new \r8\Backtrace\Event\Func(
+                    "throw",
+                    $this->exception->getFile(),
+                    $this->exception->getLine(),
+                    array( $this->exception )
+                )
+            );
         }
 
         return $this->backtrace;

@@ -47,21 +47,38 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAddEvent ()
+    public function testPushEvent ()
     {
         $backtrace = new \r8\Backtrace;
         $this->assertSame( array(), $backtrace->getEvents() );
 
         $event1 = $this->getMockEvent();
-        $this->assertSame( $backtrace, $backtrace->addEvent( $event1 ) );
+        $this->assertSame( $backtrace, $backtrace->pushEvent( $event1 ) );
         $this->assertSame( array($event1), $backtrace->getEvents() );
 
         $event2 = $this->getMockEvent();
-        $this->assertSame( $backtrace, $backtrace->addEvent( $event2 ) );
+        $this->assertSame( $backtrace, $backtrace->pushEvent( $event2 ) );
         $this->assertSame( array($event1, $event2), $backtrace->getEvents() );
 
-        $this->assertSame( $backtrace, $backtrace->addEvent( $event1 ) );
+        $this->assertSame( $backtrace, $backtrace->pushEvent( $event1 ) );
         $this->assertSame( array($event1, $event2), $backtrace->getEvents() );
+    }
+
+    public function testUnshiftEvent ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $this->assertSame( array(), $backtrace->getEvents() );
+
+        $event1 = $this->getMockEvent();
+        $this->assertSame( $backtrace, $backtrace->unshiftEvent( $event1 ) );
+        $this->assertSame( array($event1), $backtrace->getEvents() );
+
+        $event2 = $this->getMockEvent();
+        $this->assertSame( $backtrace, $backtrace->unshiftEvent( $event2 ) );
+        $this->assertSame( array($event2, $event1), $backtrace->getEvents() );
+
+        $this->assertSame( $backtrace, $backtrace->unshiftEvent( $event1 ) );
+        $this->assertSame( array($event2, $event1), $backtrace->getEvents() );
     }
 
     public function testVisit ()
@@ -74,13 +91,13 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $event1->expects( $this->once() )
             ->method( "visit" )
             ->with( $this->equalTo($visitor) );
-        $backtrace->addEvent( $event1 );
+        $backtrace->pushEvent( $event1 );
 
         $event2 = $this->getMockEvent();
         $event2->expects( $this->once() )
             ->method( "visit" )
             ->with( $this->equalTo($visitor) );
-        $backtrace->addEvent( $event2 );
+        $backtrace->pushEvent( $event2 );
 
         $this->assertSame( $visitor, $backtrace->visit($visitor) );
     }
@@ -90,13 +107,13 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $backtrace = new \r8\Backtrace;
         $this->assertSame( 0, count($backtrace) );
 
-        $backtrace->addEvent( $this->getMockEvent() );
+        $backtrace->pushEvent( $this->getMockEvent() );
         $this->assertSame( 1, count($backtrace) );
 
-        $backtrace->addEvent( $this->getMockEvent() );
+        $backtrace->pushEvent( $this->getMockEvent() );
         $this->assertSame( 2, count($backtrace) );
 
-        $backtrace->addEvent( $this->getMockEvent() );
+        $backtrace->pushEvent( $this->getMockEvent() );
         $this->assertSame( 3, count($backtrace) );
     }
 
@@ -110,9 +127,9 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
             $this->getMockEvent()
         );
 
-        $backtrace->addEvent( $events[0] );
-        $backtrace->addEvent( $events[1] );
-        $backtrace->addEvent( $events[2] );
+        $backtrace->pushEvent( $events[0] );
+        $backtrace->pushEvent( $events[1] );
+        $backtrace->pushEvent( $events[2] );
 
         PHPUnit_Framework_Constraint_Iterator::assert( $events, $backtrace );
     }
@@ -127,9 +144,9 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
             $this->getMockEvent()
         );
 
-        $backtrace->addEvent( $events[0] );
-        $backtrace->addEvent( $events[1] );
-        $backtrace->addEvent( $events[2] );
+        $backtrace->pushEvent( $events[0] );
+        $backtrace->pushEvent( $events[1] );
+        $backtrace->pushEvent( $events[2] );
 
         $this->assertSame( $events[0], $backtrace->getEvent(0) );
         $this->assertSame( $events[1], $backtrace->getEvent(1) );
@@ -137,7 +154,7 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( $events[2], $backtrace->getEvent(-1) );
     }
 
-    public function testPop ()
+    public function testPopEvent ()
     {
         $backtrace = new \r8\Backtrace;
 
@@ -147,12 +164,12 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
             $this->getMockEvent()
         );
 
-        $backtrace->addEvent( $events[0] );
-        $backtrace->addEvent( $events[1] );
-        $backtrace->addEvent( $events[2] );
+        $backtrace->pushEvent( $events[0] );
+        $backtrace->pushEvent( $events[1] );
+        $backtrace->pushEvent( $events[2] );
 
         $this->assertSame( 3, $backtrace->count() );
-        $this->assertSame( $backtrace, $backtrace->pop() );
+        $this->assertSame( $backtrace, $backtrace->popEvent() );
 
         $this->assertSame(
             array( $events[1], $events[2] ),

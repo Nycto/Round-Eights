@@ -41,17 +41,17 @@ class classes_Backtrace_Formatter extends PHPUnit_Framework_TestCase
     public function getTestBacktrace ()
     {
         $backtrace = new \r8\Backtrace;
-        $backtrace->addEvent( new \r8\Backtrace\Event\Closure(
+        $backtrace->pushEvent( new \r8\Backtrace\Event\Closure(
             '/path/example.php', 11, array( "arg1", "arg2" )
         ));
-        $backtrace->addEvent( new \r8\Backtrace\Event\StaticMethod(
+        $backtrace->pushEvent( new \r8\Backtrace\Event\StaticMethod(
             'test', 'stat', '/path/example.php', 24, array()
         ));
-        $backtrace->addEvent( new \r8\Backtrace\Event\Method(
+        $backtrace->pushEvent( new \r8\Backtrace\Event\Method(
             'test', 'meth', '/path/example.php', 27, array()
         ));
-        $backtrace->addEvent( new \r8\Backtrace\Event\Func( 'array_map' ) );
-        $backtrace->addEvent( new \r8\Backtrace\Event\Main( '/path/example.php' ));
+        $backtrace->pushEvent( new \r8\Backtrace\Event\Func( 'array_map' ) );
+        $backtrace->pushEvent( new \r8\Backtrace\Event\Main( '/path/example.php' ));
 
         return $backtrace;
     }
@@ -128,13 +128,13 @@ class classes_Backtrace_Formatter extends PHPUnit_Framework_TestCase
 
 
         $backtrace = new \r8\Backtrace;
-        $backtrace->addEvent( $this->getMockEvent(
+        $backtrace->pushEvent( $this->getMockEvent(
             "function", array( "arg" ), "/example/file.php", 5050
         ));
-        $backtrace->addEvent( $this->getMockEvent(
+        $backtrace->pushEvent( $this->getMockEvent(
             "method", array( 1234 ), "/example/other.php", 1000
         ));
-        $backtrace->addEvent(
+        $backtrace->pushEvent(
             $this->getMockMain( "/example/main.php" )
         );
 

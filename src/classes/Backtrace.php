@@ -50,13 +50,13 @@ class Backtrace implements \IteratorAggregate, \Countable
 
         foreach ( $backtrace AS $event ) {
             if ( is_array($event) ) {
-                $result->addEvent(
+                $result->pushEvent(
                     \r8\Backtrace\Event::from( $event )
                 );
             }
         }
 
-        $result->addEvent(
+        $result->pushEvent(
             new \r8\Backtrace\Event\Main(
                 \r8\Env::request()->getFile()->getPath()
             )
@@ -93,10 +93,34 @@ class Backtrace implements \IteratorAggregate, \Countable
      * @param \r8\Backtrace\Event $event The event to add
      * @return \r8\Backtrace Returns a self reference
      */
-    public function addEvent ( \r8\Backtrace\Event $event )
+    public function pushEvent ( \r8\Backtrace\Event $event )
     {
         if ( !in_array($event, $this->events, TRUE) )
             $this->events[] = $event;
+        return $this;
+    }
+
+    /**
+     * Adds a new event onto the beginning of this backtrace
+     *
+     * @param \r8\Backtrace\Event $event The event to add
+     * @return \r8\Backtrace Returns a self reference
+     */
+    public function unshiftEvent ( \r8\Backtrace\Event $event )
+    {
+        if ( !in_array($event, $this->events, TRUE) )
+            \array_unshift( $this->events, $event );
+        return $this;
+    }
+
+    /**
+     * Pops an event off the top of the backtrace
+     *
+     * @return \r8\Backtrace
+     */
+    public function popEvent ()
+    {
+        array_shift( $this->events );
         return $this;
     }
 
@@ -150,16 +174,6 @@ class Backtrace implements \IteratorAggregate, \Countable
         return \r8\ary\offset( $this->events, $offset );
     }
 
-    /**
-     * Pops an event off the top of the backtrace
-     *
-     * @return \r8\Backtrace
-     */
-    public function pop ()
-    {
-        array_shift( $this->events );
-        return $this;
-    }
 
 }
 
