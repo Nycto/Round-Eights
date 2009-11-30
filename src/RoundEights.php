@@ -62,8 +62,9 @@ if (!defined("r8_DIR_INTERFACES"))
     define("r8_DIR_INTERFACES", r8_DIR ."interfaces/");
 
 /**
- * Include the function files
+ * Include the required files
  */
+require_once r8_DIR_CLASSES ."Autoload.php";
 require_once r8_DIR_FUNCTIONS ."general.php";
 require_once r8_DIR_FUNCTIONS ."numbers.php";
 require_once r8_DIR_FUNCTIONS ."strings.php";
@@ -73,24 +74,11 @@ require_once r8_DIR_FUNCTIONS ."array.php";
 /**
  * Register the autoloader
  */
-spl_autoload_register(function ( $class ) {
+\r8\Autoload::getInstance()
+    ->register('r8', r8_DIR_CLASSES)
+    ->register('r8\iface', r8_DIR_INTERFACES);
 
-    $class = explode("\\", $class);
-    $class = array_filter( $class );
-    array_shift( $class );
-
-    $first = reset( $class );
-
-    if ( $first == "iface" )
-        $class = r8_DIR_INTERFACES . implode( "/", array_slice( $class, 1 ) ) .".php";
-
-    else
-        $class = r8_DIR_CLASSES . implode( "/", $class ) .".php";
-
-    if ( file_exists( $class ) )
-        require_once $class;
-
-});
+spl_autoload_register( array( \r8\Autoload::getInstance(), "load" ) );
 
 /**
  * Take a snapshot of the environment
