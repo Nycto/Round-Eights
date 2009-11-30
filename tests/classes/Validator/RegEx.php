@@ -52,23 +52,6 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testInvalidRegex ()
-    {
-        $regex = new \r8\Validator\RegEx("1234");
-
-        try {
-            $regex->validate( "test" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( PHPUnit_Framework_Error $err ) {
-            $this->assertSame(
-                    "preg_match(): Delimiter must not be alphanumeric or backslash",
-                    $err->getMessage()
-                );
-        }
-
-    }
-
     public function testInvalidNonStrings()
     {
         $validator = new \r8\Validator\RegEx("/[a-z]/");
@@ -165,7 +148,7 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
             );
     }
 
-    public function _testString()
+    public function testString()
     {
         $validator = new \r8\Validator\RegEx('/\.php$/');
         $this->assertTrue( $validator->isValid("file.php") );

@@ -50,7 +50,6 @@ if ( !defined("r8_DIR") ) {
     $roundEightsDir = rtrim( $roundEightsDir, "/" ) ."/";
     define("r8_DIR", $roundEightsDir);
     unset($roundEightsDir);
-
 }
 
 if (!defined("r8_DIR_FUNCTIONS"))
@@ -74,7 +73,7 @@ require_once r8_DIR_FUNCTIONS ."array.php";
 /**
  * Register the autoloader
  */
-spl_autoload_register( function ( $class ) {
+spl_autoload_register(function ( $class ) {
 
     $class = explode("\\", $class);
     $class = array_filter( $class );
@@ -91,35 +90,70 @@ spl_autoload_register( function ( $class ) {
     if ( file_exists( $class ) )
         require_once $class;
 
-} );
-
-/**
- * Set up custom exception handling
- */
-set_exception_handler(function ( $exception ) {
-
-    // If we are running in script mode, we don't need HTML
-    if ( \r8\Env::request()->isCLI() ) {
-        echo "FATAL ERROR: Uncaught Exception Thrown:\n" .$exception;
-    }
-    else {
-
-        echo "<div class='phpException'>\n"
-            ."<h3>Fatal Error: Uncaught Exception Thrown</h3>\n";
-
-        if ( $exception instanceof GeneralError )
-            echo $exception->getVerboseHTML();
-        else
-            echo "<pre>". $exception ."</pre>";
-
-        echo "</div>";
-
-    }
 });
 
 /**
  * Take a snapshot of the environment
  */
 \r8\Env::Request();
+
+/**
+ * Set up error handling
+ */
+set_error_handler(function ( $code, $message, $file, $line ) {
+
+    $level = (int) ini_get('error_reporting');
+    $code = (int) $code;
+
+    if ( !( $code & $level ) )
+        return TRUE;
+
+    $backtrace = \r8\Backtrace::create()->popEvent();
+    \r8\Error::getInstance()->handle(
+        new \r8\Error\PHP( $file, $line, $code, $message, $backtrace )
+    );
+});
+
+/**
+ * Set up exception handling
+ */
+set_exception_handler(function ( $exception ) {
+    \r8\Error::getInstance()->handle(
+        new \r8\Error\Exception( $exception )
+    );
+});
+
+/**
+ * Hook in the error handler to the error log
+ */
+\r8\Error::getInstance()->register(
+    new \r8\Error\Handler\Stream(
+        new \r8\Error\Formatter\JSON( \r8\Env::request() ),
+        new \r8\Stream\Out\ErrorLog
+    )
+);
+
+/**
+ * If display errors is enabled, hook in an error handler for outputting the errors
+ */
+$r8_displayErrors = strtolower( ini_get('display_errors') );
+if ( $r8_displayErrors == "1" || $r8_displayErrors == "on" ) {
+
+    if ( \r8\Env::request()->isCLI() )
+        $r8_formatter = new \r8\Error\Formatter\Text( \r8\Env::request() );
+    else
+        $r8_formatter = new \r8\Error\Formatter\HTML( \r8\Env::request() );
+
+    \r8\Error::getInstance()->register(
+        new \r8\Error\Handler\Stream(
+            $r8_formatter,
+            new \r8\Stream\Out\StdOut
+        )
+    );
+
+    unset( $r8_formatter );
+}
+
+unset( $r8_displayErrors );
 
 ?>
