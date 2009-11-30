@@ -77,18 +77,61 @@ class Autoload
      */
     public function register ( $prefix, $location )
     {
-        $prefix = trim( (string) $prefix, " /" );
+        $prefix = trim( (string) $prefix, '\ ' );
 
         if ( \r8\isEmpty($prefix) )
             throw new \r8\Exception\Argument( 0, "Class Prefix", "Must not be empty" );
 
-        $location = (string) $location;
+        $location = rtrim( (string) $location, "/" );
 
         if ( \r8\isEmpty($location) )
             throw new \r8\Exception\Argument( 1, "File Location", "Must not be empty" );
 
-        $this->map[ '/'. $prefix .'/' ] = $location;
+        $this->map = array($prefix => $location) + $this->map;
         return $this;
+    }
+
+    /**
+     * Given a class name, finds the file in which it is located
+     *
+     * @param String $class The name of the class to look for
+     * @return String|NULL Returns NULL if the file could not be found
+     */
+    public function find ( $class )
+    {
+        $class = "\\". trim( (string) $class, " \\" );
+
+        foreach ( $this->map AS $prefix => $location )
+        {
+            if ( \r8\str\startsWith($class, '\\'. $prefix .'\\') )
+            {
+                $file = \r8\str\stripHead( $class, '\\'. $prefix .'\\' );
+                $file = str_replace('\\', '/', $file);
+                $file = $location ."/". $file .".php";
+                if ( file_exists($file) )
+                    return $file;
+            }
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Attempts to load the given class
+     *
+     * @param String $class The name of the class to look for
+     * @return Boolean Returns whether the class was successfully loaded
+     */
+    public function load ( $class )
+    {
+        $file = $this->find( $class );
+
+        if ( $file === NULL )
+            return FALSE;
+
+        require_once $file;
+
+        return class_exists( $class, FALSE );
     }
 
 }

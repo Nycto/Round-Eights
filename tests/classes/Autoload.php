@@ -48,21 +48,21 @@ class classes_Autoload extends PHPUnit_Framework_TestCase
         $auto = new \r8\Autoload;
         $this->assertSame( array(), $auto->getRegistered() );
 
-        $this->assertSame( $auto, $auto->register( '/r8/', "/dir" ) );
+        $this->assertSame( $auto, $auto->register( '   \r8\  ', '/dir' ) );
         $this->assertSame(
-            array( '/r8/' => '/dir' ),
+            array( 'r8' => '/dir' ),
             $auto->getRegistered()
         );
 
-        $this->assertSame( $auto, $auto->register( 'r8/iface', "/dir/iface" ) );
+        $this->assertSame( $auto, $auto->register( 'r8\iface', "/dir/iface" ) );
         $this->assertSame(
-            array( '/r8/' => '/dir', '/r8/iface/' => '/dir/iface' ),
+            array( 'r8\iface' => '/dir/iface', 'r8' => '/dir' ),
             $auto->getRegistered()
         );
 
-        $this->assertSame( $auto, $auto->register( 'r8', "/new" ) );
+        $this->assertSame( $auto, $auto->register( 'r8', "/new///" ) );
         $this->assertSame(
-            array( '/r8/' => '/new', '/r8/iface/' => '/dir/iface' ),
+            array( 'r8' => '/new', 'r8\iface' => '/dir/iface' ),
             $auto->getRegistered()
         );
     }
@@ -72,7 +72,7 @@ class classes_Autoload extends PHPUnit_Framework_TestCase
         $auto = new \r8\Autoload;
 
         try {
-            $auto->register( '', "/new" );
+            $auto->register( '', '/new' );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument $err ) {
@@ -86,6 +86,34 @@ class classes_Autoload extends PHPUnit_Framework_TestCase
         catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
+    }
+
+    public function testFind ()
+    {
+        $auto = new \r8\Autoload;
+        $auto->register( 'r8', r8_DIR_CLASSES );
+        $auto->register( 'r8\iface', r8_DIR_INTERFACES );
+
+        $this->assertSame(
+        	r8_DIR_CLASSES ."Autoload.php",
+            $auto->find('\r8\Autoload')
+        );
+
+        $this->assertSame(
+        	r8_DIR_INTERFACES ."Error.php",
+            $auto->find('\r8\iface\Error')
+        );
+
+        $this->assertNull( $auto->find('\unknown\class') );
+    }
+
+    public function testLoad ()
+    {
+        $auto = new \r8\Autoload;
+        $this->assertFalse( $auto->load("class") );
+
+        $auto->register( 'r8', r8_DIR_CLASSES );
+        $this->assertTrue( $auto->load('\r8\Autoload') );
     }
 
 }
