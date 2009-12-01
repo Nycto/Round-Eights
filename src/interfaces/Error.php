@@ -80,6 +80,13 @@ interface Error
      */
     public function getType ();
 
+    /**
+     * Returns an array of details about this error
+     *
+     * @return Array
+     */
+    public function getDetails ();
+
 }
 
 ?>

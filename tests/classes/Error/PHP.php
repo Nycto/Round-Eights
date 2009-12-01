@@ -92,6 +92,17 @@ class classes_Error_PHP extends PHPUnit_Framework_TestCase
         $this->assertSame( "Unknown Error", $error->getType() );
     }
 
+    public function testGetDetails ()
+    {
+        $backtrace = new \r8\Backtrace;
+        $error = new \r8\Error\PHP(
+            "example.php", 123, 7,
+            "Error Message", $backtrace
+        );
+
+        $this->assertSame( array(), $error->getDetails() );
+    }
+
 }
 
 ?>

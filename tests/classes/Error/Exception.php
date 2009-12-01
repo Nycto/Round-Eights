@@ -60,6 +60,62 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
         $this->assertSame( $trace, $error->getBacktrace() );
     }
 
+    public function testGetDetails_OutsideException ()
+    {
+        $exception = new Exception( "The Message", 5050 );
+        $error = new \r8\Error\Exception( $exception );
+
+        $this->assertSame( array(), $error->getDetails() );
+    }
+
+    public function testGetDetails_Bare ()
+    {
+        $exception = new \r8\Exception( "The Message", 5050 );
+        $error = new \r8\Error\Exception( $exception );
+
+        $this->assertSame(
+            array(
+                'Exception' => 'General Exception (General Errors)'
+            ),
+            $error->getDetails()
+        );
+    }
+
+    public function testGetDetails_Full ()
+    {
+        $exception = $this->getMock('\r8\Exception');
+        $exception->expects( $this->once() )
+            ->method( 'getDescription' )
+            ->will( $this->returnValue("Exception Name"));
+        $exception->expects( $this->once() )
+            ->method( 'getData' )
+            ->will( $this->returnValue(
+                array( 'Key' => 'Value', 'More' => 505050 )
+            ));
+        $exception->expects( $this->once() )
+            ->method( 'getFault' )
+            ->will( $this->returnValue(
+                array(
+                    'function' => 'method', 'class' => 'cls', 'type' => '->',
+                    'file' => '/test.php', 'line' => 50
+                )
+            ));
+
+        $error = new \r8\Error\Exception( $exception );
+
+        $this->assertSame(
+            array(
+                'Exception' => 'Exception Name',
+                'Caused By' => 'cls->method()',
+                'Caused in File' => '/test.php',
+                'Caused on Line' => 50,
+                'Key' => 'Value',
+                'More' => 505050
+            ),
+            $error->getDetails()
+        );
+    }
+
 }
 
 ?>

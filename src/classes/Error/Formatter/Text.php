@@ -44,15 +44,24 @@ class Text extends \r8\Error\Formatter
         );
 
         $result = "\n"
-			."PHP Error Encointered!\n";
+            ."PHP Error Encointered!\n";
 
-		foreach ( $this->toArray($error) AS $key => $value )
-		{
-		    $result .= $key .": ". $value ."\n";
-		}
+        foreach ( $this->toArray($error) AS $key => $value ) {
+            $result .= $key .": ". $value ."\n";
+        }
+
+        $details = $error->getDetails();
+        if ( !empty($details) ) {
+            $result .= "Details:\n";
+            foreach ( $details AS $key => $value ) {
+                if ( !\r8\isBasic($value) )
+                    $value = \r8\getDump($value);
+                $result .= "    ". $key .": ". $value ."\n";
+            }
+        }
 
         $result .= "Backtrace:\n"
-            .$formatter->format( $error->getBacktrace() )
+            ."    ". str_replace("\n", "\n    ", $formatter->format( $error->getBacktrace() ))
             ."\n\n";
 
         return $result;

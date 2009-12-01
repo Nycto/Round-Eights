@@ -188,6 +188,16 @@ class PHP implements \r8\iface\Error
             return "Unknown Error";
     }
 
+    /**
+     * Returns an array of details about this error
+     *
+     * @return Array
+     */
+    public function getDetails ()
+    {
+        return array();
+    }
+
 }
 
 ?>

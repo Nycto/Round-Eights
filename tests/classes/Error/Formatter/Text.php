@@ -38,12 +38,19 @@ class classes_Error_Formatter_Text extends PHPUnit_Framework_TestCase
         $formatter = new \r8\Error\Formatter\Text(
             \r8\Env::request()
         );
+        
+        $exception = new \r8\Exception("Test", 5050);
+        $exception->setFault(0);
+        $exception->addData("key", "data");
+        $exception->addData("test", new stdClass);
 
-        $error = new \r8\Error\Exception( new \Exception );
+        $error = new \r8\Error\Exception( $exception );
 
         $result = $formatter->format( $error );
         $this->assertType( "string", $result );
         $this->assertGreaterThan( 0, strlen($result) );
+        
+        echo $result;
     }
 
 }

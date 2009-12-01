@@ -32,6 +32,27 @@ class JSON extends \r8\Error\Formatter
 {
 
     /**
+     * Formats an array as a JSON object
+     *
+     * @param Array $data
+     * @return String
+     */
+    private function formatArray ( array $data )
+    {
+        $result = "";
+
+        foreach ( $data AS $key => $value ) {
+
+            if ( !\r8\isBasic($value) )
+                $value = \r8\getDump( $value );
+
+            $result .= '"'. $key .'":'. json_encode($value) .", ";
+        }
+
+        return rtrim( $result, ", " );
+    }
+
+    /**
      * Formats an error as a string
      *
      * @param \r8\iface\Error $error The error to format
@@ -43,14 +64,13 @@ class JSON extends \r8\Error\Formatter
             new \r8\Backtrace\Formatter\JSON
         );
 
-        $result = "{";
+        $result = "{". $this->formatArray( $this->toArray($error) );
 
-		foreach ( $this->toArray($error) AS $key => $value )
-		{
-		    $result .= '"'. $key .'":'. json_encode($value) .", ";
-		}
+        $details = $error->getDetails();
+        if ( !empty($details) )
+            $result .= ', "Details":{'. $this->formatArray($details) .'}';
 
-        $result .= '"Backtrace":'
+        $result .= ', "Backtrace":'
             .$formatter->format( $error->getBacktrace() )
             ."}";
 

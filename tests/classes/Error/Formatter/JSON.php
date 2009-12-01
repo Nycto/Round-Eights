@@ -39,7 +39,14 @@ class classes_Error_Formatter_JSON extends PHPUnit_Framework_TestCase
             \r8\Env::request()
         );
 
-        $error = new \r8\Error\Exception( new \Exception );
+
+        $exception = new \r8\Exception("Test", 5050);
+        $exception->setFault(0);
+        $exception->addData("key", "data");
+        $exception->addData("test", new stdClass);
+
+        $error = new \r8\Error\Exception( $exception );
+
 
         $result = $formatter->format( $error );
         $this->assertType( "string", $result );
