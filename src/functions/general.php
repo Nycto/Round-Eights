@@ -79,8 +79,10 @@ function reduce ($value)
     else if (is_resource($value))
         return get_resource_type($value);
 
+    // @codeCoverageIgnoreStart
     else
         return NULL;
+    // @codeCoverageIgnoreEnd
 
 }
 

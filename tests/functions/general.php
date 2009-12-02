@@ -38,7 +38,7 @@ class functions_general extends PHPUnit_Framework_TestCase
 
         $var1 = "test";
         $var2 = "other";
-        r8\swap($var1, $var2);
+        \r8\swap($var1, $var2);
 
         $this->assertEquals("test", $var2);
         $this->assertEquals("other", $var1);
@@ -46,25 +46,27 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testReduce ()
     {
-        $this->assertFalse( r8\reduce( FALSE ) );
-        $this->assertTrue( r8\reduce( TRUE ) );
-        $this->assertNull( r8\reduce( NULL ) );
-        $this->assertEquals( 270, r8\reduce( 270 ) );
-        $this->assertEquals( 151.12, r8\reduce( 151.12 ) );
-        $this->assertEquals( 151.12, r8\reduce( array(151.12, 150) ) );
-        $this->assertEquals( 151.12, r8\reduce( array( array(151.12, 150) ) ) );
+        $this->assertFalse( \r8\reduce( FALSE ) );
+        $this->assertTrue( \r8\reduce( TRUE ) );
+        $this->assertNull( \r8\reduce( NULL ) );
+        $this->assertEquals( 270, \r8\reduce( 270 ) );
+        $this->assertEquals( 151.12, \r8\reduce( 151.12 ) );
+        $this->assertEquals( 151.12, \r8\reduce( array(151.12, 150) ) );
+        $this->assertEquals( 151.12, \r8\reduce( array( array(151.12, 150) ) ) );
+        $this->assertEquals( "String of stuff", \r8\reduce( "String of stuff" ) );
+        $this->assertEquals( "stream", \r8\reduce(STDOUT) );
     }
 
     public function testDefineIf ()
     {
         $this->assertFalse( defined("testDefineIf_example") );
 
-        $this->assertTrue( r8\defineIf("testDefineIf_example", "value") );
+        $this->assertTrue( \r8\defineIf("testDefineIf_example", "value") );
 
         $this->assertTrue( defined("testDefineIf_example") );
         $this->assertEquals( "value", testDefineIf_example );
 
-        $this->assertTrue( r8\defineIf("testDefineIf_example", "new value") );
+        $this->assertTrue( \r8\defineIf("testDefineIf_example", "new value") );
 
         $this->assertEquals( "value", testDefineIf_example );
 
@@ -72,84 +74,84 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testIsEmpty ()
     {
-        $this->assertTrue( r8\isEmpty("") );
-        $this->assertTrue( r8\isEmpty(0) );
-        $this->assertTrue( r8\isEmpty(NULL) );
-        $this->assertTrue( r8\isEmpty(FALSE) );
-        $this->assertTrue( r8\isEmpty( array() ) );
-        $this->assertTrue( r8\isEmpty( "  " ) );
+        $this->assertTrue( \r8\isEmpty("") );
+        $this->assertTrue( \r8\isEmpty(0) );
+        $this->assertTrue( \r8\isEmpty(NULL) );
+        $this->assertTrue( \r8\isEmpty(FALSE) );
+        $this->assertTrue( \r8\isEmpty( array() ) );
+        $this->assertTrue( \r8\isEmpty( "  " ) );
 
-        $this->assertFalse( r8\isEmpty("string") );
-        $this->assertFalse( r8\isEmpty(1) );
-        $this->assertFalse( r8\isEmpty("0") );
-        $this->assertFalse( r8\isEmpty("1") );
-        $this->assertFalse( r8\isEmpty(TRUE) );
-        $this->assertFalse( r8\isEmpty( array(1) ) );
+        $this->assertFalse( \r8\isEmpty("string") );
+        $this->assertFalse( \r8\isEmpty(1) );
+        $this->assertFalse( \r8\isEmpty("0") );
+        $this->assertFalse( \r8\isEmpty("1") );
+        $this->assertFalse( \r8\isEmpty(TRUE) );
+        $this->assertFalse( \r8\isEmpty( array(1) ) );
 
-        $this->assertFalse( r8\isEmpty("", r8\ALLOW_BLANK) );
-        $this->assertFalse( r8\isEmpty(0, r8\ALLOW_ZERO) );
-        $this->assertFalse( r8\isEmpty(NULL, r8\ALLOW_NULL) );
-        $this->assertFalse( r8\isEmpty(FALSE, r8\ALLOW_FALSE) );
-        $this->assertFalse( r8\isEmpty( array(), r8\ALLOW_EMPTY_ARRAYS ) );
-        $this->assertFalse( r8\isEmpty( "  ", r8\ALLOW_SPACES ) );
+        $this->assertFalse( \r8\isEmpty("", \r8\ALLOW_BLANK) );
+        $this->assertFalse( \r8\isEmpty(0, \r8\ALLOW_ZERO) );
+        $this->assertFalse( \r8\isEmpty(NULL, \r8\ALLOW_NULL) );
+        $this->assertFalse( \r8\isEmpty(FALSE, \r8\ALLOW_FALSE) );
+        $this->assertFalse( \r8\isEmpty( array(), \r8\ALLOW_EMPTY_ARRAYS ) );
+        $this->assertFalse( \r8\isEmpty( "  ", \r8\ALLOW_SPACES ) );
     }
 
     public function testIsVague ()
     {
-        $this->assertTrue( r8\isVague(FALSE) );
-        $this->assertTrue( r8\isVague(TRUE) );
-        $this->assertTrue( r8\isVague("") );
-        $this->assertTrue( r8\isVague(0) );
-        $this->assertTrue( r8\isVague(NULL) );
-        $this->assertTrue( r8\isVague( array() ) );
-        $this->assertTrue( r8\isVague( "  " ) );
+        $this->assertTrue( \r8\isVague(FALSE) );
+        $this->assertTrue( \r8\isVague(TRUE) );
+        $this->assertTrue( \r8\isVague("") );
+        $this->assertTrue( \r8\isVague(0) );
+        $this->assertTrue( \r8\isVague(NULL) );
+        $this->assertTrue( \r8\isVague( array() ) );
+        $this->assertTrue( \r8\isVague( "  " ) );
 
-        $this->assertFalse( r8\isVague("string") );
-        $this->assertFalse( r8\isVague(1) );
-        $this->assertFalse( r8\isVague("0") );
-        $this->assertFalse( r8\isVague("1") );
-        $this->assertFalse( r8\isVague( array(1) ) );
+        $this->assertFalse( \r8\isVague("string") );
+        $this->assertFalse( \r8\isVague(1) );
+        $this->assertFalse( \r8\isVague("0") );
+        $this->assertFalse( \r8\isVague("1") );
+        $this->assertFalse( \r8\isVague( array(1) ) );
     }
 
     public function testIsBasic ()
     {
-        $this->assertTrue( r8\isBasic(FALSE) );
-        $this->assertTrue( r8\isBasic(TRUE) );
-        $this->assertTrue( r8\isBasic("some string") );
-        $this->assertTrue( r8\isBasic(500) );
-        $this->assertTrue( r8\isBasic(2.78) );
-        $this->assertTrue( r8\isBasic(NULL) );
+        $this->assertTrue( \r8\isBasic(FALSE) );
+        $this->assertTrue( \r8\isBasic(TRUE) );
+        $this->assertTrue( \r8\isBasic("some string") );
+        $this->assertTrue( \r8\isBasic(500) );
+        $this->assertTrue( \r8\isBasic(2.78) );
+        $this->assertTrue( \r8\isBasic(NULL) );
 
-        $this->assertFalse( r8\isBasic( $this->getMock("object") ) );
-        $this->assertFalse( r8\isBasic( array() ) );
+        $this->assertFalse( \r8\isBasic( $this->getMock("object") ) );
+        $this->assertFalse( \r8\isBasic( array() ) );
     }
 
     public function testArrayVal ()
     {
-        $this->assertEquals( array(1, 2, 3), r8\arrayVal(array(1, 2, 3)) );
-        $this->assertEquals( array(1), r8\arrayVal(1) );
+        $this->assertEquals( array(1, 2, 3), \r8\arrayVal(array(1, 2, 3)) );
+        $this->assertEquals( array(1), \r8\arrayVal(1) );
     }
 
     public function testNumVal ()
     {
-        $this->assertEquals( 1, r8\numVal(1) );
-        $this->assertEquals( 1.5, r8\numVal(1.5) );
-        $this->assertEquals( 1, r8\numVal("1") );
-        $this->assertEquals( 1.5, r8\numVal("1.5") );
+        $this->assertEquals( 1, \r8\numVal(1) );
+        $this->assertEquals( 1.5, \r8\numVal(1.5) );
+        $this->assertEquals( 1, \r8\numVal("1") );
+        $this->assertEquals( 1.5, \r8\numVal("1.5") );
     }
 
     public function testBoolVal ()
     {
-        $this->assertEquals( TRUE, r8\boolVal(TRUE) );
-        $this->assertEquals( FALSE, r8\boolVal(FALSE) );
-        $this->assertEquals( TRUE, r8\boolVal(1) );
-        $this->assertEquals( FALSE, r8\boolVal(0) );
+        $this->assertEquals( TRUE, \r8\boolVal(TRUE) );
+        $this->assertEquals( FALSE, \r8\boolVal(FALSE) );
+        $this->assertEquals( TRUE, \r8\boolVal(1) );
+        $this->assertEquals( FALSE, \r8\boolVal(0) );
     }
 
     public function testStrVal ()
     {
         $this->assertEquals( "string", \r8\strVal("string") );
-        $this->assertEquals( "5", r8\strVal(5) );
+        $this->assertEquals( "5", \r8\strVal(5) );
 
         $toString = $this->getMock("stub_strval", array("__toString"));
         $toString->expects( $this->once() )
@@ -161,18 +163,18 @@ class functions_general extends PHPUnit_Framework_TestCase
 
     public function testIndexVal ()
     {
-        $this->assertSame( 0, r8\indexVal(FALSE) );
-        $this->assertSame( 1, r8\indexVal(TRUE) );
-        $this->assertSame( "", r8\indexVal("") );
-        $this->assertSame( 0, r8\indexVal(0) );
-        $this->assertSame( "", r8\indexVal(NULL) );
-        $this->assertSame( "", r8\indexVal( array() ) );
-        $this->assertSame( "  ", r8\indexVal( "  " ) );
-        $this->assertSame( "string", r8\indexVal("string") );
-        $this->assertSame( 1, r8\indexVal(1) );
-        $this->assertSame( "0", r8\indexVal("0") );
-        $this->assertSame( "1", r8\indexVal("1") );
-        $this->assertSame( 1, r8\indexVal( array(1) ) );
+        $this->assertSame( 0, \r8\indexVal(FALSE) );
+        $this->assertSame( 1, \r8\indexVal(TRUE) );
+        $this->assertSame( "", \r8\indexVal("") );
+        $this->assertSame( 0, \r8\indexVal(0) );
+        $this->assertSame( "", \r8\indexVal(NULL) );
+        $this->assertSame( "", \r8\indexVal( array() ) );
+        $this->assertSame( "  ", \r8\indexVal( "  " ) );
+        $this->assertSame( "string", \r8\indexVal("string") );
+        $this->assertSame( 1, \r8\indexVal(1) );
+        $this->assertSame( "0", \r8\indexVal("0") );
+        $this->assertSame( "1", \r8\indexVal("1") );
+        $this->assertSame( 1, \r8\indexVal( array(1) ) );
     }
 
     public function testKindOf ()
