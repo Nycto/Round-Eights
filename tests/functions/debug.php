@@ -32,6 +32,16 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  */
 class functions_debug extends PHPUnit_Framework_TestCase
 {
+    
+    public function testDump ()
+    {
+        ob_start();
+        $this->assertNull( \r8\dump("String of Data") );
+        $result = ob_get_clean();
+        
+        $this->assertType('string', $result);
+        $this->assertGreaterThan(0, strlen($result));
+    }
 
     public function testGetDump ()
     {

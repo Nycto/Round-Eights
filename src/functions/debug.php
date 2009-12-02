@@ -36,7 +36,7 @@ namespace r8;
  */
 function dump ( $value )
 {
-    if ( isset($_SERVER['SHELL']) ) {
+    if ( \r8\Env::request()->isCLI() ) {
         var_dump( $value );
     }
     else {
