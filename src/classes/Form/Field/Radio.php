@@ -37,7 +37,7 @@ class Radio extends \r8\Form\Multi
      * The fields need to have an ID so that the label tags are correctly
      * associated with the radio tags
      *
-     * @return
+     * @return String
      */
     public function getRadioOptionID ( $value )
     {
@@ -56,7 +56,7 @@ class Radio extends \r8\Form\Multi
      * Returns the an HTML tag that represents an individual option's radio button
      *
      * @param String|Integer $value The value of the option whose tag should be returned
-     * @return Object Returns a \r8\HTML\Tag object
+     * @return \r8\HTML\Tag
      */
     public function getOptionRadioTag ( $value )
     {
@@ -84,7 +84,7 @@ class Radio extends \r8\Form\Multi
      * Returns the an HTML tag that represents an individual option's label
      *
      * @param String|Integer $value The value of the option whose label tag should be returned
-     * @return Object Returns a \r8\HTML\Tag object
+     * @return \r8\HTML\Tag
      */
     public function getOptionLabelTag ( $value )
     {
@@ -123,7 +123,7 @@ class Radio extends \r8\Form\Multi
     /**
      * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return Object A \r8\HTML\Tag object
+     * @return \r8\HTML\Tag
      */
     public function getTag()
     {

@@ -36,6 +36,8 @@ abstract class Multi extends \r8\Form\Field
      *
      * This is an associative array where they key is the option value and
      * the element value is the option label
+     *
+     * @var Array
      */
     private $options = array();
 
@@ -71,7 +73,7 @@ abstract class Multi extends \r8\Form\Field
      * @param mixed $value The raw value of this option. This will be reduced
      *      down to a basic value
      * @param String $label The visible label for this value
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function addOption ( $value, $label )
     {
@@ -100,7 +102,7 @@ abstract class Multi extends \r8\Form\Field
      * Removes an option from the list based on it's value
      *
      * @param mixed $value The option value to remove
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function removeOption ( $value )
     {
@@ -131,7 +133,7 @@ abstract class Multi extends \r8\Form\Field
     /**
      * Removes all the registered options from this instance
      *
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function clearOptions ()
     {
@@ -143,7 +145,7 @@ abstract class Multi extends \r8\Form\Field
      * Imports a set of options from an array or traversable object
      *
      * @param array $source
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function importOptions ( array $source )
     {

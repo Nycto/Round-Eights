@@ -55,7 +55,7 @@ class Select extends \r8\Form\Multi
     /**
      * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return Object A \r8\HTML\Tag object
+     * @return \r8\HTML\Tag
      */
     public function getTag()
     {

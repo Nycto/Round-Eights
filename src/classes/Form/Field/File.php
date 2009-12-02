@@ -80,7 +80,7 @@ class File extends \r8\Form\Field
      *
      * This will apply the validator to the filtered value
      *
-     * @return object An instance of validator results
+     * @return \r8\Validator\Results
      */
     public function validate ()
     {
@@ -97,7 +97,7 @@ class File extends \r8\Form\Field
     /**
      * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return Object A \r8\HTML\Tag object
+     * @return \r8\HTML\Tag
      */
     public function getTag()
     {
