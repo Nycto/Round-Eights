@@ -24,6 +24,8 @@
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  */
 
+// @codeCoverageIgnoreStart
+
 // Ensure they are running the appropriate PHP version
 if ( version_compare( phpversion(), '5.3.1' ) < 0 )
     trigger_error("Could not load Round Eights: PHP version 5.3.1 required", E_USER_ERROR);
@@ -143,5 +145,7 @@ if ( $r8_displayErrors == "1" || $r8_displayErrors == "on" ) {
 }
 
 unset( $r8_displayErrors );
+
+// @codeCoverageIgnoreEnd
 
 ?>

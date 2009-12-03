@@ -111,7 +111,9 @@ class Cookie implements \r8\iface\Session
      */
     protected function setCookie ( $key, $value, $expire )
     {
+        // @codeCoverageIgnoreStart
         return setCookie( $key, $value, $expire );
+        // @codeCoverageIgnoreEnd
     }
 
     /**

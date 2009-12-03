@@ -39,8 +39,10 @@ class ErrorLog implements \r8\iface\Stream\Out
      */
     public function write ( $data )
     {
+        // @codeCoverageIgnoreStart
         error_log( \r8\strval( $data ) );
         return $this;
+        // @codeCoverageIgnoreEnd
     }
 
 }

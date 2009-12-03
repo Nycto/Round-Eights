@@ -77,7 +77,9 @@ class Mail extends \r8\Mail\Transport
      */
     protected function rawMail ( $to, $subject, $message, $headers )
     {
+        // @codeCoverageIgnoreStart
         return @mail( $to, $subject, $message, $headers );
+        // @codeCoverageIgnoreEnd
     }
 
     /**

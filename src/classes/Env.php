@@ -52,10 +52,12 @@ class Env
      */
     static private function getHeaders ()
     {
+        // @codeCoverageIgnoreStart
         if ( function_exists('apache_request_headers') )
             return apache_request_headers();
 
         return array();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -65,7 +67,9 @@ class Env
      */
     static private function isCLI ()
     {
+        // @codeCoverageIgnoreStart
         return php_sapi_name() == "cli" ? TRUE : FALSE;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -75,6 +79,7 @@ class Env
      */
     static public function request ()
     {
+        // @codeCoverageIgnoreStart
         if ( !isset(self::$request) ) {
 
             self::$request = new \r8\Env\Request(
@@ -85,6 +90,7 @@ class Env
                     self::isCLI()
                 );
         }
+        // @codeCoverageIgnoreEnd
 
         return self::$request;
     }
