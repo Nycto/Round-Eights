@@ -1,36 +1,34 @@
 <?php
 /**
- * File System Class
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
-namespace h2o\FileSys;
+namespace r8\FileSys;
 
 /**
  * Filesystem File class
  */
-class File extends \h2o\FileSys
+class File extends \r8\FileSys
 {
 
     /**
@@ -66,7 +64,7 @@ class File extends \h2o\FileSys
      */
     public function setPath ( $path )
     {
-        $path = trim(\h2o\strval( $path ));
+        $path = trim(\r8\strval( $path ));
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -93,13 +91,13 @@ class File extends \h2o\FileSys
     }
 
     /**
-     * Returns the directory as a \h2o\FileSys\Dir object
+     * Returns the directory as a \r8\FileSys\Dir object
      *
-     * @return Object Returns a \h2o\FileSys\Dir objec
+     * @return Object Returns a \r8\FileSys\Dir objec
      */
     public function getDir ()
     {
-        return new \h2o\FileSys\Dir( $this->getRawDir() );
+        return new \r8\FileSys\Dir( $this->getRawDir() );
     }
 
     /**
@@ -122,9 +120,9 @@ class File extends \h2o\FileSys
      */
     public function setExt ( $extension )
     {
-        $extension = trim(\h2o\strval( $extension ));
+        $extension = trim(\r8\strval( $extension ));
         $extension = ltrim( $extension, "." );
-        $this->extension = \h2o\isEmpty( $extension ) ? null : $extension;
+        $this->extension = \r8\isEmpty( $extension ) ? null : $extension;
         return $this;
     }
 
@@ -167,9 +165,9 @@ class File extends \h2o\FileSys
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(\h2o\strval( $filename ));
+        $filename = trim(\r8\strval( $filename ));
         $filename = rtrim( $filename, "." );
-        $this->filename = \h2o\isEmpty( $filename ) ? null : $filename;
+        $this->filename = \r8\isEmpty( $filename ) ? null : $filename;
         return $this;
     }
 
@@ -210,7 +208,7 @@ class File extends \h2o\FileSys
         if ( !$this->extExists() )
             return $this->getFilename();
 
-        return \h2o\str\weld(
+        return \r8\str\weld(
                 $this->getFilename(),
                 $this->getExt(),
                 "."
@@ -227,11 +225,11 @@ class File extends \h2o\FileSys
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(\h2o\strval( $basename ));
+        $basename = trim(\r8\strval( $basename ));
         $basename = pathinfo( $basename );
 
         // Handle filenames that start with a dot, like ".htaccess"
-        if ( \h2o\str\startsWith( $basename['basename'], "." ) ) {
+        if ( \r8\str\startsWith( $basename['basename'], "." ) ) {
             $basename = pathinfo( substr($basename['basename'], 1) );
             $basename['filename'] = ".".$basename['filename'];
         }
@@ -260,7 +258,7 @@ class File extends \h2o\FileSys
         $result = @file_get_contents( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable read data from file"
                 );
@@ -281,7 +279,7 @@ class File extends \h2o\FileSys
         $result = @file_put_contents( $this->getPath(), $content );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -302,7 +300,7 @@ class File extends \h2o\FileSys
         $result = @file_put_contents( $this->getPath(), $content, FILE_APPEND );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable write data to file"
                 );
@@ -324,7 +322,7 @@ class File extends \h2o\FileSys
         $result = @file( $this->getPath() );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to read data from file"
                 );
@@ -367,7 +365,7 @@ class File extends \h2o\FileSys
             return $this;
 
         if ( !@unlink( $this->getPath() ) ) {
-            $err = new \h2o\Exception\FileSystem( $this->getPath(), "Unable to delete file" );
+            $err = new \r8\Exception\FileSystem( $this->getPath(), "Unable to delete file" );
             throw $err;
         }
 
@@ -386,13 +384,13 @@ class File extends \h2o\FileSys
         $finfo = finfo_open(\FILEINFO_MIME);
 
         if ( $finfo === FALSE )
-            throw new \h2o\Exception\Extension( "Unable to open finfo database" );
+            throw new \r8\Exception\Extension( "Unable to open finfo database" );
 
         $result = finfo_file( $finfo, $this->getPath() );
 
         finfo_close( $finfo );
 
-        if ( \h2o\str\contains(" ", $result) )
+        if ( \r8\str\contains(" ", $result) )
             $result = strstr( $result, " ", TRUE );
 
         $result = rtrim($result, ";");
@@ -404,19 +402,19 @@ class File extends \h2o\FileSys
      * Copies this file to a new location
      *
      * @param String $destination The new location for the file
-     * @return Object Returns a new instance of \h2o\FileSys\File with the
+     * @return Object Returns a new instance of \r8\FileSys\File with the
      *      path pointing to the new file
      */
     public function copy ( $destination )
     {
         $this->requirePath();
 
-        $destination = \h2o\strval($destination);
+        $destination = \r8\strval($destination);
 
         $result = @copy( $this->getPath(), $destination );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to copy file"
                 );
@@ -438,12 +436,12 @@ class File extends \h2o\FileSys
     {
         $this->requirePath();
 
-        $destination = \h2o\strval($destination);
+        $destination = \r8\strval($destination);
 
         $result = @rename( $this->getPath(), $destination );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to move file"
                 );

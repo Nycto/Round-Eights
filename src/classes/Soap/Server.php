@@ -2,200 +2,165 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Soap
  */
 
-namespace h2o\Soap;
+namespace r8\Soap;
 
 /**
- * Delegates a Soap request to the appropriate registered command
+ * Delegates a Soap request to the appropriate registered message processors
  */
 class Server
 {
 
     /**
-     * The list of registered commands
+     * The processor for handling soap messages
      *
-     * @var array
+     * @var \r8\Soap\Server\Messages
      */
-    private $operations = array();
+    private $messages;
 
     /**
-     * The namespace the command elements will be members of
+     * The processor for handling soap headers
+     *
+     * @var \r8\Soap\Server\Headers
+     */
+    private $headers;
+
+    /**
+     * The namespace to use for soap elements
      *
      * @var String
      */
-    private $namespace;
+    private $namespace = "http://www.w3.org/2003/05/soap-envelope";
 
     /**
      * Constructor...
      *
-     * @param String $namespace The namespace the command elements will
-     * 		be members of
+     * @param \r8\Soap\Server\Messages $message The message processor
+     * @param \r8\Soap\Server\Messages $message The header processor
      */
-    public function __construct ( $namespace )
-    {
-        $this->namespace = trim( \h2o\strval( $namespace ) );
+    public function __construct (
+        \r8\Soap\Server\Messages $message = null,
+        \r8\Soap\Server\Headers $header = null
+    ) {
+        $this->messages = empty($message) ? new \r8\Soap\Server\Messages : $message;
+        $this->headers = empty($header) ? new \r8\Soap\Server\Headers : $header;
     }
 
     /**
-     * Returns the list of registered operations
+     * Returns the list of registered messages
      *
-     * @return array Returns an array of \h2o\iface\Soap\Operation objects
+     * @return \r8\Soap\Server\Messages
      */
-    public function getOperations ()
+    public function getMessages ()
     {
-        return $this->operations;
+        return $this->messages;
     }
 
     /**
-     * Registers a new command
+     * Returns the Headers registered for processing
      *
-     * @param String $title The name of the operation this object will handle
-     * @param \h2o\iface\Soap\Operation $operation The handler to invoke when
-     * 		this command is encountered
-     * @return \h2o\Soap\Server Returns a self reference
+     * @return \r8\Soap\Server\Headers
      */
-    public function register ( $title, \h2o\iface\Soap\Operation $operation )
+    public function getHeaders ()
     {
-        $title = \h2o\str\stripW( $title );
+        return $this->headers;
+    }
 
-        if ( \h2o\isEmpty($title) )
-            throw new \h2o\Exception\Argument(0, "Command Title", "Must not be empty");
-
-        $this->operations[ $title ] = $operation;
-
+    /**
+     * Adds a new Role this server acts under
+     *
+     * @param String $role
+     * @return \r8\Soap\Server Returns a self reference
+     */
+    public function addRole ( $role )
+    {
+        $this->headers->addRole( $role );
         return $this;
     }
 
     /**
-     * Returns the Soap command element from a given DOM Document
+     * Registers a new header processor
      *
-     * @throws \h2o\Exception\Interrupt\Soap This is thrown if any error
-     * 		is encountered while parsing the documet
-     * @param DOMDocument $doc The document to parse as a soap request
-     * @return DOMElement The command element
+     * @param String $uri The URI of the header
+     * @param String $name The tag name of the header this object will handle
+     * @param \r8\iface\Soap\Header $operation The handler to invoke when
+     * 		this command is encountered
+     * @return \r8\Soap\Server Returns a self reference
      */
-    private function getOperationElem ( \DOMDocument $doc )
+    public function addHeader ( $uri, $name, \r8\iface\Soap\Header $header )
     {
-        if ( !$doc->hasChildNodes() ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Empty XML Document",
-                1000
-            );
-        }
-
-        $xpath = new \DOMXPath( $doc );
-        $xpath->registerNamespace("soap", "http://www.w3.org/2001/12/soap-envelope");
-        $xpath->registerNamespace("cmd", $this->namespace);
-
-        // Look for the soap envelope
-        if ( $xpath->evaluate("count(/soap:Envelope)") == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap envelope",
-                1001
-            );
-        }
-
-        // I couldn't resist this variable name.
-        $bodyCount = $xpath->evaluate("count(/soap:Envelope/soap:Body)");
-
-        // Look for the soap body
-        if ( $bodyCount == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap body",
-                1002
-            );
-        }
-
-        // Ensure there aren't multiple soap bodies
-        if ( $bodyCount > 1 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Multiple soap body elements found",
-                1003
-            );
-        }
-
-        $cmdCount = $xpath->evaluate("count(/soap:Envelope/soap:Body/cmd:*)");
-
-        // Look for the soap command tag
-        if ( $cmdCount == 0 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Could not find soap operation element",
-                1004
-            );
-        }
-
-        // Ensure there aren't multiple commands
-        if ( $cmdCount > 1 ) {
-            throw new \h2o\Exception\Interrupt\Soap(
-            	"Multiple soap operation elements found",
-                1005
-            );
-        }
-
-        // Pull the command node
-        $cmd = $xpath->query("/soap:Envelope/soap:Body/cmd:*");
-
-        return $cmd->item(0);
+        $this->headers->addHeader( $uri, $name, $header );
+        return $this;
     }
 
     /**
-     * Processes a DOMDocument as an soap request
+     * Registers a new message processor
      *
-     * In the event of an error, a Soap Fault builder will be returned.
+     * @param String $uri The URI of the message
+     * @param String $name The tag name of the message this object will handle
+     * @param \r8\iface\Soap\Message $operation The handler to invoke when
+     * 		this command is encountered
+     * @return \r8\Soap\Server Returns a self reference
+     */
+    public function addMessage ( $uri, $name, \r8\iface\Soap\Message $message )
+    {
+        $this->messages->addMessage( $uri, $name, $message );
+        return $this;
+    }
+
+    /**
+     * Processes a soap request through this server
      *
-     * @param \DOMDocument $doc The document to process
-     * @return \h2o\iface\XMLBuilder Returns the builder needed to construct
+     * @param \r8\Soap\Parser $parser The soap message to process
+     * @return \r8\iface\XMLBuilder Returns the builder needed to construct
      * 		the response
      */
-    public function process ( \DOMDocument $doc )
+    public function process ( \r8\Soap\Parser $parser )
     {
         try {
-
-            // Extract the soap operation element
-            $cmd = $this->getOperationElem( $doc );
-
-            $tag = $cmd->tagName;
-
-            // If the tag is namespaced, just grab the local part
-            if ( \h2o\str\contains(":", $tag) )
-                $tag = \h2o\ary\last( explode(":", $tag) );
-
-            if ( !isset($this->operations[ $tag ]) ) {
-                throw new \h2o\Exception\Interrupt\Soap(
-                        "Invalid soap operation",
-                        1006
-                    );
-            }
-
-            return $this->operations[ $tag ]->getResponseBuilder( $doc, $cmd );
-
+            $headers = $this->headers->process( $parser );
+            $body = $this->messages->process( $parser );
         }
-        catch ( \h2o\Exception\Interrupt\Soap $err ) {
-            return new \h2o\XMLBuilder\Soap\Fault(
-                    $err->getCode(),
-                    $err->getMessage()
-                );
+        catch ( \r8\Soap\Fault $err ) {
+            $headers = null;
+            $body = new \r8\XMLBuilder\Soap\Fault( $err, $this->namespace );
         }
+
+        return new \r8\XMLBuilder\Soap\Envelope( $body, $headers, $this->namespace );
+    }
+
+    /**
+     * A helper method for processing a stream
+     *
+     * @param \r8\iface\Stream\In $stream The source data
+     * @return \r8\iface\XMLBuilder Returns the builder needed to construct
+     * 		the response
+     */
+    public function processStream ( \r8\iface\Stream\In $stream )
+    {
+        $doc = new \DOMDocument;
+        $doc->loadXML( $stream->readAll() );
+        return $this->process( new \r8\Soap\Parser($doc) );
     }
 
 }

@@ -1,8 +1,8 @@
 --------------------
-Installing RaindropPHP
+Installing Round Eights
 --------------------
 
-RaindropPHP comes in two flavours, the raw source files and the single file PHP
+Round Eights comes in two flavours, the raw source files and the single file PHP
 archive. Both are equivilent as far as functionality is concerned.
 
 
@@ -10,12 +10,12 @@ archive. Both are equivilent as far as functionality is concerned.
 Installing the PHP archive
 --------------------------
 
-Included in your download is RaindropPHP.phar. If you choose this path, this file
+Included in your download is Round Eights.phar. If you choose this path, this file
 is all you need. Simply copy it to your chosen destination, and include it like
 you would any other file, for example:
 
 <?php
-require_once "/path/to/RaindropPHP.phar";
+require_once "/path/to/Round Eights.phar";
 ?>
 
 For more information about phar files, visit the PHP manual here:
@@ -28,10 +28,10 @@ Installing the Source Files
 ---------------------------
 
 Optionally, you may simply copy the "src" directory and all of its contents to
-your code base, and include the contained "RaindropPHP.php" file, for example:
+your code base, and include the contained "Round Eights.php" file, for example:
 
 <?php
-require_once "/path/to/src/RaindropPHP.php";
+require_once "/path/to/src/Round Eights.php";
 ?>
 
 
@@ -39,5 +39,5 @@ require_once "/path/to/src/RaindropPHP.php";
 Requirements
 ------------
 
-RaindropPHP requires version 5.3 or later of PHP. There are a few components that
+Round Eights requires version 5.3 or later of PHP. There are a few components that
 require specific PHP extensions.

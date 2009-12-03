@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -28,7 +28,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
-require_once rtrim( __DIR__, "/" ) ."/../src/RaindropPHP.php";
+require_once rtrim( __DIR__, "/" ) ."/../src/RoundEights.php";
 
 error_reporting( E_ALL | E_STRICT );
 
@@ -37,7 +37,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 /**
  * Includes the config file and ensures that a set of constants exists
  */
-class h2o_Test_Config
+class r8_Test_Config
 {
 
     /**
@@ -118,7 +118,7 @@ class h2o_Test_Config
  *
  * Provides an interface to search and load test suites in a directory
  */
-class h2o_Base_TestSuite extends PHPUnit_Framework_TestSuite
+class r8_Base_TestSuite extends PHPUnit_Framework_TestSuite
 {
 
     /**
@@ -210,7 +210,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
             $this->markTestSkipped("MySQLi extension is not loaded");
 
         // Ensure the proper configuration exists
-        $config = new h2o_Test_Config(
+        $config = new r8_Test_Config(
                 "MYSQLI",
                 array( "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE" )
             );
@@ -242,7 +242,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * Returns and maintains a \h2o\DB\MySQLi Link
+     * Returns and maintains a \r8\DB\MySQLi Link
      *
      * This will also create a table and fill it with data, according to the
      * settings in the config.php file
@@ -253,7 +253,7 @@ abstract class PHPUnit_MySQLi_Framework_TestCase extends PHPUnit_Framework_TestC
 
         if ( !isset($link) || !$link->isConnected() ) {
 
-            $link = new \h2o\DB\MySQLi\Link( $this->getURI() );
+            $link = new \r8\DB\MySQLi\Link( $this->getURI() );
 
             $mysqli = $link->getLink();
 
@@ -325,7 +325,7 @@ abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_Te
      */
     public function getTempFileName ()
     {
-        $result = rtrim( sys_get_temp_dir(), "/" ) ."/h2o_unitTest_". uniqid();
+        $result = rtrim( sys_get_temp_dir(), "/" ) ."/r8_unitTest_". uniqid();
         $this->cleanup[] = $result;
         return $result;
     }
@@ -405,7 +405,7 @@ abstract class PHPUnit_Dir_Framework_TestCase extends PHPUnit_Framework_TestCase
      */
     public function setUp ()
     {
-        $this->dir = rtrim( sys_get_temp_dir(), "/" ) ."/h2o_". uniqid();
+        $this->dir = rtrim( sys_get_temp_dir(), "/" ) ."/r8_". uniqid();
 
         if (!mkdir( $this->dir ))
             $this->markTestSkipped("Unable to create temporary directory: ". $this->dir);
@@ -531,6 +531,31 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
     }
 
     /**
+     * Converts an interator to an array while providing a maximum result cap
+     *
+     * @param Integer $max The maximum number of results
+     * @param Traversable $iterator The iterator to convert
+     * @return Array
+     */
+    static public function iteratorToArray ( $max, \Traversable $iterator )
+    {
+        $i = 0;
+
+        $result = array();
+
+        foreach ( $iterator AS $key => $value )
+        {
+            $result[ $key ] = $value;
+
+            $i++;
+            if ( $i > $max )
+                break;
+        }
+
+        return $result;
+    }
+
+    /**
      * Constructor...
      *
      * @param Array $value The value the iterator should produce
@@ -545,7 +570,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
      *
      * @return Array
      */
-    public function iteratorToArray ( Traversable $iterator )
+    public function toArray ( Traversable $iterator )
     {
         $hash = spl_object_hash( $iterator );
 
@@ -558,23 +583,9 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
         // Give them a 25% bonus to make debugging easier
         $max *= 1.25;
 
-        $i = 0;
+        $this->cache[$hash] = self::iteratorToArray( $max, $iterator );
 
-        $result = array();
-
-        foreach ( $iterator AS $key => $value )
-        {
-            $i++;
-
-            if ( $i > $max )
-                break;
-
-            $result[ $key ] = $value;
-        }
-
-        $this->cache[$hash] = $result;
-
-        return $result;
+        return $this->cache[$hash];
     }
 
     /**
@@ -589,7 +600,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
         if ( !($other instanceof Traversable) )
             return FALSE;
 
-        return $this->iteratorToArray($other) === $this->value;
+        return $this->toArray($other) === $this->value;
     }
 
     /**
@@ -607,7 +618,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
 
         $diff = new PHPUnit_Framework_ComparisonFailure_Array(
         	        $this->value,
-        	        $this->iteratorToArray($other)
+        	        $this->toArray($other)
 
             );
 

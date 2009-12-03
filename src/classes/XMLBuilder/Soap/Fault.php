@@ -2,69 +2,59 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package XMLBuilder
  */
 
-namespace h2o\XMLBuilder\Soap;
+namespace r8\XMLBuilder\Soap;
 
 /**
  * Generates a soap fault node structure
  */
-class Fault implements \h2o\iface\XMLBuilder
+class Fault implements \r8\iface\XMLBuilder
 {
 
     /**
-     * The fault code
+     * The fault whose XML is being built
      *
-     * @var String
+     * @var \r8\Soap\Fault
      */
-    private $code;
+    private $fault;
 
     /**
-     * The human readable fault reason description
+     * The namespace URI to use for the soap elements
      *
      * @var String
      */
-    private $reason;
+    private $soapURI;
 
     /**
      * Constructor...
      *
-     * @param String $code The fault code
-     * @param String $reason The human readable fault reason description
+     * @param \r8\Soap\Fault $fault The fault whose XML is being built
+     * @param String $soapURI The namespace URI to use for the soap elements
      */
-    public function __construct ( $code, $reason )
+    public function __construct ( \r8\Soap\Fault $fault, $soapURI )
     {
-        $code = \h2o\strval($code);
-
-        if ( \h2o\isEmpty($code) )
-            throw new \h2o\Exception\Argument(0, "Fault Code", "Must not be empty");
-
-        $reason = \h2o\strval($reason);
-
-        if ( \h2o\isEmpty($reason) )
-            throw new \h2o\Exception\Argument(0, "Fault Reason", "Must not be empty");
-
-        $this->code = $code;
-        $this->reason = $reason;
+        $this->fault = $fault;
+        $this->soapURI = (string) $soapURI;
     }
 
     /**
@@ -75,25 +65,28 @@ class Fault implements \h2o\iface\XMLBuilder
      */
     public function buildNode ( \DOMDocument $doc )
     {
-        $fault = $doc->createElementNS(
-                "http://www.w3.org/2003/05/soap-envelope",
-                "soap:Fault"
-            );
+        $data = array(
+            "Code" => array( "Value" => $this->fault->getPrimeCode() ),
+            "Reason" => array( "Text" => $this->fault->getMessage() )
+        );
 
-        $code = $doc->createElement("soap:Code");
-        $code->appendChild(
-                $doc->createElement("soap:Value", $this->code)
-            );
+        $parent =& $data[ 'Code' ];
 
-        $reason = $doc->createElement("soap:Reason");
-        $reason->appendChild(
-                $doc->createElement("soap:Text", $this->reason)
-            );
+        foreach ( $this->fault->getSubCodes() AS $subcode )
+        {
+            $parent[  'Subcode' ] = array( "Value" => $subcode );
+            $parent =& $parent[ 'Subcode' ];
+        }
 
-        $fault->appendChild( $code );
-        $fault->appendChild( $reason );
+        if ( !\r8\isEmpty($this->fault->getRole()) )
+            $data['Role'] = $this->fault->getRole();
 
-        return $fault;
+        if ( !\r8\isEmpty($this->fault->getDetails()) )
+            $data['Details'] = $this->fault->getDetails();
+
+        $builder = new \r8\XMLBuilder\Quick\Values( "Fault", $data, $this->soapURI );
+
+        return $builder->buildNode( $doc );
     }
 
 }

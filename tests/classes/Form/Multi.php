@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_strValue ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption("str", "lbl") );
 
@@ -44,7 +44,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_intValue ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(50, "lbl") );
 
@@ -53,7 +53,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_floatValue ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(1.5, "othr") );
 
@@ -66,7 +66,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_boolValue ()
     {
 
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(FALSE, "lbl") );
 
@@ -86,7 +86,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_nullValue ()
     {
 
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption(null, "lbl") );
 
@@ -99,7 +99,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_objValue ()
     {
 
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( $this->getMock("stub"), "lbl") );
 
@@ -111,7 +111,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_nonStringLabel ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( 1, 5) );
         $this->assertSame(
@@ -129,7 +129,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_conflict ()
     {
 
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame( $mock, $mock->addOption( "val", "one") );
         $this->assertSame(
@@ -147,7 +147,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testHasOption ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -161,7 +161,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testGetOptionLabel ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -178,14 +178,14 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
             $mock->getOptionLabel(4);
             $this->fail("An expected exception was not thrown");
         }
-        catch( \h2o\Exception\Index $err ) {
+        catch( \r8\Exception\Index $err ) {
             $this->assertSame("Option does not exist in field", $err->getMessage());
         }
     }
 
     public function testRemoveOption ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -204,7 +204,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testClearOptions ()
     {
 
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -220,7 +220,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testImportOptions ()
     {
-        $mock = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
 
         $this->assertSame(
                 $mock,
@@ -235,12 +235,12 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testDefaultValidator ()
     {
-        $field = $this->getMock("h2o\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $this->assertThat(
                 $field->getValidator(),
-                $this->isInstanceOf("h2o\Validator\MultiField")
+                $this->isInstanceOf("r8\Validator\MultiField")
             );
 
         $field->setValue( "one" );

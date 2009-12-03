@@ -1,31 +1,29 @@
 <?php
 /**
- * Database Connection
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace h2o\DB;
+namespace r8\DB;
 
 /**
  * Core Database Connection
@@ -34,7 +32,7 @@ namespace h2o\DB;
  * setting up the link, performing actions against the resource and
  * automatically disconnecting
  */
-abstract class Link implements \h2o\iface\DB\Link
+abstract class Link implements \r8\iface\DB\Link
 {
 
     /**
@@ -108,8 +106,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     static public function isSelect ( $query )
     {
-        $query = \h2o\strval($query);
-        $query = \h2o\str\stripQuoted($query, array("'", '"', "`"));
+        $query = \r8\strval($query);
+        $query = \r8\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
         return preg_match("/^\s*[\(?\s*]*(?:EXPLAIN\s+)?SELECT/i", $query) ? TRUE : FALSE;
@@ -123,8 +121,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     static public function isInsert ( $query )
     {
-        $query = \h2o\strval($query);
-        $query = \h2o\str\stripQuoted($query, array("'", '"', "`"));
+        $query = \r8\strval($query);
+        $query = \r8\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
         return preg_match("/^\s*INSERT\b/i", $query) ? TRUE : FALSE;
@@ -142,7 +140,7 @@ abstract class Link implements \h2o\iface\DB\Link
     static public function cleanseValue ( $value, $allowNull, $onString )
     {
         if ( !is_callable($onString) )
-            throw new \h2o\Exception\Argument(0, "onString Callback", "Must be Callable");
+            throw new \r8\Exception\Argument(0, "onString Callback", "Must be Callable");
 
         if ( is_array($value) ) {
             $result = array();
@@ -152,7 +150,7 @@ abstract class Link implements \h2o\iface\DB\Link
             return $result;
         }
 
-        $value = \h2o\reduce($value);
+        $value = \r8\reduce($value);
 
         if (is_bool($value))
             return $value ? "1" : "0";
@@ -179,7 +177,7 @@ abstract class Link implements \h2o\iface\DB\Link
     {
         // Ensure that the required extension is loaded
         if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
-            throw new \h2o\Exception\Extension(
+            throw new \r8\Exception\Extension(
                     static::PHP_EXTENSION,
                     "Extension is not loaded"
                 );
@@ -213,7 +211,7 @@ abstract class Link implements \h2o\iface\DB\Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return Object Returns a \h2o\DB\Result object
+     * @return Object Returns a \r8\DB\Result object
      */
     abstract protected function rawQuery ( $query );
 
@@ -250,7 +248,7 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setPersistent ( $setting )
     {
-        $this->persistent = \h2o\Filter::Boolean()->filter($setting);
+        $this->persistent = \r8\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -274,7 +272,7 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setForceNew ( $setting )
     {
-        $this->forceNew = \h2o\Filter::Boolean()->filter($setting);
+        $this->forceNew = \r8\Filter::Boolean()->filter($setting);
         return $this;
     }
 
@@ -296,8 +294,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setUserName ( $username )
     {
-        $username = \h2o\strval( $username );
-        $this->username = \h2o\isEmpty( $username ) ? null : $username;
+        $username = \r8\strval( $username );
+        $this->username = \r8\isEmpty( $username ) ? null : $username;
         return $this;
     }
 
@@ -340,8 +338,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setPassword ( $password )
     {
-        $password = \h2o\strval( $password );
-        $this->password = \h2o\isEmpty($password) ? null : $password;
+        $password = \r8\strval( $password );
+        $this->password = \r8\isEmpty($password) ? null : $password;
         return $this;
     }
 
@@ -384,8 +382,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setHost ( $host )
     {
-        $host = \h2o\strval( $host );
-        $this->host = \h2o\isEmpty( $host ) ? null : $host;
+        $host = \r8\strval( $host );
+        $this->host = \r8\isEmpty( $host ) ? null : $host;
         return $this;
     }
 
@@ -428,7 +426,7 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setPort ( $port )
     {
-        $port = intval( \h2o\reduce( $port ) );
+        $port = intval( \r8\reduce( $port ) );
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }
@@ -472,8 +470,8 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function setDatabase ( $database )
     {
-        $database = \h2o\strval( $database );
-        $this->database = \h2o\isEmpty( $database ) ? null : $database;
+        $database = \r8\strval( $database );
+        $this->database = \r8\isEmpty( $database ) ? null : $database;
         return $this;
     }
 
@@ -508,8 +506,8 @@ abstract class Link implements \h2o\iface\DB\Link
     {
         foreach ( $array AS $key => $value ) {
 
-            $key = "set". strtolower( \h2o\str\stripW( $key ) );
-            $value = \h2o\strval( $value );
+            $key = "set". strtolower( \r8\str\stripW( $key ) );
+            $value = \r8\strval( $value );
 
             if ( method_exists( $this, $key ) )
                 $this->$key( $value );
@@ -527,14 +525,14 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function fromURI ( $uri )
     {
-        $uri = \h2o\strval( $uri );
-        $result = \h2o\Validator::URL()->validate( $uri );
+        $uri = \r8\strval( $uri );
+        $result = \r8\Validator::URL()->validate( $uri );
 
         if ( !$result->isValid() )
-            throw new \h2o\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
+            throw new \r8\Exception\Argument( 0, "Settings URI", $result->getFirstError() );
 
         $uri = parse_url( $uri );
-        $uri = \h2o\ary\translateKeys( $uri, array(
+        $uri = \r8\ary\translateKeys( $uri, array(
                 "user" => "username",
                 "pass" => "password"
             ));
@@ -556,20 +554,20 @@ abstract class Link implements \h2o\iface\DB\Link
     /**
      * Validates the log-in credentials in preparation to connect
      *
-     * @throws \h2o\Exception\DB\Link
+     * @throws \r8\Exception\DB\Link
      *      This will be thrown if any of the required credentials are not set
      * @return Object Returns a self reference
      */
     public function validateCredentials ()
     {
         if ( !$this->userNameExists() )
-            throw new \h2o\Exception\DB\Link("UserName must be set", 0, $this);
+            throw new \r8\Exception\DB\Link("UserName must be set", 0, $this);
 
         if ( !$this->hostExists() )
-            throw new \h2o\Exception\DB\Link("Host must be set", 0, $this);
+            throw new \r8\Exception\DB\Link("Host must be set", 0, $this);
 
         if ( !$this->databaseExists() )
-            throw new \h2o\Exception\DB\Link("Database name must be set", 0, $this);
+            throw new \r8\Exception\DB\Link("Database name must be set", 0, $this);
 
         return $this;
     }
@@ -582,7 +580,7 @@ abstract class Link implements \h2o\iface\DB\Link
     public function getHostWithPort ()
     {
         if ( !$this->hostExists() )
-            throw new \h2o\Exception\Interaction("Host must be set");
+            throw new \r8\Exception\Interaction("Host must be set");
 
         if ( $this->portExists() )
             return $this->host .":". $this->port;
@@ -624,7 +622,7 @@ abstract class Link implements \h2o\iface\DB\Link
             $result = $this->rawConnect();
 
             if ( !is_resource($result) && !is_object($result) ) {
-                throw new \h2o\Exception\DB\Link(
+                throw new \r8\Exception\DB\Link(
                         "Database connector did not return a resource or an object",
                         0,
                         $this
@@ -644,7 +642,7 @@ abstract class Link implements \h2o\iface\DB\Link
      */
     public function getIdentifier ()
     {
-        if ( preg_match('/^h2o\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
+        if ( preg_match('/^r8\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
             $ident = $matches[1];
         else
             $ident = "db";
@@ -667,27 +665,27 @@ abstract class Link implements \h2o\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @return \h2o\DB\Result Returns a result object
+     * @return \r8\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = \h2o\strval($query);
+        $query = \r8\strval($query);
 
-        if ( \h2o\isEmpty($query) )
-            throw new \h2o\Exception\Argument(0, "Query", "Must not be empty");
+        if ( \r8\isEmpty($query) )
+            throw new \r8\Exception\Argument(0, "Query", "Must not be empty");
 
         try {
             $result = $this->rawQuery( $query );
         }
-        catch (\h2o\Exception\DB\Query $err) {
+        catch (\r8\Exception\DB\Query $err) {
             $err->shiftFault();
             throw $err;
         }
 
-        if ( !( $result instanceof \h2o\DB\Result ) ) {
-            throw new \h2o\Exception\DB\Query(
+        if ( !( $result instanceof \r8\DB\Result ) ) {
+            throw new \r8\Exception\DB\Query(
                     $query,
-                    "Query did not return a \h2o\DB\Result object",
+                    "Query did not return a \r8\DB\Result object",
                     0,
                     $this
                 );

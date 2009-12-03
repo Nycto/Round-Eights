@@ -1,66 +1,64 @@
 <?php
 /**
- * Base Validator class
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * This provides an interface for comparing a value to a set of parameters
  */
-abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\Validator
+abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Validator
 {
 
     /**
      * Static method for creating a new validator instance
      *
      * This takes the called function and looks for a class under
-     * the \h2o\Validator namespace.
+     * the \r8\Validator namespace.
      *
-     * @throws \h2o\Exception\Argument Thrown if the validator class can't be found
+     * @throws \r8\Exception\Argument Thrown if the validator class can't be found
      * @param String $validator The validator class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \h2o\Validator subclass
+     * @return Object Returns a new \r8\Validator subclass
      */
     static public function __callStatic ( $validator, $args )
     {
-        $validator = "\\h2o\\Validator\\". trim( \h2o\strval($validator) );
+        $validator = '\r8\Validator\\'. trim( \r8\strval($validator) );
 
         if ( !class_exists($validator, true) ) {
-            throw new \h2o\Exception\Argument(
+            throw new \r8\Exception\Argument(
                     0,
                     "Validator Class Name",
-                    "Validator could not be found in \h2o\Validator namespace"
+                    'Validator could not be found in \r8\Validator namespace'
                 );
         }
 
-        if ( !\h2o\kindOf( $validator, "\h2o\iface\Validator") ) {
-            throw new \h2o\Exception\Argument(
+        if ( !\r8\kindOf( $validator, '\r8\iface\Validator') ) {
+            throw new \r8\Exception\Argument(
                     0,
                     "Validator Class Name",
-                    "Class does not implement \h2o\iface\Validator"
+                    'Class does not implement \r8\iface\Validator'
                 );
         }
 
@@ -80,7 +78,7 @@ abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\
      * Performs the validation and returns the result
      *
      * @param mixed $value The value to validate
-     * @return Object Returns an instance of \h2o\Validator\Result
+     * @return Object Returns an instance of \r8\Validator\Result
      */
     public function validate ( $value )
     {
@@ -92,26 +90,26 @@ abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\
 
         // Normalize the results if it is an array
         if ( \is_array($result) ) {
-            $result = \h2o\ary\flatten( $result );
-            $result = \array_map( '\h2o\\strval', $result );
-            $result = \h2o\ary\compact( $result );
+            $result = \r8\ary\flatten( $result );
+            $result = \array_map( '\r8\\strval', $result );
+            $result = \r8\ary\compact( $result );
         }
 
-        elseif ( $result instanceof \h2o\Validator\Result )
+        elseif ( $result instanceof \r8\Validator\Result )
             $result = $result->getErrors();
 
         elseif ( is_null($result) || is_bool($result) || $result === 0 || $result === 0.0 )
             $result = null;
 
         else
-            $result = \h2o\strval( $result );
+            $result = \r8\strval( $result );
 
         // Boot up the results of the validation process
-        $output = new \h2o\Validator\Result( $value );
+        $output = new \r8\Validator\Result( $value );
 
         // If the internal validator returned a non-empty value
         // (either an array with values or a non-blank string)
-        if ( !\h2o\isEmpty($result) ) {
+        if ( !\r8\isEmpty($result) ) {
 
             // If this validator is hooked up with a set of custom error messages,
             // use them instead of what the result returned
@@ -148,7 +146,7 @@ abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\
 
         if ( !$result->isValid() ) {
 
-            throw new \h2o\Exception\Data(
+            throw new \r8\Exception\Data(
                     $value,
                     "Validated Value",
                     $result->getFirstError()
@@ -164,7 +162,7 @@ abstract class Validator extends \h2o\Validator\ErrorList implements \h2o\iface\
      *
      * @param mixed $value It will be given the value to validate
      * @return mixed Should return any errors that are encountered.
-     *      This can be an array, a string, a \h2o\Validator\Result instance
+     *      This can be an array, a string, a \r8\Validator\Result instance
      */
     abstract protected function process ($value);
 

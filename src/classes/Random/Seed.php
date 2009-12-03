@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Random
  */
 
-namespace h2o\Random;
+namespace r8\Random;
 
 /**
  * Class for generating a seed value
@@ -50,7 +50,7 @@ class Seed
     /**
      * Returns a new, random seed
      *
-     * @return \h2o\Random\Seed
+     * @return \r8\Random\Seed
      */
     static public function random ()
     {
@@ -83,11 +83,11 @@ class Seed
      *
      * @param mixed $source The source value to generate the seed from. This will
      *      be converted to a string before it is used.
-     * @return \h2o\Encrypt\Seed Returns a self reference
+     * @return \r8\Encrypt\Seed Returns a self reference
      */
     public function setSource( $source )
     {
-        if ( !\h2o\isBasic($source) )
+        if ( !\r8\isBasic($source) )
             $source = serialize($source);
 
         $this->source = strval($source);
@@ -109,33 +109,35 @@ class Seed
     /**
      * Returns an integer representation of this seed
      *
-     * Note that to be able to use this method, you must have the BC Math extension
-     * installed. An exception will be thrown if it is not.
-     *
      * @return Integer Returns an integer between zero and the value of the
      *      self::MAX_INT constant
      */
     public function getInteger ()
     {
-        if ( !extension_loaded("bcmath") )
-            throw new \h2o\Exception\Extension("BC Math", "BC Math extension is not loaded");
+        $source = $this->getString();
 
-        $source = strtolower( $this->getString() );
+        $len = strlen($source);
+        $hash = 0;
 
-        $source = array_map( "hexdec", str_split( $source, 2 ) );
+        // Loop over every hex pair
+        for ( $i = 0; $i < $len; $i += 2 )
+        {
+            // Convert the hex pair back to binary
+            $num = hexdec( substr($source, $i, 2) );
 
-        $source = implode ("", $source);
+            // Mutate it to generate the hash
+            // This is the sdbm hash algorithm
+            $hash = $num + ($hash << 6) + ($hash << 16) - $hash;
 
-        // Integers can only be so big, so fit the source value into
-        // the constraints of PHP
-        return \intval( \bcmod($source, self::MAX_INT) );
+            // Ensure it fits within an integer
+            $hash = abs( $hash % self::MAX_INT );
+        }
+
+        return $hash;
     }
 
     /**
      * Returns a float representation of this seed between and including 0 and 1.
-     *
-     * Note that to be able to use this method, you must have the BC Math extension
-     * installed. An exception will be thrown if it is not.
      *
      * @return Float A float value >= 0 and <= 1. This will have precision of up
      *      to 14 decimal places.

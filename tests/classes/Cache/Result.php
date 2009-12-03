@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -34,14 +34,14 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * Returns a new mock h2o\Cache\DB object
+     * Returns a new mock r8\Cache\DB object
      *
      * @return Object
      */
     public function getTestCache ()
     {
         return $this->getMock(
-                'h2o\iface\Cache',
+                'r8\iface\Cache',
                 array('get', 'getForUpdate', 'set', 'setIfSame', 'add',
                     'replace', 'yield', 'append', 'prepend', 'increment',
                     'decrement', 'delete', 'flush')
@@ -52,7 +52,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
     {
         $cache = $this->getTestCache();
 
-        $result = new \h2o\Cache\Result( $cache, "KeyValue", "ABC123", "Chunk of data");
+        $result = new \r8\Cache\Result( $cache, "KeyValue", "ABC123", "Chunk of data");
 
         $this->assertSame( $cache, $result->getCache() );
         $this->assertSame( "KeyValue", $result->getKey() );
@@ -66,7 +66,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
         $hash = new stdClass;
         $value = new stdClass;
 
-        $result = new \h2o\Cache\Result( $cache, 1234, $hash, $value);
+        $result = new \r8\Cache\Result( $cache, 1234, $hash, $value);
 
         $this->assertSame( $cache, $result->getCache() );
         $this->assertSame( "1234", $result->getKey() );
@@ -85,7 +85,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
                     $this->equalTo(0)
                 );
 
-        $result = new \h2o\Cache\Result( $cache, "Pi", "abc", 3.14);
+        $result = new \r8\Cache\Result( $cache, "Pi", "abc", 3.14);
 
         $this->assertSame( $result, $result->set(3.1415) );
     }
@@ -101,7 +101,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
                     $this->equalTo(30)
                 );
 
-        $result = new \h2o\Cache\Result( $cache, "Pi", "abc", 3.14);
+        $result = new \r8\Cache\Result( $cache, "Pi", "abc", 3.14);
 
         $this->assertSame( $result, $result->set(3.1415, 30) );
     }
@@ -110,7 +110,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
     {
         $cache = $this->getTestCache();
 
-        $result = new \h2o\Cache\Result( $cache, "Pi", "abc", 3.14);
+        $result = new \r8\Cache\Result( $cache, "Pi", "abc", 3.14);
 
         $cache->expects( $this->once() )
             ->method("setIfSame")
@@ -127,7 +127,7 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
     {
         $cache = $this->getTestCache();
 
-        $result = new \h2o\Cache\Result( $cache, "Pi", "abc", 3.14);
+        $result = new \r8\Cache\Result( $cache, "Pi", "abc", 3.14);
 
         $cache->expects( $this->once() )
             ->method("setIfSame")

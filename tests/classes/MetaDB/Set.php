@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,12 +36,12 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
     /**
      * Returns a test database
      *
-     * @return \h2o\MetaDB\DB
+     * @return \r8\MetaDB\DB
      */
-    public function getTestDB ( \h2o\MetaDB\Set $set, $name )
+    public function getTestDB ( \r8\MetaDB\Set $set, $name )
     {
         return $this->getMock(
-                'h2o\MetaDB\DB',
+                'r8\MetaDB\DB',
                 array( "_mock" ),
                 array( $set, $name )
             );
@@ -49,7 +49,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testAddDB ()
     {
-        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+        $set = new \r8\MetaDB\Set( new \r8\DB\BlackHole\Link );
 
         $this->assertSame( array(), $set->getDBs() );
 
@@ -81,7 +81,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
             $set->addDB( $this->getTestDB( $set, "dbName" ) );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "A database with that name already exists", $err->getMessage() );
         }
 
@@ -89,7 +89,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testGetDB ()
     {
-        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+        $set = new \r8\MetaDB\Set( new \r8\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -108,7 +108,7 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+        $set = new \r8\MetaDB\Set( new \r8\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -124,14 +124,14 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
             $set->NotADB;
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Variable $err ) {
+        catch ( \r8\Exception\Variable $err ) {
             $this->assertSame( "Database does not exist", $err->getMessage() );
         }
     }
 
     public function testIsset ()
     {
-        $set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
+        $set = new \r8\MetaDB\Set( new \r8\DB\BlackHole\Link );
 
         // Add two databases
         $db1 = $this->getTestDB( $set, "dbName" );
@@ -147,20 +147,20 @@ class classes_metadb_set extends PHPUnit_Framework_TestCase
 
     public function testSelect ()
     {
-        $query = new \h2o\Query\Select;
-        $builder = $this->getMock('\h2o\iface\MetaDB\RowBuilder');
-        $link = new \h2o\DB\BlackHole\Link;
+        $query = new \r8\Query\Select;
+        $builder = $this->getMock('\r8\iface\MetaDB\RowBuilder');
+        $link = new \r8\DB\BlackHole\Link;
 
-        $selector = new \h2o\MetaDB\Set( $link );
+        $selector = new \r8\MetaDB\Set( $link );
 
         $result = $selector->select( $builder, $query );
 
-        $this->assertThat( $result, $this->isInstanceOf("h2o\MetaDB\Result") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\MetaDB\Result") );
 
         $this->assertSame( $builder, $result->getRowBuilder() );
 
         $decorated = $result->getDecorated();
-        $this->assertThat( $decorated, $this->isInstanceOf("h2o\DB\BlackHole\Read") );
+        $this->assertThat( $decorated, $this->isInstanceOf("r8\DB\BlackHole\Read") );
         $this->assertSame( "SELECT *", $decorated->getQuery() );
     }
 

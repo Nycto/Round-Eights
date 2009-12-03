@@ -2,23 +2,23 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -33,7 +33,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testOuterDelimAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame( "&", $parser->getOuterDelim() );
 
@@ -47,7 +47,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
             $parser->setOuterDelim("");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -56,7 +56,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testInnerDelimAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame( "=", $parser->getInnerDelim() );
 
@@ -70,7 +70,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
             $parser->setInnerDelim("");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -79,7 +79,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testStartDelimAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame( "?", $parser->getStartDelim() );
         $this->assertTrue( $parser->startDelimExists() );
@@ -103,7 +103,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testEndDelimAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame( "#", $parser->getEndDelim() );
         $this->assertTrue( $parser->endDelimExists() );
@@ -127,7 +127,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testSubRegExAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame( '/\[(.*?)\]/', $parser->getSubRegEx() );
 
@@ -138,7 +138,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
             $parser->setSubRegEx("   ");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -147,29 +147,29 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testKeyFilterAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
-        $this->assertThat($parser->getKeyFilter(), $this->isInstanceOf('h2o\Curry\Call'));
+        $this->assertThat($parser->getKeyFilter(), $this->isInstanceOf('r8\Curry\Call'));
 
-        $filter = $this->getMock('h2o\iface\Filter', array('filter'));
+        $filter = $this->getMock('r8\iface\Filter', array('filter'));
         $this->assertSame( $parser, $parser->setKeyFilter($filter) );
         $this->assertSame( $filter, $parser->getKeyFilter() );
     }
 
     public function testValueFilterAccessors ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
-        $this->assertThat($parser->getValueFilter(), $this->isInstanceOf('h2o\Curry\Call'));
+        $this->assertThat($parser->getValueFilter(), $this->isInstanceOf('r8\Curry\Call'));
 
-        $filter = $this->getMock('h2o\iface\Filter', array('filter'));
+        $filter = $this->getMock('r8\iface\Filter', array('filter'));
         $this->assertSame( $parser, $parser->setValueFilter($filter) );
         $this->assertSame( $filter, $parser->getValueFilter() );
     }
 
     public function testParse_standards ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame(
                 array ( "key" => "value", "key2" => array('sub' => array('sub2' => "value3")) ),
@@ -199,7 +199,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testParse_fringe ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
 
         $this->assertSame(
                 array (),
@@ -264,7 +264,7 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testParse_custom ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
         $parser->setStartDelim('(');
         $parser->setEndDelim(')');
         $parser->setOuterDelim('/');
@@ -294,33 +294,33 @@ class classes_queryparser extends PHPUnit_Framework_TestCase
 
     public function testParse_badSubRegEx ()
     {
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
         $parser->setSubRegEx('/\[.*?\]/');
 
         try {
             $parser->parse( "key[sub]=value" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame( "Sub-Key RegEx did not return a sub-pattern", $err->getMessage() );
         }
     }
 
     public function testParse_filters ()
     {
-        $keyFilter = $this->getMock('h2o\iface\Filter', array('filter'));
+        $keyFilter = $this->getMock('r8\iface\Filter', array('filter'));
         $keyFilter->expects( $this->once() )
             ->method('filter')
             ->with( $this->equalTo('key[sub]') )
             ->will( $this->returnValue('newKey') );
 
-        $valFilter = $this->getMock('h2o\iface\Filter', array('filter'));
+        $valFilter = $this->getMock('r8\iface\Filter', array('filter'));
         $valFilter->expects( $this->once() )
             ->method('filter')
             ->with( $this->equalTo('value') )
             ->will( $this->returnValue('newVal') );
 
-        $parser = new \h2o\QueryParser;
+        $parser = new \r8\QueryParser;
         $parser->setKeyFilter($keyFilter);
         $parser->setValueFilter($valFilter);
 

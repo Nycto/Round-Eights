@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Validators
  */
 
-namespace h2o\Validator;
+namespace r8\Validator;
 
 /**
  * Validates that a value matches a given regular expression
@@ -35,7 +35,7 @@ namespace h2o\Validator;
  * This uses preg_match to execute the regular expression and does not add the
  * wrap characters. You must include those on instantiation
  */
-class RegEx extends \h2o\Validator
+class RegEx extends \r8\Validator
 {
 
     /**
@@ -52,9 +52,9 @@ class RegEx extends \h2o\Validator
      */
     public function __construct( $regex )
     {
-        $regex = \h2o\strVal( $regex );
-        if ( \h2o\isEmpty($regex) )
-            throw new \h2o\Exception\Argument(0, "Regular Expression", "Must not be empty");
+        $regex = \r8\strVal( $regex );
+        if ( \r8\isEmpty($regex) )
+            throw new \r8\Exception\Argument(0, "Regular Expression", "Must not be empty");
         $this->regex = $regex;
     }
 
@@ -67,7 +67,7 @@ class RegEx extends \h2o\Validator
     protected function process ( $value )
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
-            $value = \h2o\strval($value);
+            $value = \r8\strval($value);
 
         if ( !is_string($value) )
             return "Must be a string";

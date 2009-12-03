@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Query
  */
 
-namespace h2o\Query\From;
+namespace r8\Query\From;
 
 /**
  * Represents a single table to select from
  */
-class Table implements \h2o\iface\Query\From
+class Table implements \r8\iface\Query\From
 {
 
     /**
@@ -56,14 +56,14 @@ class Table implements \h2o\iface\Query\From
      * Instantiates a new instance of this object from a string
      *
      * @param String $string The string to parse into an object
-     * @return \h2o\Query\From\Table
+     * @return \r8\Query\From\Table
      */
     static public function fromString ( $string )
     {
-        list( $string, $alias ) = \h2o\Query::parseSQLAlias( $string );
+        list( $string, $alias ) = \r8\Query::parseSQLAlias( $string );
 
         // Split the name into the table and database
-        $parsed = \h2o\Query::parseSQLName( $string );
+        $parsed = \r8\Query::parseSQLName( $string );
 
         // Instantiate with the table name
         $field = new self( array_pop($parsed) );
@@ -97,14 +97,14 @@ class Table implements \h2o\iface\Query\From
      * Sets the table name
      *
      * @param String $table The name of the table
-     * @return \h2o\Query\From\Table Returns a self referencve
+     * @return \r8\Query\From\Table Returns a self referencve
      */
     public function setTable ( $table )
     {
-        $table = \h2o\str\stripW( $table );
+        $table = \r8\str\stripW( $table );
 
         if ( empty($table) )
-            throw new \h2o\Exception\Argument( 0, "Table Name", "Must not be empty" );
+            throw new \r8\Exception\Argument( 0, "Table Name", "Must not be empty" );
 
         $this->table = $table;
 
@@ -135,11 +135,11 @@ class Table implements \h2o\iface\Query\From
      * Sets the Database
      *
      * @param String $database The name of the database
-     * @return \h2o\Query\From\Table Returns a self reference
+     * @return \r8\Query\From\Table Returns a self reference
      */
     public function setDatabase ( $database )
     {
-        $database = \h2o\str\stripW( $database );
+        $database = \r8\str\stripW( $database );
         $this->database = $database ? $database : null;
         return $this;
     }
@@ -157,7 +157,7 @@ class Table implements \h2o\iface\Query\From
     /**
      * Clears the currently set Database
      *
-     * @return \h2o\Query\From\Table Returns a self reference
+     * @return \r8\Query\From\Table Returns a self reference
      */
     public function clearDatabase ()
     {
@@ -179,11 +179,11 @@ class Table implements \h2o\iface\Query\From
      * Sets the Alias
      *
      * @param String $alias The alias of this field
-     * @return \h2o\Query\From\Table Returns a self reference
+     * @return \r8\Query\From\Table Returns a self reference
      */
     public function setAlias ( $alias )
     {
-        $alias = \h2o\str\stripW( $alias );
+        $alias = \r8\str\stripW( $alias );
         $this->alias = $alias ? $alias : null;
         return $this;
     }
@@ -201,7 +201,7 @@ class Table implements \h2o\iface\Query\From
     /**
      * Clears the currently set Alias
      *
-     * @return \h2o\Query\From\Table Returns a self reference
+     * @return \r8\Query\From\Table Returns a self reference
      */
     public function clearAlias ()
     {
@@ -212,11 +212,11 @@ class Table implements \h2o\iface\Query\From
     /**
      * Returns the SQL FROM clause
      *
-     * @param \h2o\iface\DB\Link $link The database connection this WHERE clause
+     * @param \r8\iface\DB\Link $link The database connection this WHERE clause
      * 		is being run against. This is being passed in for escaping purposes
      * @return String
      */
-    public function toFromSQL ( \h2o\iface\DB\Link $link )
+    public function toFromSQL ( \r8\iface\DB\Link $link )
     {
         return
             ( $this->database ? "`". $this->database ."`." : "" )

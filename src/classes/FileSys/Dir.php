@@ -1,36 +1,34 @@
 <?php
 /**
- * File System Class
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
-namespace h2o\FileSys;
+namespace r8\FileSys;
 
 /**
  * Filesystem Directory class
  */
-class Dir extends \h2o\FileSys implements \RecursiveIterator
+class Dir extends \r8\FileSys implements \RecursiveIterator
 {
 
     /**
@@ -56,7 +54,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     /**
      * Returns a Dir instance representing the system's temporary directory
      *
-     * @return Object A \h2o\FileSys\Dir instance
+     * @return Object A \r8\FileSys\Dir instance
      */
     static public function getTemp ()
     {
@@ -130,7 +128,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
         $resource = @opendir( $this->getPath() );
 
         if ( $resource === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to open directory"
                 );
@@ -150,9 +148,9 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
             $item = $path . $item;
 
             if ( is_dir( $item ) )
-                $result[] = new \h2o\FileSys\Dir( $item );
+                $result[] = new \r8\FileSys\Dir( $item );
             else
-                $result[] = new \h2o\FileSys\File( $item );
+                $result[] = new \r8\FileSys\File( $item );
 
         }
 
@@ -169,7 +167,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function make ()
     {
         if ( !$this->dirExists() )
-            throw new \h2o\Exception\Variable("Path", "No Path has been set");
+            throw new \r8\Exception\Variable("Path", "No Path has been set");
 
         $path = $this->getRawDir();
 
@@ -177,7 +175,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
             return $this;
 
         if ( @mkdir( $path, 0777, TRUE ) === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $path,
                     "Unable to create directory"
                 );
@@ -204,7 +202,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
             $resource = @opendir( $dir );
 
             if ( $resource === FALSE ) {
-                $err = new \h2o\Exception\FileSystem( $dir, "Unable to open directory" );
+                $err = new \r8\Exception\FileSystem( $dir, "Unable to open directory" );
                 throw $err;
             }
 
@@ -225,7 +223,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
                 }
 
                 if ( $result === FALSE ) {
-                    $err = new \h2o\Exception\FileSystem( $dir . $item, "Unable to delete path" );
+                    $err = new \r8\Exception\FileSystem( $dir . $item, "Unable to delete path" );
                     throw $err;
                 }
 
@@ -260,7 +258,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
         $result = @rmdir( $path );
 
         if ( $result === FALSE ) {
-            $err = new \h2o\Exception\FileSystem(
+            $err = new \r8\Exception\FileSystem(
                     $path,
                     "Unable to delete directory"
                 );
@@ -280,21 +278,21 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
      * @param String $prefix A prefix to attach to the file name
      * @param String $extension The extension the file should have
      * @param Boolean $moreEntropy Increases the length of the generated filename
-     * @return Object Returns a \h2o\FileSys\File object
+     * @return Object Returns a \r8\FileSys\File object
      */
     public function getUniqueFile ( $prefix = null, $extension = null, $moreEntropy = FALSE )
     {
         if ( !$this->dirExists() )
-            throw new \h2o\Exception\Variable("Dir", "No directory has been set for this instance");
+            throw new \r8\Exception\Variable("Dir", "No directory has been set for this instance");
 
-        $file = new \h2o\FileSys\File;
+        $file = new \r8\FileSys\File;
         $file->setDir( $this->getRawDir() );
 
-        if ( !\h2o\isVague($extension) )
+        if ( !\r8\isVague($extension) )
             $file->setExt( $extension );
 
-        $prefix = \h2o\isVague($prefix) ? null : \h2o\strval( $prefix );
-        $moreEntropy = \h2o\boolVal( $moreEntropy );
+        $prefix = \r8\isVague($prefix) ? null : \r8\strval( $prefix );
+        $moreEntropy = \r8\boolVal( $moreEntropy );
 
         do {
 
@@ -319,9 +317,9 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function contains ( $subPath )
     {
         if ( !$this->dirExists() )
-            throw new \h2o\Exception\Variable("Dir", "No directory has been set for this instance");
+            throw new \r8\Exception\Variable("Dir", "No directory has been set for this instance");
 
-        $subPath = new \h2o\FileSys\File( $subPath );
+        $subPath = new \r8\FileSys\File( $subPath );
         $subPath->resolve( $this->getPath() );
         return $subPath->isDir() || $subPath->isFile();
     }
@@ -335,13 +333,13 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function getSubPath ( $subPath )
     {
         if ( !$this->dirExists() )
-            throw new \h2o\Exception\Variable("Dir", "No directory has been set for this instance");
+            throw new \r8\Exception\Variable("Dir", "No directory has been set for this instance");
 
-        $subPath = new \h2o\FileSys\File( $subPath );
+        $subPath = new \r8\FileSys\File( $subPath );
         $subPath->resolve( $this->getPath() );
 
         if ( $subPath->isDir() )
-            return new \h2o\FileSys\Dir( $subPath );
+            return new \r8\FileSys\Dir( $subPath );
         else
             return $subPath;
     }
@@ -400,7 +398,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
             $resource = @opendir( $this->getPath() );
 
             if ( $resource === FALSE ) {
-                $err = new \h2o\Exception\FileSystem(
+                $err = new \r8\Exception\FileSystem(
                         $this->getPath(),
                         "Unable to open directory for iteration"
                     );
@@ -428,7 +426,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function next ()
     {
         if ( !$this->hasResource() )
-            throw new \h2o\Exception\Interaction("Iteration has not been rewound");
+            throw new \r8\Exception\Interaction("Iteration has not been rewound");
 
         $this->pointer++;
 
@@ -470,14 +468,14 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function current ()
     {
         if ( !$this->hasResource() )
-            throw new \h2o\Exception\Interaction("Iteration has not been rewound");
+            throw new \r8\Exception\Interaction("Iteration has not been rewound");
 
         $current = $this->getRawDir() . $this->current;
 
         if ( is_dir( $current ) )
-            return new \h2o\FileSys\Dir( $current );
+            return new \r8\FileSys\Dir( $current );
         else
-            return new \h2o\FileSys\File( $current );
+            return new \r8\FileSys\File( $current );
     }
 
     /**
@@ -488,7 +486,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function key ()
     {
         if ( !$this->hasResource() )
-            throw new \h2o\Exception\Interaction("Iteration has not been rewound");
+            throw new \r8\Exception\Interaction("Iteration has not been rewound");
 
         return $this->pointer;
     }
@@ -502,7 +500,7 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     public function hasChildren ()
     {
         if ( !$this->hasResource() )
-            throw new \h2o\Exception\Interaction("Iteration has not been rewound");
+            throw new \r8\Exception\Interaction("Iteration has not been rewound");
 
         if ( $this->current == ".." || $this->current == "." )
             return FALSE;
@@ -513,17 +511,17 @@ class Dir extends \h2o\FileSys implements \RecursiveIterator
     /**
      * Used for recursive iteration, this returns the iterator for the current element
      *
-     * @return Object Returns a \h2o\FileSys\Dir object
+     * @return Object Returns a \r8\FileSys\Dir object
      */
     public function getChildren ()
     {
         if ( !$this->hasResource() )
-            throw new \h2o\Exception\Interaction("Iteration has not been rewound");
+            throw new \r8\Exception\Interaction("Iteration has not been rewound");
 
         if ( !$this->hasChildren() )
-            throw new \h2o\Exception\Interaction("Current value does not have children");
+            throw new \r8\Exception\Interaction("Current value does not have children");
 
-        // Grab the current item as a \h2o\FileSys\Dir object
+        // Grab the current item as a \r8\FileSys\Dir object
         $current = $this->current();
 
         // Import the 'includeDots' setting

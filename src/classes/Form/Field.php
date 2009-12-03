@@ -2,33 +2,33 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace h2o\Form;
+namespace r8\Form;
 
 /**
  * The base class for HTML form fields
  */
-abstract class Field implements \h2o\iface\Form\Field
+abstract class Field implements \r8\iface\Form\Field
 {
 
     /**
@@ -50,7 +50,7 @@ abstract class Field implements \h2o\iface\Form\Field
     /**
      * The filter to apply to any data that is fed in to this field
      *
-     * @var \h2o\iface\Filter
+     * @var \r8\iface\Filter
      */
     private $filter;
 
@@ -60,14 +60,14 @@ abstract class Field implements \h2o\iface\Form\Field
      * This allows you to do things like obfuscate credit cards, SSNs, or set
      * a value that a field should always be equal to.
      *
-     * @var \h2o\iface\Filter
+     * @var \r8\iface\Filter
      */
     private $outFilter;
 
     /**
      * The validator for this field
      *
-     * @var \h2o\iface\Validator
+     * @var \r8\iface\Validator
      */
     private $validator;
 
@@ -95,14 +95,14 @@ abstract class Field implements \h2o\iface\Form\Field
      * Sets the name of this field
      *
      * @param String $name The field name
-     * @return \h2o\Form\Field Returns a self reference
+     * @return \r8\Form\Field Returns a self reference
      */
     public function setName( $name )
     {
-        $name = \h2o\Filter::Variable()->filter( $name );
+        $name = \r8\Filter::Variable()->filter( $name );
 
-        if ( !\h2o\Validator::Variable()->isValid( $name ) )
-            throw new \h2o\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
+        if ( !\r8\Validator::Variable()->isValid( $name ) )
+            throw new \r8\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         $this->name = $name;
 
@@ -115,12 +115,12 @@ abstract class Field implements \h2o\iface\Form\Field
      * If no filter has been explicitly set, this will create a new chain
      * filter, save it to this instance and return a reference to it
      *
-     * @return \h2o\iface\Filter
+     * @return \r8\iface\Filter
      */
     public function getFilter ()
     {
-        if ( !($this->filter instanceof \h2o\iface\Filter) )
-            $this->filter = new \h2o\Filter\Chain;
+        if ( !($this->filter instanceof \r8\iface\Filter) )
+            $this->filter = new \r8\Filter\Chain;
 
         return $this->filter;
     }
@@ -128,10 +128,10 @@ abstract class Field implements \h2o\iface\Form\Field
     /**
      * Sets the filter for this instance
      *
-     * @param \h2o\iface\Filter An object that implements the \h2o\iface\Filter interface
-     * @return \h2o\Form\Field Returns a self reference
+     * @param \r8\iface\Filter An object that implements the \r8\iface\Filter interface
+     * @return \r8\Form\Field Returns a self reference
      */
-    public function setFilter( \h2o\iface\Filter $filter )
+    public function setFilter( \r8\iface\Filter $filter )
     {
         $this->filter = $filter;
         return $this;
@@ -142,12 +142,12 @@ abstract class Field implements \h2o\iface\Form\Field
      *
      * By default, this is set to use a Chain filter
      *
-     * @return \h2o\iface\Filter
+     * @return \r8\iface\Filter
      */
     public function getOutputFilter ()
     {
-        if ( !($this->outFilter instanceof \h2o\iface\Filter) )
-            $this->outFilter = new \h2o\Filter\Chain;
+        if ( !($this->outFilter instanceof \r8\iface\Filter) )
+            $this->outFilter = new \r8\Filter\Chain;
 
         return $this->outFilter;
     }
@@ -155,10 +155,10 @@ abstract class Field implements \h2o\iface\Form\Field
     /**
      * Sets the output filter
      *
-     * @param \h2o\iface\Filter
-     * @return \h2o\Form\Field Returns a self reference
+     * @param \r8\iface\Filter
+     * @return \r8\Form\Field Returns a self reference
      */
-    public function setOutputFilter ( \h2o\iface\Filter $filter )
+    public function setOutputFilter ( \r8\iface\Filter $filter )
     {
         $this->outFilter = $filter;
         return $this;
@@ -170,12 +170,12 @@ abstract class Field implements \h2o\iface\Form\Field
      * If no validator has been explicitly set, this will create a new "Any"
      * validator, save it to this instance and return a reference to it
      *
-     * @return \h2o\iface\Validator
+     * @return \r8\iface\Validator
      */
     public function getValidator ()
     {
-        if ( !($this->validator instanceof \h2o\iface\Validator) )
-            $this->validator = new \h2o\Validator\Any;
+        if ( !($this->validator instanceof \r8\iface\Validator) )
+            $this->validator = new \r8\Validator\Any;
 
         return $this->validator;
     }
@@ -183,10 +183,10 @@ abstract class Field implements \h2o\iface\Form\Field
     /**
      * Sets the validator for this instance
      *
-     * @param \h2o\iface\Validator A validator object
-     * @return \h2o\Form\Field Returns a self reference
+     * @param \r8\iface\Validator A validator object
+     * @return \r8\Form\Field Returns a self reference
      */
-    public function setValidator( \h2o\iface\Validator $validator )
+    public function setValidator( \r8\iface\Validator $validator )
     {
         $this->validator = $validator;
         return $this;
@@ -200,16 +200,16 @@ abstract class Field implements \h2o\iface\Form\Field
      * then it wraps the current validator and the validator in the instance in
      * an All validator and sets it to the validator for this instance.
      *
-     * @param \h2o\iface\Validator $validator The validator to add to this instance
-     * @return \h2o\Form\Field Returns a self reference
+     * @param \r8\iface\Validator $validator The validator to add to this instance
+     * @return \r8\Form\Field Returns a self reference
      */
-    public function andValidator ( \h2o\iface\Validator $validator )
+    public function andValidator ( \r8\iface\Validator $validator )
     {
-        if ( $this->validator instanceof \h2o\Validator\All ) {
+        if ( $this->validator instanceof \r8\Validator\All ) {
             $this->validator->add( $validator );
         }
         else {
-            $this->validator = new \h2o\Validator\All(
+            $this->validator = new \r8\Validator\All(
                     $this->validator,
                     $validator
                 );
@@ -232,14 +232,14 @@ abstract class Field implements \h2o\iface\Form\Field
      * Sets the value for this field
      *
      * This does not apply the filter when saving, however it will convert any
-     * objects or arrays using the \h2o\reduce function
+     * objects or arrays using the \r8\reduce function
      *
      * @param mixed $value The value of this field
-     * @return \h2o\Form\Field Returns a self reference
+     * @return \r8\Form\Field Returns a self reference
      */
     public function setValue ( $value )
     {
-        $this->value = \h2o\reduce( $value );
+        $this->value = \r8\reduce( $value );
         return $this;
     }
 
@@ -251,7 +251,7 @@ abstract class Field implements \h2o\iface\Form\Field
     public function getValue ()
     {
         // Only apply the filter if there is one
-        if ( $this->filter instanceof \h2o\iface\Filter )
+        if ( $this->filter instanceof \r8\iface\Filter )
             return $this->filter->filter( $this->getRawValue() );
         else
             return $this->getRawValue();
@@ -265,7 +265,7 @@ abstract class Field implements \h2o\iface\Form\Field
     public function getForOutput ()
     {
         // Only apply the filter if there is one
-        if ( $this->outFilter instanceof \h2o\iface\Filter )
+        if ( $this->outFilter instanceof \r8\iface\Filter )
             return $this->outFilter->filter( $this->getValue() );
         else
             return $this->getValue();
@@ -277,7 +277,7 @@ abstract class Field implements \h2o\iface\Form\Field
      *
      * This will apply the validator to the filtered value
      *
-     * @return \h2o\Validator\Results
+     * @return \r8\Validator\Results
      */
     public function validate ()
     {
@@ -295,13 +295,13 @@ abstract class Field implements \h2o\iface\Form\Field
     }
 
     /**
-     * Returns a \h2o\Tag object that represents this instance
+     * Returns a \r8\HTML\Tag object that represents this instance
      *
-     * @return \h2o\Tag
+     * @return \r8\HTML\Tag
      */
     public function getTag()
     {
-        return new \h2o\Tag(
+        return new \r8\HTML\Tag(
                 'input',
                 null,
                 array(

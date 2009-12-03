@@ -2,41 +2,41 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Page
  */
 
-namespace h2o\Page;
+namespace r8\Page;
 
 /**
  * Accepts a Template and a list of pages. When this instance is rendered, it
  * will render all the contained pages and inject them as values into the given
  * template
  */
-class Injector implements \h2o\iface\Page
+class Injector implements \r8\iface\Page
 {
 
     /**
      * The template that will have pages injected into it.
      *
-     * @var \h2o\Template
+     * @var \r8\Template
      */
     private $template;
 
@@ -50,10 +50,10 @@ class Injector implements \h2o\iface\Page
     /**
      * Constructor...
      *
-     * @param \h2o\Template $template The template that will have pages injected
+     * @param \r8\Template $template The template that will have pages injected
      *      into it.
      */
-    public function __construct ( \h2o\Template $template )
+    public function __construct ( \r8\Template $template )
     {
         $this->template = $template;
     }
@@ -72,12 +72,12 @@ class Injector implements \h2o\iface\Page
      * Adds a page to this list of pages to render
      *
      * @param String The variable name to inject this page as
-     * @param \h2o\iface\Page $page The page to add
-     * @return \h2o\Page\Collection Returns a self reference
+     * @param \r8\iface\Page $page The page to add
+     * @return \r8\Page\Collection Returns a self reference
      */
-    public function addPage ( $index, \h2o\iface\Page $page )
+    public function addPage ( $index, \r8\iface\Page $page )
     {
-        $index = \h2o\Template::normalizeLabel( $index );
+        $index = \r8\Template::normalizeLabel( $index );
         $this->pages[ $index ] = $page;
         return $this;
     }
@@ -85,7 +85,7 @@ class Injector implements \h2o\iface\Page
     /**
      * Resets the list of pages in this instance
      *
-     * @return \h2o\Page\Collection Returns a self reference
+     * @return \r8\Page\Collection Returns a self reference
      */
     public function clearPages ()
     {
@@ -96,18 +96,18 @@ class Injector implements \h2o\iface\Page
     /**
      * Returns the core content this page will display
      *
-     * @param \h2o\Page\Context $context A context object which is used by this
+     * @param \r8\Page\Context $context A context object which is used by this
      *      page to communicate with the root page
-     * @return \h2o\Template Returns the input template
+     * @return \r8\Template Returns the input template
      */
-    public function getContent ( \h2o\Page\Context $context )
+    public function getContent ( \r8\Page\Context $context )
     {
         foreach ( $this->pages AS $index => $page ) {
 
             $content = $page->getContent( $context );
 
-            if ( !($content instanceof \h2o\iface\Template) )
-                $content = new \h2o\Template\Raw( $content );
+            if ( !($content instanceof \r8\iface\Template) )
+                $content = new \r8\Template\Raw( $content );
 
             $this->template->set( $index, $content );
 

@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,27 +35,27 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testMessage ()
     {
-        $err = new \h2o\Exception();
+        $err = new \r8\Exception();
         $this->assertFalse( $err->issetMessage() );
 
-        $err = new \h2o\Exception("This is a message");
+        $err = new \r8\Exception("This is a message");
         $this->assertTrue( $err->issetMessage() );
         $this->assertEquals( "This is a message", $err->getMessage() );
     }
 
     public function testCode ()
     {
-        $err = new \h2o\Exception();
+        $err = new \r8\Exception();
         $this->assertFalse( $err->issetCode() );
 
-        $err = new \h2o\Exception("This is a message", 543);
+        $err = new \r8\Exception("This is a message", 543);
         $this->assertTrue( $err->issetCode() );
         $this->assertEquals( 543, $err->getCode() );
     }
 
     public function testGetTraceByOffset ()
     {
-        $err = new \h2o\Exception();
+        $err = new \r8\Exception();
 
         $trace = $err->getTraceByOffset(0);
 
@@ -65,7 +65,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testGetTraceCount ()
     {
-        $err = new \h2o\Exception();
+        $err = new \r8\Exception();
 
         $this->assertThat( $err->getTraceCount(0), $this->isType("int") );
         $this->assertThat( $err->getTraceCount(0), $this->greaterThan(0) );
@@ -73,7 +73,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testFault ()
     {
-        $err = new \h2o\Exception();
+        $err = new \r8\Exception();
 
         // test whether setFault and issetFault work
         $this->assertFalse( $err->issetFault() );
@@ -102,7 +102,7 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testData ()
     {
-        $err = new \h2o\Exception;
+        $err = new \r8\Exception;
 
         $this->assertSame( $err, $err->addData("Data Label", 20) );
         $this->assertSame( array("Data Label" => 20), $err->getData() );
@@ -111,8 +111,8 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
     public function testThrowing ()
     {
-        $this->setExpectedException('\h2o\Exception');
-        throw new \h2o\Exception;
+        $this->setExpectedException('\r8\Exception');
+        throw new \r8\Exception;
     }
 
 }

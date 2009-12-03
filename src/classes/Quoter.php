@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Quoter
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * Parses a string and splits it in to a list of quoted and unquoted sections
@@ -58,13 +58,13 @@ class Quoter
      */
     static public function isEscaped ( $string, $offset, $escape = '\\' )
     {
-        $escape = \h2o\strval( $escape );
+        $escape = \r8\strval( $escape );
 
         // Something can't be escaped if there is no escape string
-        if ( \h2o\isEmpty( $escape, ALLOW_SPACES ) )
+        if ( \r8\isEmpty( $escape, ALLOW_SPACES ) )
             return false;
 
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
         $offset = intval( $offset );
 
         if ( $offset > strlen( $string ) )
@@ -102,10 +102,10 @@ class Quoter
         // Loop through each needle so we can figure out the one with the minimum offset
         foreach( $needles AS $needle ) {
 
-            $needle = \h2o\strval( $needle );
+            $needle = \r8\strval( $needle );
 
-            if ( \h2o\isEmpty( $needle, ALLOW_SPACES ) )
-                throw new \h2o\Exception\Data($needle, "needle", "Needle must not be empty");
+            if ( \r8\isEmpty( $needle, ALLOW_SPACES ) )
+                throw new \r8\Exception\Data($needle, "needle", "Needle must not be empty");
 
             // Cache the length of the needle so it isn't continually calculated
             $needleLen = strlen( $needle );
@@ -188,20 +188,20 @@ class Quoter
      */
     public function setQuote ( $open, $close = FALSE )
     {
-        $open = \h2o\strval( $open );
+        $open = \r8\strval( $open );
 
-        if ( \h2o\isEmpty($open, ALLOW_SPACES) )
-            throw new \h2o\Exception\Argument( 0, "Open Quote", "Must not be empty" );
+        if ( \r8\isEmpty($open, ALLOW_SPACES) )
+            throw new \r8\Exception\Argument( 0, "Open Quote", "Must not be empty" );
 
-        if ( \h2o\isVague( $close, ALLOW_SPACES ) ) {
+        if ( \r8\isVague( $close, ALLOW_SPACES ) ) {
             $close = array( $open );
         }
         else {
 
-            $close = \h2o\arrayVal( $close );
-            $close = \h2o\ary\flatten( $close );
-            $close = \array_map( 'h2o\strval', $close );
-            $close = \h2o\ary\compact( $close, \h2o\ALLOW_SPACES );
+            $close = \r8\arrayVal( $close );
+            $close = \r8\ary\flatten( $close );
+            $close = \array_map( 'r8\strval', $close );
+            $close = \r8\ary\compact( $close, \r8\ALLOW_SPACES );
             $close = \array_unique( $close );
 
         }
@@ -219,7 +219,7 @@ class Quoter
     public function getAllQuotes ()
     {
         $quotes = array_values( $this->quotes );
-        $quotes = \h2o\ary\flatten( $quotes );
+        $quotes = \r8\ary\flatten( $quotes );
         $quotes = \array_merge( $quotes, array_keys($this->quotes) );
         $quotes = \array_unique( $quotes );
         return \array_values($quotes);
@@ -243,7 +243,7 @@ class Quoter
      */
     public function isOpenQuote ( $quote )
     {
-        $quote = \h2o\strval( $quote );
+        $quote = \r8\strval( $quote );
         return array_key_exists( $quote, $this->quotes );
     }
 
@@ -255,10 +255,10 @@ class Quoter
      */
     public function getCloseQuotesFor ( $quote )
     {
-        $quote = \h2o\strval( $quote );
+        $quote = \r8\strval( $quote );
 
         if ( !$this->isOpenQuote($quote) )
-            throw new \h2o\Exception\Argument( 0, "Open Quote", "Invalid open quote" );
+            throw new \r8\Exception\Argument( 0, "Open Quote", "Invalid open quote" );
 
         return array_values( $this->quotes[ $quote ] );
     }
@@ -284,9 +284,9 @@ class Quoter
      */
     public function setEscape ( $escape )
     {
-        $escape = \h2o\strval( $escape );
-        if ( \h2o\isEmpty( $escape, ALLOW_SPACES ) )
-            throw new \h2o\Exception\Argument( 0, "Escape String", "Must not be empty" );
+        $escape = \r8\strval( $escape );
+        if ( \r8\isEmpty( $escape, ALLOW_SPACES ) )
+            throw new \r8\Exception\Argument( 0, "Escape String", "Must not be empty" );
         $this->escape = $escape;
         return $this;
     }
@@ -316,15 +316,15 @@ class Quoter
      * Breaks a string up according the settings in this instance
      *
      * @param String $string The string to parse
-     * @return Object Returns a \h2o\Quoter\Parsed object
+     * @return Object Returns a \r8\Quoter\Parsed object
      */
     public function parse ( $string )
     {
-        $string = \h2o\strval( $string );
+        $string = \r8\strval( $string );
 
         $openQuotes = $this->getOpenQuotes();
 
-        $result = new \h2o\Quoter\Parsed;
+        $result = new \r8\Quoter\Parsed;
 
         do {
 
@@ -336,7 +336,7 @@ class Quoter
             if ( $openOffset === FALSE ) {
 
                 $result->addSection(
-                        new \h2o\Quoter\Section\Unquoted( $string )
+                        new \r8\Quoter\Section\Unquoted( $string )
                     );
 
                 break;
@@ -346,7 +346,7 @@ class Quoter
 
                 // Construct the unquoted section and add it to the result
                 $result->addSection(
-                        new \h2o\Quoter\Section\Unquoted(
+                        new \r8\Quoter\Section\Unquoted(
                                 substr( $string, 0, $openOffset )
                             )
                     );
@@ -373,7 +373,7 @@ class Quoter
 
             // Construct the quoted section and add it to the result
             $result->addSection(
-                    new \h2o\Quoter\Section\Quoted(
+                    new \r8\Quoter\Section\Quoted(
                             $quoted,
                             $openQuote,
                             $closeQuote

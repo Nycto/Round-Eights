@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testInitial ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $this->assertSame(
                 array( "'" => array( "'" ), '"' => array( '"' ) ),
@@ -47,7 +47,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testClearQuotes ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $this->assertSame(
                 array( "'" => array( "'" ), '"' => array( '"' ) ),
@@ -64,7 +64,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testSetQuote ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->clearQuotes();
 
         $this->assertSame(
@@ -90,7 +90,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testGetAllQuotes ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setQuote( "'", array( "'", '"', '`' ) );
         $quoter->setQuote( "!", array( '@', '#', '*' ) );
 
@@ -102,7 +102,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testGetOpenQuotes ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setQuote( "'", array( "'", '"', '`' ) );
         $quoter->setQuote( "!", array( '@', '#', '*' ) );
         $quoter->setQuote( "(", ")" );
@@ -116,7 +116,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testIsOpenQuote ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setQuote( "(", ")" );
         $quoter->setQuote( "`" );
 
@@ -127,7 +127,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testGetCloseQuotesFor ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setQuote( "(", ")" );
         $quoter->setQuote( "`" );
         $quoter->setQuote( "!", array( '@', '#', '*' ) );
@@ -145,7 +145,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testSetEscape ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $this->assertSame( $quoter, $quoter->setEscape( "new" ) );
         $this->assertSame( "new", $quoter->getEscape() );
 
@@ -153,14 +153,14 @@ class classes_quoter extends PHPUnit_Framework_TestCase
             $quoter->setEscape("");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame( "Must not be empty", $err->getMessage() );
         }
     }
 
     public function testClearEscape ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setEscape( '\\' );
 
         $this->assertSame( $quoter, $quoter->clearEscape() );
@@ -169,7 +169,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testEscapeExists ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->setEscape( '\\' );
 
         $this->assertTrue( $quoter->escapeExists() );
@@ -181,52 +181,52 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testIsEscaped ()
     {
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 90) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\'t it escaped?", 90) );
 
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 0) );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 8) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\'t it escaped?", 0) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\'t it escaped?", 8) );
 
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 4) );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\\\'t it escaped?", 5) );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn\\\\\\'t it escaped?", 6) );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\\\\\\\'t it escaped?", 7) );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn\\\\\\\\\\'t it escaped?", 8) );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\\\\\\\\\'t it escaped?", 9) );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn\\\\\\\\\\\\\\'t it escaped?", 10) );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn\\'t it escaped?", 4) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\\\'t it escaped?", 5) );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn\\\\\\'t it escaped?", 6) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\\\\\\\'t it escaped?", 7) );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn\\\\\\\\\\'t it escaped?", 8) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\\\\\\\\\'t it escaped?", 9) );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn\\\\\\\\\\\\\\'t it escaped?", 10) );
 
-        $this->assertFalse( \h2o\Quoter::isEscaped("\\\\isn't it escaped?", 2) );
+        $this->assertFalse( \r8\Quoter::isEscaped("\\\\isn't it escaped?", 2) );
 
 
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn't it escaped?", 2, '/esc/') );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn/esc/'t it escaped?", 8, '/esc/') );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn/EsC/'t it escaped?", 8, '/esc/') );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn/Esc//EsC/'t it escaped?", 13, '/esc/') );
-        $this->assertTrue( \h2o\Quoter::isEscaped("isn/EsC//Esc//EsC/'t it escaped?", 18, '/esc/') );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn't it escaped?", 2, '/esc/') );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn/esc/'t it escaped?", 8, '/esc/') );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn/EsC/'t it escaped?", 8, '/esc/') );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn/Esc//EsC/'t it escaped?", 13, '/esc/') );
+        $this->assertTrue( \r8\Quoter::isEscaped("isn/EsC//Esc//EsC/'t it escaped?", 18, '/esc/') );
 
-        $this->assertTrue( \h2o\Quoter::isEscaped("/esc/isn't it escaped?", 5, '/esc/') );
+        $this->assertTrue( \r8\Quoter::isEscaped("/esc/isn't it escaped?", 5, '/esc/') );
 
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 4, null) );
-        $this->assertFalse( \h2o\Quoter::isEscaped("isn\\'t it escaped?", 8, null) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\'t it escaped?", 4, null) );
+        $this->assertFalse( \r8\Quoter::isEscaped("isn\\'t it escaped?", 8, null) );
     }
 
     public function testFindNext ()
     {
         try {
-            \h2o\Quoter::findNext( "string", array ('"', "") );
+            \r8\Quoter::findNext( "string", array ('"', "") );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Data $err ) {
+        catch ( \r8\Exception\Data $err ) {
             $this->assertSame( "Needle must not be empty", $err->getMessage() );
         }
 
         $this->assertSame(
                 array(false, false),
-                \h2o\Quoter::findNext( "string", array() )
+                \r8\Quoter::findNext( "string", array() )
             );
 
         $this->assertSame(
                 array(8, "'"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "It\\'s a 'quoted' string",
                         array ('"', "'"),
                         '\\'
@@ -235,7 +235,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(false, false),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "It\\'s a \\'quoted\\'  string",
                         array ('"', "'"),
                         '\\'
@@ -244,7 +244,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(0, '"'),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         '"Its a \\"quoted\\"  string',
                         array ('"', "'"),
                         '\\'
@@ -253,7 +253,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(false, false),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         'String without quotes',
                         array ('"', "'"),
                         '\\'
@@ -262,7 +262,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(false, false),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         'String \"without\" quotes',
                         array ('"', "'"),
                         '\\'
@@ -271,7 +271,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(6, "'"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         'String\' "with" \'quotes',
                         array ('"', "'"),
                         '\\'
@@ -280,7 +280,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(6, '"'),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String\" 'with' \"quotes",
                         array ('"', "'"),
                         '\\'
@@ -289,7 +289,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(19, "'"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with a quote'",
                         array ('"', "'"),
                         '\\'
@@ -298,7 +298,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(12, "QT"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with QTa quote",
                         array ('QT'),
                         '\\'
@@ -307,7 +307,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(22, "QT"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with \\QTa quoteQT",
                         array ('QT'),
                         '\\'
@@ -316,7 +316,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(12, "QT"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with qtQT2 a quote",
                         array ('QT', 'QT2'),
                         '\\'
@@ -325,7 +325,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(14, "QT"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String q with qt a quote",
                         array ('QT', 'QT2'),
                         '\\'
@@ -334,7 +334,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(12, "QT"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with QT2a quote",
                         array ('QT', 'QT2'),
                         '\\'
@@ -343,7 +343,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array(7, "with"),
-                \h2o\Quoter::findNext(
+                \r8\Quoter::findNext(
                         "String with a quote",
                         array ('with', 'it'),
                         '\\'
@@ -354,15 +354,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testParse_endWithUnquoted ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $result = $quoter->parse("string 'with' quotes");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
         $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("string ", "'with'", " quotes"),
-                array_map( 'h2o\strval', $result->getSections() )
+                array_map( 'r8\strval', $result->getSections() )
             );
 
 
@@ -370,7 +370,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( "string ", $offset->getContent() );
 
@@ -379,7 +379,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[1];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "with", $offset->getContent() );
         $this->assertSame( "'", $offset->getOpenQuote() );
@@ -390,7 +390,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[2];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( " quotes", $offset->getContent() );
 
@@ -398,15 +398,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testParse_endWithQuoted ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $result = $quoter->parse("string 'with'");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
         $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("string ", "'with'"),
-                array_map( 'h2o\strval', $result->getSections() )
+                array_map( 'r8\strval', $result->getSections() )
             );
 
 
@@ -414,7 +414,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( "string ", $offset->getContent() );
 
@@ -423,7 +423,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[1];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "with", $offset->getContent() );
         $this->assertSame( "'", $offset->getOpenQuote() );
@@ -432,15 +432,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testParse_onlyUnquoted()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $result = $quoter->parse("This is a string");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
         $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("This is a string"),
-                array_map('h2o\strval', $result->getSections() )
+                array_map('r8\strval', $result->getSections() )
             );
 
 
@@ -448,22 +448,22 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( "This is a string", $offset->getContent() );
     }
 
     public function testParse_onlyQuoted()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $result = $quoter->parse("'This is a string'");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
         $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("'This is a string'"),
-                array_map('h2o\strval', $result->getSections() )
+                array_map('r8\strval', $result->getSections() )
             );
 
 
@@ -471,7 +471,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "This is a string", $offset->getContent() );
         $this->assertSame( "'", $offset->getOpenQuote() );
@@ -480,15 +480,15 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testParse_touchingQuoted()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
 
         $result = $quoter->parse("'This is''a string'");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
         $this->assertType( 'array', $result->getSections() );
 
         $this->assertSame(
                 array("'This is'", "'a string'"),
-                array_map('h2o\strval', $result->getSections() )
+                array_map('r8\strval', $result->getSections() )
             );
 
 
@@ -496,7 +496,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "This is", $offset->getContent() );
         $this->assertSame( "'", $offset->getOpenQuote() );
@@ -507,7 +507,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[1];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "a string", $offset->getContent() );
         $this->assertSame( "'", $offset->getOpenQuote() );
@@ -516,16 +516,16 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
     public function testParse_oddQuotes ()
     {
-        $quoter = new \h2o\Quoter;
+        $quoter = new \r8\Quoter;
         $quoter->clearQuotes()
             ->setQuote("<({", array( "END OF QUOTE", "))" ) );
 
         $result = $quoter->parse("<({This isEND OF QUOTE a string <({with stuff)) in it");
-        $this->assertThat( $result, $this->isInstanceOf("h2o\Quoter\Parsed") );
+        $this->assertThat( $result, $this->isInstanceOf("r8\Quoter\Parsed") );
 
         $this->assertSame(
                 array("<({This isEND OF QUOTE", " a string ", "<({with stuff))", " in it"),
-                array_map("h2o\strval", $result->getSections())
+                array_map("r8\strval", $result->getSections())
             );
 
 
@@ -533,7 +533,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[0];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "This is", $offset->getContent() );
         $this->assertSame( "<({", $offset->getOpenQuote() );
@@ -544,7 +544,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[1];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( " a string ", $offset->getContent() );
 
@@ -553,7 +553,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[2];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Quoted")
+                $this->isInstanceOf("r8\Quoter\Section\Quoted")
             );
         $this->assertSame( "with stuff", $offset->getContent() );
         $this->assertSame( "<({", $offset->getOpenQuote() );
@@ -564,7 +564,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
         $offset = $offset[3];
         $this->assertThat(
                 $offset,
-                $this->isInstanceOf("h2o\Quoter\Section\Unquoted")
+                $this->isInstanceOf("r8\Quoter\Section\Unquoted")
             );
         $this->assertSame( " in it", $offset->getContent() );
     }

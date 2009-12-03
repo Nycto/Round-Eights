@@ -1,51 +1,49 @@
 <?php
 /**
- * Database Query Result
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace h2o\DB\Result\Read;
+namespace r8\DB\Result\Read;
 
 /**
  * Helper base class for Read decorators. It provides a full set of transmogrifiers
  */
-abstract class Decorator implements \h2o\iface\DB\Result\Read
+abstract class Decorator implements \r8\iface\DB\Result\Read
 {
 
     /**
      * The Read result being decorated
      *
-     * @var \h2o\iface\DB\Result\Read
+     * @var \r8\iface\DB\Result\Read
      */
     private $decorated;
 
     /**
      * Constructor...
      *
-     * @param \h2o\iface\DB\Result\Read $decorated The Read result being decorated
+     * @param \r8\iface\DB\Result\Read $decorated The Read result being decorated
      */
-    public function __construct ( \h2o\iface\DB\Result\Read $decorated )
+    public function __construct ( \r8\iface\DB\Result\Read $decorated )
     {
         $this->decorated = $decorated;
     }
@@ -53,7 +51,7 @@ abstract class Decorator implements \h2o\iface\DB\Result\Read
     /**
      * Returns the Decorated read result
      *
-     * @return \h2o\iface\DB\Result\Read
+     * @return \r8\iface\DB\Result\Read
      */
     public function getDecorated ()
     {
@@ -144,7 +142,7 @@ abstract class Decorator implements \h2o\iface\DB\Result\Read
      *
      * Iterator interface function
      *
-     * @return \h2o\DB\Result\Read\Decorator Returns a self reference
+     * @return \r8\DB\Result\Read\Decorator Returns a self reference
      */
     public function next ()
     {
@@ -169,7 +167,7 @@ abstract class Decorator implements \h2o\iface\DB\Result\Read
      *
      * Iterator interface function
      *
-     * @return \h2o\DB\Result\Read\Decorator Returns a self reference
+     * @return \r8\DB\Result\Read\Decorator Returns a self reference
      */
     public function rewind ()
     {
@@ -184,9 +182,9 @@ abstract class Decorator implements \h2o\iface\DB\Result\Read
      *
      * @param Integer $offset The offset to seek to
      * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
-     * @return \h2o\DB\Result\Read\Decorator Returns a self reference
+     * @return \r8\DB\Result\Read\Decorator Returns a self reference
      */
-    public function seek ( $offset, $wrapFlag = \h2o\num\OFFSET_RESTRICT )
+    public function seek ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
     {
         $this->decorated->seek( $offset, $wrapFlag );
         return $this;
@@ -195,7 +193,7 @@ abstract class Decorator implements \h2o\iface\DB\Result\Read
     /**
      * Frees the resource in this instance
      *
-     * @return \h2o\DB\Result\Read\Decorator Returns a self reference
+     * @return \r8\DB\Result\Read\Decorator Returns a self reference
      */
     public function free ()
     {

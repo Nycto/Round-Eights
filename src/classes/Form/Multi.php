@@ -1,36 +1,34 @@
 <?php
 /**
- * A Basic HTML form field
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Forms
  */
 
-namespace h2o\Form;
+namespace r8\Form;
 
 /**
  * The core class for HTML form fields that have multiple, distinct, options
  */
-abstract class Multi extends \h2o\Form\Field
+abstract class Multi extends \r8\Form\Field
 {
 
     /**
@@ -38,6 +36,8 @@ abstract class Multi extends \h2o\Form\Field
      *
      * This is an associative array where they key is the option value and
      * the element value is the option label
+     *
+     * @var Array
      */
     private $options = array();
 
@@ -53,7 +53,7 @@ abstract class Multi extends \h2o\Form\Field
         parent::__construct($name);
 
         $this->setValidator(
-                new \h2o\Validator\MultiField( $this )
+                new \r8\Validator\MultiField( $this )
             );
     }
 
@@ -73,12 +73,12 @@ abstract class Multi extends \h2o\Form\Field
      * @param mixed $value The raw value of this option. This will be reduced
      *      down to a basic value
      * @param String $label The visible label for this value
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function addOption ( $value, $label )
     {
-        $value = \h2o\indexVal($value);
-        $label = \h2o\strval( $label );
+        $value = \r8\indexVal($value);
+        $label = \r8\strval( $label );
 
         $this->options[ $value ] = $label;
 
@@ -93,7 +93,7 @@ abstract class Multi extends \h2o\Form\Field
      */
     public function hasOption ( $value )
     {
-        $value = \h2o\indexVal($value);
+        $value = \r8\indexVal($value);
 
         return array_key_exists( $value, $this->options );
     }
@@ -102,11 +102,11 @@ abstract class Multi extends \h2o\Form\Field
      * Removes an option from the list based on it's value
      *
      * @param mixed $value The option value to remove
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function removeOption ( $value )
     {
-        $value = \h2o\indexVal($value);
+        $value = \r8\indexVal($value);
 
         if ( $this->hasOption( $value ) )
             unset($this->options[ $value ]);
@@ -122,10 +122,10 @@ abstract class Multi extends \h2o\Form\Field
      */
     public function getOptionLabel ( $value )
     {
-        $value = \h2o\indexVal($value);
+        $value = \r8\indexVal($value);
 
         if ( !$this->hasOption( $value ) )
-            throw new \h2o\Exception\Index($value, "Option Value", "Option does not exist in field");
+            throw new \r8\Exception\Index($value, "Option Value", "Option does not exist in field");
 
         return $this->options[ $value ];
     }
@@ -133,7 +133,7 @@ abstract class Multi extends \h2o\Form\Field
     /**
      * Removes all the registered options from this instance
      *
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function clearOptions ()
     {
@@ -145,11 +145,11 @@ abstract class Multi extends \h2o\Form\Field
      * Imports a set of options from an array or traversable object
      *
      * @param array $source
-     * @return Object Returns a self reference
+     * @return \r8\Form\Multi Returns a self reference
      */
     public function importOptions ( array $source )
     {
-        $source = \h2o\ary\flatten( $source );
+        $source = \r8\ary\flatten( $source );
 
         foreach ( $source AS $key => $value ) {
             $this->addOption($key, $value);

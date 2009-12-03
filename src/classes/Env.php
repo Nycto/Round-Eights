@@ -2,28 +2,28 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Env
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * A global registry for accessing the request and response objects
@@ -34,14 +34,14 @@ class Env
     /**
      * The global request object
      *
-     * @var \h2o\Env\iface\Request
+     * @var \r8\Env\iface\Request
      */
     static protected $request;
 
     /**
      * The global response object
      *
-     * @var \h2o\Env\iface\Response
+     * @var \r8\Env\iface\Response
      */
     static private $response;
 
@@ -52,10 +52,12 @@ class Env
      */
     static private function getHeaders ()
     {
+        // @codeCoverageIgnoreStart
         if ( function_exists('apache_request_headers') )
             return apache_request_headers();
 
         return array();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -65,19 +67,22 @@ class Env
      */
     static private function isCLI ()
     {
+        // @codeCoverageIgnoreStart
         return php_sapi_name() == "cli" ? TRUE : FALSE;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
      * Returns the global Env\Request instance
      *
-     * @return \h2o\iface\Env\Request The singleton Env object
+     * @return \r8\iface\Env\Request The singleton Env object
      */
     static public function request ()
     {
+        // @codeCoverageIgnoreStart
         if ( !isset(self::$request) ) {
 
-            self::$request = new \h2o\Env\Request(
+            self::$request = new \r8\Env\Request(
                     $_SERVER,
                     $_POST,
                     $_FILES,
@@ -85,6 +90,7 @@ class Env
                     self::isCLI()
                 );
         }
+        // @codeCoverageIgnoreEnd
 
         return self::$request;
     }
@@ -92,12 +98,12 @@ class Env
     /**
      * Returns the global response object
      *
-     * @return \h2o\Env\iface\Response
+     * @return \r8\Env\iface\Response
      */
     static public function response ()
     {
         if ( !isset(self::$response) )
-            self::$response = new \h2o\Env\Response;
+            self::$response = new \r8\Env\Response;
 
         return self::$response;
     }

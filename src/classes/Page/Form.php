@@ -2,39 +2,39 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Page
  */
 
-namespace h2o\Page;
+namespace r8\Page;
 
 /**
  * Shortcut for displaying and submitting a form
  */
-class Form extends \h2o\Page
+class Form extends \r8\Page
 {
 
     /**
      * The form this page represents
      *
-     * @var \h2o\Form
+     * @var \r8\Form
      */
     private $form;
 
@@ -55,26 +55,26 @@ class Form extends \h2o\Page
     /**
      * The page to return when displaying the form
      *
-     * @var \h2o\iface\Page
+     * @var \r8\iface\Page
      */
     private $display;
 
     /**
      * The page to return when the form has been submitted and validates
      *
-     * @var \h2o\iface\Page
+     * @var \r8\iface\Page
      */
     private $success;
 
     /**
      * Constructor...
      *
-     * @param \h2o\Form $form The form this page represents
-     * @param \h2o\iface\Page $display The page to return when displaying the form
-     * @param \h2o\iface\Page $success The page to return when the form has been
+     * @param \r8\Form $form The form this page represents
+     * @param \r8\iface\Page $display The page to return when displaying the form
+     * @param \r8\iface\Page $success The page to return when the form has been
      *      submitted and validates
      */
-    public function __construct ( \h2o\Form $form, \h2o\iface\Page $display, \h2o\iface\Page $success )
+    public function __construct ( \r8\Form $form, \r8\iface\Page $display, \r8\iface\Page $success )
     {
         $this->form = $form;
         $this->display = $display;
@@ -84,7 +84,7 @@ class Form extends \h2o\Page
     /**
      * Returns the form instance for this page
      *
-     * @return \h2o\Form Returns a form object
+     * @return \r8\Form Returns a form object
      */
     public function getForm ()
     {
@@ -94,7 +94,7 @@ class Form extends \h2o\Page
     /**
      * Returns the page to use when displaying the form
      *
-     * @return \h2o\iface\Page
+     * @return \r8\iface\Page
      */
     public function getDisplay ()
     {
@@ -104,7 +104,7 @@ class Form extends \h2o\Page
     /**
      * Returns the page to use when a form is succesfully submitted
      *
-     * @return \h2o\iface\Page
+     * @return \r8\iface\Page
      */
     public function getSuccess ()
     {
@@ -127,7 +127,7 @@ class Form extends \h2o\Page
      * is initially displayed.
      *
      * @param array $initials The initial values array
-     * @return \h2o\Page\Form Returns a self reference
+     * @return \r8\Page\Form Returns a self reference
      */
     public function setInitials ( array $initials )
     {
@@ -156,7 +156,7 @@ class Form extends \h2o\Page
      * Sets the array that will be used to fill the form with data.
      *
      * @param array $source The source to pull the submitted data from
-     * @return \h2o\Page\Form Returns a self reference
+     * @return \r8\Page\Form Returns a self reference
      */
     public function setSource ( array $source )
     {
@@ -167,7 +167,7 @@ class Form extends \h2o\Page
     /**
      * Returns the page object to use for the current form state
      *
-     * @return \h2o\iface\Page
+     * @return \r8\iface\Page
      */
     public function getPage ()
     {
@@ -196,11 +196,11 @@ class Form extends \h2o\Page
     /**
      * Returns the core content this page will display
      *
-     * @param \h2o\Page\Context $context A context object which is used by this
+     * @param \r8\Page\Context $context A context object which is used by this
      *      page to communicate with the root page
-     * @return \h2o\iface\Template Returns a blank template
+     * @return \r8\iface\Template Returns a blank template
      */
-    public function getContent ( \h2o\Page\Context $context )
+    public function getContent ( \r8\Page\Context $context )
     {
         return $this->getPage()->getContent( $context );
     }

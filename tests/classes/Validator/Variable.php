@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,7 +35,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testNonStrings ()
     {
-        $validator = new \h2o\Validator\Variable;
+        $validator = new \r8\Validator\Variable;
 
         $result = $validator->validate($this->getMock("stubObject"));
         $this->assertFalse( $result->isValid() );
@@ -82,7 +82,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $validator = new \h2o\Validator\Variable;
+        $validator = new \r8\Validator\Variable;
 
         $this->assertTrue( $validator->validate("string")->isValid() );
         $this->assertTrue( $validator->validate("test1234")->isValid() );
@@ -94,7 +94,7 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $validator = new \h2o\Validator\Variable;
+        $validator = new \r8\Validator\Variable;
 
         $result = $validator->validate("123");
         $this->assertFalse( $result->isValid() );

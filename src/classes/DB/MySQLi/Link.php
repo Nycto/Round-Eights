@@ -1,36 +1,34 @@
 <?php
 /**
- * Database Link
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Database
  */
 
-namespace h2o\DB\MySQLi;
+namespace r8\DB\MySQLi;
 
 /**
  * MySQL Database Link
  */
-class Link extends \h2o\DB\Link
+class Link extends \r8\DB\Link
 {
 
     /**
@@ -55,7 +53,7 @@ class Link extends \h2o\DB\Link
 
         if ( !$link ) {
 
-            throw new \h2o\Exception\DB\Link(
+            throw new \r8\Exception\DB\Link(
                     mysqli_connect_error(),
                     mysqli_connect_errno(),
                     $this
@@ -95,7 +93,7 @@ class Link extends \h2o\DB\Link
         if ( is_array( $value ) )
             return array_map( array($this, "escapeString"), $value );
 
-        $value = \h2o\strval($value);
+        $value = \r8\strval($value);
 
         // Don't force a connection just to escape a string
         if ( $this->isConnected() )
@@ -108,7 +106,7 @@ class Link extends \h2o\DB\Link
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return \h2o\DB\Result Returns a result object
+     * @return \r8\DB\Result Returns a result object
      */
     protected function rawQuery ( $query )
     {
@@ -117,12 +115,12 @@ class Link extends \h2o\DB\Link
         $result = $link->query( $query );
 
         if ( $result === FALSE )
-            throw new \h2o\Exception\DB\Query( $query, $link->error, $link->errno );
+            throw new \r8\Exception\DB\Query( $query, $link->error, $link->errno );
 
         if ( self::isSelect($query) )
-            return new \h2o\DB\MySQLi\Read( $result, $query );
+            return new \r8\DB\MySQLi\Read( $result, $query );
         else
-            return new \h2o\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
+            return new \r8\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
     }
 
     /**

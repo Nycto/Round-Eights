@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -35,9 +35,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testQuery ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
 
         $link->expects( $this->at(0) )
@@ -60,14 +60,14 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
             ->will( $this->throwException(
-                    new \h2o\Exception\DB\Query("SELECT * FROM table", "test exception")
+                    new \r8\Exception\DB\Query("SELECT * FROM table", "test exception")
                 ) );
 
         try {
             $query->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\DB\Query $err ) {
+        catch ( \r8\Exception\DB\Query $err ) {
             $this->assertSame("test exception", $err->getMessage());
         }
 
@@ -76,22 +76,22 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             ->method("query")
             ->with(
                     $this->equalTo("SELECT * FROM table"),
-                    $this->equalTo( \h2o\DB\LinkWrap\Querier::SILENT )
+                    $this->equalTo( \r8\DB\LinkWrap\Querier::SILENT )
                 )
             ->will( $this->throwException(
-                    new \h2o\Exception\DB\Query("SELECT * FROM table", "test exception")
+                    new \r8\Exception\DB\Query("SELECT * FROM table", "test exception")
                 ) );
 
         $this->assertFalse(
-                $query->query("SELECT * FROM table", \h2o\DB\LinkWrap\Querier::SILENT)
+                $query->query("SELECT * FROM table", \r8\DB\LinkWrap\Querier::SILENT)
             );
     }
 
     public function testBegin ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -103,9 +103,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCommit ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -117,9 +117,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testRollBack ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -131,9 +131,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetFieldList ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
 
         $link->expects( $this->at(0) )
@@ -165,7 +165,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->getFieldList( array() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -173,15 +173,15 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_Errors ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         try {
             $query->insert( "", array() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -189,7 +189,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->insert( "tablename", array() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -197,15 +197,15 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_Success ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $link->expects($this->once())
             ->method("query")
             ->with( $this->equalTo("INSERT INTO table SET `field1` = 404, `field2` = 'error'" ) )
             ->will( $this->returnValue(
-                    new \h2o\DB\Result\Write(1, 20, "INSERT")
+                    new \r8\DB\Result\Write(1, 20, "INSERT")
                 ));
 
         $link->expects($this->at(0))
@@ -226,9 +226,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testInsert_ReturnFalse ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $link->expects($this->once())
             ->method("query")
@@ -252,15 +252,15 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_Errors ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         try {
             $query->update( "", null, array() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -268,7 +268,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->update( "tablename", null, array() );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -276,11 +276,11 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_NoWhere ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
-        $result = new \h2o\DB\Result\Write(1, null, "UPDATE");
+        $result = new \r8\DB\Result\Write(1, null, "UPDATE");
 
         $link->expects($this->once())
             ->method("query")
@@ -305,11 +305,11 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testUpdate_WithWhere ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
-        $result = new \h2o\DB\Result\Write(1, null, "UPDATE");
+        $result = new \r8\DB\Result\Write(1, null, "UPDATE");
 
         $link->expects($this->once())
             ->method("query")
@@ -334,21 +334,21 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_WrongResult ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
 
         $link->expects($this->once())
             ->method("query")
             ->with( $this->equalTo("UPDATE table SET id = 1" ) )
-            ->will( $this->returnValue( new \h2o\DB\Result\Write(0, null, "UPDATE") ));
+            ->will( $this->returnValue( new \r8\DB\Result\Write(0, null, "UPDATE") ));
 
         try {
             $query->getRow( "UPDATE table SET id = 1" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame("Query did not a valid Read result object", $err->getMessage());
         }
 
@@ -356,12 +356,12 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_valid ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $result = $this->getMock(
-                "\h2o\DB\Result\Read",
+                '\r8\DB\Result\Read',
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -390,12 +390,12 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_otherRow ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $result = $this->getMock(
-                "\h2o\DB\Result\Read",
+                '\r8\DB\Result\Read',
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -424,12 +424,12 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetRow_noResults ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         $result = $this->getMock(
-                "\h2o\DB\Result\Read",
+                '\r8\DB\Result\Read',
                 array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
                 array(null, "SELECT * FROM table")
             );
@@ -455,15 +455,15 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_errors ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         try {
             $query->getField( "", "SELECT * FROM TABLE");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -471,21 +471,21 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_wrongResult ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
 
         $link->expects($this->once())
             ->method("query")
             ->with( $this->equalTo("UPDATE table SET id = 1" ) )
-            ->will( $this->returnValue( new \h2o\DB\Result\Write(0, null, "UPDATE") ));
+            ->will( $this->returnValue( new \r8\DB\Result\Write(0, null, "UPDATE") ));
 
         try {
             $query->getField( "fld", "UPDATE table SET id = 1" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame("Query did not a valid Read result object", $err->getMessage());
         }
 
@@ -493,10 +493,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_nonArray ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -510,7 +510,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->getField( "fld", "SELECT * FROM table" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Interaction $err ) {
+        catch ( \r8\Exception\Interaction $err ) {
             $this->assertSame("Row was not an array or accessable as an array", $err->getMessage());
         }
 
@@ -518,10 +518,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_noField ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -535,7 +535,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
             $query->getField( "fld", "SELECT * FROM table" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Field does not exist in row", $err->getMessage());
         }
 
@@ -543,10 +543,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_array ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -565,10 +565,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testGetField_object ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -589,15 +589,15 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_errors ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \h2o\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\LinkWrap\Querier( $link );
 
         try {
             $query->count( "" );
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \h2o\Exception\Argument $err ) {
+        catch ( \r8\Exception\Argument $err ) {
             $this->assertSame("Must not be empty", $err->getMessage());
         }
 
@@ -605,10 +605,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_valid ()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -624,10 +624,10 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
     public function testCount_withWhere()
     {
-        $link = $this->getMock( "\h2o\iface\DB\Link" );
+        $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                "\h2o\DB\LinkWrap\Querier",
+                '\r8\DB\LinkWrap\Querier',
                 array("getRow"),
                 array( $link )
             );

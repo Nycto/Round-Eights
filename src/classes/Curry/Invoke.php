@@ -1,36 +1,34 @@
 <?php
 /**
- * Function Currying
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package curry
  */
 
-namespace h2o\Curry;
+namespace r8\Curry;
 
 /**
  * A curry class for invoking object methods
  */
-class Invoke extends \h2o\Curry
+class Invoke extends \r8\Curry
 {
 
     /**
@@ -46,10 +44,10 @@ class Invoke extends \h2o\Curry
      */
     public function __construct ( $method )
     {
-        $method = trim( \h2o\strVal( $method ) );
+        $method = trim( \r8\strVal( $method ) );
 
-        if ( !\h2o\Validator::Method()->isValid($method) )
-            throw new \h2o\Exception\Argument( 0, "Method", "Invalid method name" );
+        if ( !\r8\Validator::Method()->isValid($method) )
+            throw new \r8\Exception\Argument( 0, "Method", "Invalid method name" );
 
         $this->method = $method;
 
@@ -70,7 +68,7 @@ class Invoke extends \h2o\Curry
     protected function rawExec ( $object, array $args = array() )
     {
         if ( !is_object($object) )
-            throw new \h2o\Exception\Argument( 0, "Object", "Must be an object" );
+            throw new \r8\Exception\Argument( 0, "Object", "Must be an object" );
 
         // Take the easy outs if we can
         if ( count($args) <= 0 )

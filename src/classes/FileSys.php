@@ -1,31 +1,29 @@
 <?php
 /**
- * File System Class
- *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
-namespace h2o;
+namespace r8;
 
 /**
  * The base filesystem class
@@ -51,7 +49,7 @@ abstract class FileSys
      */
     static public function resolvePath ( $path )
     {
-        $path = trim( \h2o\strval($path) );
+        $path = trim( \r8\strval($path) );
         $path = str_replace( '\\', '/', $path );
 
         // Pull the root value off of the path
@@ -65,7 +63,7 @@ abstract class FileSys
 
         // Record whether the path we are resolving ends with a "/"... this will
         // be used to re-attach the trailing slash later
-        $hasTail = \h2o\str\endsWith($path, "/");
+        $hasTail = \r8\str\endsWith($path, "/");
 
         $pathStack = explode("/", $path);
 
@@ -92,29 +90,29 @@ abstract class FileSys
      * Static method for creating a new filesys instance
      *
      * This takes the called function and looks for a class under
-     * the \h2o\FileSys namespace.
+     * the \r8\FileSys namespace.
      *
      * @param String $class The FileSys class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \h2o\FileSys subclass
+     * @return Object Returns a new \r8\FileSys subclass
      */
     static public function __callStatic ( $class, $args )
     {
-        $class = "\\h2o\\FileSys\\". trim( \h2o\strval($class) );
+        $class = '\r8\FileSys\\'. trim( \r8\strval($class) );
 
         if ( !class_exists($class, true) ) {
-            throw new \h2o\Exception\Argument(
+            throw new \r8\Exception\Argument(
                     0,
                     "FileSys Class Name",
-                    "Class could not be found in \\h2o\\FileSys namespace"
+                    'Class could not be found in \r8\FileSys namespace'
                 );
         }
 
-        if ( !\h2o\kindOf( $class, "\\h2o\\FileSys") ) {
-            throw new \h2o\Exception\Argument(
+        if ( !\r8\kindOf( $class, "\\r8\\FileSys") ) {
+            throw new \r8\Exception\Argument(
                     0,
                     "FileSys Class Name",
-                    "Class does not implement \\h2o\\FileSys"
+                    "Class does not implement \\r8\\FileSys"
                 );
         }
 
@@ -144,12 +142,12 @@ abstract class FileSys
         if ( $path instanceof self )
             return clone $path;
 
-        $path = \h2o\strval($path);
+        $path = \r8\strval($path);
 
         if ( is_dir($path) )
-            return new \h2o\FileSys\Dir( $path );
+            return new \r8\FileSys\Dir( $path );
         else
-            return new \h2o\FileSys\File( $path );
+            return new \r8\FileSys\File( $path );
     }
 
     /**
@@ -212,15 +210,15 @@ abstract class FileSys
      */
     public function setDir ( $dir )
     {
-        $dir = \h2o\strval( $dir );
+        $dir = \r8\strval( $dir );
 
-        if ( \h2o\isEmpty($dir, \h2o\str\ALLOW_BLANK) ) {
+        if ( \r8\isEmpty($dir, \r8\str\ALLOW_BLANK) ) {
             $this->dir = null;
         }
         else {
             $dir = str_replace('\\', '/', $dir);
-            $dir = \h2o\str\stripRepeats($dir, "/");
-            $dir = \h2o\str\tail($dir, "/");
+            $dir = \r8\str\stripRepeats($dir, "/");
+            $dir = \r8\str\tail($dir, "/");
             $this->dir = $dir;
         }
 
@@ -260,7 +258,7 @@ abstract class FileSys
     public function requirePath ()
     {
         if ( !$this->exists() ) {
-            throw new \h2o\Exception\FileSystem\Missing(
+            throw new \r8\Exception\FileSystem\Missing(
                     $this->getPath(),
                     "Path does not exist"
                 );
@@ -341,13 +339,13 @@ abstract class FileSys
         $time = filectime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve creation time"
                 );
         }
 
-        return new \h2o\DateTime( $time );
+        return new \r8\DateTime( $time );
     }
 
     /**
@@ -362,13 +360,13 @@ abstract class FileSys
         $time = fileatime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve access time"
                 );
         }
 
-        return new \h2o\DateTime( $time );
+        return new \r8\DateTime( $time );
     }
 
     /**
@@ -383,13 +381,13 @@ abstract class FileSys
         $time = filemtime( $this->getPath() );
 
         if ( $time === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve last modified time"
                 );
         }
 
-        return new \h2o\DateTime( $time );
+        return new \r8\DateTime( $time );
     }
 
     /**
@@ -404,7 +402,7 @@ abstract class FileSys
         $group = @filegroup( $this->getPath() );
 
         if ( $group === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve group id"
                 );
@@ -425,7 +423,7 @@ abstract class FileSys
         $owner = @fileowner( $this->getPath() );
 
         if ( $owner === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve owner id"
                 );
@@ -446,7 +444,7 @@ abstract class FileSys
         $perms = @fileperms( $this->getPath() );
 
         if ( $perms === FALSE ) {
-            throw new \h2o\Exception\FileSystem(
+            throw new \r8\Exception\FileSystem(
                     $this->getPath(),
                     "Unable to resolve permissions"
                 );
@@ -483,14 +481,14 @@ abstract class FileSys
      */
     public function resolve ( $base = null, $strict = FALSE )
     {
-        if ( \h2o\isVague($base) )
+        if ( \r8\isVague($base) )
             $base = $this->getCWD();
 
         $base = self::resolvePath( $base );
 
         // If the base doesn't start with a root of some sort, attach the cwd
         if ( !preg_match('/^(?:[a-z]+:)?\//i', $base ) )
-            $base = \h2o\str\weld( $this->getCWD(), $base, "/" );
+            $base = \r8\str\weld( $this->getCWD(), $base, "/" );
 
         $path = $this->getPath();
         $path = str_replace('\\', '/', $path);
@@ -507,14 +505,14 @@ abstract class FileSys
         // If we are in strict mode, we always ignore the root and instead use the base
         if ( $strict ) {
             $path = self::resolvePath( $path );
-            $path = \h2o\str\weld( $base, $path, "/" );
+            $path = \r8\str\weld( $base, $path, "/" );
         }
 
         else {
 
             // If they didn't give us a root, use the base, but let them dip in to it
             if ( $root === FALSE )
-                $path = \h2o\str\weld( $base, $path, "/" );
+                $path = \r8\str\weld( $base, $path, "/" );
             else
                 $path = $root . $path;
 

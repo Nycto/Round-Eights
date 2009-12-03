@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -33,212 +33,220 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_soap_server extends PHPUnit_Framework_TestCase
 {
 
-    public function testRegister ()
+    public function testConstruct_Defaults ()
     {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $this->assertSame( array(), $soap->getOperations() );
+        $server = new \r8\Soap\Server;
 
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
-        $this->assertSame( $soap, $soap->register("one", $cmd) );
-        $this->assertSame( array("one" => $cmd), $soap->getOperations() );
-
-        $cmd2 = $this->getMock('\h2o\iface\Soap\Operation');
-        $this->assertSame( $soap, $soap->register("two", $cmd2) );
-        $this->assertSame(
-                array("one" => $cmd, "two" => $cmd2),
-                $soap->getOperations()
-            );
-
-        $this->assertSame( $soap, $soap->register("one", $cmd2) );
-        $this->assertSame(
-                array("one" => $cmd2, "two" => $cmd2),
-                $soap->getOperations()
-            );
-    }
-
-    public function testRegister_err ()
-    {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $this->assertSame( array(), $soap->getOperations() );
-
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
-
-        try {
-            $soap->register("  ", $cmd);
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \h2o\Exception\Argument $err ) {
-            $this->assertSame( "Must not be empty", $err->getMessage() );
-        }
-    }
-
-    public function testProcess_emptyDoc ()
-    {
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-
-        $result = $soap->process( new DOMDocument );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1000,
-                		"Empty XML Document"
-            		),
-                $result
-            );
-    }
-
-    public function testProcess_noEnvelope ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML('<tag />');
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1001,
-                		"Could not find soap envelope"
-            		),
-                $result
-            );
-    }
-
-    public function testProcess_noBody ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML('<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" />');
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                        1002,
-                        "Could not find soap body"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_multiBody ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
+        $this->assertThat(
+            $server->getHeaders(),
+            $this->isInstanceOf("r8\Soap\Server\Headers")
         );
 
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1003,
-                		"Multiple soap body elements found"
-                    ),
-                $result
-            );
+        $this->assertThat(
+            $server->getMessages(),
+            $this->isInstanceOf("r8\Soap\Server\Messages")
+        );
     }
 
-    public function testProcess_noOperation ()
+    public function testConstruct_Injected ()
     {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
-        );
+        $headers = new \r8\Soap\Server\Headers;
+        $messages = new \r8\Soap\Server\Messages;
 
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
+        $server = new \r8\Soap\Server( $messages, $headers );
 
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                		1004,
-                		"Could not find soap operation element"
-                    ),
-                $result
-            );
+        $this->assertSame( $headers, $server->getHeaders() );
+        $this->assertSame( $messages, $server->getMessages() );
     }
 
-    public function testProcess_multiOperation ()
+    public function testAddRole ()
     {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        			.'<m:Action2 xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
+        $headers = $this->getMock('r8\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "addRole" )
+            ->with( $this->equalTo("test:uri") );
 
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
+        $messages = new \r8\Soap\Server\Messages;
 
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                    	1005,
-                    	"Multiple soap operation elements found"
-                    ),
-                $result
-            );
+        $server = new \r8\Soap\Server( $messages, $headers );
+
+        $this->assertSame( $server, $server->addRole( "test:uri" ) );
+
     }
 
-    public function testProcess_invalidOperation ()
+    public function testAddHeader ()
     {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
+        $head = $this->getMock('r8\iface\Soap\Header');
 
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-        $result = $soap->process( $doc );
-
-        $this->assertEquals(
-                new \h2o\XMLBuilder\Soap\Fault(
-                    	1006,
-                    	"Invalid soap operation"
-                    ),
-                $result
-            );
-    }
-
-    public function testProcess_success ()
-    {
-        $doc = new DOMDocument;
-        $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        			.'<m:Action xmlns:m="uri://example.com" />'
-        		.'</soap:Body>'
-    		.'</soap:Envelope>'
-        );
-
-        $soap = new \h2o\Soap\Server( "uri://example.com" );
-
-        $response = $this->getMock('\h2o\iface\XMLBuilder');
-
-        $cmd = $this->getMock('\h2o\iface\Soap\Operation');
-        $cmd->expects( $this->once() )
-            ->method( 'getResponseBuilder' )
+        $headers = $this->getMock('r8\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "addHeader" )
             ->with(
-                    $this->equalTo($doc),
-                    $this->isInstanceOf("DOMElement")
-                )
-            ->will( $this->returnValue($response) );
+                $this->equalTo( "test:uri" ),
+                $this->equalTo( "tag" ),
+                $this->equalTo( $head )
+            );
+
+        $messages = new \r8\Soap\Server\Messages;
+
+        $server = new \r8\Soap\Server( $messages, $headers );
+
+        $this->assertSame(
+            $server,
+            $server->addHeader( "test:uri", "tag", $head )
+        );
+    }
+
+    public function testAddMessage ()
+    {
+        $msg = $this->getMock('r8\iface\Soap\Message');
+
+        $messages = $this->getMock('r8\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "addMessage" )
+            ->with(
+                $this->equalTo( "test:uri" ),
+                $this->equalTo( "tag" ),
+                $this->equalTo( $msg )
+            );
+
+        $server = new \r8\Soap\Server( $messages );
+
+        $this->assertSame(
+            $server,
+            $server->addMessage( "test:uri", "tag", $msg )
+        );
+    }
+
+    public function testProcess_HeaderFault ()
+    {
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('r8\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->throwException(
+                new \r8\Soap\Fault( "Fault" )
+            ) );
+
+        $messages = $this->getMock('r8\Soap\Server\Messages');
+        $messages->expects( $this->never() )->method( "process" );
+
+        $server = new \r8\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
 
 
-        $soap->register( "Action", $cmd );
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                .'<soap:Body>'
+                    .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
+                .'</soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
+    }
 
-        $this->assertSame( $response, $soap->process( $doc ) );
+    public function testProcess_BodyFault ()
+    {
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('r8\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(NULL) );
+
+        $messages = $this->getMock('r8\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->throwException(
+                new \r8\Soap\Fault( "Fault" )
+            ) );
+
+        $server = new \r8\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
+
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+                .'<soap:Body>'
+                    .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
+                .'</soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testProcess_Success ()
+    {
+        $parser = $this->getMock('r8\Soap\Parser', array(), array(), '', FALSE);
+
+        $headers = $this->getMock('r8\Soap\Server\Headers');
+        $headers->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(
+                new \r8\XMLBuilder\Node("Heading")
+            ) );
+
+        $messages = $this->getMock('r8\Soap\Server\Messages');
+        $messages->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->equalTo($parser) )
+            ->will( $this->returnValue(
+                new \r8\XMLBuilder\Node("Content")
+            ) );
+
+        $server = new \r8\Soap\Server( $messages, $headers );
+
+        $result = $server->process( $parser );
+
+        $this->assertThat( $result, $this->isInstanceOf("r8\XMLBuilder\Soap\Envelope") );
+
+
+        $doc = new DOMDocument;
+        $doc->appendChild( $result->buildNode( $doc ) );
+        $this->assertSame(
+        	'<?xml version="1.0"?>' ."\n"
+            .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
+            	.'<soap:Header><Heading/></soap:Header>'
+                .'<soap:Body><Content/></soap:Body>'
+            .'</soap:Envelope>' ."\n",
+            $doc->saveXML()
+        );
+    }
+
+    public function testProcessStream ()
+    {
+        $result = $this->getMock('r8\XMLBuilder\Soap\Envelope', array(), array(), '', FALSE);
+
+        $server = $this->getMock('r8\Soap\Server', array('process'));
+        $server->expects( $this->once() )
+            ->method( "process" )
+            ->with( $this->isInstanceOf('r8\Soap\Parser') )
+            ->will( $this->returnValue( $result ) );
+
+        $stream = $this->getMock('r8\iface\Stream\In');
+        $stream->expects( $this->once() )
+            ->method( "readAll" )
+            ->will( $this->returnValue("<Request/>") );
+
+        $this->assertSame( $result, $server->processStream($stream) );
+
     }
 
 }

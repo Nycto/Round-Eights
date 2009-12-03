@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -36,21 +36,21 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     /**
      * A common Set to use when generating test column
      *
-     * @var \h2o\MetaDB\Set
+     * @var \r8\MetaDB\Set
      */
     private $set;
 
     /**
      * A common Database to use when generating test column
      *
-     * @var \h2o\MetaDB\DB
+     * @var \r8\MetaDB\DB
      */
     private $db;
 
     /**
      * A common table to use when generating test columns
      *
-     * @var \h2o\MetaDB\Column
+     * @var \r8\MetaDB\Column
      */
     private $table;
 
@@ -61,21 +61,21 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
      */
     public function setUp ()
     {
-        $this->set = new \h2o\MetaDB\Set( new \h2o\DB\BlackHole\Link );
-        $this->db = new \h2o\MetaDB\DB( $this->set, "dbName" );
-        $this->table = new \h2o\MetaDB\Table( $this->db, "tblName" );
+        $this->set = new \r8\MetaDB\Set( new \r8\DB\BlackHole\Link );
+        $this->db = new \r8\MetaDB\DB( $this->set, "dbName" );
+        $this->table = new \r8\MetaDB\Table( $this->db, "tblName" );
     }
 
     /**
      * Returns a test column
      *
      * @param String $name The name of the column
-     * @return \h2o\MetaDB\Column
+     * @return \r8\MetaDB\Column
      */
     public function getTestColumn ( $name )
     {
         return $this->getMock(
-                "\h2o\MetaDB\Column",
+                '\r8\MetaDB\Column',
                 array( "filterSelected" ),
                 array( $this->table, $name )
             );
@@ -93,7 +93,7 @@ class classes_metadb_column extends PHPUnit_Framework_TestCase
     {
         $col = $this->getTestColumn( "col" );
 
-        $link = new \h2o\DB\BlackHole\Link;
+        $link = new \r8\DB\BlackHole\Link;
 
         $this->assertSame(
         	"dbName.tblName.col",

@@ -2,46 +2,46 @@
 /**
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package Template
  */
 
-namespace h2o\Template;
+namespace r8\Template;
 
 /**
  * A collection of templates that can be treated as a single template
  */
-class Collection implements \h2o\iface\Template
+class Collection implements \r8\iface\Template
 {
 
     /**
      * The list of templates
      *
-     * @var Array An array of \h2o\iface\Template objects
+     * @var Array An array of \r8\iface\Template objects
      */
-    protected $list = array();
+    private $list = array();
 
     /**
      * Returns the list of templates registered in this instance
      *
-     * @return Array Returns an array of \h2o\iface\Template objects
+     * @return Array Returns an array of \r8\iface\Template objects
      */
     public function getTemplates ()
     {
@@ -51,10 +51,10 @@ class Collection implements \h2o\iface\Template
     /**
      * Adds a template to the end of this list
      *
-     * @param \h2o\iface\Template $template The template to add
-     * @return \h2o\Template\Collection Returns a self reference for chaining
+     * @param \r8\iface\Template $template The template to add
+     * @return \r8\Template\Collection Returns a self reference for chaining
      */
-    public function add ( \h2o\iface\Template $template )
+    public function add ( \r8\iface\Template $template )
     {
         $this->list[] = $template;
         return $this;
@@ -63,7 +63,7 @@ class Collection implements \h2o\iface\Template
     /**
      * Displays all the templates contained in this instance
      *
-     * @return \h2o\Template\Collection Returns a self reference
+     * @return \r8\Template\Collection Returns a self reference
      */
     public function display ()
     {

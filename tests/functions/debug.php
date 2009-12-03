@@ -4,23 +4,23 @@
  *
  * @license Artistic License 2.0
  *
- * This file is part of RaindropPHP.
+ * This file is part of Round Eights.
  *
- * RaindropPHP is free software: you can redistribute it and/or modify
+ * Round Eights is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License as published by
  * the Open Source Initiative, either version 2.0 of the License, or
  * (at your option) any later version.
  *
- * RaindropPHP is distributed in the hope that it will be useful,
+ * Round Eights is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * Artistic License for more details.
  *
  * You should have received a copy of the Artistic License
- * along with RaindropPHP. If not, see <http://www.RaindropPHP.com/license.php>
+ * along with Round Eights. If not, see <http://www.RoundEights.com/license.php>
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
- * @author James Frasca <James@RaindropPHP.com>
+ * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
  * @package UnitTests
  */
@@ -32,43 +32,53 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
  */
 class functions_debug extends PHPUnit_Framework_TestCase
 {
+    
+    public function testDump ()
+    {
+        ob_start();
+        $this->assertNull( \r8\dump("String of Data") );
+        $result = ob_get_clean();
+        
+        $this->assertType('string', $result);
+        $this->assertGreaterThan(0, strlen($result));
+    }
 
     public function testGetDump ()
     {
-        $this->assertEquals( "bool(TRUE)", \h2o\getDump( TRUE ) );
-        $this->assertEquals( "bool(FALSE)", \h2o\getDump( FALSE ) );
+        $this->assertEquals( "bool(TRUE)", \r8\getDump( TRUE ) );
+        $this->assertEquals( "bool(FALSE)", \r8\getDump( FALSE ) );
 
-        $this->assertEquals( "null()", \h2o\getDump( null ) );
+        $this->assertEquals( "null()", \r8\getDump( null ) );
 
-        $this->assertEquals( "int(1)", \h2o\getDump( 1 ) );
+        $this->assertEquals( "int(1)", \r8\getDump( 1 ) );
 
-        $this->assertEquals( "float(10.5)", \h2o\getDump( 10.5 ) );
+        $this->assertEquals( "float(10.5)", \r8\getDump( 10.5 ) );
 
-        $this->assertEquals( "string('some string')", \h2o\getDump( "some string" ) );
+        $this->assertEquals( "string('some string')", \r8\getDump( "some string" ) );
         $this->assertEquals(
                 "string('some string that is goi'...'after fifty characters')",
-                \h2o\getDump( "some string that is going to be trimmed after fifty characters" )
+                \r8\getDump( "some string that is going to be trimmed after fifty characters" )
             );
-        $this->assertEquals( "string('some\\nstring\\twith\\rbreaks')", \h2o\getDump( "some\nstring\twith\rbreaks" ) );
+        $this->assertEquals( "string('some\\nstring\\twith\\rbreaks')", \r8\getDump( "some\nstring\twith\rbreaks" ) );
 
-        $this->assertEquals( "array(0)", \h2o\getDump( array() ) );
-        $this->assertEquals( "array(1)(int(0) => int(5))", \h2o\getDump( array( 5 ) ) );
+        $this->assertEquals( "array(0)", \r8\getDump( array() ) );
+        $this->assertEquals( "array(1)(int(0) => int(5))", \r8\getDump( array( 5 ) ) );
         $this->assertEquals(
                 "array(2)(int(0) => string('string'), int(20) => float(1.5))",
-                \h2o\getDump( array( "string", 20 => 1.5 ) )
+                \r8\getDump( array( "string", 20 => 1.5 ) )
             );
         $this->assertEquals(
                 "array(5)(int(0) => int(1), int(1) => int(2),...)",
-                \h2o\getDump( array( 1, 2, 3, 4, 20 ) )
+                \r8\getDump( array( 1, 2, 3, 4, 20 ) )
             );
         $this->assertEquals(
                 "array(1)(int(0) => array(2))",
-                \h2o\getDump( array( array( 5, 6 ) ) )
+                \r8\getDump( array( array( 5, 6 ) ) )
             );
 
-        $this->assertEquals( "object(Exception)", \h2o\getDump( new Exception ) );
+        $this->assertEquals( "object(Exception)", \r8\getDump( new Exception ) );
 
-        $this->assertEquals( "resource(stream)", \h2o\getDump( fopen( __FILE__, "r" ) ) );
+        $this->assertEquals( "resource(stream)", \r8\getDump( fopen( __FILE__, "r" ) ) );
     }
 
 }
