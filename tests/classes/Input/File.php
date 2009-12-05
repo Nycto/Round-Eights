@@ -74,6 +74,21 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
         $this->assertSame( 1234567, $file->getSize() );
     }
 
+    public function testGetMimeType ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->once() )
+            ->method( 'getMimeType' )
+            ->will( $this->returnValue("text/plain") );
+
+        $file = new \r8\Input\File( "FileName", 1234, $temp );
+
+        $this->assertSame( "text/plain", $file->getMimeType() );
+        $this->assertSame( "text/plain", $file->getMimeType() );
+        $this->assertSame( "text/plain", $file->getMimeType() );
+    }
+
 }
 
 ?>

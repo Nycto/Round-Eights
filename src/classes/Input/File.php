@@ -129,6 +129,19 @@ class File
         return $this->size;
     }
 
+    /**
+     * Returns the mime type of this file
+     *
+     * @return String
+     */
+    public function getMimeType ()
+    {
+        if ( !isset($this->mime) )
+            $this->mime = $this->file->getMimeType();
+
+        return $this->mime;
+    }
+
 }
 
 ?>
