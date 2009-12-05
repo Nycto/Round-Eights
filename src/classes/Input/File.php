@@ -142,6 +142,16 @@ class File
         return $this->mime;
     }
 
+    /**
+     * Returns whether this file is actually an uploaded file
+     *
+     * @return Boolean
+     */
+    public function isUploadedFile ()
+    {
+        return \is_uploaded_file( $this->file->getPath() );
+    }
+
 }
 
 ?>

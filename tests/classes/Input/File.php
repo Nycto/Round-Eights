@@ -89,6 +89,19 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
         $this->assertSame( "text/plain", $file->getMimeType() );
     }
 
+    public function testIsUploadedFile ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->once() )
+            ->method( 'getPath' )
+            ->will( $this->returnValue( __FILE__ ) );
+
+        $file = new \r8\Input\File( "FileName", 1234, $temp );
+
+        $this->assertFalse( $file->isUploadedFile() );
+    }
+
 }
 
 ?>
