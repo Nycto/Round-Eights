@@ -102,6 +102,122 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
         $this->assertFalse( $file->isUploadedFile() );
     }
 
+    public function testIsReadable ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->once() )
+            ->method( 'isReadable' )
+            ->will( $this->returnValue( TRUE ) );
+
+        $file = new \r8\Input\File( "FileName", 1234, $temp );
+
+        $this->assertTrue( $file->isReadable() );
+    }
+
+    public function testIsValid_ErrorCode ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->never() )->method( "isReadable" );
+        $temp->expects( $this->never() )->method( "getSize" );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", 1234, $temp )
+        );
+        $file->expects( $this->never() )->method( "isUploadedFile" );
+
+        $this->assertFalse( $file->isValid() );
+    }
+
+    public function testIsValid_NotUploaded ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->never() )->method( "isReadable" );
+        $temp->expects( $this->never() )->method( "getSize" );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", UPLOAD_ERR_OK, $temp )
+        );
+        $file->expects( $this->once() )
+            ->method( "isUploadedFile" )
+            ->will( $this->returnValue(FALSE) );
+
+        $this->assertFalse( $file->isValid() );
+    }
+
+    public function testIsValid_NotReadable ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->never() )->method( "getSize" );
+        $temp->expects( $this->once() )
+            ->method( "isReadable" )
+            ->will( $this->returnValue(FALSE) );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", UPLOAD_ERR_OK, $temp )
+        );
+        $file->expects( $this->once() )
+            ->method( "isUploadedFile" )
+            ->will( $this->returnValue(TRUE) );
+
+        $this->assertFalse( $file->isValid() );
+    }
+
+    public function testIsValid_EmptyFile ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->once() )
+            ->method( "getSize" )
+            ->will( $this->returnValue(0) );
+        $temp->expects( $this->once() )
+            ->method( "isReadable" )
+            ->will( $this->returnValue(TRUE) );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", UPLOAD_ERR_OK, $temp )
+        );
+        $file->expects( $this->once() )
+            ->method( "isUploadedFile" )
+            ->will( $this->returnValue(TRUE) );
+
+        $this->assertFalse( $file->isValid() );
+    }
+
+    public function testIsValid_Valid ()
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->once() )->method( "requirePath" );
+        $temp->expects( $this->once() )
+            ->method( "getSize" )
+            ->will( $this->returnValue(50) );
+        $temp->expects( $this->once() )
+            ->method( "isReadable" )
+            ->will( $this->returnValue(TRUE) );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", UPLOAD_ERR_OK, $temp )
+        );
+        $file->expects( $this->once() )
+            ->method( "isUploadedFile" )
+            ->will( $this->returnValue(TRUE) );
+
+        $this->assertTrue( $file->isValid() );
+    }
+
 }
 
 ?>

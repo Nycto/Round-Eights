@@ -152,6 +152,29 @@ class File
         return \is_uploaded_file( $this->file->getPath() );
     }
 
+    /**
+     * Returns whether this file is readable
+     *
+     * @return Boolean
+     */
+    public function isReadable ()
+    {
+        return $this->file->isReadable();
+    }
+
+    /**
+     * Returns a whether this is a valid file upload
+     *
+     * @return Boolean
+     */
+    public function isValid ()
+    {
+        return $this->code == UPLOAD_ERR_OK
+            && $this->isUploadedFile()
+            && $this->isReadable()
+            && $this->getSize() > 0;
+    }
+
 }
 
 ?>
