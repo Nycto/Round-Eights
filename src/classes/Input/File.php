@@ -175,6 +175,43 @@ class File
             && $this->getSize() > 0;
     }
 
+    /**
+     * If this uploaded file isn't valid, this will return the error message
+     *
+     * @return String Returns NULL if no error was encountered
+     */
+    public function getMessage ()
+    {
+        // Handle any explicit errors that PHP gives us
+        if ( $this->code != UPLOAD_ERR_OK ) {
+            $map = array(
+                UPLOAD_ERR_INI_SIZE => "File exceeds the server's maximum allowed size",
+                UPLOAD_ERR_FORM_SIZE => "File exceeds the maximum allowed size",
+                UPLOAD_ERR_PARTIAL => "File was only partially uploaded",
+                UPLOAD_ERR_NO_FILE => "No file was uploaded",
+                UPLOAD_ERR_NO_TMP_DIR => "No temporary directory was defined on the server",
+                UPLOAD_ERR_CANT_WRITE => "Unable to write the uploaded file to the server",
+                UPLOAD_ERR_EXTENSION => "A PHP extension has restricted this upload"
+            );
+
+            if ( isset($map[$this->code]) )
+                return $map[$this->code];
+            else
+                return "An unknown error occurred";
+        }
+
+        if ( !$this->isUploadedFile() )
+            return "Upload validation failed";
+
+        if ( !$this->isReadable() )
+            return "Uploaded file is not readable";
+
+        if ( $this->getSize() == 0 )
+            return "Uploaded file is empty";
+
+        return NULL;
+    }
+
 }
 
 ?>

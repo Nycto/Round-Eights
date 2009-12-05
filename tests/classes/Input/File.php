@@ -33,6 +33,34 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Input_File extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test upload with errors
+     *
+     * @return \r8\Input\File
+     */
+    public function getTestFile ( $code, $isUploaded, $readable, $size )
+    {
+        $temp = $this->getMock('\r8\FileSys\File');
+        $temp->expects( $this->any() )->method( "requirePath" );
+        $temp->expects( $this->any() )
+            ->method( "getSize" )
+            ->will( $this->returnValue($size) );
+        $temp->expects( $this->any() )
+            ->method( "isReadable" )
+            ->will( $this->returnValue($readable) );
+
+        $file = $this->getMock(
+        	'\r8\Input\File',
+            array( "isUploadedFile" ),
+            array( "FileName", $code, $temp )
+        );
+        $file->expects( $this->any() )
+            ->method( "isUploadedFile" )
+            ->will( $this->returnValue($isUploaded) );
+
+        return $file;
+    }
+
     public function testConstruct ()
     {
         $temp = $this->getMock('\r8\FileSys\File');
@@ -117,105 +145,83 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
 
     public function testIsValid_ErrorCode ()
     {
-        $temp = $this->getMock('\r8\FileSys\File');
-        $temp->expects( $this->once() )->method( "requirePath" );
-        $temp->expects( $this->never() )->method( "isReadable" );
-        $temp->expects( $this->never() )->method( "getSize" );
-
-        $file = $this->getMock(
-        	'\r8\Input\File',
-            array( "isUploadedFile" ),
-            array( "FileName", 1234, $temp )
-        );
-        $file->expects( $this->never() )->method( "isUploadedFile" );
-
+        $file = $this->getTestFile( 100, TRUE, TRUE, 100 );
         $this->assertFalse( $file->isValid() );
     }
 
     public function testIsValid_NotUploaded ()
     {
-        $temp = $this->getMock('\r8\FileSys\File');
-        $temp->expects( $this->once() )->method( "requirePath" );
-        $temp->expects( $this->never() )->method( "isReadable" );
-        $temp->expects( $this->never() )->method( "getSize" );
-
-        $file = $this->getMock(
-        	'\r8\Input\File',
-            array( "isUploadedFile" ),
-            array( "FileName", UPLOAD_ERR_OK, $temp )
-        );
-        $file->expects( $this->once() )
-            ->method( "isUploadedFile" )
-            ->will( $this->returnValue(FALSE) );
-
+        $file = $this->getTestFile( UPLOAD_ERR_OK, FALSE, TRUE, 100 );
         $this->assertFalse( $file->isValid() );
     }
 
     public function testIsValid_NotReadable ()
     {
-        $temp = $this->getMock('\r8\FileSys\File');
-        $temp->expects( $this->once() )->method( "requirePath" );
-        $temp->expects( $this->never() )->method( "getSize" );
-        $temp->expects( $this->once() )
-            ->method( "isReadable" )
-            ->will( $this->returnValue(FALSE) );
-
-        $file = $this->getMock(
-        	'\r8\Input\File',
-            array( "isUploadedFile" ),
-            array( "FileName", UPLOAD_ERR_OK, $temp )
-        );
-        $file->expects( $this->once() )
-            ->method( "isUploadedFile" )
-            ->will( $this->returnValue(TRUE) );
-
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, FALSE, 100 );
         $this->assertFalse( $file->isValid() );
     }
 
     public function testIsValid_EmptyFile ()
     {
-        $temp = $this->getMock('\r8\FileSys\File');
-        $temp->expects( $this->once() )->method( "requirePath" );
-        $temp->expects( $this->once() )
-            ->method( "getSize" )
-            ->will( $this->returnValue(0) );
-        $temp->expects( $this->once() )
-            ->method( "isReadable" )
-            ->will( $this->returnValue(TRUE) );
-
-        $file = $this->getMock(
-        	'\r8\Input\File',
-            array( "isUploadedFile" ),
-            array( "FileName", UPLOAD_ERR_OK, $temp )
-        );
-        $file->expects( $this->once() )
-            ->method( "isUploadedFile" )
-            ->will( $this->returnValue(TRUE) );
-
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, TRUE, 0 );
         $this->assertFalse( $file->isValid() );
     }
 
     public function testIsValid_Valid ()
     {
-        $temp = $this->getMock('\r8\FileSys\File');
-        $temp->expects( $this->once() )->method( "requirePath" );
-        $temp->expects( $this->once() )
-            ->method( "getSize" )
-            ->will( $this->returnValue(50) );
-        $temp->expects( $this->once() )
-            ->method( "isReadable" )
-            ->will( $this->returnValue(TRUE) );
-
-        $file = $this->getMock(
-        	'\r8\Input\File',
-            array( "isUploadedFile" ),
-            array( "FileName", UPLOAD_ERR_OK, $temp )
-        );
-        $file->expects( $this->once() )
-            ->method( "isUploadedFile" )
-            ->will( $this->returnValue(TRUE) );
-
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, TRUE, 100 );
         $this->assertTrue( $file->isValid() );
+    }
+
+    public function testGetMessage_ErrorCode ()
+    {
+        $file = $this->getTestFile( UPLOAD_ERR_NO_FILE, TRUE, TRUE, 100 );
+        $this->assertSame(
+            "No file was uploaded",
+            $file->getMessage()
+        );
+    }
+
+    public function testGetMessage_UnknownCode ()
+    {
+        $file = $this->getTestFile( 505050, TRUE, TRUE, 100 );
+        $this->assertSame(
+            "An unknown error occurred",
+            $file->getMessage()
+        );
+    }
+
+    public function testGetMessage_NotUploaded ()
+    {
+        $file = $this->getTestFile( UPLOAD_ERR_OK, FALSE, TRUE, 100 );
+        $this->assertSame(
+            "Upload validation failed",
+            $file->getMessage()
+        );
+    }
+
+    public function testGetMessage_NotReadable ()
+    {
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, FALSE, 100 );
+        $this->assertSame(
+            "Uploaded file is not readable",
+            $file->getMessage()
+        );
+    }
+
+    public function testGetMessage_Empty ()
+    {
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, TRUE, 0 );
+        $this->assertSame(
+            "Uploaded file is empty",
+            $file->getMessage()
+        );
+    }
+
+    public function testGetMessage_Valid ()
+    {
+        $file = $this->getTestFile( UPLOAD_ERR_OK, TRUE, TRUE, 199 );
+        $this->assertNull( $file->getMessage() );
     }
 
 }
