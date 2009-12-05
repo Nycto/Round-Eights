@@ -116,6 +116,19 @@ class File
         return $this->file;
     }
 
+    /**
+     * Returns the size of this file
+     *
+     * @return Integer
+     */
+    public function getSize ()
+    {
+        if ( !isset($this->size) )
+            $this->size = $this->file->getSize();
+
+        return $this->size;
+    }
+
 }
 
 ?>
