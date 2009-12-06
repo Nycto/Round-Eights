@@ -34,14 +34,14 @@ interface Request
     /**
      * Returns the data posted by the client
      *
-     * @return array
+     * @return \r8\iface\Input
      */
     public function getPost ();
 
     /**
      * Returns the query string parsed as an array
      *
-     * @return array
+     * @return \r8\iface\Input
      */
     public function getGet ();
 

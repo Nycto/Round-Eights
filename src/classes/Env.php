@@ -84,7 +84,7 @@ class Env
 
             self::$request = new \r8\Env\Request(
                     $_SERVER,
-                    $_POST,
+                    new \r8\Input\Reference( $_POST ),
                     $_FILES,
                     self::getHeaders(),
                     self::isCLI()

@@ -44,22 +44,16 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetPost ()
     {
-        $req = new \r8\Env\Request(
-                array(),
-                array( 'one' => 'first', 'two' => 'second' )
-            );
-
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getPost()
-            );
+        $input = $this->getMock('\r8\iface\Input');
+        $req = new \r8\Env\Request( array(), $input );
+        $this->assertSame( $input, $req->getPost() );
     }
 
     public function testGetFiles ()
     {
         $req = new \r8\Env\Request(
                 array(),
-                array(),
+                $this->getMock('\r8\iface\Input'),
                 array( 'one' => 'first', 'two' => 'second' )
             );
 
@@ -75,20 +69,21 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                 array( 'QUERY_STRING' => 'one=first&two=second' )
             );
 
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getGet()
-            );
+        $get = $req->getGet();
+
+        $this->assertThat( $get, $this->isInstanceOf('\r8\iface\Input') );
+        $this->assertSame( $get, $req->getGet() );
+        $this->assertSame( $get, $req->getGet() );
 
         $this->assertSame(
                 array( 'one' => 'first', 'two' => 'second' ),
-                $req->getGet()
+                $get->toArray()
             );
     }
 
     public function testGetURL_empty ()
     {
-        $req = new \r8\Env\Request( array(), array(), array() );
+        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array() );
 
         $url = $req->getURL();
         $this->assertThat( $url, $this->isInstanceOf('r8\URL') );
@@ -217,7 +212,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     {
         $req = new \r8\Env\Request(
                 array(),
-                array(),
+                $this->getMock('\r8\iface\Input'),
                 array(),
                 array( 'one' => 'first', 'two' => 'second' )
             );
@@ -233,10 +228,10 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $req = new \r8\Env\Request;
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), array(), array(), array(), FALSE );
+        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array(), array(), FALSE );
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), array(), array(), array(), TRUE );
+        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array(), array(), TRUE );
         $this->assertTrue( $req->isCLI() );
     }
 
