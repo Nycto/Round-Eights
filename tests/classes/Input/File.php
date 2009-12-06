@@ -61,6 +61,88 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
         return $file;
     }
 
+    public function testFromArray_flat ()
+    {
+        $result = \r8\Input\File::fromArray( array(
+            'name' => 'File Name',
+        	'tmp_name' => __FILE__,
+            'error' => 1234
+        ) );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Input\File') );
+
+        $this->assertSame( "File Name", $result->getName() );
+        $this->assertSame( 1234, $result->getCode() );
+        $this->assertEquals(
+            new \r8\FileSys\File( __FILE__ ),
+            $result->getFile()
+        );
+    }
+
+    public function testFromArray_Multiple ()
+    {
+        $result = \r8\Input\File::fromArray( array(
+            'name' => array( 'File Name', 'Mismatch', "k" => 'File 2' ),
+        	'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
+            'error' => array( 1234, "k" => 0 )
+        ) );
+
+        $this->assertType('array', $result);
+        $this->assertSame( 2, count($result) );
+
+        $this->assertArrayHasKey( 0, $result );
+        $this->assertArrayHasKey( "k", $result );
+
+        $this->assertThat( $result[0], $this->isInstanceOf('\r8\Input\File') );
+        $this->assertThat( $result["k"], $this->isInstanceOf('\r8\Input\File') );
+
+        $this->assertSame( "File Name", $result[0]->getName() );
+        $this->assertSame( 1234, $result[0]->getCode() );
+        $this->assertEquals(
+            new \r8\FileSys\File( __FILE__ ),
+            $result[0]->getFile()
+        );
+
+        $this->assertSame( "File 2", $result["k"]->getName() );
+        $this->assertSame( 0, $result["k"]->getCode() );
+        $this->assertEquals(
+            new \r8\FileSys\File( r8_DIR_CLASSES ."Autoload.php" ),
+            $result["k"]->getFile()
+        );
+    }
+
+    public function testFromArray_InvalidArray ()
+    {
+        try {
+            \r8\Input\File::fromArray( array() );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "The following indexes are required and missing: name, tmp_name, error", $err->getMessage() );
+        }
+
+        try {
+            \r8\Input\File::fromArray( array(
+                'name' => 'File Name',
+            	'tmp_name' => '/tmp/example.txt',
+            ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "The following indexes are required and missing: error", $err->getMessage() );
+        }
+
+        try {
+            \r8\Input\File::fromArray( array(
+                'name' => 'File Name',
+            ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "The following indexes are required and missing: tmp_name, error", $err->getMessage() );
+        }
+    }
+
     public function testConstruct ()
     {
         $temp = $this->getMock('\r8\FileSys\File');

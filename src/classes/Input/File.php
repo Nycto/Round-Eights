@@ -67,6 +67,48 @@ class File
     private $size;
 
     /**
+     * Builds a new instance of this object from an array
+     *
+     * @param array $input The source data
+     * @return \r8\Input\File|Array This could return an array of \r8\Input\File
+     * 		objects if the input array is multi-dimensional.
+     */
+    static public function fromArray ( array $input )
+    {
+        $fields = array( 'name', 'tmp_name', 'error' );
+
+        // Narrow the array to only what is needed
+        $input = \r8\ary\hone( $input, $fields );
+
+        // Check for missing fields
+        $missing = array_diff( $fields, array_keys($input) );
+        if ( count($missing) > 0 )
+            throw new \r8\Exception\Argument(0, "Input Array", "The following indexes are required and missing: ". implode(", ", $missing));
+
+        // If they only gave us a single file,
+        if ( !is_array($input['name']) ) {
+            return new self(
+                $input['name'],
+                $input['error'],
+                new \r8\FileSys\File( $input['tmp_name'] )
+            );
+        }
+
+        // Handle multiple files passed under one file name
+        $result = array();
+        foreach ( $input['name'] AS $key => $value ) {
+            if ( isset($input['error'][$key]) && isset($input['tmp_name'][$key]) ) {
+                $result[$key] = new self(
+                    $input['name'][$key],
+                    $input['error'][$key],
+                    new \r8\FileSys\File( $input['tmp_name'][$key] )
+                );
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Constructor...
      *
      * @param String $name The original name of the file on the client machine
