@@ -28,6 +28,8 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
+define("r8_SUPPRESS_HANDLERS", TRUE);
+
 require_once rtrim( __DIR__, "/" ) ."/../src/RoundEights.php";
 
 error_reporting( E_ALL | E_STRICT );
