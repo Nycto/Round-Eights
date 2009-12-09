@@ -51,16 +51,15 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetFiles ()
     {
+        $files = $this->getMock('\r8\Input\Files');
+
         $req = new \r8\Env\Request(
                 array(),
                 $this->getMock('\r8\iface\Input'),
-                array( 'one' => 'first', 'two' => 'second' )
+                $files
             );
 
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getFiles()
-            );
+        $this->assertSame( $files, $req->getFiles() );
     }
 
     public function testGetGet ()
@@ -83,7 +82,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
 
     public function testGetURL_empty ()
     {
-        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array() );
+        $req = new \r8\Env\Request( array() );
 
         $url = $req->getURL();
         $this->assertThat( $url, $this->isInstanceOf('r8\URL') );
@@ -213,7 +212,7 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $req = new \r8\Env\Request(
                 array(),
                 $this->getMock('\r8\iface\Input'),
-                array(),
+                $this->getMock('\r8\Input\Files'),
                 array( 'one' => 'first', 'two' => 'second' )
             );
 
@@ -228,10 +227,25 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $req = new \r8\Env\Request;
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array(), array(), FALSE );
+        $req = new \r8\Env\Request(
+            array(),
+            $this->getMock('\r8\iface\Input'),
+            $this->getMock('\r8\Input\Files'),
+            array(),
+            FALSE
+        );
+
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), $this->getMock('\r8\iface\Input'), array(), array(), TRUE );
+
+        $req = new \r8\Env\Request(
+            array(),
+            $this->getMock('\r8\iface\Input'),
+            $this->getMock('\r8\Input\Files'),
+            array(),
+            TRUE
+        );
+
         $this->assertTrue( $req->isCLI() );
     }
 

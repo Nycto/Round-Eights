@@ -83,12 +83,12 @@ class Env
         if ( !isset(self::$request) ) {
 
             self::$request = new \r8\Env\Request(
-                    $_SERVER,
-                    new \r8\Input\Reference( $_POST ),
-                    $_FILES,
-                    self::getHeaders(),
-                    self::isCLI()
-                );
+                $_SERVER,
+                new \r8\Input\Reference( $_POST ),
+                \r8\Input\Files::fromArray( $_FILES ),
+                self::getHeaders(),
+                self::isCLI()
+            );
         }
         // @codeCoverageIgnoreEnd
 

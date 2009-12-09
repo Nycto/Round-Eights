@@ -111,20 +111,20 @@ class Request implements \r8\iface\Env\Request
      *
      * @param array $server The $_SERVER array
      * @param \r8\iface\Input $post The POST input data
-     * @param array $files The $_FILES array
+     * @param \r8\Input\Files $files The uploaded files
      * @param array $headers The list of request headers
      * @param Boolean $cli Whether the script was invoked via the command line
      */
     public function __construct (
         array $server = array(),
         \r8\iface\Input $post = null,
-        array $files = array(),
+        \r8\Input\Files $files = null,
         array $headers = array(),
         $cli = FALSE
     ) {
         $this->server = $server;
         $this->post = $post ? $post : new \r8\Input\Void;
-        $this->files = $files;
+        $this->files = $files ? $files : new \r8\Input\Files;
         $this->headers = $headers;
         $this->cli = \r8\boolVal( $cli );
     }
@@ -159,7 +159,7 @@ class Request implements \r8\iface\Env\Request
     /**
      * Returns the list of files uploaded by the client
      *
-     * @return array
+     * @return \r8\Input\files
      */
     public function getFiles ()
     {
