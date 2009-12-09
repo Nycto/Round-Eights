@@ -52,7 +52,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
         );
 
         $files = new \r8\Input\Files( $input );
-        $this->assertSame( $input, $files->getFiles() );
+        $this->assertSame( $input, $files->getAllFiles() );
     }
 
     public function testConstruct_Multi ()
@@ -63,7 +63,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
         );
 
         $files = new \r8\Input\Files( $input );
-        $this->assertSame( $input, $files->getFiles() );
+        $this->assertSame( $input, $files->getAllFiles() );
     }
 
     public function testConstruct_Noise ()
@@ -80,8 +80,34 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
                 "first" => $input['first'],
                 "second" => array( $input['second'][0], $input['second'][2] )
             ),
-            $files->getFiles()
+            $files->getAllFiles()
         );
+    }
+
+    public function testGetFile ()
+    {
+        $input = array(
+            "first" => $this->getTestFile(),
+        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+        );
+        $files = new \r8\Input\Files( $input );
+
+        $this->assertNull( $files->getFile("zero") );
+        $this->assertSame( $input["first"], $files->getFile("first") );
+        $this->assertSame( $input["second"][0], $files->getFile("second") );
+    }
+
+    public function testGetFileList ()
+    {
+        $input = array(
+            "first" => $this->getTestFile(),
+        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+        );
+        $files = new \r8\Input\Files( $input );
+
+        $this->assertNull( $files->getFile("zero") );
+        $this->assertSame( array($input["first"]), $files->getFileList("first") );
+        $this->assertSame( $input["second"], $files->getFileList("second") );
     }
 
 }

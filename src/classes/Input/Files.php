@@ -64,7 +64,6 @@ class Files
             }
 
         }
-
     }
 
     /**
@@ -72,9 +71,51 @@ class Files
      *
      * @return Array
      */
-    public function getFiles ()
+    public function getAllFiles ()
     {
         return $this->files;
+    }
+
+    /**
+     * Returns a file from the registry
+     *
+     * Even if an index contains a list of fields, the first file
+     * of the array will be returned
+     *
+     * @param String $index The field index of the file to return
+     * @return \r8\Input\File Returns NULL if the index doesn't exist
+     */
+    public function getFile ( $index )
+    {
+        if ( !isset($this->files[$index]) )
+            return NULL;
+
+        else if ( is_array($this->files[$index]) )
+            return reset($this->files[$index]);
+
+        else
+            return $this->files[$index];
+    }
+
+    /**
+     * Returns the list of files registered under the given index
+     *
+     * Even if a file isn't indexed as a list, it will be cast as
+     * a single value array and returned.
+     *
+     * @param String $index The index of the file list to return
+     * @return Array Returns an array of \r8\Input\File objects
+     */
+    public function getFileList ( $index )
+    {
+        if ( !isset($this->files[$index]) )
+            return array();
+
+        else if ( is_array($this->files[$index]) )
+            return $this->files[$index];
+
+        else
+            return array( $this->files[$index] );
     }
 
 }
