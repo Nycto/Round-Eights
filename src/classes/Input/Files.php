@@ -39,6 +39,27 @@ class Files
     private $files = array();
 
     /**
+     * Builds a new instance of this object from an array
+     *
+     * This is directly geared toward interpreting the $_FILES array
+     *
+     * @param array $input The source data
+     * @return \r8\Input\Files
+     */
+    static public function fromArray ( array $input )
+    {
+        $result = array();
+
+        foreach ( $input AS $key => $value )
+        {
+            if ( is_array($value) )
+                $result[$key] = \r8\Input\File::fromArray($value);
+        }
+
+        return new self( $result );
+    }
+
+    /**
      * Constructor...
      *
      * @param Array $fileList The array of files to register, indexed
@@ -116,6 +137,17 @@ class Files
 
         else
             return array( $this->files[$index] );
+    }
+
+    /**
+     * Returns whether a file exists in this list
+     *
+     * @param String $index The index of the file list to check
+     * @return Boolean
+     */
+    public function fileExists ( $index )
+    {
+        return isset($this->files[$index]);
     }
 
 }

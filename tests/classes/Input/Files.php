@@ -110,6 +110,39 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
         $this->assertSame( $input["second"], $files->getFileList("second") );
     }
 
+    public function testFileExists ()
+    {
+        $input = array(
+            "first" => $this->getTestFile(),
+        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+        );
+        $files = new \r8\Input\Files( $input );
+
+        $this->assertFalse( $files->fileExists("zero") );
+        $this->assertTrue( $files->fileExists("first") );
+        $this->assertTrue( $files->fileExists("second") );
+    }
+
+    public function testFromArray ()
+    {
+        $result = \r8\Input\Files::fromArray(array(
+            "first" => array(
+            	'name' => array( 'File Name', "k" => 'File 2' ),
+            	'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
+                'error' => array( 1234, "k" => 0 )
+            ),
+            "second" => array(
+            	'name' => 'File Name',
+            	'tmp_name' => __FILE__,
+                'error' => 1234
+            )
+        ));
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Input\Files') );
+        $this->assertTrue( $result->fileExists('first') );
+        $this->assertTrue( $result->fileExists('second') );
+    }
+
 }
 
 ?>
