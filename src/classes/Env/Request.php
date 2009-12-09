@@ -95,7 +95,7 @@ class Request implements \r8\iface\Env\Request
      * @param String $key The key to test
      * @return Boolean
      */
-    static public function hasKey( array &$array, $key )
+    static private function hasKey ( array &$array, $key )
     {
         if ( !array_key_exists($key, $array) )
             return FALSE;
