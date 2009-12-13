@@ -28,82 +28,109 @@
 require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * Unit test for running both filesystem test suites
+ * unit tests
  */
-class classes_form_field_file
-{
-
-    public static function suite()
-    {
-        $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_form_field_file_noFile' );
-        $suite->addTestSuite( 'classes_form_field_file_withFile' );
-        return $suite;
-    }
-
-}
-
-/**
- * unit tests that don't require a temporary file
- */
-class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
+class classes_Form_Field_File extends PHPUnit_Framework_TestCase
 {
 
     public function testGetRawValue_noFile ()
     {
-        $field = $this->getMock("r8\Form\Field\File", array("getUploadedFiles"), array("fld"));
+        $validator = $this->getMock('\r8\Validator\FileUpload');
 
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array()) );
+        $files = $this->getMock('\r8\Input\Files');
+        $files->expects( $this->once() )
+            ->method("getFile")
+            ->with( $this->equalTo("fld") )
+            ->will( $this->returnValue(NULL) );
 
-        $this->assertNull($field->getRawValue());
+        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+
+        $this->assertNull( $field->getRawValue() );
     }
 
     public function testGetRawValue_withFile ()
     {
-        $field = $this->getMock("r8\Form\Field\File", array("getUploadedFiles"), array("fld"));
+        $validator = $this->getMock('\r8\Validator\FileUpload');
 
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "tmp_name" => "/dir/to/file.txt"
-                ))) );
+        $file = $this->getMock('\r8\Input\File', array(), array(), '', FALSE);
 
-        $this->assertSame("/dir/to/file.txt", $field->getRawValue());
+        $files = $this->getMock('\r8\Input\Files');
+        $files->expects( $this->once() )
+            ->method("getFile")
+            ->with( $this->equalTo("fld") )
+            ->will( $this->returnValue( $file ) );
+
+        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+
+        $this->assertSame( $file, $field->getRawValue() );
     }
 
-    public function testValidate_invalidUpload ()
+    public function testValidate_invalid ()
     {
+        $file = $this->getMock('\r8\Input\File', array(), array(), '', FALSE);
 
-        // Set up the FileUpload validator to return an invalid uploaded file
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
+        $result = $this->getMock('\r8\Validator\Result', array(), array(), '', FALSE);
+        $result->expects( $this->once() )
+            ->method( "isValid" )
+            ->will( $this->returnValue(FALSE) );
 
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => UPLOAD_ERR_INI_SIZE,
-                    "tmp_name" => "/dir/to/file.txt"
-                ))) );
+        $validator = $this->getMock('\r8\Validator\FileUpload');
+        $validator->expects( $this->once() )
+            ->method('validate')
+            ->with( $this->equalTo($file) )
+            ->will( $this->returnValue($result) );
+
+        $upperValid = $this->getMock('\r8\Validator\FileUpload');
+        $upperValid->expects( $this->never() )->method('validate');
+
+        $files = $this->getMock('\r8\Input\Files');
+        $files->expects( $this->once() )
+            ->method("getFile")
+            ->with( $this->equalTo("fld") )
+            ->will( $this->returnValue( $file ) );
+
+        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field->setValidator( $upperValid );
+
+        $this->assertSame( $result, $field->validate() );
+    }
+
+    public function testValidate_valid ()
+    {
+        $file = $this->getMock('\r8\Input\File', array(), array(), '', FALSE);
 
 
-        // Set up file upload field to use the mock FileUpload validator
-        $field = $this->getMock("r8\Form\Field\File", array("getFileUploadValidator"), array("fld"));
+        $result = $this->getMock('\r8\Validator\Result', array(), array(), '', FALSE);
+        $result->expects( $this->once() )
+            ->method( "isValid" )
+            ->will( $this->returnValue(TRUE) );
 
-        $field->expects( $this->once() )
-            ->method("getFileUploadValidator")
-            ->will( $this->returnValue( $valid ) );
+        $validator = $this->getMock('\r8\Validator\FileUpload');
+        $validator->expects( $this->once() )
+            ->method('validate')
+            ->with( $this->equalTo($file) )
+            ->will( $this->returnValue($result) );
 
 
-        // Run the simulation
-        $result = $field->validate();
-        $this->assertThat( $result, $this->isInstanceOf("r8\Validator\Result"));
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("File exceeds the server's maximum allowed size"),
-                $result->getErrors()
-            );
+        $upperResult = $this->getMock('\r8\Validator\Result', array(), array(), '', FALSE);
 
+        $upperValid = $this->getMock('\r8\Validator\FileUpload');
+        $upperValid->expects( $this->once() )
+            ->method('validate')
+            ->with( $this->equalTo($file) )
+            ->will( $this->returnValue($upperResult) );
+
+
+        $files = $this->getMock('\r8\Input\Files');
+        $files->expects( $this->exactly(2) )
+            ->method("getFile")
+            ->with( $this->equalTo("fld") )
+            ->will( $this->returnValue( $file ) );
+
+        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field->setValidator( $upperValid );
+
+        $this->assertSame( $upperResult, $field->validate() );
     }
 
     public function testGetTag ()
@@ -123,100 +150,6 @@ class classes_form_field_file_noFile extends PHPUnit_Framework_TestCase
 
         $this->assertTrue( isset($tag['type']) );
         $this->assertSame( "file", $tag['type'] );
-    }
-
-}
-
-/**
- * Unit tests the need an actual file
- */
-class classes_form_field_file_withFile extends PHPUnit_TestFile_Framework_TestCase
-{
-
-    public function testValidate_valid ()
-    {
-
-        // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $this->file
-                ))) );
-
-
-        // Set up file upload field to use the mock validator and mock $_FILES
-        $field = $this->getMock("r8\Form\Field\File", array("getUploadedFiles", "getFileUploadValidator"), array("fld"));
-
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "tmp_name" => $this->file
-                ))) );
-
-        $field->expects( $this->once() )
-            ->method("getFileUploadValidator")
-            ->will( $this->returnValue( $valid ) );
-
-
-        $this->assertTrue( $field->isValid() );
-    }
-
-    public function testValidate_otherValidator ()
-    {
-        // Set up the FileUpload validator to return a valid uploaded file
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $this->file
-                ))) );
-
-
-        // This result will be returned by the second validator
-        $result = new \r8\Validator\Result( $this->file );
-
-        // Set up another validator that should receive the filename
-        $otherValid = $this->getMock("r8\iface\Validator", array("isValid", "validate"));
-        $otherValid->expects( $this->once() )
-            ->method("validate")
-            ->with( $this->equalTo($this->file) )
-            ->will( $this->returnValue( $result ) );
-
-
-        // Set up the mock field to use the FileUpload validator and mock $_FILES
-        $field = $this->getMock(
-                '\r8\Form\Field\File',
-                array("getUploadedFiles", "getFileUploadValidator"),
-                array("fld")
-            );
-
-        $field->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "tmp_name" => $this->file
-                ))) );
-
-        $field->expects( $this->once() )
-            ->method("getFileUploadValidator")
-            ->will( $this->returnValue( $valid ) );
-
-
-        $field->setValidator( $otherValid );
-
-        $this->assertSame( $result, $field->validate() );
     }
 
 }
