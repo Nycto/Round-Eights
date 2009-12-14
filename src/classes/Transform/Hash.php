@@ -29,7 +29,7 @@ namespace r8\Transform;
  * Verifies the integrity of another Transform object by prepending a
  * cryptographic hash to the value
  */
-class Verify implements \r8\iface\Transform
+class Hash implements \r8\iface\Transform
 {
 
     /**
