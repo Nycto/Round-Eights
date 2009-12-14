@@ -42,19 +42,40 @@ class classes_Transform_Lifetime extends PHPUnit_Framework_TestCase
     public function testFrom_NoDelimiter ()
     {
         $life = new \r8\Transform\Lifetime( 60 );
-        $this->assertNull( $life->from( "Data" ) );
+
+        try {
+            $life->from( "Data" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Data does not contain a timestamp", $err->getMessage() );
+        }
     }
 
     public function testFrom_NonTimestamp ()
     {
         $life = new \r8\Transform\Lifetime( 60 );
-        $this->assertNull( $life->from( "blah:Data" ) );
+
+        try {
+            $life->from( "#!blah^:Data" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Data does not contain a timestamp", $err->getMessage() );
+        }
     }
 
     public function testFrom_Expired ()
     {
         $life = new \r8\Transform\Lifetime( 60 );
-        $this->assertNull( $life->from( "a99:Data" ) );
+
+        try {
+            $life->from( "a99:Data" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Data has expired", $err->getMessage() );
+        }
     }
 
     public function testFrom_Future ()
@@ -62,7 +83,14 @@ class classes_Transform_Lifetime extends PHPUnit_Framework_TestCase
         $data = base_convert( time() + 10000, 10, 36 ) .":Data";
 
         $life = new \r8\Transform\Lifetime( 60 );
-        $this->assertNull( $life->from( $data ) );
+
+        try {
+            $life->from( $data );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {
+            $this->assertSame( "Timestamp is in the future", $err->getMessage() );
+        }
     }
 
     public function testFrom_Valid ()

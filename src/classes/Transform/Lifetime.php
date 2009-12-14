@@ -69,22 +69,21 @@ class Lifetime implements \r8\iface\Transform
      */
     public function from ( $string )
     {
+        if ( !\preg_match('/^[0-9a-z]+:/', $string) )
+            throw new \r8\Exception\Data( $string, "Transform String", "Data does not contain a timestamp" );
+
         $pos = \strpos($string, ":");
 
-        if ( $pos === FALSE )
-            return NULL;
-
         $timestamp = substr( $string, 0, $pos );
-
-        if ( !\preg_match('/^[0-9a-z]+$/', $timestamp) )
-            return NULL;
-
         $timestamp = (float) base_convert( $timestamp, 36, 10 );
 
         $delta = time() - $timestamp;
 
-        if ( $delta > $this->lifetime || $delta < 0 )
-            return NULL;
+        if ( $delta < 0 )
+            throw new \r8\Exception\Data( $string, "Transform String", "Timestamp is in the future" );
+
+        if ( $delta > $this->lifetime )
+            throw new \r8\Exception\Data( $string, "Transform String", "Data has expired" );
 
         return substr( $string, $pos + 1 );
     }
