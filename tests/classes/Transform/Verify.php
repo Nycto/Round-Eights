@@ -91,87 +91,59 @@ class classes_Transform_Verify extends PHPUnit_Framework_TestCase
 
     public function testTo ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "to" )
-            ->with( $this->equalTo("unencoded") )
-            ->will( $this->returnValue("encoded") );
-
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        $verify = new \r8\Transform\Verify( $seed );
 
         $this->assertSame(
-            "9OgoBpBeCUGP2HMyNf1uHPPYNXJ1bgxZkfNAyjBgX3JlbmNvZGVk",
-            base64_encode( $verify->to("unencoded") )
+            "/ed5j7V/ybTy4QVcmCPLTcQ+l+7rEL+XRqDwuJ+Q1mlEYXRh",
+            base64_encode( $verify->to("Data") )
         );
     }
 
     public function testTo_Shortened ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "to" )
-            ->with( $this->equalTo("unencoded") )
-            ->will( $this->returnValue("encoded") );
-
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed, 10 );
+        $verify = new \r8\Transform\Verify( $seed, 10 );
 
         $this->assertSame(
-            "9OgoBpBeCUGP2GVuY29kZWQ=",
-            base64_encode( $verify->to("unencoded") )
+            "/ed5j7V/ybTy4URhdGE=",
+            base64_encode( $verify->to("Data") )
         );
     }
 
     public function testTo_Readable ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "to" )
-            ->with( $this->equalTo("unencoded") )
-            ->will( $this->returnValue("encoded") );
-
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed, 10, TRUE );
+        $verify = new \r8\Transform\Verify( $seed, 10, TRUE );
 
         $this->assertSame(
-            "f4e82806905e09418fd8encoded",
-            $verify->to("unencoded")
+            "fde7798fb57fc9b4f2e1Data",
+            $verify->to("Data")
         );
     }
 
     public function testFrom ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "from" )
-            ->with( $this->equalTo("encoded") )
-            ->will( $this->returnValue("unencoded") );
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        $verify = new \r8\Transform\Verify( $seed );
 
         $this->assertSame(
-            "unencoded",
+            "Data",
             $verify->from( base64_decode(
-                "9OgoBpBeCUGP2HMyNf1uHPPYNXJ1bgxZkfNAyjBgX3JlbmNvZGVk"
+                "/ed5j7V/ybTy4QVcmCPLTcQ+l+7rEL+XRqDwuJ+Q1mlEYXRh"
             ))
         );
     }
 
     public function testFrom_NoHash ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        $verify = new \r8\Transform\Verify( $seed );
 
         try {
             $verify->from( "Not long enough" );
@@ -184,10 +156,9 @@ class classes_Transform_Verify extends PHPUnit_Framework_TestCase
 
     public function testFrom_Invalid ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed );
+        $verify = new \r8\Transform\Verify( $seed );
 
         try {
             $verify->from( base64_decode(
@@ -203,39 +174,25 @@ class classes_Transform_Verify extends PHPUnit_Framework_TestCase
 
     public function testFrom_Shortened ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "from" )
-            ->with( $this->equalTo("encoded") )
-            ->will( $this->returnValue("unencoded") );
-
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed, 10 );
+        $verify = new \r8\Transform\Verify( $seed, 10 );
 
         $this->assertSame(
-            "unencoded",
-            $verify->from( base64_decode("9OgoBpBeCUGP2GVuY29kZWQ=") )
+            "Data",
+            $verify->from( base64_decode("/ed5j7V/ybTy4URhdGE=") )
         );
     }
 
     public function testFrom_Readable ()
     {
-        $wrapped = $this->getMock('\r8\iface\Transform');
-        $wrapped->expects( $this->once() )
-            ->method( "from" )
-            ->with( $this->equalTo("encoded") )
-            ->will( $this->returnValue("unencoded") );
-
-
         $seed = $this->getTestSeed("seed data");
 
-        $verify = new \r8\Transform\Verify( $wrapped, $seed, 10, TRUE );
+        $verify = new \r8\Transform\Verify( $seed, 10, TRUE );
 
         $this->assertSame(
-            "unencoded",
-            $verify->from("f4e82806905e09418fd8encoded")
+            "Data",
+            $verify->from("fde7798fb57fc9b4f2e1Data")
         );
     }
 
