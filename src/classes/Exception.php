@@ -132,7 +132,7 @@ class Exception extends \Exception
      *
      * @param Integer $offset The offset at fault for the current exception
      * @param integer $wrapFlag The offset wrapping mode to use
-     * @return object Returns a self reference
+     * @return \r8\Exception Returns a self reference
      */
     public function setFault ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
     {
@@ -149,7 +149,7 @@ class Exception extends \Exception
     /**
      * Unset the fault offset
      *
-     * @return object Returns a self reference
+     * @return \r8\Exception Returns a self reference
      */
     public function unsetFault ()
     {
@@ -184,7 +184,7 @@ class Exception extends \Exception
      *
      * @param Integer $shift
      * @param Integer $wrapFlag
-     * @return object Returns a self reference
+     * @return \r8\Exception Returns a self reference
      */
     public function shiftFault ($shift = 1, $wrapFlag = \r8\ary\OFFSET_RESTRICT)
     {
@@ -227,7 +227,7 @@ class Exception extends \Exception
      *
      * @param String $label The label of this data
      * @param mixed $data The actual data
-     * @return object Returns a self reference
+     * @return \r8\Exception Returns a self reference
      */
     public function addData ( $label, $value )
     {
@@ -238,7 +238,7 @@ class Exception extends \Exception
     /**
      * Returns the data list for the current instance
      *
-     * @return object Returns an array object. Each entry is a piece of data with a label and value
+     * @return Array
      */
     public function getData ()
     {
@@ -282,7 +282,7 @@ class Exception extends \Exception
             $formatter = new \r8\Error\Formatter\Text( \r8\Env::request() );
         else
             $formatter = new \r8\Error\Formatter\HTML( \r8\Env::request() );
-            
+
         return $formatter->format( $this );
     }
 
