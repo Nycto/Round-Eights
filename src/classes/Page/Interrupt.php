@@ -22,10 +22,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Exception
+ * @package Page
  */
 
-namespace r8\Exception\Interrupt;
+namespace r8\Page;
 
 /**
  * Page load Interruption exception
@@ -33,7 +33,7 @@ namespace r8\Exception\Interrupt;
  * This exception is used by the Page classes to interrupt the loading of a page
  * and immediately send control back to the root page
  */
-class Page extends \r8\Exception\Interrupt
+class Interrupt extends \r8\Exception\Interrupt
 {
 
     /**

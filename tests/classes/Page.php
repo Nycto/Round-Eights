@@ -138,7 +138,7 @@ class classes_page extends PHPUnit_Framework_TestCase
             ->method("getContent")
             ->with( $this->isInstanceOf('r8\Page\Context') )
             ->will( $this->throwException(
-                    new \r8\Exception\Interrupt\Page
+                    new \r8\Page\Interrupt
                 ) );
 
         $result = $root->getTemplate();

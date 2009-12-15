@@ -107,12 +107,12 @@ class Context
      * This causes an interrupt exception to be thrown. The root page will react
      * by catching the exception and returning a blank template
      *
-     * @throws \r8\Exception\Interrupt\Page
+     * @throws \r8\Page\Interrupt
      * @return null
      */
     public function interrupt ()
     {
-        throw new \r8\Exception\Interrupt\Page("Page execution interrupted");
+        throw new \r8\Page\Interrupt("Page execution interrupted");
     }
 
 }

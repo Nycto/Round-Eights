@@ -134,7 +134,7 @@ class Page
         try {
             $template = $this->getPage()->getContent( $context );
         }
-        catch ( \r8\Exception\Interrupt\Page $err ) {
+        catch ( \r8\Page\Interrupt $err ) {
 
             // If an interrupt is thrown, suppress the page load
             $context->suppress();
