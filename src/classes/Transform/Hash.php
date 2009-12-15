@@ -26,18 +26,11 @@
 namespace r8\Transform;
 
 /**
- * Verifies the integrity of another Transform object by prepending a cryptographic
- * hash to the transformed value
+ * Verifies the integrity of another Transform object by prepending a
+ * cryptographic hash to the value
  */
-class Verify implements \r8\iface\Transform
+class Hash implements \r8\iface\Transform
 {
-
-    /**
-     * The Transform being decorated
-     *
-     * @var \r8\iface\Transform
-     */
-    private $wrapped;
 
     /**
      * The salt to use when generating hashes
@@ -112,19 +105,16 @@ class Verify implements \r8\iface\Transform
     /**
      * Constructor...
      *
-     * @param \r8\iface\Transform $wrapped The transform object being wrapped
      * @param \r8\Random\Seed $salt The salt to use for the hashing process
      * @param Integer $hashLength The length of the hash to generate
      * @param Boolean $readable When set to TRUE, the hash will be hex encoded
      * 		before prepending it
      */
     public function __construct (
-        \r8\iface\Transform $wrapped,
         \r8\Random\Seed $salt,
         $hashLength = 32,
         $readable = FALSE
     ) {
-        $this->wrapped = $wrapped;
         $this->salt = $salt;
         $this->hashLength = max( (int) $hashLength, 1 );
         $this->readable = (bool) $readable;
@@ -139,14 +129,13 @@ class Verify implements \r8\iface\Transform
     public function to ( $string )
     {
         $string = \r8\strVal( $string );
-        $transformed = $this->wrapped->to( $string );
 
         $hash = self::pbkdf2( $string, $this->salt->getString(), $this->hashLength );
 
         if ( $this->readable )
             $hash = \bin2hex( $hash );
 
-        return $hash . $transformed;
+        return $hash . $string;
     }
 
     /**
@@ -166,7 +155,7 @@ class Verify implements \r8\iface\Transform
         if ( strlen($mac) !== $hashLength )
             throw new \r8\Exception\Data( $string, "Transform String", "Unable to extract data verification hash" );
 
-        $string = $this->wrapped->from( substr( $string, $hashLength ) );
+        $string = substr( $string, $hashLength );
 
         $compareHash = self::pbkdf2( $string, $this->salt->getString(), $this->hashLength );
 

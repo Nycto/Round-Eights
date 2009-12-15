@@ -43,6 +43,16 @@ class classes_Transform_base64 extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testTo_urlSafe ()
+    {
+        $encode = new \r8\Transform\Base64( TRUE );
+
+        $this->assertSame(
+                "fn5-abc_fn5-abc_fn5-abc_IA",
+                $encode->to("~~~i\xb7?~~~i\xb7?~~~i\xb7? ")
+            );
+    }
+
     public function testFrom ()
     {
         $encode = new \r8\Transform\Base64;
@@ -50,6 +60,16 @@ class classes_Transform_base64 extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 "This is a string",
                 $encode->from("VGhpcyBpcyBhIHN0cmluZw==")
+            );
+    }
+
+    public function testFrom_urlSafe ()
+    {
+        $encode = new \r8\Transform\Base64( TRUE );
+
+        $this->assertSame(
+                "~~~i\xb7?~~~i\xb7?~~~i\xb7? ",
+                $encode->from("fn5-abc_fn5-abc_fn5-abc_IA")
             );
     }
 
