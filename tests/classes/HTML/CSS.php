@@ -62,6 +62,19 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
         $this->assertSame( "all", $css->getMedia() );
     }
 
+    public function testConditionAccessors ()
+    {
+        $css = new \r8\HTML\CSS("/example.css");
+        $this->assertNull( $css->getCondition() );
+
+        $condition = new \r8\HTML\Conditional('lte IE7');
+        $this->assertSame( $css, $css->setCondition( $condition ) );
+        $this->assertSame( $condition, $css->getCondition() );
+
+        $this->assertSame( $css, $css->clearCondition() );
+        $this->assertNull( $css->getCondition() );
+    }
+
     public function testGetTag ()
     {
         $css = new \r8\HTML\CSS("/example.css");
@@ -80,6 +93,23 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
         $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
         $this->assertSame(
         	'<link rel="stylesheet" href="/test.css" type="text/css" media="print" />',
+            $tag->__toString()
+        );
+    }
+
+    public function testGetTag_Condition ()
+    {
+        $css = new \r8\HTML\CSS("/example.css");
+        $condition = new \r8\HTML\Conditional('lte IE7');
+        $css->setCondition( $condition );
+
+        $tag = $css->getTag();
+        $this->assertSame( $condition, $tag );
+
+        $this->assertSame(
+            '<!--[if lte IE7]>'
+        	.'<link rel="stylesheet" href="/example.css" type="text/css" media="all" />'
+        	.'<![endif]-->',
             $tag->__toString()
         );
     }
