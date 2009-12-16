@@ -79,107 +79,6 @@ class classes_HTML_Tag extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testSetContent ()
-    {
-        $tag = new \r8\HTML\Tag("a");
-
-        $this->assertNull( $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent("This is a string") );
-        $this->assertEquals( "This is a string", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent("0") );
-        $this->assertEquals( "0", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent("") );
-        $this->assertNull( $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent("   ") );
-        $this->assertEquals( "   ", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent(FALSE) );
-        $this->assertNull( $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent(TRUE) );
-        $this->assertSame( "1", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->setContent(1) );
-        $this->assertSame( "1", $tag->getContent() );
-
-        $mock = $this->getMock("stub_getContent", array("__toString"));
-        $mock->expects( $this->once() )
-            ->method("__toString")
-            ->will( $this->returnValue("stringified"));
-
-        $this->assertSame( $tag, $tag->setContent($mock) );
-        $this->assertSame( "stringified", $tag->getContent() );
-    }
-
-    public function testAppendContent ()
-    {
-        $tag = new \r8\HTML\Tag("a");
-
-        $this->assertNull( $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent("string") );
-        $this->assertEquals( "string", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent("0") );
-        $this->assertEquals( "string0", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent("") );
-        $this->assertEquals( "string0", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent("  ") );
-        $this->assertEquals( "string0  ", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent(FALSE) );
-        $this->assertEquals( "string0  ", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent(TRUE) );
-        $this->assertEquals( "string0  1", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->appendContent(1) );
-        $this->assertEquals( "string0  11", $tag->getContent() );
-
-        $mock = $this->getMock("stub_getContent", array("__toString"));
-        $mock->expects( $this->once() )
-            ->method("__toString")
-            ->will( $this->returnValue("stringified"));
-
-        $this->assertSame( $tag, $tag->appendContent($mock) );
-        $this->assertEquals( "string0  11stringified", $tag->getContent() );
-    }
-
-    public function testClearContent ()
-    {
-        $tag = new \r8\HTML\Tag("a");
-
-        $this->assertNull( $tag->getContent() );
-
-        $tag->setContent("This is a string") ;
-        $this->assertEquals( "This is a string", $tag->getContent() );
-
-        $this->assertSame( $tag, $tag->clearContent() );
-
-        $this->assertNull( $tag->getContent() );
-    }
-
-    public function testHasContent ()
-    {
-        $tag = new \r8\HTML\Tag("a");
-
-        $this->assertFalse( $tag->hasContent() );
-
-        $tag->setContent("This is a string") ;
-
-        $this->assertTrue( $tag->hasContent() );
-
-        $tag->clearContent();
-
-        $this->assertFalse( $tag->hasContent() );
-    }
-
     public function testIsEmpty ()
     {
         $tag = new \r8\HTML\Tag("hr");
@@ -642,28 +541,29 @@ class classes_HTML_Tag extends PHPUnit_Framework_TestCase
         $this->assertSame( '<div id="myDiv" checked />', $tag->getEmptyTag() );
     }
 
-    public function testToString()
+    public function testRender ()
     {
         $tag = new \r8\HTML\Tag("input");
 
-        $this->assertSame( "<input />", $tag->__toString() );
+        $this->assertSame( "<input />", $tag->render() );
 
         $tag->setTag("option");
 
-        $this->assertSame( "<option></option>", $tag->__toString() );
+        $this->assertSame( "<option></option>", $tag->render() );
 
         $tag->setAttr("value", "WA");
 
-        $this->assertSame( '<option value="WA"></option>', $tag->__toString() );
+        $this->assertSame( '<option value="WA"></option>', $tag->render() );
 
         $tag->setAttr("selected");
 
-        $this->assertSame( '<option value="WA" selected></option>', $tag->__toString() );
+        $this->assertSame( '<option value="WA" selected></option>', $tag->render() );
 
         $tag->setContent("Washington");
 
-        $this->assertSame( '<option value="WA" selected>Washington</option>', $tag->__toString() );
+        $this->assertSame( '<option value="WA" selected>Washington</option>', $tag->render() );
     }
+
 }
 
 ?>

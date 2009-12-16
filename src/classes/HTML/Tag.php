@@ -32,7 +32,7 @@ namespace r8\HTML;
  * as a supplement. Sometimes, DOMXML is overkill. The goal for this class
  * is to contain a single tag.
  */
-class Tag implements \ArrayAccess
+class Tag extends \r8\HTML\Node implements \ArrayAccess
 {
 
     /**
@@ -59,13 +59,6 @@ class Tag implements \ArrayAccess
      * @var Array
      */
     private $attrs = array();
-
-    /**
-     * The content of this tag
-     *
-     * @var Mixed
-     */
-    private $content;
 
     /**
      * Allows a tag instance to be created by calling a method with the tag name.
@@ -125,8 +118,8 @@ class Tag implements \ArrayAccess
      */
     public function __construct ( $tag, $content = null, $attrs = array() )
     {
+        parent::__construct( $content );
         $this->setTag( $tag );
-        $this->setContent( $content );
         $this->importAttrs( $attrs );
     }
 
@@ -155,64 +148,6 @@ class Tag implements \ArrayAccess
 
         $this->tag = $tag;
 
-        return $this;
-    }
-
-    /**
-     * Returns the content of this tag
-     *
-     * @return String
-     */
-    public function getContent ()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Sets the content of this instance
-     *
-     * @param string $content
-     * @return \r8\HTML\Tag Returns a self reference
-     */
-    public function setContent ( $content )
-    {
-        $content = \r8\strval($content);
-        $this->content = empty($content) && $content !== "0" ? null : $content;
-        return $this;
-    }
-
-    /**
-     * Adds content to the end of the existing content
-     *
-     * @param string $content
-     * @return \r8\HTML\Tag Returns a self reference
-     */
-    public function appendContent ( $content )
-    {
-        $content = \r8\strval($content);
-        if ( !empty($content) || $content === "0" )
-            $this->content .= $content;
-        return $this;
-    }
-
-    /**
-     * Returns whether the current instance has any content
-     *
-     * @return Boolean
-     */
-    public function hasContent ()
-    {
-        return isset($this->content);
-    }
-
-    /**
-     * Unsets any content in this instance
-     *
-     * @return \r8\HTML\Tag Returns a self reference
-     */
-    public function clearContent ()
-    {
-        $this->content = null;
         return $this;
     }
 
@@ -468,13 +403,14 @@ class Tag implements \ArrayAccess
      *
      * @return String Returns a string of HTML
      */
-    public function __toString ()
+    public function render ()
     {
         if ( $this->isEmpty() )
             return $this->getEmptyTag();
         else
             return $this->getOpenTag() . $this->getContent() . $this->getCloseTag();
     }
+
 }
 
 ?>
