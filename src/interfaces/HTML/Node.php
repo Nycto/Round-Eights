@@ -23,7 +23,7 @@
  * @package HTML
  */
 
-namespace r8\iface;
+namespace r8\iface\HTML;
 
 /**
  * An HTML node
