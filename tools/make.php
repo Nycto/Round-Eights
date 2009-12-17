@@ -46,7 +46,4 @@ $phar->setStub( $stub ) ;
 
 echo "Phar file packed\n";
 
-/**
- * Everything below the halt compiler construct will be used as the stub for the phar file
- */
-__halt_compiler();
+?>
