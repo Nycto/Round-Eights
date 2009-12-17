@@ -30,7 +30,7 @@ if ( !Phar::canWrite() )
 
 require_once rtrim( __DIR__, "/" ) .'/../src/RoundEights.php';
 
-$phar = new Phar('Round Eights.phar');
+$phar = new Phar('RoundEights.phar');
 
 // Add the source directory
 $phar->buildFromDirectory( r8_DIR );
