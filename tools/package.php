@@ -30,27 +30,30 @@ $base = realpath( rtrim( __DIR__, "/" ) ."/.." ) ."/";
 
 
 // include r8
-require_once $base .'/src/RoundEights.php';
+require_once $base .'src/RoundEights.php';
 
 // Create the phar file
 include "make.php";
 
 
-// Pull the system's temporary directory
-$tempDir = rtrim( sys_get_temp_dir(), "/" );
+// Pull the base temporary directory. Keep creating directory names
+// until we find one that doesn't yet exist
+do {
+    $tempDir = new \r8\FileSys\Dir(
+        rtrim( sys_get_temp_dir(), "/" ) ."/RoundEights_". uniqid()
+    );
+}
+while ( $tempDir->isDir() );
 
 
-// Pull the temporary directory that the package will be pooled in
-$tmp = new \r8\FileSys\Dir( $tempDir ."/RoundEights" ) ;
+// Pull the destination directory that the package will be pooled in
+$dest = new \r8\FileSys\Dir( $tempDir->getSubPath("RoundEights")->getPath() );
+
+// Create the destination dir
+$dest->make();
 
 
-// Empty the temp dir or create it if it doesn't exist
-if ( $tmp->isDir() )
-    $tmp->purge();
-else
-    $tmp->make();
-
-echo "Temporary directory created: ". $tmp->getPath() ."\n";
+echo "Temporary directory created: ". $dest->getPath() ."\n";
 
 
 // Pull a list of dirs and files that need to be copied and their destination
@@ -71,7 +74,7 @@ foreach ( $copy AS $source => $destination ) {
     $result = system(
             "cp -R "
             . escapeshellarg($base . $source) ." "
-            . escapeshellarg( $tmp->getSubPath($destination)->getPath() )
+            . escapeshellarg( $dest->getSubPath($destination)->getPath() )
         );
 
     if ( $result === FALSE )
@@ -83,14 +86,14 @@ foreach ( $copy AS $source => $destination ) {
 
 
 // Remove the config file from pooled directory
-if ( $tmp->contains("tests/config.php") ) {
-    $tmp->getSubPath("tests/config.php")->delete();
+if ( $dest->contains("tests/config.php") ) {
+    $dest->getSubPath("tests/config.php")->delete();
     echo "test config file deleted\n";
 }
 
 
-$zipFile = new \r8\FileSys\File($base ."/tools/RoundEights-". r8_VERSION .".zip");
-$targzFile = new \r8\FileSys\File($base ."/tools/RoundEights-". r8_VERSION .".tar.gz");
+$zipFile = new \r8\FileSys\File($base ."tools/RoundEights-". r8_VERSION .".zip");
+$targzFile = new \r8\FileSys\File($base ."tools/RoundEights-". r8_VERSION .".tar.gz");
 
 
 if ( $zipFile->exists() ) {
@@ -105,7 +108,7 @@ if ( $targzFile->exists() ) {
 
 
 // Create the archives archive
-echo "Creating zip archive";
+echo "Creating zip archive\n";
 system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."zip -r "
@@ -117,16 +120,16 @@ echo "Creating tar.gz archive\n";
 system(
         "cd ". escapeshellarg($tempDir) ."; "
         ."tar -cvzf "
-        . escapeshellarg( $targzFile->getPath()  ) ." "
+        .escapeshellarg( $targzFile->getPath()  ) ." "
         .escapeshellarg( "RoundEights" )
     );
 
 
 // Purge and remove the temporary dir
 echo "Removing temporary directory\n";
-$tmp->purge()->delete();
+//$tempDir->purge()->delete();
 
 
-echo "End of script";
+echo "End of script\n";
 
 ?>
