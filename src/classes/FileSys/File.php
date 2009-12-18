@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
@@ -33,11 +33,15 @@ class File extends \r8\FileSys
 
     /**
      * The extension of this file
+     *
+     * @var String
      */
     private $extension;
 
     /**
      * The filename name of this file
+     *
+     * @var String
      */
     private $filename;
 
@@ -60,7 +64,7 @@ class File extends \r8\FileSys
      * Sets the path that this instance represents
      *
      * @param String $path The new path
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function setPath ( $path )
     {
@@ -91,9 +95,9 @@ class File extends \r8\FileSys
     }
 
     /**
-     * Returns the directory as a \r8\FileSys\Dir object
+     * Returns the directory this file lives in
      *
-     * @return Object Returns a \r8\FileSys\Dir objec
+     * @return \r8\FileSys\Dir
      */
     public function getDir ()
     {
@@ -116,7 +120,7 @@ class File extends \r8\FileSys
      * Sets the extension for this file
      *
      * @param String $extension The new extension
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function setExt ( $extension )
     {
@@ -139,7 +143,7 @@ class File extends \r8\FileSys
     /**
      * Clears the extension from this file
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function clearExt ()
     {
@@ -161,7 +165,7 @@ class File extends \r8\FileSys
      * Sets the filename for this file
      *
      * @param String $filename The new filename
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function setFilename ( $filename )
     {
@@ -184,7 +188,7 @@ class File extends \r8\FileSys
     /**
      * Clears the filename from this file
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function clearFilename ()
     {
@@ -221,7 +225,7 @@ class File extends \r8\FileSys
      * This sets the extension and filename at once
      *
      * @param String $basename The new basename
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function setBasename ( $basename )
     {
@@ -272,7 +276,7 @@ class File extends \r8\FileSys
      * Sets the content in this file
      *
      * @param String $content The content to set
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function set ( $content )
     {
@@ -293,7 +297,7 @@ class File extends \r8\FileSys
      * Appends a chunk of content to this file
      *
      * @param String $content The content to append
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function append ( $content )
     {
@@ -346,7 +350,7 @@ class File extends \r8\FileSys
     /**
      * Removes all the content from a file
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function truncate ()
     {
@@ -356,7 +360,7 @@ class File extends \r8\FileSys
     /**
      * Deletes this file from the filesystem
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function delete ()
     {
@@ -402,7 +406,7 @@ class File extends \r8\FileSys
      * Copies this file to a new location
      *
      * @param String $destination The new location for the file
-     * @return Object Returns a new instance of \r8\FileSys\File with the
+     * @return \r8\FileSys\ Returns a new \r8\FileSys\File instance with the
      *      path pointing to the new file
      */
     public function copy ( $destination )
@@ -430,7 +434,7 @@ class File extends \r8\FileSys
      * On success, this will automatically update the path in this instance
      *
      * @param String $destination The new location for the file
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\File Returns a self reference
      */
     public function move ( $destination )
     {

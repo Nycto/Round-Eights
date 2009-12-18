@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Env
  */
 
@@ -41,7 +41,7 @@ class Request implements \r8\iface\Env\Request
     /**
      * The variables posted by the client
      *
-     * @var array
+     * @var \r8\iface\Input
      */
     private $post;
 
@@ -95,7 +95,7 @@ class Request implements \r8\iface\Env\Request
      * @param String $key The key to test
      * @return Boolean
      */
-    static public function hasKey( array &$array, $key )
+    static private function hasKey ( array &$array, $key )
     {
         if ( !array_key_exists($key, $array) )
             return FALSE;
@@ -110,21 +110,21 @@ class Request implements \r8\iface\Env\Request
      * Constructor...
      *
      * @param array $server The $_SERVER array
-     * @param array $post The $_POST array
-     * @param array $files The $_FILES array
+     * @param \r8\iface\Input $post The POST input data
+     * @param \r8\Input\Files $files The uploaded files
      * @param array $headers The list of request headers
      * @param Boolean $cli Whether the script was invoked via the command line
      */
     public function __construct (
         array $server = array(),
-        array $post = array(),
-        array $files = array(),
+        \r8\iface\Input $post = null,
+        \r8\Input\Files $files = null,
         array $headers = array(),
         $cli = FALSE
     ) {
         $this->server = $server;
-        $this->post = $post;
-        $this->files = $files;
+        $this->post = $post ? $post : new \r8\Input\Void;
+        $this->files = $files ? $files : new \r8\Input\Files;
         $this->headers = $headers;
         $this->cli = \r8\boolVal( $cli );
     }
@@ -132,7 +132,7 @@ class Request implements \r8\iface\Env\Request
     /**
      * Returns the data posted by the client
      *
-     * @return array
+     * @return \r8\iface\Input
      */
     public function getPost ()
     {
@@ -149,7 +149,8 @@ class Request implements \r8\iface\Env\Request
         // Lazy instantiation
         if ( !isset($this->get) ) {
             $parser = new \r8\QueryParser;
-            $this->get = $parser->parse( $this->server['QUERY_STRING'] );
+            $data = $parser->parse( $this->server['QUERY_STRING'] );
+            $this->get = new \r8\Input\Reference( $data );
         }
 
         return $this->get;
@@ -158,7 +159,7 @@ class Request implements \r8\iface\Env\Request
     /**
      * Returns the list of files uploaded by the client
      *
-     * @return array
+     * @return \r8\Input\files
      */
     public function getFiles ()
     {

@@ -21,7 +21,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package UnitTests
  */
 
@@ -33,40 +33,24 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_env_request extends PHPUnit_Framework_TestCase
 {
 
-    public function testHasKey ()
-    {
-        $ary = array( "one" => "value", "two" => "" );
-
-        $this->assertTrue( \r8\Env\Request::hasKey($ary, "one") );
-        $this->assertFalse( \r8\Env\Request::hasKey($ary, "two") );
-        $this->assertFalse( \r8\Env\Request::hasKey($ary, "three") );
-    }
-
     public function testGetPost ()
     {
-        $req = new \r8\Env\Request(
-                array(),
-                array( 'one' => 'first', 'two' => 'second' )
-            );
-
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getPost()
-            );
+        $input = $this->getMock('\r8\iface\Input');
+        $req = new \r8\Env\Request( array(), $input );
+        $this->assertSame( $input, $req->getPost() );
     }
 
     public function testGetFiles ()
     {
+        $files = $this->getMock('\r8\Input\Files');
+
         $req = new \r8\Env\Request(
                 array(),
-                array(),
-                array( 'one' => 'first', 'two' => 'second' )
+                $this->getMock('\r8\iface\Input'),
+                $files
             );
 
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getFiles()
-            );
+        $this->assertSame( $files, $req->getFiles() );
     }
 
     public function testGetGet ()
@@ -75,20 +59,21 @@ class classes_env_request extends PHPUnit_Framework_TestCase
                 array( 'QUERY_STRING' => 'one=first&two=second' )
             );
 
-        $this->assertSame(
-                array( 'one' => 'first', 'two' => 'second' ),
-                $req->getGet()
-            );
+        $get = $req->getGet();
+
+        $this->assertThat( $get, $this->isInstanceOf('\r8\iface\Input') );
+        $this->assertSame( $get, $req->getGet() );
+        $this->assertSame( $get, $req->getGet() );
 
         $this->assertSame(
                 array( 'one' => 'first', 'two' => 'second' ),
-                $req->getGet()
+                $get->toArray()
             );
     }
 
     public function testGetURL_empty ()
     {
-        $req = new \r8\Env\Request( array(), array(), array() );
+        $req = new \r8\Env\Request( array() );
 
         $url = $req->getURL();
         $this->assertThat( $url, $this->isInstanceOf('r8\URL') );
@@ -217,8 +202,8 @@ class classes_env_request extends PHPUnit_Framework_TestCase
     {
         $req = new \r8\Env\Request(
                 array(),
-                array(),
-                array(),
+                $this->getMock('\r8\iface\Input'),
+                $this->getMock('\r8\Input\Files'),
                 array( 'one' => 'first', 'two' => 'second' )
             );
 
@@ -233,10 +218,25 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         $req = new \r8\Env\Request;
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), array(), array(), array(), FALSE );
+        $req = new \r8\Env\Request(
+            array(),
+            $this->getMock('\r8\iface\Input'),
+            $this->getMock('\r8\Input\Files'),
+            array(),
+            FALSE
+        );
+
         $this->assertFalse( $req->isCLI() );
 
-        $req = new \r8\Env\Request( array(), array(), array(), array(), TRUE );
+
+        $req = new \r8\Env\Request(
+            array(),
+            $this->getMock('\r8\iface\Input'),
+            $this->getMock('\r8\Input\Files'),
+            array(),
+            TRUE
+        );
+
         $this->assertTrue( $req->isCLI() );
     }
 

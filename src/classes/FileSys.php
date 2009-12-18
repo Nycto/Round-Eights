@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
@@ -33,6 +33,8 @@ abstract class FileSys
 
     /**
      * The directory of the current path
+     *
+     * @var String
      */
     protected $dir;
 
@@ -94,7 +96,7 @@ abstract class FileSys
      *
      * @param String $class The FileSys class to create
      * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \r8\FileSys subclass
+     * @return \r8\FileSys Returns a new \r8\FileSys subclass
      */
     static public function __callStatic ( $class, $args )
     {
@@ -134,8 +136,8 @@ abstract class FileSys
      *
      * If we can't determine the path type, a FileSys\File object will be created.
      *
-     * @param Object|String $path The path to use for instantiation
-     * @return Object Returns a FileSys object of the appropriate type
+     * @param \r8\FileSys|String $path The path to use for instantiation
+     * @return \r8\FileSys Returns a FileSys object of the appropriate type
      */
     static public function create ( $path )
     {
@@ -171,7 +173,7 @@ abstract class FileSys
      * Sets the path that this instance represents
      *
      * @param String $path The new path
-     * @return Object Returns a self reference
+     * @return \r8\FileSys Returns a self reference
      */
     abstract public function setPath ( $path );
 
@@ -206,7 +208,7 @@ abstract class FileSys
      * Sets the directory
      *
      * @param String $dir The new directory
-     * @return Object Returns a self reference
+     * @return \r8\FileSys Returns a self reference
      */
     public function setDir ( $dir )
     {
@@ -242,7 +244,7 @@ abstract class FileSys
     /**
      * Unsets the directory value from this instance
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys Returns a self reference
      */
     public function clearDir ()
     {
@@ -253,7 +255,7 @@ abstract class FileSys
     /**
      * Checks to see if the path exists and throws an exception if it doesn't
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys Returns a self reference
      */
     public function requirePath ()
     {
@@ -330,7 +332,7 @@ abstract class FileSys
     /**
      * Returns when a file was created
      *
-     * @return Object Returns a date/time object
+     * @return \r8\DateTime Returns a date/time object
      */
     public function getCTime ()
     {
@@ -351,7 +353,7 @@ abstract class FileSys
     /**
      * Returns the last access time of a file
      *
-     * @return Object Returns a date/time object
+     * @return \r8\DateTime Returns a date/time object
      */
     public function getATime ()
     {
@@ -372,7 +374,7 @@ abstract class FileSys
     /**
      * Returns the last modified time of a file
      *
-     * @return Object Returns a date/time object
+     * @return \r8\DateTime Returns a date/time object
      */
     public function getMTime ()
     {
@@ -477,7 +479,7 @@ abstract class FileSys
      *
      * @param string $base The base directory the path should stem from
      * @param boolean $strict Whether or not the path can dip in to the base dir
-     * @return Object Returns a self reference
+     * @return \r8\FileSys Returns a self reference
      */
     public function resolve ( $base = null, $strict = FALSE )
     {

@@ -21,7 +21,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  */
 
 // @codeCoverageIgnoreStart
@@ -35,7 +35,7 @@ if ( defined("r8_INCLUDED") )
     return;
 
 // Define the version
-define("r8_VERSION", "0.3.0dev");
+define("r8_VERSION", "0.3.0");
 
 // Mark that Round Eights has been included
 define("r8_INCLUDED", TRUE);
@@ -88,63 +88,61 @@ spl_autoload_register( array( \r8\Autoload::getInstance(), "load" ) );
 \r8\Env::Request();
 
 /**
- * Set up error handling
+ * Set up error handling, but only if it isn't being suppressed by the including code
  */
-set_error_handler(function ( $code, $message, $file, $line ) {
+if ( !defined("r8_SUPPRESS_HANDLERS") ) {
 
-    $level = (int) ini_get('error_reporting');
-    $code = (int) $code;
+    // Register the error handler
+    set_error_handler(function ( $code, $message, $file, $line ) {
 
-    if ( !( $code & $level ) )
-        return TRUE;
+        $level = (int) ini_get('error_reporting');
+        $code = (int) $code;
 
-    $backtrace = \r8\Backtrace::create()->popEvent();
-    \r8\Error::getInstance()->handle(
-        new \r8\Error\PHP( $file, $line, $code, $message, $backtrace )
-    );
-});
+        if ( !( $code & $level ) )
+            return TRUE;
 
-/**
- * Set up exception handling
- */
-set_exception_handler(function ( $exception ) {
-    \r8\Error::getInstance()->handle(
-        new \r8\Error\Exception( $exception )
-    );
-});
+        $backtrace = \r8\Backtrace::create()->popEvent();
+        \r8\Error::getInstance()->handle(
+            new \r8\Error\PHP( $file, $line, $code, $message, $backtrace )
+        );
+    });
 
-/**
- * Hook in the error handler to the error log
- */
-\r8\Error::getInstance()->register(
-    new \r8\Error\Handler\Stream(
-        new \r8\Error\Formatter\JSON( \r8\Env::request() ),
-        new \r8\Stream\Out\ErrorLog
-    )
-);
+    // Register an exception handler
+    set_exception_handler(function ( $exception ) {
+        \r8\Error::getInstance()->handle(
+            new \r8\Error\Exception( $exception )
+        );
+    });
 
-/**
- * If display errors is enabled, hook in an error handler for outputting the errors
- */
-$r8_displayErrors = strtolower( ini_get('display_errors') );
-if ( $r8_displayErrors == "1" || $r8_displayErrors == "on" ) {
-
-    if ( \r8\Env::request()->isCLI() )
-        $r8_formatter = new \r8\Error\Formatter\Text( \r8\Env::request() );
-    else
-        $r8_formatter = new \r8\Error\Formatter\HTML( \r8\Env::request() );
-
+    // Hook in the error handler to the error log
     \r8\Error::getInstance()->register(
         new \r8\Error\Handler\Stream(
-            $r8_formatter,
-            new \r8\Stream\Out\StdOut
+            new \r8\Error\Formatter\JSON( \r8\Env::request() ),
+            new \r8\Stream\Out\ErrorLog
         )
     );
 
-    unset( $r8_formatter );
-}
+    // If display errors is enabled, hook in an error handler for outputting the errors
+    $r8_displayErrors = strtolower( ini_get('display_errors') );
+    if ( $r8_displayErrors == "1" || $r8_displayErrors == "on" ) {
 
-unset( $r8_displayErrors );
+        if ( \r8\Env::request()->isCLI() )
+            $r8_formatter = new \r8\Error\Formatter\Text( \r8\Env::request() );
+        else
+            $r8_formatter = new \r8\Error\Formatter\HTML( \r8\Env::request() );
+
+        \r8\Error::getInstance()->register(
+            new \r8\Error\Handler\Stream(
+                $r8_formatter,
+                new \r8\Stream\Out\StdOut
+            )
+        );
+
+        unset( $r8_formatter );
+    }
+
+    unset( $r8_displayErrors );
+}
 
 // @codeCoverageIgnoreEnd
 

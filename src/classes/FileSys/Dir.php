@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package FileSystem
  */
 
@@ -33,28 +33,36 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
 
     /**
      * For iteration, this is the directory resource
+     *
+     * @var Resource
      */
     private $resource;
 
     /**
      * For iteration, this is the integer offset of the current element
+     *
+     * @var Integer
      */
     private $pointer;
 
     /**
      * Used for iteration, this is the value of the current directory item
+     *
+     * @var String
      */
     private $current;
 
     /**
      * Whether or not to include ".." and "." when iterating
+     *
+     * @var Boolean
      */
     private $includeDots = TRUE;
 
     /**
      * Returns a Dir instance representing the system's temporary directory
      *
-     * @return Object A \r8\FileSys\Dir instance
+     * @return \r8\FileSys\Dir
      */
     static public function getTemp ()
     {
@@ -86,7 +94,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
      * Sets the path that this instance represents
      *
      * @param String $path The new path
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function setPath ( $path )
     {
@@ -162,7 +170,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Creates the current directory recursively
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function make ()
     {
@@ -188,7 +196,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Deletes all the files from in a directory
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function purge ()
     {
@@ -246,7 +254,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
      * want to delete a full directory, you can chain together this method
      * with the "purge()" method.
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function delete ()
     {
@@ -278,7 +286,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
      * @param String $prefix A prefix to attach to the file name
      * @param String $extension The extension the file should have
      * @param Boolean $moreEntropy Increases the length of the generated filename
-     * @return Object Returns a \r8\FileSys\File object
+     * @return \r8\FileSys\File
      */
     public function getUniqueFile ( $prefix = null, $extension = null, $moreEntropy = FALSE )
     {
@@ -311,7 +319,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Returns whether a sub-path exists below this directory
      *
-     * @param Object|String $subPath The subpath to search for
+     * @param \r8\FileSys|String $subPath The subpath to search for
      * @return Boolean
      */
     public function contains ( $subPath )
@@ -327,8 +335,8 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Returns a new FileSys instance relative to this directory
      *
-     * @param Object|String $subPath The subpath to search for
-     * @return Object A new filesys object
+     * @param \r8\FileSys|String $subPath The subpath to search for
+     * @return \r8\FileSys A new filesys object
      */
     public function getSubPath ( $subPath )
     {
@@ -360,7 +368,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
      * Sets whether "." and ".." will be included during iteration.
      *
      * @param Boolean $include Whether to include the dots
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function setIncludeDots ( $include )
     {
@@ -381,7 +389,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Used for iteration, this resets to the beginning of the directory
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function rewind ()
     {
@@ -421,7 +429,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
      * Used for iteration, this moves the internal iteration pointer on to the next
      * element in the directory
      *
-     * @return Object Returns a self reference
+     * @return \r8\FileSys\Dir Returns a self reference
      */
     public function next ()
     {
@@ -511,7 +519,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
     /**
      * Used for recursive iteration, this returns the iterator for the current element
      *
-     * @return Object Returns a \r8\FileSys\Dir object
+     * @return \r8\FileSys\Dir
      */
     public function getChildren ()
     {

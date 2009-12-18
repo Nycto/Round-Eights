@@ -21,7 +21,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package UnitTests
  */
 
@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_page_context extends PHPUnit_Framework_TestCase
+class classes_Page_Context extends PHPUnit_Framework_TestCase
 {
 
     public function testSuppress ()
@@ -74,7 +74,7 @@ class classes_page_context extends PHPUnit_Framework_TestCase
             $context->interrupt();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( r8\Exception\Interrupt\Page $err ) {
+        catch ( \r8\Page\Interrupt $err ) {
             $this->assertSame( "Page execution interrupted", $err->getMessage() );
         }
     }

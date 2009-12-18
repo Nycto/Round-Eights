@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Env
  */
 
@@ -83,12 +83,12 @@ class Env
         if ( !isset(self::$request) ) {
 
             self::$request = new \r8\Env\Request(
-                    $_SERVER,
-                    $_POST,
-                    $_FILES,
-                    self::getHeaders(),
-                    self::isCLI()
-                );
+                $_SERVER,
+                new \r8\Input\Reference( $_POST ),
+                \r8\Input\Files::fromArray( $_FILES ),
+                self::getHeaders(),
+                self::isCLI()
+            );
         }
         // @codeCoverageIgnoreEnd
 

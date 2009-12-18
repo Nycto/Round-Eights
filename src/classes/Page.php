@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Page
  */
 
@@ -134,7 +134,7 @@ class Page
         try {
             $template = $this->getPage()->getContent( $context );
         }
-        catch ( \r8\Exception\Interrupt\Page $err ) {
+        catch ( \r8\Page\Interrupt $err ) {
 
             // If an interrupt is thrown, suppress the page load
             $context->suppress();

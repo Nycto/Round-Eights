@@ -21,272 +21,65 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package UnitTests
  */
 
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * File Upload unit test suite
- */
-class classes_validator_fileupload
-{
-
-    public static function suite()
-    {
-        $suite = new r8_Base_TestSuite;
-        $suite->addTestSuite( 'classes_validator_fileupload_noFile' );
-        $suite->addTestSuite( 'classes_validator_fileupload_emptyFile' );
-        $suite->addTestSuite( 'classes_validator_fileupload_withFile' );
-        return $suite;
-    }
-
-}
-
-/**
  * unit tests
  */
-class classes_validator_fileupload_noFile extends PHPUnit_Framework_TestCase
+class classes_Validator_FileUpload extends PHPUnit_Framework_TestCase
 {
 
-    public function testInvalidFieldName ()
+    public function testProcess_NonFile ()
     {
         $valid = new \r8\Validator\FileUpload;
 
         try {
-            $valid->validate("1234");
+            $valid->validate( "A String" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( "Must be a valid PHP variable name", $err->getMessage() );
+            $this->assertSame( 'Must be an instance of \r8\Input\File', $err->getMessage() );
         }
     }
 
-    public function testNoUploads()
+    public function testProcess_Invalid ()
     {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
+        $valid = new \r8\Validator\FileUpload;
 
-        $result = $valid->validate("fld");
+        $file = $this->getMock('\r8\Input\File', array(), array(), '', FALSE);
+        $file->expects( $this->once() )
+            ->method( "isValid" )
+            ->will( $this->returnValue(FALSE) );
+        $file->expects( $this->once() )
+            ->method( "getMessage" )
+            ->will( $this->returnValue("An error was encountered") );
+
+        $result = $valid->validate( $file );
+
         $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("No file was uploaded"),
-                $result->getErrors()
-            );
+        $this->assertSame(
+            array( "An error was encountered" ),
+            $result->getErrors()
+        );
     }
 
-    public function testUploadErrors_iniSize ()
+    public function testProcess_Valid ()
     {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_INI_SIZE ))) );
+        $valid = new \r8\Validator\FileUpload;
 
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("File exceeds the server's maximum allowed size"),
-                $result->getErrors()
-            );
-    }
+        $file = $this->getMock('\r8\Input\File', array(), array(), '', FALSE);
+        $file->expects( $this->once() )
+            ->method( "isValid" )
+            ->will( $this->returnValue(TRUE) );
+        $file->expects( $this->never() )->method( "getMessage" );
 
-    public function testUploadErrors_formSize ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_FORM_SIZE ))) );
+        $result = $valid->validate( $file );
 
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("File exceeds the maximum allowed size"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_partial ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_PARTIAL ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("File was only partially uploaded"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_noFile ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_FILE ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("No file was uploaded"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_noTmp ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_NO_TMP_DIR ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("No temporary directory was defined on the server"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_cantWrite ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_CANT_WRITE ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("Unable to write the uploaded file to the server"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_extension ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => UPLOAD_ERR_EXTENSION ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("A PHP extension has restricted this upload"),
-                $result->getErrors()
-            );
-    }
-
-    public function testUploadErrors_other ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array( "error" => 9999 ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("An unknown error occured"),
-                $result->getErrors()
-            );
-    }
-
-    public function testRestrictedFile ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles"));
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => __FILE__
-                ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("File is restricted"),
-                $result->getErrors()
-            );
-    }
-
-}
-
-class classes_validator_fileupload_emptyFile extends PHPUnit_EmptyFile_Framework_TestCase
-{
-
-    public function testEmptyFile ()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $this->file
-                ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("Uploaded file is empty"),
-                $result->getErrors()
-            );
-    }
-
-}
-
-class classes_validator_fileupload_withFile extends PHPUnit_TestFile_Framework_TestCase
-{
-
-    public function testUnreadable ()
-    {
-        chmod($this->file, 0200);
-
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $this->file
-                ))) );
-
-        $result = $valid->validate("fld");
-        $this->assertFalse( $result->isValid() );
-        $this->assertEquals(
-                array("Uploaded file is not readable"),
-                $result->getErrors()
-            );
-    }
-
-    public function testValid()
-    {
-        $valid = $this->getMock("r8\Validator\FileUpload", array("getUploadedFiles", "isUploadedFile"));
-
-        $valid->expects( $this->once() )
-            ->method("isUploadedFile")
-            ->will( $this->returnValue( TRUE ) );
-
-        $valid->expects( $this->once() )
-            ->method("getUploadedFiles")
-            ->will( $this->returnValue(array("fld" => array(
-                    "error" => 0,
-                    "tmp_name" => $this->file
-                ))) );
-
-        $this->assertTrue( $valid->isValid("fld") );
+        $this->assertTrue( $result->isValid() );
     }
 
 }

@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Exception
  */
 
@@ -186,53 +186,17 @@ class Argument extends \r8\Exception
     }
 
     /**
-     * Returns specifics about this exception
+     * Returns the data list for the current instance
      *
-     * @return String
+     * @return Array
      */
-    public function getDetailsString ()
+    public function getData ()
     {
-        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
-            return NULL;
-
-        $data = array();
-        foreach ( $this->data AS $key => $value )
-            $data[] = $key .": ". $value;
-
-        return "Details:\n"
-                .( $this->issetCode() ? "  Code: ". $this->getCode() ."\n" : "" )
-                .( $this->issetMessage() ? "  Message: ". $this->getMessage() ."\n" : "" )
-                .( $this->issetArg() ? "  Arg Offset: ". $this->getArgOffset() ."\n" : "" )
-                .( $this->issetArg() ? "  Arg Value: ". \r8\getDump( $this->getArgData() ) ."\n" : "" )
-                .( count($data) > 0 ? "  ". implode("\n  ", $data) ."\n" : "" );
-    }
-
-    /**
-     * Returns specifics about this exception rendered as HTML
-     *
-     * @return String
-     */
-    public function getDetailsHTML ()
-    {
-        if (!$this->issetMessage() && !$this->issetCode() && count( $this->data ) <= 0 )
-            return NULL;
-
-        $data = array();
-        foreach ( $this->data AS $key => $value )
-            $data[] = "<dt>". htmlspecialchars($key) ."</dt>"
-                ."<dd>". $value ."</dd>";
-
-        return
-            "<div class='r8_Exception_Details'>\n"
-            ."<h3>Details</h3>\n"
-            ."<dl>\n"
-            .($this->issetCode()?"<dt>Code</dt><dd>". $this->getCode() ."</dd>\n":"")
-            .($this->issetMessage()?"<dt>Message</dt><dd>". $this->getMessage() ."</dd>\n":"")
-            .( $this->issetArg() ? "<dt>Arg Offset</dt><dd>". $this->getArgOffset() ."</dd>\n" : "" )
-            .( $this->issetArg() ? "<dt>Arg Value</dt><dd>". \r8\getDump( $this->getArgData() ) ."</dd>\n" : "" )
-            .( count($data) > 0 ? implode("\n", $data) ."\n" : "" )
-            ."</dl>\n"
-            ."</div>\n";
+        return array(
+                "Arg Offset" => $this->getArgOffset(),
+                "Arg Value" => \r8\getDump( $this->getArgData() )
+            )
+            + $this->data;
     }
 
 }

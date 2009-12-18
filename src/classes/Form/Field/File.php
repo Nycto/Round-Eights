@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Forms
  */
 
@@ -32,46 +32,49 @@ class File extends \r8\Form\Field
 {
 
     /**
-     * Returns the value of the $_FILE variable
+     * The validator to use
+     * 		for checking the uploaded file.
      *
-     * This has been added to make it easier to unit test. By mocking this class
-     * and overwriting this method, you can make the rest of the methods think
-     * that a file was uploaded
-     *
-     * @return Array
+     * @var \r8\Validator\FileUpload
      */
-    protected function getUploadedFiles ()
-    {
-        return $_FILES;
+    private $validator;
+
+    /**
+     * The list of uploaded files to pull this fields value from
+     *
+     * @var \r8\Input\files
+     */
+    private $files;
+
+    /**
+     * Constructor...
+     *
+     * @param String $name The name of this form field
+     * @param \r8\Validator\FileUpload $validator The validator to use
+     * 		for checking the uploaded file. If left empty, a default
+     * 		instance will be created
+     * @param \r8\Input\Files $files The list of uploaded files to pull
+     * 		this fields value from. If left empty, the File list from
+     * 		the global Request will be used
+     */
+    public function __construct(
+        $name,
+        \r8\Validator\FileUpload $validator = null,
+        \r8\Input\Files $files = null
+    ) {
+        parent::__construct( $name );
+        $this->validator = $validator ?: new \r8\Validator\FileUpload;
+        $this->files = $files ?: \r8\Env::request()->getFiles();
     }
 
     /**
-     * Returns a new FileUpload validator
+     * Returns the details of the uploaded file
      *
-     * This has been added to make it easier to unit test. By mocking this class
-     * and overwriting this method, you can make the rest of the methods think
-     * that a file was uploaded
-     *
-     * @return Object A FileUpload validator
-     */
-    protected function getFileUploadValidator ()
-    {
-        return new \r8\Validator\FileUpload;
-    }
-
-    /**
-     * Returns the temporary filename of the uploaded file
-     *
-     * @return mixed The raw value of this field
+     * @return \r8\Input\File Returns NULL if no file was uploaded
      */
     public function getRawValue ()
     {
-        $files = $this->getUploadedFiles();
-
-        if ( isset($files[ $this->getName() ]) )
-            return $files[ $this->getName() ]['tmp_name'];
-
-        return null;
+        return $this->files->getFile( $this->getName() );
     }
 
     /**
@@ -85,7 +88,7 @@ class File extends \r8\Form\Field
     public function validate ()
     {
         // Apply the FileUpload validator before anything else
-        $result = $this->getFileUploadValidator()->validate( $this->getName() );
+        $result = $this->validator->validate( $this->getRawValue() );
 
         // If it fails, don't even give the other validators a chance
         if ( !$result->isValid() )

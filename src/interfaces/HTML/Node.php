@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -21,36 +19,31 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
+ * @package HTML
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+namespace r8\iface\HTML;
 
 /**
- * unit tests
+ * An HTML node
  */
-class classes_exception_interrupt_page extends PHPUnit_Framework_TestCase
+interface Node
 {
 
-    public function testConstruct ()
-    {
-        $err = new \r8\Exception\Interrupt\Page(
-                'Interrupted',
-                2020,
-                0
-            );
+    /**
+     * Returns the HTML string represented by this instance
+     *
+     * @return String Returns a string of HTML
+     */
+    public function render ();
 
-        $this->assertEquals( "Interrupted", $err->getMessage() );
-        $this->assertEquals( 2020, $err->getCode() );
-
-        $this->assertEquals(
-                array(),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
-    }
+    /**
+     * Returns the HTML string represented by this instance
+     *
+     * @return String Returns a string of HTML
+     */
+    public function __toString ();
 
 }
 

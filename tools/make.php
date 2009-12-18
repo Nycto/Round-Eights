@@ -21,7 +21,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package Package
  */
 
@@ -30,7 +30,7 @@ if ( !Phar::canWrite() )
 
 require_once rtrim( __DIR__, "/" ) .'/../src/RoundEights.php';
 
-$phar = new Phar('Round Eights.phar');
+$phar = new Phar('RoundEights-'. r8_VERSION .'.phar');
 
 // Add the source directory
 $phar->buildFromDirectory( r8_DIR );
@@ -46,7 +46,4 @@ $phar->setStub( $stub ) ;
 
 echo "Phar file packed\n";
 
-/**
- * Everything below the halt compiler construct will be used as the stub for the phar file
- */
-__halt_compiler();
+?>

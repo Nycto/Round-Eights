@@ -19,7 +19,7 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
  * @package HTML
  */
 
@@ -44,6 +44,13 @@ class CSS
      * @var String
      */
     private $media = "all";
+
+    /**
+     * The conditional under which this css should be loaded
+     *
+     * @var \r8\HTML\Conditional
+     */
+    private $condition;
 
     /**
      * Constructor...
@@ -102,13 +109,46 @@ class CSS
     }
 
     /**
+     * Returns the Condition under which this CSS should be loaded
+     *
+     * @return \r8\HTML\Conditional
+     */
+    public function getCondition ()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * Sets the Condition under which this CSS should be loaded
+     *
+     * @param \r8\HTML\Conditional $condition
+     * @return \r8\HTML\CSS Returns a self reference
+     */
+    public function setCondition ( \r8\HTML\Conditional $condition )
+    {
+        $this->condition = $condition;
+        return $this;
+    }
+
+    /**
+     * Clears the Conditional from this instance
+     *
+     * @return \r8\HTML\CSS Returns a self reference
+     */
+    public function clearCondition ()
+    {
+        $this->condition = null;
+        return $this;
+    }
+
+    /**
      * Builds a tag object from the data in this instance
      *
      * @return \r8\HTML\Tag
      */
     public function getTag ()
     {
-        return new \r8\HTML\Tag(
+        $tag = new \r8\HTML\Tag(
             'link',
             null,
             array(
@@ -118,6 +158,11 @@ class CSS
                 "media" => $this->media
             )
         );
+
+        if ( $this->condition )
+            return $this->condition->setContent( $tag );
+        else
+            return $tag;
     }
 
 }

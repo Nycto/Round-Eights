@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception Class
+ * Unit Test File
  *
  * @license Artistic License 2.0
  *
@@ -21,30 +21,25 @@
  * or <http://www.opensource.org/licenses/artistic-license-2.0.php>.
  *
  * @author James Frasca <James@RoundEights.com>
- * @copyright Copyright 2008, James Frasca, All Rights Reserved
- * @package Exception
+ * @copyright Copyright 2009, James Frasca, All Rights Reserved
+ * @package UnitTests
  */
 
-namespace r8\Exception\Interrupt;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Page load Interruption exception
- *
- * This exception is used by the Page classes to interrupt the loading of a page
- * and immediately send control back to the root page
+ * unit tests
  */
-class Page extends \r8\Exception\Interrupt
+class classes_Input_Void extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * The title of this exception
-     */
-    const TITLE = "Page Interruption";
-
-    /**
-     * A brief description of this error type
-     */
-    const DESCRIPTION = "Page load interruption";
+    public function testAccess ()
+    {
+        $input = new \r8\Input\Void;
+        $this->assertNull( $input->get("key") );
+        $this->assertFalse( $input->exists("key") );
+        $this->assertSame( array(), $input->toArray() );
+    }
 
 }
 
