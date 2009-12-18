@@ -35,7 +35,7 @@ if ( defined("r8_INCLUDED") )
     return;
 
 // Define the version
-define("r8_VERSION", "0.3.0dev");
+define("r8_VERSION", "0.3.0");
 
 // Mark that Round Eights has been included
 define("r8_INCLUDED", TRUE);
