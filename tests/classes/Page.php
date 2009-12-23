@@ -30,12 +30,18 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_page extends PHPUnit_Framework_TestCase
+class classes_Page extends PHPUnit_Framework_TestCase
 {
 
     public function getTestPage ()
     {
         return $this->getMock("r8\iface\Page", array("getContent"));
+    }
+
+    public function testCreate ()
+    {
+        $page = \r8\Page::create( $this->getTestPage() );
+        $this->assertThat( $page, $this->isInstanceOf( '\r8\Page' ) );
     }
 
     public function testPageAccessors ()
