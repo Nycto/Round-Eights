@@ -133,8 +133,6 @@ if ( !defined("r8_SUPPRESS_HANDLERS") ) {
             )
         )
     );
-
-    unset( $r8_formatter );
 }
 
 // @codeCoverageIgnoreEnd
