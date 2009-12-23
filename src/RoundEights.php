@@ -135,6 +135,24 @@ if ( !defined("r8_SUPPRESS_HANDLERS") ) {
     );
 }
 
+// Only define the r8 helper function if it doesn't already exist
+if ( !function_exists('r8') ) {
+
+    /**
+     * An identity method that simply returns the input argument
+     *
+     * This helper method exists to aid with inline instantiation. 
+     *
+     * @param Object $object The input object
+     * @return Object Returns the input object
+     */
+    function r8 ( $object )
+    {
+        return $object;
+    }
+
+}
+
 // @codeCoverageIgnoreEnd
 
 ?>
