@@ -36,7 +36,7 @@ class Injector implements \r8\iface\Page
     /**
      * The template that will have pages injected into it.
      *
-     * @var \r8\Template
+     * @var \r8\iface\Template\Access
      */
     private $template;
 
@@ -50,10 +50,10 @@ class Injector implements \r8\iface\Page
     /**
      * Constructor...
      *
-     * @param \r8\Template $template The template that will have pages injected
-     *      into it.
+     * @param \r8\iface\Template\Access $template The template that will have
+     *      pages injected into it.
      */
-    public function __construct ( \r8\Template $template )
+    public function __construct ( \r8\iface\Template\Access $template )
     {
         $this->template = $template;
     }
@@ -77,7 +77,7 @@ class Injector implements \r8\iface\Page
      */
     public function addPage ( $index, \r8\iface\Page $page )
     {
-        $index = \r8\Template::normalizeLabel( $index );
+        $index = \r8\Template\Access::normalizeLabel( $index );
         $this->pages[ $index ] = $page;
         return $this;
     }

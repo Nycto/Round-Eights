@@ -33,11 +33,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Page_Injector extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test template
+     *
+     * @return ReturnType
+     */
+    public function getTestTemplate ()
+    {
+        return $this->getMock(
+            '\r8\iface\Template\Access',
+            array('display', 'render', '__toString', 'set', 'remove', 'exists', 'get')
+        );
+    }
+
     public function testPageAccessors ()
     {
-        $page = new \r8\Page\Injector(
-                $this->getMock('r8\Template', array('display', 'render', '__toString'))
-            );
+        $page = new \r8\Page\Injector( $this->getTestTemplate() );
 
         $sub1 = $this->getMock('r8\iface\Page', array('getContent'));
         $sub2 = $this->getMock('r8\iface\Page', array('getContent'));
@@ -71,7 +82,7 @@ class classes_Page_Injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent ()
     {
-        $tpl = $this->getMock('r8\Template', array('display', 'render', '__toString', 'set'));
+        $tpl = $this->getTestTemplate();
 
         $page = new \r8\Page\Injector( $tpl );
 
@@ -114,7 +125,7 @@ class classes_Page_Injector extends PHPUnit_Framework_TestCase
 
     public function testGetContent_empty ()
     {
-        $tpl = $this->getMock('r8\Template', array('display', 'render', '__toString', 'set'));
+        $tpl = $this->getTestTemplate();
 
         $page = new \r8\Page\Injector( $tpl );
 
