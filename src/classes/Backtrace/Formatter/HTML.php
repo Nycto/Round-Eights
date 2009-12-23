@@ -44,7 +44,7 @@ class HTML implements \r8\iface\Backtrace\Formatter
 
         $args = array_map( 'htmlspecialchars', array_map( '\r8\getDump', $args ) );
 
-        return "<ul>\n"
+        return "Arguments:<ul>\n"
         	."                <li>"
     	    .implode("</li>\n                <li>", $args)
     	    ."</li>\n"

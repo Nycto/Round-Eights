@@ -83,7 +83,7 @@ class classes_Backtrace_Formatter_HTML extends PHPUnit_Framework_TestCase
             ."        <ul>\n"
             ."            <li>File: example.php</li>\n"
             ."            <li>Line: 25</li>\n"
-            ."            <li><ul>\n"
+            ."            <li>Arguments:<ul>\n"
             ."                <li>string('arg1')</li>\n"
             ."                <li>int(2)</li>\n"
             ."            </ul></li>\n"
