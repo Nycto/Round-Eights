@@ -122,26 +122,19 @@ if ( !defined("r8_SUPPRESS_HANDLERS") ) {
         )
     );
 
-    // If display errors is enabled, hook in an error handler for outputting the errors
-    $r8_displayErrors = strtolower( ini_get('display_errors') );
-    if ( $r8_displayErrors == "1" || $r8_displayErrors == "on" ) {
-
-        if ( \r8\Env::request()->isCLI() )
-            $r8_formatter = new \r8\Error\Formatter\Text( \r8\Env::request() );
-        else
-            $r8_formatter = new \r8\Error\Formatter\HTML( \r8\Env::request() );
-
-        \r8\Error::getInstance()->register(
+    // Hook in the error handler to output the error to the client
+    \r8\Error::getInstance()->register(
+        new \r8\Error\Handler\IniDisplay(
             new \r8\Error\Handler\Stream(
-                $r8_formatter,
+                \r8\Env::request()->isCLI()
+                    ? new \r8\Error\Formatter\Text( \r8\Env::request() )
+                    : new \r8\Error\Formatter\HTML( \r8\Env::request() ),
                 new \r8\Stream\Out\StdOut
             )
-        );
+        )
+    );
 
-        unset( $r8_formatter );
-    }
-
-    unset( $r8_displayErrors );
+    unset( $r8_formatter );
 }
 
 // @codeCoverageIgnoreEnd
