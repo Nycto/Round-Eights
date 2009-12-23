@@ -30,34 +30,8 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_curry extends PHPUnit_Framework_TestCase
+class classes_Curry extends PHPUnit_Framework_TestCase
 {
-
-    public function testCallStatic ()
-    {
-        $curry = \r8\Curry::Call("trim");
-        $this->assertThat( $curry, $this->isInstanceOf("r8\\Curry\\Call") );
-        $this->assertSame( "trimmed", $curry("  trimmed  ") );
-
-
-        $curry = \r8\Curry::Call("rtrim", "-");
-        $this->assertThat( $curry, $this->isInstanceOf("r8\\Curry\\Call") );
-        $this->assertSame( "--trimmed", $curry("--trimmed--") );
-
-
-        $curry = \r8\Curry::Call("str_replace", "!", "original");
-        $this->assertThat( $curry, $this->isInstanceOf("r8\\Curry\\Call") );
-        $this->assertSame( "or!g!nal", $curry("i") );
-
-
-        try {
-            \r8\Curry::ThisIsNotReal();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( 'Class could not be found in \\r8\\Curry namespace', $err->getMessage() );
-        }
-    }
 
     public function testSet ()
     {

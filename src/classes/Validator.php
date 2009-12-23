@@ -32,49 +32,6 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
 {
 
     /**
-     * Static method for creating a new validator instance
-     *
-     * This takes the called function and looks for a class under
-     * the \r8\Validator namespace.
-     *
-     * @throws \r8\Exception\Argument Thrown if the validator class can't be found
-     * @param String $validator The validator class to create
-     * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \r8\Validator subclass
-     */
-    static public function __callStatic ( $validator, $args )
-    {
-        $validator = '\r8\Validator\\'. trim( \r8\strval($validator) );
-
-        if ( !class_exists($validator, true) ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "Validator Class Name",
-                    'Validator could not be found in \r8\Validator namespace'
-                );
-        }
-
-        if ( !\r8\kindOf( $validator, '\r8\iface\Validator') ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "Validator Class Name",
-                    'Class does not implement \r8\iface\Validator'
-                );
-        }
-
-        if ( count($args) <= 0 ) {
-            return new $validator;
-        }
-        else if ( count($args) == 1 ) {
-            return new $validator( reset($args) );
-        }
-        else {
-            $refl = new ReflectionClass( $validator );
-            return $refl->newInstanceArgs( $args );
-        }
-    }
-
-    /**
      * Performs the validation and returns the result
      *
      * @param mixed $value The value to validate

@@ -297,7 +297,7 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
     $quotes = \r8\ary\compact($quotes);
 
     $quoteString = array_map(
-            \r8\Curry::Call("preg_quote")->setRight("/")->setLimit(1),
+            r8( new \r8\Curry\Call("preg_quote") )->setRight("/")->setLimit(1),
             $quotes
         );
     $quoteString = implode("|", $quoteString);

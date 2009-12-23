@@ -38,12 +38,6 @@ class classes_Page extends PHPUnit_Framework_TestCase
         return $this->getMock("r8\iface\Page", array("getContent"));
     }
 
-    public function testCreate ()
-    {
-        $page = \r8\Page::create( $this->getTestPage() );
-        $this->assertThat( $page, $this->isInstanceOf( '\r8\Page' ) );
-    }
-
     public function testPageAccessors ()
     {
         $page = $this->getTestPage();

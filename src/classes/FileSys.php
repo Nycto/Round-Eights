@@ -89,47 +89,6 @@ abstract class FileSys
     }
 
     /**
-     * Static method for creating a new filesys instance
-     *
-     * This takes the called function and looks for a class under
-     * the \r8\FileSys namespace.
-     *
-     * @param String $class The FileSys class to create
-     * @param array $args Any constructor args to use during instantiation
-     * @return \r8\FileSys Returns a new \r8\FileSys subclass
-     */
-    static public function __callStatic ( $class, $args )
-    {
-        $class = '\r8\FileSys\\'. trim( \r8\strval($class) );
-
-        if ( !class_exists($class, true) ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "FileSys Class Name",
-                    'Class could not be found in \r8\FileSys namespace'
-                );
-        }
-
-        if ( !\r8\kindOf( $class, "\\r8\\FileSys") ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "FileSys Class Name",
-                    "Class does not implement \\r8\\FileSys"
-                );
-        }
-
-        if ( count($args) <= 0 ) {
-            return new $class;
-        }
-
-        // At the moment, neither FileSys\Dir nor FileSys\File take more than one
-        // argument, so there is no need to do anything else
-        else {
-            return new $class( reset($args) );
-        }
-    }
-
-    /**
      * Creates a new FileSys instance according to the given path. That is to say,
      * if the path is a file, a FileSys\File instance will be returned. If it is
      * a Dir, a FileSys\Dir instance will be returned

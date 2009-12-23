@@ -50,7 +50,7 @@ class Formatter
      */
     static public function formatAddress ($email, $name = NULL)
     {
-        $email = \r8\Filter::Email()->filter( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
 
         if ( !\r8\isVague($name) )
             $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );

@@ -47,9 +47,9 @@ abstract class Access
      */
     static public function normalizeLabel ( $label )
     {
-        $label = \r8\Filter::Variable()->filter( $label );
+        $label = r8( new \r8\Filter\Variable() )->filter( $label );
 
-        if ( !\r8\Validator::Variable()->isValid( $label ) )
+        if ( !r8( new \r8\Validator\Variable )->isValid( $label ) )
             throw new \r8\Exception\Argument(0, "Label", "Must be a valid PHP variable name");
 
         return $label;

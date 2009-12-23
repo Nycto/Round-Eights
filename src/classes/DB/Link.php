@@ -248,7 +248,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setPersistent ( $setting )
     {
-        $this->persistent = \r8\Filter::Boolean()->filter($setting);
+        $this->persistent = r8(new \r8\Filter\Boolean)->filter($setting);
         return $this;
     }
 
@@ -272,7 +272,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setForceNew ( $setting )
     {
-        $this->forceNew = \r8\Filter::Boolean()->filter($setting);
+        $this->forceNew = r8(new \r8\Filter\Boolean)->filter($setting);
         return $this;
     }
 
@@ -526,7 +526,7 @@ abstract class Link implements \r8\iface\DB\Link
     public function fromURI ( $uri )
     {
         $uri = \r8\strval( $uri );
-        $result = \r8\Validator::URL()->validate( $uri );
+        $result = r8(new \r8\Validator\URL)->validate( $uri );
 
         if ( !$result->isValid() )
             throw new \r8\Exception\Argument( 0, "Settings URI", $result->getFirstError() );

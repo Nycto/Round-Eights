@@ -56,48 +56,6 @@ abstract class Curry implements \r8\iface\Filter
     protected $length;
 
     /**
-     * Static method for creating a new curry object
-     *
-     * This takes the called function and looks for a class under
-     * the \r8\Curry namespace.
-     *
-     * @param String $curry The curry class to create
-     * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \r8\Curry subclass
-     */
-    static public function __callStatic ( $curry, $args )
-    {
-        $curry = "\\r8\\Curry\\". trim( \r8\strval($curry) );
-
-        if ( !class_exists($curry, true) ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "Curry Class Name",
-                    "Class could not be found in \\r8\\Curry namespace"
-                );
-        }
-
-        if ( !\r8\kindOf( $curry, "\\r8\\Curry") ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "Curry Class Name",
-                    "Class is not a child of \\r8\\Curry"
-                );
-        }
-
-        if ( count($args) <= 0 ) {
-            return new $curry;
-        }
-        else if ( count($args) == 1 ) {
-            return new $curry( reset($args) );
-        }
-        else {
-            $refl = new \ReflectionClass( $curry );
-            return $refl->newInstanceArgs( $args );
-        }
-    }
-
-    /**
      * Sets the leftward arguments
      *
      * @param mixed $args... Any arguments to curry to the left

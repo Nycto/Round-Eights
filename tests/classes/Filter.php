@@ -35,7 +35,6 @@ class classes_filter extends PHPUnit_Framework_TestCase
 
     public function testInvoke ()
     {
-
         $mock = $this->getMock("r8\Filter", array("filter"));
 
         $mock->expects($this->once())
@@ -44,25 +43,6 @@ class classes_filter extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('Filtered Value'));
 
         $this->assertEquals( "Filtered Value", $mock('Input Value') );
-
-    }
-
-    public function testCallStatic ()
-    {
-        $filter = \r8\Filter::StandardEmpty();
-        $this->assertThat( $filter, $this->isInstanceOf("r8\Filter\StandardEmpty") );
-        $this->assertEquals( 0, $filter->getFlags() );
-        $this->assertNull( $filter->getValue() );
-
-        $filter = \r8\Filter::StandardEmpty( "Empty Value" );
-        $this->assertThat( $filter, $this->isInstanceOf("r8\Filter\StandardEmpty") );
-        $this->assertEquals( 0, $filter->getFlags() );
-        $this->assertEquals( "Empty Value", $filter->getValue() );
-
-        $filter = \r8\Filter::StandardEmpty( "Empty Value", 5 );
-        $this->assertThat( $filter, $this->isInstanceOf("r8\Filter\StandardEmpty") );
-        $this->assertEquals( 5, $filter->getFlags() );
-        $this->assertEquals( "Empty Value", $filter->getValue() );
     }
 
 }

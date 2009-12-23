@@ -54,17 +54,6 @@ class Page
     private $context;
 
     /**
-     * An inline instantiation method for this class
-     *
-     * @param \r8\iface\Page $page The page being displayed
-     * @return \r8\Page
-     */
-    static public function create ( \r8\iface\Page $page )
-    {
-        return new self( $page );
-    }
-
-    /**
      * Constructor... Accepts the page that will be rendered when getTemplate is
      * called.
      *

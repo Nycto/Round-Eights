@@ -130,8 +130,8 @@ class Mail
         // Get the default source e-mail address from the php.ini file
         $default = ini_get('sendmail_from');
 
-        $default = \r8\Filter::Email()->filter( $default );
-        if ( \r8\Validator::Email()->isValid( $default ) )
+        $default = r8(new \r8\Filter\Email)->filter( $default );
+        if ( r8(new \r8\Validator\Email)->isValid( $default ) )
             $this->setFrom( $default );
     }
 
@@ -223,8 +223,8 @@ class Mail
      */
     public function setFrom ( $email, $name = FALSE )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         $this->from = $email;
 
@@ -276,8 +276,8 @@ class Mail
      */
     public function addTo ( $email, $name = FALSE )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
             $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
@@ -313,8 +313,8 @@ class Mail
      */
     public function toExists( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         return isset( $this->to[ $email ] );
     }
@@ -337,8 +337,8 @@ class Mail
      */
     public function removeTo ( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( isset($this->to[ $email ]) )
             unset( $this->to[ $email ] );
@@ -367,8 +367,8 @@ class Mail
      */
     public function addCC ( $email, $name = FALSE )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
             $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
@@ -404,8 +404,8 @@ class Mail
      */
     public function ccExists ( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         return isset( $this->cc[ $email ] );
     }
@@ -428,8 +428,8 @@ class Mail
      */
     public function removeCC ( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( isset($this->cc[ $email ]) )
             unset( $this->cc[ $email ] );
@@ -458,8 +458,8 @@ class Mail
      */
     public function addBCC ( $email, $name = FALSE )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
             $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
@@ -495,8 +495,8 @@ class Mail
      */
     public function bccExists ( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         return isset( $this->bcc[ $email ] );
     }
@@ -519,8 +519,8 @@ class Mail
      */
     public function removeBCC ( $email )
     {
-        $email = \r8\Filter::Email()->filter( $email );
-        \r8\Validator::Email()->ensure( $email );
+        $email = r8(new \r8\Filter\Email)->filter( $email );
+        r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( isset($this->bcc[ $email ]) )
             unset( $this->bcc[ $email ] );

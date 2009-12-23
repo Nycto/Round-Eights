@@ -109,9 +109,9 @@ class Form implements \Countable
      */
     public function setAction ( $url )
     {
-        $url = \r8\Filter::URL()->filter( $url );
+        $url = r8(new \r8\Filter\URL)->filter( $url );
 
-        if ( !\r8\Validator::URL( \r8\Validator\URL::ALLOW_RELATIVE )->isValid( $url ) )
+        if ( !r8(new \r8\Validator\URL( \r8\Validator\URL::ALLOW_RELATIVE ))->isValid( $url ) )
             throw new \r8\Exception\Argument( 0, "Form Action", "Must be a valid URL" );
 
         $this->action = $url;
@@ -229,9 +229,9 @@ class Form implements \Countable
      */
     public function find ( $name )
     {
-        $name = \r8\Filter::Variable()->filter( $name );
+        $name = r8(new \r8\Filter\Variable)->filter( $name );
 
-        if ( !\r8\Validator::Variable()->isValid( $name ) )
+        if ( !r8(new \r8\Validator\Variable)->isValid( $name ) )
             throw new \r8\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         foreach ( $this->fields AS $field ) {

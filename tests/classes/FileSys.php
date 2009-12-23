@@ -33,36 +33,6 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_filesys extends PHPUnit_Framework_TestCase
 {
 
-    public function testCallStatic ()
-    {
-        $filesys = \r8\FileSys::File();
-        $this->assertThat( $filesys, $this->isInstanceOf('r8\FileSys\File') );
-        $this->assertNull( $filesys->getPath() );
-
-        $filesys = \r8\FileSys::Dir();
-        $this->assertThat( $filesys, $this->isInstanceOf('r8\FileSys\Dir') );
-        $this->assertNull( $filesys->getPath() );
-
-        $filesys = \r8\FileSys::File("/dir/to/file.php");
-        $this->assertThat( $filesys, $this->isInstanceOf('r8\FileSys\File') );
-        $this->assertSame( "/dir/to/file.php", $filesys->getPath() );
-
-        $filesys = \r8\FileSys::Dir("/dir/path/");
-        $this->assertThat( $filesys, $this->isInstanceOf('r8\FileSys\Dir') );
-        $this->assertSame( "/dir/path/", $filesys->getPath() );
-
-        try {
-            \r8\FileSys::NotARealClass();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame(
-                    'Class could not be found in \r8\FileSys namespace',
-                    $err->getMessage()
-                );
-        }
-    }
-
     public function testCreate ()
     {
         $dir = \r8\FileSys::create( __DIR__ );

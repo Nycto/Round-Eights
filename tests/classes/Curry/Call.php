@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_curry_call extends PHPUnit_Framework_TestCase
+class classes_Curry_Call extends PHPUnit_Framework_TestCase
 {
 
     // This method exists simply to test the calling of static methods

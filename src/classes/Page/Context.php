@@ -82,7 +82,7 @@ class Context
     {
         $url = trim( \r8\strval( $url ) );
 
-        \r8\Validator::URL( \r8\Validator\URL::ALLOW_RELATIVE )->ensure( $url );
+        r8(new \r8\Validator\URL( \r8\Validator\URL::ALLOW_RELATIVE ))->ensure( $url );
 
         $this->redirect = $url;
 

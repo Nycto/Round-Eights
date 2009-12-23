@@ -82,7 +82,7 @@ class Headers
         if ( $role === NULL || $role === "" )
             return TRUE;
 
-        return in_array( \r8\Filter::URL()->filter($role), $this->roles );
+        return in_array( r8(new \r8\Filter\URL)->filter($role), $this->roles );
     }
 
     /**
@@ -93,7 +93,7 @@ class Headers
      */
     public function addRole ( $role )
     {
-        $role = \r8\Filter::URL()->filter($role);
+        $role = r8(new \r8\Filter\URL)->filter($role);
 
         if ( !\r8\isEmpty($role) && !in_array($role, $this->roles) )
             $this->roles[] = $role;

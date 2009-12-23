@@ -56,7 +56,7 @@ class Header extends \r8\Soap\Node
 
         $value = $this->node->getAttributeNS( $this->soapNS, "mustUnderstand" );
 
-        return \r8\Filter::Boolean()->filter( $value );
+        return r8(new \r8\Filter\Boolean)->filter( $value );
     }
 
 }

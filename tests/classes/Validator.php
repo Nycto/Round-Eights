@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_validator extends PHPUnit_Framework_TestCase
+class classes_Validator extends PHPUnit_Framework_TestCase
 {
 
     public function getMockValidator ( $return )
@@ -42,28 +42,6 @@ class classes_validator extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( $return ) );
 
         return $mock;
-    }
-
-    public function testCallStatic ()
-    {
-        $validator = \r8\Validator::Email();
-        $this->assertThat( $validator, $this->isInstanceOf("r8\Validator\Email") );
-
-        try {
-            \r8\Validator::ThisIsNotAValidator();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( 'Validator could not be found in \r8\Validator namespace', $err->getMessage() );
-        }
-
-        try {
-            \r8\Validator::Result();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( 'Class does not implement \r8\iface\Validator', $err->getMessage() );
-        }
     }
 
     public function testNullResult ()

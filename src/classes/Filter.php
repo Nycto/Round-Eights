@@ -32,42 +32,6 @@ abstract class Filter implements \r8\iface\Filter
 {
 
     /**
-     * Static method for creating a new filtering instance
-     *
-     * This takes the called function and looks for a class under
-     * the \r8\Filter namespace.
-     *
-     * @throws \r8\Exception\Argument Thrown if the filter class can't be found
-     * @param String $filter The filter class to create
-     * @param array $args Any constructor args to use during instantiation
-     * @return Object Returns a new \r8\Filter subclass
-     */
-    static public function __callStatic ( $filter, $args )
-    {
-        $filter = '\r8\Filter\\'. trim( \r8\strval($filter) );
-
-        if ( !class_exists($filter, true) ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "Filter Class Name",
-                    'Filter could not be found in \r8\Filter namespace'
-                );
-        }
-
-        if ( count($args) <= 0 ) {
-            return new $filter;
-        }
-        else if ( count($args) == 1 ) {
-            return new $filter( reset($args) );
-        }
-        else {
-            $refl = new \ReflectionClass( $filter );
-            return $refl->newInstanceArgs( $args );
-        }
-
-    }
-
-    /**
      * Magic method to allow this instance to be invoked like a function.
      *
      * Causes the filtering to happen as if the filter method was invoked

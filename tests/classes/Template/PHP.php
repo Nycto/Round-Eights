@@ -61,7 +61,7 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
         $this->expectOutputString("Lorem Ipsum");
 
         $tpl = new \r8\Template\PHP(
-            \r8\FileFinder::Dir()->addDir("/"),
+            r8(new \r8\FileFinder\Dir)->addDir("/"),
             $this->file
         );
 
@@ -81,7 +81,7 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
         $this->expectOutputString("Lorem Ipsum");
 
         $tpl = new \r8\Template\PHP(
-            \r8\FileFinder::Dir()->addDir("/"),
+            r8(new \r8\FileFinder\Dir)->addDir("/"),
             $this->file
         );
 

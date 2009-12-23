@@ -40,38 +40,6 @@ abstract class FileFinder
     private $fallback;
 
     /**
-     * Allows you to instantiate a FileFinder in-line by calling it like a static method
-     *
-     * @param String $class The class to instantiate
-     * @param Array $args Any arguments to pass to the construcor
-     * @return \r8\FileFinder Returns a new FileFinder of the given type
-     */
-    static public function __callStatic ( $class, $args )
-    {
-        $class = "\\r8\\FileFinder\\". trim( \r8\strval($class) );
-
-        if ( !class_exists( $class, true ) ) {
-            throw new \r8\Exception\Argument(
-                    0,
-                    "FileFinder Class Name",
-                    "Class could not be found in \\r8\\FileFinder namespace"
-                );
-        }
-
-        if ( count($args) <= 0 ) {
-            return new $class;
-        }
-        else if ( count($args) == 1 ) {
-            return new $class( reset($args) );
-        }
-        else {
-            $refl = new \ReflectionClass( $class );
-            return $refl->newInstanceArgs( $args );
-        }
-
-    }
-
-    /**
      * Returns the fallback class for this instance
      *
      * @return \r8\FileFinder|Null Returns the fallback, or NULL if none

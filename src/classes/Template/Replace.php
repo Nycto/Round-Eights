@@ -30,7 +30,7 @@ namespace r8\Template;
  *
  * The default replacement string is #{label}
  */
-class Replace extends \r8\Template
+class Replace extends \r8\Template\Access implements \r8\iface\Template\Access
 {
 
     /**

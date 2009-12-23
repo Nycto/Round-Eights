@@ -57,7 +57,7 @@ class Javascript
      */
     public function setSource ( $source )
     {
-        \r8\Validator::URL( \r8\Validator\URL::ALLOW_RELATIVE )->ensure( $source );
+        r8(new \r8\Validator\URL( \r8\Validator\URL::ALLOW_RELATIVE ))->ensure( $source );
         $this->source = $source;
         return $this;
     }

@@ -46,7 +46,7 @@ class Invoke extends \r8\Curry
     {
         $method = trim( \r8\strVal( $method ) );
 
-        if ( !\r8\Validator::Method()->isValid($method) )
+        if ( !r8(new \r8\Validator\Method() )->isValid($method) )
             throw new \r8\Exception\Argument( 0, "Method", "Invalid method name" );
 
         $this->method = $method;

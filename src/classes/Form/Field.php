@@ -99,9 +99,9 @@ abstract class Field implements \r8\iface\Form\Field
      */
     public function setName( $name )
     {
-        $name = \r8\Filter::Variable()->filter( $name );
+        $name = r8(new \r8\Filter\Variable)->filter( $name );
 
-        if ( !\r8\Validator::Variable()->isValid( $name ) )
+        if ( !r8(new \r8\Validator\Variable)->isValid( $name ) )
             throw new \r8\Exception\Argument( 0, "Field Name", "Must be a valid PHP variable name" );
 
         $this->name = $name;

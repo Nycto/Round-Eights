@@ -157,7 +157,7 @@ class Fault extends \r8\Exception\Interrupt
      */
     public function setRole ( $role )
     {
-        $role = \r8\Filter::URL()->filter( $role );
+        $role = r8(new \r8\Filter\URL)->filter( $role );
         $this->role = empty($role) ? NULL : $role;
         return $this;
     }
