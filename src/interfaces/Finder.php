@@ -20,26 +20,25 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Finder
  */
 
 namespace r8\iface;
 
 /**
- * Interface locating a file
+ * Interface for locating a file
  */
-interface FileFinder
+interface Finder
 {
 
     /**
-     * Attempts to find a file
+     * Attempts to find a file given a relative path
      *
-     * @param String $base The base directory being looked in
-     * @param String $file The file being looked for
+     * @param String $file The relative path of the file being looked for
      * @return String|NULL Returns the path of the found file, relative to the
      *      given base. Returns NULL if the file could not be found
      */
-    public function find ( $base, $file );
+    public function find ( $file );
 
 }
 
