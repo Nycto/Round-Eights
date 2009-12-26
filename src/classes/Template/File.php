@@ -34,7 +34,7 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * The file finder to use for this instance
      *
-     * @var \r8\FileFinder
+     * @var \r8\iface\Finder
      */
     private $finder;
 
@@ -48,10 +48,10 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Constructor allows you to immediately set the file, if you so desire
      *
-     * @param \r8\FileFinder $finder The file finder to use to find this file
+     * @param \r8\iface\Finder $finder The file finder to use to find this file
      * @param mixed $file The file this tempalte should load
      */
-    public function __construct ( \r8\FileFinder $finder, $file )
+    public function __construct ( \r8\iface\Finder $finder, $file )
     {
         $this->finder = $finder;
         $this->setFile( $file );
@@ -60,7 +60,7 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Returns the file finder for this instance
      *
-     * @return \r8\FileFinder|Null
+     * @return \r8\iface\Finder|Null
      */
     public function getFinder ()
     {
@@ -70,10 +70,10 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Sets the file finder for this instance
      *
-     * @param \r8\FileFinder $finder The file finder to use
+     * @param \r8\iface\Finder $finder The file finder to use
      * @return \r8\Template\File Returns a self reference
      */
-    public function setFinder ( \r8\FileFinder $finder )
+    public function setFinder ( \r8\iface\Finder $finder )
     {
         $this->finder = $finder;
         return $this;

@@ -32,21 +32,21 @@ class Builder extends \r8\Template\Access
 {
 
     /**
-     * The FileFinder to load into any file based templates
+     * The Finder to load into any file based templates
      *
-     * @var \r8\FileFinder
+     * @var \r8\iface\Finder
      */
-    private $fileFinder;
+    private $finder;
 
     /**
      * Constructor...
      *
-     * @param \r8\FileFinder $fileFinder The FileFinder to load into
+     * @param \r8\iface\Finder $finder The Finder to load into
      * 		any file based templates
      */
-    public function __construct ( \r8\FileFinder $fileFinder )
+    public function __construct ( \r8\iface\Finder $finder )
     {
-        $this->fileFinder = $fileFinder;
+        $this->finder = $finder;
     }
 
     /**
@@ -112,7 +112,7 @@ class Builder extends \r8\Template\Access
      */
     public function php ( $file )
     {
-        $tpl = new \r8\Template\PHP( $this->fileFinder, $file );
+        $tpl = new \r8\Template\PHP( $this->finder, $file );
         $tpl->import( $this->getValues() );
         return $tpl;
     }

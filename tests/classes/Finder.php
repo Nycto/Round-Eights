@@ -25,25 +25,13 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * unit tests
  */
-class classes_filefinder_includepath extends PHPUnit_Framework_TestCase
+class classes_Finder extends PHPUnit_Framework_TestCase
 {
-
-    public function testGetDirs ()
-    {
-        $this->iniSet("include_path", ".:..:sub/path:/root");
-
-        $ini = new \r8\FileFinder\IncludePath;
-
-        $this->assertEquals(
-                array( ".", "..", "sub/path", "/root" ),
-                $ini->getDirs()
-            );
-    }
 
 }
 

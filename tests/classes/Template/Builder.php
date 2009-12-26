@@ -35,7 +35,7 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
     public function getMockFinder ()
     {
-        return $this->getMock('\r8\FileFinder', array('internalFind'));
+        return $this->getMock('\r8\iface\Finder');
     }
 
     public function testBlank ()

@@ -20,25 +20,37 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package FileFinder
+ * @package Finder
  */
 
-namespace r8\FileFinder;
+namespace r8;
 
 /**
- * Class used to locate a file within the include_path ini setting
+ * The base File Finder interface
  */
-class IncludePath extends \r8\FileFinder\DirList
+class Finder implements \r8\iface\Finder
 {
 
     /**
-     * Returns a list of directories to be searched
+     * Constructor...
      *
-     * @return array Returns a list of directories
+     * @param \r8\iface\Finder $finder The modifier to use
      */
-    public function getDirs ()
+    public function __construct ( \r8\iface\Finder $finder )
     {
-        return explode( ":", get_include_path() );
+
+    }
+
+    /**
+     * Attempts to find a file given a relative path
+     *
+     * @param String $file The relative path of the file being looked for
+     * @return String|NULL Returns the path of the found file, relative to the
+     *      given base. Returns NULL if the file could not be found
+     */
+    public function find ( $file )
+    {
+
     }
 
 }

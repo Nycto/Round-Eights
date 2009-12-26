@@ -35,10 +35,10 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
     public function getMockFinder ()
     {
-        return $this->getMock('\r8\FileFinder', array('internalFind'));
+        return $this->getMock('\r8\iface\Finder');
     }
 
-    public function getMockTpl ( \r8\FileFinder $finder = null, $file = null )
+    public function getMockTpl ( \r8\iface\Finder $finder = null, $file = null )
     {
         if ( empty($finder) )
             $finder = $this->getMockFinder();
@@ -47,7 +47,7 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
             $file = '/example.txt';
 
         return $this->getMock(
-                'r8\Template\File',
+                '\r8\Template\File',
                 array('display'),
                 array( $finder, $file )
             );
@@ -108,7 +108,7 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
         $foundFile = new \r8\FileSys\File('/path/to/tpl.php');
 
-        $finder = $this->getMock( 'r8\FileFinder', array('internalFind', 'find') );
+        $finder = $this->getMock( '\r8\iface\Finder', array('internalFind', 'find') );
         $finder->expects( $this->once() )
             ->method('find')
             ->with( $this->equalTo($file) )
