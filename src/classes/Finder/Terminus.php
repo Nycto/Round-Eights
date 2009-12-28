@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -22,17 +20,31 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package Finder
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace r8\Finder;
 
 /**
- * unit tests
+ * A terminal point in a Finder tree that will actually look for the path
  */
-class classes_Finder_Find extends PHPUnit_Framework_TestCase
+class Terminus implements \r8\iface\Finder
 {
-    
+
+    /**
+     * Attempts to find a file given a relative path
+     *
+     * @param \r8\Finder\Tracker $tracker $file The tracker to use when determining
+     *      if a base/path combination is valid
+     * @param String $base The base directory to look for the path in
+     * @param String $path The path being looked for
+     * @return Boolean Returns whether the path was found
+     */
+    public function find ( \r8\Finder\Tracker $tracker, $base, $path )
+    {
+        return $tracker->test( $base, $path );
+    }
+
 }
 
 ?>
