@@ -54,6 +54,14 @@ class classes_Finder_IncludePath extends PHPUnit_Framework_TestCase
                 $this->equalTo("file")
             )
             ->will( $this->returnValue( FALSE ) );
+        $wrapped->expects( $this->at(2) )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("file")
+            )
+            ->will( $this->returnValue( FALSE ) );
 
         $ext = new \r8\Finder\IncludePath( $wrapped );
 
