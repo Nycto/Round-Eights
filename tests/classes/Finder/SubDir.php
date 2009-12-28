@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Finder_Terminus extends PHPUnit_Framework_TestCase
+class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
 {
 
     public function testAddSubDir ()
