@@ -66,7 +66,7 @@ class IncludePath implements \r8\iface\Finder
                 return TRUE;
         }
 
-        return $this->wrapped->find( $tracker, $base, $path );
+        return FALSE;
     }
 
 }
