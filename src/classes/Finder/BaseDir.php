@@ -75,15 +75,15 @@ class BaseDir implements \r8\iface\Finder
     /**
      * Adds a new sub-directory to the list that will be prepended
      *
-     * @param String $subdir
+     * @param String $dir
      * @return \r8\Finder\BaseDir Returns a self reference
      */
-    public function addDir ( $subdir )
+    public function addDir ( $dir )
     {
-        $subdir = rtrim( (string) $subdir, "/" );
+        $dir = rtrim( (string) $dir, "/" );
 
-        if ( !\r8\IsEmpty($subdir) )
-            $this->dirs[] = $subdir;
+        if ( !\r8\IsEmpty($dir) )
+            $this->dirs[] = $dir;
 
         return $this;
     }
