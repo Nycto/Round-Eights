@@ -49,7 +49,7 @@ class BaseDir implements \r8\iface\Finder
      * Constructor...
      *
      * @param \r8\iface\Finder $wrapped The finder being wrapped
-     * @param String $dirs... Sub-directories to prepend during process
+     * @param String $dirs... The initial directory set to add to this instance
      */
     public function __construct ( \r8\iface\Finder $wrapped )
     {
