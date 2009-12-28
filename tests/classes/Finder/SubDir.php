@@ -54,6 +54,98 @@ class classes_Finder_Terminus extends PHPUnit_Framework_TestCase
         $this->assertSame( array("subdir", "dir/path"), $subdir->getSubDirs() );
     }
 
+    public function testFind_NoSubDirs ()
+    {
+        $tracker = $this->getMock('\r8\Finder\Tracker');
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("file")
+            )
+            ->will( $this->returnValue( TRUE ) );
+
+        $subdir = new \r8\Finder\SubDir( $wrapped );
+
+        $this->assertTrue( $subdir->find( $tracker, "base", "file" ) );
+    }
+
+    public function testFind_FirstSubDir ()
+    {
+        $tracker = $this->getMock('\r8\Finder\Tracker');
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("first/file")
+            )
+            ->will( $this->returnValue( TRUE ) );
+
+        $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
+
+        $this->assertTrue( $subdir->find( $tracker, "base", "file" ) );
+    }
+
+    public function testFind_SecondSubDir ()
+    {
+        $tracker = $this->getMock('\r8\Finder\Tracker');
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->at(0) )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("first/file")
+            )
+            ->will( $this->returnValue( FALSE ) );
+        $wrapped->expects( $this->at(1) )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("second/file")
+            )
+            ->will( $this->returnValue( TRUE ) );
+
+        $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
+
+        $this->assertTrue( $subdir->find( $tracker, "base", "file" ) );
+    }
+
+    public function testFind_Unfound ()
+    {
+        $tracker = $this->getMock('\r8\Finder\Tracker');
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->at(0) )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("first/file")
+            )
+            ->will( $this->returnValue( FALSE ) );
+        $wrapped->expects( $this->at(1) )
+            ->method( "find" )
+            ->with(
+                $this->equalTo($tracker),
+                $this->equalTo("base"),
+                $this->equalTo("second/file")
+            )
+            ->will( $this->returnValue( FALSE ) );
+
+        $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
+
+        $this->assertFalse( $subdir->find( $tracker, "base", "file" ) );
+    }
+
 }
 
 ?>

@@ -49,12 +49,12 @@ class SubDir implements \r8\iface\Finder
     /**
      * Constructor...
      *
-     * @param \r8\iface\Finder $finder The finder being wrapped
+     * @param \r8\iface\Finder $wrapped The finder being wrapped
      * @param String $dirs... Sub-directories to prepend during process
      */
-    public function __construct ( \r8\iface\Finder $finder )
+    public function __construct ( \r8\iface\Finder $wrapped )
     {
-        $this->finder = $finder;
+        $this->wrapped = $wrapped;
 
         if ( func_num_args() > 1 ) {
             $args = func_get_args();
@@ -100,6 +100,17 @@ class SubDir implements \r8\iface\Finder
      */
     public function find ( \r8\Finder\Tracker $tracker, $base, $path )
     {
+        if ( count($this->subdirs) == 0 )
+            return $this->wrapped->find( $tracker, $base, $path );
+
+        $path = trim( (string) $path, "/" );
+
+        foreach ( $this->subdirs AS $subdir ) {
+            if ( $this->wrapped->find( $tracker, $base, $subdir ."/". $path ) )
+                return TRUE;
+        }
+
+        return FALSE;
     }
 
 }
