@@ -34,11 +34,12 @@ interface Finder
     /**
      * Attempts to find a file given a relative path
      *
-     * @param String $file The relative path of the file being looked for
-     * @return String|NULL Returns the path of the found file, relative to the
-     *      given base. Returns NULL if the file could not be found
+     * @param \r8\Finder\Tracker $tracker $file The tracker to use when determining
+     *      if a base/path combination is valid
+     * @param String $base The base directory to look for the path in
+     * @param String $path The path being looked for
      */
-    public function find ( $file );
+    public function find ( \r8\Finder\Tracker $tracker, $base, $path );
 
 }
 
