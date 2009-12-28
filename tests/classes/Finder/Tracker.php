@@ -81,6 +81,15 @@ class classes_Finder_Tracker extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tracker->test( __DIR__, basename( __FILE__ ) ) );
     }
 
+    public function testGetSuccess ()
+    {
+        $tracker = new \r8\Finder\Tracker;
+        $this->assertNull( $tracker->getSuccess() );
+
+        $this->assertTrue( $tracker->test( __DIR__, basename( __FILE__ ) ) );
+        $this->assertSame( __FILE__, $tracker->getSuccess() );
+    }
+
 }
 
 ?>

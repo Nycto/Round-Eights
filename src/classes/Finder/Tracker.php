@@ -39,6 +39,13 @@ class Tracker
     private $tested = array();
 
     /**
+     * The most recent successful path to have been found
+     *
+     * @var String
+     */
+    private $success;
+
+    /**
      * Returns the list of paths that have been tested so far
      *
      * @return Array An array of string
@@ -46,6 +53,17 @@ class Tracker
     public function getTested ()
     {
         return $this->tested;
+    }
+
+    /**
+     * Returns the most recent successful path that was tested
+     *
+     * @return String|NULL Returns the full path as a string, or NULL if no
+     *      successful path was ever found
+     */
+    public function getSuccess ()
+    {
+       return $this->success;
     }
 
     /**
@@ -66,7 +84,12 @@ class Tracker
         if ( !in_array($full, $this->tested))
             $this->tested[] = $full;
 
-        return is_file( $full );
+        if ( !is_file( $full ) )
+            return FALSE;
+
+        $this->success = $full;
+
+        return TRUE;
     }
 
 }
