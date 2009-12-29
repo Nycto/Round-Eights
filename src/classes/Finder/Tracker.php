@@ -39,20 +39,6 @@ class Tracker
     private $tested = array();
 
     /**
-     * The most recent successful relative path to have been found
-     *
-     * @var String
-     */
-    private $relative;
-
-    /**
-     * The most recent successful absolute path to have been found
-     *
-     * @var String
-     */
-    private $absolute;
-
-    /**
      * Returns the list of paths that have been tested so far
      *
      * @return Array An array of string
@@ -60,28 +46,6 @@ class Tracker
     public function getTested ()
     {
         return $this->tested;
-    }
-
-    /**
-     * Returns the most recently successful relative path that was tested
-     *
-     * @return String|NULL Returns the full path as a string, or NULL if no
-     *      successful path was ever found
-     */
-    public function getRelative ()
-    {
-       return $this->relative;
-    }
-
-    /**
-     * Returns the most recently successful absolute path that was tested
-     *
-     * @return String|NULL Returns the full path as a string, or NULL if no
-     *      successful path was ever found
-     */
-    public function getAbsolute ()
-    {
-       return $this->absolute;
     }
 
     /**
@@ -106,9 +70,6 @@ class Tracker
 
         if ( !is_file( $full ) )
             return FALSE;
-
-        $this->relative = \r8\FileSys::resolvePath( $path );
-        $this->absolute = $full;
 
         return TRUE;
     }

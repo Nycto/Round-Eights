@@ -81,24 +81,6 @@ class classes_Finder_Tracker extends PHPUnit_Framework_TestCase
         $this->assertTrue( $tracker->test( __DIR__, basename( __FILE__ ) ) );
     }
 
-    public function testGetRelative ()
-    {
-        $tracker = new \r8\Finder\Tracker;
-        $this->assertNull( $tracker->getRelative() );
-
-        $this->assertTrue( $tracker->test( __DIR__, basename( __FILE__ ) ) );
-        $this->assertSame( basename( __FILE__ ), $tracker->getRelative() );
-    }
-
-    public function testGetAbsolute ()
-    {
-        $tracker = new \r8\Finder\Tracker;
-        $this->assertNull( $tracker->getAbsolute() );
-
-        $this->assertTrue( $tracker->test( __DIR__, basename( __FILE__ ) ) );
-        $this->assertSame( __FILE__, $tracker->getAbsolute() );
-    }
-
 }
 
 ?>
