@@ -43,7 +43,7 @@ class classes_Finder_Terminus extends PHPUnit_Framework_TestCase
 
         $find = new \r8\Finder\Terminus;
 
-        $this->assertFalse( $find->find( $tracker, "/base/", "file.ext" ) );
+        $this->assertNull( $find->find( $tracker, "/base/", "file.ext" ) );
     }
 
     public function testFind_found ()
@@ -56,7 +56,11 @@ class classes_Finder_Terminus extends PHPUnit_Framework_TestCase
 
         $find = new \r8\Finder\Terminus;
 
-        $this->assertTRUE( $find->find( $tracker, "/base/dir", "filename" ) );
+        $result = $find->find( $tracker, "/base/dir", "filename" );
+
+        $this->assertThat( $result, $this->isInstanceOf( '\r8\Finder\Result' ) );
+        $this->assertSame( "/base/dir", $result->getBase() );
+        $this->assertSame( "filename", $result->getPath() );
     }
 
 }

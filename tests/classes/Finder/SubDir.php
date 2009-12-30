@@ -75,6 +75,8 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
 
     public function testFind_FirstSubDir ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -85,15 +87,17 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("first/file")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
 
-        $this->assertTrue( $subdir->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $subdir->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_SecondSubDir ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -104,7 +108,7 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("first/file")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
         $wrapped->expects( $this->at(1) )
             ->method( "find" )
             ->with(
@@ -112,11 +116,11 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("second/file")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
 
-        $this->assertTrue( $subdir->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $subdir->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_Unfound ()
@@ -131,7 +135,7 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("first/file")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
         $wrapped->expects( $this->at(1) )
             ->method( "find" )
             ->with(
@@ -139,11 +143,11 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("second/file")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
 
         $subdir = new \r8\Finder\SubDir( $wrapped, "first", "second" );
 
-        $this->assertFalse( $subdir->find( $tracker, "base", "file" ) );
+        $this->assertNull( $subdir->find( $tracker, "base", "file" ) );
     }
 
 }

@@ -56,6 +56,8 @@ class classes_Finder_BaseDir extends PHPUnit_Framework_TestCase
 
     public function testFind_FirstDir ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -66,15 +68,17 @@ class classes_Finder_BaseDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("first"),
                 $this->equalTo("file")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $dir = new \r8\Finder\BaseDir( $wrapped, "first", "second" );
 
-        $this->assertTrue( $dir->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $dir->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_SecondDir ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -85,7 +89,7 @@ class classes_Finder_BaseDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("first"),
                 $this->equalTo("file")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
         $wrapped->expects( $this->at(1) )
             ->method( "find" )
             ->with(
@@ -93,11 +97,11 @@ class classes_Finder_BaseDir extends PHPUnit_Framework_TestCase
                 $this->equalTo("second"),
                 $this->equalTo("file")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $dir = new \r8\Finder\BaseDir( $wrapped, "first", "second" );
 
-        $this->assertTrue( $dir->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $dir->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_Unfound ()
@@ -124,7 +128,7 @@ class classes_Finder_BaseDir extends PHPUnit_Framework_TestCase
 
         $dir = new \r8\Finder\BaseDir( $wrapped, "first", "second" );
 
-        $this->assertFalse( $dir->find( $tracker, "base", "file" ) );
+        $this->assertNULL( $dir->find( $tracker, "base", "file" ) );
     }
 
 }

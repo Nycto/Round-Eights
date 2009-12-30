@@ -96,7 +96,7 @@ class SubDir implements \r8\iface\Finder
      *      if a base/path combination is valid
      * @param String $base The base directory to look for the path in
      * @param String $path The path being looked for
-     * @return Boolean Returns whether the path was found
+     * @return \r8\Finder\Result|NULL Returns a result, or NULL if the file couldn't be found
      */
     public function find ( \r8\Finder\Tracker $tracker, $base, $path )
     {
@@ -106,11 +106,12 @@ class SubDir implements \r8\iface\Finder
         $path = trim( (string) $path, "/" );
 
         foreach ( $this->subdirs AS $subdir ) {
-            if ( $this->wrapped->find( $tracker, $base, $subdir ."/". $path ) )
-                return TRUE;
+            $result = $this->wrapped->find( $tracker, $base, $subdir ."/". $path );
+            if ( $result instanceof \r8\Finder\Result )
+                return $result;
         }
 
-        return FALSE;
+        return NULL;
     }
 
 }

@@ -92,7 +92,7 @@ class Mutate implements \r8\iface\Finder
      *      if a base/path combination is valid
      * @param String $base The base directory to look for the path in
      * @param String $path The path being looked for
-     * @return Boolean Returns whether the path was found
+     * @return \r8\Finder\Result|NULL Returns a result, or NULL if the file couldn't be found
      */
     public function find ( \r8\Finder\Tracker $tracker, $base, $path )
     {
@@ -104,7 +104,7 @@ class Mutate implements \r8\iface\Finder
         // Iterate over each possible mutation and determine if it should be applied
         foreach ( $this->mutations AS $mutate ) {
 
-            $result = FALSE;
+            $result = NULL;
 
             // Check for a partial match
             if ( \r8\str\startsWith( $path, $mutate["from"] ."/" ) ) {
@@ -125,8 +125,8 @@ class Mutate implements \r8\iface\Finder
                 );
             }
 
-            if ( $result )
-                return TRUE;
+            if ( $result instanceof \r8\Finder\Result )
+                return $result;
         }
 
         return $this->wrapped->find( $tracker, $base, $origPath );

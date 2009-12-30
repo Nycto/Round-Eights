@@ -53,17 +53,19 @@ class classes_Finder_IncludePath extends PHPUnit_Framework_TestCase
                 $this->equalTo("second"),
                 $this->equalTo("file")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
 
         $ext = new \r8\Finder\IncludePath( $wrapped );
 
         $this->iniSet("include_path", "first". \PATH_SEPARATOR ."second");
 
-        $this->assertFalse( $ext->find( $tracker, "base", "file" ) );
+        $this->assertNull( $ext->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_Found ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -74,13 +76,13 @@ class classes_Finder_IncludePath extends PHPUnit_Framework_TestCase
                 $this->equalTo("first"),
                 $this->equalTo("file")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $ext = new \r8\Finder\IncludePath( $wrapped );
 
         $this->iniSet("include_path", "first". \PATH_SEPARATOR ."second");
 
-        $this->assertTrue( $ext->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $ext->find( $tracker, "base", "file" ) );
     }
 
 }

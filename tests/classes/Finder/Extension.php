@@ -75,6 +75,8 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
 
     public function testFind_FirstExt ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -85,15 +87,17 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("file.one")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $ext = new \r8\Finder\Extension( $wrapped, "one", "two" );
 
-        $this->assertTrue( $ext->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $ext->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_SecondExt ()
     {
+        $result = $this->getMock('\r8\Finder\Result', array(), array(), '', FALSE);
+
         $tracker = $this->getMock('\r8\Finder\Tracker');
 
         $wrapped = $this->getMock('\r8\iface\Finder');
@@ -104,7 +108,7 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("file.one")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
         $wrapped->expects( $this->at(1) )
             ->method( "find" )
             ->with(
@@ -112,11 +116,11 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("file.two")
             )
-            ->will( $this->returnValue( TRUE ) );
+            ->will( $this->returnValue( $result ) );
 
         $ext = new \r8\Finder\Extension( $wrapped, "one", "two" );
 
-        $this->assertTrue( $ext->find( $tracker, "base", "file" ) );
+        $this->assertSame( $result, $ext->find( $tracker, "base", "file" ) );
     }
 
     public function testFind_Unfound ()
@@ -139,11 +143,11 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
                 $this->equalTo("base"),
                 $this->equalTo("file.two")
             )
-            ->will( $this->returnValue( FALSE ) );
+            ->will( $this->returnValue( NULL ) );
 
         $ext = new \r8\Finder\Extension( $wrapped, "one", "two" );
 
-        $this->assertFalse( $ext->find( $tracker, "base", "file" ) );
+        $this->assertNull( $ext->find( $tracker, "base", "file" ) );
     }
 
 }
