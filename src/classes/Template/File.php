@@ -34,7 +34,7 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * The file finder to use for this instance
      *
-     * @var \r8\iface\Finder
+     * @var \r8\Finder
      */
     private $finder;
 
@@ -48,10 +48,10 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Constructor allows you to immediately set the file, if you so desire
      *
-     * @param \r8\iface\Finder $finder The file finder to use to find this file
-     * @param mixed $file The file this tempalte should load
+     * @param \r8\Finder $finder The file finder to use to find this file
+     * @param Mixed $file The file this tempalte should load
      */
-    public function __construct ( \r8\iface\Finder $finder, $file )
+    public function __construct ( \r8\Finder $finder, $file )
     {
         $this->finder = $finder;
         $this->setFile( $file );
@@ -60,7 +60,7 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Returns the file finder for this instance
      *
-     * @return \r8\iface\Finder|Null
+     * @return \r8\Finder|Null
      */
     public function getFinder ()
     {
@@ -70,10 +70,10 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Sets the file finder for this instance
      *
-     * @param \r8\iface\Finder $finder The file finder to use
+     * @param \r8\Finder $finder The file finder to use
      * @return \r8\Template\File Returns a self reference
      */
-    public function setFinder ( \r8\iface\Finder $finder )
+    public function setFinder ( \r8\Finder $finder )
     {
         $this->finder = $finder;
         return $this;
@@ -82,24 +82,23 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     /**
      * Sets the file this template will load
      *
-     * @param mixed $file The file to load
+     * @param Mixed $file The file to load
      * @return \r8\Template\File Returns a self reference
      */
     public function setFile ( $file )
     {
-        if ( $file instanceof \r8\FileSys\File)
-            $this->file = $file;
-        else
-            $this->file = new \r8\FileSys\File( $file );
+        if ( $file instanceof \r8\FileSys\File )
+            $file = $file->getPath();
+
+        $this->file = (string) $file;
 
         return $this;
     }
 
     /**
-     * Returns the file this template will load
+     * Returns the relative, unresolved path of the file this template will load
      *
-     * @return \r8\FileSys\File|Null Returns a \r8\FileSys\File object, or NULL
-     *      if no file has been set.
+     * @return String
      */
     public function getFile ()
     {
@@ -107,13 +106,14 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
     }
 
     /**
-     * Finds the template file to load
+     * Finds the absolute path of the template file to load
      *
-     * @return \r8\FileSys\File Returns a \r8\FileSys\File object
+     * @throws \r8\Exception\Finder\Missing Thrown if the file can't be found
+     * @return String Returns the fully resolved path of the template file
      */
-    public function findFile ()
+    public function findPath ()
     {
-        return $this->finder->find( $this->getFile() );
+        return $this->finder->findPath( $this->file, TRUE );
     }
 
     /**

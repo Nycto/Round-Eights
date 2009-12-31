@@ -35,10 +35,10 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
     public function getMockFinder ()
     {
-        return $this->getMock('\r8\iface\Finder');
+        return $this->getMock('\r8\Finder', array(), array(), '', FALSE);
     }
 
-    public function getMockTpl ( \r8\iface\Finder $finder = null, $file = null )
+    public function getMockTpl ( \r8\Finder $finder = null, $file = null )
     {
         if ( empty($finder) )
             $finder = $this->getMockFinder();
@@ -72,51 +72,30 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
     public function testFileAccessors ()
     {
-        $tpl = $this->getMockTpl( null, "/file.php");
-
-        $file = $tpl->getFile();
-        $this->assertThat( $file, $this->isInstanceOf('\r8\FileSys\File') );
-        $this->assertSame( "/file.php", $file->getPath() );
-
+        $tpl = $this->getMockTpl( null, "/file.php" );
+        $this->assertSame( "/file.php", $tpl->getFile() );
 
         // Set the file from a string
         $this->assertSame( $tpl, $tpl->setFile( "/path/to/file.php" ) );
-
-        $file = $tpl->getFile();
-        $this->assertThat( $file, $this->isInstanceOf('\r8\FileSys\File') );
-        $this->assertSame( "/path/to/file.php", $file->getPath() );
-
-
-        // Modify the file directly and make sure it sticks
-        $tpl->getFile()->setPath("/new/path.php");
-
-        $file2 = $tpl->getFile();
-        $this->assertSame( $file, $file2 );
-        $this->assertSame( "/new/path.php", $file2->getPath() );
-
+        $this->assertSame( "/path/to/file.php", $tpl->getFile() );
 
         // Set the file from an object
         $fileObj = new \r8\FileSys\File('/dir/tpl.php');
         $this->assertSame( $tpl, $tpl->setFile( $fileObj ) );
-        $this->assertSame( $fileObj, $tpl->getFile() );
-        $this->assertSame( '/dir/tpl.php', $tpl->getFile()->getPath() );
+        $this->assertSame( '/dir/tpl.php', $tpl->getFile() );
     }
 
-    public function testFindFile ()
+    public function testFindPath ()
     {
-        $file = new \r8\FileSys\File('/dir/tpl.php');
-
-        $foundFile = new \r8\FileSys\File('/path/to/tpl.php');
-
-        $finder = $this->getMock( '\r8\iface\Finder', array('internalFind', 'find') );
+        $finder = $this->getMockFinder();
         $finder->expects( $this->once() )
-            ->method('find')
-            ->with( $this->equalTo($file) )
-            ->will( $this->returnValue($foundFile) );
+            ->method('findPath')
+            ->with( $this->equalTo("/search.ext") )
+            ->will( $this->returnValue("/result.ext") );
 
-        $tpl = $this->getMockTpl( $finder, $file );
+        $tpl = $this->getMockTpl( $finder, "/search.ext" );
 
-        $this->assertSame( $foundFile, $tpl->findFile() );
+        $this->assertSame( "/result.ext", $tpl->findPath() );
     }
 
     public function testRender ()
