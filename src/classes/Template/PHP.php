@@ -39,7 +39,7 @@ class PHP extends \r8\Template\File
     public function display ()
     {
         extract( $this->getValues(), EXTR_PREFIX_SAME, "var" );
-        include $this->findFile()->getPath();
+        include $this->findPath();
         return $this;
     }
 

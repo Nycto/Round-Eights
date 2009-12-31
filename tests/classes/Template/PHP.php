@@ -48,7 +48,7 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
     public function getMockFinder ()
     {
-        return $this->getMock('\r8\iface\Finder');
+        return $this->getMock('\r8\Finder', array(), array(), '', FALSE);
     }
 
     public function testDisplay ()
@@ -60,13 +60,13 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
         $finder = $this->getMockFinder();
         $finder->expects( $this->once() )
-            ->method( "find" )
-            ->with( $this->equalTo( "blah" ) )
-            ->will( $this->returnValue( "oi" ) );
+            ->method( "findPath" )
+            ->with( $this->equalTo( "search.ext" ) )
+            ->will( $this->returnValue( $this->file ) );
 
         $this->expectOutputString("Lorem Ipsum");
 
-        $tpl = new \r8\Template\PHP( $finder, $this->file );
+        $tpl = new \r8\Template\PHP( $finder, "search.ext" );
 
         $tpl->set("lorem", "Lorem");
         $tpl->set("ipsum", "Ipsum");
@@ -83,13 +83,13 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
         $finder = $this->getMockFinder();
         $finder->expects( $this->once() )
-            ->method( "find" )
-            ->with( $this->equalTo( "blah" ) )
-            ->will( $this->returnValue( "oi" ) );
+            ->method( "findPath" )
+            ->with( $this->equalTo( "search.ext" ) )
+            ->will( $this->returnValue( $this->file ) );
 
         $this->expectOutputString("Lorem Ipsum");
 
-        $tpl = new \r8\Template\PHP( $finder, $this->file );
+        $tpl = new \r8\Template\PHP( $finder, "search.ext" );
 
         $tpl->set("lorem", "Lorem");
         $tpl->set("this", "Ipsum");
