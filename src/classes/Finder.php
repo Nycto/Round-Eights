@@ -102,6 +102,24 @@ class Finder
         return $result ? $result->getFile() : NULL;
     }
 
+    /**
+     * Finds the absolute path of a file given a relative path
+     *
+     * This differs from the find method in that it skips over the result object
+     * and directly returns the Path as a string
+     *
+     * @param String $path The relative path of the file being looked for
+     * @param Boolean $volatile If true, an exception will be thrown when a
+     *      file is not found
+     * @return String|NULL Returns the file path. Returns NULL if the
+     *      file could not be found
+     */
+    public function findPath ( $path, $volatile = FALSE )
+    {
+        $result = $this->find( $path, $volatile );
+        return $result ? $result->getAbsolute() : NULL;
+    }
+
 }
 
 ?>

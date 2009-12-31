@@ -167,6 +167,68 @@ class classes_Finder extends PHPUnit_Framework_TestCase
         $this->assertSame( $file, $finder->findFile("file.ext") );
     }
 
+    public function testFindPath_Unfound ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertNull( $finder->findPath("file.ext") );
+    }
+
+    public function testFindPath_Volatile ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        try {
+            $finder->findPath("file.ext", TRUE);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Finder\Missing $err ) {
+            $this->assertSame( "Finder was unable to locate file", $err->getMessage() );
+        }
+    }
+
+    public function testFindPath_Found ()
+    {
+        $result = $this->getMock('\r8\Finder\Result', array(), array('base', 'path'));
+        $result->expects( $this->once() )
+            ->method( "getAbsolute" )
+            ->will( $this->returnValue( "/result.ext" ) );
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( $result ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertSame( "/result.ext", $finder->findPath("file.ext") );
+    }
+
 }
 
 ?>
