@@ -34,17 +34,16 @@ class Builder extends \r8\Template\Access
     /**
      * The Finder to load into any file based templates
      *
-     * @var \r8\iface\Finder
+     * @var \r8\Finder
      */
     private $finder;
 
     /**
      * Constructor...
      *
-     * @param \r8\iface\Finder $finder The Finder to load into
-     * 		any file based templates
+     * @param \r8\Finder $finder The Finder to load into any file based templates
      */
-    public function __construct ( \r8\iface\Finder $finder )
+    public function __construct ( \r8\Finder $finder )
     {
         $this->finder = $finder;
     }

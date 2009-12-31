@@ -35,7 +35,7 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
     public function getMockFinder ()
     {
-        return $this->getMock('\r8\iface\Finder');
+        return $this->getMock('\r8\Finder', array(), array(), '', FALSE);
     }
 
     public function testBlank ()
@@ -94,16 +94,15 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
     public function testPHP ()
     {
         $finder = $this->getMockFinder();
-        $file = new \r8\FileSys\File('/dir/tpl.php');
 
         $builder = new \r8\Template\Builder( $finder );
         $builder->set( "one", 1 );
         $builder->set( "two", 2 );
 
-        $result = $builder->php( $file );
+        $result = $builder->php( 'dir/tpl.php' );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\Template\PHP') );
-        $this->assertSame( $file, $result->getFile() );
+        $this->assertSame( 'dir/tpl.php', $result->getFile() );
         $this->assertSame( $finder, $result->getFinder() );
         $this->assertSame( array( "one" => 1, "two" => 2), $result->getValues() );
     }
