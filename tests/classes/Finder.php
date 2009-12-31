@@ -33,6 +33,140 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_Finder extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct_Error ()
+    {
+        try {
+            new \r8\Finder( "", $this->getMock('\r8\iface\Finder') );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
+    public function testFind_Volatile ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        try {
+            $finder->find("file.ext", TRUE);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Finder\Missing $err ) {
+            $this->assertSame( "Finder was unable to locate file", $err->getMessage() );
+        }
+    }
+
+    public function testFind_Unfound ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertNull( $finder->find("file.ext") );
+    }
+
+    public function testFind_Found ()
+    {
+        $result = new \r8\Finder\Result('base', 'path');
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( $result ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertSame( $result, $finder->find("file.ext") );
+    }
+
+    public function testFindFile_Unfound ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertNull( $finder->findFile("file.ext") );
+    }
+
+    public function testFindFile_Volatile ()
+    {
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( NULL ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        try {
+            $finder->findFile("file.ext", TRUE);
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Finder\Missing $err ) {
+            $this->assertSame( "Finder was unable to locate file", $err->getMessage() );
+        }
+    }
+
+    public function testFindFile_Found ()
+    {
+        $file = $this->getMock('\r8\FileSys');
+
+        $result = $this->getMock('\r8\Finder\Result', array(), array('base', 'path'));
+        $result->expects( $this->once() )
+            ->method( "getFile" )
+            ->will( $this->returnValue( $file ) );
+
+        $wrapped = $this->getMock('\r8\iface\Finder');
+        $wrapped->expects( $this->once() )
+            ->method( "find" )
+            ->with(
+                $this->isInstanceOf('\r8\Finder\Tracker'),
+                $this->equalTo("/base"),
+                $this->equalTo("file.ext")
+            )
+            ->will( $this->returnValue( $result ) );
+
+        $finder = new \r8\Finder( "/base", $wrapped );
+
+        $this->assertSame( $file, $finder->findFile("file.ext") );
+    }
+
 }
 
 ?>

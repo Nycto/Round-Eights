@@ -26,31 +26,80 @@
 namespace r8;
 
 /**
- * The base File Finder interface
+ * The primary interface class for finding a file
  */
-class Finder implements \r8\iface\Finder
+class Finder
 {
+
+    /**
+     * The base directory to look in
+     *
+     * @var String
+     */
+    private $base;
+
+    /**
+     * The file finder to use for locating files
+     *
+     * @var \r8\iface\Finder
+     */
+    private $finder;
 
     /**
      * Constructor...
      *
+     * @param String $base The initial base directory to use
      * @param \r8\iface\Finder $finder The modifier to use
      */
-    public function __construct ( \r8\iface\Finder $finder )
+    public function __construct ( $base, \r8\iface\Finder $finder )
     {
+        $base = rtrim( (string) $base, "/" );
+        if ( empty($base) )
+            throw new \r8\Exception\Argument( 0, "Base Directory", "Must not be empty" );
+        $this->base = $base;
 
+        $this->finder = $finder;
     }
 
     /**
-     * Attempts to find a file given a relative path
+     * Attempts to find the absolute path of a file given a relative path
      *
-     * @param String $file The relative path of the file being looked for
-     * @return String|NULL Returns the path of the found file, relative to the
-     *      given base. Returns NULL if the file could not be found
+     * @param String $path The relative path of the file being looked for
+     * @param Boolean $volatile If true, an exception will be thrown when a
+     *      file is not found
+     * @return \r8\Finder\Result|NULL Returns the found file. Returns NULL if the
+     *      file could not be found
      */
-    public function find ( $file )
+    public function find ( $path, $volatile = FALSE )
     {
+        $tracker = new \r8\Finder\Tracker;
+        $result = $this->finder->find( $tracker, $this->base, $path );
 
+        if ( !($result instanceof \r8\Finder\Result) ) {
+            if ( $volatile )
+                throw new \r8\Exception\Finder\Missing( $path, $tracker );
+            return NULL;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Finds a file given a relative path
+     *
+     * This differs from the find method in that it skips over the result object
+     * and directly returns the \r8\FileSys object
+     *
+     * @param String $path The relative path of the file being looked for
+     * @param Boolean $volatile If true, an exception will be thrown when a
+     *      file is not found
+     * @return \r8\FileSys|NULL Returns the found file. Returns NULL if the
+     *      file could not be found
+     */
+    public function findFile ( $path, $volatile = FALSE )
+    {
+        $result = $this->find( $path, $volatile );
+        return $result ? $result->getFile() : NULL;
     }
 
 }
