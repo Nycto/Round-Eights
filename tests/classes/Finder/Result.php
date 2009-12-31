@@ -72,6 +72,12 @@ class classes_Finder_Result extends PHPUnit_Framework_TestCase
         $this->assertNotSame( $file, $result->getFile() );
     }
 
+    public function testGetAbsolute ()
+    {
+        $result = new \r8\Finder\Result( "/test/path/./", "file.ext" );
+        $this->assertSame( "/test/path/file.ext", $result->getAbsolute() );
+    }
+
 }
 
 ?>

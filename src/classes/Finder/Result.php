@@ -106,6 +106,16 @@ class Result
         return clone $this->file;
     }
 
+    /**
+     * Returns the absolute path of the file represented by this instance
+     *
+     * @return String
+     */
+    public function getAbsolute ()
+    {
+        return $this->getFile()->getPath();
+    }
+
 }
 
 ?>
