@@ -38,7 +38,8 @@ interface Finder
      *      if a base/path combination is valid
      * @param String $base The base directory to look for the path in
      * @param String $path The path being looked for
-     * @return Boolean Returns whether the path was found
+     * @return \r8\Finder\Result|NULL Returns a result, or NULL if the file
+     *      couldn't be found
      */
     public function find ( \r8\Finder\Tracker $tracker, $base, $path );
 
