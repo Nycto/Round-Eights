@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * Unit Tests
  */
-class classes_quoter extends PHPUnit_Framework_TestCase
+class classes_Quoter extends PHPUnit_Framework_TestCase
 {
 
     public function testInitial ()
@@ -362,7 +362,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("string ", "'with'", " quotes"),
-                array_map( 'r8\strval', $result->getSections() )
+                array_map( 'strval', $result->getSections() )
             );
 
 
@@ -406,7 +406,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("string ", "'with'"),
-                array_map( 'r8\strval', $result->getSections() )
+                array_map( 'strval', $result->getSections() )
             );
 
 
@@ -440,7 +440,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("This is a string"),
-                array_map('r8\strval', $result->getSections() )
+                array_map('strval', $result->getSections() )
             );
 
 
@@ -463,7 +463,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("'This is a string'"),
-                array_map('r8\strval', $result->getSections() )
+                array_map('strval', $result->getSections() )
             );
 
 
@@ -488,7 +488,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("'This is'", "'a string'"),
-                array_map('r8\strval', $result->getSections() )
+                array_map('strval', $result->getSections() )
             );
 
 
@@ -525,7 +525,7 @@ class classes_quoter extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
                 array("<({This isEND OF QUOTE", " a string ", "<({with stuff))", " in it"),
-                array_map("r8\strval", $result->getSections())
+                array_map("strval", $result->getSections())
             );
 
 

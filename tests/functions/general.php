@@ -126,39 +126,12 @@ class functions_general extends PHPUnit_Framework_TestCase
         $this->assertFalse( \r8\isBasic( array() ) );
     }
 
-    public function testArrayVal ()
-    {
-        $this->assertEquals( array(1, 2, 3), \r8\arrayVal(array(1, 2, 3)) );
-        $this->assertEquals( array(1), \r8\arrayVal(1) );
-    }
-
     public function testNumVal ()
     {
         $this->assertEquals( 1, \r8\numVal(1) );
         $this->assertEquals( 1.5, \r8\numVal(1.5) );
         $this->assertEquals( 1, \r8\numVal("1") );
         $this->assertEquals( 1.5, \r8\numVal("1.5") );
-    }
-
-    public function testBoolVal ()
-    {
-        $this->assertEquals( TRUE, \r8\boolVal(TRUE) );
-        $this->assertEquals( FALSE, \r8\boolVal(FALSE) );
-        $this->assertEquals( TRUE, \r8\boolVal(1) );
-        $this->assertEquals( FALSE, \r8\boolVal(0) );
-    }
-
-    public function testStrVal ()
-    {
-        $this->assertEquals( "string", \r8\strVal("string") );
-        $this->assertEquals( "5", \r8\strVal(5) );
-
-        $toString = $this->getMock("stub_strval", array("__toString"));
-        $toString->expects( $this->once() )
-            ->method("__toString")
-            ->will( $this->returnValue("String Version") );
-
-        $this->assertEquals( "String Version", \r8\strVal( $toString ) );
     }
 
     public function testIndexVal ()

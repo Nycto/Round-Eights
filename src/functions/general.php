@@ -182,17 +182,6 @@ function isBasic ( $value )
 }
 
 /**
- * Forces an array to always be returned
- *
- * @param mixed $value The value to transform in to an array
- * @return array
- */
-function arrayVal ($value)
-{
-    return is_array($value)?$value:Array($value);
-}
-
-/**
  * Forces a value to either an integer or a float, whichever is more appropriate
  *
  * @param mixed $value The value to transform to a number
@@ -204,36 +193,6 @@ function numVal ($value)
         return $value;
     $value = \r8\reduce($value);
     return intval($value) == floatval($value)?intval($value):floatval($value);
-}
-
-/**
- * Forces a value to boolean true or false
- *
- * @param boolean $value The value to force to boolean
- * @return Boolean
- */
-function boolVal ($value)
-{
-    return $value?TRUE:FALSE;
-}
-
-/**
- * Returns the string value of a variable
- *
- * This differs from strval in that it invokes __toString if an object is given
- * and the object has that method
- *
- * @param mixed $value The value to force to a string
- * @return String
- */
-function strval ( $value )
-{
-
-    // We use get_class_methods instead of method_exists to ensure that __toString is a public method
-    if (is_object($value) && in_array("__toString", get_class_methods($value)))
-        return (string) $value->__toString();
-    else
-        return (string) \r8\reduce($value);
 }
 
 /**
