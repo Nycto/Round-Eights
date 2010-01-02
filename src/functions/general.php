@@ -62,28 +62,28 @@ function swap(&$one, &$two)
  */
 function reduce ($value)
 {
+    switch ( gettype($value) ) {
+        case 'boolean':
+        case 'integer':
+        case 'double':
+        case 'string':
+        case 'NULL':
+            return $value;
 
-    if (is_bool($value) || is_int($value) || is_float($value) || is_string($value) || is_null($value))
-        return $value;
+        case 'array':
+            return empty($value) ? NULL : \r8\reduce( current($value) );
 
-    else if (is_array($value)) {
-        if (count($value) <= 0)
+        case 'object':
+            return \r8\reduce( get_object_vars($value) );
+
+        case 'resource':
+            return get_resource_type($value);
+
+        // @codeCoverageIgnoreStart
+        default:
             return NULL;
-        else
-            return \r8\reduce(current($value));
+        // @codeCoverageIgnoreEnd
     }
-
-    else if (is_object($value))
-        return \r8\reduce(get_object_vars($value));
-
-    else if (is_resource($value))
-        return get_resource_type($value);
-
-    // @codeCoverageIgnoreStart
-    else
-        return NULL;
-    // @codeCoverageIgnoreEnd
-
 }
 
 /**
