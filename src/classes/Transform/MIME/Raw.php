@@ -55,7 +55,7 @@ class Raw extends \r8\Transform\MIME
      */
     public function to ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         // React to the input encoding
         $string = iconv( $this->getInputEncoding(), 'ISO-8859-1', $string );

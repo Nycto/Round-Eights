@@ -93,8 +93,8 @@ function contains($needle, $haystack, $ignoreCase = TRUE)
 function offsets ($needle, $haystack, $ignoreCase = TRUE)
 {
     $ignoreCase = \r8\boolVal($ignoreCase);
-    $needle = \r8\strVal($needle);
-    $haystack = \r8\strVal($haystack);
+    $needle = (string) $needle;
+    $haystack = (string) $haystack;
 
     if (empty($needle))
         throw new \r8\Exception\Argument(0, 'needle', 'Must not be empty');
@@ -474,8 +474,8 @@ function head ($string, $head, $ignoreCase = TRUE)
  */
 function stripHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = \r8\strval( \r8\reduce($string) );
-    $head = \r8\strval( \r8\reduce($head) );
+    $string = (string) \r8\reduce($string );
+    $head = (string) \r8\reduce($head );
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
@@ -504,9 +504,9 @@ function stripHead ($string, $head, $ignoreCase = TRUE)
  */
 function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
 {
-    $string1 = \r8\strval($string1);
-    $string2 = \r8\strval($string2);
-    $glue = \r8\strval($glue);
+    $string1 = (string) $string1;
+    $string2 = (string) $string2;
+    $glue = (string) $glue;
 
     if ( \r8\isVague($glue, \r8\str\ALLOW_SPACES))
         return $string1 . $string2;
@@ -528,7 +528,7 @@ function weld ($string1, $string2, $glue, $ignoreCase = TRUE)
  */
 function partition ($string, $offsets)
 {
-    $string = \r8\strval($string);
+    $string = (string) $string;
 
     if (strlen($string) <= 0)
         return array();
@@ -566,8 +566,8 @@ function partition ($string, $offsets)
 function compare ($string1, $string2, $ignoreCase = TRUE)
 {
     return $ignoreCase ?
-        strcasecmp( \r8\strval($string1), \r8\strval($string2) ) :
-        strcmp( \r8\strval($string1), \r8\strval($string2) );
+        strcasecmp( (string) $string1, (string) $string2 ) :
+        strcmp( (string) $string1, (string) $string2 );
 }
 
 /**
@@ -625,7 +625,7 @@ function truncate ($string, $maxLength, $delimiter = '...')
  */
 function pluralize ( $string, $count = 2 )
 {
-    $string = \r8\strval($string);
+    $string = (string) $string;
 
     if ( \r8\isEmpty( trim($string) ) )
         throw new \r8\Exception\Argument(0, "String", "Must not be empty");

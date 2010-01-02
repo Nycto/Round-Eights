@@ -45,7 +45,7 @@ class URI implements \r8\iface\Stream\In
      */
     public function __construct ( $uri )
     {
-        $uri = \r8\strval( $uri );
+        $uri = (string) $uri;
 
         $this->resource = @fopen( $uri, "r" );
 

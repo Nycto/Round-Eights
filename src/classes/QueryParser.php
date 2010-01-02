@@ -113,7 +113,7 @@ class QueryParser
      */
     public function setOuterDelim ( $delim )
     {
-        $delim = \r8\strval($delim);
+        $delim = (string) $delim;
 
         if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             throw new \r8\Exception\Argument(0, "Outer Delimiter", "Must not be empty");
@@ -141,7 +141,7 @@ class QueryParser
      */
     public function setInnerDelim ( $delim )
     {
-        $delim = \r8\strval($delim);
+        $delim = (string) $delim;
 
         if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             throw new \r8\Exception\Argument(0, "Inner Delimiter", "Must not be empty");
@@ -169,7 +169,7 @@ class QueryParser
      */
     public function setStartDelim ( $delim )
     {
-        $delim = \r8\strval($delim);
+        $delim = (string) $delim;
 
         if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             $delim = null;
@@ -218,7 +218,7 @@ class QueryParser
      */
     public function setEndDelim ( $delim )
     {
-        $delim = \r8\strval($delim);
+        $delim = (string) $delim;
 
         if ( \r8\isEmpty($delim, \r8\ALLOW_SPACES) )
             $delim = null;
@@ -267,7 +267,7 @@ class QueryParser
      */
     public function setSubRegEx ( $regex )
     {
-        $regex = \r8\strval($regex);
+        $regex = (string) $regex;
 
         if ( \r8\isEmpty($regex) )
             throw new \r8\Exception\Argument(0, "Sub-Key Reg Ex", "Must not be empty");
@@ -372,7 +372,7 @@ class QueryParser
      */
     public function parse ( $query )
     {
-        $query = \r8\strval($query);
+        $query = (string) $query;
 
         // Grab everything after the starting delimiter
         if ( \r8\str\contains($this->startDelim, $query) )

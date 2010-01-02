@@ -46,7 +46,7 @@ class ErrorList
      */
     public function addError ( $message )
     {
-        $message = \r8\strval($message);
+        $message = (string) $message;
 
         if ( \r8\isEmpty($message) )
             throw new \r8\Exception\Argument( 0, "Error Message", "Must Not Be Empty" );

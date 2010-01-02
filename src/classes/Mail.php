@@ -649,7 +649,7 @@ class Mail
      */
     public function setText ( $text )
     {
-        $text = trim( \r8\strval( $text ) );
+        $text = trim( (string) $text );
 
         $this->text = \r8\isEmpty($text) ? NULL : $text;
 
@@ -700,7 +700,7 @@ class Mail
      */
     public function setHTML ( $html )
     {
-        $html = trim( \r8\strval( $html ) );
+        $html = trim( (string) $html );
 
         $this->html = \r8\isEmpty($html) ? NULL : $html;
 
@@ -753,7 +753,7 @@ class Mail
         if ( \r8\isEmpty($header) )
             throw new \r8\Exception\Argument( 0, 'Header Name', 'Must not be empty' );
 
-        $this->headers[ $header ] = \r8\strval( $value );
+        $this->headers[ $header ] = (string) $value;
 
         return $this;
     }

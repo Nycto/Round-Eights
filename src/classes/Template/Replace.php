@@ -79,7 +79,7 @@ class Replace extends \r8\Template\Access implements \r8\iface\Template\Access
      */
     public function setTemplate ( $template )
     {
-        $this->template = \r8\strval( $template );
+        $this->template = (string) $template;
         return $this;
     }
 
@@ -106,7 +106,7 @@ class Replace extends \r8\Template\Access implements \r8\iface\Template\Access
      */
     public function setSearch ( $search )
     {
-        $this->search = \r8\strval( $search );
+        $this->search = (string) $search;
         return $this;
     }
 
@@ -153,7 +153,7 @@ class Replace extends \r8\Template\Access implements \r8\iface\Template\Access
 
             // Otherwise make the replacement
             else
-                return $matches[1] . \r8\strval( $self->get( $matches[3] ) );
+                return $matches[1] . (string) $self->get( $matches[3] );
 
         }, $this->template );
     }

@@ -106,7 +106,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     static public function isSelect ( $query )
     {
-        $query = \r8\strval($query);
+        $query = (string) $query;
         $query = \r8\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
@@ -121,7 +121,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     static public function isInsert ( $query )
     {
-        $query = \r8\strval($query);
+        $query = (string) $query;
         $query = \r8\str\stripQuoted($query, array("'", '"', "`"));
         $query = trim($query);
 
@@ -294,7 +294,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setUserName ( $username )
     {
-        $username = \r8\strval( $username );
+        $username = (string) $username;
         $this->username = \r8\isEmpty( $username ) ? null : $username;
         return $this;
     }
@@ -338,7 +338,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setPassword ( $password )
     {
-        $password = \r8\strval( $password );
+        $password = (string) $password;
         $this->password = \r8\isEmpty($password) ? null : $password;
         return $this;
     }
@@ -382,7 +382,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setHost ( $host )
     {
-        $host = \r8\strval( $host );
+        $host = (string) $host;
         $this->host = \r8\isEmpty( $host ) ? null : $host;
         return $this;
     }
@@ -470,7 +470,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setDatabase ( $database )
     {
-        $database = \r8\strval( $database );
+        $database = (string) $database;
         $this->database = \r8\isEmpty( $database ) ? null : $database;
         return $this;
     }
@@ -507,7 +507,7 @@ abstract class Link implements \r8\iface\DB\Link
         foreach ( $array AS $key => $value ) {
 
             $key = "set". strtolower( \r8\str\stripW( $key ) );
-            $value = \r8\strval( $value );
+            $value = (string) $value;
 
             if ( method_exists( $this, $key ) )
                 $this->$key( $value );
@@ -525,7 +525,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function fromURI ( $uri )
     {
-        $uri = \r8\strval( $uri );
+        $uri = (string) $uri;
         $result = r8(new \r8\Validator\URL)->validate( $uri );
 
         if ( !$result->isValid() )
@@ -669,7 +669,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = \r8\strval($query);
+        $query = (string) $query;
 
         if ( \r8\isEmpty($query) )
             throw new \r8\Exception\Argument(0, "Query", "Must not be empty");

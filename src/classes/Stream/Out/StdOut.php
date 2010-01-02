@@ -41,7 +41,7 @@ class StdOut implements \r8\iface\Stream\Out
      */
     public function write ( $data )
     {
-        echo \r8\strval( $data );
+        echo (string) $data;
         unset( $data );
         return $this;
     }

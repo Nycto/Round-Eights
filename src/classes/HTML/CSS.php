@@ -93,7 +93,7 @@ class CSS
      */
     public function setMedia ( $media )
     {
-        $media = trim( \r8\strval($media) );
+        $media = trim( (string) $media );
         $this->media = empty($media) ? "all" : $media;
         return $this;
     }

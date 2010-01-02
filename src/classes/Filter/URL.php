@@ -42,7 +42,7 @@ class URL extends \r8\Filter
     public function filter ( $value )
     {
         return filter_var(
-            \r8\strval($value),
+            (string) $value,
             FILTER_SANITIZE_URL
         );
     }

@@ -75,7 +75,7 @@ class Result
     public function __construct ( \r8\iface\Cache $cache, $key, $hash, $value )
     {
         $this->cache = $cache;
-        $this->key = \r8\strval( $key );
+        $this->key = (string) $key;
         $this->hash = $hash;
         $this->value = $value;
     }

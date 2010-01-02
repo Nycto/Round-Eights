@@ -44,7 +44,7 @@ class IPv4 extends \r8\Filter
         return preg_replace(
                 '/[^0-9\.]/',
                 '',
-                \r8\strval( $value )
+                (string) $value
             );
     }
 

@@ -51,7 +51,7 @@ abstract class FileSys
      */
     static public function resolvePath ( $path )
     {
-        $path = trim( \r8\strval($path) );
+        $path = trim( (string) $path );
         $path = str_replace( '\\', '/', $path );
 
         // Pull the root value off of the path
@@ -103,7 +103,7 @@ abstract class FileSys
         if ( $path instanceof self )
             return clone $path;
 
-        $path = \r8\strval($path);
+        $path = (string) $path;
 
         if ( is_dir($path) )
             return new \r8\FileSys\Dir( $path );
@@ -171,7 +171,7 @@ abstract class FileSys
      */
     public function setDir ( $dir )
     {
-        $dir = \r8\strval( $dir );
+        $dir = (string) $dir;
 
         if ( \r8\isEmpty($dir, \r8\str\ALLOW_BLANK) ) {
             $this->dir = null;

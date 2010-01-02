@@ -62,7 +62,7 @@ class Response implements \r8\iface\Env\Response
             throw $err;
         }
 
-        header( \r8\strval($header) );
+        header( (string) $header );
 
         return $this;
         // @codeCoverageIgnoreEnd

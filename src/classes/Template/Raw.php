@@ -98,7 +98,7 @@ class Raw implements \r8\iface\Template
      */
     public function display ()
     {
-        echo \r8\strval( $this->content );
+        echo $this->render();
         return $this;
     }
 
@@ -109,7 +109,11 @@ class Raw implements \r8\iface\Template
      */
     public function render ()
     {
-        return \r8\strval( $this->content );
+        // This allows a toString method to return a non-string without throwing an error
+        if ( is_object($this->content) && \r8\respondTo($this->content, "__toString") )
+            return (string) $this->content->__toString();
+        else
+            return (string) $this->content;
     }
 
     /**

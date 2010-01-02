@@ -98,7 +98,7 @@ class URL
         if ( $url instanceof self )
             $this->copyURL( $url );
         else if ( !\r8\isVague($url) )
-            $this->setURL( \r8\strval($url) );
+            $this->setURL( (string) $url );
     }
 
     /**
@@ -206,7 +206,7 @@ class URL
      */
     public function setUserName ( $username )
     {
-        $username = \r8\strval( $username );
+        $username = (string) $username;
         $this->username = \r8\isEmpty( $username ) ? null : $username;
         return $this;
     }
@@ -250,7 +250,7 @@ class URL
      */
     public function setPassword ( $password )
     {
-        $password = \r8\strval( $password );
+        $password = (string) $password;
         $this->password = \r8\isEmpty( $password ) ? null : $password;
         return $this;
     }
@@ -306,7 +306,7 @@ class URL
      */
     public function setUserInfo ( $userInfo )
     {
-        $userInfo = \r8\strVal( $userInfo );
+        $userInfo = (string) $userInfo;
 
         if ( \r8\str\contains("@", $userInfo))
             $userInfo = strstr( $userInfo, "@", TRUE );
@@ -378,7 +378,7 @@ class URL
      */
     public function setHost ( $host )
     {
-        $host = \r8\strval($host);
+        $host = (string) $host;
 
         $host = preg_replace("/[^a-z0-9\.\-]/i", "", $host);
 
@@ -573,7 +573,7 @@ class URL
      */
     public function setHostAndPort ( $hostAndPort )
     {
-        $hostAndPort = \r8\strval( $hostAndPort );
+        $hostAndPort = (string) $hostAndPort;
 
         if ( preg_match('/(.+)\:([0-9]+)$/', $hostAndPort, $matches) ) {
             $this->setHost( $matches[1] );
@@ -624,7 +624,7 @@ class URL
      */
     public function setBase ( $base )
     {
-        $base = \r8\strval( $base );
+        $base = (string) $base;
 
         if ( \r8\str\contains("://", $base) ) {
             $this->setScheme( strstr($base, "://", TRUE) );
@@ -694,7 +694,7 @@ class URL
      */
     public function setDir ( $directory )
     {
-        $directory = \r8\strval( $directory );
+        $directory = (string) $directory;
 
         if ( \r8\isEmpty( $directory ) ) {
             $this->directory = null;
@@ -747,7 +747,7 @@ class URL
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(\r8\strval( $filename ));
+        $filename = trim((string) $filename);
         $filename = rtrim( $filename, "." );
         $this->filename = \r8\isEmpty( $filename ) ? null : $filename;
         return $this;
@@ -794,7 +794,7 @@ class URL
      */
     public function setExt ( $extension )
     {
-        $extension = trim(\r8\strval( $extension ));
+        $extension = trim((string) $extension);
         $extension = ltrim( $extension, "." );
         $this->extension = \r8\isEmpty( $extension ) ? null : $extension;
         return $this;
@@ -852,7 +852,7 @@ class URL
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(\r8\strval( $basename ));
+        $basename = trim((string) $basename);
         $basename = pathinfo( $basename );
 
         if ( isset($basename['filename']) )
@@ -891,7 +891,7 @@ class URL
      */
     public function setPath ( $path )
     {
-        $path = trim(\r8\strval( $path ));
+        $path = trim((string) $path);
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -967,7 +967,7 @@ class URL
      */
     public function setFauxDir ( $fauxDir )
     {
-        $fauxDir = \r8\strval( $fauxDir );
+        $fauxDir = (string) $fauxDir;
         $this->fauxDir = \r8\isEmpty( $fauxDir )
             ? null : \r8\str\head($fauxDir, "/");
         return $this;
@@ -1042,7 +1042,7 @@ class URL
         if ( is_array($query) )
             $query = http_build_query( $query );
 
-        $query = \r8\strval( $query );
+        $query = (string) $query;
 
         if ( \r8\isEmpty($query, \r8\ALLOW_SPACES) )
             $this->query = null;
@@ -1103,7 +1103,7 @@ class URL
      */
     public function setFragment ( $fragment )
     {
-        $fragment = \r8\strval( $fragment );
+        $fragment = (string) $fragment;
         $this->fragment = \r8\isEmpty( $fragment, \r8\ALLOW_SPACES ) ? null : $fragment;
         return $this;
     }
@@ -1180,7 +1180,7 @@ class URL
      */
     public function setURL ( $url )
     {
-        $url = \r8\strval($url);
+        $url = (string) $url;
 
         $parsed = parse_url( $url );
 

@@ -47,7 +47,7 @@ class B extends \r8\Transform\MIME
         // a header defined
 
 
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         // React to the input encoding
         $string = iconv(

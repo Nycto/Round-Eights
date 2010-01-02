@@ -84,7 +84,7 @@ class Tokenize implements \Iterator
     public function __construct ( \r8\iface\Stream\In $stream, $delim, $bytes = 1024 )
     {
         $this->stream = $stream;
-        $this->delim = \r8\strval( $delim );
+        $this->delim = (string) $delim;
         $this->bytes = max( \intval( $bytes ), 1 );
     }
 

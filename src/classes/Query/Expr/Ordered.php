@@ -53,7 +53,7 @@ class Ordered implements \r8\iface\Query\Ordered
      */
     static public function fromString ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         preg_match('/^(.*?)(\bASC|\bDESC)?$/i', $string, $matches);
 

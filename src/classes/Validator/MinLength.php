@@ -62,7 +62,7 @@ class MinLength extends \r8\Validator
     protected function process ( $value )
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
-            $value = \r8\strval($value);
+            $value = (string) $value;
 
         if ( !is_string($value) )
             return "Must be a string";

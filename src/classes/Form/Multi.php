@@ -78,7 +78,7 @@ abstract class Multi extends \r8\Form\Field
     public function addOption ( $value, $label )
     {
         $value = \r8\indexVal($value);
-        $label = \r8\strval( $label );
+        $label = (string) $label;
 
         $this->options[ $value ] = $label;
 

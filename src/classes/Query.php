@@ -39,7 +39,7 @@ class Query
      */
     static public function parseSQLName ( $name )
     {
-        $name = \r8\strval( $name );
+        $name = (string) $name;
 
         // If it doesn't contain a 'dot', then things are simple
         if ( !\r8\str\contains( ".", $name ) ) {
@@ -74,7 +74,7 @@ class Query
      */
     static public function parseSQLAlias ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         // If there is no obvious alias, take an easy out
         if ( !\r8\str\contains(" AS ", $string) ) {

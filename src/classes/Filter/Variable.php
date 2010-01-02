@@ -42,7 +42,7 @@ class Variable extends \r8\Filter
         return preg_replace(
                 '/[^a-zA-Z0-9_\x7f-\xff]/',
                 '',
-                \r8\strval( $value )
+                (string) $value
             );
     }
 

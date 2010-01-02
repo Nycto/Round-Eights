@@ -55,7 +55,7 @@ class FileSystem extends \r8\Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $path = trim( \r8\strval( $path ) );
+        $path = trim( (string) $path );
 
         if ( !empty($path) )
             $this->addData( "Path", $path );

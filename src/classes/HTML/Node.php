@@ -70,7 +70,7 @@ abstract class Node implements \r8\iface\HTML\Node
      */
     public function setContent ( $content )
     {
-        $content = \r8\strval($content);
+        $content = (string) $content;
         $this->content = empty($content) && $content !== "0" ? null : $content;
         return $this;
     }
@@ -83,7 +83,7 @@ abstract class Node implements \r8\iface\HTML\Node
      */
     public function appendContent ( $content )
     {
-        $content = \r8\strval($content);
+        $content = (string) $content;
         if ( !empty($content) || $content === "0" )
             $this->content .= $content;
         return $this;

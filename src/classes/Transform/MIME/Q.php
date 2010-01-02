@@ -46,7 +46,7 @@ class Q extends \r8\Transform\MIME
         // can do a few things the iconv encode method cant: Handle encoding without
         // a header defined, use the underscore as spaces to save on space.
 
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         // React to the input encoding
         $string = iconv(

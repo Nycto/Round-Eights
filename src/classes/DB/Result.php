@@ -43,7 +43,7 @@ abstract class Result
      */
     public function __construct ( $query )
     {
-        $this->query = \r8\strval($query);
+        $this->query = (string) $query;
     }
 
     /**

@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_datetime extends PHPUnit_Framework_TestCase
+class classes_DateTime extends PHPUnit_Framework_TestCase
 {
 
     protected $timezone;
@@ -387,7 +387,7 @@ class classes_datetime extends PHPUnit_Framework_TestCase
         $this->assertEquals( 968544000, $time->getTimeStamp() );
 
         // From an instance of datetime
-        $source = new DateTime;
+        $source = new \r8\DateTime;
         $source->setTimeStamp(968569200);
         $this->assertSame( $time, $time->interpret( $source ) );
         $this->assertEquals( 968569200, $time->getTimeStamp() );

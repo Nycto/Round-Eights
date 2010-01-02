@@ -69,7 +69,7 @@ abstract class Collection extends \r8\Validator
 
         }
         else {
-            $validator = \r8\strval( $validator );
+            $validator = (string) $validator;
 
             if ( !is_subclass_of($validator, '\r8\iface\Validator') ) {
 

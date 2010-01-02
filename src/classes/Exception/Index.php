@@ -56,7 +56,7 @@ class Index extends \r8\Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $this->addData( "Index Label", \r8\strval( $label ) );
+        $this->addData( "Index Label", (string) $label );
         $this->addData( "Value", \r8\getDump($value) );
     }
 }

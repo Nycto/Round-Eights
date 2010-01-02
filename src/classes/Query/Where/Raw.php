@@ -45,7 +45,7 @@ class Raw implements \r8\iface\Query\Where
      */
     public function __construct ( $value )
     {
-        $this->value = trim( \r8\strval( $value ) );
+        $this->value = trim( (string) $value );
     }
 
     /**

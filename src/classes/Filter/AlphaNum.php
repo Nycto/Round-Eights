@@ -42,7 +42,7 @@ class AlphaNum extends \r8\Filter
         return preg_replace(
                 '/[^a-zA-Z0-9]/',
                 '',
-                \r8\strval( $value )
+                (string) $value
             );
     }
 

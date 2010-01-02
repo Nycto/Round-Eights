@@ -166,7 +166,7 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      */
     public function isField ( $field )
     {
-        return in_array( \r8\strval($field), $this->getFields() );
+        return in_array( (string) $field, $this->getFields() );
     }
 
     /**

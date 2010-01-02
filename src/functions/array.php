@@ -358,7 +358,7 @@ function contains ( array $array, $value, $strict = FALSE )
  */
 function invoke ( array $array, $func )
 {
-    $func = \r8\strval($func);
+    $func = (string) $func;
 
     $out = array();
 

@@ -47,7 +47,7 @@ class Querier extends \r8\DB\LinkWrap
     public function query ( $query, $flags = 0 )
     {
         $flags = intval( $flags );
-        $query = \r8\strval($query);
+        $query = (string) $query;
 
         try {
             return $this->getLink()->query( $query, $flags );
@@ -133,7 +133,7 @@ class Querier extends \r8\DB\LinkWrap
      */
     public function insert ( $table, $fields, $flags = 0 )
     {
-        $table = \r8\strval($table);
+        $table = (string) $table;
 
         if ( \r8\isEmpty($table) )
             throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
@@ -163,14 +163,14 @@ class Querier extends \r8\DB\LinkWrap
      */
     public function update ($table, $where, $fields, $flags = 0)
     {
-        $table = \r8\strval($table);
+        $table = (string) $table;
 
         if ( \r8\isEmpty($table) )
             throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "UPDATE ". $table ." SET ". $this->getFieldList($fields);
 
-        $where = trim( \r8\strval($where) );
+        $where = trim( (string) $where );
 
         if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
@@ -221,7 +221,7 @@ class Querier extends \r8\DB\LinkWrap
      */
     public function getField ($field, $query, $row = 0, $flags = 0)
     {
-        $field = \r8\strval( $field );
+        $field = (string) $field;
 
         if ( \r8\isEmpty($field) )
             throw new \r8\Exception\Argument( 0, "Field", "Must not be empty" );
@@ -258,14 +258,14 @@ class Querier extends \r8\DB\LinkWrap
      */
     public function count ($table, $where = FALSE, $flags = 0)
     {
-        $table = \r8\strval($table);
+        $table = (string) $table;
 
         if ( \r8\isEmpty($table) )
             throw new \r8\Exception\Argument(0, "Table Name", "Must not be empty");
 
         $query = "SELECT COUNT(*) AS cnt FROM ". $table;
 
-        $where = trim( \r8\strval($where) );
+        $where = trim( (string) $where );
 
         if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;

@@ -106,7 +106,7 @@ class Tag extends \r8\HTML\Node implements \ArrayAccess
      */
     static public function quoteAttr ($string)
     {
-        return '"'. htmlspecialchars( \r8\strval( $string ) ) .'"';
+        return '"'. htmlspecialchars( (string) $string ) .'"';
     }
 
     /**

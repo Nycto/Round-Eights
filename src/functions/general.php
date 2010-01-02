@@ -257,7 +257,7 @@ function indexVal ( $value )
         return intval($value);
 
     else
-        return \r8\strval($value);
+        return (string) $value;
 }
 
 /**
@@ -311,7 +311,7 @@ function respondTo ($object, $function)
     if (!is_object($object))
         return FALSE;
 
-    $function = \r8\strval( $function );
+    $function = (string) $function;
 
     return in_array( $function, get_class_methods($object) );
 }

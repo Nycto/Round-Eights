@@ -84,7 +84,7 @@ class Quoted extends \r8\Quoter\Section
      */
     public function setOpenQuote ( $quote )
     {
-        $this->openQuote = is_null( $quote ) ? null : \r8\strval( $quote );
+        $this->openQuote = is_null( $quote ) ? null : (string) $quote;
         return $this;
     }
 
@@ -127,7 +127,7 @@ class Quoted extends \r8\Quoter\Section
      */
     public function setCloseQuote ( $quote )
     {
-        $this->closeQuote = is_null( $quote ) ? null : \r8\strval( $quote );
+        $this->closeQuote = is_null( $quote ) ? null : (string) $quote;
         return $this;
     }
 

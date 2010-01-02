@@ -39,7 +39,7 @@ class StdErr implements \r8\iface\Stream\Out
      */
     public function write ( $data )
     {
-        fwrite( STDERR, \r8\strval( $data ) );
+        fwrite( STDERR, (string) $data );
         return $this;
     }
 

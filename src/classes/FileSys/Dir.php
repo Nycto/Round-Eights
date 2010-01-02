@@ -299,7 +299,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
         if ( !\r8\isVague($extension) )
             $file->setExt( $extension );
 
-        $prefix = \r8\isVague($prefix) ? null : \r8\strval( $prefix );
+        $prefix = \r8\isVague($prefix) ? null : (string) $prefix;
         $moreEntropy = \r8\boolVal( $moreEntropy );
 
         do {

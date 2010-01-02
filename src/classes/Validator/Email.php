@@ -53,7 +53,7 @@ class Email extends \r8\Validator
      */
     protected function process ( $value )
     {
-        $value = \r8\strval( $value );
+        $value = (string) $value;
 
         if ( \r8\isEmpty($value) )
             return "Email Address must not be empty";

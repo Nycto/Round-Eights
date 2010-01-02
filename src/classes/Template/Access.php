@@ -164,8 +164,8 @@ abstract class Access
 
         if ( array_key_exists( $label, $this->variables ) ) {
             $this->variables[ $label ] =
-                \r8\strval( $this->variables[ $label ] )
-                . \r8\strval( $value );
+                (string) $this->variables[ $label ]
+                . (string) $value;
         }
         else {
             $this->variables[ $label ] = $value;

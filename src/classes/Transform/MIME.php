@@ -96,7 +96,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
     static public function stripHeaderName ( $header )
     {
         // Convert it to a string
-        $header = \r8\strval( $header );
+        $header = (string) $header;
 
         // Remove any non-printable ascii characters
         $header = preg_replace('/[^\x21-\x7E]/', '', $header);
@@ -291,7 +291,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
      */
     public function setEOL ( $eol )
     {
-        $this->eol = \r8\strval( $eol );
+        $this->eol = (string) $eol;
         return $this;
     }
 
@@ -314,7 +314,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
      */
     public function from ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         // Strip the header name off, if it exists
         $string = preg_replace('/^[\x21-\x7E]+\s*\:/', '', $string);

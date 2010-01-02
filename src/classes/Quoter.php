@@ -58,13 +58,13 @@ class Quoter
      */
     static public function isEscaped ( $string, $offset, $escape = '\\' )
     {
-        $escape = \r8\strval( $escape );
+        $escape = (string) $escape;
 
         // Something can't be escaped if there is no escape string
         if ( \r8\isEmpty( $escape, ALLOW_SPACES ) )
             return false;
 
-        $string = \r8\strval( $string );
+        $string = (string) $string;
         $offset = intval( $offset );
 
         if ( $offset > strlen( $string ) )
@@ -102,7 +102,7 @@ class Quoter
         // Loop through each needle so we can figure out the one with the minimum offset
         foreach( $needles AS $needle ) {
 
-            $needle = \r8\strval( $needle );
+            $needle = (string) $needle;
 
             if ( \r8\isEmpty( $needle, ALLOW_SPACES ) )
                 throw new \r8\Exception\Data($needle, "needle", "Needle must not be empty");
@@ -188,7 +188,7 @@ class Quoter
      */
     public function setQuote ( $open, $close = FALSE )
     {
-        $open = \r8\strval( $open );
+        $open = (string) $open;
 
         if ( \r8\isEmpty($open, ALLOW_SPACES) )
             throw new \r8\Exception\Argument( 0, "Open Quote", "Must not be empty" );
@@ -243,7 +243,7 @@ class Quoter
      */
     public function isOpenQuote ( $quote )
     {
-        $quote = \r8\strval( $quote );
+        $quote = (string) $quote;
         return array_key_exists( $quote, $this->quotes );
     }
 
@@ -255,7 +255,7 @@ class Quoter
      */
     public function getCloseQuotesFor ( $quote )
     {
-        $quote = \r8\strval( $quote );
+        $quote = (string) $quote;
 
         if ( !$this->isOpenQuote($quote) )
             throw new \r8\Exception\Argument( 0, "Open Quote", "Invalid open quote" );
@@ -284,7 +284,7 @@ class Quoter
      */
     public function setEscape ( $escape )
     {
-        $escape = \r8\strval( $escape );
+        $escape = (string) $escape;
         if ( \r8\isEmpty( $escape, ALLOW_SPACES ) )
             throw new \r8\Exception\Argument( 0, "Escape String", "Must not be empty" );
         $this->escape = $escape;
@@ -320,7 +320,7 @@ class Quoter
      */
     public function parse ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         $openQuotes = $this->getOpenQuotes();
 

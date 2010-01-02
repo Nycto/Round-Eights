@@ -57,7 +57,7 @@ class Variable extends \r8\Exception
 
         $this->addData(
                 "Variable Name",
-                \r8\strval( $variable )
+                (string) $variable
             );
     }
 

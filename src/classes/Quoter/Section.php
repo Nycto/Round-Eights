@@ -71,7 +71,7 @@ abstract class Section
      */
     public function setContent ( $content )
     {
-        $this->content = is_null($content) ? null : \r8\strval( $content );
+        $this->content = is_null($content) ? null : (string) $content;
         return $this;
     }
 

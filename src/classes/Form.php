@@ -165,7 +165,7 @@ class Form implements \Countable
      */
     public function setEncoding ( $encoding )
     {
-        $encoding = trim( \r8\strval( $encoding ) );
+        $encoding = trim( (string) $encoding );
 
         if ( \r8\isEmpty($encoding) )
             throw new \r8\Exception\Argument( 0, "Form Encoding", "Must not be empty" );

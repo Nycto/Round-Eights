@@ -59,7 +59,7 @@ class String implements \r8\iface\Stream\In
      */
     public function __construct ( $string )
     {
-        $this->string = \r8\strval($string);
+        $this->string = (string) $string;
         $this->length = strlen( $this->string );
     }
 

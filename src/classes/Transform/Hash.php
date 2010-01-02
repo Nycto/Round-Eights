@@ -70,8 +70,8 @@ class Hash implements \r8\iface\Transform
      */
     static public function pbkdf2 ( $string, $salt, $keyLength = 32, $iterations = 1000 )
     {
-        $string = \r8\strval( $string );
-        $salt = \r8\strval( $salt );
+        $string = (string) $string;
+        $salt = (string) $salt;
         $keyLength = max( 1, \r8\numVal( $keyLength ) );
         $iterations = max( 1, (int) $iterations );
 
@@ -128,7 +128,7 @@ class Hash implements \r8\iface\Transform
      */
     public function to ( $string )
     {
-        $string = \r8\strVal( $string );
+        $string = (string) $string;
 
         $hash = self::pbkdf2( $string, $this->salt->getString(), $this->hashLength );
 
@@ -146,7 +146,7 @@ class Hash implements \r8\iface\Transform
      */
     public function from ( $string )
     {
-        $string = \r8\strVal( $string );
+        $string = (string) $string;
 
         $hashLength = $this->hashLength * ( $this->readable ? 2 : 1 );
 

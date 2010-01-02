@@ -59,7 +59,7 @@ class Base64 implements \r8\iface\Transform\Encode
      */
     public function to ( $string )
     {
-        $result = base64_encode( \r8\strval($string) );
+        $result = base64_encode( (string) $string );
 
         if ( $this->urlSafe )
             $result = \rtrim( \strtr( $result, '+/', '-_' ), "=" );
@@ -75,7 +75,7 @@ class Base64 implements \r8\iface\Transform\Encode
      */
     public function from ( $string )
     {
-        $string = \r8\strval($string);
+        $string = (string) $string;
 
         if ( $this->urlSafe )
             $string = \strtr( $string, '-_', '+/' );

@@ -42,7 +42,7 @@ class QuotedPrintable implements \r8\iface\Transform\Encode
      */
     public function to ( $string )
     {
-        return quoted_printable_encode( \r8\strval($string) );
+        return quoted_printable_encode( (string) $string );
     }
 
     /**
@@ -53,7 +53,7 @@ class QuotedPrintable implements \r8\iface\Transform\Encode
      */
     public function from ( $string )
     {
-        return quoted_printable_decode( \r8\strval($string) );
+        return quoted_printable_decode( (string) $string );
     }
 
 }

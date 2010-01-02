@@ -93,7 +93,7 @@ class Link extends \r8\DB\Link
         if ( is_array( $value ) )
             return array_map( array($this, "escapeString"), $value );
 
-        $value = \r8\strval($value);
+        $value = (string) $value;
 
         // Don't force a connection just to escape a string
         if ( $this->isConnected() )

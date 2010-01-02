@@ -55,7 +55,7 @@ class Extension extends \r8\Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $extension = \r8\strval( $extension );
+        $extension = (string) $extension;
 
         $this->addData( "Extension", $extension );
     }

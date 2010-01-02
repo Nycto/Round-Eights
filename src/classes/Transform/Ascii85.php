@@ -78,7 +78,7 @@ class Ascii85 implements \r8\iface\Transform\Encode
      */
     public function to ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
         $length = strlen( $string );
         $result = "";
 
@@ -147,7 +147,7 @@ class Ascii85 implements \r8\iface\Transform\Encode
      */
     public function from ( $string )
     {
-        $string = trim( \r8\strval( $string ) );
+        $string = trim( (string) $string );
         $string = \r8\str\stripHead( $string, "<~" );
         $string = \r8\str\stripTail( $string, "~>" );
 

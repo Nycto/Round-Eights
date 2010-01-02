@@ -46,7 +46,7 @@ class URI implements \r8\iface\Stream\Out
      */
     public function __construct ( $uri, $append = FALSE )
     {
-        $uri = \r8\strval( $uri );
+        $uri = (string) $uri;
 
         $this->resource = @fopen(
                 $uri,
@@ -94,7 +94,7 @@ class URI implements \r8\iface\Stream\Out
      */
     public function write ( $data )
     {
-        $data = \r8\strval( $data );
+        $data = (string) $data;
 
         if ( is_resource($this->resource) )
             fwrite( $this->resource, $data );

@@ -52,7 +52,7 @@ class RegEx extends \r8\Validator
      */
     public function __construct( $regex )
     {
-        $regex = \r8\strVal( $regex );
+        $regex = (string) $regex;
         if ( \r8\isEmpty($regex) )
             throw new \r8\Exception\Argument(0, "Regular Expression", "Must not be empty");
         $this->regex = $regex;
@@ -67,7 +67,7 @@ class RegEx extends \r8\Validator
     protected function process ( $value )
     {
         if ( is_bool($value) || is_int($value) || is_float($value) || is_null($value) )
-            $value = \r8\strval($value);
+            $value = (string) $value;
 
         if ( !is_string($value) )
             return "Must be a string";

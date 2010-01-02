@@ -59,7 +59,7 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
             $result = null;
 
         else
-            $result = \r8\strval( $result );
+            $result = (string) $result;
 
         // Boot up the results of the validation process
         $output = new \r8\Validator\Result( $value );

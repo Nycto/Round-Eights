@@ -57,7 +57,7 @@ class Deflate implements \r8\iface\Transform\Compress
      */
     public function to ( $string )
     {
-        return gzDeflate( \r8\strval($string), $this->level );
+        return gzDeflate( (string) $string, $this->level );
     }
 
     /**
@@ -68,7 +68,7 @@ class Deflate implements \r8\iface\Transform\Compress
      */
     public function from ( $string )
     {
-        return gzInflate( \r8\strval($string) );
+        return gzInflate( (string) $string );
     }
 
 }

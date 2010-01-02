@@ -56,7 +56,7 @@ class Data extends \r8\Exception
     {
         parent::__construct($message, $code, $fault);
 
-        $label = \r8\strval( $label );
+        $label = (string) $label;
 
         $this->addData(
                 \r8\isEmpty($label) ? "Value" : $label,

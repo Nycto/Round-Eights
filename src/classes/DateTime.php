@@ -72,7 +72,7 @@ class DateTime
      */
     static public function setDefaultFormat ($format)
     {
-        self::$defaultFormat = \r8\strval($format);
+        self::$defaultFormat = (string) $format;
     }
 
     /**
@@ -143,7 +143,7 @@ class DateTime
         if ( is_float($datetime) )
             $datetime = number_format($datetime, 0, '.', '');
 
-        $datetime = \r8\strval( $datetime );
+        $datetime = (string) $datetime;
 
 
         $year = '(?:[1-9][0-9]{3})';
@@ -325,7 +325,7 @@ class DateTime
      */
     public function setString ( $string )
     {
-        $string = strtotime( \r8\strval( $string ) );
+        $string = strtotime( (string) $string );
         if ($string === FALSE)
             throw new \r8\Exception\Argument(0, "Date/Time String", "Unable to parse string to a valid time");
         return $this->setTimeStamp( $string );
@@ -354,7 +354,7 @@ class DateTime
      */
     public function setFormat( $format )
     {
-        $this->format = \r8\strval( $format );
+        $this->format = (string) $format;
         return $this;
     }
 
@@ -383,7 +383,7 @@ class DateTime
         if ( isVague($format) )
             $format = $this->getFormat();
         else
-            $format = \r8\strval( $format );
+            $format = (string) $format;
 
         return date( $format, $this->time );
     }
@@ -410,7 +410,7 @@ class DateTime
      *
      * It checks for the following (in this order):
      *  - If an integer, it sets it as a unix timestamp
-     *  - If an instance of cDateTime, it pulls the data from that instance
+     *  - If an instance of \r8\DateTime, it pulls the data from that instance
      *  - if an array, it works similarly to mktime
      *  - It then converts the value to a string and checks...
      *  - if it is a MySQL date/datetime
@@ -428,7 +428,7 @@ class DateTime
             $this->time = intval( $input );
         }
 
-        else if ($input instanceof cDateTime) {
+        else if ($input instanceof \r8\DateTime) {
             $this->setTimeStamp( $input->getTimeStamp() );
         }
 
@@ -438,7 +438,7 @@ class DateTime
 
         else {
 
-            $input = \r8\strval( $input );
+            $input = (string) $input;
 
             if ( self::isSQL( $input ) )
                 $this->setSQL( $input );

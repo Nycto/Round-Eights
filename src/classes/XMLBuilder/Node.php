@@ -53,7 +53,7 @@ class Node implements \r8\iface\XMLBuilder
      */
     public function __construct ( $tag, array $attrs = array() )
     {
-        $tag = trim( \r8\strval($tag) );
+        $tag = trim( (string) $tag );
 
         if ( \r8\isEmpty($tag) )
             throw new \r8\Exception\Argument(1, "Tag Name", "Must not be empty");

@@ -53,7 +53,7 @@ class Compare extends \r8\Validator
      */
     public function __construct( $operator, $versus )
     {
-        $operator = trim( \r8\strval($operator) );
+        $operator = trim( (string) $operator );
 
         if ( !preg_match( '/^(?:<=?|>=?|={1,3}|<>|!={1,2})$/', $operator ) )
             throw new \r8\Exception\Argument( 0, "Comparison Operator", "Unsupported comparison operator" );

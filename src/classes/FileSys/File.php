@@ -68,7 +68,7 @@ class File extends \r8\FileSys
      */
     public function setPath ( $path )
     {
-        $path = trim(\r8\strval( $path ));
+        $path = trim((string) $path);
         $path = pathinfo( $path );
 
         if ( isset($path['dirname']) )
@@ -124,7 +124,7 @@ class File extends \r8\FileSys
      */
     public function setExt ( $extension )
     {
-        $extension = trim(\r8\strval( $extension ));
+        $extension = trim((string) $extension);
         $extension = ltrim( $extension, "." );
         $this->extension = \r8\isEmpty( $extension ) ? null : $extension;
         return $this;
@@ -169,7 +169,7 @@ class File extends \r8\FileSys
      */
     public function setFilename ( $filename )
     {
-        $filename = trim(\r8\strval( $filename ));
+        $filename = trim((string) $filename);
         $filename = rtrim( $filename, "." );
         $this->filename = \r8\isEmpty( $filename ) ? null : $filename;
         return $this;
@@ -229,7 +229,7 @@ class File extends \r8\FileSys
      */
     public function setBasename ( $basename )
     {
-        $basename = trim(\r8\strval( $basename ));
+        $basename = trim((string) $basename);
         $basename = pathinfo( $basename );
 
         // Handle filenames that start with a dot, like ".htaccess"
@@ -413,7 +413,7 @@ class File extends \r8\FileSys
     {
         $this->requirePath();
 
-        $destination = \r8\strval($destination);
+        $destination = (string) $destination;
 
         $result = @copy( $this->getPath(), $destination );
 
@@ -440,7 +440,7 @@ class File extends \r8\FileSys
     {
         $this->requirePath();
 
-        $destination = \r8\strval($destination);
+        $destination = (string) $destination;
 
         $result = @rename( $this->getPath(), $destination );
 

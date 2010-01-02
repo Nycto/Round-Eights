@@ -42,7 +42,7 @@ class Alpha extends \r8\Filter
         return preg_replace(
                 '/[^a-zA-Z]/',
                 '',
-                \r8\strval( $value )
+                (string) $value
             );
     }
 

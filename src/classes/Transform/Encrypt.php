@@ -135,7 +135,7 @@ class Encrypt implements \r8\iface\Transform\Encrypt
         $this->initialize( $resource, $iv );
 
         // Do the actual encryption
-        $encrypted = mcrypt_generic( $resource, \r8\strval( $string ) );
+        $encrypted = mcrypt_generic( $resource, (string) $string );
 
         // Clean up the resource
         mcrypt_generic_deinit( $resource );
@@ -153,7 +153,7 @@ class Encrypt implements \r8\iface\Transform\Encrypt
      */
     public function from ( $string )
     {
-        $string = \r8\strval( $string );
+        $string = (string) $string;
 
         $resource = $this->getResource();
 
