@@ -83,7 +83,7 @@ class Benchmark
      */
     public function run ( $times = 1000 )
     {
-        $result = new \r8\Benchmark\Result;
+        $result = new \r8\Benchmark\Result( $this->name );
 
         $times = max( (int) $times, 1 );
 

@@ -64,14 +64,17 @@ class classes_Benchmark extends PHPUnit_Framework_TestCase
 
         $result = $bench->run();
         $this->assertThat( $result, $this->isInstanceOf( '\r8\Benchmark\Result' ) );
+        $this->assertSame( "test", $result->getName() );
         $this->assertSame( 1000, $result->count() );
 
         $result = $bench->run( 500 );
         $this->assertThat( $result, $this->isInstanceOf( '\r8\Benchmark\Result' ) );
+        $this->assertSame( "test", $result->getName() );
         $this->assertSame( 500, $result->count() );
 
         $result = $bench->run( -10 );
         $this->assertThat( $result, $this->isInstanceOf( '\r8\Benchmark\Result' ) );
+        $this->assertSame( "test", $result->getName() );
         $this->assertSame( 1, $result->count() );
     }
 
