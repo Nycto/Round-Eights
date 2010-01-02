@@ -93,7 +93,7 @@ class Benchmark
             $start = microtime( TRUE );
             $test();
             $end = microtime( TRUE );
-            $result->addTime( $start - $end );
+            $result->addTime( $end - $start );
         }
 
         return $result;
