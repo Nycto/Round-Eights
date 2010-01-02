@@ -200,7 +200,7 @@ class Quoter
 
             $close = \r8\arrayVal( $close );
             $close = \r8\ary\flatten( $close );
-            $close = \array_map( 'r8\strval', $close );
+            $close = \r8\ary\stringize( $close );
             $close = \r8\ary\compact( $close, \r8\ALLOW_SPACES );
             $close = \array_unique( $close );
 

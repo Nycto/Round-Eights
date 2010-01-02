@@ -48,7 +48,7 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
         // Normalize the results if it is an array
         if ( \is_array($result) ) {
             $result = \r8\ary\flatten( $result );
-            $result = \array_map( '\r8\\strval', $result );
+            $result = \r8\ary\stringize( $result );
             $result = \r8\ary\compact( $result );
         }
 

@@ -209,7 +209,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
     if (is_array($repeated) ) {
 
         $repeated = \r8\ary\flatten($repeated);
-        $repeated = array_map('strval', $repeated);
+        $repeated = \r8\ary\stringize($repeated);
 
         foreach( $repeated AS $key => $value ) {
             $repeated[ $key ] = preg_quote($value, "/");
