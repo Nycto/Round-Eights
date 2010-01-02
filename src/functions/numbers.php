@@ -104,7 +104,7 @@ function between ($value, $lower, $upper, $inclusive = TRUE)
     $lower = \r8\numVal($lower);
     $upper = \r8\numVal($upper);
 
-    $inclusive = \r8\boolVal($inclusive);
+    $inclusive = (bool) $inclusive;
     if ($upper < $lower)
         \r8\swap($upper, $lower);
 
@@ -202,7 +202,7 @@ function numWrap ($value, $lower, $upper, $useLower = TRUE)
     $value = \r8\numVal($value);
     $lower = \r8\numVal($lower);
     $upper = \r8\numVal($upper);
-    $useLower = \r8\boolVal($useLower);
+    $useLower = (bool) $useLower;
 
     if ($lower == $upper)
         return $lower;

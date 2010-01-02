@@ -92,7 +92,7 @@ function contains($needle, $haystack, $ignoreCase = TRUE)
  */
 function offsets ($needle, $haystack, $ignoreCase = TRUE)
 {
-    $ignoreCase = \r8\boolVal($ignoreCase);
+    $ignoreCase = (bool) $ignoreCase;
     $needle = (string) $needle;
     $haystack = (string) $haystack;
 

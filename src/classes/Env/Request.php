@@ -126,7 +126,7 @@ class Request implements \r8\iface\Env\Request
         $this->post = $post ? $post : new \r8\Input\Void;
         $this->files = $files ? $files : new \r8\Input\Files;
         $this->headers = $headers;
-        $this->cli = \r8\boolVal( $cli );
+        $this->cli = (bool) $cli;
     }
 
     /**

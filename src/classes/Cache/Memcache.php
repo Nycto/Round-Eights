@@ -84,7 +84,7 @@ class Memcache implements \r8\iface\Cache
         if ( $this->port < 0 )
             throw new \r8\Exception\Argument(1, "Memcache Port", "Must be at least 0");
 
-        $this->persistent = \r8\boolval( $persistent );
+        $this->persistent = (bool) $persistent;
 
         $this->timeout = intval( $timeout );
         if ( $this->timeout <= 0 )

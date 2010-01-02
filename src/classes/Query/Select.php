@@ -120,7 +120,7 @@ class Select
      */
     public function setDistinct ( $distinct )
     {
-        $this->distinct = \r8\boolVal( $distinct );
+        $this->distinct = (bool) $distinct;
         return $this;
     }
 
@@ -152,7 +152,7 @@ class Select
      */
     public function setFoundRows ( $foundRows )
     {
-        $this->foundRows = \r8\boolVal( $foundRows );
+        $this->foundRows = (bool) $foundRows;
         return $this;
     }
 

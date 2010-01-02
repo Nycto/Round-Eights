@@ -300,7 +300,7 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
             $file->setExt( $extension );
 
         $prefix = \r8\isVague($prefix) ? null : (string) $prefix;
-        $moreEntropy = \r8\boolVal( $moreEntropy );
+        $moreEntropy = (bool) $moreEntropy;
 
         do {
 
