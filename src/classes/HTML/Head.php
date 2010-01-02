@@ -246,18 +246,9 @@ class Head
 
         $content = array_merge(
             $content,
-            array_map(
-            	'\r8\strval',
-                \r8\ary\invoke( $this->metatags, "getTag" )
-            ),
-            array_map(
-            	'\r8\strval',
-                \r8\ary\invoke( $this->css, "getTag" )
-            ),
-            array_map(
-            	'\r8\strval',
-                \r8\ary\invoke( $this->javascript, "getTag" )
-            )
+            \r8\ary\stringize( \r8\ary\invoke( $this->metatags, "getTag" ) ),
+            \r8\ary\stringize( \r8\ary\invoke( $this->css, "getTag" ) ),
+            \r8\ary\stringize( \r8\ary\invoke( $this->javascript, "getTag" ) )
         );
 
         return new \r8\HTML\Tag( "head", implode( "\n", $content ) );
