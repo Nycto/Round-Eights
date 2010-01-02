@@ -150,7 +150,7 @@ abstract class FileSys
      */
     public function __toString ()
     {
-        return strval( $this->getPath() );
+        return (string) $this->getPath();
     }
 
     /**

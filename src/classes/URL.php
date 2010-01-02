@@ -108,7 +108,7 @@ class URL
      */
     public function __toString ()
     {
-        return strval( $this->getURL() );
+        return (string) $this->getURL();
     }
 
     /**

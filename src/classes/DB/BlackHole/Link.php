@@ -47,7 +47,7 @@ class Link implements \r8\iface\DB\Link
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = strval( $query );
+        $query = (string) $query;
 
         if ( \r8\DB\Link::isSelect($query) )
             return new \r8\DB\BlackHole\Read( null, $query );

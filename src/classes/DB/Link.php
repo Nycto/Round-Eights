@@ -156,7 +156,7 @@ abstract class Link implements \r8\iface\DB\Link
             return $value ? "1" : "0";
 
         else if ( is_int($value) || is_float($value) )
-            return \strval( $value );
+            return (string) $value;
 
         else if ( is_null($value) )
             return $allowNull ? "NULL" : call_user_func( $onString, "" );

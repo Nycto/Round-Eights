@@ -231,7 +231,7 @@ class Exception extends \Exception
      */
     public function addData ( $label, $value )
     {
-        $this->data[ trim(strval($label)) ] = $value;
+        $this->data[ trim((string) $label) ] = $value;
         return $this;
     }
 
@@ -253,7 +253,7 @@ class Exception extends \Exception
      */
     public function getDataValue ( $label )
     {
-        $label = trim(strval($label));
+        $label = trim((string) $label);
 
         if ( array_key_exists($label, $this->data) )
             return $this->data[ $label ];

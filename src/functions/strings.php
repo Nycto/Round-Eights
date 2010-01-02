@@ -49,7 +49,7 @@ const ALLOW_ASCII = 128;
  */
 function int2Ordinal ($integer)
 {
-    $integer = strval(intval($integer));
+    $integer = (string) intval($integer);
 
     if ( \r8\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
@@ -77,9 +77,9 @@ function int2Ordinal ($integer)
 function contains($needle, $haystack, $ignoreCase = TRUE)
 {
     if ($ignoreCase)
-        return ( stripos( strVal($haystack), strVal($needle) ) === FALSE) ? FALSE : TRUE;
+        return ( stripos( (string) $haystack, (string) $needle ) === FALSE) ? FALSE : TRUE;
     else
-        return ( strpos( strVal($haystack), strVal($needle) ) === FALSE) ? FALSE : TRUE;
+        return ( strpos( (string) $haystack, (string) $needle ) === FALSE) ? FALSE : TRUE;
 }
 
 /**
@@ -151,7 +151,7 @@ function unshout ($string)
             function ( $match ) {
                     return $match[1] . strtolower($match[2]);
                 },
-            strVal( $string )
+            (string) $string
         );
 
 }
@@ -178,7 +178,7 @@ function stripW ($string, $flags = 0)
 
     // ALLOW_ASCII trumps all the other flags
     if ( $flags & \r8\str\ALLOW_ASCII ) {
-        return preg_replace( '/[^\x20-\x7E]/', '', strval($string) );
+        return preg_replace( '/[^\x20-\x7E]/', '', (string) $string );
     }
     else {
         return preg_replace(
@@ -217,7 +217,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = implode("|", $repeated);
     }
     else {
-        $repeated = preg_quote(strval($repeated), '/');
+        $repeated = preg_quote((string) $repeated, '/');
     }
 
     if ( \r8\isEmpty( $repeated ) )
@@ -242,11 +242,11 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
 
-    $string = strval($string);
+    $string = (string) $string;
     if ( \r8\isEmpty($string) )
         return '';
 
-    $glue = strval( $glue );
+    $glue = (string) $glue;
 
     // Maxlength must be at least 1
     $maxLength = max( $maxLength, 1 );
@@ -288,7 +288,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 {
 
-    $string = strval($string);
+    $string = (string) $string;
 
     $quotes = \r8\arrayVal( $quotes );
     $quotes = \r8\ary\flatten( $quotes );
@@ -342,8 +342,8 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
  */
 function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
 {
-    $haystack = strtolower(strVal($haystack));
-    $needle = strtolower(strVal($needle));
+    $haystack = strtolower((string) $haystack);
+    $needle = strtolower((string) $needle);
 
     if (!is_int($length))
         return substr_count( $haystack, $needle, $offset );
@@ -361,8 +361,8 @@ function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
  */
 function startsWith ($string, $head, $ignoreCase = TRUE)
 {
-    $string = strval($string);
-    $head = strval($head);
+    $string = (string) $string;
+    $head = (string) $head;
 
     // Not isEmpty because it's okay if it is filled with spaces.
     // True is returned because all strings start with an empty character.
@@ -386,8 +386,8 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
 function endsWith ($string, $tail, $ignoreCase = TRUE)
 {
 
-    $string = strval($string);
-    $tail = strval($tail);
+    $string = (string) $string;
+    $tail = (string) $tail;
 
     // not isEmpty because it's okay if it is filled with spaces
     // all strings end with an empty character...
@@ -409,8 +409,8 @@ function endsWith ($string, $tail, $ignoreCase = TRUE)
  */
 function tail ($string, $tail, $ignoreCase = TRUE)
 {
-    $string = strval($string);
-    $tail = strval($tail);
+    $string = (string) $string;
+    $tail = (string) $tail;
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($tail))
@@ -429,8 +429,8 @@ function tail ($string, $tail, $ignoreCase = TRUE)
  */
 function stripTail ($string, $tail, $ignoreCase = TRUE)
 {
-    $string = strval($string);
-    $tail = strval($tail);
+    $string = (string) $string;
+    $tail = (string) $tail;
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($tail))
@@ -454,8 +454,8 @@ function stripTail ($string, $tail, $ignoreCase = TRUE)
  */
 function head ($string, $head, $ignoreCase = TRUE)
 {
-    $string = strval($string);
-    $head = strval($head);
+    $string = (string) $string;
+    $head = (string) $head;
 
     // not isEmpty because it's okay if it is filled with spaces
     if (empty($head))
@@ -601,8 +601,8 @@ function enclose ($string, $enclose, $ignoreCase = TRUE)
 function truncate ($string, $maxLength, $delimiter = '...')
 {
 
-    $string = strval($string);
-    $delimiter = strval($delimiter);
+    $string = (string) $string;
+    $delimiter = (string) $delimiter;
 
     // The maxLength must be at LEAST the length of the delimiter, plus a character on both sides
     $maxLength = max( intval($maxLength), strlen($delimiter) + 2 );

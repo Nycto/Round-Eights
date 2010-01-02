@@ -90,7 +90,7 @@ class Seed
         if ( !\r8\isBasic($source) )
             $source = serialize($source);
 
-        $this->source = strval($source);
+        $this->source = (string) $source;
 
         return $this;
     }

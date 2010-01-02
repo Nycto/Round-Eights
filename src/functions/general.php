@@ -226,14 +226,14 @@ function boolVal ($value)
  * @param mixed $value The value to force to a string
  * @return String
  */
-function strVal ($value)
+function strval ( $value )
 {
 
     // We use get_class_methods instead of method_exists to ensure that __toString is a public method
     if (is_object($value) && in_array("__toString", get_class_methods($value)))
-        return \strval( $value->__toString() );
+        return (string) $value->__toString();
     else
-        return \strval( \r8\reduce($value) );
+        return (string) \r8\reduce($value);
 }
 
 /**
@@ -274,12 +274,12 @@ function indexVal ( $value )
  */
 function kindOf ( $value, $className )
 {
-    $className = ltrim( trim( strval( $className ) ), "\\" );
+    $className = ltrim( trim( (string) $className ), "\\" );
 
     if ( is_object($value) )
         return ( $value instanceof $className ) ? TRUE : FALSE;
 
-    $value = trim( trim( strval( $value ) ), "\\" );
+    $value = trim( trim( (string) $value ), "\\" );
 
     if ( !class_exists($value) )
         return FALSE;
