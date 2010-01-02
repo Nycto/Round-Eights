@@ -439,4 +439,15 @@ function isList ( array $array )
     return count(array_diff_key($array, array_keys(array_keys($array)))) === 0;
 }
 
+/**
+ * Casts all the values in an array as strings
+ *
+ * @param Array $array The array whose values should be cast
+ * @return array
+ */
+function stringize ( array $array )
+{
+    return array_map( 'strval', $array );
+}
+
 ?>

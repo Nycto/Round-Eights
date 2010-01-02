@@ -491,6 +491,28 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertTrue( \r8\ary\isList(array()) );
     }
 
+    public function testStringize ()
+    {
+        $this->assertSame(
+            array(),
+            \r8\ary\stringize(array())
+        );
+
+        $obj = $this->getMock('stdClass', array("__toString"));
+        $obj->expects( $this->once() )
+            ->method( "__toString" )
+            ->will( $this->returnValue( "obj" ) );
+
+        $this->assertSame(
+            array(
+                "one", "1", "1.2", "Array", "1", "", "", "obj"
+            ),
+            \r8\ary\stringize(array(
+                "one", 1, 1.2, array(), TRUE, FALSE, NULL, $obj
+            ))
+        );
+    }
+
 }
 
 ?>
