@@ -109,7 +109,7 @@ class Result implements \Countable
      */
     public function getTotalTime ()
     {
-        return array_sum( $this->times );
+        return max( array_sum( $this->times ), 0 );
     }
 
     /**
@@ -124,7 +124,7 @@ class Result implements \Countable
         if ( $count == 0 )
             return 0;
 
-        return $this->getTotalTime() / $count;
+        return max( $this->getTotalTime() / $count, 0 );
     }
 
 }
