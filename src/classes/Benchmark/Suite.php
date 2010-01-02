@@ -69,13 +69,25 @@ class Suite
      * Adds a new test to this instance
      *
      * @param \r8\Benchmark $benchmark The benchmark to add to this suite
-     * @return \r8\Benchmark\Suite
+     * @return \r8\Benchmark\Suite Returns a self reference
      */
     public function addBenchmark ( \r8\Benchmark $benchmark )
     {
         if ( !in_array($benchmark, $this->benchmarks, TRUE) )
             $this->benchmarks[] = $benchmark;
         return $this;
+    }
+
+    /**
+     * Helper method for construction a benchmark object and adding it to this suite
+     *
+     * @return \r8\Benchmark\Suite Returns a self reference
+     */
+    public function add ( $name, $test )
+    {
+        return $this->addBenchmark(
+            new \r8\Benchmark( $name, $test )
+        );
     }
 
     /**

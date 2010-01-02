@@ -93,6 +93,20 @@ class classes_Benchmark_Suite extends PHPUnit_Framework_TestCase
         $this->assertSame( array($mark1, $mark2), $suite->getBenchmarks() );
     }
 
+    public function testAdd ()
+    {
+        $suite = new \r8\Benchmark\Suite;
+
+        $this->assertSame( $suite, $suite->add( "test", function () {} ) );
+
+        $tests = $suite->getBenchmarks();
+        $this->assertSame( 1, count($tests) );
+        $this->assertArrayHasKey( 0, $tests );
+
+        $this->assertThat( $tests[0], $this->isInstanceOf( '\r8\Benchmark' ) );
+        $this->assertSame( "test", $tests[0]->getName() );
+    }
+
     public function testRun_Empty ()
     {
         $suite = new \r8\Benchmark\Suite;
