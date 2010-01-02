@@ -198,7 +198,7 @@ class Quoter
         }
         else {
 
-            $close = \r8\arrayVal( $close );
+            $close = (array) $close;
             $close = \r8\ary\flatten( $close );
             $close = \r8\ary\stringize( $close );
             $close = \r8\ary\compact( $close, \r8\ALLOW_SPACES );

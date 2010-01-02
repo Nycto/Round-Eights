@@ -290,7 +290,7 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 
     $string = (string) $string;
 
-    $quotes = \r8\arrayVal( $quotes );
+    $quotes = (array) $quotes;
     $quotes = \r8\ary\flatten( $quotes );
     $quotes = \array_map( 'trim', $quotes );
     $quotes = \array_unique($quotes);

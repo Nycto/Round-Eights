@@ -76,7 +76,7 @@ class Ary extends \r8\Filter
      */
     public function filter ( $value )
     {
-        $value = \r8\arrayVal($value);
+        $value = (array) $value;
 
         foreach( $value AS $key => $val ) {
             $value[ $key ] = $this->filter->filter( $val );
