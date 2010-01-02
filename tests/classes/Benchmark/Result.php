@@ -33,9 +33,26 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Benchmark_Result extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct_Error ()
+    {
+        try {
+            new \r8\Benchmark\Result( "  " );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+    }
+
+    public function testGetName ()
+    {
+        $result = new \r8\Benchmark\Result( "test" );
+        $this->assertSame( "test", $result->getName() );
+    }
+
     public function testAddTime ()
     {
-        $result = new \r8\Benchmark\Result;
+        $result = new \r8\Benchmark\Result( "test" );
         $this->assertSame( array(), $result->getTimes() );
 
         $this->assertSame( $result, $result->addTime(0.5) );
@@ -47,7 +64,7 @@ class classes_Benchmark_Result extends PHPUnit_Framework_TestCase
 
     public function testCount ()
     {
-        $result = new \r8\Benchmark\Result;
+        $result = new \r8\Benchmark\Result( "test" );
         $this->assertSame( 0, $result->count() );
 
         $result->addTime(0.5);
@@ -61,7 +78,7 @@ class classes_Benchmark_Result extends PHPUnit_Framework_TestCase
 
     public function testGetTotalTime ()
     {
-        $result = new \r8\Benchmark\Result;
+        $result = new \r8\Benchmark\Result( "test" );
         $this->assertSame( 0, $result->getTotalTime() );
 
         $result->addTime(0.5);
@@ -75,7 +92,7 @@ class classes_Benchmark_Result extends PHPUnit_Framework_TestCase
 
     public function testGetAverageTime ()
     {
-        $result = new \r8\Benchmark\Result;
+        $result = new \r8\Benchmark\Result( "test" );
         $this->assertSame( 0, $result->getAverageTime() );
 
         $result->addTime(0.5);

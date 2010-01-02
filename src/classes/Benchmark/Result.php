@@ -39,6 +39,38 @@ class Result implements \Countable
     private $times = array();
 
     /**
+     * The name of this test
+     *
+     * @var String
+     */
+    private $name;
+
+    /**
+     * Constructor...
+     *
+     * @param String $name The name of the test
+     */
+    public function __construct ( $name )
+    {
+        $name = trim( (string) $name );
+
+        if ( empty($name) )
+            throw new \r8\Exception\Argument(0, "Test Name", "Must not be empty");
+
+        $this->name = $name;
+    }
+
+    /**
+     * Returns the name of this test
+     *
+     * @return String
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+    /**
      * Returns the list of times in which this test ran
      *
      * @return Array The list of run times in seconds
