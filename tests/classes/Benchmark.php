@@ -36,7 +36,15 @@ class classes_Benchmark extends PHPUnit_Framework_TestCase
     public function testConstruct_Error ()
     {
         try {
-            new \r8\Benchmark( "Not a method" );
+            new \r8\Benchmark( "  ", "Not a method" );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Must not be empty", $err->getMessage() );
+        }
+
+        try {
+            new \r8\Benchmark( "test", "Not a method" );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument $err ) {
@@ -44,9 +52,15 @@ class classes_Benchmark extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetName ()
+    {
+        $bench = new \r8\Benchmark( "test", function () {} );
+        $this->assertSame( "test", $bench->getName() );
+    }
+
     public function testRun ()
     {
-        $bench = new \r8\Benchmark( function () {} );
+        $bench = new \r8\Benchmark( "test", function () {} );
 
         $result = $bench->run();
         $this->assertThat( $result, $this->isInstanceOf( '\r8\Benchmark\Result' ) );

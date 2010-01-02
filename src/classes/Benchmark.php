@@ -32,6 +32,13 @@ class Benchmark
 {
 
     /**
+     * The name of this test
+     *
+     * @var String
+     */
+    private $name;
+
+    /**
      * The test function to run
      *
      * @var Mixed
@@ -41,14 +48,31 @@ class Benchmark
     /**
      * Constructor...
      *
+     * @param String $name The name of this test
      * @param Mixed $test The test function to run
      */
-    public function __construct ( $test )
+    public function __construct ( $name, $test )
     {
+        $name = trim( (string) $name );
+
+        if ( empty($name) )
+            throw new \r8\Exception\Argument(0, "Test Name", "Must not be empty");
+
         if ( !is_callable($test) )
-            throw new \r8\Exception\Argument(0, "Test Function", "Must be callable");
+            throw new \r8\Exception\Argument(1, "Test Function", "Must be callable");
 
         $this->test = $test;
+        $this->name = $name;
+    }
+
+    /**
+     * Returns the name of this test
+     *
+     * @return String
+     */
+    public function getName ()
+    {
+        return $this->name;
     }
 
     /**
