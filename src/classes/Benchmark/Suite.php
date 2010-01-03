@@ -121,10 +121,16 @@ class Suite
             echo "    No tests found\n";
 
         foreach ( $resultList AS $result ) {
-            echo "    Test: ". $result->getName() ."\n"
-                ."        Total Time: ". $result->getTotalTime() ." seconds\n"
-                ."        Iterations: ". $result->count() ."\n"
-                ."        Average Time: ". $result->getAverageTime() ." seconds\n";
+            printf(
+                "    Test: %s\n"
+                ."        Total Time: %.10f seconds\n"
+                ."        Iterations: %d\n"
+                ."        Average Time: %.10f seconds\n",
+                $result->getName(),
+                $result->getTotalTime(),
+                $result->count(),
+                $result->getAverageTime()
+            );
         }
 
         return $this;
@@ -152,12 +158,19 @@ class Suite
             echo "<tr><td colspan='4'>No tests found</td></tr>\n";
 
         foreach ( $resultList AS $result ) {
-            echo "<tr>\n"
-                ."<td>". htmlspecialchars( $result->getName() ) ."</td>\n"
-                ."<td>". htmlspecialchars( $result->getTotalTime() ) ." seconds</td>\n"
-                ."<td>". htmlspecialchars( $result->count() ) ."</td>\n"
-                ."<td>". htmlspecialchars( $result->getAverageTime() ) ." seconds</td>\n"
-                ."</tr>\n";
+
+            printf(
+                "<tr>\n"
+                ."<td>%s</td>\n"
+                ."<td>%.10f seconds</td>\n"
+                ."<td>%d</td>\n"
+                ."<td>%.10f seconds</td>\n"
+                ."</tr>\n",
+                htmlspecialchars( $result->getName() ),
+                htmlspecialchars( $result->getTotalTime() ),
+                htmlspecialchars( $result->count() ),
+                htmlspecialchars( $result->getAverageTime() )
+            );
         }
 
         echo "</table>\n";
