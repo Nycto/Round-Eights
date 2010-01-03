@@ -361,18 +361,12 @@ function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
  */
 function startsWith ($string, $head, $ignoreCase = TRUE)
 {
-    $string = (string) $string;
     $head = (string) $head;
 
-    // Not isEmpty because it's okay if it is filled with spaces.
-    // True is returned because all strings start with an empty character.
-    if (empty($head))
-        return TRUE;
-
-    $stringHead = substr($string, 0, strlen($head));
-
-    return \r8\str\compare($stringHead, $head, $ignoreCase) == 0?TRUE:FALSE;
-
+    if ( $ignoreCase )
+        return strcasecmp( substr( (string) $string, 0, strlen($head) ), $head ) == 0;
+    else
+        return substr( (string) $string, 0, strlen($head) ) === $head;
 }
 
 /**
