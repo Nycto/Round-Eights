@@ -379,19 +379,12 @@ function startsWith ($string, $head, $ignoreCase = TRUE)
  */
 function endsWith ($string, $tail, $ignoreCase = TRUE)
 {
-
-    $string = (string) $string;
     $tail = (string) $tail;
 
-    // not isEmpty because it's okay if it is filled with spaces
-    // all strings end with an empty character...
-    if (empty($tail))
-        return TRUE;
-
-    $stringTail = substr($string, 0 - strlen($tail));
-
-    return \r8\str\compare($stringTail, $tail, $ignoreCase) == 0?TRUE:FALSE;
-
+    if ( $ignoreCase )
+        return strcasecmp( substr( (string) $string, 0 - strlen($tail) ), $tail ) == 0;
+    else
+        return substr( (string) $string, 0 - strlen($tail) ) === $tail;
 }
 /**
  * Adds a tail to a string if it doesn't already exist
