@@ -419,18 +419,12 @@ function stripTail ($string, $tail, $ignoreCase = TRUE)
     $string = (string) $string;
     $tail = (string) $tail;
 
-    // not isEmpty because it's okay if it is filled with spaces
-    if (empty($tail))
+    if ( !\r8\str\endsWith($string, $tail, $ignoreCase))
         return $string;
 
-    if ( \r8\str\endsWith($string, $tail, $ignoreCase))
-        $string = substr($string, 0, 0 - strlen($tail));
-
-    if ($string === FALSE)
-        $string = "";
-
-    return $string;
+    return substr($string, 0, 0 - strlen($tail)) ?: "";
 }
+
 /**
  * Adds a head to a string if it doesn't already exist
  *
@@ -461,20 +455,13 @@ function head ($string, $head, $ignoreCase = TRUE)
  */
 function stripHead ($string, $head, $ignoreCase = TRUE)
 {
-    $string = (string) \r8\reduce($string );
-    $head = (string) \r8\reduce($head );
+    $string = (string) $string;
+    $head = (string) $head;
 
-    // not isEmpty because it's okay if it is filled with spaces
-    if (empty($head))
+    if ( !\r8\str\startsWith($string, $head, $ignoreCase) )
         return $string;
 
-    if (\r8\str\startsWith($string, $head, $ignoreCase))
-        $string = substr($string, strlen($head));
-
-    if ($string === FALSE)
-        $string = "";
-
-    return $string;
+    return substr($string, strlen( $head )) ?: "";
 }
 
 /**
