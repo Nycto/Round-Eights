@@ -101,11 +101,14 @@ class Autoload
     {
         $class = "\\". trim( (string) $class, " \\" );
 
-        foreach ( $this->map AS $prefix => $location )
-        {
-            if ( \r8\str\startsWith($class, '\\'. $prefix .'\\') )
-            {
-                $file = \r8\str\stripHead( $class, '\\'. $prefix .'\\' );
+        foreach ( $this->map AS $prefix => $location ) {
+
+            $prefix = '\\'. $prefix .'\\';
+            $prefixLen = strlen( $prefix );
+
+            // If the class name starts with this prefix, try to apply this rule
+            if ( strcasecmp( substr($class, 0, $prefixLen), $prefix ) == 0 ) {
+                $file = substr( $class, $prefixLen );
                 $file = str_replace('\\', '/', $file);
                 $file = $location ."/". $file .".php";
                 if ( file_exists($file) )
