@@ -53,7 +53,7 @@ class Func extends \r8\Query\Atom
      */
     public function __construct ( $func )
     {
-        $func = \r8\str\stripW( $func, \r8\str\ALLOW_UNDERSCORES );
+        $func = \r8\str\stripW( $func, "_" );
         $func = strtoupper( $func );
 
         if ( empty($func) )

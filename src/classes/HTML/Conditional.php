@@ -58,7 +58,7 @@ class Conditional extends \r8\HTML\Node
      */
     public function setCondition ( $condition )
     {
-        $condition = trim( \r8\str\stripW($condition, \r8\str\ALLOW_SPACES) );
+        $condition = trim( \r8\str\stripW($condition, " ") );
 
         if ( \r8\isEmpty($condition) )
             throw new \r8\Exception\Argument(0, "Condition", "Must not be empty");

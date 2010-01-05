@@ -100,7 +100,7 @@ class Aliased implements \r8\iface\Query\Selectable
      */
     public function setAlias ( $alias )
     {
-        $alias = \r8\str\stripW( $alias, \r8\str\ALLOW_UNDERSCORES );
+        $alias = \r8\str\stripW( $alias, "_" );
 
         $this->alias = empty($alias) ? NULL : $alias;
 

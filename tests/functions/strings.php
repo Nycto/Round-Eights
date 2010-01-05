@@ -194,40 +194,35 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
     public function testStripW ()
     {
+        $this->assertSame( "", \r8\str\stripW("") );
+
         $this->assertEquals(
                 "123abc",
                 \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc")
             );
         $this->assertEquals(
                 "  1 23 a bc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \r8\str\ALLOW_SPACES)
+                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " ")
             );
         $this->assertEquals(
                 "  1_ 23 a bc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \r8\str\ALLOW_SPACES | \r8\str\ALLOW_UNDERSCORES)
+                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " _")
             );
         $this->assertEquals(
                 "12\n3ab\rc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \r8\str\ALLOW_NEWLINES)
+                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", "\n\r")
             );
-        $this->assertEquals(
-                "12\n3ab\rc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \r8\str\ALLOW_NEWLINES)
-            );
-        $this->assertEquals(
-                "123\tabc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", \r8\str\ALLOW_TABS)
-            );
-        $this->assertEquals(
-                "123-abc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <->?a )))b\rc", \r8\str\ALLOW_DASHES)
-            );
+    }
+
+    public function testStripNoPrint ()
+    {
+        $this->assertSame( "", \r8\str\stripNoPrint("") );
 
         $chars = implode("", array_map( 'chr', range(0, 255) ));
         $this->assertSame(
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
                 ."\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
-                \r8\str\stripW($chars, \r8\str\ALLOW_ASCII)
+                \r8\str\stripNoPrint($chars)
             );
     }
 

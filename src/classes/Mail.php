@@ -175,7 +175,7 @@ class Mail
      */
     public function setFromName ( $name )
     {
-        $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+        $name = trim( \r8\str\stripNoPrint( $name ) );
 
         $this->fromName = \r8\isEmpty($name) ? NULL : $name;
 
@@ -280,7 +280,7 @@ class Mail
         r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
-            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = trim( \r8\str\stripNoPrint( $name ) );
             $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
@@ -371,7 +371,7 @@ class Mail
         r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
-            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = trim( \r8\str\stripNoPrint( $name ) );
             $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
@@ -462,7 +462,7 @@ class Mail
         r8(new \r8\Validator\Email)->ensure( $email );
 
         if ( !\r8\isVague( $name ) ) {
-            $name = trim( \r8\str\stripW( $name, \r8\str\ALLOW_ASCII ) );
+            $name = trim( \r8\str\stripNoPrint( $name ) );
             $name = \r8\isEmpty($name) ? NULL : $name;
         }
 
@@ -549,7 +549,7 @@ class Mail
         // Strip out any new lines or tabs
         $subject = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $subject );
 
-        $subject = trim( \r8\str\stripW( $subject, \r8\str\ALLOW_ASCII ) );
+        $subject = trim( \r8\str\stripNoPrint( $subject ) );
 
         $this->subject = \r8\isEmpty($subject) ? NULL : $subject;
 
@@ -598,7 +598,7 @@ class Mail
         // Strip out any new lines or tabs
         $messageID = str_replace( array("\r\n", "\r", "\n", "\t"), " ", $messageID );
 
-        $messageID = trim( \r8\str\stripW( $messageID, \r8\str\ALLOW_ASCII ) );
+        $messageID = trim( \r8\str\stripNoPrint( $messageID ) );
 
         $this->messageID = \r8\isEmpty($messageID) ? NULL : $messageID;
 

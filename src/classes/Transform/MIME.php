@@ -206,7 +206,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
      */
     public function setInputEncoding ( $charset )
     {
-        $charset = \r8\str\stripW($charset, \r8\str\ALLOW_DASHES);
+        $charset = \r8\str\stripW($charset, "-");
 
         if ( \r8\isEmpty($charset) )
             throw new \r8\Exception\Argument(0, "Character Set", "Must not be empty");
@@ -253,7 +253,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
      */
     public function setOutputEncoding ( $charset )
     {
-        $charset = \r8\str\stripW($charset, \r8\str\ALLOW_DASHES);
+        $charset = \r8\str\stripW($charset, "-");
 
         if ( \r8\isEmpty($charset) )
             throw new \r8\Exception\Argument(0, "Character Set", "Must not be empty");

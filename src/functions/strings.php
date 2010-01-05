@@ -159,40 +159,32 @@ function unshout ($string)
 /**
  * Removes everything but letters and numbers from a string
  *
- * named after the regular expression used
+ * This method is named after the regular expression control character used to
+ * represent alpha-numeric characters
  *
  * @param String $string The value being processed
- * @param Integer $flags Allows you to adjust how str::stripW handles different characters. Allowed flags are:
- *  - ALLOW_TABS
- *  - ALLOW_NEWLINES
- *  - ALLOW_SPACES
- *  - ALLOW_UNDERSCORES
- *  - ALLOW_DASHES
- *  - ALLOW_ASCII
+ * @param String $allow Any additional characters to allow
  * @return String Returns the stripped string
  */
-function stripW ($string, $flags = 0)
+function stripW ($string, $allow = "")
 {
+    $allow = (string) $allow;
 
-    $flags = max( intval( \r8\reduce($flags)), 0 );
+    if ( $allow !== "" )
+        $allow = preg_quote($allow);
 
-    // ALLOW_ASCII trumps all the other flags
-    if ( $flags & \r8\str\ALLOW_ASCII ) {
-        return preg_replace( '/[^\x20-\x7E]/', '', (string) $string );
-    }
-    else {
-        return preg_replace(
-                "/[^a-z0-9"
-                .($flags & \r8\str\ALLOW_TABS?"\t":"")
-                .($flags & \r8\str\ALLOW_NEWLINES?"\n\r":"")
-                .($flags & \r8\str\ALLOW_SPACES?" ":"")
-                .($flags & \r8\str\ALLOW_UNDERSCORES?"_":"")
-                .($flags & \r8\str\ALLOW_DASHES?'\-':"")
-                ."]/i",
-                NULL,
-                $string
-            );
-    }
+    return preg_replace( "/[^a-z0-9". $allow ."]/i", "", (string) $string );
+}
+
+/**
+ * Strips all non-printable characters from a string
+ *
+ * @param String $string The value being processed
+ * @return String Returns the stripped string
+ */
+function stripNoPrint ($string)
+{
+    return preg_replace( '/[^\x20-\x7E]/', '', (string) $string );
 }
 
 /**
