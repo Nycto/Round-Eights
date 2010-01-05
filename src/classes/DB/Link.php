@@ -426,7 +426,7 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function setPort ( $port )
     {
-        $port = intval( \r8\reduce( $port ) );
+        $port = (int) $port;
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }

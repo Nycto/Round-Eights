@@ -121,8 +121,7 @@ function defineIf ($constant, $value)
  */
 function isEmpty ($value, $flags = 0)
 {
-
-    $flags = max(intval(\r8\reduce($flags)), 0);
+    $flags = max( (int) $flags, 0 );
 
     // Use the default empty function, if we can
     // Note that empty() considers the string '0' to be empty and this function doesn't

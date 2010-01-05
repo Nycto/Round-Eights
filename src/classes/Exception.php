@@ -193,7 +193,7 @@ class Exception extends \Exception
         if ( !$this->issetFault() )
             return $this->setFault(0);
 
-        $shift = intval(reduce($shift));
+        $shift = (int) $shift;
 
         $trace = $this->getTrace();
 

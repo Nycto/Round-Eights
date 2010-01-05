@@ -121,7 +121,7 @@ function flatten ( array $array, $maxDepth = 1 )
         return $output;
     };
 
-    $maxDepth = max(intval(\r8\reduce($maxDepth)), 1);
+    $maxDepth = max( (int) $maxDepth, 1);
 
     return $flatten( $array, $maxDepth, $flatten );
 }

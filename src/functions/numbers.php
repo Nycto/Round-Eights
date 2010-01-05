@@ -159,9 +159,9 @@ function limit ($value, $low, $high)
  */
 function intWrap ($value, $lower, $upper)
 {
-    $value = intval( \r8\reduce($value) );
-    $lower = intval( \r8\reduce($lower) );
-    $upper = intval( \r8\reduce($upper) );
+    $value = (int) $value;
+    $lower = (int) $lower;
+    $upper = (int) $upper;
 
     if ($lower == $upper)
         return $lower;
