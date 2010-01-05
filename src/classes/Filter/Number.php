@@ -56,10 +56,10 @@ class Number extends \r8\Filter
         if ( is_object($value) )
             return 1;
 
-        if ( floatval( $value ) == (int) $value )
+        if ( (float) $value == (int) $value )
             return (int) $value;
         else
-            return floatval( $value );
+            return (float) $value;
     }
 
 }

@@ -56,7 +56,7 @@ class Float extends \r8\Filter
         if ( is_object($value) )
             return 1.0;
 
-        return floatval( $value );
+        return (float) $value;
     }
 
 }
