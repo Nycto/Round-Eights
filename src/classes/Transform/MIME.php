@@ -130,7 +130,7 @@ abstract class MIME implements \r8\iface\Transform\Encode
      */
     public function setLineLength ( $length )
     {
-        $this->length = max( intval( $length ), 0 );
+        $this->length = max( (int) $length, 0 );
         return $this;
     }
 

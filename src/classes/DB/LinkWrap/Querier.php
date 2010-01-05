@@ -46,7 +46,7 @@ class Querier extends \r8\DB\LinkWrap
      */
     public function query ( $query, $flags = 0 )
     {
-        $flags = intval( $flags );
+        $flags = (int) $flags;
         $query = (string) $query;
 
         try {
@@ -270,7 +270,7 @@ class Querier extends \r8\DB\LinkWrap
         if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
 
-        return intval( $this->getField("cnt", $query, 0, $flags) );
+        return (int) $this->getField("cnt", $query, 0, $flags );
     }
 
 }

@@ -65,7 +65,7 @@ class Quoter
             return false;
 
         $string = (string) $string;
-        $offset = intval( $offset );
+        $offset = (int) $offset;
 
         if ( $offset > strlen( $string ) )
             return false;

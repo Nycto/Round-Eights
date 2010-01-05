@@ -56,8 +56,8 @@ class Number extends \r8\Filter
         if ( is_object($value) )
             return 1;
 
-        if ( floatval( $value ) == intval( $value ) )
-            return intval( $value );
+        if ( floatval( $value ) == (int) $value )
+            return (int) $value;
         else
             return floatval( $value );
     }

@@ -57,7 +57,7 @@ class Integer extends \r8\Filter
         if ( is_object($value) )
             return 1;
 
-        return intval( $value );
+        return (int) $value;
 
     }
 

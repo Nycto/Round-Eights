@@ -191,7 +191,7 @@ function numVal ($value)
     if (is_int($value) || is_float($value))
         return $value;
     $value = \r8\reduce($value);
-    return intval($value) == floatval($value)?intval($value):floatval($value);
+    return (int) $value == floatval($value)?(int) $value:floatval($value);
 }
 
 /**
@@ -212,7 +212,7 @@ function indexVal ( $value )
         return $value;
 
     else if ( is_float($value) || is_bool($value) )
-        return intval($value);
+        return (int) $value;
 
     else
         return (string) $value;

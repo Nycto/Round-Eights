@@ -270,7 +270,7 @@ function offset ( array $array, $offset, $wrapFlag = \r8\ary\OFFSET_RESTRICT )
  */
 function compact ( array $array, $flags = 0 )
 {
-    $flags = max( intval($flags), 0 );
+    $flags = max( (int) $flags, 0 );
 
     // Create the callback to apply to each sub-array
     $compact = function ( $array, &$compact ) use ( $flags ) {

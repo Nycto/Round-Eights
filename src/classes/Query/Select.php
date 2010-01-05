@@ -644,7 +644,7 @@ class Select
      */
     public function setLimit ( $limit )
     {
-        $this->limit = intval($limit);
+        $this->limit = (int) $limit;
 
         if ( $this->limit <= 0 )
             $this->limit = null;
@@ -691,7 +691,7 @@ class Select
      */
     public function setOffset ( $offset )
     {
-        $this->offset = intval($offset);
+        $this->offset = (int) $offset;
 
         if ( $this->offset <= 0 )
             $this->offset = null;

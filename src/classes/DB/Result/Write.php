@@ -51,11 +51,11 @@ class Write extends \r8\DB\Result
     public function __construct ( $affected, $insertID, $query )
     {
         if ( !\r8\isVague($insertID) ) {
-            $insertID = intval($insertID);
+            $insertID = (int) $insertID;
             $this->insertID = $insertID > 0 ? $insertID : NULL;
         }
 
-        $this->affected = max( intval( $affected ), 0 );
+        $this->affected = max( (int) $affected, 0 );
 
         parent::__construct($query);
     }

@@ -199,7 +199,7 @@ class DateTime
      */
     public function setTimeStamp ( $timestamp )
     {
-        $this->time = intval($timestamp);
+        $this->time = (int) $timestamp;
         return $this;
     }
 
@@ -425,7 +425,7 @@ class DateTime
 
         // If it is an integer, set it as a unix timestamp
         if (is_int($input) || is_float($input) ) {
-            $this->time = intval( $input );
+            $this->time = (int) $input;
         }
 
         else if ($input instanceof \r8\DateTime) {
@@ -484,14 +484,14 @@ class DateTime
             case self::UNIT_YEARS:
 
                 $ary = $this->getArray();
-                $ary[ $unit ] += intval( $value );
+                $ary[ $unit ] += (int) $value;
 
                 $this->setArray( $ary );
 
                 // If there is a fraction involved, we need to calculate the length of the unit
                 // Because the length of these particular units changes,
                 // we do it relative to the current value.
-                if ( intval($value) != $value ) {
+                if ( (int) $value != $value ) {
 
                     $copy = clone $this;
 
@@ -505,7 +505,7 @@ class DateTime
                     $diff = abs( $copy->getTimeStamp() - $this->getTimeStamp() );
 
                     // Multiply it by the decimal of the original value to
-                    $diff *= $value - intval($value);
+                    $diff *= $value - (int) $value;
 
                     // Then add that many seconds on to the current date
                     $this->add($diff, self::UNIT_SECONDS);
@@ -530,7 +530,7 @@ class DateTime
                 $value *= 60;
 
             case self::UNIT_SECONDS:
-                $this->time += intval( $value );
+                $this->time += (int) $value;
                 break;
         }
 
@@ -588,7 +588,7 @@ class DateTime
      */
     public function set ( $unit, $value )
     {
-        $value = intval( $value );
+        $value = (int) $value;
 
         switch ( self::normalizeUnit( $unit ) ) {
 
@@ -630,9 +630,9 @@ class DateTime
     public function setTime ( $hours, $minutes, $seconds )
     {
         return $this->setArray(array(
-                "hours" => intval( $hours ),
-                "minutes" => intval( $minutes ),
-                "seconds" => intval( $seconds ),
+                "hours" => (int) $hours,
+                "minutes" => (int) $minutes,
+                "seconds" => (int) $seconds,
             ));
     }
 
@@ -649,9 +649,9 @@ class DateTime
     public function setDate ( $year, $month, $day )
     {
         $ary = array(
-                "year" => intval( $year ),
-                "month" => intval( $month),
-                "day" => intval( $day),
+                "year" => (int) $year,
+                "month" => (int) $month,
+                "day" => (int) $day,
             );
 
         if ( !isset($this->time) )
@@ -675,12 +675,12 @@ class DateTime
     public function setDateTime ( $year, $month, $day, $hour, $minutes, $seconds )
     {
         $this->time = mktime(
-                intval( $hour ),
-                intval( $minutes ),
-                intval( $seconds ),
-                intval( $month ),
-                intval( $day ),
-                intval( $year )
+                (int) $hour,
+                (int) $minutes,
+                (int) $seconds,
+                (int) $month,
+                (int) $day,
+                (int) $year
             );
 
         return $this;

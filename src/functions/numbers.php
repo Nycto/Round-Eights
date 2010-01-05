@@ -257,12 +257,12 @@ function numWrap ($value, $lower, $upper, $useLower = TRUE)
 function offsetWrap ($length, $offset, $wrapFlag)
 {
 
-    $length = intval( $length );
+    $length = (int) $length;
 
     if ( $length <= 0 )
         throw new \r8\Exception\Index($offset, "Offset", "List is empty");
 
-    $offset = intval( \r8\reduce($offset) );
+    $offset = (int) \r8\reduce($offset );
 
     switch ($wrapFlag) {
 

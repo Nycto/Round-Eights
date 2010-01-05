@@ -54,7 +54,7 @@ class URL extends \r8\Validator
      */
     public function __construct ( $flags = 0 )
     {
-        $this->flags = max( intval($flags), 0 );
+        $this->flags = max( (int) $flags, 0 );
     }
 
     /**

@@ -165,7 +165,7 @@ abstract class Curry implements \r8\iface\Filter
      */
     public function setOffset ( $offset )
     {
-        $this->offset = intval($offset);
+        $this->offset = (int) $offset;
         return $this;
     }
 
@@ -198,7 +198,7 @@ abstract class Curry implements \r8\iface\Filter
      */
     public function setLimit ( $limit )
     {
-        $this->limit = intval($limit);
+        $this->limit = (int) $limit;
         return $this;
     }
 

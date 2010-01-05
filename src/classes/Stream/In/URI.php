@@ -91,7 +91,7 @@ class URI implements \r8\iface\Stream\In
         if ( !$this->canRead() )
             return NULL;
 
-        $bytes = max( intval($bytes), 0 );
+        $bytes = max( (int) $bytes, 0 );
 
         if ( $bytes == 0 )
             return "";

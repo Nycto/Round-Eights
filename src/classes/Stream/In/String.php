@@ -84,7 +84,7 @@ class String implements \r8\iface\Stream\In
         if ( !$this->canRead() )
             return NULL;
 
-        $bytes = intval( $bytes );
+        $bytes = (int) $bytes;
 
         $result = substr( $this->string, $this->pointer, $bytes );
 

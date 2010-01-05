@@ -80,13 +80,13 @@ class Memcache implements \r8\iface\Cache
         if ( \r8\isEmpty($this->host) )
             throw new \r8\Exception\Argument(0, "Memcache Host", "Must not be empty");
 
-        $this->port = intval( $port );
+        $this->port = (int) $port;
         if ( $this->port < 0 )
             throw new \r8\Exception\Argument(1, "Memcache Port", "Must be at least 0");
 
         $this->persistent = (bool) $persistent;
 
-        $this->timeout = intval( $timeout );
+        $this->timeout = (int) $timeout;
         if ( $this->timeout <= 0 )
             throw new \r8\Exception\Argument(1, "Memcache Port", "Must be greater than 0");
     }

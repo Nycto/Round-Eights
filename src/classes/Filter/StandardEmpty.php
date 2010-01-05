@@ -76,7 +76,7 @@ class StandardEmpty extends \r8\Filter
      */
     public function setFlags ( $flags )
     {
-        $this->flags = max( intval($flags), 0 );
+        $this->flags = max( (int) $flags, 0 );
         return $this;
     }
 
@@ -90,7 +90,7 @@ class StandardEmpty extends \r8\Filter
      */
     public function addFlags ( $flags )
     {
-        $flags = max( intval($flags), 0 );
+        $flags = max( (int) $flags, 0 );
         $this->flags = $this->flags | $flags;
         return $this;
     }

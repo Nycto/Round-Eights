@@ -85,10 +85,10 @@ class CMWC extends \r8\Random
         $long = bcadd( $long, $this->carry );
 
         // Pull the low order bits as the next random number
-        $this->num = ( self::MAX_INT - 1 ) - intval( bcmod( $long, self::MAX_INT ) );
+        $this->num = ( self::MAX_INT - 1 ) - (int) bcmod( $long, self::MAX_INT );
 
         // Pull the high order bits as the next carry value
-        $this->carry = intval( bcdiv( $long, self::MAX_INT ) );
+        $this->carry = (int) bcdiv( $long, self::MAX_INT );
 
         return $this->num;
     }

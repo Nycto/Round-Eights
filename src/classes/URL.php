@@ -465,7 +465,7 @@ class URL
      */
     public function setPort ( $port )
     {
-        $port = intval($port);
+        $port = (int) $port;
         $this->port = $port <= 0 ? null : $port;
         return $this;
     }

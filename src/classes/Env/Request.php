@@ -189,7 +189,7 @@ class Request implements \r8\iface\Env\Request
 
         // Pull the port
         if ( self::hasKey($this->server, "SERVER_PORT") )
-            $url->setPort( intval( $this->server['SERVER_PORT'] ) );
+            $url->setPort( (int) $this->server['SERVER_PORT'] );
 
         // The path and file name
         if ( self::hasKey($this->server, 'SCRIPT_NAME') )

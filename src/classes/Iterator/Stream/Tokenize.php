@@ -85,7 +85,7 @@ class Tokenize implements \Iterator
     {
         $this->stream = $stream;
         $this->delim = (string) $delim;
-        $this->bytes = max( \intval( $bytes ), 1 );
+        $this->bytes = max( (int) $bytes, 1 );
     }
 
     /**

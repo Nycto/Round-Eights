@@ -50,7 +50,7 @@ class MinLength extends \r8\Validator
      */
     public function __construct( $length )
     {
-        $this->length = max( intval($length), 0 );
+        $this->length = max( (int) $length, 0 );
     }
 
     /**

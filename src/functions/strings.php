@@ -49,7 +49,7 @@ const ALLOW_ASCII = 128;
  */
 function int2Ordinal ($integer)
 {
-    $integer = (string) intval($integer);
+    $integer = (string) (int) $integer;
 
     if ( \r8\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
         return $integer ."th";
@@ -244,7 +244,7 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
     $maxLength = max( $maxLength, 1 );
 
     // If they didn't define a trimTo, then default it to 2/3 the max length
-    if ( \r8\isVague($trimTo) || intval($trimTo) <= 0 )
+    if ( \r8\isVague($trimTo) || (int) $trimTo <= 0 )
         $trimTo = ceil($maxLength * (2 / 3));
 
     // The trimTo length can't be greater than the max length
@@ -571,7 +571,7 @@ function truncate ($string, $maxLength, $delimiter = '...')
     $delimiter = (string) $delimiter;
 
     // The maxLength must be at LEAST the length of the delimiter, plus a character on both sides
-    $maxLength = max( intval($maxLength), strlen($delimiter) + 2 );
+    $maxLength = max( (int) $maxLength, strlen($delimiter) + 2 );
 
     if (strlen( $string ) <= $maxLength)
         return $string;
