@@ -249,6 +249,11 @@ class functions_strings extends PHPUnit_Framework_TestCase
             );
 
         $this->assertEquals(
+                " a string with repeats",
+                \r8\str\stripRepeats('  a   string with   repeats', ' ')
+            );
+
+        $this->assertEquals(
                 "start T tyty yyyy end",
                 \r8\str\stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
             );

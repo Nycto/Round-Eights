@@ -197,7 +197,6 @@ function stripNoPrint ($string)
  */
 function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
 {
-
     if (is_array($repeated) ) {
 
         $repeated = \r8\ary\flatten($repeated);
@@ -212,7 +211,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         $repeated = preg_quote((string) $repeated, '/');
     }
 
-    if ( \r8\isEmpty( $repeated ) )
+    if ( \r8\isEmpty( $repeated, \r8\ALLOW_SPACES ) )
         throw new \r8\Exception\Argument(1, 'Repeated', 'Must not be empty');
 
     return preg_replace(
@@ -222,6 +221,7 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
         );
 
 }
+
 /**
  * Collapses long words down with elipses
  *
