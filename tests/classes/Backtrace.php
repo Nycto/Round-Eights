@@ -237,6 +237,17 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( __FUNCTION__, $first->getName() );
     }
 
+	public function testDump ()
+	{
+		ob_start();
+		\r8\Backtrace::dump();
+		$result = ob_get_clean();
+
+		$this->assertGreaterThan( 0, strlen($result) );
+		$this->assertContains("testDump", $result);
+		$this->assertNotContains('\r8\Backtrace', $result);
+	}
+
 }
 
 ?>

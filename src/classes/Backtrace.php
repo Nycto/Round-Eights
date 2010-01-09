@@ -78,6 +78,22 @@ class Backtrace implements \IteratorAggregate, \Countable
     }
 
     /**
+     * A helper method that dumps the current backtrace to the client
+     *
+     * @return NULL
+     */
+    static public function dump ()
+    {
+        if ( \r8\Env::request()->isCLI() )
+            $format = new \r8\Backtrace\Formatter\Text;
+        else
+            $format = new \r8\Backtrace\Formatter\HTML;
+
+        echo r8(new \r8\Backtrace\Formatter( $format ) )
+            ->format( self::create()->popEvent() );
+    }
+
+    /**
      * Returns the Events in this backtrace
      *
      * @return Array An array of \r8\Backtrace\Event
