@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
+class classes_Iterator_Debug extends PHPUnit_Framework_TestCase
 {
     
     public function testIterate ()
