@@ -30,7 +30,7 @@ namespace r8\iface\DB\Adapter;
 /**
  * Database Result adapter
  */
-interface Result extends \Countable
+interface Result
 {
 
     /**

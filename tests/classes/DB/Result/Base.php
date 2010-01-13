@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,40 +22,29 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package Database
+ * @package UnitTests
  */
 
-namespace r8\DB;
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
- * Database Query Result
+ * unit tests
  */
-abstract class Result
+class classes_DB_Result_Base extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * The query associated with these results
-     */
-    private $query;
-
-    /**
-     * Constructor...
-     *
-     * @param String $query The query that produced this result
-     */
-    public function __construct ( $query )
+    public function testConstruct ()
     {
-        $this->query = (string) $query;
-    }
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
 
-    /**
-     * Returns the query associated with this result
-     *
-     * @return String
-     */
-    public function getQuery ()
-    {
-        return $this->query;
+        $mock = $this->getMock(
+            '\r8\DB\Result\Base',
+            array( '_mock' ),
+            array( "SELECT * FROM table", $adapter )
+        );
+
+        $this->assertSame( "SELECT * FROM table", $mock->getQuery() );
+        $this->assertSame( $adapter, $mock->getAdapter() );
     }
 
 }
