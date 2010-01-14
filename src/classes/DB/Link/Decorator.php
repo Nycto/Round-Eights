@@ -23,23 +23,25 @@
  * @package Database
  */
 
-namespace r8\DB;
+namespace r8\DB\Link;
 
 /**
- * Base wrapper for increasing the functionality of a database Link
+ * Base decorator for increasing the functionality of a database Link
  */
-abstract class LinkWrap implements \r8\iface\DB\Link
+abstract class Decorator implements \r8\iface\DB\Link
 {
 
     /**
      * The Link this decorator wraps around
+     *
+     * @var \r8\iface\DB\Link
      */
     private $link;
 
     /**
      * Constructor...
      *
-     * @param Object $link The database Link this instance wraps around
+     * @param \r8\iface\DB\Link $link The database Link this instance wraps around
      */
     public function __construct ( \r8\iface\DB\Link $link )
     {
@@ -49,28 +51,11 @@ abstract class LinkWrap implements \r8\iface\DB\Link
     /**
      * Returns the Link this instance wraps
      *
-     * @return Object
+     * @return \r8\iface\DB\Link
      */
     public function getLink ()
     {
         return $this->link;
-    }
-
-    /**
-     * Walks the chain of link wraps until a leaf is found, which is then returned
-     *
-     * @return Object Returns a \r8\iface\DB\Link instance
-     */
-    public function getTopLink ()
-    {
-        $link = $this->link;
-
-        // walk the chain until we find something that isn't a link wrap
-        while ( $link instanceof \r8\DB\LinkWrap ) {
-            $link = $link->getLink();
-        }
-
-        return $link;
     }
 
     /**
@@ -113,20 +98,6 @@ abstract class LinkWrap implements \r8\iface\DB\Link
     public function escape ( $value, $allowNull = TRUE )
     {
         return $this->link->escape( $value, $allowNull );
-    }
-
-    /**
-     * Escapes a string to be used in a query
-     *
-     * If this function is given an array, it will apply itself to every value
-     * in the array and return that array.
-     *
-     * @param String $value The value to escape
-     * @return String|Array
-     */
-    public function escapeString ( $value )
-    {
-        return $this->link->escapeString( $value );
     }
 
 }

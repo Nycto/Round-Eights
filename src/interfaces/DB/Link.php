@@ -35,10 +35,9 @@ interface Link
      * Runs a query and returns the result
      *
      * @param String $query The query to run
-     * @param Integer $flags Any boolean flags to set
      * @returns \r8\DB\Result Returns a result object
      */
-    public function query ( $query, $flags = 0 );
+    public function query ( $query );
 
     /**
      * Quotes a variable to be used in a query

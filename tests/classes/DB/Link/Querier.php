@@ -30,68 +30,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
+class classes_DB_Link_Querier extends PHPUnit_Framework_TestCase
 {
-
-    public function testQuery ()
-    {
-        $link = $this->getMock( '\r8\iface\DB\Link' );
-
-        $query = new \r8\DB\LinkWrap\Querier( $link );
-
-
-        $link->expects( $this->at(0) )
-            ->method("query")
-            ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
-            ->will( $this->returnValue("Result Set") );
-
-        $this->assertSame( "Result Set", $query->query("SELECT * FROM table") );
-
-
-        $link->expects( $this->at(0) )
-            ->method("query")
-            ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(5) )
-            ->will( $this->returnValue("Result Set") );
-
-        $this->assertSame( "Result Set", $query->query("SELECT * FROM table", 5) );
-
-
-        $link->expects( $this->at(0) )
-            ->method("query")
-            ->with( $this->equalTo("SELECT * FROM table"), $this->equalTo(0) )
-            ->will( $this->throwException(
-                    new \r8\Exception\DB\Query("SELECT * FROM table", "test exception")
-                ) );
-
-        try {
-            $query->query("SELECT * FROM table");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\DB\Query $err ) {
-            $this->assertSame("test exception", $err->getMessage());
-        }
-
-
-        $link->expects( $this->at(0) )
-            ->method("query")
-            ->with(
-                    $this->equalTo("SELECT * FROM table"),
-                    $this->equalTo( \r8\DB\LinkWrap\Querier::SILENT )
-                )
-            ->will( $this->throwException(
-                    new \r8\Exception\DB\Query("SELECT * FROM table", "test exception")
-                ) );
-
-        $this->assertFalse(
-                $query->query("SELECT * FROM table", \r8\DB\LinkWrap\Querier::SILENT)
-            );
-    }
 
     public function testBegin ()
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -105,7 +51,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -119,7 +65,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $link->expects( $this->once() )
             ->method("query")
@@ -133,7 +79,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
 
         $link->expects( $this->at(0) )
@@ -175,7 +121,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         try {
             $query->insert( "", array() );
@@ -199,7 +145,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $link->expects($this->once())
             ->method("query")
@@ -228,7 +174,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $link->expects($this->once())
             ->method("query")
@@ -254,7 +200,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         try {
             $query->update( "", null, array() );
@@ -278,7 +224,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $result = new \r8\DB\Result\Write(1, null, "UPDATE");
 
@@ -307,7 +253,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         $result = new \r8\DB\Result\Write(1, null, "UPDATE");
 
@@ -336,7 +282,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
 
         $link->expects($this->once())
@@ -358,47 +304,43 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
-        $result = $this->getMock(
-                '\r8\DB\Result\Read',
-                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
-                array(null, "SELECT * FROM table")
-            );
+        $result = $this->getMock( '\r8\iface\DB\Result\Read' );
 
         $link->expects($this->once())
             ->method("query")
             ->with( $this->equalTo("SELECT * FROM table" ) )
             ->will( $this->returnValue( $result ));
 
+        $result->expects( $this->once() )
+            ->method("count")
+            ->will( $this->returnValue(5));
 
         $result->expects( $this->once() )
-            ->method("rawSeek")
-            ->with( $this->equalTo(0) )
+            ->method("seek")
+            ->with( $this->equalTo(0) );
+
+        $result->expects( $this->once() )
+            ->method("current")
             ->will( $this->returnValue(array( 'one', 'two' )));
 
         $result->expects( $this->once() )
-            ->method("rawCount")
-            ->will( $this->returnValue(5));
+            ->method("free");
 
         $this->assertSame(
                 array( 'one', 'two' ),
                 $query->getRow( "SELECT * FROM table" )
             );
-
     }
 
     public function testGetRow_otherRow ()
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
-        $result = $this->getMock(
-                '\r8\DB\Result\Read',
-                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
-                array(null, "SELECT * FROM table")
-            );
+        $result = $this->getMock( '\r8\iface\DB\Result\Read' );
 
         $link->expects($this->once())
             ->method("query")
@@ -407,18 +349,24 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
 
         $result->expects( $this->once() )
-            ->method("rawSeek")
-            ->with( $this->equalTo(3) )
-            ->will( $this->returnValue(array( 'one', 'two' )));
-
-        $result->expects( $this->once() )
-            ->method("rawCount")
+            ->method("count")
             ->will( $this->returnValue(5));
 
+        $result->expects( $this->once() )
+            ->method("seek")
+            ->with( $this->equalTo(3) );
+
+        $result->expects( $this->once() )
+            ->method( "current" )
+            ->will( $this->returnValue( array( 'one', 'two' ) ) );
+
+        $result->expects( $this->once() )
+            ->method("free");
+
         $this->assertSame(
-                array( 'one', 'two' ),
-                $query->getRow( "SELECT * FROM table", 3 )
-            );
+            array( 'one', 'two' ),
+            $query->getRow( "SELECT * FROM table", 3 )
+        );
 
     }
 
@@ -426,13 +374,9 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
-        $result = $this->getMock(
-                '\r8\DB\Result\Read',
-                array("rawCount", "rawFetch", "rawSeek", "rawFields", "rawFree"),
-                array(null, "SELECT * FROM table")
-            );
+        $result = $this->getMock( '\r8\iface\DB\Result\Read' );
 
         $link->expects($this->once())
             ->method("query")
@@ -441,23 +385,20 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
 
 
         $result->expects( $this->never() )
-            ->method("rawSeek");
+            ->method("seek");
 
         $result->expects( $this->once() )
-            ->method("rawCount")
+            ->method("count")
             ->will( $this->returnValue(0));
 
-        $this->assertFalse(
-                $query->getRow( "SELECT * FROM table" )
-            );
-
+        $this->assertNull( $query->getRow( "SELECT * FROM table" ) );
     }
 
     public function testGetField_errors ()
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         try {
             $query->getField( "", "SELECT * FROM TABLE");
@@ -473,7 +414,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
 
         $link->expects($this->once())
@@ -496,7 +437,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -521,7 +462,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -546,7 +487,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -568,7 +509,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -591,7 +532,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
-        $query = new \r8\DB\LinkWrap\Querier( $link );
+        $query = new \r8\DB\Link\Querier( $link );
 
         try {
             $query->count( "" );
@@ -608,7 +549,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );
@@ -627,7 +568,7 @@ class classes_db_linkwrap_querier extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $query = $this->getMock(
-                '\r8\DB\LinkWrap\Querier',
+                '\r8\DB\Link\Querier',
                 array("getRow"),
                 array( $link )
             );

@@ -25,12 +25,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 
 /**
  * unit tests
  */
-class classes_db_linkwrap extends PHPUnit_Framework_TestCase
+class classes_DB_Link_Decorator extends PHPUnit_Framework_TestCase
 {
 
     public function testGetLink ()
@@ -38,7 +38,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
+                '\r8\DB\Link\Decorator',
                 array("_mock"),
                 array( $link )
             );
@@ -46,44 +46,12 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
         $this->assertSame( $link, $mock->getLink() );
     }
 
-    public function testGetTopLink_shallow ()
-    {
-        $link = $this->getMock( '\r8\iface\DB\Link' );
-
-        $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
-                array("_mock"),
-                array( $link )
-            );
-
-        $this->assertSame( $link, $mock->getTopLink() );
-    }
-
-    public function testGetTopLink_deep ()
-    {
-        $link = $this->getMock( '\r8\iface\DB\Link' );
-
-        $mock1 = $this->getMock(
-                '\r8\DB\LinkWrap',
-                array("_mock"),
-                array( $link )
-            );
-
-        $mock2 = $this->getMock(
-                '\r8\DB\LinkWrap',
-                array("_mock"),
-                array( $mock1 )
-            );
-
-        $this->assertSame( $link, $mock2->getTopLink() );
-    }
-
     public function testQuery ()
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
+                '\r8\DB\Link\Decorator',
                 array("_mock"),
                 array( $link )
             );
@@ -101,7 +69,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
+                '\r8\DB\Link\Decorator',
                 array("_mock"),
                 array( $link )
             );
@@ -126,7 +94,7 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
         $link = $this->getMock( '\r8\iface\DB\Link' );
 
         $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
+                '\r8\DB\Link\Decorator',
                 array("_mock"),
                 array( $link )
             );
@@ -144,24 +112,6 @@ class classes_db_linkwrap extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("escaped") );
 
         $this->assertSame( "escaped", $mock->escape("raw value", FALSE) );
-    }
-
-    public function testEscapeString ()
-    {
-        $link = $this->getMock( '\r8\iface\DB\Link' );
-
-        $link->expects( $this->once() )
-            ->method( "escapeString" )
-            ->with( $this->equalTo("raw value") )
-            ->will( $this->returnValue("escaped") );
-
-        $mock = $this->getMock(
-                '\r8\DB\LinkWrap',
-                array("_mock"),
-                array( $link )
-            );
-
-        $this->assertSame( "escaped", $mock->escapeString("raw value") );
     }
 
 }

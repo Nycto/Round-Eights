@@ -23,52 +23,18 @@
  * @package Database
  */
 
-namespace r8\DB\LinkWrap;
+namespace r8\DB\Link;
 
 /**
- * Link wrapper to provide advanced
+ * Link decorator that provides an extended interface for executing query
  */
-class Querier extends \r8\DB\LinkWrap
+class Querier extends \r8\DB\Link\Decorator
 {
-
-    /**
-     * Query Flags
-     */
-    const SILENT = 1;
-    const INSERT_IGNORE = 2;
-
-    /**
-     * Runs a query and returns the result
-     *
-     * @param String $query The query to run
-     * @param Integer $flags Any boolean flags to set
-     * @return \r8\DB\Result Returns a result object
-     */
-    public function query ( $query, $flags = 0 )
-    {
-        $flags = (int) $flags;
-        $query = (string) $query;
-
-        try {
-            return $this->getLink()->query( $query, $flags );
-        }
-        catch (\r8\Exception\DB\Query $err) {
-
-            if ( !( $flags & self::SILENT) ) {
-                $err->shiftFault();
-                throw $err;
-            }
-
-            return FALSE;
-
-        }
-
-    }
 
     /**
      * Marks the start of a transaction
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Link\Querier Returns a self reference
      */
     public function begin ()
     {
@@ -79,7 +45,7 @@ class Querier extends \r8\DB\LinkWrap
     /**
      * Commits a transaction
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Link\Querier Returns a self reference
      */
     public function commit ()
     {
@@ -90,7 +56,7 @@ class Querier extends \r8\DB\LinkWrap
     /**
      * Rolls back the current transaction
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Link\Querier Returns a self reference
      */
     public function rollBack ()
     {
@@ -128,10 +94,9 @@ class Querier extends \r8\DB\LinkWrap
      *
      * @param String $table The table to insert into
      * @param Array|Object $fields The associative array of fields to insert
-     * @param Integer $flags Any query flags to use
      * @return Integer Returns the ID of the inserted row
      */
-    public function insert ( $table, $fields, $flags = 0 )
+    public function insert ( $table, $fields )
     {
         $table = (string) $table;
 
@@ -140,7 +105,7 @@ class Querier extends \r8\DB\LinkWrap
 
         $query = "INSERT INTO ". $table ." SET ". $this->getFieldList($fields);
 
-        $result = $this->query($query, $flags);
+        $result = $this->query($query);
 
         if ( $result === FALSE )
             return FALSE;
@@ -158,10 +123,9 @@ class Querier extends \r8\DB\LinkWrap
      * @param String $table The table to update
      * @param String $where Any WHERE clause restrictions to place on the query
      * @param Array|Object $fields The associative array of fields update
-     * @param Integer $flags Any query flags to use
-     * @return Object Returns a Result object
+     * @return \r8\iface\DB\Result Returns a Result object
      */
-    public function update ($table, $where, $fields, $flags = 0)
+    public function update ($table, $where, $fields)
     {
         $table = (string) $table;
 
@@ -175,7 +139,7 @@ class Querier extends \r8\DB\LinkWrap
         if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
 
-        return $this->query($query, $flags);
+        return $this->query($query);
     }
 
     /**
@@ -185,14 +149,14 @@ class Querier extends \r8\DB\LinkWrap
      *
      * @param String $query The query to execute
      * @param Integer $row The row of a multi-result set to pull the field from
-     * @param Integer $flags Any query flags to use
-     * @return mixed Returns the row of the result, or returns FALSE if no results were returned
+     * @return Mixed Returns the row of the result, or returns NULL if
+     *      no results were returned
      */
-    public function getRow ($query, $row = 0, $flags = 0)
+    public function getRow ($query, $row = 0)
     {
-        $result = $this->query($query, $flags);
+        $result = $this->query($query);
 
-        if ( !($result instanceof \r8\DB\Result\Read) ) {
+        if ( !($result instanceof \r8\iface\DB\Result\Read) ) {
             $err = new \r8\Exception\Interaction("Query did not a valid Read result object");
             $err->addData("Query", $query);
             $err->addData("Returned Result", \r8\getDump($result));
@@ -200,9 +164,11 @@ class Querier extends \r8\DB\LinkWrap
         }
 
         if ($result->count() <= 0)
-            return FALSE;
+            return NULL;
 
-        $value = $result->seek( $row )->current();
+        $result->seek( $row );
+
+        $value = $result->current();
 
         $result->free();
 
@@ -217,16 +183,17 @@ class Querier extends \r8\DB\LinkWrap
      * @param String $field The field to return
      * @param String $query The query to execute
      * @param Integer $row The row of a multi-result set to pull the field from
-     * @return mixed Returns the value of the field, or FALSE if no results were returned
+     * @return Mixed Returns the value of the field, or NULL if no results
+     *      were returned
      */
-    public function getField ($field, $query, $row = 0, $flags = 0)
+    public function getField ($field, $query, $row = 0)
     {
         $field = (string) $field;
 
         if ( \r8\isEmpty($field) )
             throw new \r8\Exception\Argument( 0, "Field", "Must not be empty" );
 
-        $result = $this->getRow( $query, $row, $flags );
+        $result = $this->getRow( $query, $row );
 
         if ( !is_array($result) && !($result instanceof \ArrayAccess) ) {
             $err = new \r8\Exception\Interaction("Row was not an array or accessable as an array");
@@ -253,10 +220,9 @@ class Querier extends \r8\DB\LinkWrap
      *
      * @param String $table The table to update
      * @param String $where Any WHERE clause restrictions to place on the query
-     * @param Integer $flags Any query flags to use
      * @return Integer Returns the number of counted rows
      */
-    public function count ($table, $where = FALSE, $flags = 0)
+    public function count ($table, $where = FALSE)
     {
         $table = (string) $table;
 
@@ -270,7 +236,7 @@ class Querier extends \r8\DB\LinkWrap
         if ( !\r8\isEmpty($where) )
             $query .= " WHERE ". $where;
 
-        return (int) $this->getField("cnt", $query, 0, $flags );
+        return (int) $this->getField("cnt", $query, 0 );
     }
 
 }
