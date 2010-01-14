@@ -66,6 +66,14 @@ interface Link
      * @return Boolean
      */
     public function isConnected ();
+
+    /**
+     * Returns the name of the extension required to utilize this link
+     *
+     * @return String|NULL Returns NULL if no specific extension is required
+     */
+    public function getExtension ();
+
 }
 
 ?>
