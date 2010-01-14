@@ -28,16 +28,20 @@ namespace r8\DB\Result;
 /**
  * Database Read Query Results
  */
-class Write extends \r8\DB\Result
+class Write extends \r8\DB\Result\Base
 {
 
     /**
      * This is the cached value of the affected number of rows
+     *
+     * @var Integer
      */
     private $affected;
 
     /**
      * This is the cached value of the insert ID
+     *
+     * @var Integer
      */
     private $insertID;
 
@@ -63,7 +67,7 @@ class Write extends \r8\DB\Result
     /**
      * Returns the number of rows affected by a query
      *
-     * @return Integer|False
+     * @return Integer
      */
     public function getAffected ()
     {
@@ -73,7 +77,7 @@ class Write extends \r8\DB\Result
     /**
      * Returns the ID of the row inserted by this query
      *
-     * @return Integer|False This will return FALSE if no ID is returned
+     * @return Integer|NULL This will return NULL if no ID is returned
      */
     public function getInsertID ()
     {

@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_db_result_write extends PHPUnit_Framework_TestCase
+class classes_DB_Result_Write extends PHPUnit_Framework_TestCase
 {
 
     public function testGetAffected ()
