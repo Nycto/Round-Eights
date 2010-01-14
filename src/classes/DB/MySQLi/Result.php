@@ -28,7 +28,7 @@ namespace r8\DB\MySQLi;
 /**
  * MySQLi Database read result
  */
-class Read extends \r8\DB\Result\Read
+class Result implements \r8\iface\DB\Adapter\Result
 {
 
     /**
@@ -36,39 +36,17 @@ class Read extends \r8\DB\Result\Read
      *
      * @return Integer
      */
-    protected function rawCount ()
+    public function count ()
     {
-        return $this->getResult()->num_rows;
-    }
-
-    /**
-     * Internal method to fetch the next row in a result set
-     *
-     * @return Array Returns the field values
-     */
-    protected function rawFetch ()
-    {
-        return $this->getResult()->fetch_assoc();
-    }
-
-    /**
-     * Internal method to seek to a specific row in a result resource
-     *
-     * @param Integer $offset The offset to seek to
-     * @return Array Returns the field values
-     */
-    protected function rawSeek ($offset)
-    {
-        $this->getResult()->data_seek($offset);
-        return $this->rawFetch();
+        return $this->result->num_rows;
     }
 
     /**
      * Internal method to get a list of field names returned
      *
-     * @return Array
+     * @return Integer
      */
-    protected function rawFields ()
+    public function getFields ()
     {
         $fields = $this->getResult()->fetch_fields();
 
@@ -80,13 +58,53 @@ class Read extends \r8\DB\Result\Read
     }
 
     /**
+     * Internal method to fetch the next row in a result set
+     *
+     * @return Array Returns the field values
+     */
+    public function fetch ()
+    {
+        return $this->getResult()->fetch_assoc();
+    }
+
+    /**
+     * Internal method to seek to a specific row in a result resource
+     *
+     * @param Integer $offset The offset to seek to
+     * @return Array Returns the field values
+     */
+    public function seek ($offset)
+    {
+        $this->getResult()->data_seek($offset);
+    }
+
+    /**
+     * Returns the number of rows affected by this query
+     *
+     * @return Integer
+     */
+    public function getAffected ()
+    {
+
+    }
+
+    /**
+     * Returns the Insert ID
+     *
+     * @return Integer
+     */
+    public function getInsertID ()
+    {
+
+    }
+
+    /**
      * Internal method to free the result resource
      *
      * @return null
      */
-    protected function rawFree ()
+    public function free ()
     {
-        $result = $this->getResult();
         $result->free();
     }
 
