@@ -26,10 +26,21 @@
 namespace r8\DB\BlackHole;
 
 /**
- * A Database connection that simply throws away any input it is given
+ * A Database connection that throws away any input it is given
+ *
+ * This has the ability to load Results into a queue, which will then be returned
+ * as Select statements come in. Once the queue runs out, empty results will
+ * be returned.
  */
 class Link implements \r8\iface\DB\Adapter\Link
 {
+    
+    /**
+     * The queue of result objects to return when a select query is executed
+     *
+     * @var Array An array of \r8\iface\DB\Adapter\Result objects
+     */
+    private $queue = array();
 
     /**
      * An internal counter to keep track of the dished out insert ids
@@ -37,6 +48,48 @@ class Link implements \r8\iface\DB\Adapter\Link
      * @var Integer
      */
     private $insertID = 0;
+    
+    /**
+     * Constructor...
+     *
+     * @param \r8\iface\DB\Adapter\Result $result... Any results to import into
+     *      this link
+     */
+    public function __construct ()
+    {
+        if ( func_num_args() > 0 ) {
+            $args = func_get_args();
+            foreach ( $args AS $arg ) {
+                if ( $arg instanceof \r8\iface\DB\Adapter\Result )
+                    $this->addResult( $arg );
+            }
+        }
+    }
+    
+    /**
+     * Returns the Queue of results currently loaded in this instance
+     *
+     * @return Array An array of \r8\iface\DB\Adapter\Result objects
+     */
+    public function getQueue ()
+    {
+       return $this->queue;
+    }
+    
+    /**
+     * Adds a new result to be returned at the end of the queue
+     *
+     * The results will be returned in a first-in/first-out manner when a select
+     * query is run against this link
+     *
+     * @param \r8\iface\DB\Adapter\Result $result The result to return
+     * @return \r8\DB\BlackHole\Link Returns a self reference
+     */
+    public function addResult ( \r8\iface\DB\Adapter\Result $result )
+    {
+        $this->queue[] = $result;
+        return $this;
+    }
 
     /**
      * Opens a new connection to the server
@@ -71,10 +124,13 @@ class Link implements \r8\iface\DB\Adapter\Link
         $query = (string) $query;
 
         if ( \r8\DB\Link::isSelect($query) ) {
-            return new \r8\DB\Result\Read(
-                new \r8\DB\BlackHole\Result,
-                $query
-            );
+            
+            if ( empty($this->queue) )
+                $result = new \r8\DB\BlackHole\Result;
+            else
+                $result = array_shift( $this->queue );
+            
+            return new \r8\DB\Result\Read( $result, $query );
         }
 
         else if ( \r8\DB\Link::isInsert($query) ) {

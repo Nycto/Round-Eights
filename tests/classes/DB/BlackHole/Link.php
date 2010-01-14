@@ -33,6 +33,31 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertSame( array(), $link->getQueue() );
+
+        $adapter1 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter2 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $link = new \r8\DB\BlackHole\Link( $adapter1, $adapter2 );
+        $this->assertSame( array($adapter1, $adapter2), $link->getQueue() );
+    }
+
+    public function testAddResult ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertSame( array(), $link->getQueue() );
+
+        $adapter1 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $this->assertSame( $link, $link->addResult( $adapter1 ) );
+        $this->assertSame( array($adapter1), $link->getQueue() );
+        
+        $adapter2 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $this->assertSame( $link, $link->addResult( $adapter2 ) );
+        $this->assertSame( array($adapter1, $adapter2), $link->getQueue() );
+    }
+
     public function testConnect ()
     {
         $link = new \r8\DB\BlackHole\Link;
@@ -45,11 +70,37 @@ class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
         $this->assertSame( "\\'escape\\'", $link->escape("'escape'") );
     }
 
-    public function testQuery_Select ()
+    public function testQuery_SelectNoQueue ()
     {
         $link = new \r8\DB\BlackHole\Link;
         $result = $link->query("SELECT * FROM table");
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Read') );
+        $this->assertSame( 0, $result->count() );
+    }
+
+    public function testQuery_SelectFromQueue ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+
+        $adapter1 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $link->addResult( $adapter1 );
+
+        $adapter2 = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $link->addResult( $adapter2 );
+
+        $result1 = $link->query("SELECT * FROM table");
+        $this->assertThat( $result1, $this->isInstanceOf('\r8\DB\Result\Read') );
+        $this->assertSame( $adapter1, $result1->getAdapter() );
+
+        $result2 = $link->query("SELECT * FROM table");
+        $this->assertThat( $result2, $this->isInstanceOf('\r8\DB\Result\Read') );
+        $this->assertSame( $adapter2, $result2->getAdapter() );
+
+        $result3 = $link->query("SELECT * FROM table");
+        $this->assertThat( $result3, $this->isInstanceOf('\r8\DB\Result\Read') );
+        $this->assertNotSame( $adapter1, $result3->getAdapter() );
+        $this->assertNotSame( $adapter2, $result3->getAdapter() );
+        $this->assertSame( 0, $result3->count() );
     }
 
     public function testQuery_Insert ()
