@@ -450,4 +450,104 @@ function stringize ( array $array )
     return array_map( 'strval', $array );
 }
 
+/**
+ * Returns the offset of a given key
+ *
+ * This will throw an exception if the key is not found in the array
+ *
+ * @param Array $array The array to operate on
+ * @param Mixed $key The key to look up
+ * @return Integer Returns the offset of the key
+ */
+function keyOffset ( array $array, $key )
+{
+    $key = \r8\indexVal( $key );
+
+    if ( !array_key_exists($key, $array) )
+        throw new \r8\Exception\Argument(1, "Key", "Key does not exist");
+
+    return array_search( $key, array_keys( $array ) );
+}
+
+/**
+ * Returns the offset of the pointer in an array
+ *
+ * @param Array $array The array to operate on
+ * @return Integer|NULL Returns the offset, or NULL if the array is empty
+ */
+function pointer ( array &$array )
+{
+    if ( empty($array) )
+        return NULL;
+
+    return \r8\ary\keyOffset( $array, key($array) );
+}
+
+/**
+ * Sets the internal array pointer to a specific offset
+ *
+ * @param Array $array The array to operate on
+ * @param Integer $offset The offset to seek to
+ * @param Integer $wrapFlag How to handle offsets outside the array range
+ * @return Mixed Returns the value at the given offset. NULL will be returned
+ *      if the given array is empty
+ */
+function seek ( array &$array, $offset, $wrapFlag = FALSE )
+{
+    $count = count( $array ) - 1;
+
+    if ( $count == -1 )
+        return NULL;
+
+    $offset = \r8\ary\calcOffset( $array, $offset, $wrapFlag );
+
+    // escape from the easy out
+    if ($offset == 0)
+        return reset( $array );
+
+    if ($offset == $count)
+        return end( $array );
+
+    // Get the position of the current pointer
+    $pointer = \r8\ary\pointer( $array );
+
+    // If we are already at our destination...
+    if ($pointer == $offset)
+        return current( $array );
+
+    // If the point we are seeking to is closer to the beginning than it is
+    // to the end or to the current pointer position, seek from the start
+    if ($offset < abs($pointer - $offset) && $offset < abs($count - $offset)) {
+        reset( $array );
+        $pointer = 0;
+    }
+
+    // If the point we are seeking to is closer to the end than the start or
+    // the current pointer position, seek from the end
+    else if (abs($count - $offset) < abs($pointer - $offset)) {
+        end( $array );
+        $pointer = $count;
+    }
+
+    // If we are seeking backward
+    if ($pointer > $offset) {
+
+        // seek to the before final point
+        for ($pointer--; $pointer >= $offset; $pointer--) {
+            prev( $array );
+        }
+    }
+
+    // If we are seeking forward
+    else {
+
+        // seek to the final point
+        for ($pointer++; $pointer <= $offset; $pointer++) {
+            next( $array );
+        }
+    }
+
+    return current( $array );
+}
+
 ?>

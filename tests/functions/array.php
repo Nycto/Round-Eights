@@ -513,6 +513,88 @@ class functions_array extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testKeyOffset ()
+    {
+        $ary = array(
+            4 => "zero", 2 => "one", 8 => "two", 32 => "three",
+            16 => "four", 64 => "five"
+        );
+
+        $this->assertEquals( 0, \r8\ary\keyOffset( $ary, 4 ) );
+        $this->assertEquals( 5, \r8\ary\keyOffset( $ary, 64 ) );
+        $this->assertEquals( 3, \r8\ary\keyOffset( $ary, 32 ) );
+
+        try {
+            \r8\ary\keyOffset( $ary, 65432 );
+            $this->fail('An expected exception has not been raised.');
+        }
+        catch ( \r8\Exception\Argument $err ) {
+            $this->assertSame( "Key does not exist", $err->getMessage() );
+        }
+    }
+
+    public function testPointer ()
+    {
+        $ary = \range(0, 19);
+        $this->assertEquals( 0, \r8\ary\pointer( $ary ) );
+
+        end( $ary );
+        $this->assertEquals( 19, \r8\ary\pointer( $ary ) );
+
+        prev( $ary );
+        prev( $ary );
+        prev( $ary );
+        $this->assertEquals( 16, \r8\ary\pointer( $ary ) );
+    }
+
+    public function testSeek ()
+    {
+        // Test setting the pointer to the end of the array
+        $ary = array();
+        $this->assertSame( NULL, \r8\ary\seek($ary, 0) );
+
+
+
+        $ary = range(100, 119);
+
+        // Test setting the pointer to the end of the array
+        $this->assertSame( 119, \r8\ary\seek($ary, -1) );
+        $this->assertEquals( 119, current( $ary ) );
+
+
+        // Test setting it to the beginning
+        $this->assertSame( 100, \r8\ary\seek( $ary, 0 ) );
+        $this->assertEquals( 100, current( $ary ) );
+
+
+        // Test seeking to the current location of the pointer
+        next( $ary );
+        next( $ary );
+        next( $ary );
+        $this->assertSame( 103, \r8\ary\seek( $ary, 3 ) );
+        $this->assertEquals( 103, current( $ary ) );
+
+
+        // Test seeking to a point closest to the end of the array
+        $this->assertSame( 117, \r8\ary\seek( $ary, 17 ) );
+        $this->assertEquals( 117, current( $ary ) );
+
+
+        // Test seeking to a point closest to the beginning of the array
+        $this->assertSame( 105, \r8\ary\seek( $ary, 5 ) );
+        $this->assertEquals( 105, current( $ary ) );
+
+
+        // Test seeking forward when the closest point is the current pointer
+        $this->assertSame( 107, \r8\ary\seek( $ary, 7 ) );
+        $this->assertEquals( 107, current( $ary ) );
+
+
+        // Test seeking backward when the closest point is the current pointer
+        $this->assertSame( 106, \r8\ary\seek( $ary, 6 ) );
+        $this->assertEquals( 106, current( $ary ) );
+    }
+
 }
 
 ?>
