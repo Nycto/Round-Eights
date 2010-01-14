@@ -35,7 +35,7 @@ class classes_query_atom extends PHPUnit_Framework_TestCase
 
     public function testToOrderedSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $atom = $this->getMock("r8\Query\Atom", array("toAtomSQL"));
         $atom->expects( $this->once() )
@@ -48,7 +48,7 @@ class classes_query_atom extends PHPUnit_Framework_TestCase
 
     public function testToSelectSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $atom = $this->getMock("r8\Query\Atom", array("toAtomSQL"));
         $atom->expects( $this->once() )

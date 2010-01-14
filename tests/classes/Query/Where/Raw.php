@@ -50,7 +50,7 @@ class classes_query_where_raw extends PHPUnit_Framework_TestCase
 
     public function testToWhereSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $clause = new \r8\Query\Where\Raw("Value");
         $this->assertSame( "Value", $clause->toWhereSQL( $link ) );

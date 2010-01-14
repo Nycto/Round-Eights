@@ -111,7 +111,7 @@ class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
 
     public function testToOrderedSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $atom = new \r8\Query\Atom\Field("fld");
         $alias = new \r8\Query\Expr\Ordered( $atom );

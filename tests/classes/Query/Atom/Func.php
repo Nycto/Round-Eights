@@ -97,7 +97,7 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
 
     public function testToAtomSQL_withArgs ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $fld = new \r8\Query\Atom\Func(
         		"Func",

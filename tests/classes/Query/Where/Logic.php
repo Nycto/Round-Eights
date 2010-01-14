@@ -149,7 +149,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $logic->addClause( $this->getTestClause( 10, "Lower" ) );
 
         // Run the actual conversion
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"Higher DELIM (Lower) DELIM Higher DELIM (Lower)",
                 $logic->toWhereSQL( $link )
@@ -166,7 +166,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $logic->addClause( $this->getTestClause( 20, "Equals3" ) );
 
         // Run the actual conversion
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"Equals1 DELIM Equals2 DELIM Equals3",
                 $logic->toWhereSQL( $link )
@@ -183,7 +183,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $logic->addClause( $this->getTestClause( 30, "Higher" ) );
 
         // Run the actual conversion
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"(Lower) DELIM Higher",
                 $logic->toWhereSQL( $link )

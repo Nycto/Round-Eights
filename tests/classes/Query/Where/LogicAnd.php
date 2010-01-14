@@ -81,7 +81,7 @@ class classes_query_where_logicand extends PHPUnit_Framework_TestCase
         // Create an equal precedence WHERE clause
         $and->addClause( $this->getTestClause(70, "Equals") );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"(Lower) AND Higher AND Equals",
                 $and->toWhereSQL( $link )

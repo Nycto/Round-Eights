@@ -51,7 +51,7 @@ class classes_query_atom_primitive extends PHPUnit_Framework_TestCase
 
     public function testToAtomSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $prim = new \r8\Query\Atom\Primitive( 20 );
         $this->assertSame( "20", $prim->toAtomSQL( $link ) );

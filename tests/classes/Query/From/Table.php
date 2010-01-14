@@ -154,7 +154,7 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
     public function testToFromSQL ()
     {
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $table = new \r8\Query\From\Table( "table" );
 
         $this->assertSame( "`table`", $table->toFromSQL($link) );

@@ -80,7 +80,7 @@ class classes_query_where_logicor extends PHPUnit_Framework_TestCase
         // Create an equal precedence WHERE clause
         $or->addClause( $this->getTestClause(50, "Equals") );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"(Lower) OR Higher OR Equals",
                 $or->toWhereSQL( $link )

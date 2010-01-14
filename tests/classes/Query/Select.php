@@ -528,7 +528,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \r8\Query\Select;
         $select->setDistinct( TRUE );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT DISTINCT *",
@@ -541,7 +541,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \r8\Query\Select;
         $select->setFoundRows( TRUE );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT SQL_CALC_FOUND_ROWS *",
@@ -556,7 +556,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select->addField( new \r8\Query\Atom\Field("field1") );
         $select->addField( new \r8\Query\Atom\Field("fld2") );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"SELECT `field1`, `fld2`",
                 $select->toSQL( $link )
@@ -571,7 +571,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("`table`") );
 
         $select = new \r8\Query\Select( $from );
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -590,7 +590,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \r8\Query\Select;
         $select->setWhere( $where );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -606,7 +606,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select->addOrder( new \r8\Query\Atom\Field("field1") );
         $select->addOrder( new \r8\Query\Atom\Field("fld2") );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"SELECT *\n"
     			."ORDER BY `field1`, `fld2`",
@@ -621,7 +621,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select->addGroup( new \r8\Query\Atom\Field("field1") );
         $select->addGroup( new \r8\Query\Atom\Field("fld2") );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
         		"SELECT *\n"
     			."GROUP BY `field1`, `fld2`",
@@ -639,7 +639,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \r8\Query\Select;
         $select->setHaving( $where );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -653,7 +653,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select = new \r8\Query\Select;
         $select->setLimit( 20 );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -668,7 +668,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $select->setLimit( 20 );
         $select->setOffset( 100 );
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT *\n"
@@ -717,7 +717,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->setOffset( 100 );
 
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
@@ -743,7 +743,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->having("COUNT(*) = 2")
             ->limit(20, 100);
 
-        $link = new \r8\DB\BlackHole\Link;
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
         		"SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"
