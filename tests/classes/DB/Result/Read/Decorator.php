@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../../general.php";
 /**
  * unit tests
  */
-class classes_db_result_read_decorator extends PHPUnit_Framework_TestCase
+class classes_DB_Result_Read_Decorator extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -200,6 +200,21 @@ class classes_db_result_read_decorator extends PHPUnit_Framework_TestCase
         $dec = $this->getTestDecorator( $result );
 
         $this->assertSame( $dec, $dec->free() );
+    }
+
+    public function testGetQuery ()
+    {
+        $result = $this->getMock('r8\iface\DB\Result\Read');
+        $result->expects( $this->once() )
+            ->method('getQuery')
+            ->will( $this->returnValue( "SELECT 1 + 1" ) );
+
+        $dec = $this->getTestDecorator( $result );
+
+        PHPUnit_Framework_Constraint_SQL::assert(
+            "SELECT 1 + 1",
+            $result->getQuery()
+        );
     }
 
 }

@@ -201,6 +201,16 @@ abstract class Decorator implements \r8\iface\DB\Result\Read
         return $this;
     }
 
+    /**
+     * Returns the query used to generate this result
+     *
+     * @return String
+     */
+    public function getQuery ()
+    {
+        return $this->decorated->getQuery();
+    }
+
 }
 
 ?>
