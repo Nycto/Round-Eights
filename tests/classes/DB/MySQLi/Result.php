@@ -98,7 +98,8 @@ class classes_DB_Mysqli_Result extends PHPUnit_Framework_TestCase
 
     public function tearDown ()
     {
-        $this->db->close();
+        if ( $this->db )
+            $this->db->close();
     }
 
     /**
