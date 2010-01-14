@@ -23,39 +23,49 @@
  * @package Database
  */
 
-namespace r8\DB;
+namespace r8\iface\DB\Adapter;
 
 /**
- * Database Query Result
+ * Database Connection Adapter
  */
-abstract class Result
+interface Link
 {
 
     /**
-     * The query associated with these results
+     * Connect to the server
+     *
+     * @return Resource Returns a database connection resource
      */
-    private $query;
+    public function connect ();
 
     /**
-     * Constructor...
+     * Given a string, escapes it for use in a query
      *
-     * @param String $query The query that produced this result
+     * @return String Returns the escaped string
      */
-    public function __construct ( $query )
-    {
-        $this->query = (string) $query;
-    }
+    public function escape ( $string );
 
     /**
-     * Returns the query associated with this result
+     * Execute a query and return a result object
      *
-     * @return String
+     * @param String $query The query to execute
+     * @return \r8\iface\DB\Adapter\Result
      */
-    public function getQuery ()
-    {
-        return $this->query;
-    }
+    public function query ( $query );
 
+    /**
+     * Disconnect from the server
+     *
+     * @return null
+     */
+    public function disconnect ();
+
+    /**
+     * Returns whether this connection is active
+     *
+     * @return Boolean
+     */
+    public function isConnected ();
 }
 
 ?>
