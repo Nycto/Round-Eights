@@ -32,9 +32,9 @@ interface Link
 {
 
     /**
-     * Connect to the server
+     * Opens a new connection to the server
      *
-     * @return Resource Returns a database connection resource
+     * @return NULL
      */
     public function connect ();
 
@@ -73,6 +73,13 @@ interface Link
      * @return String|NULL Returns NULL if no specific extension is required
      */
     public function getExtension ();
+
+    /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URI that loosely identifies this connection
+     */
+    public function getIdentifier ();
 
 }
 
