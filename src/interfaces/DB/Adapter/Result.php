@@ -61,20 +61,6 @@ interface Result
      * @return Array Returns the field values
      */
     public function seek ($offset);
-    
-    /**
-     * Returns the number of rows affected by this query
-     *
-     * @return Integer
-     */
-    public function getAffected ();
-    
-    /**
-     * Returns the Insert ID 
-     *
-     * @return Integer
-     */
-    public function getInsertID ();
 
     /**
      * Internal method to free the result resource

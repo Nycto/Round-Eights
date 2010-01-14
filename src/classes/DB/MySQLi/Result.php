@@ -32,6 +32,21 @@ class Result implements \r8\iface\DB\Adapter\Result
 {
 
     /**
+     * The result object from the database
+     *
+     * @var \MySQLi_Result
+     */
+    private $result;
+
+    /**
+     * Constructor...
+     */
+    public function __construct ( \MySQLi_Result $result )
+    {
+        $this->result = $result;
+    }
+
+    /**
      * Internal method that returns the number of rows found
      *
      * @return Integer
@@ -48,7 +63,7 @@ class Result implements \r8\iface\DB\Adapter\Result
      */
     public function getFields ()
     {
-        $fields = $this->getResult()->fetch_fields();
+        $fields = $this->result->fetch_fields();
 
         foreach ( $fields AS $key => $field ) {
             $fields[ $key ] = $field->name;
@@ -64,7 +79,7 @@ class Result implements \r8\iface\DB\Adapter\Result
      */
     public function fetch ()
     {
-        return $this->getResult()->fetch_assoc();
+        return $this->result->fetch_assoc();
     }
 
     /**
@@ -75,27 +90,7 @@ class Result implements \r8\iface\DB\Adapter\Result
      */
     public function seek ($offset)
     {
-        $this->getResult()->data_seek($offset);
-    }
-
-    /**
-     * Returns the number of rows affected by this query
-     *
-     * @return Integer
-     */
-    public function getAffected ()
-    {
-
-    }
-
-    /**
-     * Returns the Insert ID
-     *
-     * @return Integer
-     */
-    public function getInsertID ()
-    {
-
+        $this->result->data_seek($offset);
     }
 
     /**
@@ -105,7 +100,7 @@ class Result implements \r8\iface\DB\Adapter\Result
      */
     public function free ()
     {
-        $result->free();
+        $this->result->free();
     }
 
 }
