@@ -74,7 +74,7 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      * @param \r8\iface\DB\Adapter\Result $adapter The query result adapter that
      *      provides a standard way to interface with the results
      */
-    public function __construct ( $query, \r8\iface\DB\Adapter\Result $adapter )
+    public function __construct ( \r8\iface\DB\Adapter\Result $adapter, $query )
     {
         parent::__construct($query);
         $this->adapter = $adapter;

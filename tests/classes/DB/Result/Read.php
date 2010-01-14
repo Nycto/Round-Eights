@@ -39,7 +39,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $adapter->expects( $this->once() )
             ->method("free");
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( $read, $read->free() );
         $this->assertSame( $read, $read->free() );
@@ -52,7 +52,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $adapter->expects( $this->once() )
             ->method("free");
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $read->__destruct();
     }
@@ -63,7 +63,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $adapter->expects( $this->once() )
             ->method("free");
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertTrue( $read->hasResult() );
         $this->assertTrue( $read->hasResult() );
@@ -81,7 +81,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->method("count")
             ->will( $this->returnValue(20) );
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( 20, $read->count() );
         $this->assertSame( 20, $read->count() );
@@ -96,7 +96,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->method("getFields")
             ->will( $this->returnValue( array("one", "two") ) );
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( array("one", "two"), $read->getFields() );
         $this->assertSame( array("one", "two"), $read->getFields() );
@@ -110,7 +110,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->method("getFields")
             ->will( $this->returnValue( array("one", "two") ) );
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertTrue( $read->isField("one") );
         $this->assertTrue( $read->isField("two") );
@@ -127,7 +127,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->method("getFields")
             ->will( $this->returnValue( array("one", "two") ) );
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( 2, $read->fieldCount() );
         $this->assertSame( 2, $read->fieldCount() );
@@ -163,7 +163,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( array() ) );
 
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
 
         $this->assertSame( $read, $read->seek( 0 ) );
@@ -206,7 +206,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->method("fetch")
             ->will( $this->returnValue( array("six", "five") ) );
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
 
         PHPUnit_Framework_Constraint_Iterator::assert(
@@ -240,7 +240,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( array("one", "two") ) );
 
 
-        $read = new \r8\DB\Result\Read( "SELECT *", $adapter );
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( array("one", "two"), $read->current() );
         $this->assertSame( array("one", "two"), $read->current() );
