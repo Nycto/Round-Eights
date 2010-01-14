@@ -305,7 +305,22 @@ class classes_DB_Config extends PHPUnit_Framework_TestCase
         $this->assertSame("pwd", $config->getPassword());
         $this->assertSame("otherDB", $config->getDatabase());
         $this->assertTrue( $config->getPersistent() );
+    }
 
+    public function testGetIdentifier ()
+    {
+        $config = new \r8\DB\Config;
+        $config->clearHost();
+        $this->assertSame( "db", $config->getIdentifier("db") );
+
+        $config->setHost("example.com");
+        $this->assertSame( "db://example.com", $config->getIdentifier("db") );
+
+        $config->setPort(8080);
+        $this->assertSame( "db://example.com:8080", $config->getIdentifier("db") );
+
+        $config->setUserName("uname");
+        $this->assertSame( "db://uname@example.com:8080", $config->getIdentifier("db") );
     }
 
 }

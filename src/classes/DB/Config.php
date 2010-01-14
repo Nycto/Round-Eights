@@ -449,6 +449,29 @@ class Config
             return $this->host;
     }
 
+    /**
+     * Generates an identifying string based on the data in this configuration
+     *
+     * @param String $protocol The protocol type to prepend to the identifier
+     * @return String
+     */
+    public function getIdentifier ( $protocol )
+    {
+        $ident = $protocol;
+
+        if ( !$this->hostExists() )
+            return $ident;
+
+        $ident .= "://";
+
+        if ( $this->userNameExists() )
+            $ident .= $this->getUserName() ."@";
+
+        $ident .= $this->getHostWithPort();
+
+        return $ident;
+    }
+
 }
 
 ?>
