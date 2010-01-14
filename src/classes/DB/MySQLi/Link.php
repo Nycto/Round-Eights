@@ -28,99 +28,129 @@ namespace r8\DB\MySQLi;
 /**
  * MySQL Database Link
  */
-class Link extends \r8\DB\Link
+class Link implements \r8\iface\DB\Adapter\Link
 {
 
     /**
-     * This is the PHP extension required for this interface to work
+     * The configuration options for this connection
+     *
+     * @var \r8\DB\Config
      */
-    const PHP_EXTENSION = "mysqli";
+    private $config;
 
     /**
-     * Connect to the server
+     * The database connection this link represents
      *
-     * @return Resource|Object Returns a database connection resource
+     * @var MySQLi
      */
-    protected function rawConnect ()
+    private $link;
+
+    /**
+     * Constructor...
+     *
+     * @param \r8\DB\Config $config The credentials to use for opening the connection
+     */
+    public function __construct ( \r8\DB\Config $config )
     {
-        $link = @mysqli_connect(
-                $this->getHost(),
-                $this->getUserName(),
-                $this->getPassword(),
-                $this->getDatabase(),
-                $this->getPort()
-            );
-
-        if ( !$link ) {
-
-            throw new \r8\Exception\DB\Link(
-                    mysqli_connect_error(),
-                    mysqli_connect_errno(),
-                    $this
-                );
-
-        }
-
-        return $link;
-
+        $this->config = $config;
     }
 
     /**
-     * Returns whether a given resource is still connected
+     * Returns whether this connection is active
      *
-     * @param Resource|Object $connection The connection being tested
      * @return Boolean
      */
-    protected function rawIsConnected ( $connection )
+    public function isConnected ()
     {
-        if ( !($connection instanceof \mysqli) )
-            return FALSE;
-
-        if ( @$connection->ping() !== TRUE )
+        if ( !($this->link instanceof \MySQLi) )
             return FALSE;
 
         return TRUE;
     }
 
     /**
-     * Used to escape a string for use in a query.
+     * Connect to the server
      *
-     * @param String $value The string to escape
-     * @return String An escaped version of the string
+     * @return NULL
      */
-    public function escapeString ( $value )
+    public function connect ()
+    {
+        if ( isset($this->link) )
+            return NULL;
+
+        $link = @mysqli_connect(
+            $this->config->getHost(),
+            $this->config->getUserName(),
+            $this->config->getPassword(),
+            $this->config->getDatabase(),
+            $this->config->getPort()
+        );
+
+        if ( !$link ) {
+            throw new \r8\Exception\DB\Link(
+                mysqli_connect_error(),
+                mysqli_connect_errno(),
+                $this
+            );
+        }
+
+        $this->link = $link;
+    }
+
+    /**
+     * Given a string, escapes it for use in a query
+     *
+     * @param String $value The string to escape. If an array is given, all the
+     *      values in it will be escaped
+     * @return String Returns the escaped string
+     */
+    public function escape ( $value )
     {
         if ( is_array( $value ) )
-            return array_map( array($this, "escapeString"), $value );
+            return array_map( array($this, "escape"), $value );
 
         $value = (string) $value;
 
-        // Don't force a connection just to escape a string
-        if ( $this->isConnected() )
-            return $this->getLink()->real_escape_string( $value );
-        else
-            return addslashes( $value );
+        if ( !isset($this->link) )
+            $this->connect();
+
+        return $this->link->real_escape_string( $value );
     }
 
     /**
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
-     * @return \r8\DB\Result Returns a result object
+     * @return \r8\iface\DB\Adapter\Result
      */
-    protected function rawQuery ( $query )
+    public function query ( $query )
     {
-        $link = $this->getLink();
+        if ( !isset($this->link) )
+            $this->connect();
 
-        $result = $link->query( $query );
+        $result = $this->link->query( $query );
 
-        if ( $result === FALSE )
-            throw new \r8\Exception\DB\Query( $query, $link->error, $link->errno );
+        if ( $result === FALSE ) {
+            throw new \r8\Exception\DB\Query(
+                $query,
+                $this->link->error,
+                $this->link->errno
+            );
+        }
 
-        if ( self::isSelect($query) )
-            return new \r8\DB\MySQLi\Read( $result, $query );
-        else
-            return new \r8\DB\Result\Write( $link->affected_rows, $link->insert_id, $query );
+        if ( \r8\DB\Link::isSelect($query) ) {
+            return new \r8\DB\Result\Read(
+                new \r8\DB\MySQLi\Result( $result ),
+                $query
+            );
+        }
+        else {
+            return new \r8\DB\Result\Write(
+                $this->link->affected_rows,
+                $this->link->insert_id,
+                $query
+            );
+        }
     }
 
     /**
@@ -128,10 +158,30 @@ class Link extends \r8\DB\Link
      *
      * @return null
      */
-    protected function rawDisconnect ()
+    public function disconnect ()
     {
-        $link = $this->getLink();
-        $link->close();
+        $this->link->close();
+        $this->link = null;
+    }
+
+    /**
+     * Returns the name of the extension required to utilize this link
+     *
+     * @return String|NULL Returns NULL if no specific extension is required
+     */
+    public function getExtension ()
+    {
+        return "mysqli";
+    }
+
+    /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URI that loosely identifies this connection
+     */
+    public function getIdentifier ()
+    {
+        return $this->config->getIdentifier("MySQLi");
     }
 
 }
