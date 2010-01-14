@@ -41,6 +41,7 @@ interface Link
     /**
      * Given a string, escapes it for use in a query
      *
+     * @param String $string The value to escape
      * @return String Returns the escaped string
      */
     public function escape ( $string );
@@ -56,7 +57,7 @@ interface Link
     /**
      * Disconnect from the server
      *
-     * @return null
+     * @return NULL
      */
     public function disconnect ();
 
