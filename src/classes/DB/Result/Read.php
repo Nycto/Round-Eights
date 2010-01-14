@@ -28,46 +28,56 @@ namespace r8\DB\Result;
 /**
  * Database Read Query Results
  */
-abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
+class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
 {
 
     /**
-     * The database result resource
+     * The query result adapter that provides a standard way to interface with
+     * the results
+     *
+     * @var \r8\iface\DB\Adapter\Result
      */
-    private $result;
+    private $adapter;
 
     /**
      * The number of rows returned by this query
+     *
+     * @var Integer
      */
     private $count;
 
     /**
      * The list of fields in the result set
+     *
+     * @var Array
      */
     private $fields;
 
     /**
      * The current offset of the result set
+     *
+     * @var Integer
      */
     private $pointer;
 
     /**
      * The value of the current row
+     *
+     * @var Array
      */
     private $row;
 
     /**
      * Constructor...
      *
-     * @param Resource|Object $result The database result resource or object
      * @param String $query The query that produced this result
+     * @param \r8\iface\DB\Adapter\Result $adapter The query result adapter that
+     *      provides a standard way to interface with the results
      */
-    public function __construct ( $result, $query )
+    public function __construct ( $query, \r8\iface\DB\Adapter\Result $adapter )
     {
-        if (is_resource($result) || is_object($result))
-            $this->result = $result;
-
         parent::__construct($query);
+        $this->adapter = $adapter;
     }
 
     /**
@@ -87,29 +97,8 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      */
     public function hasResult ()
     {
-        return isset( $this->result )
-            && ( is_resource( $this->result ) || is_object( $this->result ) );
+        return isset( $this->adapter );
     }
-
-    /**
-     * Returns the result resource this instance encases
-     *
-     * @return mixed Returns NULL if there is no resource set
-     */
-    protected function getResult ()
-    {
-        if ( $this->hasResult() )
-            return $this->result;
-        else
-            return NULL;
-    }
-
-    /**
-     * Internal method that returns the number of rows found
-     *
-     * @return Integer
-     */
-    abstract protected function rawCount ();
 
     /**
      * Returns the number of rows affected by a query
@@ -121,24 +110,11 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      */
     public function count ()
     {
-
-        if ( !isset($this->count) ) {
-
-            $this->count = $this->rawCount();
-
-            if ( !is_int($this->count) )
-                $this->count = 0;
-        }
+        if ( !isset($this->count) )
+            $this->count = max( (int) $this->adapter->count(), 0 );
 
         return $this->count;
     }
-
-    /**
-     * Internal method to get a list of field names returned
-     *
-     * @return Integer
-     */
-    abstract protected function rawFields ();
 
     /**
      * Returns a list of field names returned by the query
@@ -147,13 +123,8 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      */
     public function getFields ()
     {
-        if ( !isset($this->fields) ) {
-
-            $this->fields = $this->rawFields();
-
-            if ( !is_array($this->fields) )
-                $this->fields = array();
-        }
+        if ( !isset($this->fields) )
+            $this->fields = (array) $this->adapter->getFields();
 
         return $this->fields;
     }
@@ -178,21 +149,6 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
     {
         return count( $this->getFields() );
     }
-
-    /**
-     * Internal method to fetch the next row in a result set
-     *
-     * @return Array Returns the field values
-     */
-    abstract protected function rawFetch ();
-
-    /**
-     * Internal method to seek to a specific row in a result resource
-     *
-     * @param Integer $offset The offset to seek to
-     * @return Array Returns the field values
-     */
-    abstract protected function rawSeek ($offset);
 
     /**
      * Returns the value of the current row
@@ -233,11 +189,10 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      *
      * Iterator interface function
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Result\Read Returns a self reference
      */
     public function next ()
     {
-
         // If the pointer isn't set yet, start it at 0
         if ( !isset($this->pointer) )
             $this->pointer = 0;
@@ -248,7 +203,7 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
 
         // If there are still rows to fetch, grab the next one
         if ( $this->pointer < $this->count() )
-            $this->row = $this->rawFetch();
+            $this->row = (array) $this->adapter->fetch();
         else
             $this->row = FALSE;
 
@@ -277,7 +232,7 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      *
      * Iterator interface function
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Result\Read Returns a self reference
      */
     public function rewind ()
     {
@@ -299,7 +254,7 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
      *
      * @param Integer $offset The offset to seek to
      * @param Integer $wrapFlag How to handle offsets that fall outside of the length of the list.
-     * @return Object Returns a self reference
+     * @return \r8\DB\Result\Read Returns a self reference
      */
     public function seek ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
     {
@@ -311,29 +266,23 @@ abstract class Read extends \r8\DB\Result implements \r8\iface\DB\Result\Read
 
         if ( $offset !== FALSE && $this->pointer !== $offset ) {
             $this->pointer = $offset;
-            $this->row = $this->rawSeek( $offset );
+            $this->adapter->seek( $offset );
+            $this->row = (array) $this->adapter->fetch();
         }
 
         return $this;
     }
 
     /**
-     * Internal method to free the result resource
-     *
-     * @return null
-     */
-    abstract protected function rawFree ();
-
-    /**
      * Frees the resource in this instance
      *
-     * @return Object Returns a self reference
+     * @return \r8\DB\Result\Read Returns a self reference
      */
     public function free ()
     {
         if ( $this->hasResult() ) {
-            $this->rawFree();
-            $this->result = null;
+            $this->adapter->free();
+            unset( $this->adapter );
         }
         return $this;
     }

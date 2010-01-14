@@ -37,26 +37,15 @@ abstract class Base
      * @var String
      */
     private $query;
-    
-    /**
-     * The query result adapter that provides a standard way to interface with
-     * the results
-     *
-     * @var \r8\iface\DB\Adapter\Result
-     */
-    private $adapter;
 
     /**
      * Constructor...
      *
      * @param String $query The query that produced this result
-     * @param \r8\iface\DB\Adapter\Result $adapter The query result adapter that
-     *      provides a standard way to interface with the results
      */
-    public function __construct ( $query, \r8\iface\DB\Adapter\Result $adapter )
+    public function __construct ( $query )
     {
         $this->query = (string) $query;
-        $this->adapter = $adapter;
     }
 
     /**
@@ -67,16 +56,6 @@ abstract class Base
     public function getQuery ()
     {
         return $this->query;
-    }
-    
-    /**
-     * Returns the Adapter that provides an interface for interacting with the adapters
-     *
-     * @return \r8\iface\DB\Adapter\Result
-     */
-    public function getAdapter ()
-    {
-       return $this->adapter;
     }
 
 }

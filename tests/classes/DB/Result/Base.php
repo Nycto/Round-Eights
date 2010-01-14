@@ -35,16 +35,13 @@ class classes_DB_Result_Base extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
-
         $mock = $this->getMock(
             '\r8\DB\Result\Base',
             array( '_mock' ),
-            array( "SELECT * FROM table", $adapter )
+            array( "SELECT * FROM table" )
         );
 
         $this->assertSame( "SELECT * FROM table", $mock->getQuery() );
-        $this->assertSame( $adapter, $mock->getAdapter() );
     }
 
 }
