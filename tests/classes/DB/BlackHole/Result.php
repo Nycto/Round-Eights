@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_DB_Blackhole_Read extends PHPUnit_Framework_TestCase
+class classes_DB_BlackHole_Result extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct_Empty ()
