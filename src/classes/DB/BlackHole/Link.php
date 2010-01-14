@@ -28,7 +28,7 @@ namespace r8\DB\BlackHole;
 /**
  * A Database connection that simply throws away any input it is given
  */
-class Link implements \r8\iface\DB\Link
+class Link implements \r8\iface\DB\Adapter\Link
 {
 
     /**
@@ -37,6 +37,27 @@ class Link implements \r8\iface\DB\Link
      * @var Integer
      */
     private $insertID = 0;
+
+    /**
+     * Opens a new connection to the server
+     *
+     * @return NULL
+     */
+    public function connect ()
+    {
+        return NULL;
+    }
+
+    /**
+     * Given a string, escapes it for use in a query
+     *
+     * @param String $string The value to escape
+     * @return String Returns the escaped string
+     */
+    public function escape ( $string )
+    {
+        return addslashes( $string );
+    }
 
     /**
      * Runs a query and returns the result
@@ -49,76 +70,60 @@ class Link implements \r8\iface\DB\Link
     {
         $query = (string) $query;
 
-        if ( \r8\DB\Link::isSelect($query) )
-            return new \r8\DB\BlackHole\Read( null, $query );
+        if ( \r8\DB\Link::isSelect($query) ) {
+            return new \r8\DB\Result\Read(
+                new \r8\DB\BlackHole\Result,
+                $query
+            );
+        }
 
-        else if ( \r8\DB\Link::isInsert($query) )
+        else if ( \r8\DB\Link::isInsert($query) ) {
             return new \r8\DB\Result\Write( 1, ++$this->insertID, $query );
+        }
 
-        else
+        else {
             return new \r8\DB\Result\Write( 0, null, $query );
+        }
     }
 
     /**
-     * Escapes a string to be used in a query
+     * Disconnect from the server
      *
-     * If this function is given an array, it will apply itself to every value
-     * in the array and return that array.
-     *
-     * @param String $value The value to escape
-     * @return String|Array
+     * @return null
      */
-    public function escapeString ( $value )
+    public function disconnect ()
     {
-        return addslashes( $value );
+        return NULL;
     }
 
     /**
-     * Quotes a variable to be used in a query
+     * Returns whether this connection is active
      *
-     * When given a string, it escapes the string and puts quotes around it. When
-     * given a number, it returns the number as is. When given a boolean value,
-     * it returns 0 or 1. When given a NULL value, it returns the word NULL as a string.
-     *
-     * If this function is given an array, it will apply itself to every value
-     * in the array and return the array.
-     *
-     * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow
-     * @return String|Array
+     * @return Boolean
      */
-    public function quote ( $value, $allowNull = TRUE )
+    public function isConnected ()
     {
-        $self = $this;
-        return \r8\DB\Link::cleanseValue(
-                $value,
-                $allowNull,
-                function ($value) use ( $self ) {
-                    return "'". $self->escapeString($value) ."'";
-                }
-            );
+        return TRUE;
     }
 
     /**
-     * Escapes a variable to be used in a query
+     * Returns the name of the extension required to utilize this link
      *
-     * This function works almost exactly like cDB::quote except that it does
-     * not add quotation marks to strings. It just escapes each value.
-     *
-     * If this function is given an array, it will apply itself to every value
-     * in the array and return that array.
-     *
-     * @param mixed $value The value to quote
-     * @param Boolean $allowNull Whether to allow
-     * @return String|Array
+     * @return String|NULL Returns NULL if no specific extension is required
      */
-    public function escape ( $value, $allowNull = TRUE )
+    public function getExtension ()
     {
-        return \r8\DB\Link::cleanseValue(
-                $value,
-                $allowNull,
-                array( $this, "escapeString" )
-            );
+        return NULL;
+    }
+
+    /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URI that loosely identifies this connection
+     */
+    public function getIdentifier ()
+    {
+        return "blackhole";
     }
 
 }

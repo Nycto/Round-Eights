@@ -30,14 +30,26 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
+class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
 {
+
+    public function testConnect ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertNull( $link->connect() );
+    }
+
+    public function testEscape ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertSame( "\\'escape\\'", $link->escape("'escape'") );
+    }
 
     public function testQuery_Select ()
     {
         $link = new \r8\DB\BlackHole\Link;
         $result = $link->query("SELECT * FROM table");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\BlackHole\Read") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Read') );
     }
 
     public function testQuery_Insert ()
@@ -45,17 +57,17 @@ class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\BlackHole\Link;
 
         $result = $link->query("INSERT INTO table VALUES (NULL)");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
         $this->assertSame( 1, $result->getAffected() );
         $this->assertSame( 1, $result->getInsertID() );
 
         $result = $link->query("INSERT INTO table VALUES (NULL)");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
         $this->assertSame( 1, $result->getAffected() );
         $this->assertSame( 2, $result->getInsertID() );
 
         $result = $link->query("INSERT INTO table VALUES (NULL)");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
         $this->assertSame( 1, $result->getAffected() );
         $this->assertSame( 3, $result->getInsertID() );
     }
@@ -65,34 +77,38 @@ class classes_db_blackhole_link extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\BlackHole\Link;
 
         $result = $link->query("UPDATE table SET field = NULL");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
         $this->assertSame( 0, $result->getAffected() );
         $this->assertNull( $result->getInsertID() );
 
         $result = $link->query("UPDATE table SET field = NULL");
-        $this->assertThat( $result, $this->isInstanceOf("r8\DB\Result\Write") );
+        $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
         $this->assertSame( 0, $result->getAffected() );
         $this->assertNull( $result->getInsertID() );
     }
 
-    public function testEscapeString ()
+    public function testDisconnect ()
     {
         $link = new \r8\DB\BlackHole\Link;
-        $this->assertSame( "\\'escape\\'", $link->escapeString("'escape'") );
+        $this->assertNull( $link->disconnect() );
     }
 
-    public function testEscape ()
+    public function testIsConnected ()
     {
         $link = new \r8\DB\BlackHole\Link;
-        $this->assertSame( "\\'escape\\'", $link->escape("'escape'") );
-        $this->assertSame( "100", $link->escape(100) );
+        $this->assertTrue( $link->isConnected() );
     }
 
-    public function testQuote ()
+    public function testGetExtension ()
     {
         $link = new \r8\DB\BlackHole\Link;
-        $this->assertSame( "'\\'escape\\''", $link->quote("'escape'") );
-        $this->assertSame( "100", $link->quote(100) );
+        $this->assertNull( $link->getExtension() );
+    }
+
+    public function testGetIdentifier ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertSame( "blackhole", $link->getIdentifier() );
     }
 
 }
