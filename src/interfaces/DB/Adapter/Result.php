@@ -43,7 +43,7 @@ interface Result
     /**
      * Internal method to get a list of field names returned
      *
-     * @return Integer
+     * @return Array
      */
     public function getFields ();
 
@@ -58,7 +58,7 @@ interface Result
      * Internal method to seek to a specific row in a result resource
      *
      * @param Integer $offset The offset to seek to
-     * @return Array Returns the field values
+     * @return NULL
      */
     public function seek ($offset);
 
