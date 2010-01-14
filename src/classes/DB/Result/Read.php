@@ -89,6 +89,16 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
     {
         $this->free();
     }
+    
+    /**
+     * Returns the Adapter wrapped inside this result
+     *
+     * @return \r8\iface\DB\Adapter\Result
+     */
+    public function getAdapter ()
+    {
+       return $this->adapter;
+    }
 
     /**
      * Returns whether this instance currently holds a valid resource

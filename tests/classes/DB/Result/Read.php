@@ -33,6 +33,15 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
 {
 
+    public function testGetAdapter ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+
+        $this->assertSame( $adapter, $read->getAdapter() );
+    }
+
     public function testFree ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
