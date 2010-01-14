@@ -33,15 +33,6 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_DB_Link extends PHPUnit_Framework_TestCase
 {
 
-    public function getMockLink ( $args = array() )
-    {
-        return $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected"),
-                $args
-            );
-    }
-
     public function testCleanseValue_nonStrings ()
     {
         $this->assertSame(
@@ -186,116 +177,73 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
             );
     }
 
+	public function testConstruct_MissingExtension ()
+	{
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+			->method( "getExtension" )
+			->will( $this->returnValue( "Not A Real Extension" ) );
+
+		try {
+			new \r8\DB\Link( $adapter );
+			$this->fail("An expected exception was not thrown");
+		}
+		catch ( \r8\Exception\Extension $err ) {
+			$this->assertSame( "Extension is not loaded", $err->getMessage() );
+		}
+	}
+
+	public function testConstruct_NoExtension ()
+	{
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+			->method( "getExtension" )
+			->will( $this->returnValue( NULL ) );
+
+		new \r8\DB\Link( $adapter );
+	}
+
     public function testIsConnected ()
     {
-        $mock = $this->getMockLink();
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
 
-        $this->assertFalse( $mock->isConnected() );
-    }
+		// Called twice because of the destructor
+		$adapter->expects( $this->exactly(2) )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
 
-    public function testGetLink_invalidResource ()
-    {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method( "rawConnect" )
-            ->will( $this->returnValue(FALSE) );
+		$link = new \r8\DB\Link( $adapter );
 
-        $mock->fromURI("db://user:pword@localhost/dbname");
-
-        try {
-            $mock->getLink();
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\DB\Link $err ) {
-            $this->assertSame( "Database connector did not return a resource or an object", $err->getMessage() );
-        }
-    }
-
-    public function testGetIdentifier ()
-    {
-        $mock = $this->getMockLink();
-        $mock->clearHost();
-
-        $this->assertRegExp(
-                '/^db\:\/\/hash\:[0-9a-zA-Z\_]+$/',
-                $mock->getIdentifier()
-            );
-
-        $mock->setHost('127.0.0.1');
-        $this->assertRegExp(
-                '/^db\:\/\/127\.0\.0\.1$/',
-                $mock->getIdentifier()
-            );
-
-        $mock->setPort( 8080 );
-        $this->assertRegExp(
-                '/^db\:\/\/127\.0\.0\.1\:8080$/',
-                $mock->getIdentifier()
-            );
-
-        $mock->setUserName( 'uname' );
-        $this->assertRegExp(
-                '/^db\:\/\/uname\@127\.0\.0\.1\:8080$/',
-                $mock->getIdentifier()
-            );
-
-        $mock->clearPort();
-        $this->assertRegExp(
-                '/^db\:\/\/uname\@127\.0\.0\.1$/',
-                $mock->getIdentifier()
-            );
+        $this->assertTrue( $link->isConnected() );
     }
 
     public function testDisconnect ()
     {
-        $mock = $this->getMockLink();
-        $this->assertSame( $mock, $mock->disconnect() );
-    }
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->at(1) )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
+		$adapter->expects( $this->once() )
+			->method( "disconnect" );
 
-    public function testDisconnect_fakedConnection ()
-    {
+		$link = new \r8\DB\Link( $adapter );
 
-        $mock = $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
-            );
-
-        $mock->expects( $this->at( 0 ) )
-            ->method("isConnected")
-            ->will( $this->returnValue(TRUE) );
-
-        $mock->expects( $this->once() )
-            ->method("rawDisconnect");
-
-        $this->assertSame( $mock, $mock->disconnect() );
-    }
-
-    public function testDestruct ()
-    {
-
-        $mock = $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "isConnected", "getLink")
-            );
-
-        $mock->expects( $this->at( 0 ) )
-            ->method("isConnected")
-            ->will( $this->returnValue(TRUE) );
-
-        $mock->expects( $this->once() )
-            ->method("rawDisconnect");
-
-        $mock->__destruct();
+        $this->assertSame( $link, $link->disconnect() );
+		$this->assertSame( $link, $link->disconnect() );
+		$this->assertSame( $link, $link->disconnect() );
     }
 
     public function testQuery_emptyQuery()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->never() )
-            ->method( "rawQuery" );
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->any() )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
+
+		$link = new \r8\DB\Link( $adapter );
 
         try {
-            $mock->query("");
+            $link->query("");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument  $err ) {
@@ -303,7 +251,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
         }
 
         try {
-            $mock->query("    ");
+            $link->query("    ");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument  $err ) {
@@ -313,38 +261,52 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
     public function testQuery_invalidResult ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method( "rawQuery" )
-            ->with( $this->equalTo("SELECT * FROM table") )
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->any() )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
+
+        $adapter->expects( $this->once() )
+            ->method( "query" )
+            ->with( new PHPUnit_Framework_Constraint_SQL(
+				"SELECT * FROM table"
+			) )
             ->will( $this->returnValue("not a result") );
 
+		$link = new \r8\DB\Link( $adapter );
+
         try {
-            $mock->query("SELECT * FROM table");
+            $link->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\DB\Query  $err ) {
-            $this->assertSame( "Query did not return a \r8\DB\Result object", $err->getMessage() );
+            $this->assertSame( 'Query did not return a \r8\iface\DB\Result object', $err->getMessage() );
         }
     }
 
     public function testQuery_throw ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method( "rawQuery" )
-            ->with( $this->equalTo("SELECT * FROM table") )
-            ->will(
-                    $this->throwException(
-                            new \r8\Exception\DB\Query(
-                                    "SELECT * FROM table",
-                                    "Example Exception"
-                                )
-                        )
-                );
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->any() )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
+
+        $adapter->expects( $this->once() )
+            ->method( "query" )
+            ->with( new PHPUnit_Framework_Constraint_SQL(
+				"SELECT * FROM table"
+			) )
+            ->will( $this->throwException(
+				new \r8\Exception\DB\Query(
+					"SELECT * FROM table",
+					"Example Exception"
+				)
+            ) );
+
+		$link = new \r8\DB\Link( $adapter );
 
         try {
-            $mock->query("SELECT * FROM table");
+            $link->query("SELECT * FROM table");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\DB\Query  $err ) {
@@ -352,148 +314,198 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
         }
     }
 
+	public function testQuery_Valid ()
+	{
+		$result = $this->getMock('\r8\DB\Result\Read', array(), array(), '', FALSE);
+
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->any() )
+			->method( "isConnected" )
+			->will( $this->returnValue( TRUE ) );
+
+        $adapter->expects( $this->once() )
+            ->method( "query" )
+            ->with( new PHPUnit_Framework_Constraint_SQL(
+				"SELECT * FROM table"
+			) )
+            ->will( $this->returnValue( $result ) );
+
+		$link = new \r8\DB\Link( $adapter );
+
+		$this->assertSame(
+			$result,
+			$link->query("SELECT * FROM table")
+		);
+	}
+
     public function testQuote_nonStrings ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->never() )
-            ->method("quoteString");
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->never() )
+			->method( "escape" )
+			->will( $this->returnValue( TRUE ) );
 
-        $this->assertSame( "1", $mock->quote( 1 ) );
-        $this->assertSame( "10.5", $mock->quote( 10.5 ) );
-        $this->assertSame( "0", $mock->quote( 00 ) );
+		$link = new \r8\DB\Link( $adapter );
 
-        $this->assertSame( "1", $mock->quote( true ) );
-        $this->assertSame( "0", $mock->quote( false ) );
+        $this->assertSame( "1", $link->quote( 1 ) );
+        $this->assertSame( "10.5", $link->quote( 10.5 ) );
+        $this->assertSame( "0", $link->quote( 00 ) );
 
-        $this->assertSame( "NULL", $mock->quote( null ) );
+        $this->assertSame( "1", $link->quote( true ) );
+        $this->assertSame( "0", $link->quote( false ) );
+
+        $this->assertSame( "NULL", $link->quote( null ) );
 
         // Now look for strings that can be treated as numbers
-        $this->assertSame( "100", $mock->quote( "100" ) );
-        $this->assertSame( "0.5", $mock->quote( "0.5" ) );
-        $this->assertSame( ".5", $mock->quote( ".5" ) );
+        $this->assertSame( "100", $link->quote( "100" ) );
+        $this->assertSame( "0.5", $link->quote( "0.5" ) );
+        $this->assertSame( ".5", $link->quote( ".5" ) );
     }
 
     public function testQuote_array ()
     {
-        $mock = $this->getMockLink();
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->never() )
+			->method( "escape" )
+			->will( $this->returnValue( TRUE ) );
+
+		$link = new \r8\DB\Link( $adapter );
+
         $this->assertSame(
-                array("5", "5.5"),
-                $mock->quote(array(5, 5.5))
-            );
+			array("5", "5.5"),
+			$link->quote(array(5, 5.5))
+		);
     }
 
     public function testQuote_Strings ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+			->method('escape')
             ->with( $this->equalTo("string thing") )
             ->will( $this->returnValue("quoted thing") );
-        $this->assertSame( "'quoted thing'", $mock->quote( "string thing" ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "'quoted thing'", $link->quote( "string thing" ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+			->method('escape')
             ->with( $this->equalTo("") )
             ->will( $this->returnValue("") );
-        $this->assertSame( "''", $mock->quote( null, FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "''", $link->quote( null, FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("+0123.45e6") )
             ->will( $this->returnValue("+0123.45e6") );
-        $this->assertSame( "'+0123.45e6'", $mock->quote( "+0123.45e6", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "'+0123.45e6'", $link->quote( "+0123.45e6", FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("0xFF") )
             ->will( $this->returnValue("0xFF") );
-        $this->assertSame( "'0xFF'", $mock->quote( "0xFF", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "'0xFF'", $link->quote( "0xFF", FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("+5") )
             ->will( $this->returnValue("+5") );
-        $this->assertSame( "'+5'", $mock->quote( "+5", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "'+5'", $link->quote( "+5", FALSE ) );
     }
 
     public function testEscape_nonStrings ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->never() )
-            ->method("escapeString");
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->never() )->method("escape");
+		$link = new \r8\DB\Link( $adapter );
 
-        $this->assertSame( "1", $mock->escape( 1 ) );
-        $this->assertSame( "10.5", $mock->escape( 10.5 ) );
-        $this->assertSame( "0", $mock->escape( 00 ) );
+        $this->assertSame( "1", $link->escape( 1 ) );
+        $this->assertSame( "10.5", $link->escape( 10.5 ) );
+        $this->assertSame( "0", $link->escape( 00 ) );
 
-        $this->assertSame( "1", $mock->escape( true ) );
-        $this->assertSame( "0", $mock->escape( false ) );
+        $this->assertSame( "1", $link->escape( true ) );
+        $this->assertSame( "0", $link->escape( false ) );
 
-        $this->assertSame( "NULL", $mock->escape( null ) );
+        $this->assertSame( "NULL", $link->escape( null ) );
 
         // Now look for strings that can be treated as numbers
-        $this->assertSame( "100", $mock->escape( "100" ) );
-        $this->assertSame( "0.5", $mock->escape( "0.5" ) );
-        $this->assertSame( ".5", $mock->escape( ".5" ) );
+        $this->assertSame( "100", $link->escape( "100" ) );
+        $this->assertSame( "0.5", $link->escape( "0.5" ) );
+        $this->assertSame( ".5", $link->escape( ".5" ) );
     }
 
     public function testEscape_array ()
     {
-        $mock = $this->getMockLink();
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+		$adapter->expects( $this->never() )->method("escape");
+		$link = new \r8\DB\Link( $adapter );
+
         $this->assertSame(
                 array("5", "5.5"),
-                $mock->escape(array(5, 5.5))
+                $link->escape(array(5, 5.5))
             );
     }
 
     public function testEscape_Strings ()
     {
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("string thing") )
             ->will( $this->returnValue("escaped thing") );
-        $this->assertSame( "escaped thing", $mock->escape( "string thing" ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "escaped thing", $link->escape( "string thing" ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("") )
             ->will( $this->returnValue("") );
-        $this->assertSame( "", $mock->escape( null, FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "", $link->escape( null, FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("+0123.45e6") )
             ->will( $this->returnValue("+0123.45e6") );
-        $this->assertSame( "+0123.45e6", $mock->escape( "+0123.45e6", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "+0123.45e6", $link->escape( "+0123.45e6", FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("0xFF") )
             ->will( $this->returnValue("0xFF") );
-        $this->assertSame( "0xFF", $mock->escape( "0xFF", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "0xFF", $link->escape( "0xFF", FALSE ) );
 
 
-        $mock = $this->getMockLink();
-        $mock->expects( $this->once() )
-            ->method("escapeString")
+
+		$adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("escape")
             ->with( $this->equalTo("+5") )
             ->will( $this->returnValue("+5") );
-        $this->assertSame( "+5", $mock->escape( "+5", FALSE ) );
+		$link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "+5", $link->escape( "+5", FALSE ) );
     }
 
 }

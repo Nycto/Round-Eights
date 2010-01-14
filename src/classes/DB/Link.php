@@ -26,35 +26,17 @@
 namespace r8\DB;
 
 /**
- * Core Database Connection
- *
- * The base class for database connections. Provides an interface for
- * setting up the link, performing actions against the resource and
- * automatically disconnecting
+ * A Database Connection
  */
-abstract class Link implements \r8\iface\DB\Link
+class Link implements \r8\iface\DB\Link
 {
 
     /**
-     * To be overridden, this is the PHP extension required for this interface to work
+     * The database adapter to interface with
      *
-     * @var String
+     * @var \r8\iface\DB\Adapter\Link
      */
-    const PHP_EXTENSION = FALSE;
-
-    /**
-     * The configuration details for this connection
-     *
-     * @var \r8\DB\Config
-     */
-    private $config;
-
-    /**
-     * Once connected, this is the Link resource
-     *
-     * @var Resource
-     */
-    private $resource;
+    private $adapter;
 
     /**
      * Returns whether a query is a SELECT query
@@ -103,45 +85,56 @@ abstract class Link implements \r8\iface\DB\Link
         if ( is_array($value) ) {
             $result = array();
             foreach ( $value AS $key => $toCleanse ) {
-                $result[ $key ] = self::cleanseValue($toCleanse, $allowNull, $onString);
+                $result[ $key ] = self::cleanseValue(
+                    $toCleanse,
+                    $allowNull,
+                    $onString
+                );
             }
             return $result;
         }
 
-        $value = \r8\reduce($value);
+        $value = \r8\reduce( $value );
 
-        if (is_bool($value))
-            return $value ? "1" : "0";
+        switch ( gettype($value) ) {
 
-        else if ( is_int($value) || is_float($value) )
-            return (string) $value;
+            case "boolean":
+                return $value ? "1" : "0";
 
-        else if ( is_null($value) )
-            return $allowNull ? "NULL" : call_user_func( $onString, "" );
+            case "integer":
+            case "double":
+                return (string) $value;
 
-        else if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
-            return $value;
+            case "NULL":
+                return $allowNull ? "NULL" : call_user_func( $onString, "" );
 
-        else
-            return call_user_func( $onString, $value );
+            default:
+            case "string":
+                if ( is_numeric($value) && !preg_match('/[^0-9\.]/', $value) )
+                    return $value;
+
+                return call_user_func( $onString, $value );
+        }
     }
 
     /**
      * Constructor...
      *
-     * @param \r8\DB\Config $config The configuration details for this connection
+     * @param \r8\iface\DB\Adapter\Link $adapter The database adapter to interface with
      */
-    public function __construct ( \r8\DB\Config $config )
+    public function __construct ( \r8\iface\DB\Adapter\Link $adapter )
     {
+        $extension = $adapter->getExtension();
+
         // Ensure that the required extension is loaded
-        if ( static::PHP_EXTENSION != false && !extension_loaded( static::PHP_EXTENSION ) ) {
+        if ( !empty($extension) && !extension_loaded( $extension ) ) {
             throw new \r8\Exception\Extension(
-                    static::PHP_EXTENSION,
-                    "Extension is not loaded"
-                );
+                $extension,
+                "Extension is not loaded"
+            );
         }
-        
-        $this->config = $config;
+
+        $this->adapter = $adapter;
     }
 
     /**
@@ -155,105 +148,13 @@ abstract class Link implements \r8\iface\DB\Link
     }
 
     /**
-     * Connect to the server
-     *
-     * @return Resource Returns a database connection resource
-     */
-    abstract protected function rawConnect ();
-
-    /**
-     * Execute a query and return a result object
-     *
-     * @param String $query The query to execute
-     * @return Object Returns a \r8\DB\Result object
-     */
-    abstract protected function rawQuery ( $query );
-
-    /**
-     * Disconnect from the server
-     *
-     * @return null
-     */
-    abstract protected function rawDisconnect ();
-
-    /**
-     * Returns whether a given resource is still connected
-     *
-     * @param Resource|Object $connection The connection being tested
-     * @return Boolean
-     */
-    abstract protected function rawIsConnected ( $connection );
-
-    /**
      * Returns whether this instance is currently connected
      *
      * @return Boolean
      */
     public function isConnected ()
     {
-        $result =
-            isset($this->resource)
-            && ( is_resource($this->resource) || is_object($this->resource) )
-            && $this->rawIsConnected( $this->resource );
-
-        if ( !$result )
-            $this->resource = null;
-
-        return $result ? TRUE : FALSE;
-    }
-
-    /**
-     * Returns the connection resource
-     *
-     * If this instance is not already connected, this will attempt to make the connection
-     *
-     * @return Resource Returns a database connection resource
-     */
-    public function getLink ()
-    {
-        if ( !$this->isConnected() ){
-
-            $this->validateCredentials();
-
-            $result = $this->rawConnect();
-
-            if ( !is_resource($result) && !is_object($result) ) {
-                throw new \r8\Exception\DB\Link(
-                        "Database connector did not return a resource or an object",
-                        0,
-                        $this
-                    );
-            }
-
-            $this->resource = $result;
-        }
-
-        return $this->resource;
-    }
-
-    /**
-     * Returns a brief string that can be used to describe this connection
-     *
-     * @return String Returns a URN
-     */
-    public function getIdentifier ()
-    {
-        if ( preg_match('/^r8\\\\DB\\\\([a-z0-9]+)\\\\Link$/i', get_class($this), $matches ) )
-            $ident = $matches[1];
-        else
-            $ident = "db";
-
-        $ident .= "://";
-
-        if ( !$this->hostExists() )
-            return $ident ."hash:". spl_object_hash($this);
-
-        if ( $this->userNameExists() )
-            $ident .= $this->getUserName() ."@";
-
-        $ident .= $this->getHostWithPort();
-
-        return $ident;
+        return $this->adapter->isConnected();
     }
 
     /**
@@ -261,7 +162,7 @@ abstract class Link implements \r8\iface\DB\Link
      *
      * @param String $query The query to run
      * @param Integer $flags Any boolean flags to set
-     * @return \r8\DB\Result Returns a result object
+     * @return \r8\iface\DB\Result Returns a result object
      */
     public function query ( $query, $flags = 0 )
     {
@@ -270,21 +171,24 @@ abstract class Link implements \r8\iface\DB\Link
         if ( \r8\isEmpty($query) )
             throw new \r8\Exception\Argument(0, "Query", "Must not be empty");
 
+        if ( !$this->adapter->isConnected() )
+            $this->adapter->connect();
+
         try {
-            $result = $this->rawQuery( $query );
+            $result = $this->adapter->query( $query );
         }
         catch (\r8\Exception\DB\Query $err) {
             $err->shiftFault();
             throw $err;
         }
 
-        if ( !( $result instanceof \r8\DB\Result ) ) {
+        if ( !( $result instanceof \r8\iface\DB\Result ) ) {
             throw new \r8\Exception\DB\Query(
-                    $query,
-                    "Query did not return a \r8\DB\Result object",
-                    0,
-                    $this
-                );
+                $query,
+                'Query did not return a \r8\iface\DB\Result object',
+                0,
+                $this->adapter
+            );
         }
 
         return $result;
@@ -297,9 +201,9 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function disconnect ()
     {
-        if ( $this->isConnected() )
-            $this->rawDisconnect();
-        $this->link = null;
+        if ( $this->adapter->isConnected() )
+            $this->adapter->disconnect();
+
         return $this;
     }
 
@@ -319,14 +223,14 @@ abstract class Link implements \r8\iface\DB\Link
      */
     public function quote ( $value, $allowNull = TRUE )
     {
-        $self = $this;
+        $adapter = $this->adapter;
         return self::cleanseValue(
-                $value,
-                $allowNull,
-                function ($value) use ( $self ) {
-                    return "'". $self->escapeString($value) ."'";
-                }
-            );
+            $value,
+            $allowNull,
+            function ($value) use ( $adapter ) {
+                return "'". $adapter->escape($value) ."'";
+            }
+        );
     }
 
     /**
@@ -345,10 +249,10 @@ abstract class Link implements \r8\iface\DB\Link
     public function escape ( $value, $allowNull = TRUE )
     {
         return self::cleanseValue(
-                $value,
-                $allowNull,
-                array( $this, "escapeString" )
-            );
+            $value,
+            $allowNull,
+            array( $this->adapter, "escape" )
+        );
     }
 
 }
