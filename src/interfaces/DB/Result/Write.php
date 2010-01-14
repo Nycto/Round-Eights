@@ -28,46 +28,24 @@
 namespace r8\iface\DB\Result;
 
 /**
- * Database Read Query Results
+ * Database Write Query Results
  */
-interface Read extends \r8\iface\DB\Result, \Countable, \SeekableIterator
+interface Write extends \r8\iface\DB\Result
 {
 
     /**
-     * Returns whether this instance currently holds a valid resource
-     *
-     * @return Boolean
-     */
-    public function hasResult ();
-
-    /**
-     * Returns a list of field names returned by the query
-     *
-     * @return Array
-     */
-    public function getFields ();
-
-    /**
-     * Returns whether a field exists in the results
-     *
-     * @param String $field The case-sensitive field name
-     * @return Boolean
-     */
-    public function isField ( $field );
-
-    /**
-     * Returns the number of fields in the result set
+     * Returns the number of rows affected by a query
      *
      * @return Integer
      */
-    public function fieldCount ();
+    public function getAffected ();
 
     /**
-     * Frees the resource in this instance
+     * Returns the ID of the row inserted by this query
      *
-     * @return Object Returns a self reference
+     * @return Integer|NULL This will return NULL if no ID is returned
      */
-    public function free ();
+    public function getInsertID ();
 
 }
 

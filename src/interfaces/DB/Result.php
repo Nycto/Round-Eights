@@ -25,49 +25,20 @@
  * @package Database
  */
 
-namespace r8\iface\DB\Result;
+namespace r8\iface\DB;
 
 /**
- * Database Read Query Results
+ * Database Query Results
  */
-interface Read extends \r8\iface\DB\Result, \Countable, \SeekableIterator
+interface Result
 {
 
     /**
-     * Returns whether this instance currently holds a valid resource
+     * Returns the query used to generate this result
      *
-     * @return Boolean
+     * @return String
      */
-    public function hasResult ();
-
-    /**
-     * Returns a list of field names returned by the query
-     *
-     * @return Array
-     */
-    public function getFields ();
-
-    /**
-     * Returns whether a field exists in the results
-     *
-     * @param String $field The case-sensitive field name
-     * @return Boolean
-     */
-    public function isField ( $field );
-
-    /**
-     * Returns the number of fields in the result set
-     *
-     * @return Integer
-     */
-    public function fieldCount ();
-
-    /**
-     * Frees the resource in this instance
-     *
-     * @return Object Returns a self reference
-     */
-    public function free ();
+    public function getQuery ();
 
 }
 

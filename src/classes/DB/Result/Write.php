@@ -28,7 +28,7 @@ namespace r8\DB\Result;
 /**
  * Database Read Query Results
  */
-class Write extends \r8\DB\Result\Base
+class Write extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Write
 {
 
     /**
