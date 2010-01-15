@@ -41,7 +41,7 @@ class classes_DB_SQLite_Result extends PHPUnit_Framework_TestCase
     private $db;
 
     /**
-     * Ensures that all the prerequisites exist for connecting via mysqli
+     * Ensures that all the prerequisites exist for connecting to a SQLite db
      */
     public function setUp ()
     {
