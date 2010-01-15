@@ -152,6 +152,35 @@ class classes_DB_Mysqli_Result extends PHPUnit_Framework_TestCase
         $this->assertNull( $result->fetch() );
     }
 
+    public function testSeek ()
+    {
+        $result = $this->getTestResult();
+
+        $this->assertSame(
+                array('id' => '1', 'label' => 'alpha', 'data' => 'one'),
+                $result->fetch()
+            );
+
+        $this->assertSame(
+                array('id' => '2', 'label' => 'beta', 'data' => 'two'),
+                $result->fetch()
+            );
+
+        $this->assertNull( $result->seek(0) );
+
+        $this->assertSame(
+                array('id' => '1', 'label' => 'alpha', 'data' => 'one'),
+                $result->fetch()
+            );
+
+        $this->assertNull( $result->seek(2) );
+
+        $this->assertSame(
+                array('id' => '3', 'label' => 'gamma', 'data' => 'three'),
+                $result->fetch()
+            );
+    }
+
     public function testFree ()
     {
         $result = $this->getTestResult();
