@@ -100,6 +100,16 @@ abstract class Decorator implements \r8\iface\DB\Link
         return $this->link->escape( $value, $allowNull );
     }
 
+    /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URI that loosely identifies this connection
+     */
+    public function getIdentifier ()
+    {
+        return $this->link->getIdentifier();
+    }
+
 }
 
 ?>

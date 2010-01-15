@@ -28,7 +28,7 @@ namespace r8\iface\DB\Adapter;
 /**
  * Database Connection Adapter
  */
-interface Link
+interface Link extends \r8\iface\DB\Identified
 {
 
     /**
@@ -74,13 +74,6 @@ interface Link
      * @return String|NULL Returns NULL if no specific extension is required
      */
     public function getExtension ();
-
-    /**
-     * Returns a brief string that can be used to describe this connection
-     *
-     * @return String Returns a URI that loosely identifies this connection
-     */
-    public function getIdentifier ();
 
 }
 

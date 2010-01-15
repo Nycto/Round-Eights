@@ -28,7 +28,7 @@ namespace r8\iface\DB;
 /**
  * Database Link interface
  */
-interface Link
+interface Link extends \r8\iface\DB\Identified
 {
 
     /**

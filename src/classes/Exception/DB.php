@@ -56,9 +56,6 @@ class DB extends \r8\Exception
     {
         parent::__construct( $message, $code, $fault );
 
-        if ( $link instanceof \r8\DB\LinkWrap )
-            $link = $link->getTopLink();
-
         if ( $link instanceof \r8\DB\Link )
             $this->addData( 'Link', $link->getIdentifier() );
         else

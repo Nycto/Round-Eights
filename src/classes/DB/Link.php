@@ -255,6 +255,16 @@ class Link implements \r8\iface\DB\Link
         );
     }
 
+    /**
+     * Returns a brief string that can be used to describe this connection
+     *
+     * @return String Returns a URI that loosely identifies this connection
+     */
+    public function getIdentifier ()
+    {
+        return $this->adapter->getIdentifier();
+    }
+
 }
 
 ?>
