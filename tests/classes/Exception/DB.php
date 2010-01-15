@@ -30,20 +30,15 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_db extends PHPUnit_Framework_TestCase
+class classes_Exception_DB extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct_link ()
+    public function testConstruct_Identified ()
     {
-        $link = $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "getIdentifier")
-            );
-
+        $link = $this->getMock( '\r8\iface\DB\Identified' );
         $link->expects( $this->once() )
             ->method("getIdentifier")
             ->will( $this->returnValue("db://ident") );
-
 
         $err = new \r8\Exception\DB(
                 'Oops, an error was encountered',
@@ -56,46 +51,7 @@ class classes_exception_db extends PHPUnit_Framework_TestCase
         $this->assertEquals( 404, $err->getCode() );
         $this->assertEquals( 0, $err->getFaultOffset() );
 
-        $this->assertEquals(
-                array("Link" => "db://ident"),
-                $err->getData()
-            );
-    }
-
-    public function testConstruct_linkwrap ()
-    {
-        $link = $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "getIdentifier")
-            );
-
-        $link->expects( $this->once() )
-            ->method("getIdentifier")
-            ->will( $this->returnValue("db://ident") );
-
-
-        $wrap = $this->getMock(
-                '\r8\DB\LinkWrap',
-                array("_mock"),
-                array( $link )
-            );
-
-
-        $err = new \r8\Exception\DB(
-                'Oops, an error was encountered',
-                404,
-                $wrap,
-                0
-            );
-
-        $this->assertEquals( "Oops, an error was encountered", $err->getMessage() );
-        $this->assertEquals( 404, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
-        $this->assertEquals(
-                array("Link" => "db://ident"),
-                $err->getData()
-            );
+        $this->assertEquals( array("Link" => "db://ident"), $err->getData() );
     }
 
     public function testConstruct_other ()
