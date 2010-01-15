@@ -33,6 +33,9 @@ define ( "MYSQLI_USERNAME", "phpunit" );
 define ( "MYSQLI_PASSWORD", FALSE );
 define ( "MYSQLI_TABLE", "r8_Test_Table" );
 
+define ( "SQLITE_FILE", "/tmp/r8_SQLiteTestDB" );
+define ( "SQLITE_TABLE", "r8_Test_Table" );
+
 define ( "MEMCACHE_HOST", "127.0.0.1" );
 define ( "MEMCACHE_PORT", 11211 );
 
