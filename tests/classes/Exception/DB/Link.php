@@ -30,20 +30,15 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_exception_db_link extends PHPUnit_Framework_TestCase
+class classes_Exception_DB_Link extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct_link ()
     {
-        $link = $this->getMock(
-                '\r8\DB\Link',
-                array("rawConnect", "rawDisconnect", "escapeString", "rawQuery", "rawIsConnected", "getIdentifier")
-            );
-
+        $link = $this->getMock( '\r8\iface\DB\Identified' );
         $link->expects( $this->once() )
             ->method("getIdentifier")
             ->will( $this->returnValue("db://ident") );
-
 
         $err = new \r8\Exception\DB\Link(
                 'Oops, an error was encountered',
