@@ -63,46 +63,6 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( $read, $read->free() );
     }
 
-    public function testFree_WithoutIteratingFirst ()
-    {
-        $result = new \r8\DB\Result\Read(
-            new \r8\DB\BlackHole\Result(
-                array( 1, 2 ), array( 3, 4 )
-            ),
-            "SELECT 1"
-        );
-
-        $result->free();
-
-        PHPUnit_Framework_Constraint_Iterator::assert(
-            array(),
-            $result
-        );
-    }
-
-    public function testFree_IterateFirst ()
-    {
-        $result = new \r8\DB\Result\Read(
-            new \r8\DB\BlackHole\Result(
-                array( 1, 2 ),
-                array( 3, 4 )
-            ),
-            "SELECT 1"
-        );
-
-        PHPUnit_Framework_Constraint_Iterator::assert(
-            array( array( 1, 2 ), array( 3, 4 ) ),
-            $result
-        );
-
-        $result->free();
-
-        PHPUnit_Framework_Constraint_Iterator::assert(
-            array(),
-            $result
-        );
-    }
-
     public function testDestruct ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
@@ -142,11 +102,25 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
 
         $this->assertSame( 20, $read->count() );
         $this->assertSame( 20, $read->count() );
-        $this->assertSame( 20, $read->count() );
         $this->assertSame( 20, count( $read ) );
     }
 
-    public function testCount_Freed ()
+    public function testCount_FreeWithCount ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->once() )
+            ->method("count")
+            ->will( $this->returnValue(20) );
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+
+        $this->assertSame( 20, $read->count() );
+
+        $read->free();
+        $this->assertSame( 20, $read->count() );
+    }
+
+    public function testCount_FreeWithoutCount ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
         $adapter->expects( $this->never() )->method("count");
@@ -175,7 +149,21 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( array("one", "two"), $read->getFields() );
     }
 
-    public function testGetFields_Freed ()
+    public function testGetFields_FreeWithFields ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->once() )
+            ->method("getFields")
+            ->will( $this->returnValue( array("one", "two") ) );
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $this->assertSame( array("one", "two"), $read->getFields() );
+
+        $read->free();
+        $this->assertSame( array("one", "two"), $read->getFields() );
+    }
+
+    public function testGetFields_FreeWithoutFields ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
         $adapter->expects( $this->never() )->method("getFields");
@@ -322,6 +310,45 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
                 array("six", "five"),
             ),
             $read
+        );
+    }
+
+    public function testIterate_FreeWithoutIterating ()
+    {
+        $result = new \r8\DB\Result\Read(
+            new \r8\DB\BlackHole\Result(
+                array( 1, 2 ), array( 3, 4 )
+            ),
+            "SELECT 1"
+        );
+
+        $result->free();
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
+        );
+    }
+
+    public function testIterate_FreeAfterIterating ()
+    {
+        $result = new \r8\DB\Result\Read(
+            new \r8\DB\BlackHole\Result(
+                array( 1, 2 ),
+                array( 3, 4 )
+            ),
+            "SELECT 1"
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array( array( 1, 2 ), array( 3, 4 ) ),
+            $result
+        );
+
+        $result->free();
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
         );
     }
 

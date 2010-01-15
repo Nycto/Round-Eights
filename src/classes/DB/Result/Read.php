@@ -139,11 +139,13 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function getFields ()
     {
-        if ( !isset($this->adapter) )
-            return array();
+        if ( !isset($this->fields) ) {
 
-        if ( !isset($this->fields) )
-            $this->fields = (array) $this->adapter->getFields();
+            if ( isset($this->adapter) )
+                $this->fields = (array) $this->adapter->getFields();
+            else
+                $this->fields = array();
+        }
 
         return $this->fields;
     }
