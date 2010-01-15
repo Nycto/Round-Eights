@@ -36,10 +36,18 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
     public function testGetAdapter ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
-
         $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
         $this->assertSame( $adapter, $read->getAdapter() );
+    }
+
+    public function testGetAdapter_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertNull( $read->getAdapter() );
     }
 
     public function testFree ()
@@ -53,6 +61,46 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( $read, $read->free() );
         $this->assertSame( $read, $read->free() );
         $this->assertSame( $read, $read->free() );
+    }
+
+    public function testFree_WithoutIteratingFirst ()
+    {
+        $result = new \r8\DB\Result\Read(
+            new \r8\DB\BlackHole\Result(
+                array( 1, 2 ), array( 3, 4 )
+            ),
+            "SELECT 1"
+        );
+
+        $result->free();
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
+        );
+    }
+
+    public function testFree_IterateFirst ()
+    {
+        $result = new \r8\DB\Result\Read(
+            new \r8\DB\BlackHole\Result(
+                array( 1, 2 ),
+                array( 3, 4 )
+            ),
+            "SELECT 1"
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array( array( 1, 2 ), array( 3, 4 ) ),
+            $result
+        );
+
+        $result->free();
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            $result
+        );
     }
 
     public function testDestruct ()
@@ -98,6 +146,21 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( 20, count( $read ) );
     }
 
+    public function testCount_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+
+        $read->free();
+
+        $this->assertSame( 0, $read->count() );
+        $this->assertSame( 0, $read->count() );
+        $this->assertSame( 0, $read->count() );
+        $this->assertSame( 0, count( $read ) );
+    }
+
     public function testGetFields ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
@@ -110,6 +173,18 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( array("one", "two"), $read->getFields() );
         $this->assertSame( array("one", "two"), $read->getFields() );
         $this->assertSame( array("one", "two"), $read->getFields() );
+    }
+
+    public function testGetFields_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("getFields");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+
+        $read->free();
+
+        $this->assertSame( array(), $read->getFields() );
     }
 
     public function testIsField ()
@@ -184,6 +259,19 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( $read, $read->seek( 1 ) );
     }
 
+    public function testSeek_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+        $adapter->expects( $this->never() )->method("seek");
+        $adapter->expects( $this->never() )->method("fetch");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertSame( $read, $read->seek( 0 ) );
+    }
+
     public function testIteration ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
@@ -254,6 +342,55 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $this->assertSame( array("one", "two"), $read->current() );
         $this->assertSame( array("one", "two"), $read->current() );
         $this->assertSame( array("one", "two"), $read->current() );
+    }
+
+    public function testCurrent_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+        $adapter->expects( $this->never() )->method("fetch");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertNull( $read->current() );
+    }
+
+    public function testNext_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+        $adapter->expects( $this->never() )->method("fetch");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertSame( $read, $read->next() );
+    }
+
+    public function testKey_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+        $adapter->expects( $this->never() )->method("fetch");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertNull( $read->key() );
+    }
+
+    public function testRewind_Freed ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $adapter->expects( $this->never() )->method("count");
+        $adapter->expects( $this->never() )->method("fetch");
+        $adapter->expects( $this->never() )->method("seek");
+
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+        $read->free();
+
+        $this->assertSame( $read, $read->rewind() );
     }
 
 }

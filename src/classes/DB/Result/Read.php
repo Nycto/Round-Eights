@@ -89,15 +89,15 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
     {
         $this->free();
     }
-    
+
     /**
      * Returns the Adapter wrapped inside this result
      *
-     * @return \r8\iface\DB\Adapter\Result
+     * @return \r8\iface\DB\Adapter\Result Returns NULL if the result has been freed
      */
     public function getAdapter ()
     {
-       return $this->adapter;
+        return isset( $this->adapter ) ? $this->adapter : NULL;
     }
 
     /**
@@ -120,8 +120,14 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function count ()
     {
-        if ( !isset($this->count) )
-            $this->count = max( (int) $this->adapter->count(), 0 );
+        if ( !isset($this->count) ) {
+
+            if ( isset($this->adapter) )
+                $this->count = max( (int) $this->adapter->count(), 0 );
+            else
+                $this->count = 0;
+
+        }
 
         return $this->count;
     }
@@ -133,6 +139,9 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function getFields ()
     {
+        if ( !isset($this->adapter) )
+            return array();
+
         if ( !isset($this->fields) )
             $this->fields = (array) $this->adapter->getFields();
 
@@ -165,11 +174,14 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      *
      * Iterator interface function
      *
-     * @return mixed Returns the current Row, or FALSE if the iteration has
+     * @return mixed Returns the current Row, or NULL if the iteration has
      *      reached the end of the row list
      */
     public function current ()
     {
+        if ( !isset($this->adapter) )
+            return NULL;
+
         // If the pointer has not yet been initialize, grab the first row
         if ( !isset($this->pointer) )
             $this->next();
@@ -186,6 +198,9 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function valid ()
     {
+        if ( !isset($this->adapter) )
+            return FALSE;
+
         $count = $this->count();
 
         if ( $count == 0 )
@@ -203,6 +218,9 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function next ()
     {
+        if ( !isset($this->adapter) )
+            return $this;
+
         // If the pointer isn't set yet, start it at 0
         if ( !isset($this->pointer) )
             $this->pointer = 0;
@@ -229,6 +247,9 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function key ()
     {
+        if ( !isset($this->adapter) )
+            return NULL;
+
         // If the pointer has not yet been initialize, grab the first row
         if ( !isset($this->pointer) )
             $this->next();
@@ -246,13 +267,16 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function rewind ()
     {
-        // If the pointer hasn't been initialized at all, then we just need to fetch the first row
-        if ( !isset($this->pointer) )
-            $this->next();
+        if ( isset($this->adapter) ) {
 
-        // If the pointer is already at zero, we don't need to do anything
-        else if ( $this->pointer > 0 )
-            $this->seek(0);
+            // If the pointer hasn't been initialized at all, then we just need to fetch the first row
+            if ( !isset($this->pointer) )
+                $this->next();
+
+            // If the pointer is already at zero, we don't need to do anything
+            else if ( $this->pointer > 0 )
+                $this->seek(0);
+        }
 
         return $this;
     }
@@ -268,6 +292,9 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
      */
     public function seek ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
     {
+        if ( !isset($this->adapter) )
+            return $this;
+
         $offset = \r8\num\offsetWrap(
                 $this->count(),
                 $offset,
@@ -292,7 +319,11 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
     {
         if ( $this->hasResult() ) {
             $this->adapter->free();
-            unset( $this->adapter );
+            unset(
+                $this->adapter,
+                $this->pointer,
+                $this->row
+            );
         }
         return $this;
     }
