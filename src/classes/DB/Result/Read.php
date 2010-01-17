@@ -91,6 +91,18 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
     }
 
     /**
+     * Prevents serialization of this object
+     *
+     * @return array
+     */
+    public function __sleep ()
+    {
+        throw new \r8\Exception\Interaction(
+            'Database results can not be serialized. Consider using an \r8\Iterator\Cache object.'
+        );
+    }
+
+    /**
      * Returns the Adapter wrapped inside this result
      *
      * @return \r8\iface\DB\Adapter\Result Returns NULL if the result has been freed

@@ -33,6 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
 {
 
+    public function testSerialize ()
+    {
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
+        $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
+
+        try {
+            \serialize( $read );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Interaction $err ) {
+            $this->assertSame(
+                'Database results can not be serialized. Consider using an \r8\Iterator\Cache object.',
+                $err->getMessage()
+            );
+        }
+    }
+
     public function testGetAdapter ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Result');
