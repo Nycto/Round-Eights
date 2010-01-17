@@ -28,7 +28,7 @@ namespace r8\DB;
 /**
  * Database configuration information
  */
-class Config
+class Config implements \Serializable
 {
 
     /**
@@ -92,6 +92,27 @@ class Config
 
         else if ( is_array( $input ) )
             $this->fromArray( $input );
+    }
+
+    /**
+     * Returns the serialized version of this configuration
+     *
+     * @return String
+     */
+    public function serialize ()
+    {
+        return $this->getURI();
+    }
+
+    /**
+     * Returns the serialized version of this configuration
+     *
+     * @param String $serialized The serialized data
+     * @return NULL
+     */
+    public function unserialize ( $serialized )
+    {
+        $this->fromURI( (string) $serialized );
     }
 
     /**

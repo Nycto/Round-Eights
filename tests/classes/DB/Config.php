@@ -47,6 +47,22 @@ class classes_DB_Config extends PHPUnit_Framework_TestCase
         $this->assertSame( 42, $config->getPort() );
     }
 
+    public function testSerialize ()
+    {
+        $config = new \r8\DB\Config( "db://example.com:3306/dbname" );
+
+        $serialized = serialize($config);
+        $this->assertSame(
+            'C:12:"r8\\DB\\Config":28:{db://example.com:3306/dbname}',
+            $serialized
+        );
+
+        $this->assertEquals(
+            new \r8\DB\Config( "db://example.com:3306/dbname" ),
+            unserialize($serialized)
+        );
+    }
+
     public function testPersistentAccessors ()
     {
         $config = new \r8\DB\Config;
