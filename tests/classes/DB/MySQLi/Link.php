@@ -213,6 +213,19 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
 		$this->assertSame( "mysqli", $link->getExtension() );
 	}
 
+	public function testSerialize ()
+	{
+        $link = $this->getTestLink();
+		$link->connect();
+
+		$serialized = serialize( $link );
+
+		$this->assertEquals(
+			$this->getTestLink(),
+			unserialize($serialized)
+		);
+	}
+
 }
 
 ?>
