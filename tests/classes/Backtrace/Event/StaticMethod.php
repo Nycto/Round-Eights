@@ -38,7 +38,7 @@ class classes_Backtrace_Event_StaticMethod extends PHPUnit_Framework_TestCase
         $main = new \r8\Backtrace\Event\StaticMethod(
             "cls",
             "meth",
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );
@@ -56,7 +56,7 @@ class classes_Backtrace_Event_StaticMethod extends PHPUnit_Framework_TestCase
         $event = new \r8\Backtrace\Event\StaticMethod(
             "cls",
             "meth",
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );

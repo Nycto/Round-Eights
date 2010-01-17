@@ -135,7 +135,7 @@ abstract class Logic implements \r8\iface\Query\Where
 
         // Combine all the sub-clauses with the delimiter
         return implode(
-        		" ". trim( $this->getDelimiter() ) ." ",
+                " ". trim( $this->getDelimiter() ) ." ",
                 $result
             );
     }

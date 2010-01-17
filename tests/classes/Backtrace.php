@@ -41,7 +41,7 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
     public function getMockEvent ()
     {
         return $this->getMock(
-        	'\r8\Backtrace\Event',
+            '\r8\Backtrace\Event',
             array('visit', 'getResolvedName'),
             array( '/path/example.php' )
         );
@@ -181,14 +181,14 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
     {
         $backtrace = \r8\Backtrace::from( array (
             array ( 'file' => '/tmp/backtrace.php', 'line' => 11,
-    			'function' => '{closure}', 'args' => array () ),
+                'function' => '{closure}', 'args' => array () ),
             array ( 'function' => 'stat', 'class' => 'tmp',
-            	'type' => '::', 'args' => array () ),
+                'type' => '::', 'args' => array () ),
             array ( 'file' => '/tmp/backtrace.php', 'line' => 24,
-    			'function' => 'meth', 'class' => 'tmp', 'type' => '->',
-    			'args' => array () ),
+                'function' => 'meth', 'class' => 'tmp', 'type' => '->',
+                'args' => array () ),
             array ( 'file' => '/tmp/backtrace.php', 'line' => 27,
-    			'function' => 'execute', 'args' => array () ),
+                'function' => 'execute', 'args' => array () ),
         ) );
 
         $this->assertThat( $backtrace, $this->isInstanceOf('\r8\Backtrace') );
@@ -237,16 +237,16 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $this->assertSame( __FUNCTION__, $first->getName() );
     }
 
-	public function testDump ()
-	{
-		ob_start();
-		\r8\Backtrace::dump();
-		$result = ob_get_clean();
+    public function testDump ()
+    {
+        ob_start();
+        \r8\Backtrace::dump();
+        $result = ob_get_clean();
 
-		$this->assertGreaterThan( 0, strlen($result) );
-		$this->assertContains("testDump", $result);
-		$this->assertNotContains('\r8\Backtrace', $result);
-	}
+        $this->assertGreaterThan( 0, strlen($result) );
+        $this->assertContains("testDump", $result);
+        $this->assertNotContains('\r8\Backtrace', $result);
+    }
 
 }
 

@@ -68,7 +68,7 @@ abstract class Formatter implements \r8\iface\Error\Formatter
         return array_filter( array(
             "Time" => date("Y-m-d H:i:s"),
             "Type" => $error->getType(),
-        	"Message" => $error->getMessage(),
+            "Message" => $error->getMessage(),
             "Code" => $error->getcode(),
             "File" => $error->getFile(),
             "Line" => $error->getLine(),

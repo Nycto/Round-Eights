@@ -100,7 +100,7 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $fld = new \r8\Query\Atom\Func(
-        		"Func",
+                "Func",
                 new \r8\Query\Atom\Primitive(5),
                 new \r8\Query\Atom\Field("fld")
             );

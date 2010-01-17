@@ -58,7 +58,7 @@ abstract class Event
                 array( "function", "line", "file", "class", "type", "args" )
             )
             + array(
-            	"function" => null, "line" => null, "file" => null,
+                "function" => null, "line" => null, "file" => null,
                  "class" => null, "type" => null, "args" => array()
             );
 

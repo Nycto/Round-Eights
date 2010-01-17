@@ -666,8 +666,8 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
             return PHPUnit_Util_Type::toString($other) ." is an instance of Traversable";
 
         $diff = new PHPUnit_Framework_ComparisonFailure_Array(
-        	        $this->value,
-        	        $this->toArray($other)
+                    $this->value,
+                    $this->toArray($other)
 
             );
 

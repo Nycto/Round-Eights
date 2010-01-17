@@ -39,7 +39,7 @@ class classes_query_where_compare extends PHPUnit_Framework_TestCase
         $right = $this->getMock('r8\iface\Query\Atom');
 
         $compare = $this->getMock(
-        		'\r8\Query\Where\Compare',
+                '\r8\Query\Where\Compare',
                 array( "toWhereSQL" ),
                 array( $left, $right )
             );
@@ -54,7 +54,7 @@ class classes_query_where_compare extends PHPUnit_Framework_TestCase
         $right = $this->getMock('r8\iface\Query\Atom');
 
         $compare = $this->getMock(
-        		'\r8\Query\Where\Compare',
+                '\r8\Query\Where\Compare',
                 array( "toWhereSQL" ),
                 array( $left, $right )
             );

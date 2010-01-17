@@ -41,7 +41,7 @@ class classes_HTML_Node extends PHPUnit_Framework_TestCase
     public function getTestNode ( $content = null )
     {
         return $this->getMock(
-        	'\r8\HTML\Node',
+            '\r8\HTML\Node',
             array('render'),
             array( $content )
         );

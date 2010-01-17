@@ -54,7 +54,7 @@ class JSON implements \r8\iface\Backtrace\Formatter
     public function event ( $position, $name, array $args, $file, $line )
     {
         $result = array_filter( array(
-        	"Stack" => $position,
+            "Stack" => $position,
             "Name" => $name,
             "Closure" => empty($name),
             "File" => $file,
@@ -75,7 +75,7 @@ class JSON implements \r8\iface\Backtrace\Formatter
     public function main ( $position, $file )
     {
         return json_encode( array(
-        	"Stack" => $position,
+            "Stack" => $position,
             "Main" => empty($name),
             "File" => $file,
         ) );

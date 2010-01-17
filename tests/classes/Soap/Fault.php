@@ -36,27 +36,27 @@ class classes_Soap_Fault extends PHPUnit_Framework_TestCase
     public function testTranslatePrimeCode ()
     {
         $this->assertSame(
-        	"VersionMismatch",
+            "VersionMismatch",
             \r8\Soap\Fault::translatePrimeCode("VERSIONMISMATCH")
         );
 
         $this->assertSame(
-        	"MustUnderstand",
+            "MustUnderstand",
             \r8\Soap\Fault::translatePrimeCode("MustUnderstand")
         );
 
         $this->assertSame(
-        	"DataEncodingUnknown",
+            "DataEncodingUnknown",
             \r8\Soap\Fault::translatePrimeCode("dataencodingunknown")
         );
 
         $this->assertSame(
-        	"Sender",
+            "Sender",
             \r8\Soap\Fault::translatePrimeCode("SeNdEr")
         );
 
         $this->assertSame(
-        	"Receiver",
+            "Receiver",
             \r8\Soap\Fault::translatePrimeCode("   Receiver   ")
         );
 
@@ -78,8 +78,8 @@ class classes_Soap_Fault extends PHPUnit_Framework_TestCase
     public function testConstruct_full ()
     {
         $fault = new \r8\Soap\Fault(
-    		"Fault!",
-    		"Receiver",
+            "Fault!",
+            "Receiver",
             array( "Sub Code!", "#two!", "   ", 3)
         );
 

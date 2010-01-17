@@ -41,7 +41,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
     public function getTestLogic ()
     {
         $logic = $this->getMock(
-        		'r8\Query\Where\Logic',
+                'r8\Query\Where\Logic',
                 array( "getPrecedence", "getDelimiter" )
             );
 
@@ -81,7 +81,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         $where3 = $this->getTestClause( 20, "Where" );
 
         $logic = $this->getMock(
-        		'r8\Query\Where\Logic',
+                'r8\Query\Where\Logic',
                 array( "getPrecedence", "getDelimiter" ),
                 array(
                     $where1, "invalid", $where2, new stdClass, $where3
@@ -97,7 +97,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
     public function testClauseAccessors ()
     {
         $logic = $this->getMock(
-        		'r8\Query\Where\Logic',
+                'r8\Query\Where\Logic',
                 array( "getPrecedence", "getDelimiter" )
             );
 
@@ -121,7 +121,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
     public function testCountClauses ()
     {
         $logic = $this->getMock(
-        		'r8\Query\Where\Logic',
+                'r8\Query\Where\Logic',
                 array( "getPrecedence", "getDelimiter" )
             );
         $this->assertSame( 0, $logic->countClauses() );
@@ -151,7 +151,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         // Run the actual conversion
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"Higher DELIM (Lower) DELIM Higher DELIM (Lower)",
+                "Higher DELIM (Lower) DELIM Higher DELIM (Lower)",
                 $logic->toWhereSQL( $link )
             );
     }
@@ -168,7 +168,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         // Run the actual conversion
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"Equals1 DELIM Equals2 DELIM Equals3",
+                "Equals1 DELIM Equals2 DELIM Equals3",
                 $logic->toWhereSQL( $link )
             );
     }
@@ -185,7 +185,7 @@ class classes_query_where_logic extends PHPUnit_Framework_TestCase
         // Run the actual conversion
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"(Lower) DELIM Higher",
+                "(Lower) DELIM Higher",
                 $logic->toWhereSQL( $link )
             );
     }

@@ -112,7 +112,7 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
     public function testSet_Expiration ()
     {
         $sess = $this->getMock(
-        	'r8\Session\Cookie',
+            'r8\Session\Cookie',
             array('setCookie'),
             array( 50 )
         );

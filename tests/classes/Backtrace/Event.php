@@ -114,7 +114,7 @@ class classes_Backtrace_Event extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         $event = $this->getMock(
-        	'\r8\Backtrace\Event',
+            '\r8\Backtrace\Event',
             array('visit', 'getResolvedName'),
             array('/path/example.php', 1423)
         );

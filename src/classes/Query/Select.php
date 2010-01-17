@@ -753,7 +753,7 @@ class Select
         }
         else {
             $sql .= implode(
-        		", ",
+                ", ",
                 \r8\ary\invoke( $this->fields, "toSelectSQL", $link )
             );
         }
@@ -766,14 +766,14 @@ class Select
 
         if ( count($this->order) > 0 ) {
             $sql .= "\nORDER BY ". implode(
-        		", ",
+                ", ",
                 \r8\ary\invoke( $this->order, "toOrderedSQL", $link )
             );
         }
 
         if ( count($this->group) > 0 ) {
             $sql .= "\nGROUP BY ". implode(
-        		", ",
+                ", ",
                 \r8\ary\invoke( $this->group, "toOrderedSQL", $link )
             );
         }
@@ -784,8 +784,8 @@ class Select
         if ( $this->limitExists() )
         {
             $sql .= "\nLIMIT "
-        		.( $this->offsetExists() ? $this->getOffset() : "0" )
-            	.", ". $this->getLimit();
+                .( $this->offsetExists() ? $this->getOffset() : "0" )
+                .", ". $this->getLimit();
         }
 
         return $sql;

@@ -62,7 +62,7 @@ class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
         $doc->appendChild( $node );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n\n",
+            '<?xml version="1.0"?>' ."\n\n",
             $doc->saveXML()
         );
     }
@@ -82,7 +82,7 @@ class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
         $doc->appendChild( $node );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<one/>' ."\n"
             .'<two/>' ."\n"
             .'<three/>' ."\n",

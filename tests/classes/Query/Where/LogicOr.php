@@ -82,7 +82,7 @@ class classes_query_where_logicor extends PHPUnit_Framework_TestCase
 
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"(Lower) OR Higher OR Equals",
+                "(Lower) OR Higher OR Equals",
                 $or->toWhereSQL( $link )
             );
     }

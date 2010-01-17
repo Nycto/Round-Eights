@@ -114,12 +114,12 @@ class classes_DB_Link_Decorator extends PHPUnit_Framework_TestCase
         $this->assertSame( "escaped", $mock->escape("raw value", FALSE) );
     }
 
-	public function testGetIdentifier ()
-	{
+    public function testGetIdentifier ()
+    {
         $link = $this->getMock( '\r8\iface\DB\Link' );
-		$link->expects( $this->any() )
-			->method( "getIdentifier" )
-			->will( $this->returnValue( "db:uri" ) );
+        $link->expects( $this->any() )
+            ->method( "getIdentifier" )
+            ->will( $this->returnValue( "db:uri" ) );
 
         $mock = $this->getMock(
                 '\r8\DB\Link\Decorator',
@@ -127,8 +127,8 @@ class classes_DB_Link_Decorator extends PHPUnit_Framework_TestCase
                 array( $link )
             );
 
-		$this->assertSame( "db:uri", $mock->getIdentifier() );
-	}
+        $this->assertSame( "db:uri", $mock->getIdentifier() );
+    }
 
 }
 

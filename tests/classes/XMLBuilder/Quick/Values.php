@@ -36,7 +36,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_ArrayBasic ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"ary",
+            "ary",
             array( "key" => "value", "key2" => "value2" )
         );
 
@@ -49,7 +49,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary><key>value</key><key2>value2</key2></ary>' ."\n",
+            .'<ary><key>value</key><key2>value2</key2></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -57,7 +57,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_ArrayDepth ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"ary",
+            "ary",
             array( "key" => array( "sub" => array( "child" => "data", "stuff" => "info" ) ) )
         );
 
@@ -70,7 +70,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary><key><sub><child>data</child><stuff>info</stuff></sub></key></ary>' ."\n",
+            .'<ary><key><sub><child>data</child><stuff>info</stuff></sub></key></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -78,12 +78,12 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_Iterators ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"iter",
+            "iter",
             new ArrayIterator(array(
-            	"key" => new ArrayIterator(array(
-            		"sub" => new ArrayIterator(array(
-            			"child" => "data",
-            			"stuff" => "info"
+                "key" => new ArrayIterator(array(
+                    "sub" => new ArrayIterator(array(
+                        "child" => "data",
+                        "stuff" => "info"
                     ))
                 ))
             ))
@@ -98,7 +98,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<iter><key><sub><child>data</child><stuff>info</stuff></sub></key></iter>' ."\n",
+            .'<iter><key><sub><child>data</child><stuff>info</stuff></sub></key></iter>' ."\n",
             $doc->saveXML()
          );
     }
@@ -142,7 +142,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<build><test/></build>' ."\n",
+            .'<build><test/></build>' ."\n",
             $doc->saveXML()
          );
     }
@@ -168,7 +168,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<build><parent><test/></parent></build>' ."\n",
+            .'<build><parent><test/></parent></build>' ."\n",
             $doc->saveXML()
          );
     }
@@ -191,7 +191,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<obj><child>data</child><stuff>info</stuff><two>blah</two></obj>' ."\n",
+            .'<obj><child>data</child><stuff>info</stuff><two>blah</two></obj>' ."\n",
             $doc->saveXML()
          );
     }
@@ -216,7 +216,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<obj><key><sub><child>data</child><stuff>info</stuff></sub></key><two>blah</two></obj>' ."\n",
+            .'<obj><key><sub><child>data</child><stuff>info</stuff></sub></key><two>blah</two></obj>' ."\n",
             $doc->saveXML()
          );
     }
@@ -239,7 +239,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<tostr>Data Chunk</tostr>' ."\n",
+            .'<tostr>Data Chunk</tostr>' ."\n",
             $doc->saveXML()
          );
     }
@@ -252,7 +252,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( "Data Chunk" ) );
 
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"tostr",
+            "tostr",
             array( "tag" => $obj )
         );
 
@@ -265,7 +265,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<tostr><tag>Data Chunk</tag></tostr>' ."\n",
+            .'<tostr><tag>Data Chunk</tag></tostr>' ."\n",
             $doc->saveXML()
          );
     }
@@ -273,7 +273,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_Namespaced ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"ary",
+            "ary",
             array( "key" => "value" ),
             "test:uri"
         );
@@ -287,7 +287,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary xmlns="test:uri"><key>value</key></ary>' ."\n",
+            .'<ary xmlns="test:uri"><key>value</key></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -295,7 +295,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_InvalidKey ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"keys",
+            "keys",
             array( "  !! @@ &&" => "val", 26 => "number" )
         );
 
@@ -308,7 +308,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<keys><unknown>val</unknown><numeric_26>number</numeric_26></keys>' ."\n",
+            .'<keys><unknown>val</unknown><numeric_26>number</numeric_26></keys>' ."\n",
             $doc->saveXML()
          );
     }
@@ -316,12 +316,12 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_List ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"list",
+            "list",
             array(
                 "item" => array(
-                	array( "key" => "value" ),
-                	"string",
-                	array( "other" => "thing" )
+                    array( "key" => "value" ),
+                    "string",
+                    array( "other" => "thing" )
                 )
             )
         );
@@ -335,7 +335,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<list><item><key>value</key></item><item>string</item><item><other>thing</other></item></list>' ."\n",
+            .'<list><item><key>value</key></item><item>string</item><item><other>thing</other></item></list>' ."\n",
             $doc->saveXML()
          );
     }
@@ -343,10 +343,10 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
     public function testBuildNode_RootList ()
     {
         $builder = new \r8\XMLBuilder\Quick\Values(
-        	"list",
+            "list",
             array(
-            	array( "key" => "value" ),
-            	"string"
+                array( "key" => "value" ),
+                "string"
             )
         );
 
@@ -359,7 +359,7 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<list><numeric_0><key>value</key></numeric_0><numeric_1>string</numeric_1></list>' ."\n",
+            .'<list><numeric_0><key>value</key></numeric_0><numeric_1>string</numeric_1></list>' ."\n",
             $doc->saveXML()
          );
     }

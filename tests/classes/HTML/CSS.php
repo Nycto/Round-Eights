@@ -82,7 +82,7 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
         $tag = $css->getTag();
         $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
         $this->assertSame(
-        	'<link rel="stylesheet" href="/example.css" type="text/css" media="all" />',
+            '<link rel="stylesheet" href="/example.css" type="text/css" media="all" />',
             $tag->__toString()
         );
 
@@ -92,7 +92,7 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
         $tag = $css->getTag();
         $this->assertThat( $tag, $this->isInstanceOf('\r8\HTML\Tag') );
         $this->assertSame(
-        	'<link rel="stylesheet" href="/test.css" type="text/css" media="print" />',
+            '<link rel="stylesheet" href="/test.css" type="text/css" media="print" />',
             $tag->__toString()
         );
     }
@@ -108,8 +108,8 @@ class classes_HTML_CSS extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<!--[if lte IE7]>'
-        	.'<link rel="stylesheet" href="/example.css" type="text/css" media="all" />'
-        	.'<![endif]-->',
+            .'<link rel="stylesheet" href="/example.css" type="text/css" media="all" />'
+            .'<![endif]-->',
             $tag->__toString()
         );
     }

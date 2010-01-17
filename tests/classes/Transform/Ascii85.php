@@ -112,10 +112,10 @@ class classes_Transform_Ascii85 extends PHPUnit_Framework_TestCase
         $this->assertSame(
             "<~87c4?!!!!!@VfId+<VdL<+0KW~>",
             $encode->to(
-            	"Head"
-            	.chr( 0 ).chr( 0 ).chr( 0 ).chr( 0 )
-            	."blah"
-            	."    "
+                "Head"
+                .chr( 0 ).chr( 0 ).chr( 0 ).chr( 0 )
+                ."blah"
+                ."    "
                 ."Tail"
             )
         );

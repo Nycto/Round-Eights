@@ -95,7 +95,7 @@ class classes_stream_in_uri extends PHPUnit_TestFile_Framework_TestCase
         $stream = new \r8\Stream\In\URI( $this->file );
 
         $this->assertSame(
-        		"This is a string\n"
+                "This is a string\n"
                 ."of data that is put\n"
                 ."in the test file",
                 $stream->readAll()
@@ -109,7 +109,7 @@ class classes_stream_in_uri extends PHPUnit_TestFile_Framework_TestCase
         $stream->read(5);
 
         $this->assertSame(
-        		"is a string\n"
+                "is a string\n"
                 ."of data that is put\n"
                 ."in the test file",
                 $stream->readAll()

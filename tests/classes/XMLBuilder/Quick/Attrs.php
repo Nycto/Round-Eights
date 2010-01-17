@@ -36,7 +36,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
     public function testBuildNode_ArrayBasic ()
     {
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"ary",
+            "ary",
             array( "key" => "value", "key2" => "value2" )
         );
 
@@ -49,7 +49,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary key="value" key2="value2"/>' ."\n",
+            .'<ary key="value" key2="value2"/>' ."\n",
             $doc->saveXML()
          );
     }
@@ -57,13 +57,13 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
     public function testBuildNode_ArrayDepth ()
     {
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"ary",
+            "ary",
             array(
-            	"key" => array(
+                "key" => array(
                     "attr" => "hrmph",
-            		"sub" => array(
-            			"child" => "data",
-            			"stuff" => "info"
+                    "sub" => array(
+                        "child" => "data",
+                        "stuff" => "info"
                     )
                 )
             )
@@ -78,7 +78,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary><key attr="hrmph"><sub child="data" stuff="info"/></key></ary>' ."\n",
+            .'<ary><key attr="hrmph"><sub child="data" stuff="info"/></key></ary>' ."\n",
             $doc->saveXML()
          );
     }
@@ -86,13 +86,13 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
     public function testBuildNode_Iterators ()
     {
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"iter",
+            "iter",
             new ArrayIterator(array(
-            	"key" => new ArrayIterator(array(
+                "key" => new ArrayIterator(array(
                     "attr" => "hrmph",
-            		"sub" => new ArrayIterator(array(
-            			"child" => "data",
-            			"stuff" => "info"
+                    "sub" => new ArrayIterator(array(
+                        "child" => "data",
+                        "stuff" => "info"
                     ))
                 ))
             ))
@@ -107,7 +107,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<iter><key attr="hrmph"><sub child="data" stuff="info"/></key></iter>' ."\n",
+            .'<iter><key attr="hrmph"><sub child="data" stuff="info"/></key></iter>' ."\n",
             $doc->saveXML()
          );
     }
@@ -151,7 +151,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<build><test/></build>' ."\n",
+            .'<build><test/></build>' ."\n",
             $doc->saveXML()
          );
     }
@@ -177,7 +177,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<build><parent><test/></parent></build>' ."\n",
+            .'<build><parent><test/></parent></build>' ."\n",
             $doc->saveXML()
          );
     }
@@ -200,7 +200,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<obj child="data" stuff="info" two="blah"/>' ."\n",
+            .'<obj child="data" stuff="info" two="blah"/>' ."\n",
             $doc->saveXML()
          );
     }
@@ -225,7 +225,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<obj two="blah"><key><sub child="data" stuff="info"/></key></obj>' ."\n",
+            .'<obj two="blah"><key><sub child="data" stuff="info"/></key></obj>' ."\n",
             $doc->saveXML()
          );
     }
@@ -248,7 +248,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<tostr>Data Chunk</tostr>' ."\n",
+            .'<tostr>Data Chunk</tostr>' ."\n",
             $doc->saveXML()
          );
     }
@@ -261,7 +261,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue( "Data Chunk" ) );
 
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"tostr",
+            "tostr",
             array( "tag" => $obj )
         );
 
@@ -274,7 +274,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<tostr tag="Data Chunk"/>' ."\n",
+            .'<tostr tag="Data Chunk"/>' ."\n",
             $doc->saveXML()
          );
     }
@@ -282,7 +282,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
     public function testBuildNode_Namespaced ()
     {
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"ary",
+            "ary",
             array( "key" => "value" ),
             "test:uri"
         );
@@ -296,7 +296,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<ary xmlns="test:uri" key="value"/>' ."\n",
+            .'<ary xmlns="test:uri" key="value"/>' ."\n",
             $doc->saveXML()
          );
     }
@@ -304,7 +304,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
     public function testBuildNode_InvalidKey ()
     {
         $builder = new \r8\XMLBuilder\Quick\Attrs(
-        	"keys",
+            "keys",
             array( "  !! @@ &&" => "val", 26 => "number" )
         );
 
@@ -317,7 +317,7 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<keys unknown="val" numeric_26="number"/>' ."\n",
+            .'<keys unknown="val" numeric_26="number"/>' ."\n",
             $doc->saveXML()
          );
     }

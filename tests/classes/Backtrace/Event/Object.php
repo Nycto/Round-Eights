@@ -36,12 +36,12 @@ class classes_Backtrace_Event_Object extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
         $event = $this->getMock(
-        	'\r8\Backtrace\Event\Object',
+            '\r8\Backtrace\Event\Object',
             array('visit', 'getResolvedName'),
             array(
                 "cls",
                 "meth",
-            	'/path/example.php',
+                '/path/example.php',
                 1423,
                 array( "arg1", "arg2" )
             )
@@ -58,12 +58,12 @@ class classes_Backtrace_Event_Object extends PHPUnit_Framework_TestCase
     {
         try {
             $this->getMock(
-            	'\r8\Backtrace\Event\Object',
+                '\r8\Backtrace\Event\Object',
                 array('visit', 'getResolvedName'),
                 array(
                     null,
                     "Method",
-                	'/path/example.php',
+                    '/path/example.php',
                     50,
                     array( "arg1", "arg2" )
                 )

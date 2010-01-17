@@ -38,7 +38,7 @@ class classes_Transform_Deflate extends PHPUnit_Framework_TestCase
         $cmpr = new \r8\Transform\Deflate( 0 );
 
         $this->assertSame(
-    		"AQcA+P9UZXN0aW5n",
+            "AQcA+P9UZXN0aW5n",
             base64_encode($cmpr->to("Testing"))
         );
     }
@@ -48,7 +48,7 @@ class classes_Transform_Deflate extends PHPUnit_Framework_TestCase
         $cmpr = new \r8\Transform\Deflate( 9 );
 
         $this->assertSame(
-    		"C0ktLsnMSwcA",
+            "C0ktLsnMSwcA",
             base64_encode($cmpr->to("Testing"))
         );
     }
@@ -58,7 +58,7 @@ class classes_Transform_Deflate extends PHPUnit_Framework_TestCase
         $cmpr = new \r8\Transform\Deflate;
 
         $this->assertSame(
-    		"C0ktLsnMS1coQaUB",
+            "C0ktLsnMS1coQaUB",
             base64_encode($cmpr->to("Testing testing testing"))
         );
     }

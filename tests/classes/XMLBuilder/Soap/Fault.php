@@ -43,7 +43,7 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
         $doc->appendChild( $builder->buildNode( $doc ) );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Error</Text></Reason></Fault>' ."\n",
             $doc->saveXML()
         );
@@ -60,7 +60,7 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
         $doc->appendChild( $builder->buildNode( $doc ) );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Error</Text></Reason><Role>role:uri</Role></Fault>' ."\n",
             $doc->saveXML()
         );
@@ -76,7 +76,7 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
         $doc->appendChild( $builder->buildNode( $doc ) );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<Fault xmlns="test:uri"><Code><Value>MustUnderstand</Value><Subcode><Value>one</Value><Subcode><Value>two</Value></Subcode></Subcode></Code><Reason><Text>Oops</Text></Reason></Fault>' ."\n",
             $doc->saveXML()
         );
@@ -93,7 +93,7 @@ class classes_xmlbuilder_soap_fault extends PHPUnit_Framework_TestCase
         $doc->appendChild( $builder->buildNode( $doc ) );
 
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<Fault xmlns="test:uri"><Code><Value>Sender</Value></Code><Reason><Text>Oops</Text></Reason><Details><one>once</one><two>twice</two></Details></Fault>' ."\n",
             $doc->saveXML()
         );

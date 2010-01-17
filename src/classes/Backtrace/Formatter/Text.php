@@ -54,7 +54,7 @@ class Text implements \r8\iface\Backtrace\Formatter
     public function event ( $position, $name, array $args, $file, $line )
     {
         $result = "#". $position .": "
-	        .( empty($name) ? "{closure}" : $name ) ."\n";
+            .( empty($name) ? "{closure}" : $name ) ."\n";
 
         if ( !empty($file) )
             $result .= "    File: ". $file ."\n";

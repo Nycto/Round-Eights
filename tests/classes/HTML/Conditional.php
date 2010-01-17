@@ -83,13 +83,13 @@ class classes_HTML_Conditional extends PHPUnit_Framework_TestCase
 
         $condition->setContent("chunk o data");
         $this->assertSame(
-        	'<!--[if lt IE6]>chunk o data<![endif]-->',
+            '<!--[if lt IE6]>chunk o data<![endif]-->',
             $condition->render()
         );
 
         $condition->setCondition('lte IE7');
         $this->assertSame(
-        	'<!--[if lte IE7]>chunk o data<![endif]-->',
+            '<!--[if lte IE7]>chunk o data<![endif]-->',
             $condition->render()
         );
     }

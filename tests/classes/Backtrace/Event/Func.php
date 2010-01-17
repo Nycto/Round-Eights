@@ -37,7 +37,7 @@ class classes_Backtrace_Event_Func extends PHPUnit_Framework_TestCase
     {
         $event = new \r8\Backtrace\Event\Func(
             "meth",
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );
@@ -54,7 +54,7 @@ class classes_Backtrace_Event_Func extends PHPUnit_Framework_TestCase
     {
         $event = new \r8\Backtrace\Event\Func(
             "meth",
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );

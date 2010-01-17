@@ -50,7 +50,7 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue($readable) );
 
         $file = $this->getMock(
-        	'\r8\Input\File',
+            '\r8\Input\File',
             array( "isUploadedFile" ),
             array( "FileName", $code, $temp )
         );
@@ -65,7 +65,7 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
     {
         $result = \r8\Input\File::fromArray( array(
             'name' => 'File Name',
-        	'tmp_name' => __FILE__,
+            'tmp_name' => __FILE__,
             'error' => 1234
         ) );
 
@@ -83,7 +83,7 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
     {
         $result = \r8\Input\File::fromArray( array(
             'name' => array( 'File Name', 'Mismatch', "k" => 'File 2' ),
-        	'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
+            'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
             'error' => array( 1234, "k" => 0 )
         ) );
 
@@ -124,7 +124,7 @@ class classes_Input_File extends PHPUnit_Framework_TestCase
         try {
             \r8\Input\File::fromArray( array(
                 'name' => 'File Name',
-            	'tmp_name' => '/tmp/example.txt',
+                'tmp_name' => '/tmp/example.txt',
             ) );
             $this->fail("An expected exception was not thrown");
         }

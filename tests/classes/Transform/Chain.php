@@ -64,7 +64,7 @@ class classes_Transform_Chain extends PHPUnit_Framework_TestCase
         $chain->addTransform( new \r8\Transform\Base64 );
 
         $this->assertSame(
-        	"S84ozctWyE9TSEksSQQA",
+            "S84ozctWyE9TSEksSQQA",
             $chain->to( "chunk of data" )
         );
     }
@@ -77,7 +77,7 @@ class classes_Transform_Chain extends PHPUnit_Framework_TestCase
         $chain->addTransform( new \r8\Transform\Base64 );
 
         $this->assertSame(
-        	"chunk of data",
+            "chunk of data",
             $chain->from( "S84ozctWyE9TSEksSQQA" )
         );
     }

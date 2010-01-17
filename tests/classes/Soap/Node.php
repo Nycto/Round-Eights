@@ -45,7 +45,7 @@ class classes_Soap_Node extends PHPUnit_Framework_TestCase
     {
         $elem = new DOMElement("MessageName");
         $node = $this->getMock(
-        	'\r8\Soap\Node',
+            '\r8\Soap\Node',
             array('_mock'),
             array($elem, "http://www.w3.org/")
         );

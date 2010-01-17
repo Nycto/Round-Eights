@@ -143,7 +143,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $doc->appendChild( $result->buildNode( $doc ) );
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
                 .'<soap:Body>'
                     .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
@@ -181,7 +181,7 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $doc->appendChild( $result->buildNode( $doc ) );
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
                 .'<soap:Body>'
                     .'<soap:Fault><soap:Code><soap:Value>Sender</soap:Value></soap:Code><soap:Reason><soap:Text>Fault</soap:Text></soap:Reason></soap:Fault>'
@@ -221,9 +221,9 @@ class classes_soap_server extends PHPUnit_Framework_TestCase
         $doc = new DOMDocument;
         $doc->appendChild( $result->buildNode( $doc ) );
         $this->assertSame(
-        	'<?xml version="1.0"?>' ."\n"
+            '<?xml version="1.0"?>' ."\n"
             .'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">'
-            	.'<soap:Header><Heading/></soap:Header>'
+                .'<soap:Header><Heading/></soap:Header>'
                 .'<soap:Body><Content/></soap:Body>'
             .'</soap:Envelope>' ."\n",
             $doc->saveXML()

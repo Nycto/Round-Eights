@@ -36,7 +36,7 @@ class classes_Backtrace_Event_Closure extends PHPUnit_Framework_TestCase
     public function testVisit ()
     {
         $event = new \r8\Backtrace\Event\Closure(
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );
@@ -52,7 +52,7 @@ class classes_Backtrace_Event_Closure extends PHPUnit_Framework_TestCase
     public function testGetResolvedName ()
     {
         $event = new \r8\Backtrace\Event\Closure(
-        	"/path/example.php",
+            "/path/example.php",
             500,
             array( TRUE )
         );

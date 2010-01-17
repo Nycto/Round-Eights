@@ -327,7 +327,7 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
             ->method( "getAll" )
             ->will( $this->returnValue( array(
                 "key1" => "Wrapped1",
-            	"key2" => "Wrapped2",
+                "key2" => "Wrapped2",
             ) ) );
 
         $trans = $this->getMock('r8\iface\Transform');

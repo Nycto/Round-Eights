@@ -44,7 +44,7 @@ class classes_URL extends PHPUnit_Framework_TestCase
 
 
         $url = new \r8\URL( new \r8\URL(
-            	"http://uname:pword@example.net:8011/test.html?test=blah#frag"
+                "http://uname:pword@example.net:8011/test.html?test=blah#frag"
             ));
 
         $this->assertSame(
@@ -1148,7 +1148,7 @@ class classes_URL extends PHPUnit_Framework_TestCase
 
 
         $source = new \r8\URL(
-        	"http://uname:pword@test.example.com:40/path/to/file.php?var=value#frag"
+            "http://uname:pword@test.example.com:40/path/to/file.php?var=value#frag"
         );
         $source->setFauxDir("/test/faux/dirs");
 

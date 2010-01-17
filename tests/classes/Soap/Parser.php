@@ -43,15 +43,15 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-        		    .'<!-- Comment -->'
-        		    .'<msg2:Message xmlns:msg2="test2" />'
-        		    .' Stray Text  '
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                    .'<!-- Comment -->'
+                    .'<msg2:Message xmlns:msg2="test2" />'
+                    .' Stray Text  '
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
         $this->assertSame( 3, $parser->countMessages() );
@@ -110,10 +110,10 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body />'
+                .'<soap:Body />'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -132,9 +132,9 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body />'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body />'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -153,13 +153,13 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Header />'
-        		.'<soap:Header />'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Header />'
+                .'<soap:Header />'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -178,12 +178,12 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Header />'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Header />'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -194,12 +194,12 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Header />'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Header />'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -216,11 +216,11 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -237,17 +237,17 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Header>'
-        		    .'<msg:First xmlns:msg="test" />'
-        		    .' Stray Text   '
-        		    .'<msg2:Second xmlns:msg2="test2" />'
-        		    .'   <!-- Comment -->  '
-        		.'</soap:Header>'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Header>'
+                    .'<msg:First xmlns:msg="test" />'
+                    .' Stray Text   '
+                    .'<msg2:Second xmlns:msg2="test2" />'
+                    .'   <!-- Comment -->  '
+                .'</soap:Header>'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -275,11 +275,11 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 
@@ -301,14 +301,14 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
-        		.'<soap:Body>'
-        		    .'<msg:Message xmlns:msg="test" />'
-        		    .' Stray Text   '
-        		    .'   <!-- Comment -->  '
-        		    .'<msg2:Other xmlns:msg2="test" />'
-    		    .'</soap:Body>'
-    		.'</soap:Envelope>'
+            '<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope">'
+                .'<soap:Body>'
+                    .'<msg:Message xmlns:msg="test" />'
+                    .' Stray Text   '
+                    .'   <!-- Comment -->  '
+                    .'<msg2:Other xmlns:msg2="test" />'
+                .'</soap:Body>'
+            .'</soap:Envelope>'
         );
         $parser = new \r8\Soap\Parser( $doc );
 

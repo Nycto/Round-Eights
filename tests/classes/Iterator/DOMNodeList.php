@@ -42,12 +42,12 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
     {
         $doc = new DOMDocument;
         $doc->loadXML(
-        	'<doc>'
-        		.'<one />'
-        		.'<two />'
-        		.'<three />'
-        		.'<four />'
-    		.'</doc>'
+            '<doc>'
+                .'<one />'
+                .'<two />'
+                .'<three />'
+                .'<four />'
+            .'</doc>'
         );
 
         $xpath = new DOMXPath( $doc );

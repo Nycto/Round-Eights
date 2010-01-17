@@ -95,12 +95,12 @@ class classes_Autoload extends PHPUnit_Framework_TestCase
         $auto->register( 'r8\iface', r8_DIR_INTERFACES );
 
         $this->assertSame(
-        	r8_DIR_CLASSES ."Autoload.php",
+            r8_DIR_CLASSES ."Autoload.php",
             $auto->find('\r8\Autoload')
         );
 
         $this->assertSame(
-        	r8_DIR_INTERFACES ."Error.php",
+            r8_DIR_INTERFACES ."Error.php",
             $auto->find('\r8\iface\Error')
         );
 

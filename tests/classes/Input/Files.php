@@ -47,8 +47,8 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $input = array(
             "first" => $this->getTestFile(),
-        	"second" => $this->getTestFile(),
-        	"third" => $this->getTestFile(),
+            "second" => $this->getTestFile(),
+            "third" => $this->getTestFile(),
         );
 
         $files = new \r8\Input\Files( $input );
@@ -59,7 +59,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $input = array(
             "first" => array( $this->getTestFile(), $this->getTestFile() ),
-        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+            "second" => array( $this->getTestFile(), $this->getTestFile() ),
         );
 
         $files = new \r8\Input\Files( $input );
@@ -71,7 +71,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
         $input = array(
             "first" => $this->getTestFile(),
             "blah",
-        	"second" => array( $this->getTestFile(), "noise", $this->getTestFile() ),
+            "second" => array( $this->getTestFile(), "noise", $this->getTestFile() ),
         );
 
         $files = new \r8\Input\Files( $input );
@@ -88,7 +88,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $input = array(
             "first" => $this->getTestFile(),
-        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+            "second" => array( $this->getTestFile(), $this->getTestFile() ),
         );
         $files = new \r8\Input\Files( $input );
 
@@ -101,7 +101,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $input = array(
             "first" => $this->getTestFile(),
-        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+            "second" => array( $this->getTestFile(), $this->getTestFile() ),
         );
         $files = new \r8\Input\Files( $input );
 
@@ -114,7 +114,7 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $input = array(
             "first" => $this->getTestFile(),
-        	"second" => array( $this->getTestFile(), $this->getTestFile() ),
+            "second" => array( $this->getTestFile(), $this->getTestFile() ),
         );
         $files = new \r8\Input\Files( $input );
 
@@ -127,13 +127,13 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
     {
         $result = \r8\Input\Files::fromArray(array(
             "first" => array(
-            	'name' => array( 'File Name', "k" => 'File 2' ),
-            	'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
+                'name' => array( 'File Name', "k" => 'File 2' ),
+                'tmp_name' => array( __FILE__, "k" => r8_DIR_CLASSES ."Autoload.php" ),
                 'error' => array( 1234, "k" => 0 )
             ),
             "second" => array(
-            	'name' => 'File Name',
-            	'tmp_name' => __FILE__,
+                'name' => 'File Name',
+                'tmp_name' => __FILE__,
                 'error' => 1234
             )
         ));

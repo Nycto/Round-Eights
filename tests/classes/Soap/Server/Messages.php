@@ -94,7 +94,7 @@ class classes_Soap_Server_Messages extends PHPUnit_Framework_TestCase
         $this->assertSame( $soap, $soap->addMessage("other:uri", "one", $cmd2) );
         $this->assertSame(
             array(
-            	"test:uri" => array("one" => $cmd, "two" => $cmd2 ),
+                "test:uri" => array("one" => $cmd, "two" => $cmd2 ),
                 "other:uri" => array("one" => $cmd2 )
             ),
             $soap->getMessages()

@@ -46,7 +46,7 @@ class classes_XMLBuilder_Quick extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<null/>' ."\n",
+            .'<null/>' ."\n",
             $doc->saveXML()
          );
     }
@@ -64,7 +64,7 @@ class classes_XMLBuilder_Quick extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<str>test</str>' ."\n",
+            .'<str>test</str>' ."\n",
             $doc->saveXML()
          );
     }
@@ -82,7 +82,7 @@ class classes_XMLBuilder_Quick extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<int>1234</int>' ."\n",
+            .'<int>1234</int>' ."\n",
             $doc->saveXML()
          );
     }
@@ -100,7 +100,7 @@ class classes_XMLBuilder_Quick extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<float>12.34</float>' ."\n",
+            .'<float>12.34</float>' ."\n",
             $doc->saveXML()
          );
     }
@@ -118,7 +118,7 @@ class classes_XMLBuilder_Quick extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '<?xml version="1.0"?>' ."\n"
-    		.'<bool>1</bool>' ."\n",
+            .'<bool>1</bool>' ."\n",
             $doc->saveXML()
          );
     }

@@ -531,7 +531,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT DISTINCT *",
+                "SELECT DISTINCT *",
                 $select->toSQL( $link )
             );
     }
@@ -544,7 +544,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT SQL_CALC_FOUND_ROWS *",
+                "SELECT SQL_CALC_FOUND_ROWS *",
                 $select->toSQL( $link )
             );
     }
@@ -558,7 +558,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"SELECT `field1`, `fld2`",
+                "SELECT `field1`, `fld2`",
                 $select->toSQL( $link )
             );
     }
@@ -574,7 +574,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT *\n"
+                "SELECT *\n"
                 ."FROM `table`",
                 $select->toSQL( $link )
             );
@@ -593,7 +593,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT *\n"
+                "SELECT *\n"
                 ."WHERE fld = 'value'",
                 $select->toSQL( $link )
             );
@@ -608,8 +608,8 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"SELECT *\n"
-    			."ORDER BY `field1`, `fld2`",
+                "SELECT *\n"
+                ."ORDER BY `field1`, `fld2`",
                 $select->toSQL( $link )
             );
     }
@@ -623,8 +623,8 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
         $this->assertSame(
-        		"SELECT *\n"
-    			."GROUP BY `field1`, `fld2`",
+                "SELECT *\n"
+                ."GROUP BY `field1`, `fld2`",
                 $select->toSQL( $link )
             );
     }
@@ -642,7 +642,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT *\n"
+                "SELECT *\n"
                 ."HAVING fld = 'value'",
                 $select->toSQL( $link )
             );
@@ -656,7 +656,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT *\n"
+                "SELECT *\n"
                 ."LIMIT 0, 20",
                 $select->toSQL( $link )
             );
@@ -671,7 +671,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT *\n"
+                "SELECT *\n"
                 ."LIMIT 100, 20",
                 $select->toSQL( $link )
             );
@@ -694,22 +694,22 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             )
             ->setWhere(
                 new \r8\Query\Where\Equals(
-            		new \r8\Query\Atom\Field("fld1"),
+                    new \r8\Query\Atom\Field("fld1"),
                     new \r8\Query\Atom\Primitive( 5 )
                 )
             )
             ->addOrder(
                 new \r8\Query\Expr\Ordered(
-            		new \r8\Query\Atom\Field("fld1"),
-            		"DESC"
+                    new \r8\Query\Atom\Field("fld1"),
+                    "DESC"
                 )
             )
             ->addGroup(
-        		new \r8\Query\Atom\Field("fld1")
+                new \r8\Query\Atom\Field("fld1")
             )
             ->setHaving(
                 new \r8\Query\Where\Equals(
-            		new \r8\Query\Atom\Func("COUNT"),
+                    new \r8\Query\Atom\Func("COUNT"),
                     new \r8\Query\Atom\Primitive( 2 )
                 )
             )
@@ -720,12 +720,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
-        		."FROM `db`.`tableName`\n"
-        		."WHERE `fld1` = 5\n"
-        		."ORDER BY `fld1` DESC\n"
-        		."GROUP BY `fld1`\n"
-        		."HAVING COUNT() = 2\n"
+                "SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
+                ."FROM `db`.`tableName`\n"
+                ."WHERE `fld1` = 5\n"
+                ."ORDER BY `fld1` DESC\n"
+                ."GROUP BY `fld1`\n"
+                ."HAVING COUNT() = 2\n"
                 ."LIMIT 100, 20",
                 $select->toSQL( $link )
             );
@@ -746,12 +746,12 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-        		"SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"
-        		."FROM `db`.`tableName`\n"
-        		."WHERE `fld1` = 5\n"
-        		."ORDER BY `sortField` DESC\n"
-        		."GROUP BY `id`\n"
-        		."HAVING COUNT(*) = 2\n"
+                "SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"
+                ."FROM `db`.`tableName`\n"
+                ."WHERE `fld1` = 5\n"
+                ."ORDER BY `sortField` DESC\n"
+                ."GROUP BY `id`\n"
+                ."HAVING COUNT(*) = 2\n"
                 ."LIMIT 100, 20",
                 $select->toSQL( $link )
             );
