@@ -187,6 +187,19 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 		$this->assertSame( "sqlite", $link->getExtension() );
 	}
 
+	public function testSerialize ()
+	{
+        $link = $this->getTestLink();
+		$link->connect();
+
+		$serialized = serialize( $link );
+
+		$this->assertEquals(
+			$this->getTestLink(),
+			unserialize($serialized)
+		);
+	}
+
 }
 
 ?>

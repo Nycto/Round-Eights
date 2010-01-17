@@ -69,6 +69,16 @@ class Link implements \r8\iface\DB\Adapter\Link
     }
 
     /**
+     * Handles connection serialization
+     *
+     * @return Array
+     */
+    public function __sleep ()
+    {
+        return array("file", "config");
+    }
+
+    /**
      * Returns whether this connection is active
      *
      * @return Boolean
