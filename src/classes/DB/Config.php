@@ -450,6 +450,27 @@ class Config
     }
 
     /**
+     * Returns a URI string describing this connection
+     *
+     * @return String
+     */
+    public function getURI ()
+    {
+        $uri = new \r8\URL;
+        $uri->setScheme("db")
+            ->setUserName( $this->username )
+            ->setPassword( $this->password )
+            ->setHost( $this->host )
+            ->setPort( $this->port )
+            ->setPath( $this->database )
+            ->setQuery(array_filter(array(
+                "persistent" => $this->persistent ? "t" : NULL,
+                "forceNew" => $this->forceNew ? "t" : NULL
+            )));
+        return $uri->__toString();
+    }
+
+    /**
      * Generates an identifying string based on the data in this configuration
      *
      * @param String $protocol The protocol type to prepend to the identifier

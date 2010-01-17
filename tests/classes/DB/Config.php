@@ -307,6 +307,27 @@ class classes_DB_Config extends PHPUnit_Framework_TestCase
         $this->assertTrue( $config->getPersistent() );
     }
 
+    public function testGetURI ()
+    {
+        $config = new \r8\DB\Config;
+        $this->assertSame( "db://localhost", $config->getURI() );
+
+        $config->setUserName( "uname" )->setPassword( "pword" );
+        $this->assertSame( "db://uname:pword@localhost", $config->getURI() );
+
+        $config->setHost("example.com")->setPort("3306")->setDatabase("dbname");
+        $this->assertSame(
+            "db://uname:pword@example.com:3306/dbname",
+            $config->getURI()
+        );
+
+        $config->setPersistent( TRUE )->setForceNew( TRUE );
+        $this->assertSame(
+            "db://uname:pword@example.com:3306/dbname?persistent=t&forceNew=t",
+            $config->getURI()
+        );
+    }
+
     public function testGetIdentifier ()
     {
         $config = new \r8\DB\Config;
