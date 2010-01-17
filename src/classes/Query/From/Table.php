@@ -213,7 +213,7 @@ class Table implements \r8\iface\Query\From
      * Returns the SQL FROM clause
      *
      * @param \r8\iface\DB\Link $link The database connection this WHERE clause
-     * 		is being run against. This is being passed in for escaping purposes
+     *      is being run against. This is being passed in for escaping purposes
      * @return String
      */
     public function toFromSQL ( \r8\iface\DB\Link $link )

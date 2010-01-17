@@ -43,7 +43,7 @@ class Lifetime implements \r8\iface\Transform
      * Constructor...
      *
      * @param Integer $lifetime The length of time, in seconds, a chunk of
-     * 		transformed data is valid
+     *      transformed data is valid
      */
     public function __construct ( $lifetime )
     {

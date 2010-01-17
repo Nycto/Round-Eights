@@ -33,7 +33,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 {
 
-	/**
+    /**
      * Ensures that all the prerequisites exist for connecting to a SQLite db
      */
     public function setUp ()
@@ -50,27 +50,27 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
         $db = @sqlite_open( SQLITE_FILE, 0666, $error );
         if ( !$db )
             $this->markTestSkipped("SQLite Connection Error: ". $error);
-	}
+    }
 
-	/**
-	 * Returns a test database connection
-	 *
-	 * @return \r8\DB\SQLite\Link
-	 */
-	public function getTestLink ()
-	{
-		return new \r8\DB\SQLite\Link(
+    /**
+     * Returns a test database connection
+     *
+     * @return \r8\DB\SQLite\Link
+     */
+    public function getTestLink ()
+    {
+        return new \r8\DB\SQLite\Link(
             SQLITE_FILE,
-			new \r8\DB\Config
-		);
-	}
+            new \r8\DB\Config
+        );
+    }
 
     public function testConnection_error ()
     {
         $link = new \r8\DB\SQLite\Link(
             "/tmp",
-			new \r8\DB\Config
-		);
+            new \r8\DB\Config
+        );
 
         try {
             $link->connect();
@@ -86,7 +86,7 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 
     public function testConnection ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
         $this->assertFalse( $link->isConnected() );
         $this->assertNull( $link->connect() );
         $this->assertTrue( $link->isConnected() );
@@ -94,25 +94,25 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 
     public function testEscapeString ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
         $this->assertSame(
-			"This ''is'' a string",
-			$link->escape("This 'is' a string")
-		);
+            "This ''is'' a string",
+            $link->escape("This 'is' a string")
+        );
     }
 
     public function testQuery_read ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
         $result = $link->query("SELECT 50 + 10 AS result");
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Read') );
 
-		PHPUnit_Framework_Constraint_SQL::assert(
-			"SELECT 50 + 10 AS result",
-			$result->getQuery()
-		);
+        PHPUnit_Framework_Constraint_SQL::assert(
+            "SELECT 50 + 10 AS result",
+            $result->getQuery()
+        );
 
         $this->assertSame( 1, $result->count() );
         $this->assertSame( array("result"), $result->getFields() );
@@ -121,47 +121,47 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 
     public function testQuery_write ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
         $result = $link->query(
-			"CREATE TEMPORARY TABLE ". SQLITE_TABLE ."(id INT, str TEXT)"
-		);
+            "CREATE TEMPORARY TABLE ". SQLITE_TABLE ."(id INT, str TEXT)"
+        );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
-		$this->assertSame( 0, $result->getAffected() );
-		$this->assertNull( $result->getInsertID() );
+        $this->assertSame( 0, $result->getAffected() );
+        $this->assertNull( $result->getInsertID() );
 
 
         $result = $link->query("INSERT INTO ". SQLITE_TABLE ." (str) VALUES ('alpha')");
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
-		$this->assertSame( 1, $result->getAffected() );
-		$this->assertSame( 1, $result->getInsertID() );
+        $this->assertSame( 1, $result->getAffected() );
+        $this->assertSame( 1, $result->getInsertID() );
 
-		PHPUnit_Framework_Constraint_SQL::assert(
-			"INSERT INTO ". SQLITE_TABLE ." (str) VALUES ('alpha')",
-			$result->getQuery()
-		);
+        PHPUnit_Framework_Constraint_SQL::assert(
+            "INSERT INTO ". SQLITE_TABLE ." (str) VALUES ('alpha')",
+            $result->getQuery()
+        );
     }
 
     public function testQuery_Error ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
-		try {
-			$link->query("Not a valid query");
-			$this->fail("An expected exception was not thrown");
-		}
-		catch ( \r8\Exception\DB\Query $err ) {
-			$this->assertContains( "SQL logic error or missing database", $err->getMessage() );
-		}
+        try {
+            $link->query("Not a valid query");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\DB\Query $err ) {
+            $this->assertContains( "SQL logic error or missing database", $err->getMessage() );
+        }
     }
 
     public function testDisconnect ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
-		$link->connect();
+        $link->connect();
         $this->assertTrue( $link->isConnected() );
 
         $this->assertNull( $link->disconnect() );
@@ -172,8 +172,8 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
     {
         $link = new \r8\DB\SQLite\Link(
             "/path/to/database.sqlite",
-			new \r8\DB\Config
-		);
+            new \r8\DB\Config
+        );
 
         $this->assertSame(
                 "sqlite:///path/to/database.sqlite",
@@ -181,24 +181,24 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
             );
     }
 
-	public function testGetExtension ()
-	{
-		$link = $this->getTestLink();
-		$this->assertSame( "sqlite", $link->getExtension() );
-	}
-
-	public function testSerialize ()
-	{
+    public function testGetExtension ()
+    {
         $link = $this->getTestLink();
-		$link->connect();
+        $this->assertSame( "sqlite", $link->getExtension() );
+    }
 
-		$serialized = serialize( $link );
+    public function testSerialize ()
+    {
+        $link = $this->getTestLink();
+        $link->connect();
 
-		$this->assertEquals(
-			$this->getTestLink(),
-			unserialize($serialized)
-		);
-	}
+        $serialized = serialize( $link );
+
+        $this->assertEquals(
+            $this->getTestLink(),
+            unserialize($serialized)
+        );
+    }
 
 }
 

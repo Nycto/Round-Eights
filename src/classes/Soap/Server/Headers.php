@@ -117,7 +117,7 @@ class Headers
      * @param String $uri The URI of the header
      * @param String $name The tag name of the header this object will handle
      * @param \r8\iface\Soap\Header $operation The handler to invoke when
-     * 		this command is encountered
+     *      this command is encountered
      * @return \r8\Soap\Server\Headers Returns a self reference
      */
     public function addHeader ( $uri, $name, \r8\iface\Soap\Header $header )
@@ -156,7 +156,7 @@ class Headers
      *
      * @param \r8\Soap\Parser $parser The soap message to process
      * @return \r8\XMLBuilder\Series Returns the builder needed to construct
-     * 		the response headers
+     *      the response headers
      */
     public function process ( \r8\Soap\Parser $parser )
     {

@@ -54,7 +54,7 @@ class Messages
      * @param String $uri The URI of the message
      * @param String $name The tag name of the message this object will handle
      * @param \r8\iface\Soap\Message $operation The handler to invoke when
-     * 		this command is encountered
+     *      this command is encountered
      * @return \r8\Soap\Server\Messages Returns a self reference
      */
     public function addMessage ( $uri, $name, \r8\iface\Soap\Message $message )
@@ -81,7 +81,7 @@ class Messages
      *
      * @param \r8\Soap\Parser $parser The soap message to process
      * @return \r8\XMLBuilder\Series Returns the builder needed to construct
-     * 		the response messages
+     *      the response messages
      */
     public function process ( \r8\Soap\Parser $parser )
     {

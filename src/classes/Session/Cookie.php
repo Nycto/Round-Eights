@@ -71,7 +71,7 @@ class Cookie implements \r8\iface\Session
      * Constructor...
      *
      * @param Integer $expire The number of seconds you wish the cookies to survive.
-     * 		If set to 0, the cookies will expire at the end of the user's session.
+     *      If set to 0, the cookies will expire at the end of the user's session.
      */
     public function __construct ( $expire = 0 )
     {

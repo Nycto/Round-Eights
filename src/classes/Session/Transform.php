@@ -42,7 +42,7 @@ class Transform extends \r8\Session\Decorator
      * Constructor...
      *
      * @param \r8\iface\Transform $transform The transformation to apply to
-     * 		values as the enter and leave this session
+     *      values as the enter and leave this session
      * @param \r8\iface\Session $decorated The object being decorated
      */
     public function __construct (

@@ -111,8 +111,8 @@ class Aliased implements \r8\iface\Query\Selectable
      * Returns the SQL string for this expression
      *
      * @param \r8\iface\DB\Link $link The database connection this atom
-     * 		is being created against. This is being passed in for escaping
-     * 		purposes
+     *      is being created against. This is being passed in for escaping
+     *      purposes
      * @return String
      */
     public function toSelectSQL( \r8\iface\DB\Link $link )

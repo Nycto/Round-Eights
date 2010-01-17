@@ -49,7 +49,7 @@ class Stream implements \r8\iface\Error\Handler
      * Constructor...
      *
      * @param \r8\iface\Error\Formatter $formatter The formatter to use for
-     * 		generating a string from the error
+     *      generating a string from the error
      * @param \r8\iface\Stream\Out $stream The stream to write the error to
      */
     public function __construct (

@@ -42,7 +42,7 @@ class Deflate implements \r8\iface\Transform\Compress
      * Constructor...
      *
      * @param Integer $level Integer The compression level. 0 is no compression,
-     * 		9 is full compression
+     *      9 is full compression
      */
     public function __construct ( $level = 7 )
     {

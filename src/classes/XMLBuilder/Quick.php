@@ -120,8 +120,8 @@ abstract class Quick implements \r8\iface\XMLBuilder
      * @param String $parent The tag name of the parent element
      * @param Mixed $data The data being pieced together
      * @param Boolean $root Whether the data being parsed is at the root level
-     * 		This is used during iteration, for example, to ensure lists are
-     * 		created properly
+     *      This is used during iteration, for example, to ensure lists are
+     *      created properly
      * @return DOMNode Returns the built node
      */
     protected function build ( \DOMDocument $doc, $parent, &$data, $root = FALSE )

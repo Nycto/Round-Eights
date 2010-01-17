@@ -74,7 +74,7 @@ class Link implements \r8\iface\DB\Link
      * @param mixed $value The value to prepare
      * @param Boolean $allowNull Whether NULL is an acceptable value
      * @param Callback $onString The function to invoke if the value
-     * 		is a string that needs to be escaped
+     *      is a string that needs to be escaped
      * @return String Returns the cleansed value
      */
     static public function cleanseValue ( $value, $allowNull, $onString )

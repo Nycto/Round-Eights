@@ -547,7 +547,7 @@ class URL
 
         $map = array(
             'http' => 80,
-        	'https' => 443,
+            'https' => 443,
             'ftp' => 21,
             'ftps' => 990,
             'sftp' => 115,

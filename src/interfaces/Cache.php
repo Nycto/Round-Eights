@@ -47,7 +47,7 @@ interface Cache
      * @param String $key The value to retrieve
      * @param Integer $expire The lifespan of this cache value, in seconds
      * @param Callable $callback The method to invoke if the key
-     * 		doesn't exist in the database
+     *      doesn't exist in the database
      * @return mixed Returns the cached value
      */
     public function yield ( $key, $expire, $callback );

@@ -42,7 +42,7 @@ abstract class Logic implements \r8\iface\Query\Where
      * Constructor...
      *
      * @param $clauses... \r8\iface\Query\Where Any initial where clauses
-     * 		to set in this instance
+     *      to set in this instance
      */
     public function __construct ()
     {
@@ -109,7 +109,7 @@ abstract class Logic implements \r8\iface\Query\Where
      * Returns the SQL Where expression represented by this object
      *
      * @param \r8\iface\DB\Link $link The database connection this WHERE clause
-     * 		is being run against. This is being passed in for escaping purposes
+     *      is being run against. This is being passed in for escaping purposes
      * @return String
      */
     public function toWhereSQL( \r8\iface\DB\Link $link )

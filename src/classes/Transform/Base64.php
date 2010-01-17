@@ -43,8 +43,8 @@ class Base64 implements \r8\iface\Transform\Encode
      * Constructor...
      *
      * @param Boolean $urlSafe Whether to break the specs and use only URL
-     * 		safe characters in the encoded strings. This will also cause the
-     * 		trailing "=" signs to be stripped off
+     *      safe characters in the encoded strings. This will also cause the
+     *      trailing "=" signs to be stripped off
      */
     public function __construct ( $urlSafe = FALSE )
     {

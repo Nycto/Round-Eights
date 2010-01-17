@@ -33,7 +33,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
 {
 
-	/**
+    /**
      * Ensures that all the prerequisites exist for connecting via mysqli
      */
     public function setUp ()
@@ -60,32 +60,32 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
         if ($mysqli->connect_error)
             $this->markTestSkipped("MySQLi Connection Error: ".  mysqli_connect_error());
 
-		$mysqli->close();
-	}
+        $mysqli->close();
+    }
 
-	/**
-	 * Returns a test database connection
-	 *
-	 * @return \r8\DB\MySQLi\Link
-	 */
-	public function getTestLink ()
-	{
-		return new \r8\DB\MySQLi\Link(
-			new \r8\DB\Config(
-				"db://". MYSQLI_USERNAME .":". MYSQLI_PASSWORD
-				."@". MYSQLI_HOST .":". MYSQLI_PORT
-				."/". MYSQLI_DATABASE
-			)
-		);
-	}
+    /**
+     * Returns a test database connection
+     *
+     * @return \r8\DB\MySQLi\Link
+     */
+    public function getTestLink ()
+    {
+        return new \r8\DB\MySQLi\Link(
+            new \r8\DB\Config(
+                "db://". MYSQLI_USERNAME .":". MYSQLI_PASSWORD
+                ."@". MYSQLI_HOST .":". MYSQLI_PORT
+                ."/". MYSQLI_DATABASE
+            )
+        );
+    }
 
     public function testConnection_error ()
     {
         $link = new \r8\DB\MySQLi\Link(
-			new \r8\DB\Config(
-				"db://notMyUsername:SonOfA@". MYSQLI_HOST ."/databasethatisntreal"
-			)
-		);
+            new \r8\DB\Config(
+                "db://notMyUsername:SonOfA@". MYSQLI_HOST ."/databasethatisntreal"
+            )
+        );
 
         try {
             $link->connect();
@@ -101,40 +101,40 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
 
     public function testConnection ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
         $this->assertNull( $link->connect() );
         $this->assertTrue( $link->isConnected() );
     }
 
     public function testEscapeString ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
         // Escape without a connection
         $this->assertSame(
-			"This \\'is\\' a string",
-			$link->escape("This 'is' a string")
-		);
+            "This \\'is\\' a string",
+            $link->escape("This 'is' a string")
+        );
 
-		$link->connect();
+        $link->connect();
 
         // Escape WITH a connection
         $this->assertSame(
-        		"This \\'is\\' a string",
+                "This \\'is\\' a string",
                 $link->escape("This 'is' a string")
             );
 
 
         // Escape an array
         $this->assertSame(
-        		array( "This \\'is\\' a string" ),
+                array( "This \\'is\\' a string" ),
                 $link->escape( array("This 'is' a string") )
             );
     }
 
     public function testQuery_read ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
         $result = $link->query("SELECT 50 + 10");
 
@@ -145,50 +145,50 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
 
     public function testQuery_write ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
         $result = $link->query(
-			"CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
-				`id` INT NOT NULL auto_increment,
-				PRIMARY KEY ( `id` )
-			)"
-		);
+            "CREATE TEMPORARY TABLE `". MYSQLI_TABLE ."` (
+                `id` INT NOT NULL auto_increment,
+                PRIMARY KEY ( `id` )
+            )"
+        );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
-		$this->assertSame( 0, $result->getAffected() );
-		$this->assertNull( $result->getInsertID() );
+        $this->assertSame( 0, $result->getAffected() );
+        $this->assertNull( $result->getInsertID() );
 
 
         $result = $link->query("INSERT INTO ". MYSQLI_TABLE ." SET id = NULL");
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Write') );
-		$this->assertSame( 1, $result->getAffected() );
-		$this->assertSame( 1, $result->getInsertID() );
+        $this->assertSame( 1, $result->getAffected() );
+        $this->assertSame( 1, $result->getInsertID() );
 
-		PHPUnit_Framework_Constraint_SQL::assert(
-			"INSERT INTO ". MYSQLI_TABLE ." SET id = NULL",
-			$result->getQuery()
-		);
+        PHPUnit_Framework_Constraint_SQL::assert(
+            "INSERT INTO ". MYSQLI_TABLE ." SET id = NULL",
+            $result->getQuery()
+        );
     }
 
     public function testQuery_Error ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
-		try {
-			$link->query("Not a valid query");
-			$this->fail("An expected exception was not thrown");
-		}
-		catch ( \r8\Exception\DB\Query $err ) {
-			$this->assertContains( "You have an error in your SQL syntax", $err->getMessage() );
-		}
+        try {
+            $link->query("Not a valid query");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\DB\Query $err ) {
+            $this->assertContains( "You have an error in your SQL syntax", $err->getMessage() );
+        }
     }
 
     public function testDisconnect ()
     {
-		$link = $this->getTestLink();
+        $link = $this->getTestLink();
 
-		$link->connect();
+        $link->connect();
         $this->assertTrue( $link->isConnected() );
 
         $this->assertNull( $link->disconnect() );
@@ -198,8 +198,8 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
     public function testGetIdentifier ()
     {
         $link = new \r8\DB\MySQLi\Link(
-			new \r8\DB\Config("db://user@example.com:2020/db")
-		);
+            new \r8\DB\Config("db://user@example.com:2020/db")
+        );
 
         $this->assertSame(
                 "MySQLi://user@example.com:2020",
@@ -207,24 +207,24 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
             );
     }
 
-	public function testGetExtension ()
-	{
-		$link = $this->getTestLink();
-		$this->assertSame( "mysqli", $link->getExtension() );
-	}
-
-	public function testSerialize ()
-	{
+    public function testGetExtension ()
+    {
         $link = $this->getTestLink();
-		$link->connect();
+        $this->assertSame( "mysqli", $link->getExtension() );
+    }
 
-		$serialized = serialize( $link );
+    public function testSerialize ()
+    {
+        $link = $this->getTestLink();
+        $link->connect();
 
-		$this->assertEquals(
-			$this->getTestLink(),
-			unserialize($serialized)
-		);
-	}
+        $serialized = serialize( $link );
+
+        $this->assertEquals(
+            $this->getTestLink(),
+            unserialize($serialized)
+        );
+    }
 
 }
 

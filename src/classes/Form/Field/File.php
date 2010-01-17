@@ -33,7 +33,7 @@ class File extends \r8\Form\Field
 
     /**
      * The validator to use
-     * 		for checking the uploaded file.
+     *      for checking the uploaded file.
      *
      * @var \r8\Validator\FileUpload
      */
@@ -51,11 +51,11 @@ class File extends \r8\Form\Field
      *
      * @param String $name The name of this form field
      * @param \r8\Validator\FileUpload $validator The validator to use
-     * 		for checking the uploaded file. If left empty, a default
-     * 		instance will be created
+     *      for checking the uploaded file. If left empty, a default
+     *      instance will be created
      * @param \r8\Input\Files $files The list of uploaded files to pull
-     * 		this fields value from. If left empty, the File list from
-     * 		the global Request will be used
+     *      this fields value from. If left empty, the File list from
+     *      the global Request will be used
      */
     public function __construct(
         $name,

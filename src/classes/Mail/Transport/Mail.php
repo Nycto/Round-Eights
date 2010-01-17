@@ -42,7 +42,7 @@ class Mail extends \r8\Mail\Transport
      * Constructor...
      *
      * @param \r8\Mail\Formatter $formatter The formatter to use for
-     * 		constructing the message parts
+     *      constructing the message parts
      */
     public function __construct ( \r8\Mail\Formatter $formatter = null )
     {

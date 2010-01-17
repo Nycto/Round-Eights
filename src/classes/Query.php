@@ -70,7 +70,7 @@ class Query
      *
      * @param String $name The SQL string to parse
      * @return array Returns an array where the first element is the
-     * 		SQL expression and the second is the alias
+     *      SQL expression and the second is the alias
      */
     static public function parseSQLAlias ( $string )
     {

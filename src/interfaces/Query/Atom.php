@@ -37,8 +37,8 @@ interface Atom
      * Returns the SQL this atom represents
      *
      * @param \r8\iface\DB\Link $link The database connection this atom
-     * 		is being created against. This is being passed in for escaping
-     * 		purposes
+     *      is being created against. This is being passed in for escaping
+     *      purposes
      * @return String
      */
     public function toAtomSQL( \r8\iface\DB\Link $link );

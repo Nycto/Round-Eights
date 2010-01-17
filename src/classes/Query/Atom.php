@@ -35,7 +35,7 @@ abstract class Atom implements \r8\iface\Query\Atom, \r8\iface\Query\Ordered, \r
      * Returns the SQL string for this expression
      *
      * @param \r8\iface\DB\Link $link The database connection this WHERE clause
-     * 		is being run against. This is being passed in for escaping purposes
+     *      is being run against. This is being passed in for escaping purposes
      * @return String
      */
     public function toOrderedSQL( \r8\iface\DB\Link $link )
@@ -47,7 +47,7 @@ abstract class Atom implements \r8\iface\Query\Atom, \r8\iface\Query\Ordered, \r
      * Returns the SQL string for this expression
      *
      * @param \r8\iface\DB\Link $link The database connection this WHERE clause
-     * 		is being run against. This is being passed in for escaping purposes
+     *      is being run against. This is being passed in for escaping purposes
      * @return String
      */
     public function toSelectSQL( \r8\iface\DB\Link $link )

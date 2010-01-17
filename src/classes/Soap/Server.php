@@ -104,7 +104,7 @@ class Server
      * @param String $uri The URI of the header
      * @param String $name The tag name of the header this object will handle
      * @param \r8\iface\Soap\Header $operation The handler to invoke when
-     * 		this command is encountered
+     *      this command is encountered
      * @return \r8\Soap\Server Returns a self reference
      */
     public function addHeader ( $uri, $name, \r8\iface\Soap\Header $header )
@@ -119,7 +119,7 @@ class Server
      * @param String $uri The URI of the message
      * @param String $name The tag name of the message this object will handle
      * @param \r8\iface\Soap\Message $operation The handler to invoke when
-     * 		this command is encountered
+     *      this command is encountered
      * @return \r8\Soap\Server Returns a self reference
      */
     public function addMessage ( $uri, $name, \r8\iface\Soap\Message $message )
@@ -133,7 +133,7 @@ class Server
      *
      * @param \r8\Soap\Parser $parser The soap message to process
      * @return \r8\iface\XMLBuilder Returns the builder needed to construct
-     * 		the response
+     *      the response
      */
     public function process ( \r8\Soap\Parser $parser )
     {
@@ -154,7 +154,7 @@ class Server
      *
      * @param \r8\iface\Stream\In $stream The source data
      * @return \r8\iface\XMLBuilder Returns the builder needed to construct
-     * 		the response
+     *      the response
      */
     public function processStream ( \r8\iface\Stream\In $stream )
     {

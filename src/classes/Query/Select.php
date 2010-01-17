@@ -224,7 +224,7 @@ class Select
      * Adds multiple select fields at once using a fluent interface
      *
      * @param mixed... $fields Any fields to add. This can be a string
-     * 		or a selectable object
+     *      or a selectable object
      * @return \r8\Query\Select Returns a self reference
      */
     public function fields ()
@@ -345,7 +345,7 @@ class Select
      * Sets the where clause in this instance from a mixed source
      *
      * @param \r8\iface\Query\Where|String $where This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function where ( $where )
@@ -365,7 +365,7 @@ class Select
      * be created and the two will be loaded into it.
      *
      * @param \r8\iface\Query\Where|String $where This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function andWhere ( $where )
@@ -390,7 +390,7 @@ class Select
      * be created and the two will be loaded into it.
      *
      * @param \r8\iface\Query\Where|String $where This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function orWhere ( $where )
@@ -445,7 +445,7 @@ class Select
      * Adds multiple "Order By" fields at once using a fluent interface
      *
      * @param \r8\Query\iface\Ordered $fields... Any fields to add.
-     * 		This can be a string or an ordered object
+     *      This can be a string or an ordered object
      * @return \r8\Query\Select Returns a self reference
      */
     public function orderBy ()
@@ -501,7 +501,7 @@ class Select
      * Adds multiple "Group By" fields at once using a fluent interface
      *
      * @param \r8\Query\iface\Ordered $fields... Any fields to add.
-     * 		This can be a string or an ordered object
+     *      This can be a string or an ordered object
      * @return \r8\Query\Select Returns a self reference
      */
     public function groupBy ()
@@ -565,7 +565,7 @@ class Select
      * Sets the "Having" clause in this instance from a mixed source
      *
      * @param \r8\iface\Query\Where|String $having This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function having ( $having )
@@ -585,7 +585,7 @@ class Select
      * be created and the two will be loaded into it.
      *
      * @param \r8\iface\Query\Where|String $having This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function andHaving ( $having )
@@ -610,7 +610,7 @@ class Select
      * be created and the two will be loaded into it.
      *
      * @param \r8\iface\Query\Where|String $having This will take a string
-     * 		or a Where object
+     *      or a Where object
      * @return \r8\Query\Select Returns a self reference
      */
     public function orHaving ( $having )

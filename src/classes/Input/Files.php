@@ -63,7 +63,7 @@ class Files
      * Constructor...
      *
      * @param Array $fileList The array of files to register, indexed
-     * 		by their field name
+     *      by their field name
      */
     public function __construct ( array $fileList = array() )
     {

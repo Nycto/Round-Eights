@@ -86,7 +86,7 @@ class Fault extends \r8\Exception\Interrupt
 
         $map = array(
             "versionmismatch" => "VersionMismatch",
-        	"mustunderstand" => "MustUnderstand",
+            "mustunderstand" => "MustUnderstand",
             "dataencodingunknown" => "DataEncodingUnknown",
             "sender" => "Sender",
             "receiver" => "Receiver",
@@ -112,7 +112,7 @@ class Fault extends \r8\Exception\Interrupt
         $this->subCodes = array_values(
             \r8\ary\compact(
                 array_map(
-                	'\r8\str\stripW',
+                    '\r8\str\stripW',
                     \r8\ary\flatten( $subCodes )
                 )
             )

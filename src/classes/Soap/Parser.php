@@ -87,7 +87,7 @@ class Parser
     {
         if ( !$this->doc->hasChildNodes() ) {
             throw new \r8\Soap\Fault(
-            	"Document is Empty",
+                "Document is Empty",
                 "Sender",
                 array("Parser", "EmptyDoc")
             );
@@ -96,7 +96,7 @@ class Parser
         // Look for the soap envelope
         if ( $this->xpath->evaluate("count(/soap:Envelope)") == 0 ) {
             throw new \r8\Soap\Fault(
-            	"Could not find a SOAP Envelope node",
+                "Could not find a SOAP Envelope node",
                 "Sender",
                 array("Parser", "MissingEnvelope")
             );
@@ -108,7 +108,7 @@ class Parser
         // Look for the soap body
         if ( $bodyCount == 0 ) {
             throw new \r8\Soap\Fault(
-            	"Could not find a SOAP Body node",
+                "Could not find a SOAP Body node",
                 "Sender",
                 array("Parser", "MissingBody")
             );
@@ -117,7 +117,7 @@ class Parser
         // Look for the soap body
         if ( $bodyCount > 1 ) {
             throw new \r8\Soap\Fault(
-            	"Multiple SOAP Body nodes found",
+                "Multiple SOAP Body nodes found",
                 "Sender",
                 array("Parser", "MultiBody")
             );
@@ -126,7 +126,7 @@ class Parser
         // Ensure there is at least one message
         if ( $this->countMessages() == 0 ) {
             throw new \r8\Soap\Fault(
-            	"No Message Nodes found",
+                "No Message Nodes found",
                 "Sender",
                 array("Parser", "NoMessage")
             );
@@ -137,7 +137,7 @@ class Parser
 
         if ( $headerCount > 1 ) {
             throw new \r8\Soap\Fault(
-            	"Multiple SOAP Header nodes found",
+                "Multiple SOAP Header nodes found",
                 "Sender",
                 array("Parser", "MultiHeader")
             );

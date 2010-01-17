@@ -50,7 +50,7 @@ abstract class Node
      *
      * @param DOMElement $node The DOM Element this node represents
      * @param String $soapNS The namespace URI to use for any soap
-     * 		envelope elements
+     *      envelope elements
      */
     public function __construct ( \DOMElement $node, $soapNS )
     {

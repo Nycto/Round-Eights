@@ -71,7 +71,7 @@ class File
      *
      * @param array $input The source data
      * @return \r8\Input\File|Array This could return an array of \r8\Input\File
-     * 		objects if the input array is multi-dimensional.
+     *      objects if the input array is multi-dimensional.
      */
     static public function fromArray ( array $input )
     {
