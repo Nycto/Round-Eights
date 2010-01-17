@@ -33,21 +33,29 @@ class URL
 
     /**
      * The protocol for this link
+     *
+     * @var String
      */
     private $scheme;
 
     /**
      * The username for this URL
+     *
+     * @var String
      */
     private $username;
 
     /**
      * The password in this URL
+     *
+     * @var String
      */
     private $password;
 
     /**
      * The host of this url
+     *
+     * @var String
      */
     private $host;
 
@@ -55,36 +63,50 @@ class URL
      * The port for a link.
      *
      * If it isn't set as an integer, it won't be used
+     *
+     * @var String
      */
     private $port;
 
     /**
      * The directory path for a link
+     *
+     * @var String
      */
     private $directory;
 
     /**
      * The filename for a link
+     *
+     * @var String
      */
     private $filename;
 
     /**
      * The extension of the filename for this path
+     *
+     * @var String
      */
     private $extension;
 
     /**
      * The faux directories of this link
+     *
+     * @var String
      */
     private $fauxDir;
 
     /**
      * Query variables for this link
+     *
+     * @var String
      */
     private $query;
 
     /**
      * Fragment for this link
+     *
+     * @var String
      */
     private $fragment;
 
