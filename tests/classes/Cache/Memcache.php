@@ -25,13 +25,12 @@
  * @package UnitTests
  */
 
-use r8\Cache;
 require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_cache_memcache extends PHPUnit_Framework_TestCase
+class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
 {
 
     public function setUp ()
@@ -40,10 +39,7 @@ class classes_cache_memcache extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("Memcache extension not loaded");
 
         // Ensure the proper configuration exists
-        $config = new r8_Test_Config(
-                "MEMCACHE",
-                array( "HOST", "PORT" )
-            );
+        $config = new r8_Test_Config( "MEMCACHE", array( "HOST", "PORT" ) );
         $config->test();
 
         // Test the connection
