@@ -406,6 +406,18 @@ class PHPUnit_Framework_Constraint_SQL extends PHPUnit_Framework_Constraint
 {
 
     /**
+     * Any keywords to add a break behind
+     *
+     * @var array
+     */
+    static private $breaks = array(
+        'SELECT', 'AS', 'FROM', 'INNER', 'OUTER', 'LEFT', 'STRAIGHT_JOIN', 'NATURAL',
+        'ON', 'USING', 'USE', 'IGNORE', 'FORCE', 'WHERE', 'OR', 'AND', 'GROUP BY',
+        'HAVING', 'ORDER BY', 'LIMIT', 'PROCEDURE', 'INTO', 'FOR UPDATE', 'UNION',
+        'INSERT', 'VALUES', 'UPDATE', 'SET', 'DELETE', 'REPLACE', 'SET'
+    );
+
+    /**
      * The list of reserved SQL keywords
      *
      * @var Array
@@ -480,6 +492,7 @@ class PHPUnit_Framework_Constraint_SQL extends PHPUnit_Framework_Constraint
         $parsed->setIncludeQuoted( FALSE )->setIncludeUnquoted( TRUE );
 
         $keywords = '/\b(?:'. implode("|", self::$keywords) .')\b/i';
+        $breaks = '/\b('. implode("|", self::$breaks) .')\b/i';
 
         $parsed->filter(new \r8\Filter\Chain(
             r8(new \r8\Curry\Call('str_replace'))->setLeft( array("\n", "\r"), " " ),
@@ -487,10 +500,12 @@ class PHPUnit_Framework_Constraint_SQL extends PHPUnit_Framework_Constraint
             r8(new \r8\Curry\Call('preg_replace_callback'))
                 ->setLeft( $keywords, function ( $value ) {
                     return strtoupper( $value[0] );
-                } )
+                } ),
+            r8(new \r8\Curry\Call('preg_replace'))
+                ->setLeft( $breaks, "\n\\1" )
         ));
 
-        return trim( $parsed->__toString(), " ;") .";";
+        return trim( $parsed->__toString(), " ;");
     }
 
     /**
