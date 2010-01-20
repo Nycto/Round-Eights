@@ -189,7 +189,7 @@ class r8_Base_TestSuite extends PHPUnit_Framework_TestSuite
 
             $file = str_replace( ".php", "", $file );
             $file = str_replace( "/", "_", $file );
-            
+
             if ( !class_exists($testPrefix . $file) )
                 throw new Exception("Could not find unit test: ". $testPrefix . $file);
 
@@ -479,7 +479,7 @@ class PHPUnit_Framework_Constraint_SQL extends PHPUnit_Framework_Constraint
         $parsed = $quoter->parse( $sql );
         $parsed->setIncludeQuoted( FALSE )->setIncludeUnquoted( TRUE );
 
-        $keywords = '/\b(?:'. implode("|", self::$keywords) .')/i';
+        $keywords = '/\b(?:'. implode("|", self::$keywords) .')\b/i';
 
         $parsed->filter(new \r8\Filter\Chain(
             r8(new \r8\Curry\Call('str_replace'))->setLeft( array("\n", "\r"), " " ),
