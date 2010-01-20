@@ -180,6 +180,38 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame( $table, $obj->getFrom() );
     }
 
+    public function testJoinAccessors ()
+    {
+        $select = new \r8\Query\Select;
+        $this->assertSame( array(), $select->getJoins() );
+
+        $join1 = $this->getMock('r8\iface\Query\Joinable');
+        $this->assertSame( $select, $select->addJoin( $join1 ) );
+        $this->assertSame( array( $join1 ), $select->getJoins() );
+
+        // Ensure you can't add the same join twice
+        $this->assertSame( $select, $select->addJoin( $join1 ) );
+        $this->assertSame( array( $join1 ), $select->getJoins() );
+
+        $join2 = $this->getMock('r8\iface\Query\Joinable');
+        $this->assertSame( $select, $select->addJoin( $join2 ) );
+        $this->assertSame( array( $join1, $join2 ), $select->getJoins() );
+
+        $this->assertSame( $select, $select->clearJoins() );
+        $this->assertSame( array(), $select->getJoins() );
+    }
+
+    public function testJoin ()
+    {
+        $select = new \r8\Query\Select;
+
+        $join1 = $this->getMock('r8\iface\Query\Joinable');
+        $join2 = $this->getMock('r8\iface\Query\Joinable');
+
+        $this->assertSame( $select, $select->join( $join1, $join2 ) );
+        $this->assertSame( array( $join1, $join2 ), $select->getJoins() );
+    }
+
     public function testWhereAccessors ()
     {
         $obj = new \r8\Query\Select;
@@ -580,6 +612,30 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testToSQL_withJoin ()
+    {
+        $join1 = $this->getMock( "r8\iface\Query\Joinable" );
+        $join1->expects( $this->once() )
+            ->method( "toJoinSQL" )
+            ->will( $this->returnValue("INNER JOIN `table`") );
+
+        $join2 = $this->getMock( "r8\iface\Query\Joinable" );
+        $join2->expects( $this->once() )
+            ->method( "toJoinSQL" )
+            ->will( $this->returnValue("LEFT JOIN `tbl2`") );
+
+        $select = new \r8\Query\Select;
+        $select->addJoin( $join1 )->addJoin( $join2 );
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
+
+        $this->assertSame(
+                "SELECT *\n"
+                ."INNER JOIN `table`\n"
+                ."LEFT JOIN `tbl2`",
+                $select->toSQL( $link )
+            );
+    }
+
     public function testToSQL_withWhere ()
     {
         $where = $this->getMock( "r8\iface\Query\Where" );
@@ -692,6 +748,11 @@ class classes_query_select extends PHPUnit_Framework_TestCase
             ->setFrom(
                 new \r8\Query\From\Table("tableName", "db")
             )
+            ->addJoin(
+                new \r8\Query\Join\Inner(
+                    new \r8\Query\From\Table("joinTbl")
+                )
+            )
             ->setWhere(
                 new \r8\Query\Where\Equals(
                     new \r8\Query\Atom\Field("fld1"),
@@ -722,6 +783,7 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $this->assertSame(
                 "SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
                 ."FROM `db`.`tableName`\n"
+                ."INNER JOIN `joinTbl`\n"
                 ."WHERE `fld1` = 5\n"
                 ."ORDER BY `fld1` DESC\n"
                 ."GROUP BY `fld1`\n"

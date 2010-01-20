@@ -60,6 +60,13 @@ class Select
     private $from;
 
     /**
+     * The list of joins
+     *
+     * @var Array An array of \r8\iface\Query\Joinable
+     */
+    private $joins = array();
+
+    /**
      * The root WHERE clause
      *
      * @var \r8\iface\Query\Where
@@ -296,6 +303,59 @@ class Select
             $from = \r8\Query\From\Table::fromString( $from );
 
         return $this->setFrom( $from );
+    }
+
+
+    /**
+     * Returns the Join clauses
+     *
+     * @return array Returns an array of \r8\iface\Query\Joinable objects
+     */
+    public function getJoins ()
+    {
+        return $this->joins;
+    }
+
+    /**
+     * Adds a new Join clause
+     *
+     * @param \r8\iface\Query\Joinable $field
+     * @return \r8\Query\Select Returns a self reference
+     */
+    public function addJoin ( \r8\iface\Query\Joinable $join )
+    {
+        if ( !in_array($join, $this->joins, true) )
+            $this->joins[] = $join;
+
+        return $this;
+    }
+
+    /**
+     * Clears all the Join clauses
+     *
+     * @return \r8\Query\Select Returns a self reference
+     */
+    public function clearJoins ()
+    {
+        $this->joins = array();
+        return $this;
+    }
+
+    /**
+     * Adds multiple Join clauses at once using a fluent interface
+     *
+     * @param \r8\Query\iface\Joinable $fields... Any fields to add
+     * @return \r8\Query\Select Returns a self reference
+     */
+    public function join ()
+    {
+        foreach ( func_get_args() AS $arg )
+        {
+            if ( $arg instanceof \r8\iface\Query\Joinable )
+                $this->addJoin( $arg );
+        }
+
+        return $this;
     }
 
     /**
@@ -760,6 +820,10 @@ class Select
 
         if ( $this->from )
             $sql .= "\nFROM ". $this->from->toFromSQL( $link );
+
+        foreach ( $this->joins AS $join ) {
+            $sql .= "\n". $join->toJoinSQL( $link );
+        }
 
         if ( $this->where )
             $sql .= "\nWHERE ". $this->where->toWhereSQL( $link );
