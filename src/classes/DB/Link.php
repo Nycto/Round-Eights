@@ -264,7 +264,14 @@ class Link implements \r8\iface\DB\Link
      */
     public function quoteName ( $name )
     {
-        return $this->adapter->quoteName( $name );
+        $name = (string) $name;
+
+        // Rather than keep a complete index of reserved keywords, just quote
+        // anything longer than a single character
+        if ( ctype_alnum($name) && strlen($name) == 1 )
+            return $name;
+        else
+            return $this->adapter->quoteName( $name );
     }
 
     /**
