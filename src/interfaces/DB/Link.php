@@ -71,6 +71,15 @@ interface Link extends \r8\iface\DB\Identified
      */
     public function escape ( $value, $allowNull = TRUE );
 
+    /**
+     * Quotes the named identifier. This could be the name of a field, table,
+     * or database
+     *
+     * @param String $name The named identifier to quote
+     * @return String
+     */
+    public function quoteName ( $name );
+
 }
 
 ?>
