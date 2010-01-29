@@ -508,6 +508,17 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
         $this->assertSame( "+5", $link->escape( "+5", FALSE ) );
     }
 
+	public function testQuoteName ()
+	{
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->once() )
+            ->method("quoteName")
+            ->with( $this->equalTo("ident") )
+            ->will( $this->returnValue("`ident`") );
+        $link = new \r8\DB\Link( $adapter );
+        $this->assertSame( "`ident`", $link->quoteName( "ident" ) );
+	}
+
     public function testGetIdentifier ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
