@@ -44,7 +44,39 @@ class Debug extends \IteratorIterator
     {
         parent::__construct( $iterator );
     }
-
+    
+    /**
+     * Dumps the starting call to a function
+     *
+     * @param String $method The method that was called
+     * @return NULL
+     */
+    public function dumpStart ( $method )
+    {
+        printf(
+            "\n%s::%-8s Start\n",
+            spl_object_hash($this),
+            $method
+        );
+    }
+    
+    /**
+     * Dumps the ending call to a function
+     *
+     * @param String $method The method that was called
+     * @param Mixed $result The result from the method call
+     * @return NULL
+     */
+    public function dumpEnd ( $method, $result )
+    {
+        printf(
+            "%s::%-8s End    %s\n",
+            spl_object_hash($this),
+            $method,
+            \r8\getDump($result)
+        );
+    }
+    
     /**
      * Returns the key of the current value
      *
@@ -52,9 +84,9 @@ class Debug extends \IteratorIterator
      */
     public function key ()
     {
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." Start\n";
+        $this->dumpStart( __FUNCTION__ );
         $result = parent::key();
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." End: ". \r8\getDump($result) ."\n";
+        $this->dumpEnd( __FUNCTION__, $result );
         return $result;
     }
 
@@ -65,9 +97,9 @@ class Debug extends \IteratorIterator
      */
     public function current()
     {
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." Start\n";
+        $this->dumpStart( __FUNCTION__ );
         $result = parent::current();
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." End: ". \r8\getDump($result) ."\n";
+        $this->dumpEnd( __FUNCTION__, $result );
         return $result;
     }
 
@@ -78,9 +110,9 @@ class Debug extends \IteratorIterator
      */
     public function next ()
     {
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." Start\n";
+        $this->dumpStart( __FUNCTION__ );
         $result = parent::next();
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." End: ". \r8\getDump($result) ."\n";
+        $this->dumpEnd( __FUNCTION__, $result );
         return $result;
     }
 
@@ -91,9 +123,9 @@ class Debug extends \IteratorIterator
      */
     public function valid ()
     {
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." Start\n";
+        $this->dumpStart( __FUNCTION__ );
         $result = parent::valid();
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." End: ". \r8\getDump($result) ."\n";
+        $this->dumpEnd( __FUNCTION__, $result );
         return $result;
     }
 
@@ -104,9 +136,9 @@ class Debug extends \IteratorIterator
      */
     public function rewind ()
     {
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." Start\n";
+        $this->dumpStart( __FUNCTION__ );
         $result = parent::rewind();
-        echo spl_object_hash($this) ."::". __FUNCTION__ ." End: ". \r8\getDump($result) ."\n";
+        $this->dumpEnd( __FUNCTION__, $result );
         return $result;
     }
 

@@ -644,8 +644,8 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
 
         $max = count( $this->value );
 
-        // Give them a 25% bonus to make debugging easier
-        $max *= 1.25;
+        // Give them a 50% bonus to make debugging easier
+        $max = floor( $max * 1.50 );
 
         $this->cache[$hash] = self::iteratorToArray( $max, $iterator );
 
@@ -679,12 +679,13 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
     {
         if ( !($other instanceof Traversable) )
             return PHPUnit_Util_Type::toString($other) ." is an instance of Traversable";
+            
+        $other = $this->toArray($other);
 
         $diff = new PHPUnit_Framework_ComparisonFailure_Array(
-                    $this->value,
-                    $this->toArray($other)
-
-            );
+            $this->value,
+            $other
+        );
 
         return "Iteration did not produce the expected result:\n"
             .$diff->toString();
