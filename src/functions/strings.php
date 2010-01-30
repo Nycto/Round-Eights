@@ -145,7 +145,6 @@ function npos ($needle, $haystack, $offset, $ignoreCase = TRUE, $wrapFlag = \r8\
  */
 function unshout ($string)
 {
-
     return preg_replace_callback(
             '/\b(\w)(\w*[A-Z]\w*)\b/',
             function ( $match ) {
@@ -153,7 +152,6 @@ function unshout ($string)
                 },
             (string) $string
         );
-
 }
 
 /**
@@ -219,7 +217,6 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
             '\1',
             $string
         );
-
 }
 
 /**
@@ -233,7 +230,6 @@ function stripRepeats ($string, $repeated, $ignoreCase = TRUE)
  */
 function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
 {
-
     $string = (string) $string;
     if ( \r8\isEmpty($string) )
         return '';
@@ -264,7 +260,6 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
             '\1'. $glue .'\2',
             $string
         );
-
 }
 
 /**
@@ -279,7 +274,6 @@ function truncateWords ( $string, $maxLength, $trimTo = FALSE, $glue = '...' )
  */
 function stripQuoted ( $string, $quotes = array( "'", '"' ) )
 {
-
     $string = (string) $string;
 
     $quotes = (array) $quotes;
@@ -320,7 +314,6 @@ function stripQuoted ( $string, $quotes = array( "'", '"' ) )
     }
 
     return $output;
-
 }
 
 /**
@@ -354,9 +347,8 @@ function substr_icount ( $haystack, $needle, $offset = 0, $length = FALSE )
 function startsWith ($string, $head, $ignoreCase = TRUE)
 {
     $head = (string) $head;
-
     if ( $ignoreCase )
-        return strcasecmp( substr( (string) $string, 0, strlen($head) ), $head ) == 0;
+        return strncasecmp((string) $string, $head, strlen($head) ) === 0;
     else
         return substr( (string) $string, 0, strlen($head) ) === $head;
 }
@@ -566,7 +558,6 @@ function enclose ($string, $enclose, $ignoreCase = TRUE)
  */
 function truncate ($string, $maxLength, $delimiter = '...')
 {
-
     $string = (string) $string;
     $delimiter = (string) $delimiter;
 
