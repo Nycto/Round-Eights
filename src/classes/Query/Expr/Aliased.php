@@ -118,7 +118,7 @@ class Aliased implements \r8\iface\Query\Selectable
     public function toSelectSQL( \r8\iface\DB\Link $link )
     {
         return $this->atom->toAtomSQL( $link )
-            .( $this->alias ? " AS ". $this->alias : "" );
+            .( $this->alias ? " AS ". $link->quoteName( $this->alias ) : "" );
     }
 
 }

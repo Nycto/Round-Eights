@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_where_equals extends PHPUnit_Framework_TestCase
+class classes_Query_Where_Equals extends PHPUnit_Framework_TestCase
 {
 
     public function testToWhereSQL ()
     {
-        $link = $this->getMock('\r8\iface\DB\Link');
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $left = new \r8\Query\Atom\Field("left");
         $right = new \r8\Query\Atom\Field("right");

@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_where_logicor extends PHPUnit_Framework_TestCase
+class classes_Query_Where_LogicOr extends PHPUnit_Framework_TestCase
 {
     /**
      * Returns a test WHERE clause

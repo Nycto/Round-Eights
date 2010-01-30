@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_Expr_Aliased extends PHPUnit_Framework_TestCase
+class classes_Query_Expr_Aliased extends PHPUnit_Framework_TestCase
 {
 
     public function testFromString ()
@@ -99,10 +99,10 @@ class classes_query_Expr_Aliased extends PHPUnit_Framework_TestCase
         $atom = new \r8\Query\Atom\Field("fld");
         $alias = new \r8\Query\Expr\Aliased( $atom );
 
-        $this->assertSame( "`fld`", $alias->toSelectSQL( $link ) );
+        $this->assertSame( "fld", $alias->toSelectSQL( $link ) );
 
-        $alias->setAlias( "wakka");
-        $this->assertSame( "`fld` AS wakka", $alias->toSelectSQL( $link ) );
+        $alias->setAlias( "wakka" );
+        $this->assertSame( "fld AS `wakka`", $alias->toSelectSQL( $link ) );
 
     }
 

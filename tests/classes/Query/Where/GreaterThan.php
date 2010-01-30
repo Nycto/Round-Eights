@@ -35,7 +35,7 @@ class classes_Query_Where_GreaterThan extends PHPUnit_Framework_TestCase
 
     public function testToWhereSQL ()
     {
-        $link = $this->getMock('\r8\iface\DB\Link');
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $left = new \r8\Query\Atom\Field("left");
         $right = new \r8\Query\Atom\Field("right");

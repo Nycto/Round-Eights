@@ -218,9 +218,9 @@ class Field extends \r8\Query\Atom
     public function toAtomSQL( \r8\iface\DB\Link $link )
     {
         return
-            ( $this->table && $this->database ? "`". $this->database ."`." : "" )
-            .( $this->table ? "`". $this->table ."`." : "" )
-            ."`". $this->field ."`";
+            ( $this->table && $this->database ? $link->quoteName( $this->database ) ."." : "" )
+            .( $this->table ?  $link->quoteName( $this->table ) ."." : "" )
+            .$link->quoteName( $this->field );
     }
 
 }

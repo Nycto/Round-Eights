@@ -96,16 +96,16 @@ class classes_Query_Select_Star extends PHPUnit_Framework_TestCase
 
     public function testToSelectSQL ()
     {
-        $link = $this->getMock("r8\iface\DB\Link");
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $fld = new \r8\Query\Select\Star;
         $this->assertSame( "*", $fld->toSelectSQL( $link ) );
 
         $fld = new \r8\Query\Select\Star("tbl");
-        $this->assertSame( "`tbl`.*", $fld->toSelectSQL( $link ) );
+        $this->assertSame( "tbl.*", $fld->toSelectSQL( $link ) );
 
         $fld = new \r8\Query\Select\Star("tbl", "db");
-        $this->assertSame( "`db`.`tbl`.*", $fld->toSelectSQL( $link ) );
+        $this->assertSame( "db.tbl.*", $fld->toSelectSQL( $link ) );
 
         $fld = new \r8\Query\Select\Star(null, "db");
         $this->assertSame( "*", $fld->toSelectSQL( $link ) );

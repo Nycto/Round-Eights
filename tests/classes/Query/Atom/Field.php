@@ -142,16 +142,16 @@ class classes_query_atom_field extends PHPUnit_Framework_TestCase
 
     public function testToAtomSQL ()
     {
-        $link = $this->getMock("r8\iface\DB\Link");
+        $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $fld = new \r8\Query\Atom\Field("field");
         $this->assertSame( "`field`", $fld->toAtomSQL( $link ) );
 
         $fld = new \r8\Query\Atom\Field("field", "tbl");
-        $this->assertSame( "`tbl`.`field`", $fld->toAtomSQL( $link ) );
+        $this->assertSame( "tbl.`field`", $fld->toAtomSQL( $link ) );
 
         $fld = new \r8\Query\Atom\Field("field", "tbl", "db");
-        $this->assertSame( "`db`.`tbl`.`field`", $fld->toAtomSQL( $link ) );
+        $this->assertSame( "db.tbl.`field`", $fld->toAtomSQL( $link ) );
 
         $fld = new \r8\Query\Atom\Field("field", null, "db");
         $this->assertSame( "`field`", $fld->toAtomSQL( $link ) );

@@ -30,8 +30,9 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
+class classes_Query_Expr_Ordered extends PHPUnit_Framework_TestCase
 {
+
     public function testFromString ()
     {
         $this->assertEquals(
@@ -116,13 +117,13 @@ class classes_query_expr_ordered extends PHPUnit_Framework_TestCase
         $atom = new \r8\Query\Atom\Field("fld");
         $alias = new \r8\Query\Expr\Ordered( $atom );
 
-        $this->assertSame( "`fld`", $alias->toOrderedSQL( $link ) );
+        $this->assertSame( "fld", $alias->toOrderedSQL( $link ) );
 
         $alias->setOrder( "ASC" );
-        $this->assertSame( "`fld` ASC", $alias->toOrderedSQL( $link ) );
+        $this->assertSame( "fld ASC", $alias->toOrderedSQL( $link ) );
 
         $alias->setOrder( "DESC" );
-        $this->assertSame( "`fld` DESC", $alias->toOrderedSQL( $link ) );
+        $this->assertSame( "fld DESC", $alias->toOrderedSQL( $link ) );
     }
 
 }

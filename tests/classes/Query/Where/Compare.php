@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_where_compare extends PHPUnit_Framework_TestCase
+class classes_Query_Where_Compare extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()

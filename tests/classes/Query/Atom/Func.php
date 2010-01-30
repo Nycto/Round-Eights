@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_atom_func extends PHPUnit_Framework_TestCase
+class classes_Query_Atom_Func extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
@@ -105,7 +105,7 @@ class classes_query_atom_func extends PHPUnit_Framework_TestCase
                 new \r8\Query\Atom\Field("fld")
             );
 
-        $this->assertSame( "FUNC(5, `fld`)", $fld->toAtomSQL( $link ) );
+        $this->assertSame( "FUNC(5, fld)", $fld->toAtomSQL( $link ) );
     }
 
 }

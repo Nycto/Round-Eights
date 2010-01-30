@@ -158,8 +158,8 @@ class Star implements \r8\iface\Query\Selectable
     public function toSelectSQL( \r8\iface\DB\Link $link )
     {
         return
-            ( $this->table && $this->database ? "`". $this->database ."`." : "" )
-            .( $this->table ? "`". $this->table ."`." : "" )
+            ( $this->table && $this->database ? $link->quoteName( $this->database ) ."." : "" )
+            .( $this->table ? $link->quoteName( $this->table ) ."." : "" )
             ."*";
     }
 

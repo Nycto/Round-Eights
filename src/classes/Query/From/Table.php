@@ -219,9 +219,9 @@ class Table implements \r8\iface\Query\From
     public function toFromSQL ( \r8\iface\DB\Link $link )
     {
         return
-            ( $this->database ? "`". $this->database ."`." : "" )
-            . "`". $this->table ."`"
-            .( $this->alias ? " AS `". $this->alias ."`" : "" );
+            ( $this->database ? $link->quoteName( $this->database ) ."." : "" )
+            .$link->quoteName( $this->table )
+            .( $this->alias ? " AS ". $link->quoteName( $this->alias ) : "" );
     }
 
 }

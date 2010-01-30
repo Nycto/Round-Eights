@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_query_atom extends PHPUnit_Framework_TestCase
+class classes_Query_Atom extends PHPUnit_Framework_TestCase
 {
 
     public function testToOrderedSQL ()

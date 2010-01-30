@@ -781,8 +781,8 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-                "SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS info\n"
-                ."FROM `db`.`tableName`\n"
+                "SELECT DISTINCT SQL_CALC_FOUND_ROWS NOW(), `fld2` AS `info`\n"
+                ."FROM db.`tableName`\n"
                 ."INNER JOIN `joinTbl`\n"
                 ."WHERE `fld1` = 5\n"
                 ."ORDER BY `fld1` DESC\n"
@@ -808,11 +808,11 @@ class classes_query_select extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( new \r8\DB\BlackHole\Link );
 
         $this->assertSame(
-                "SELECT DISTINCT `fld1`, `db`.`fld2` AS info\n"
-                ."FROM `db`.`tableName`\n"
+                "SELECT DISTINCT `fld1`, db.`fld2` AS `info`\n"
+                ."FROM db.`tableName`\n"
                 ."WHERE `fld1` = 5\n"
                 ."ORDER BY `sortField` DESC\n"
-                ."GROUP BY `id`\n"
+                ."GROUP BY id\n"
                 ."HAVING COUNT(*) = 2\n"
                 ."LIMIT 100, 20",
                 $select->toSQL( $link )

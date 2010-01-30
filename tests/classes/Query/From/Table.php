@@ -163,10 +163,10 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
         $this->assertSame( "`table` AS `Alias`", $table->toFromSQL($link) );
 
         $table->setDatabase("DB");
-        $this->assertSame( "`DB`.`table` AS `Alias`", $table->toFromSQL($link) );
+        $this->assertSame( "DB.`table` AS `Alias`", $table->toFromSQL($link) );
 
         $table->clearAlias();
-        $this->assertSame( "`DB`.`table`", $table->toFromSQL($link) );
+        $this->assertSame( "DB.`table`", $table->toFromSQL($link) );
     }
 
 }

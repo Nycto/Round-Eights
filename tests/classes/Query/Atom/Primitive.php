@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_query_atom_primitive extends PHPUnit_Framework_TestCase
+class classes_Query_Atom_Primitive extends PHPUnit_Framework_TestCase
 {
 
     public function testGetValue ()
