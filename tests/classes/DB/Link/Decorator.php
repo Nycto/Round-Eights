@@ -114,6 +114,24 @@ class classes_DB_Link_Decorator extends PHPUnit_Framework_TestCase
         $this->assertSame( "escaped", $mock->escape("raw value", FALSE) );
     }
 
+    public function testQuoteName ()
+    {
+        $link = $this->getMock( '\r8\iface\DB\Link' );
+
+        $mock = $this->getMock(
+                '\r8\DB\Link\Decorator',
+                array("_mock"),
+                array( $link )
+            );
+
+        $link->expects( $this->at(0) )
+            ->method( "quoteName" )
+            ->with( $this->equalTo("raw value") )
+            ->will( $this->returnValue("quoted") );
+
+        $this->assertSame( "quoted", $mock->quoteName("raw value") );
+    }
+
     public function testGetIdentifier ()
     {
         $link = $this->getMock( '\r8\iface\DB\Link' );

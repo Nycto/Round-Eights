@@ -101,6 +101,18 @@ abstract class Decorator implements \r8\iface\DB\Link
     }
 
     /**
+     * Quotes the named identifier. This could be the name of a field, table,
+     * or database
+     *
+     * @param String $name The named identifier to quote
+     * @return String
+     */
+    public function quoteName ( $name )
+    {
+        return $this->link->quoteName( $name );
+    }
+
+    /**
      * Returns a brief string that can be used to describe this connection
      *
      * @return String Returns a URI that loosely identifies this connection
