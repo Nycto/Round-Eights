@@ -266,9 +266,16 @@ class Link implements \r8\iface\DB\Link
     {
         $name = (string) $name;
 
+        $keywords = array(
+            "ADD", "ALL", "AND", "AS", "ASC", "BY", "DEC", "DIV", "END", "FOR",
+            "IF", "IN", "INT", "IS", "KEY", "MOD", "NO", "NOT", "OF", "ON", "OR",
+            "OUT", "ROW", "SET", "SQL", "SSL", "TO", "USE", "XOR"
+        );
+
         // Rather than keep a complete index of reserved keywords, just quote
-        // anything longer than a single character
-        if ( ctype_alnum($name) && strlen($name) == 1 )
+        // anything longer than three characters. For anything shorter, ensure
+        // it isn't reserved
+        if ( strlen($name) <= 3 && ctype_alnum($name) && !in_array(strtoupper($name), $keywords) )
             return $name;
         else
             return $this->adapter->quoteName( $name );

@@ -511,7 +511,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
     public function testQuoteName ()
     {
         $adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
-        $adapter->expects( $this->exactly(3) )
+        $adapter->expects( $this->exactly(4) )
             ->method("quoteName")
             ->will( $this->returnCallback(function ($value) {
                 return "`". $value ."`";
@@ -519,9 +519,12 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( $adapter );
 
         $this->assertSame( "`ident`", $link->quoteName( "ident" ) );
-        $this->assertSame( "`JF`", $link->quoteName( "JF" ) );
         $this->assertSame( "`_`", $link->quoteName( "_" ) );
+        $this->assertSame( "`IN`", $link->quoteName( "IN" ) );
+        $this->assertSame( "`As`", $link->quoteName( "As" ) );
         $this->assertSame( "I", $link->quoteName( "I" ) );
+        $this->assertSame( "JF", $link->quoteName( "JF" ) );
+        $this->assertSame( "Bla", $link->quoteName( "Bla" ) );
     }
 
     public function testGetIdentifier ()
