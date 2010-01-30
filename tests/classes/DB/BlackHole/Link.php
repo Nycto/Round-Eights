@@ -52,7 +52,7 @@ class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
         $adapter1 = $this->getMock('\r8\iface\DB\Adapter\Result');
         $this->assertSame( $link, $link->addResult( $adapter1 ) );
         $this->assertSame( array($adapter1), $link->getQueue() );
-        
+
         $adapter2 = $this->getMock('\r8\iface\DB\Adapter\Result');
         $this->assertSame( $link, $link->addResult( $adapter2 ) );
         $this->assertSame( array($adapter1, $adapter2), $link->getQueue() );
@@ -68,6 +68,14 @@ class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
     {
         $link = new \r8\DB\BlackHole\Link;
         $this->assertSame( "\\'escape\\'", $link->escape("'escape'") );
+    }
+
+    public function testQuoteName ()
+    {
+        $link = new \r8\DB\BlackHole\Link;
+        $this->assertSame( "`I`", $link->quoteName("I") );
+        $this->assertSame( "`JF`", $link->quoteName("JF") );
+        $this->assertSame( "`Ident`", $link->quoteName("Ident") );
     }
 
     public function testQuery_SelectNoQueue ()

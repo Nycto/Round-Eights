@@ -34,7 +34,7 @@ namespace r8\DB\BlackHole;
  */
 class Link implements \r8\iface\DB\Adapter\Link
 {
-    
+
     /**
      * The queue of result objects to return when a select query is executed
      *
@@ -48,7 +48,7 @@ class Link implements \r8\iface\DB\Adapter\Link
      * @var Integer
      */
     private $insertID = 0;
-    
+
     /**
      * Constructor...
      *
@@ -65,7 +65,7 @@ class Link implements \r8\iface\DB\Adapter\Link
             }
         }
     }
-    
+
     /**
      * Returns the Queue of results currently loaded in this instance
      *
@@ -75,7 +75,7 @@ class Link implements \r8\iface\DB\Adapter\Link
     {
        return $this->queue;
     }
-    
+
     /**
      * Adds a new result to be returned at the end of the queue
      *
@@ -113,6 +113,18 @@ class Link implements \r8\iface\DB\Adapter\Link
     }
 
     /**
+     * Quotes the named identifier. This could be the name of a field, table,
+     * or database
+     *
+     * @param String $name The named identifier to quote
+     * @return String
+     */
+    public function quoteName ( $name )
+    {
+        return "`". ( (string) $name ) ."`";
+    }
+
+    /**
      * Runs a query and returns the result
      *
      * @param String $query The query to run
@@ -124,12 +136,12 @@ class Link implements \r8\iface\DB\Adapter\Link
         $query = (string) $query;
 
         if ( \r8\DB\Link::isSelect($query) ) {
-            
+
             if ( empty($this->queue) )
                 $result = new \r8\DB\BlackHole\Result;
             else
                 $result = array_shift( $this->queue );
-            
+
             return new \r8\DB\Result\Read( $result, $query );
         }
 
