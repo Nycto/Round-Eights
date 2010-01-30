@@ -101,6 +101,14 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testQuoteName ()
+    {
+        $link = $this->getTestLink();
+        $this->assertSame( '"I"', $link->quoteName("I") );
+        $this->assertSame( '"JF"', $link->quoteName("JF") );
+        $this->assertSame( '"Ident"', $link->quoteName("Ident") );
+    }
+
     public function testQuery_read ()
     {
         $link = $this->getTestLink();

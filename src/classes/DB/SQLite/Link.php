@@ -121,6 +121,18 @@ class Link implements \r8\iface\DB\Adapter\Link
     }
 
     /**
+     * Quotes the named identifier. This could be the name of a field, table,
+     * or database
+     *
+     * @param String $name The named identifier to quote
+     * @return String
+     */
+    public function quoteName ( $name )
+    {
+        return '"'. ( (string) $name ) .'"';
+    }
+
+    /**
      * Execute a query and return a result object
      *
      * @param String $query The query to execute
