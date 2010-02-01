@@ -40,33 +40,6 @@ const ALLOW_DASHES = 64;
 const ALLOW_ASCII = 128;
 
 /**
- * Translate a number to a string with a suffix
- *
- * For example, 1 becomes "1st", 2 becomes "2nd"
- *
- * @param Integer $integer The number to convert to an ordinal
- * @return String Returns a string version of the given integer, with a suffix tacked on
- */
-function int2Ordinal ($integer)
-{
-    $integer = (string) (int) $integer;
-
-    if ( \r8\num\between( abs( substr($integer, -2) ), 11, 13, TRUE))
-        return $integer ."th";
-
-    switch( substr($integer, -1) ) {
-        case "1":
-            return $integer ."st";
-        case "2":
-            return $integer ."nd";
-        case "3":
-            return $integer ."rd";
-        default:
-            return $integer . "th";
-    }
-}
-
-/**
  * Returns true if $needle is in haystack, false if it isn't
  *
  * @param String $needle The string you are trying to find
@@ -572,48 +545,6 @@ function truncate ($string, $maxLength, $delimiter = '...')
     return substr( $string, 0, $firstLength )
         .$delimiter
         .substr( $string, strlen( $string ) - ( $maxLength - strlen($delimiter) - $firstLength ) );
-}
-
-/**
- * Makes the last word in a string plural
- *
- * @param String $string The value to str::pluralize
- * @param Integer $count If the pluralization should only be done based on a number, pass it here
- */
-function pluralize ( $string, $count = 2 )
-{
-    $string = (string) $string;
-
-    if ( \r8\isEmpty( trim($string) ) )
-        throw new \r8\Exception\Argument(0, "String", "Must not be empty");
-
-    if ( $count == 1 )
-        return $string;
-
-    $origLen = strlen($string);
-
-    $string = rtrim($string);
-
-    $lastChar = substr($string, -1);
-
-    if ( $lastChar === "y" ) {
-        $string = substr($string, 0, -1) . "ies";
-        $origLen += 2;
-    }
-    else if ( $lastChar === "Y" ) {
-        $string = substr($string, 0, -1) . "IES";
-        $origLen += 2;
-    }
-    else if ( $lastChar === strtoupper($lastChar) ) {
-        $string = $string . "S";
-        $origLen += 1;
-    }
-    else {
-        $string = $string . "s";
-        $origLen += 1;
-    }
-
-    return $string . str_repeat(" ", $origLen - strlen($string));
 }
 
 ?>

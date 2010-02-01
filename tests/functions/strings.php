@@ -33,46 +33,6 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class functions_strings extends PHPUnit_Framework_TestCase
 {
 
-    public function testInt2Ordinal ()
-    {
-        $this->assertEquals( "1st", \r8\str\int2Ordinal(1) );
-        $this->assertEquals( "2nd", \r8\str\int2Ordinal(2) );
-        $this->assertEquals( "3rd", \r8\str\int2Ordinal(3) );
-        $this->assertEquals( "4th", \r8\str\int2Ordinal(4) );
-        $this->assertEquals( "5th", \r8\str\int2Ordinal(5) );
-        $this->assertEquals( "6th", \r8\str\int2Ordinal(6) );
-        $this->assertEquals( "7th", \r8\str\int2Ordinal(7) );
-        $this->assertEquals( "8th", \r8\str\int2Ordinal(8) );
-        $this->assertEquals( "9th", \r8\str\int2Ordinal(9) );
-        $this->assertEquals( "10th", \r8\str\int2Ordinal(10) );
-
-        $this->assertEquals( "11th", \r8\str\int2Ordinal(11) );
-        $this->assertEquals( "12th", \r8\str\int2Ordinal(12) );
-        $this->assertEquals( "13th", \r8\str\int2Ordinal(13) );
-        $this->assertEquals( "14th", \r8\str\int2Ordinal(14) );
-        $this->assertEquals( "15th", \r8\str\int2Ordinal(15) );
-        $this->assertEquals( "16th", \r8\str\int2Ordinal(16) );
-        $this->assertEquals( "17th", \r8\str\int2Ordinal(17) );
-        $this->assertEquals( "18th", \r8\str\int2Ordinal(18) );
-        $this->assertEquals( "19th", \r8\str\int2Ordinal(19) );
-        $this->assertEquals( "20th", \r8\str\int2Ordinal(20) );
-
-        $this->assertEquals( "21st", \r8\str\int2Ordinal(21) );
-        $this->assertEquals( "22nd", \r8\str\int2Ordinal(22) );
-        $this->assertEquals( "23rd", \r8\str\int2Ordinal(23) );
-        $this->assertEquals( "24th", \r8\str\int2Ordinal(24) );
-        $this->assertEquals( "25th", \r8\str\int2Ordinal(25) );
-        $this->assertEquals( "30th", \r8\str\int2Ordinal(30) );
-
-        $this->assertEquals( "-1st", \r8\str\int2Ordinal(-1) );
-        $this->assertEquals( "-2nd", \r8\str\int2Ordinal(-2) );
-        $this->assertEquals( "-3rd", \r8\str\int2Ordinal(-3) );
-        $this->assertEquals( "-4th", \r8\str\int2Ordinal(-4) );
-        $this->assertEquals( "-5th", \r8\str\int2Ordinal(-5) );
-        $this->assertEquals( "-9th", \r8\str\int2Ordinal(-9) );
-        $this->assertEquals( "-10th", \r8\str\int2Ordinal(-10) );
-    }
-
     public function testContains ()
     {
         $this->assertTrue( \r8\str\contains(' In ', 'Check In this string') );
@@ -751,30 +711,6 @@ class functions_strings extends PHPUnit_Framework_TestCase
                 "too long -- own good",
                 \r8\str\truncate ( "too long for it's own good", 20, "--" )
             );
-    }
-
-    public function testPluralize ()
-    {
-        $this->assertEquals( "tests", \r8\str\pluralize("test") );
-        $this->assertEquals( "   tests   ", \r8\str\pluralize("   test   ") );
-
-        $this->assertEquals( "tries", \r8\str\pluralize("try") );
-        $this->assertEquals( "   tries   ", \r8\str\pluralize("   try   ") );
-
-        $this->assertEquals( "TESTS", \r8\str\pluralize("TEST") );
-        $this->assertEquals( "TRIES", \r8\str\pluralize("TRY") );
-
-        $this->assertEquals( "test", \r8\str\pluralize("test", 1) );
-        $this->assertEquals( "try", \r8\str\pluralize("try", 1) );
-
-        $this->assertEquals( "tests", \r8\str\pluralize("test", 5) );
-        $this->assertEquals( "tries", \r8\str\pluralize("try", 5) );
-    }
-
-    public function testPluralizeException ()
-    {
-        $this->setExpectedException('\r8\Exception\Argument');
-        \r8\str\pluralize( '' );
     }
 
 }

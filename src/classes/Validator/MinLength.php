@@ -68,10 +68,8 @@ class MinLength extends \r8\Validator
             return "Must be a string";
 
         if ( strlen($value) < $this->length ) {
-            return \r8\str\pluralize(
-                    "Must not be shorter than ". $this->length ." character",
-                    $this->length
-                );
+            return "Must not be shorter than ". $this->length ." "
+                .\r8\Words::pluralize( "character", $this->length );
         }
     }
 
