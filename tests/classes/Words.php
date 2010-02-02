@@ -105,7 +105,80 @@ class classes_Words extends PHPUnit_Framework_TestCase
         $this->assertEquals( "staves", \r8\Words::pluralize("sTAFF") );
     }
 
-    public function testInt2Ordinal ()
+    public function testSingularize ()
+    {
+        // Irregular plurals
+        $this->assertEquals( "mouse", \r8\Words::singularize("mice") );
+        $this->assertEquals( "louse", \r8\Words::singularize("lice") );
+        $this->assertEquals( "index", \r8\Words::singularize("indices") );
+        $this->assertEquals( "matrix", \r8\Words::singularize("matrices") );
+        $this->assertEquals( "vertex", \r8\Words::singularize("vertices") );
+        $this->assertEquals( "virus", \r8\Words::singularize("viri") );
+        $this->assertEquals( "octopus", \r8\Words::singularize("octopi") );
+        $this->assertEquals( "ox", \r8\Words::singularize("oxen") );
+        $this->assertEquals( "staff", \r8\Words::singularize("staves") );
+        $this->assertEquals( "person", \r8\Words::singularize("people") );
+        $this->assertEquals( "man", \r8\Words::singularize("men") );
+        $this->assertEquals( "child", \r8\Words::singularize("children") );
+
+        // Plural == Singular
+        $this->assertEquals( "deer", \r8\Words::singularize("deer") );
+        $this->assertEquals( "moose", \r8\Words::singularize("moose") );
+        $this->assertEquals( "sheep", \r8\Words::singularize("sheep") );
+
+        // Normal Plurals
+        $this->assertEquals( "test", \r8\Words::singularize("tests") );
+        $this->assertEquals( "try", \r8\Words::singularize("tries") );
+        $this->assertEquals( "quiz", \r8\Words::singularize("quizes") );
+        $this->assertEquals( "apex", \r8\Words::singularize("apexes") );
+        $this->assertEquals( "house", \r8\Words::singularize("houses") );
+        $this->assertEquals( "box", \r8\Words::singularize("boxes") );
+        $this->assertEquals( "fetch", \r8\Words::singularize("fetches") );
+        $this->assertEquals( "pass", \r8\Words::singularize("passes") );
+        $this->assertEquals( "push", \r8\Words::singularize("pushes") );
+        $this->assertEquals( "pay", \r8\Words::singularize("pays") );
+        $this->assertEquals( "abbey", \r8\Words::singularize("abbeys") );
+        $this->assertEquals( "toy", \r8\Words::singularize("toys") );
+        $this->assertEquals( "buy", \r8\Words::singularize("buys") );
+        $this->assertEquals( "soliloquy", \r8\Words::singularize("soliloquies") );
+        $this->assertEquals( "scarf", \r8\Words::singularize("scarves") );
+        $this->assertEquals( "calf", \r8\Words::singularize("calves") );
+        $this->assertEquals( "carafe", \r8\Words::singularize("carafes") );
+        $this->assertEquals( "coiffe", \r8\Words::singularize("coiffes") );
+        $this->assertEquals( "atrium", \r8\Words::singularize("atria") );
+        $this->assertEquals( "buffalo", \r8\Words::singularize("buffaloes") );
+        $this->assertEquals( "tomato", \r8\Words::singularize("tomatoes") );
+        $this->assertEquals( "bus", \r8\Words::singularize("buses") );
+        $this->assertEquals( "status", \r8\Words::singularize("statuses") );
+        $this->assertEquals( "alias", \r8\Words::singularize("aliases") );
+        $this->assertEquals( "puff", \r8\Words::singularize("puffs") );
+        $this->assertEquals( "sex", \r8\Words::singularize("sexes") );
+        $this->assertEquals( "move", \r8\Words::singularize("moves") );
+        $this->assertEquals( "hive", \r8\Words::singularize("hives") );
+
+        /*
+        // Currently unaccounted for:
+        $this->assertEquals( "synapsis", \r8\Words::singularize("synapses") );
+        $this->assertEquals( "axis", \r8\Words::singularize("axes") );
+        $this->assertEquals( "testis", \r8\Words::singularize("testes") );
+        */
+
+        // Test when there is padding
+        $this->assertEquals( "try", \r8\Words::singularize("   tries   ") );
+
+        // Test the case
+        $this->assertEquals( "TEST", \r8\Words::singularize("TESTS") );
+
+        // Test a blank string
+        $this->assertEquals( "", \r8\Words::singularize("   ") );
+
+        // Test the capitalization rules for irregular plurals
+        $this->assertEquals( "PERSON", \r8\Words::singularize("PEOPLE") );
+        $this->assertEquals( "Staff", \r8\Words::singularize("Staves") );
+        $this->assertEquals( "staff", \r8\Words::singularize("sTAVES") );
+    }
+
+    public function testOrdinal ()
     {
         $this->assertEquals( "1st", \r8\Words::ordinal(1) );
         $this->assertEquals( "2nd", \r8\Words::ordinal(2) );

@@ -39,7 +39,9 @@ class Words
     static private $irregular = array(
         // Irregular plurals
         'person' => 'people', 'man' => 'men', 'child' => 'children',
-        'ox' => 'oxen', 'staff' => 'staves',
+        'ox' => 'oxen', 'staff' => 'staves', 'mouse' => 'mice',
+        'louse' => 'lice', 'index' => 'indices', 'matrix' => 'matrices',
+        'vertex' => 'vertices', 'octopus' => 'octopi', 'virus' => 'viri',
 
         // Plural == Singular
         'deer' => 'deer', 'moose' => 'moose', 'sheep' => 'sheep',
@@ -86,11 +88,7 @@ class Words
         switch ( $lastOne )
         {
             case "s":
-                if ( $word == "virus" || $word == "octopus" ) {
-                    $trim = -2;
-                    $end = "i";
-                }
-                else if ( $lastTwo == "is" ) {
+                if ( $lastTwo == "is" ) {
                     $trim = -2;
                     $end = "es";
                 }
@@ -100,17 +98,8 @@ class Words
                 break;
 
             case "z":
-                $end = "es";
-                break;
-
             case "x":
-                if ( in_array($word, array("matrix", "index", "vertex")) ) {
-                    $trim = -2;
-                    $end = "ices";
-                }
-                else {
-                    $end = "es";
-                }
+                $end = "es";
                 break;
 
             case "y":
@@ -123,16 +112,6 @@ class Words
                 else {
                     $trim = -1;
                     $end = "ies";
-                }
-                break;
-
-            case "e":
-                if ( $word == "mouse" || $word == "louse" ) {
-                    $trim = -4;
-                    $end = "ice";
-                }
-                else {
-                    $end = "s";
                 }
                 break;
 
@@ -162,6 +141,80 @@ class Words
                     $end = "s";
                 }
                 break;
+        }
+
+        if ( ctype_upper( substr($string, -1) ) )
+            $end = strtoupper($end);
+
+        return $trim == 0
+            ? $string . $end
+            : substr($string, 0, $trim) . $end;
+    }
+
+    /**
+     * Makes a word singular
+     *
+     * @param String $string The word to make singular
+     */
+    static public function singularize ( $string )
+    {
+        $string = trim( (string) $string );
+
+        if ( \r8\isEmpty( $string ) )
+            return $string;
+
+        $word = strtolower( $string );
+
+        $irregular = array_search( $word, self::$irregular );
+        if ( $irregular !== FALSE ) {
+            if ( ctype_upper($string) )
+                return strtoupper($irregular);
+            else if ( ctype_upper($string[0]) )
+                return ucfirst($irregular);
+            else
+                return $irregular;
+        }
+
+        // Grab the final characters
+        $lastTwo = substr($word, -2);
+        $lastThree = substr($word, -3);
+        $lastFour = substr($word, -4);
+        $lastFive = substr($word, -5);
+
+        // Represents how many letters should be pulled off the end of the word
+        $trim = -1;
+        $end = "";
+
+        if ( $lastThree == "ies" ) {
+            $trim = -3;
+            $end = "y";
+        }
+        else if ( $lastThree == "ses" ) {
+            if ( $lastFour == "sses" || $lastFour == "ases" )
+                $trim = -2;
+            else if ( $lastFour == "uses" && $lastFive != "ouses" )
+                $trim = -2;
+            else
+                $trim = -1;
+        }
+        else if ( $lastThree == "ves" ) {
+            if ( in_array($lastFour, array("aves", "eves", "ives", "oves", "uves")) ) {
+                $trim = -1;
+            }
+            else {
+                $trim = -3;
+                $end = "f";
+            }
+        }
+        else if ( $lastTwo == "es" ) {
+            if ( $lastThree == "fes" )
+                $trim = -1;
+            else
+                $trim = -2;
+        }
+        else if ( $lastTwo == "ia" ) {
+            $trim = -1;
+            $end = "um";
         }
 
         if ( ctype_upper( substr($string, -1) ) )
