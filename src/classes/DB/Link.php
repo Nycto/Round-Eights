@@ -166,7 +166,10 @@ class Link implements \r8\iface\DB\Link
      */
     public function query ( $query, $flags = 0 )
     {
-        $query = (string) $query;
+        if ( $query instanceof \r8\iface\DB\Query )
+            $query = (string) $query->toSQL( $this );
+        else
+            $query = (string) $query;
 
         if ( \r8\isEmpty($query) )
             throw new \r8\Exception\Argument(0, "Query", "Must not be empty");

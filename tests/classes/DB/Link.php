@@ -268,15 +268,13 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL(
-                "SELECT * FROM table"
-            ) )
+            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
             ->will( $this->returnValue("not a result") );
 
         $link = new \r8\DB\Link( $adapter );
 
         try {
-            $link->query("SELECT * FROM table");
+            $link->query("SELECT *");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\DB\Query  $err ) {
@@ -293,12 +291,10 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL(
-                "SELECT * FROM table"
-            ) )
+            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
             ->will( $this->throwException(
                 new \r8\Exception\DB\Query(
-                    "SELECT * FROM table",
+                    "SELECT *",
                     "Example Exception"
                 )
             ) );
@@ -306,7 +302,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
         $link = new \r8\DB\Link( $adapter );
 
         try {
-            $link->query("SELECT * FROM table");
+            $link->query("SELECT *");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\DB\Query  $err ) {
@@ -325,17 +321,38 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL(
-                "SELECT * FROM table"
-            ) )
+            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
             ->will( $this->returnValue( $result ) );
 
         $link = new \r8\DB\Link( $adapter );
 
-        $this->assertSame(
-            $result,
-            $link->query("SELECT * FROM table")
-        );
+        $this->assertSame( $result, $link->query("SELECT *") );
+    }
+
+    public function testQuery_SQLObject ()
+    {
+        $result = $this->getMock('\r8\DB\Result\Read', array(), array(), '', FALSE);
+
+        $adapter = $this->getMock('\r8\iface\DB\Adapter\Link');
+        $adapter->expects( $this->any() )
+            ->method( "isConnected" )
+            ->will( $this->returnValue( TRUE ) );
+
+        $adapter->expects( $this->once() )
+            ->method( "query" )
+            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
+            ->will( $this->returnValue( $result ) );
+
+        $link = new \r8\DB\Link( $adapter );
+
+        $query = $this->getMock('\r8\iface\DB\Query');
+        $query->expects( $this->once() )
+            ->method( "toSQL" )
+            ->with( $this->equalTo($link) )
+            ->will( $this->returnValue( "SELECT *" ) );
+
+
+        $this->assertSame( $result, $link->query( $query ) );
     }
 
     public function testQuote_nonStrings ()

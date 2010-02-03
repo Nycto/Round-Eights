@@ -28,7 +28,7 @@ namespace r8\Query;
 /**
  * Builds a Select SQL query
  */
-class Select
+class Select implements \r8\iface\DB\Query
 {
 
     /**
