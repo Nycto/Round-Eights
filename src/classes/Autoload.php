@@ -107,7 +107,7 @@ class Autoload
             $prefixLen = strlen( $prefix );
 
             // If the class name starts with this prefix, try to apply this rule
-            if ( strcasecmp( substr($class, 0, $prefixLen), $prefix ) == 0 ) {
+            if ( strncasecmp( $class, $prefix, $prefixLen ) == 0 ) {
                 $file = substr( $class, $prefixLen );
                 $file = str_replace('\\', '/', $file);
                 $file = $location ."/". $file .".php";
