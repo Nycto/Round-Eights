@@ -191,6 +191,9 @@ abstract class Access
         if ( $values instanceof self )
             $values = $values->getValues();
 
+        else if ( $values instanceof \r8\iface\Template\Importable )
+            $values = (array) $values->getTemplateValues();
+
         // pull any properties from non-traversable objects
         else if ( is_object($values) && !($values instanceof \Traversable) )
             $values = get_object_vars( $values );

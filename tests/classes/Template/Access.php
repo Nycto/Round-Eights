@@ -255,6 +255,23 @@ class classes_Template_Access extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testImport_importable ()
+    {
+        $obj = $this->getMock('\r8\iface\Template\Importable');
+        $obj->expects( $this->once() )
+            ->method( "getTemplateValues" )
+            ->will( $this->returnValue(
+                array('var' => 'value', 'other' => 3.1415)
+            ) );
+
+        $tpl = $this->getMock('\r8\Template\Access', array('_mock'));
+        $this->assertSame( $tpl, $tpl->import( $obj ) );
+        $this->assertEquals(
+                array('var' => 'value', 'other' => 3.1415),
+                $tpl->getValues()
+            );
+    }
+
     public function testImport_notImportable ()
     {
         $tpl = $this->getMock('\r8\Template\Access', array('_mock'));
