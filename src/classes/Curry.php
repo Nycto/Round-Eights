@@ -33,11 +33,14 @@ abstract class Curry implements \r8\iface\Filter
 
     /**
      * Any arguments to pass to curry to the left
+     *
+     * @var Array
      */
     protected $leftArgs = array();
 
     /**
      * Any arguments to pass to curry to the right
+     * @var Array
      */
     protected $rightArgs = array();
 
@@ -45,6 +48,8 @@ abstract class Curry implements \r8\iface\Filter
      * For slicing the input arguments, this is the offset.
      *
      * See array_slice for details
+     *
+     * @var Integer
      */
     protected $offset = 0;
 
@@ -52,6 +57,8 @@ abstract class Curry implements \r8\iface\Filter
      * For slicing the input arguments, this is the length of the array to allow
      *
      * See array_slice for details
+     *
+     * @var Integer
      */
     protected $length;
 
@@ -59,7 +66,7 @@ abstract class Curry implements \r8\iface\Filter
      * Sets the leftward arguments
      *
      * @param mixed $args... Any arguments to curry to the left
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setLeft ()
     {
@@ -72,7 +79,7 @@ abstract class Curry implements \r8\iface\Filter
      * Sets the rightward arguments from an array
      *
      * @param mixed $args Any arguments to curry to the right
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setLeftByArray ( array $args = array() )
     {
@@ -93,7 +100,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Removes any rightward arguments
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearLeft ()
     {
@@ -105,7 +112,7 @@ abstract class Curry implements \r8\iface\Filter
      * Sets the rightward arguments
      *
      * @param mixed $args... Any arguments to curry to the right
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setRight ()
     {
@@ -118,7 +125,7 @@ abstract class Curry implements \r8\iface\Filter
      * Sets the rightward arguments from an array
      *
      * @param mixed $args Any arguments to curry to the right
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setRightByArray ( array $args = array() )
     {
@@ -139,7 +146,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Removes any rightward arguments
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearRight ()
     {
@@ -150,7 +157,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Clears both the left and right arguments
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearArgs ()
     {
@@ -161,7 +168,7 @@ abstract class Curry implements \r8\iface\Filter
      * Set the start offset used to slice up the call arguments
      *
      * @param Integer $offset
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setOffset ( $offset )
     {
@@ -182,7 +189,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Returns the argument slicing offset
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearOffset ()
     {
@@ -194,7 +201,7 @@ abstract class Curry implements \r8\iface\Filter
      * Set the length limit for slicing up the call arguments
      *
      * @param Integer $limit
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function setLimit ( $limit )
     {
@@ -228,7 +235,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Clears the argument slicing limit
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearLimit ()
     {
@@ -239,7 +246,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Clears both the argument slicing limit and the offset
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clearSlicing ()
     {
@@ -249,7 +256,7 @@ abstract class Curry implements \r8\iface\Filter
     /**
      * Clears all the settings from this instance
      *
-     * @return object Returns a self reference
+     * @return \r8\Curry Returns a self reference
      */
     public function clear ()
     {
