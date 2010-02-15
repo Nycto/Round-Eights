@@ -107,13 +107,27 @@ class Builder extends \r8\Template\Access
      * Builds a new PHP file template
      *
      * @param mixed $file The file this tempalte should load
-     * @return \r8\Template\Replace
+     * @return \r8\Template\PHP
      */
     public function php ( $file )
     {
         $tpl = new \r8\Template\PHP( $this->finder, $file );
         $tpl->import( $this->getValues() );
         return $tpl;
+    }
+
+    /**
+     * Builds a new Iterate template
+     *
+     * @param \r8\iface\Template\Access $prototype The prototype template to clone
+     * @param \Traversable $iterator The iterator to pull data from
+     * @return \r8\Template\Iterate
+     */
+    public function iterate (
+        \r8\iface\Template\Access $prototype,
+        \Traversable $iterator
+    ) {
+        return new \r8\Template\Iterate( $prototype, $iterator );
     }
 
 }

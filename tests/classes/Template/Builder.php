@@ -107,6 +107,18 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
         $this->assertSame( array( "one" => 1, "two" => 2), $result->getValues() );
     }
 
+    public function testIterate ()
+    {
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
+
+        $result = $builder->iterate(
+            $this->getMock('\r8\iface\Template\Access'),
+            $this->getMock('\Iterator')
+        );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Iterate') );
+    }
+
 }
 
 ?>
