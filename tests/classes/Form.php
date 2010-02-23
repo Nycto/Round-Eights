@@ -618,9 +618,9 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $form->getHidden() );
 
 
-        $field1 = new \r8\Form\Field\Hidden("fld1");
-        $field2 = new \r8\Form\Field\Text("fld2");
-        $field3 = new \r8\Form\Field\Hidden("fld3");
+        $field1 = new \r8\Form\Hidden("fld1");
+        $field2 = new \r8\Form\Text("fld2");
+        $field3 = new \r8\Form\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )
@@ -636,9 +636,9 @@ class classes_form extends PHPUnit_Framework_TestCase
         $this->assertSame( "", $form->getHiddenHTML() );
 
 
-        $field1 = new \r8\Form\Field\Hidden("fld1");
-        $field2 = new \r8\Form\Field\Text("fld2");
-        $field3 = new \r8\Form\Field\Hidden("fld3");
+        $field1 = new \r8\Form\Hidden("fld1");
+        $field2 = new \r8\Form\Text("fld2");
+        $field3 = new \r8\Form\Hidden("fld3");
 
         $form->addField( $field1 )
             ->addField( $field2 )

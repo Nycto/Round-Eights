@@ -23,7 +23,7 @@
  * @package Forms
  */
 
-namespace r8\Form\Field;
+namespace r8\Form;
 
 /**
  * An HTML radio button field list

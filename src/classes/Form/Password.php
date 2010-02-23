@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -22,36 +20,26 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package Forms
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+namespace r8\Form;
 
 /**
- * unit tests
+ * A password form field
  */
-class classes_form_field_password extends PHPUnit_Framework_TestCase
+class Password extends \r8\Form\Field
 {
 
-    public function testGetTag ()
+    /**
+     * Returns a \r8\HTML\Tag object that represents this instance
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag()
     {
-        $field = new \r8\Form\Field\Password("fld");
-        $field->setValue("New Value")
-            ->setName("fldName");
-
-        $tag = $field->getTag();
-
-        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
-        $this->assertSame( "input", $tag->getTag() );
-
-        $this->assertTrue( isset($tag['name']) );
-        $this->assertSame( "fldName", $tag['name'] );
-
-        $this->assertTrue( isset($tag['value']) );
-        $this->assertSame( "New Value", $tag['value'] );
-
-        $this->assertTrue( isset($tag['type']) );
-        $this->assertSame( "password", $tag['type'] );
+        return parent::getTag()
+            ->setAttr("type", "password");
     }
 
 }

@@ -25,12 +25,12 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_Form_Field_File extends PHPUnit_Framework_TestCase
+class classes_Form_File extends PHPUnit_Framework_TestCase
 {
 
     public function testGetRawValue_noFile ()
@@ -43,7 +43,7 @@ class classes_Form_Field_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue(NULL) );
 
-        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", $validator, $files );
 
         $this->assertNull( $field->getRawValue() );
     }
@@ -60,7 +60,7 @@ class classes_Form_Field_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", $validator, $files );
 
         $this->assertSame( $file, $field->getRawValue() );
     }
@@ -89,7 +89,7 @@ class classes_Form_Field_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", $validator, $files );
         $field->setValidator( $upperValid );
 
         $this->assertSame( $result, $field->validate() );
@@ -127,7 +127,7 @@ class classes_Form_Field_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\Field\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", $validator, $files );
         $field->setValidator( $upperValid );
 
         $this->assertSame( $upperResult, $field->validate() );
@@ -135,7 +135,7 @@ class classes_Form_Field_File extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = new \r8\Form\Field\File("fld");
+        $field = new \r8\Form\File("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();

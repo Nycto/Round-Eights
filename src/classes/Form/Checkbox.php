@@ -23,13 +23,29 @@
  * @package Forms
  */
 
-namespace r8\Form\Field;
+namespace r8\Form;
 
 /**
- * The most basic form field
+ * A checkbox form field
  */
-class Text extends \r8\Form\Field
+class Checkbox extends \r8\Form\Field
 {
+
+    /**
+     * Constructor...
+     *
+     * Sets the default boolean filter
+     *
+     * @param String The name of this form field
+     */
+    public function __construct( $name )
+    {
+        parent::__construct( $name );
+
+        $this->setFilter(
+                new \r8\Filter\Boolean
+            );
+    }
 
     /**
      * Returns a \r8\HTML\Tag object that represents this instance
@@ -38,8 +54,20 @@ class Text extends \r8\Form\Field
      */
     public function getTag()
     {
-        return parent::getTag()
-            ->setAttr("type", "text");
+        $tag = new \r8\HTML\Tag(
+                'input',
+                null,
+                array(
+                        "type" => 'checkbox',
+                        "value" => 'on',
+                        "name" => $this->getName()
+                    )
+            );
+
+        if ( $this->getValue() )
+            $tag->setAttr("checked", "checked");
+
+        return $tag;
     }
 
 }

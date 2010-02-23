@@ -23,13 +23,34 @@
  * @package Forms
  */
 
-namespace r8\Form\Field;
+namespace r8\Form;
 
 /**
- * Text Area form fields
+ * An HTML select field
  */
-class TextArea extends \r8\Form\Field
+class Select extends \r8\Form\Multi
 {
+
+    /**
+     * Returns a string representation of the option list
+     *
+     * @return String The list of select options
+     */
+    public function getOptionList ()
+    {
+        $result = "";
+
+        foreach ( $this->getOptions() AS $key => $value ) {
+            $result .= "<option"
+                ." value='" .htmlspecialchars($key) ."'"
+                .( $this->getValue() == $key ? " selected='selected'" : "" )
+                .">"
+                .htmlspecialchars($value)
+                ."</option>";
+        }
+
+        return $result;
+    }
 
     /**
      * Returns a \r8\HTML\Tag object that represents this instance
@@ -39,9 +60,9 @@ class TextArea extends \r8\Form\Field
     public function getTag()
     {
         return new \r8\HTML\Tag(
-                'textarea',
-                $this->getForOutput(),
-                array( "name" => $this->getName() )
+                'select',
+                $this->getOptionList(),
+                array("name" => $this->getName())
             );
     }
 

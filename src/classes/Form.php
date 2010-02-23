@@ -429,7 +429,7 @@ class Form implements \Countable
         return array_filter(
                 $this->fields,
                 function ( $field ) {
-                    return ($field instanceof \r8\Form\Field\Hidden);
+                    return ($field instanceof \r8\Form\Hidden);
                 }
             );
     }

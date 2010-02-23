@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_key extends PHPUnit_Framework_TestCase
+class classes_Form_key extends PHPUnit_Framework_TestCase
 {
 
     public function testValue ()
     {
-        $field = new \r8\Form\Field\Key("fld", "Unit Test");
+        $field = new \r8\Form\Key("fld", "Unit Test");
 
         $this->assertThat( $field->getValue(), $this->isType("string") );
         $this->assertSame( 20, strlen( $field->getValue() ) );
@@ -44,7 +44,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testValidator ()
     {
-        $field = new \r8\Form\Field\Key("fld", "Unit Test");
+        $field = new \r8\Form\Key("fld", "Unit Test");
 
         $this->assertThat(
                 $field->getValidator(),
@@ -54,7 +54,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $field = new \r8\Form\Field\Key("fld", "Unit Test");
+        $field = new \r8\Form\Key("fld", "Unit Test");
 
         $this->assertThat( $field->getValue(), $this->isType("string") );
         $this->assertSame( 20, strlen( $field->getValue() ) );
@@ -64,7 +64,7 @@ class classes_form_field_key extends PHPUnit_Framework_TestCase
 
     public function testInvalid ()
     {
-        $field = new \r8\Form\Field\Key("fld", "Unit Test");
+        $field = new \r8\Form\Key("fld", "Unit Test");
         $field->setValue("This isn't it");
 
         $this->assertFalse( $field->isValid() );

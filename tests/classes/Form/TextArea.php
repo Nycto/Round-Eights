@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_textarea extends PHPUnit_Framework_TestCase
+class classes_Form_textarea extends PHPUnit_Framework_TestCase
 {
 
     public function testGetTag ()
     {
-        $field = new \r8\Form\Field\TextArea("fld");
+        $field = new \r8\Form\TextArea("fld");
         $field->setValue("New Value")
             ->setName("fldName");
 
@@ -52,7 +52,7 @@ class classes_form_field_textarea extends PHPUnit_Framework_TestCase
 
     public function testGetTag_outFiltered ()
     {
-        $field = new \r8\Form\Field\TextArea("fld");
+        $field = new \r8\Form\TextArea("fld");
         $field->setValue("New Value")
             ->setName("fldName");
 

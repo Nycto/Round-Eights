@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_select extends PHPUnit_Framework_TestCase
+class classes_Form_select extends PHPUnit_Framework_TestCase
 {
 
     public function testGetOptionList ()
     {
-        $field = new \r8\Form\Field\Select("fld");
+        $field = new \r8\Form\Select("fld");
 
         $this->assertSame("", $field->getOptionList());
 
@@ -60,7 +60,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_noOptions ()
     {
-        $field = new \r8\Form\Field\Select("fld");
+        $field = new \r8\Form\Select("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
@@ -76,7 +76,7 @@ class classes_form_field_select extends PHPUnit_Framework_TestCase
 
     public function testGetTag_withOptions ()
     {
-        $field = new \r8\Form\Field\Select("fld");
+        $field = new \r8\Form\Select("fld");
         $field->setName("fldName");
         $field->addOption("one", "Single");
         $field->addOption("two", "Double");

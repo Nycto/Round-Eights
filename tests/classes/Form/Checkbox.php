@@ -25,20 +25,30 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_text extends PHPUnit_Framework_TestCase
+class classes_Form_checkbox extends PHPUnit_Framework_TestCase
 {
+
+    public function testDefaults ()
+    {
+        $field = new \r8\Form\Checkbox("fld");
+
+        $this->assertThat(
+                $field->getFilter(),
+                $this->isInstanceOf("r8\Filter\Boolean")
+            );
+
+        $this->assertFalse( $field->getValue() );
+    }
 
     public function testGetTag ()
     {
-        $field = new \r8\Form\Field\Text("fld");
-        $field->setValue("New Value")
-            ->setName("fldName");
-
+        $field = new \r8\Form\Checkbox("fld");
+        $field->setName("fldName");
 
         $tag = $field->getTag();
 
@@ -49,32 +59,20 @@ class classes_form_field_text extends PHPUnit_Framework_TestCase
         $this->assertSame( "fldName", $tag['name'] );
 
         $this->assertTrue( isset($tag['value']) );
-        $this->assertSame( "New Value", $tag['value'] );
+        $this->assertSame( "on", $tag['value'] );
 
         $this->assertTrue( isset($tag['type']) );
-        $this->assertSame( "text", $tag['type'] );
-    }
+        $this->assertSame( "checkbox", $tag['type'] );
 
-    public function testGetTag_outFilter ()
-    {
-        $field = new \r8\Form\Field\Text("fld");
-        $field->setValue("New Value")
-            ->setName("fldName");
+        $this->assertFalse( isset($tag['checked']) );
 
 
-        $outFilter = $this->getMock("r8\iface\Filter", array("filter"));
-        $outFilter->expects( $this->once() )
-            ->method("filter")
-            ->with("New Value")
-            ->will( $this->returnValue("Filtered New Value") );
-
-        $field->setOutputFilter($outFilter);
-
+        $field->setValue('on');
 
         $tag = $field->getTag();
 
-        $this->assertTrue( isset($tag['value']) );
-        $this->assertSame( "Filtered New Value", $tag['value'] );
+        $this->assertTrue( isset($tag['checked']) );
+        $this->assertSame( "checked", $tag['checked'] );
     }
 
 }

@@ -25,19 +25,20 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_hidden extends PHPUnit_Framework_TestCase
+class classes_Form_text extends PHPUnit_Framework_TestCase
 {
 
     public function testGetTag ()
     {
-        $field = new \r8\Form\Field\Hidden("fld");
+        $field = new \r8\Form\Text("fld");
         $field->setValue("New Value")
             ->setName("fldName");
+
 
         $tag = $field->getTag();
 
@@ -51,7 +52,29 @@ class classes_form_field_hidden extends PHPUnit_Framework_TestCase
         $this->assertSame( "New Value", $tag['value'] );
 
         $this->assertTrue( isset($tag['type']) );
-        $this->assertSame( "hidden", $tag['type'] );
+        $this->assertSame( "text", $tag['type'] );
+    }
+
+    public function testGetTag_outFilter ()
+    {
+        $field = new \r8\Form\Text("fld");
+        $field->setValue("New Value")
+            ->setName("fldName");
+
+
+        $outFilter = $this->getMock("r8\iface\Filter", array("filter"));
+        $outFilter->expects( $this->once() )
+            ->method("filter")
+            ->with("New Value")
+            ->will( $this->returnValue("Filtered New Value") );
+
+        $field->setOutputFilter($outFilter);
+
+
+        $tag = $field->getTag();
+
+        $this->assertTrue( isset($tag['value']) );
+        $this->assertSame( "Filtered New Value", $tag['value'] );
     }
 
 }

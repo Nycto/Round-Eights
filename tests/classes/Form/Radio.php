@@ -25,17 +25,17 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_form_field_radio extends PHPUnit_Framework_TestCase
+class classes_Form_radio extends PHPUnit_Framework_TestCase
 {
 
     public function testGetRadioOptionID ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         $this->assertSame("radio_fld_356a192b79", $field->getRadioOptionID(1));
@@ -53,7 +53,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionRadioTag_unchecked ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         $tag = $field->getOptionRadioTag(2);
@@ -80,7 +80,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionRadioTag_checked ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
         $field->setValue( 2 ) ;
 
@@ -109,7 +109,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionRadioTag_error ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
         try {
@@ -123,7 +123,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionLabelTag ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
 
 
@@ -149,7 +149,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetOptionList ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->importOptions(array(1 => "One", 2 => "Two", 3 => "Three"));
         $field->setValue(3);
 
@@ -168,7 +168,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetTag_noOptions ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->setName("fldName");
 
         $tag = $field->getTag();
@@ -181,7 +181,7 @@ class classes_form_field_radio extends PHPUnit_Framework_TestCase
 
     public function testGetTag_withOptions ()
     {
-        $field = new \r8\Form\Field\Radio("fld");
+        $field = new \r8\Form\Radio("fld");
         $field->setName("fldName");
         $field->addOption("one", "Single");
         $field->addOption("two", "Double");

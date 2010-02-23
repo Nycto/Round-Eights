@@ -23,7 +23,7 @@
  * @package Forms
  */
 
-namespace r8\Form\Field;
+namespace r8\Form;
 
 /**
  * A form field used to upload files

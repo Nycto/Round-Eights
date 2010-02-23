@@ -23,7 +23,7 @@
  * @package Forms
  */
 
-namespace r8\Form\Field;
+namespace r8\Form;
 
 /**
  * A specialized hidden field used to help prevent XSRF attacks
@@ -34,7 +34,7 @@ namespace r8\Form\Field;
  *
  * The key generated is 20 characters long
  */
-class Key extends \r8\Form\Field\Hidden
+class Key extends \r8\Form\Hidden
 {
 
     /**
