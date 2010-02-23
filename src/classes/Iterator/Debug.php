@@ -36,22 +36,12 @@ class Debug extends \IteratorIterator
 {
 
     /**
-     * Constructor...
-     *
-     * @param \Traversable $iterator The iterator being wrapped
-     */
-    public function __construct ( \Traversable $iterator )
-    {
-        parent::__construct( $iterator );
-    }
-    
-    /**
      * Dumps the starting call to a function
      *
      * @param String $method The method that was called
      * @return NULL
      */
-    public function dumpStart ( $method )
+    private function dumpStart ( $method )
     {
         printf(
             "\n%s::%-8s Start\n",
@@ -59,7 +49,7 @@ class Debug extends \IteratorIterator
             $method
         );
     }
-    
+
     /**
      * Dumps the ending call to a function
      *
@@ -67,7 +57,7 @@ class Debug extends \IteratorIterator
      * @param Mixed $result The result from the method call
      * @return NULL
      */
-    public function dumpEnd ( $method, $result )
+    private function dumpEnd ( $method, $result )
     {
         printf(
             "%s::%-8s End    %s\n",
@@ -76,7 +66,7 @@ class Debug extends \IteratorIterator
             \r8\getDump($result)
         );
     }
-    
+
     /**
      * Returns the key of the current value
      *
