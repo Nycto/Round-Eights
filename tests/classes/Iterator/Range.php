@@ -133,6 +133,131 @@ class classes_Iterator_Range extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIteration_lowerLong ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("ax", "ay", "az", "ba", "bb", "bc"),
+            new \r8\Iterator\Range("ax", "bc")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("bc", "bb", "ba", "az", "ay", "ax"),
+            new \r8\Iterator\Range("bc", "ax")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("ax", "az", "bb", "bd"),
+            new \r8\Iterator\Range("ax", "bd", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("bd", "bb", "az", "ax"),
+            new \r8\Iterator\Range("bd", "ax", 2)
+        );
+    }
+
+    public function testIteration_upperLong ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("AX", "AY", "AZ", "BA", "BB", "BC"),
+            new \r8\Iterator\Range("AX", "BC")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("BC", "BB", "BA", "AZ", "AY", "AX"),
+            new \r8\Iterator\Range("BC", "AX")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("AX", "AZ", "BB", "BD"),
+            new \r8\Iterator\Range("AX", "BD", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("BD", "BB", "AZ", "AX"),
+            new \r8\Iterator\Range("BD", "AX", 2)
+        );
+    }
+
+    public function testIteration_lowerShortToLong ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("x", "y", "z", "aa", "ab", "ac"),
+            new \r8\Iterator\Range("x", "ac")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("ac", "ab", "aa", "z", "y", "x"),
+            new \r8\Iterator\Range("ac", "x")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("x", "z", "ab", "ad"),
+            new \r8\Iterator\Range("x", "ad", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("ad", "ab", "z", "x"),
+            new \r8\Iterator\Range("ad", "x", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("zx", "zy", "zz", "aaa", "aab", "aac"),
+            new \r8\Iterator\Range("xx", "aac")
+        );
+    }
+
+    public function testIteration_upperShortToLong ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("X", "Y", "Z", "AA", "AB", "AC"),
+            new \r8\Iterator\Range("X", "AC")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("AC", "AB", "AA", "Z", "Y", "X"),
+            new \r8\Iterator\Range("AC", "X")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("X", "Z", "AB", "AD"),
+            new \r8\Iterator\Range("X", "AD", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("AD", "AB", "Z", "X"),
+            new \r8\Iterator\Range("AD", "X", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("ZX", "ZY", "ZZ", "AAA", "AAB", "AAC"),
+            new \r8\Iterator\Range("XX", "AAC")
+        );
+    }
+
+    public function testIteration_mixedCase ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("x", "y", "z", "A", "B", "C"),
+            new \r8\Iterator\Range("x", "C")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("C", "B", "A", "z", "y", "x"),
+            new \r8\Iterator\Range("C", "x")
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("x", "z","B", "D"),
+            new \r8\Iterator\Range("x", "D", 2)
+        );
+
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array("D", "B", "z", "x"),
+            new \r8\Iterator\Range("D", "x", 2)
+        );
+    }
+
     public function testSleep ()
     {
         $iterator = new \r8\Iterator\Range(1, 5, 2);
