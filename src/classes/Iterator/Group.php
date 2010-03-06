@@ -84,6 +84,33 @@ class Group implements \OuterIterator
     }
 
     /**
+     * Extracts the given key from a mixed value
+     *
+     * @param Mixed $haystack The mixed data collection to extract the key from
+     * @return Mixed
+     */
+    private function extractKey ( $haystack )
+    {
+        if ( is_array($haystack) ) {
+            $key = isset($haystack[ $this->field ])
+                ? $haystack[ $this->field ] : NULL;
+        }
+        else if ( $haystack instanceof \ArrayAccess ) {
+            $key = $haystack->offsetExists( $this->field )
+                ? $haystack->offsetGet( $this->field ) : NULL;
+        }
+        else if ( is_object($haystack) ) {
+            $key = isset($haystack->{$this->field})
+                ? $haystack->{$this->field} : NULL;
+        }
+        else {
+            $key = NULL;
+        }
+
+        return \r8\isBasic( $key ) ? $key : NULL;
+    }
+
+    /**
      * Internal method for creating the next group
      *
      * @return NULL
@@ -100,18 +127,12 @@ class Group implements \OuterIterator
         $this->current = array();
 
         do {
-
             $current = $this->inner->current();
-            $key = NULL;
 
-            // Extract the group by field from the current value
-            if ( is_array($current) && isset($current[ $this->field ]) )
-                $key = $current[ $this->field ];
-            else if ( is_object($current) && isset($current->{$this->field}) )
-                $key = $current->{$this->field};
+            $key = $this->extractKey( $current );
 
             // If a key was found, add it to the current group until it changes
-            if ( isset($key) ) {
+            if ( !empty($key) ) {
 
                 if ( !isset( $this->key ) )
                     $this->key = $key;

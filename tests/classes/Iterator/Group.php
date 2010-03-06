@@ -69,6 +69,30 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
         return $obj;
     }
 
+    /**
+     * Creates a new ArrayAccess object and sets it up to return a set of values
+     *
+     * @return stdClass
+     */
+    public function getArrayAccess ( array $data )
+    {
+        $obj = $this->getMock('ArrayAccess');
+
+        $obj->expects( $this->any() )
+            ->method( "offsetExists" )
+            ->will( $this->returnCallback( function ($offset) use ($data) {
+                return isset($data[$offset]);
+            } ) );
+
+        $obj->expects( $this->any() )
+            ->method( "offsetGet" )
+            ->will( $this->returnCallback( function ($offset) use ($data) {
+                return $data[$offset];
+            } ) );
+
+        return $obj;
+    }
+
     public function testIterate ()
     {
         $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
@@ -165,6 +189,29 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIterate_ArrayAccess ()
+    {
+        $data = array(
+            $this->getArrayAccess( array( "num" => 5, "color" => "blue" ) ),
+            $this->getArrayAccess( array( "num" => 5, "color" => "red" ) ),
+            $this->getArrayAccess( array( "color" => "red" ) ),
+            $this->getArrayAccess( array( "num" => 6, "color" => "red" ) ),
+            $this->getArrayAccess( array( "num" => NULL, "color" => "blue" ) )
+        );
+
+        $iter = new \r8\Iterator\Group( "num", new ArrayIterator( $data ) );
+
+        $this->assertEquals(
+            array(
+                5 => array( $data[0], $data[1], ),
+                6 => array( $data[3], ),
+            ),
+            PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+                10, $iter, TRUE
+            )
+        );
+    }
+
     public function testIterate_nonField ()
     {
         // Notice that "fruit" is not a field in the iterator that getTestIterator returns
@@ -192,6 +239,21 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
             new \r8\Iterator\Group(
                 "field",
                 new EmptyIterator
+            )
+        );
+    }
+
+    public function testIterate_BadKeys ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(),
+            new \r8\Iterator\Group(
+                "field",
+                new \ArrayIterator( array(
+                    array( "field" => new stdClass ),
+                    array( "field" => array() ),
+                    array( "field" => NULL ),
+                ) )
             )
         );
     }
