@@ -27,6 +27,8 @@ namespace r8\Iterator;
 
 /**
  * Groups the values in this iterator by a plucked value
+ *
+ * The inner iterator must already be sorted by the grouping field.
  */
 class Group implements \OuterIterator
 {
@@ -46,6 +48,20 @@ class Group implements \OuterIterator
     private $inner;
 
     /**
+     * The current value being grouped by
+     *
+     * @var Mixed
+     */
+    private $key;
+
+    /**
+     * The result of the grouping
+     *
+     * @var Array
+     */
+    private $current;
+
+    /**
      * Constructor...
      *
      * @param String $field The inner field to group the results by
@@ -53,6 +69,7 @@ class Group implements \OuterIterator
      */
     public function __construct ( $field, \Iterator $inner )
     {
+        $this->field = \r8\indexVal( $field );
         $this->inner = $inner;
     }
 
@@ -67,13 +84,64 @@ class Group implements \OuterIterator
     }
 
     /**
+     * Internal method for creating the next group
+     *
+     * @return NULL
+     */
+    private function createGroup ()
+    {
+        $this->key = NULL;
+
+        if ( !$this->inner->valid() ) {
+            $this->current = NULL;
+            return;
+        }
+
+        $this->current = array();
+
+        do {
+
+            $current = $this->inner->current();
+            $key = NULL;
+
+            // Extract the group by field from the current value
+            if ( is_array($current) && isset($current[ $this->field ]) )
+                $key = $current[ $this->field ];
+            else if ( is_object($current) && isset($current->{$this->field}) )
+                $key = $current->{$this->field};
+
+            // If a key was found, add it to the current group until it changes
+            if ( isset($key) ) {
+
+                if ( !isset( $this->key ) )
+                    $this->key = $key;
+
+                if ( $key != $this->key )
+                    break;
+
+                $this->current[] = $current;
+            }
+
+            $this->inner->next();
+
+        } while ( $this->inner->valid() );
+
+        // We can get here if they gave us a grouping field that didn't exist
+        // in any of the iterator values
+        if ( empty($this->current) )
+            $this->current = NULL;
+        else
+            $this->current = new \ArrayIterator( $this->current );
+    }
+
+    /**
      * Returns the key of the current value
      *
      * @return Mixed
      */
     public function key ()
     {
-
+        return $this->key;
     }
 
     /**
@@ -83,7 +151,7 @@ class Group implements \OuterIterator
      */
     public function current()
     {
-
+        return $this->current;
     }
 
     /**
@@ -93,7 +161,7 @@ class Group implements \OuterIterator
      */
     public function next ()
     {
-
+        $this->createGroup();
     }
 
     /**
@@ -103,7 +171,7 @@ class Group implements \OuterIterator
      */
     public function valid ()
     {
-
+        return !empty( $this->current );
     }
 
     /**
@@ -113,7 +181,8 @@ class Group implements \OuterIterator
      */
     public function rewind ()
     {
-
+        $this->inner->rewind();
+        $this->createGroup();
     }
 
 }
