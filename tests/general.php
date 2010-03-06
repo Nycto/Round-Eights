@@ -599,9 +599,10 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
      *
      * @param Integer $max The maximum number of results
      * @param Traversable $iterator The iterator to convert
+     * @param Boolean $recurse Whether to recursively reduce inner iterators
      * @return Array
      */
-    static public function iteratorToArray ( $max, \Traversable $iterator )
+    static public function iteratorToArray ( $max, \Traversable $iterator, $recurse = FALSE )
     {
         $i = 0;
 
@@ -609,6 +610,9 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
 
         foreach ( $iterator AS $key => $value )
         {
+            if ( $recurse && $value instanceof \Traversable )
+                $value = self::iteratorToArray( $max - 1, $value, TRUE );
+
             $result[ $key ] = $value;
 
             $i++;
@@ -679,7 +683,7 @@ class PHPUnit_Framework_Constraint_Iterator extends PHPUnit_Framework_Constraint
     {
         if ( !($other instanceof Traversable) )
             return PHPUnit_Util_Type::toString($other) ." is an instance of Traversable";
-            
+
         $other = $this->toArray($other);
 
         $diff = new PHPUnit_Framework_ComparisonFailure_Array(
