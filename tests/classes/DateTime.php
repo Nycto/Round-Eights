@@ -37,6 +37,13 @@ class classes_DateTime extends PHPUnit_Framework_TestCase
 
     protected function setUp ()
     {
+        $tz = ini_get('date.timezone');
+        if ( empty($tz) ) {
+            $this->markTestSkipped(
+                "'date.timezone' must be configured in your php.ini"
+            );
+        }
+
         $this->timezone = date_default_timezone_get();
         date_default_timezone_set( "GMT" );
     }
