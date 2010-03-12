@@ -75,10 +75,9 @@ class Files
 
             else if ( is_array($file) ) {
 
-                $file = array_filter(
-                    $file,
-                    new \r8\Curry\Call( "is_a", '\r8\Input\File' )
-                );
+                $file = array_filter( $file, function ($obj) {
+                    return $obj instanceof \r8\Input\File;
+                });
 
                 if ( !empty($file) )
                     $this->files[$key] = array_values( $file );
