@@ -55,7 +55,7 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
     {
         file_put_contents(
                 $this->file,
-                '<?=$lorem ?> <?=$ipsum ?>'
+                '<?php echo $lorem; ?> <?php echo $ipsum ?>'
             );
 
         $finder = $this->getMockFinder();
@@ -78,7 +78,7 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
     {
         file_put_contents(
                 $this->file,
-                '<?=$lorem ?> <?=$var_this ?>'
+                '<?php echo $lorem ?> <?php echo $var_this ?>'
             );
 
         $finder = $this->getMockFinder();
