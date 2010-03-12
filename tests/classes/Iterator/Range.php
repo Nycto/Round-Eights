@@ -33,6 +33,34 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Iterator_Range extends PHPUnit_Framework_TestCase
 {
 
+    public function testNum2Alpha ()
+    {
+        $this->assertSame( "A", \r8\Iterator\Range::num2alpha(0) );
+        $this->assertSame( "B", \r8\Iterator\Range::num2alpha(1) );
+        $this->assertSame( "Y", \r8\Iterator\Range::num2alpha(24) );
+        $this->assertSame( "Z", \r8\Iterator\Range::num2alpha(25) );
+        $this->assertSame( "AA", \r8\Iterator\Range::num2alpha(26) );
+        $this->assertSame( "FZPI", \r8\Iterator\Range::num2alpha(123456) );
+        $this->assertSame( "FZPJ", \r8\Iterator\Range::num2alpha(123457) );
+    }
+
+    public function testAlpha2Num ()
+    {
+        $this->assertEquals( 0, \r8\Iterator\Range::alpha2num("A") );
+        $this->assertEquals( 1, \r8\Iterator\Range::alpha2num("B") );
+        $this->assertEquals( 24, \r8\Iterator\Range::alpha2num("Y") );
+        $this->assertEquals( 25, \r8\Iterator\Range::alpha2num("Z") );
+        $this->assertEquals( 26, \r8\Iterator\Range::alpha2num("AA") );
+        $this->assertEquals( 123456, \r8\Iterator\Range::alpha2num("FZPI") );
+        $this->assertEquals( 123457, \r8\Iterator\Range::alpha2num("FZPJ") );
+
+        $this->assertEquals( 0, \r8\Iterator\Range::alpha2num("a") );
+        $this->assertEquals( 1, \r8\Iterator\Range::alpha2num("b") );
+        $this->assertEquals( 24, \r8\Iterator\Range::alpha2num("y") );
+        $this->assertEquals( 25, \r8\Iterator\Range::alpha2num("z") );
+        $this->assertEquals( 26, \r8\Iterator\Range::alpha2num("aa") );
+    }
+
     public function testIteration_Integers ()
     {
         PHPUnit_Framework_Constraint_Iterator::assert(
@@ -203,7 +231,7 @@ class classes_Iterator_Range extends PHPUnit_Framework_TestCase
 
         PHPUnit_Framework_Constraint_Iterator::assert(
             array("zx", "zy", "zz", "aaa", "aab", "aac"),
-            new \r8\Iterator\Range("xx", "aac")
+            new \r8\Iterator\Range("zx", "aac")
         );
     }
 
@@ -231,30 +259,38 @@ class classes_Iterator_Range extends PHPUnit_Framework_TestCase
 
         PHPUnit_Framework_Constraint_Iterator::assert(
             array("ZX", "ZY", "ZZ", "AAA", "AAB", "AAC"),
-            new \r8\Iterator\Range("XX", "AAC")
+            new \r8\Iterator\Range("ZX", "AAC")
         );
     }
 
     public function testIteration_mixedCase ()
     {
         PHPUnit_Framework_Constraint_Iterator::assert(
-            array("x", "y", "z", "A", "B", "C"),
-            new \r8\Iterator\Range("x", "C")
+            array("c", "d", "e"),
+            new \r8\Iterator\Range("c", "E")
         );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
-            array("C", "B", "A", "z", "y", "x"),
-            new \r8\Iterator\Range("C", "x")
+            array("C", "D", "E"),
+            new \r8\Iterator\Range("C", "e")
         );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
-            array("x", "z","B", "D"),
-            new \r8\Iterator\Range("x", "D", 2)
+            array("ca", "cb", "cc", "cd"),
+            new \r8\Iterator\Range("cA", "CD")
+        );
+    }
+
+    public function testIteration_mixedMode ()
+    {
+        PHPUnit_Framework_Constraint_Iterator::assert(
+            array(0, 1, 2, 3, 4),
+            new \r8\Iterator\Range("c", 4)
         );
 
         PHPUnit_Framework_Constraint_Iterator::assert(
-            array("D", "B", "z", "x"),
-            new \r8\Iterator\Range("D", "x", 2)
+            array(4, 3, 2, 1, 0),
+            new \r8\Iterator\Range(4, "c")
         );
     }
 

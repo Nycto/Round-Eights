@@ -32,16 +32,30 @@ class Range implements \Iterator
 {
 
     /**
+     * The various modes this iterator can be in
+     */
+    const MODE_NUMERIC = 1;
+    const MODE_ALPHA_LOWER = 2;
+    const MODE_ALPHA_UPPER = 3;
+
+    /**
+     * The mode this iterator is operating in
+     *
+     * @var Integer
+     */
+    private $mode;
+
+    /**
      * The beginning value
      *
-     * @var Mixed
+     * @var Integer
      */
     private $start;
 
     /**
      * The ending value
      *
-     * @var Mixed
+     * @var Integer
      */
     private $end;
 
@@ -67,6 +81,39 @@ class Range implements \Iterator
     private $offset;
 
     /**
+     * Converts an integer to a string of uppercase letters (A-Z, AA-ZZ, AAA-ZZZ, etc.)
+     *
+     * @author Tamas http://us3.php.net/manual/en/function.base-convert.php#96304
+     * @param Integer $int
+     * @return String
+     */
+    static public function num2alpha ( $int )
+    {
+        for ( $result = ""; $int >= 0; $int = intval((int)$int / 26) - 1 ) {
+            $result = chr( $int % 26 + 0x41 ) . $result;
+        }
+        return $result;
+    }
+
+    /**
+     * Convert a string of uppercase letters to an integer.
+     *
+     * @author Tamas http://us3.php.net/manual/en/function.base-convert.php#96304
+     * @param String $string
+     * @return Integer
+     */
+    static public function alpha2num ( $string )
+    {
+        $string = strtoupper( (string) $string );
+        $length = strlen($string);
+        $int = 0;
+        for ( $i = 0; $i < $length; $i++ ) {
+            $int = ($int * 26) + ord($string[$i]) - 0x40;
+        }
+        return $int - 1;
+    }
+
+    /**
      * Constructor...
      *
      * @param Mixed $start The starting value
@@ -78,14 +125,23 @@ class Range implements \Iterator
         $start = \r8\reduce( $start );
         $end = \r8\reduce( $end );
 
-        if ( !(is_int($start) || is_float($start)) || !(is_int($end) || is_float($end)) )
+        if ( ctype_alpha($start) && ctype_alpha($end) )
         {
-            $start = (string) $start;
-            $end = (string) $end;
+            if ( ctype_upper( substr($start, 0, 1) ) )
+                $this->mode = self::MODE_ALPHA_UPPER;
+            else
+                $this->mode = self::MODE_ALPHA_LOWER;
+
+            $this->start = self::alpha2num( (string) $start );
+            $this->end = self::alpha2num( (string) $end );
+        }
+        else
+        {
+            $this->mode = self::MODE_NUMERIC;
+            $this->start = \r8\numVal( $start );
+            $this->end = \r8\numVal( $end );
         }
 
-        $this->start = $start;
-        $this->end = $end;
         $this->step = (int) $step == 0 ? 1 : $step;
     }
 
@@ -106,48 +162,12 @@ class Range implements \Iterator
      */
     public function current()
     {
-        return $this->current;
-    }
-
-    /**
-     * Internal method for incrementing the value as a number
-     *
-     * @return Boolean Returns whether the end of iteration has been reached
-     */
-    private function nextNumber ()
-    {
-        if ( $this->end > $this->start )
-        {
-            $this->current += $this->step;
-            return $this->current <= $this->end;
-        }
+        if ( $this->mode == self::MODE_NUMERIC )
+            return $this->current;
+        else if ( $this->mode == self::MODE_ALPHA_LOWER )
+            return strtolower( self::num2alpha( $this->current ) );
         else
-        {
-            $this->current -= $this->step;
-            return $this->current >= $this->end;
-        }
-    }
-
-    /**
-     * Internal method for incrementing the value as a string
-     *
-     * @return Boolean Returns whether the end of iteration has been reached
-     */
-    private function nextString ()
-    {
-        $end = ord( $this->end );
-        $current = ord( $this->current );
-
-        if ( $end > ord( $this->start ) )
-        {
-            $this->current = chr( $current + $this->step );
-            return $current + $this->step <= $end;
-        }
-        else
-        {
-            $this->current = chr( $current - $this->step );
-            return $current - $this->step >= $end;
-        }
+            return self::num2alpha( $this->current );
     }
 
     /**
@@ -157,10 +177,16 @@ class Range implements \Iterator
      */
     public function next ()
     {
-        if ( is_int($this->start) || is_float($this->start) )
-            $result = $this->nextNumber();
+        if ( $this->end > $this->start )
+        {
+            $this->current += $this->step;
+            $result = $this->current <= $this->end;
+        }
         else
-            $result = $this->nextString();
+        {
+            $this->current -= $this->step;
+            $result = $this->current >= $this->end;
+        }
 
         if ( !$result )
         {
@@ -201,7 +227,7 @@ class Range implements \Iterator
      */
     public function __sleep ()
     {
-        return array("start", "end", "step");
+        return array("mode", "start", "end", "step");
     }
 
 }
