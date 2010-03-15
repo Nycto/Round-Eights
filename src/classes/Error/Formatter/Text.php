@@ -44,7 +44,7 @@ class Text extends \r8\Error\Formatter
         );
 
         $result = "\n"
-            ."PHP Error Encointered!\n";
+            ."PHP Error Encountered!\n";
 
         foreach ( $this->toArray($error) AS $key => $value ) {
             $result .= $key .": ". $value ."\n";
