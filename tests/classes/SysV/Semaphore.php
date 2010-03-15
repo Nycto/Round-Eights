@@ -68,6 +68,23 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $this->assertFalse( $sem->isLocked() );
     }
 
+    public function testSerialize ()
+    {
+        $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+
+        $serial = serialize( $sem );
+
+        $this->assertNotContains( "resource", $serial );
+        $this->assertNotContains( "locked", $serial );
+
+        $unserial = unserialize( $serial );
+
+        $this->assertThat( $unserial, $this->isInstanceOf( '\r8\SysV\Semaphore' ) );
+        $this->assertFalse( $sem->isLocked() );
+        $this->assertSame( 2097006524, $sem->getKey() );
+        $this->assertSame( 20, $sem->getMax() );
+    }
+
 }
 
 ?>

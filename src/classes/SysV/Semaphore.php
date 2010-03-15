@@ -171,6 +171,16 @@ class Semaphore
         $this->resource = NULL;
     }
 
+    /**
+     * Returns the list of properties to serialize
+     *
+     * @return Array
+     */
+    public function __sleep ()
+    {
+        return array( "key", "max" );
+    }
+
 }
 
 ?>
