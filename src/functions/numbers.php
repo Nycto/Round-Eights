@@ -295,4 +295,37 @@ function offsetWrap ($length, $offset, $wrapFlag)
 
 }
 
+/**
+ * Generates an Integer hash using a string as input
+ *
+ * This uses the sdbm hashing algorithm. Details can be found here:
+ * http://www.cse.yorku.ca/~oz/hash.html
+ *
+ * @param String $source The string to hash into a number
+ * @return Integer Returns an integer between zero and the value of the
+ *      self::MAX_INT constant
+ */
+function intHash ( $source )
+{
+    $source = (string) $source;
+
+    $len = strlen($source);
+    $hash = 0;
+
+    // Loop over every hex pair
+    for ( $i = 0; $i < $len; $i++ )
+    {
+        // Convert the hex pair back to binary
+        $num = ord( substr($source, $i, 1) );
+
+        // Mutate it to generate the hash
+        $hash = $num + ($hash << 6) + ($hash << 16) - $hash;
+
+        // Ensure it fits within an integer
+        $hash = abs( $hash % 0x7FFFFFFF );
+    }
+
+    return $hash;
+}
+
 ?>
