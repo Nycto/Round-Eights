@@ -77,11 +77,11 @@ class classes_Transform_Hash extends PHPUnit_Framework_TestCase
     /**
      * Returns a test seed that will return the given string
      *
-     * @return \r8\Random\Seed
+     * @return \r8\Seed
      */
     public function getTestSeed ( $string )
     {
-        $seed = $this->getMock('\r8\Random\Seed', array(), array(), '', FALSE);
+        $seed = $this->getMock('\r8\Seed', array(), array(), '', FALSE);
         $seed->expects( $this->any() )
             ->method( "getString" )
             ->will( $this->returnValue($string) );

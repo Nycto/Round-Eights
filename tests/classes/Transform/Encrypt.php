@@ -35,7 +35,7 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 
     public function testEncrypt ()
     {
-        $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Input") );
+        $encrypt = new \r8\Transform\Encrypt( new \r8\Seed("Input") );
 
         $result = $encrypt->to("oh what a piece of data");
 
@@ -51,7 +51,7 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 
     public function testDecrypt ()
     {
-        $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Input") );
+        $encrypt = new \r8\Transform\Encrypt( new \r8\Seed("Input") );
 
         $this->assertSame(
             "oh what a piece of data",
@@ -70,7 +70,7 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 
     public function testDecrypt_WrongKey ()
     {
-        $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Different Key") );
+        $encrypt = new \r8\Transform\Encrypt( new \r8\Seed("Different Key") );
 
         $this->assertNotEquals(
             "oh what a piece of data",
@@ -82,7 +82,7 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 
     public function testDecrypt_ShortData ()
     {
-        $encrypt = new \r8\Transform\Encrypt( new \r8\Random\Seed("Different Key") );
+        $encrypt = new \r8\Transform\Encrypt( new \r8\Seed("Different Key") );
 
         try {
             $encrypt->from( "Bloopity bloop" );

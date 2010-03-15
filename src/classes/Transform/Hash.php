@@ -35,7 +35,7 @@ class Hash implements \r8\iface\Transform
     /**
      * The salt to use when generating hashes
      *
-     * @var \r8\Random\Seed
+     * @var \r8\Seed
      */
     private $salt;
 
@@ -105,13 +105,13 @@ class Hash implements \r8\iface\Transform
     /**
      * Constructor...
      *
-     * @param \r8\Random\Seed $salt The salt to use for the hashing process
+     * @param \r8\Seed $salt The salt to use for the hashing process
      * @param Integer $hashLength The length of the hash to generate
      * @param Boolean $readable When set to TRUE, the hash will be hex encoded
      *      before prepending it
      */
     public function __construct (
-        \r8\Random\Seed $salt,
+        \r8\Seed $salt,
         $hashLength = 32,
         $readable = FALSE
     ) {

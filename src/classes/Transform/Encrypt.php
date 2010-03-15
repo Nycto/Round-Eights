@@ -36,7 +36,7 @@ class Encrypt implements \r8\iface\Transform\Encrypt
     /**
      * The encryption key
      *
-     * @var \r8\Random\Seed
+     * @var \r8\Seed
      */
     private $key;
 
@@ -57,11 +57,11 @@ class Encrypt implements \r8\iface\Transform\Encrypt
     /**
      * Constructor...
      *
-     * @param \r8\Random\Seed $key The encryption key
+     * @param \r8\Seed $key The encryption key
      * @param String $cipher The cipher to use for encryption
      * @param String $mode The block cipher mode
      */
-    public function __construct ( \r8\Random\Seed $key, $cipher = 'rijndael-256', $mode = 'ctr' )
+    public function __construct ( \r8\Seed $key, $cipher = 'rijndael-256', $mode = 'ctr' )
     {
         if ( !extension_loaded('mcrypt') )
             throw new \r8\Exception\Extension("MCrypt extension required");

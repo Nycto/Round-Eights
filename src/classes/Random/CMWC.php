@@ -60,9 +60,9 @@ class CMWC extends \r8\Random
     /**
      * Constructor...
      *
-     * @param \r8\Random\Seed $seed The seed to feed into the random number generator
+     * @param \r8\Seed $seed The seed to feed into the random number generator
      */
-    public function __construct ( \r8\Random\Seed $seed )
+    public function __construct ( \r8\Seed $seed )
     {
         if ( !extension_loaded('bcmath') )
             throw new \r8\Exception\Extension("BC Math extension required");

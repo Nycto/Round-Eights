@@ -41,7 +41,7 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextInteger ()
     {
-        $seed = $this->getMock('r8\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('r8\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );
@@ -62,7 +62,7 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextFloat ()
     {
-        $seed = $this->getMock('r8\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('r8\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );
@@ -83,7 +83,7 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
     public function testNextString ()
     {
-        $seed = $this->getMock('r8\Random\Seed', array('getInteger'), array(1234));
+        $seed = $this->getMock('r8\Seed', array('getInteger'), array(1234));
         $seed->expects( $this->once() )
             ->method('getInteger')
             ->will( $this->returnValue(1975807251) );

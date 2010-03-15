@@ -25,35 +25,35 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../general.php";
 
 /**
  * unit tests
  */
-class classes_random_seed extends PHPUnit_Framework_TestCase
+class classes_Seed extends PHPUnit_Framework_TestCase
 {
 
     public function testRandom ()
     {
         $this->assertThat(
-                \r8\Random\Seed::random(),
-                $this->isInstanceOf("r8\Random\Seed")
+                \r8\Seed::random(),
+                $this->isInstanceOf('\r8\Seed')
             );
 
         $this->assertNotEquals(
-                \r8\Random\Seed::random()->getSource(),
-                \r8\Random\Seed::random()->getSource()
+                \r8\Seed::random()->getSource(),
+                \r8\Seed::random()->getSource()
             );
 
         $this->assertNotEquals(
-                \r8\Random\Seed::random()->getSource(),
-                \r8\Random\Seed::random()->getSource()
+                \r8\Seed::random()->getSource(),
+                \r8\Seed::random()->getSource()
             );
     }
 
     public function testSourceAccessors ()
     {
-        $seed = new \r8\Random\Seed("Initial value");
+        $seed = new \r8\Seed("Initial value");
 
         $this->assertSame( "Initial value", $seed->getSource() );
 
@@ -78,7 +78,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
 
     public function testGetString ()
     {
-        $seed = new \r8\Random\Seed("Initial value");
+        $seed = new \r8\Seed("Initial value");
         $this->assertSame( "fcb1ddc45496d5bd9bbb1d0e3e24a58c56f33281", $seed->getString() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
@@ -102,7 +102,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
 
     public function testGetInteger ()
     {
-        $seed = new \r8\Random\Seed("Initial value");
+        $seed = new \r8\Seed("Initial value");
         $this->assertSame( 1929230368, $seed->getInteger() );
         $this->assertSame( 1929230368, $seed->getInteger() );
 
@@ -128,7 +128,7 @@ class classes_random_seed extends PHPUnit_Framework_TestCase
 
     public function testGetFloat ()
     {
-        $seed = new \r8\Random\Seed("Initial value");
+        $seed = new \r8\Seed("Initial value");
         $this->assertSame( 0.8983678970944, $seed->getFloat() );
         $this->assertSame( 0.8983678970944, $seed->getFloat() );
 

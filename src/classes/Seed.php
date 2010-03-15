@@ -20,10 +20,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package Random
+ * @package Seed
  */
 
-namespace r8\Random;
+namespace r8;
 
 /**
  * Class for generating a seed value
@@ -50,7 +50,7 @@ class Seed
     /**
      * Returns a new, random seed
      *
-     * @return \r8\Random\Seed
+     * @return \r8\Seed
      */
     static public function random ()
     {
