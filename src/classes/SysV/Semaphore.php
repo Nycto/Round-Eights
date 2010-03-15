@@ -172,6 +172,34 @@ class Semaphore
     }
 
     /**
+     * Handles aqcuiring and releasing a lock before and after executing a callback
+     *
+     * If an exception is thrown by the callback, it will be caught, the lock
+     * will be released and the exception is re-thrown
+     *
+     * @param Callable $callback The callback being wrapped
+     * @return \r8\SysV\Semaphore
+     */
+    public function synchronize ( $callback )
+    {
+        if ( !is_callable($callback) )
+            throw new \r8\Exception\Argument(0, "Callback", "Must be callable");
+
+        $this->lock();
+
+        try {
+            $callback();
+        }
+        catch ( \Exception $err ) {
+            $this->unlock();
+            throw $err;
+        }
+
+        $this->unlock();
+        return $this;
+    }
+
+    /**
      * Destructor
      *
      * @return NULL
