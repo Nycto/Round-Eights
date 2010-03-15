@@ -33,21 +33,11 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct ()
+    public function testMakeKey ()
     {
-        $sem = new \r8\SysV\Semaphore( "Test" );
-        $this->assertSame( 231240019, $sem->getKey() );
-        $this->assertSame( 1, $sem->getMax() );
-
-
-        $sem = new \r8\SysV\Semaphore( new \r8\Seed("Test") );
-        $this->assertSame( 1271194237, $sem->getKey() );
-        $this->assertSame( 1, $sem->getMax() );
-
-
-        $sem = new \r8\SysV\Semaphore( 11235813, 20 );
-        $this->assertSame( 11235813, $sem->getKey() );
-        $this->assertSame( 20, $sem->getMax() );
+        $this->assertSame( 231240019, \r8\SysV\Semaphore::makeKey("Test") );
+        $this->assertSame( 1271194237, \r8\SysV\Semaphore::makeKey(new \r8\Seed("Test")) );
+        $this->assertSame( 11235813, \r8\SysV\Semaphore::makeKey(11235813) );
     }
 
     public function testLock ()

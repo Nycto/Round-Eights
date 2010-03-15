@@ -60,6 +60,22 @@ class Semaphore
     private $locked = FALSE;
 
     /**
+     * Generates an integer key from a variety of source
+     *
+     * @param Mixed $source The source key to generate the key from
+     * @return Integer
+     */
+    static public function makeKey ( $source )
+    {
+        if ( $source instanceof \r8\Seed )
+            return $source->getInteger();
+        else if ( !is_int($source) )
+            return \r8\num\intHash( sha1( (string) $source ) );
+        else
+            return $source;
+    }
+
+    /**
      * Constructor...
      *
      * @param Mixed $key The ID of this semaphore
@@ -68,12 +84,7 @@ class Semaphore
      */
     public function __construct ( $key, $max = 1 )
     {
-        if ( $key instanceof \r8\Seed )
-            $key = $key->getInteger();
-        else if ( !is_int($key) )
-            $key = \r8\num\intHash( sha1( (string) $key ) );
-
-        $this->key = $key;
+        $this->key = self::makeKey( $key );
         $this->max = max( 1, (int) $max );
     }
 
