@@ -178,7 +178,7 @@ class Semaphore
      * will be released and the exception is re-thrown
      *
      * @param Callable $callback The callback being wrapped
-     * @return \r8\SysV\Semaphore
+     * @return Mixed Returns the result of the callback
      */
     public function synchronize ( $callback )
     {
@@ -187,15 +187,13 @@ class Semaphore
 
         // If we're already locked, then some other chunk of code must be
         // managing this... leave it to them
-        if ( $this->locked ) {
-            $callback();
-            return $this;
-        }
+        if ( $this->locked )
+            return $callback();
 
         $this->lock();
 
         try {
-            $callback();
+            $result = $callback();
         }
         catch ( \Exception $err ) {
             $this->unlock();
@@ -203,7 +201,7 @@ class Semaphore
         }
 
         $this->unlock();
-        return $this;
+        return $result;
     }
 
     /**

@@ -80,9 +80,11 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
 
         $obj = $this->getMock('stdClass', array('__invoke'));
-        $obj->expects( $this->once() )->method( "__invoke" );
+        $obj->expects( $this->once() )
+            ->method( "__invoke" )
+            ->will( $this->returnValue("Some Data") );
 
-        $this->assertSame( $sem, $sem->synchronize($obj) );
+        $this->assertSame( "Some Data", $sem->synchronize($obj) );
         $this->assertFalse( $sem->isLocked() );
     }
 
@@ -91,11 +93,14 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
 
         $obj = $this->getMock('stdClass', array('__invoke'));
-        $obj->expects( $this->once() )->method( "__invoke" );
+        $obj->expects( $this->once() )
+            ->method( "__invoke" )
+            ->will( $this->returnValue("Some Data") );
 
         $sem->lock();
-        $this->assertSame( $sem, $sem->synchronize($obj) );
+        $this->assertSame( "Some Data", $sem->synchronize($obj) );
         $this->assertTrue( $sem->isLocked() );
+        $sem->unlock();
     }
 
     public function testSynchronize_Uncallable ()
