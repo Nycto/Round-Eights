@@ -50,6 +50,24 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $this->assertSame( 20, $sem->getMax() );
     }
 
+    public function testLock ()
+    {
+        $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+        $this->assertFalse( $sem->isLocked() );
+
+        $this->assertSame( $sem, $sem->lock() );
+        $this->assertTrue( $sem->isLocked() );
+
+        $this->assertSame( $sem, $sem->lock() );
+        $this->assertTrue( $sem->isLocked() );
+
+        $this->assertSame( $sem, $sem->unlock() );
+        $this->assertFalse( $sem->isLocked() );
+
+        $this->assertSame( $sem, $sem->unlock() );
+        $this->assertFalse( $sem->isLocked() );
+    }
+
 }
 
 ?>

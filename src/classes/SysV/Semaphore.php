@@ -46,6 +46,20 @@ class Semaphore
     private $max;
 
     /**
+     * Once acquired, the semaphore resource
+     *
+     * @var Resource
+     */
+    private $resource;
+
+    /**
+     * Whether this semaphore is currently locked
+     *
+     * @var Boolean
+     */
+    private $locked = FALSE;
+
+    /**
      * Constructor...
      *
      * @param Mixed $key The ID of this semaphore
@@ -82,6 +96,79 @@ class Semaphore
     public function getMax ()
     {
         return $this->max;
+    }
+
+    /**
+     * Requests a lock against this semaphore
+     *
+     * @throws \r8\Exception\Resource Thrown if this semaphore lock can't be acquired
+     * @return \r8\SysV\Semaphore Returns a self reference
+     */
+    public function lock ()
+    {
+        if ( $this->locked )
+            return $this;
+
+        // If the resource doesn't exist already, create it
+        if ( !$this->resource ) {
+            $this->resource = sem_get( $this->key, $this->max );
+
+            if ( $this->resource === FALSE ) {
+                throw r8( new \r8\Exception\Resource("Unable to create semaphore") )
+                    ->addData( "Key", $this->key );
+            }
+        }
+
+        if ( !sem_acquire( $this->resource ) ) {
+            throw r8( new \r8\Exception\Resource("Unable to acquire lock") )
+                ->addData( "Key", $this->key );
+        }
+
+        $this->locked = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether this semaphore is locked
+     *
+     * @return Boolean
+     */
+    public function isLocked ()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * Releases the lock against this semaphore
+     *
+     * @throws \r8\Exception\Resource Thrown if this semaphore lock can't be released
+     * @return \r8\SysV\Semaphore Returns a self reference
+     */
+    public function unlock ()
+    {
+        if ( !$this->locked )
+            return $this;
+
+        if ( !sem_release( $this->resource ) ) {
+            throw r8( new \r8\Exception\Resource("Unable to release lock") )
+                ->addData( "Key", $this->key );
+        }
+
+        $this->locked = FALSE;
+
+        return $this;
+    }
+
+    /**
+     * Destructor
+     *
+     * @return NULL
+     */
+    public function __destruct ()
+    {
+        $this->unlock();
+        $this->resource = NULL;
     }
 
 }
