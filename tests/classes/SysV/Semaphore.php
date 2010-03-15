@@ -86,6 +86,18 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $this->assertFalse( $sem->isLocked() );
     }
 
+    public function testSynchronize_PreLocked ()
+    {
+        $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+
+        $obj = $this->getMock('stdClass', array('__invoke'));
+        $obj->expects( $this->once() )->method( "__invoke" );
+
+        $sem->lock();
+        $this->assertSame( $sem, $sem->synchronize($obj) );
+        $this->assertTrue( $sem->isLocked() );
+    }
+
     public function testSynchronize_Uncallable ()
     {
         $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );

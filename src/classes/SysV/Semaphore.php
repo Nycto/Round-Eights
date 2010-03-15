@@ -185,6 +185,13 @@ class Semaphore
         if ( !is_callable($callback) )
             throw new \r8\Exception\Argument(0, "Callback", "Must be callable");
 
+        // If we're already locked, then some other chunk of code must be
+        // managing this... leave it to them
+        if ( $this->locked ) {
+            $callback();
+            return $this;
+        }
+
         $this->lock();
 
         try {
