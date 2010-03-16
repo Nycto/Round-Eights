@@ -33,6 +33,17 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Sets up the environment for this test
+     *
+     * @return NULL
+     */
+    public function setUp ()
+    {
+        if ( !extension_loaded( 'sysvsem' ) )
+            $this->markTestSkipped( "SysVSem Extension is not loaded" );
+    }
+
     public function testMakeKey ()
     {
         $this->assertSame( 231240019, \r8\SysV\Semaphore::makeKey("Test") );

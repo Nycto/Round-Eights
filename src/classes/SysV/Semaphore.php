@@ -84,6 +84,9 @@ class Semaphore
      */
     public function __construct ( $key, $max = 1 )
     {
+        if ( !extension_loaded( 'sysvsem' ) )
+            throw new \r8\Exception\Extension( "sysvsem", "Extension is not loaded" );
+
         $this->key = self::makeKey( $key );
         $this->max = max( 1, (int) $max );
     }
