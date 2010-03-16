@@ -44,6 +44,16 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
             $this->markTestSkipped( "SysVSem Extension is not loaded" );
     }
 
+    /**
+     * Tears down the environment after this test is run
+     *
+     * @return NULL
+     */
+    public static function tearDownAfterClass ()
+    {
+        r8( new \r8\SysV\Semaphore( "UnitTest", 20 ) )->delete();
+    }
+
     public function testMakeKey ()
     {
         $this->assertSame( 231240019, \r8\SysV\Semaphore::makeKey("Test") );
@@ -66,6 +76,18 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
         $this->assertFalse( $sem->isLocked() );
 
         $this->assertSame( $sem, $sem->unlock() );
+        $this->assertFalse( $sem->isLocked() );
+    }
+
+    public function testDelete ()
+    {
+        $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+        $this->assertSame( $sem, $sem->delete() );
+        $this->assertFalse( $sem->isLocked() );
+
+        $sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+        $sem->lock();
+        $this->assertSame( $sem, $sem->delete() );
         $this->assertFalse( $sem->isLocked() );
     }
 

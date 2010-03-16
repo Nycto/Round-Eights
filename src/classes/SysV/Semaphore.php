@@ -113,6 +113,26 @@ class Semaphore
     }
 
     /**
+     * Returns the semaphore PHP resource
+     *
+     * @return Resource
+     */
+    private function getResource ()
+    {
+        // If the resource doesn't exist already, create it
+        if ( !$this->resource ) {
+            $this->resource = @sem_get( $this->key, $this->max );
+
+            if ( $this->resource === FALSE ) {
+                throw r8( new \r8\Exception\Resource("Unable to create semaphore") )
+                    ->addData( "Key", $this->key );
+            }
+        }
+
+        return $this->resource;
+    }
+
+    /**
      * Requests a lock against this semaphore
      *
      * @throws \r8\Exception\Resource Thrown if this semaphore lock can't be acquired
@@ -123,17 +143,7 @@ class Semaphore
         if ( $this->locked )
             return $this;
 
-        // If the resource doesn't exist already, create it
-        if ( !$this->resource ) {
-            $this->resource = sem_get( $this->key, $this->max );
-
-            if ( $this->resource === FALSE ) {
-                throw r8( new \r8\Exception\Resource("Unable to create semaphore") )
-                    ->addData( "Key", $this->key );
-            }
-        }
-
-        if ( !sem_acquire( $this->resource ) ) {
+        if ( !@sem_acquire( $this->getResource() ) ) {
             throw r8( new \r8\Exception\Resource("Unable to acquire lock") )
                 ->addData( "Key", $this->key );
         }
@@ -171,6 +181,23 @@ class Semaphore
 
         $this->locked = FALSE;
 
+        return $this;
+    }
+
+    /**
+     * Deletes this semaphore from the system
+     *
+     * This is not the same as unlocking. This literally expunges the semaphore
+     * from the underlying system. If another process currently has a lock, it
+     * will be lost.
+     *
+     * @return \r8\SysV\Semaphore
+     */
+    public function delete ()
+    {
+        $this->unlock();
+        sem_remove( $this->getResource() );
+        $this->resource = NULL;
         return $this;
     }
 
