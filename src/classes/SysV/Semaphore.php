@@ -121,7 +121,7 @@ class Semaphore
     {
         // If the resource doesn't exist already, create it
         if ( !$this->resource ) {
-            $this->resource = @sem_get( $this->key, $this->max );
+            $this->resource = @sem_get( $this->key, $this->max, 0666, TRUE );
 
             if ( $this->resource === FALSE ) {
                 throw r8( new \r8\Exception\Resource("Unable to create semaphore") )
