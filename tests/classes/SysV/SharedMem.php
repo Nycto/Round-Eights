@@ -32,7 +32,119 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
 {
-    
+
+    /**
+     * A Semaphore that can be used for testing
+     *
+     * @var \r8\SysV\Semaphore
+     */
+    private $sem;
+
+    /**
+     * A SharedMem object that can be used for testing
+     *
+     * @var \r8\SysV\SharedMem;
+     */
+    private $shm;
+
+    /**
+     * Sets up the environment for this test
+     *
+     * @return NULL
+     */
+    public function setUp ()
+    {
+        if ( !extension_loaded( 'sysvshm' ) )
+            $this->markTestSkipped( "SysVShm Extension is not loaded" );
+
+        $this->sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
+    }
+
+    /**
+     * Tears down the environment after this test is run
+     *
+     * @return NULL
+     */
+    public function tearDown ()
+    {
+        if ( isset($this->shm) )
+            $this->shm->expunge();
+        $this->sem->delete();
+    }
+
+    /**
+     * Returns a mock semaphore object
+     *
+     * @return \r8\SysV\Semaphore
+     */
+    public function getTestSharedMem ( $paranoid = FALSE )
+    {
+        if ( !isset($this->shm) ) {
+            $this->shm = new \r8\SysV\SharedMem(
+                $this->sem,
+                "UnitTests",
+                50000,
+                $paranoid
+            );
+        }
+        return $this->shm;
+    }
+
+    public function testAccess ()
+    {
+        $mem = $this->getTestSharedMem();
+
+        $this->assertFalse( $mem->exists("one") );
+        $this->assertNull( $mem->get("one") );
+
+        $this->assertSame( $mem, $mem->set("one", "Chunk of Data") );
+        $this->assertTrue( $mem->exists("one") );
+        $this->assertSame( "Chunk of Data", $mem->get("one") );
+
+        $this->assertSame( $mem, $mem->clear("one") );
+        $this->assertFalse( $mem->exists("one") );
+        $this->assertNull( $mem->get("one") );
+    }
+
+    public function testAccess_Types ()
+    {
+        $mem = $this->getTestSharedMem();
+
+        $obj = new stdClass;
+        $obj->one = "first";
+        $obj->two = "twice";
+
+        $this->assertSame( $mem, $mem->set("null", NULL) );
+        $this->assertSame( $mem, $mem->set("true", TRUE) );
+        $this->assertSame( $mem, $mem->set("false", FALSE) );
+        $this->assertSame( $mem, $mem->set("int", 1234) );
+        $this->assertSame( $mem, $mem->set("flt", 1.234) );
+        $this->assertSame( $mem, $mem->set("str", "Data") );
+        $this->assertSame( $mem, $mem->set("ary", array(1,2,3)) );
+        $this->assertSame( $mem, $mem->set("obj", $obj) );
+
+        $this->assertNull( $mem->get("null") );
+        $this->assertTrue( $mem->get("true") );
+        $this->assertFalse( $mem->get("false") );
+        $this->assertSame( 1234, $mem->get("int") );
+        $this->assertSame( 1.234, $mem->get("flt") );
+        $this->assertSame( "Data", $mem->get("str") );
+        $this->assertSame( array(1,2,3), $mem->get("ary") );
+        $this->assertEquals( $obj, $mem->get("obj") );
+    }
+
+    public function testExpunge ()
+    {
+        $mem = $this->getTestSharedMem();
+        $this->assertSame( $mem, $mem->set("one", "Chunk of Data") );
+        $this->assertSame( $mem, $mem->set("two", "More Data") );
+
+        $this->assertSame( $mem, $mem->expunge() );
+
+        $this->assertFalse( $mem->exists("one") );
+        $this->assertFalse( $mem->exists("two") );
+    }
+
 }
 
 ?>
