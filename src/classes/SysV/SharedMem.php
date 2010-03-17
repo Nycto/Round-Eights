@@ -85,6 +85,27 @@ class SharedMem
     }
 
     /**
+     * Returns the SysV ID of this shared memory block
+     *
+     * @return Integer
+     */
+    public function getKey ()
+    {
+        return $this->key;
+    }
+
+    /**
+     * Returns the Size in bytes that will be allocated to this shared memory
+     * block when it is opened
+     *
+     * @return Integer
+     */
+    public function getSize ()
+    {
+        return $this->size;
+    }
+
+    /**
      * Returns the PHP resource for accessing the shared memory
      *
      * @return Resource
@@ -216,6 +237,16 @@ class SharedMem
             @shm_detach($resource);
         });
         return $this;
+    }
+
+    /**
+     * Returns the list of properties to serialize
+     *
+     * @return Array
+     */
+    public function __sleep ()
+    {
+        return array( "semaphore", "key", "size" );
     }
 
 }

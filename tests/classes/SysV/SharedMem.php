@@ -145,6 +145,22 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
         $this->assertFalse( $mem->exists("two") );
     }
 
+    public function testSerialize ()
+    {
+        $mem = $this->getTestSharedMem();
+
+        // Set a value to ensure the resource is open
+        $mem->set("data", "value");
+
+        $serial = serialize($mem);
+        $this->assertNotContains("resource", $serial);
+
+        $copy = unserialize( $serial );
+        $this->assertThat( $copy, $this->isInstanceOf( '\r8\SysV\SharedMem' ) );
+        $this->assertSame( $mem->getKey(), $copy->getKey() );
+        $this->assertSame( $mem->getSize(), $copy->getSize() );
+    }
+
 }
 
 ?>
