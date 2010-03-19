@@ -34,13 +34,6 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * A Semaphore that can be used for testing
-     *
-     * @var \r8\SysV\Semaphore
-     */
-    private $sem;
-
-    /**
      * A SharedMem object that can be used for testing
      *
      * @var \r8\SysV\SharedMem;
@@ -56,8 +49,6 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
     {
         if ( !extension_loaded( 'sysvshm' ) )
             $this->markTestSkipped( "SysVShm Extension is not loaded" );
-
-        $this->sem = new \r8\SysV\Semaphore( "UnitTest", 20 );
     }
 
     /**
@@ -69,7 +60,6 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
     {
         if ( isset($this->shm) )
             $this->shm->expunge();
-        $this->sem->delete();
     }
 
     /**
@@ -77,14 +67,12 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
      *
      * @return \r8\SysV\Semaphore
      */
-    public function getTestSharedMem ( $paranoid = FALSE )
+    public function getTestSharedMem ()
     {
         if ( !isset($this->shm) ) {
             $this->shm = new \r8\SysV\SharedMem(
-                $this->sem,
                 "UnitTests",
-                50000,
-                $paranoid
+                50000
             );
         }
         return $this->shm;

@@ -32,13 +32,6 @@ class SharedMem
 {
 
     /**
-     * The semaphore to lock when accessing the memory
-     *
-     * @var \r8\SysV\Semaphore
-     */
-    private $semaphore;
-
-    /**
      * The ID of the shared memory segment to access
      *
      * @var Integer
@@ -62,25 +55,17 @@ class SharedMem
     /**
      * Constructor...
      *
-     * @param \r8\SysV\Semaphore $semaphore The semaphore to lock when accessing
-     *      the memory
      * @param Mixed $key The ID of the shared memory segment to access
      * @param Integer $size The size, in bytes, of the shared memory segment to
      *      create. This is only used if the shared memory hasn't already been
      *      allocated. Unfortunately, it can't be resized once created.
      */
-    public function __construct ( \r8\SysV\Semaphore $semaphore, $key, $size )
+    public function __construct ( $key, $size )
     {
         if ( !extension_loaded( 'sysvshm' ) )
             throw new \r8\Exception\Extension( "sysvshm", "Extension is not loaded" );
 
-        if ( $key instanceof \r8\Seed )
-            $key = $key->getInteger();
-        else if ( !is_int($key) )
-            $key = \r8\num\intHash( sha1( (string) $key ) );
-
-        $this->semaphore = $semaphore;
-        $this->key = $key;
+        $this->key = \r8\SysV\Semaphore::makeKey( $key );
         $this->size = $size;
     }
 
@@ -139,19 +124,15 @@ class SharedMem
      */
     public function set ( $key, $value )
     {
-        $key = \r8\SysV\Semaphore::makeKey($key);
-
         $resource = $this->getResource();
-
+        $key = \r8\SysV\Semaphore::makeKey($key);
         $value = serialize($value);
 
-        $this->semaphore->synchronize(function() use ($resource, $key, $value) {
+        if ( !@shm_put_var( $resource, $key, $value ) ) {
+            throw r8( new \r8\Exception\Resource("Unable to write to Shared Memory") )
+                ->addData( "Key", $key );
+        }
 
-            if ( !@shm_put_var( $resource, $key, $value ) ) {
-                throw r8( new \r8\Exception\Resource("Unable to write to Shared Memory") )
-                    ->addData( "Key", $key );
-            }
-        });
         return $this;
     }
 
@@ -169,20 +150,15 @@ class SharedMem
 
         $resource = $this->getResource();
 
-        $result = $this->semaphore->synchronize(function () use ($resource, $key) {
+        if ( !shm_has_var($resource, $key) )
+            return NULL;
 
-            if ( !shm_has_var($resource, $key) )
-                return "N;";
+        $result = @shm_get_var($resource, $key);
 
-            $result = @shm_get_var($resource, $key);
-
-            if ( $result === FALSE ) {
-                throw r8( new \r8\Exception\Resource("Unable to read from Shared Memory") )
-                    ->addData( "Key", $key );
-            }
-
-            return $result;
-        });
+        if ( $result === FALSE ) {
+            throw r8( new \r8\Exception\Resource("Unable to read from Shared Memory") )
+                ->addData( "Key", $key );
+        }
 
         if ( $result == "b:0;" )
             return FALSE;
@@ -217,9 +193,7 @@ class SharedMem
         $key = \r8\SysV\Semaphore::makeKey($key);
         $resource = $this->getResource();
 
-        $this->semaphore->synchronize(function() use ($resource, $key) {
-            @shm_remove_var($resource, $key);
-        });
+        @shm_remove_var($resource, $key);
 
         return $this;
     }
@@ -232,10 +206,9 @@ class SharedMem
     public function expunge ()
     {
         $resource = $this->getResource();
-        $this->semaphore->synchronize(function() use ($resource) {
-            @shm_remove($resource);
-            @shm_detach($resource);
-        });
+        @shm_remove($resource);
+        @shm_detach($resource);
+        $this->resource = NULL;
         return $this;
     }
 
@@ -246,7 +219,7 @@ class SharedMem
      */
     public function __sleep ()
     {
-        return array( "semaphore", "key", "size" );
+        return array( "key", "size" );
     }
 
 }
