@@ -172,7 +172,10 @@ class Memcache implements \r8\iface\Cache
     public function set ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        $this->link->set( $key, $value, false, $expire );
+        if ( $value === NULL || $value === FALSE )
+            $this->link->delete( $key );
+        else
+            $this->link->set( $key, $value, false, $expire );
         return $this;
     }
 
@@ -189,6 +192,8 @@ class Memcache implements \r8\iface\Cache
 
         if ( $result === FALSE || $result === NULL )
             return NULL;
+        else if ( ctype_digit($result) )
+            return \r8\numVal( $result );
         else
             return $result;
     }
@@ -265,14 +270,7 @@ class Memcache implements \r8\iface\Cache
     public function replace ( $key, $value, $expire = 0 )
     {
         $this->connect();
-
-        // @todo Obviously, this is the preferred method. For some odd reason,
-        // though, it wasn't working. I'll have to look into this more.
-        // $this->link->replace( $key, $value );
-
-        if ( $this->get($key) )
-            $this->set( $key, $value, $expire );
-
+        $this->link->replace( $key, $value, $expire );
         return $this;
     }
 
