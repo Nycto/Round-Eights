@@ -76,6 +76,9 @@ class Memcache implements \r8\iface\Cache
      */
     public function __construct ( $host = "127.0.0.1", $port = 11211, $persistent = FALSE, $timeout = 1 )
     {
+        if ( !extension_loaded('memcache') )
+            throw new \r8\Exception\Extension("memcache", "Extension is not loaded");
+
         $this->host = trim( (string) $host );
         if ( \r8\isEmpty($this->host) )
             throw new \r8\Exception\Argument(0, "Memcache Host", "Must not be empty");
