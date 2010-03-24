@@ -156,22 +156,6 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetForUpdate ()
-    {
-        $memcache = $this->getTestLink();
-
-        $memcache->set("unitTest_key", "Chunk of Data");
-
-        $result = $memcache->getForUpdate("unitTest_key");
-
-        $this->assertThat( $result, $this->isInstanceOf('r8\Cache\Result') );
-
-        $this->assertSame( $memcache, $result->getCache() );
-        $this->assertSame( "unitTest_key", $result->getKey() );
-        $this->assertSame( "Chunk of Data", $result->getValue() );
-        $this->assertNull( $result->getHash() );
-    }
-
     public function testSet_Expire ()
     {
         $memcache = $this->getTestLink();
@@ -184,19 +168,6 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
         usleep(1250000);
 
         $this->assertNull( $memcache->get("unitTest_key") );
-    }
-
-    public function testSetIfSame ()
-    {
-        $memcache = $this->getTestLink();
-
-        $memcache->set("unitTest_key", "Initial Data");
-
-        $result = $memcache->getForUpdate("unitTest_key");
-        $this->assertThat( $result, $this->isInstanceOf('r8\Cache\Result') );
-
-        $memcache->setIfSame( $result, "New Value");
-        $this->assertSame( "New Value", $memcache->get("unitTest_key") );
     }
 
     public function testDelete ()

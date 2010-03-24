@@ -53,19 +53,6 @@ interface Cache
     public function yield ( $key, $expire, $callback );
 
     /**
-     * Returns a cached value based on it's key
-     *
-     * This returns a cached value in the form of an object. This object will allow
-     * you to run an update on the value with the clause that it shouldn't be
-     * changed if it has changed since it was retrieved. This can be used to
-     * prevent race conditions.
-     *
-     * @param String $key The value to retrieve
-     * @return \r8\Cache\Result
-     */
-    public function getForUpdate ( $key );
-
-    /**
      * Sets a new caching value, overwriting any existing values
      *
      * @param String $key The key for the value
@@ -74,18 +61,6 @@ interface Cache
      * @return \r8\iface\Cache Returns a self reference
      */
     public function set ( $key, $value, $expire = 0 );
-
-    /**
-     * Sets the value for this key only if the value hasn't changed in the cache
-     * since it was originally pulled
-     *
-     * @param \r8\Cache\Result $result A result object that was returned by
-     *      the getForUpdate method
-     * @param mixed $value The value to set
-     * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\iface\Cache Returns a self reference
-     */
-    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 );
 
     /**
      * Sets a new caching value, but only if that value doesn't exist

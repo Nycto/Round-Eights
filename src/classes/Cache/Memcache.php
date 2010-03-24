@@ -220,52 +220,6 @@ class Memcache implements \r8\iface\Cache
     }
 
     /**
-     * Returns a cached value based on it's key
-     *
-     * While the intention of this function is to allow you to only
-     * update if a value has changed, the Memcache extension does
-     * not make this possible. It will be supported by the new
-     * Memcached version, but that is still in beta
-     *
-     * @param String $key The value to retrieve
-     * @return \r8\Cache\Result
-     */
-    public function getForUpdate ( $key )
-    {
-        return new \r8\Cache\Result(
-                $this,
-                $key,
-                null,
-                $this->get( $key )
-            );
-    }
-
-    /**
-     * Sets the value for this key only if the value hasn't changed in the cache
-     * since it was originally pulled
-     *
-     * @param \r8\Cache\Result $result A result object that was returned by
-     *      the getForUpdate method
-     * @param mixed $value The value to set
-     * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
-     */
-    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 )
-    {
-        if ( $result->getCache() !== $this ) {
-            throw new \r8\Exception\Argument(
-                0,
-                "Cached Result",
-                "Result cache mismatch"
-            );
-        }
-
-        $this->set( $result->getKey(), $value, $expire );
-
-        return $this;
-    }
-
-    /**
      * Deletes a value from the cache
      *
      * @param String $key The value to delete
