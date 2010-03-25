@@ -106,8 +106,27 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
     public function testGet_BooleanFalse ()
     {
         $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", FALSE);
-        $this->assertNull( $memcache->get("unitTest_key") );
+
+        $obj = new stdClass;
+        $obj->key = "Data";
+
+        $memcache->set("null", NULL);
+        $memcache->set("false", FALSE);
+        $memcache->set("true", TRUE);
+        $memcache->set("int", 12345);
+        $memcache->set("flt", 3.1415);
+        $memcache->set("str", "Data");
+        $memcache->set("ary", array(1,2,3));
+        $memcache->set("obj", $obj);
+
+        $this->assertEquals( NULL, $memcache->get("null") );
+        $this->assertEquals( FALSE, $memcache->get("false") );
+        $this->assertEquals( TRUE, $memcache->get("true") );
+        $this->assertEquals( 12345, $memcache->get("int") );
+        $this->assertEquals( 3.1415, $memcache->get("flt") );
+        $this->assertEquals( "Data", $memcache->get("str") );
+        $this->assertEquals( array(1,2,3), $memcache->get("ary") );
+        $this->assertEquals( $obj, $memcache->get("obj") );
     }
 
     public function testSet_Expire ()

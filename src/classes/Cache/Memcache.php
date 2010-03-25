@@ -137,9 +137,9 @@ class Memcache extends \r8\Cache\Base
         if ( !$result ) {
             $error = \error_get_last();
             throw new \r8\Exception\Memcache\Connection(
-                    $error['message'],
-                    $error['type']
-                );
+                $error['message'],
+                $error['type']
+            );
         }
 
         // Now that we have verified the connection, save it
@@ -175,10 +175,15 @@ class Memcache extends \r8\Cache\Base
     public function set ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        if ( $value === NULL || $value === FALSE )
+        if ( $value === NULL) {
             $this->link->delete( $key );
-        else
+        }
+        else {
+            if ( !is_numeric($value) )
+                $value = serialize( $value );
+
             $this->link->set( $key, $value, false, max( 0, (int) $expire ) );
+        }
         return $this;
     }
 
@@ -193,12 +198,18 @@ class Memcache extends \r8\Cache\Base
         $this->connect();
         $result = $this->link->get($key);
 
-        if ( $result === FALSE || $result === NULL )
-            return NULL;
-        else if ( ctype_digit($result) )
+        if ( is_numeric($result) )
             return \r8\numVal( $result );
-        else
-            return $result;
+
+        else if ( $result == "b:0;" )
+            return FALSE;
+
+        $result = @unserialize( $result );
+
+        if ( $result === FALSE )
+            return NULL;
+
+        return $result;
     }
 
     /**
@@ -225,7 +236,9 @@ class Memcache extends \r8\Cache\Base
     public function add ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        $this->link->add( $key, $value, false, max( 0, (int) $expire ) );
+        $result = $this->link->get($key);
+        if ( $result === NULL || $result === FALSE )
+            $this->set( $key, $value, $expire );
         return $this;
     }
 
@@ -240,7 +253,9 @@ class Memcache extends \r8\Cache\Base
     public function replace ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        $this->link->replace( $key, $value, false, max( 0, (int) $expire ) );
+        $result = $this->link->get($key);
+        if ( $result !== NULL && $result !== FALSE )
+            $this->set( $key, $value, $expire );
         return $this;
     }
 
