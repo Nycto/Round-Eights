@@ -28,7 +28,7 @@ namespace r8\Cache;
 /**
  * Adapter for the Memcache extension to the standardized cache interface
  */
-class Memcache implements \r8\iface\Cache
+class Memcache extends \r8\Cache\Base
 {
 
     /**
@@ -178,7 +178,7 @@ class Memcache implements \r8\iface\Cache
         if ( $value === NULL || $value === FALSE )
             $this->link->delete( $key );
         else
-            $this->link->set( $key, $value, false, $expire );
+            $this->link->set( $key, $value, false, max( 0, (int) $expire ) );
         return $this;
     }
 
@@ -199,32 +199,6 @@ class Memcache implements \r8\iface\Cache
             return \r8\numVal( $result );
         else
             return $result;
-    }
-
-    /**
-     * Checks the cache for a value and returns it if it exists.
-     * Otherwise, the callback is invoked. The return value is saved
-     * to the cache and returned.
-     *
-     * @param String $key The value to retrieve
-     * @param Integer $expire The lifespan of this cache value, in seconds
-     * @param Callable $callback The method to invoke if the key
-     *      doesn't exist in the database
-     * @return mixed Returns the cached value
-     */
-    public function yield ( $key, $expire, $callback )
-    {
-        if ( !is_callable($callback) )
-            throw new \r8\Exception\Argument(2, "Callback", "Must be callable");
-
-        $result = $this->get( $key );
-
-        if ( $result === null ) {
-            $result = $callback();
-            $this->set($key, $result, $expire);
-        }
-
-        return $result;
     }
 
     /**
@@ -251,14 +225,7 @@ class Memcache implements \r8\iface\Cache
     public function add ( $key, $value, $expire = 0 )
     {
         $this->connect();
-
-        // @todo Obviously, this is the preferred method. For some odd reason,
-        // though, it wasn't working. I'll have to look into this more.
-        // $this->link->add( $key, $value );
-
-        if ( !$this->get($key) )
-            $this->set( $key, $value, $expire );
-
+        $this->link->add( $key, $value, false, max( 0, (int) $expire ) );
         return $this;
     }
 
@@ -273,7 +240,7 @@ class Memcache implements \r8\iface\Cache
     public function replace ( $key, $value, $expire = 0 )
     {
         $this->connect();
-        $this->link->replace( $key, $value, $expire );
+        $this->link->replace( $key, $value, false, max( 0, (int) $expire ) );
         return $this;
     }
 
@@ -292,7 +259,7 @@ class Memcache implements \r8\iface\Cache
         return $this->set(
             $key,
             $this->get($key) . $value,
-            $expire
+            max( 0, (int) $expire )
         );
     }
 
@@ -311,7 +278,7 @@ class Memcache implements \r8\iface\Cache
         return $this->set(
             $key,
             $value . $this->get($key),
-            $expire
+            max( 0, (int) $expire )
         );
     }
 

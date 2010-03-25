@@ -82,17 +82,17 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
         $memcache = $this->getTestLink();
 
         $this->assertSame(
-                $memcache,
-                $memcache->set("unitTest_key", "Chunk of Data")
-            );
+            $memcache,
+            $memcache->set("unitTest_key", "Chunk of Data")
+        );
 
         $this->assertSame( "Chunk of Data", $memcache->get("unitTest_key") );
 
 
         $this->assertSame(
-                $memcache,
-                $memcache->set("unitTest_key", "New Data")
-            );
+            $memcache,
+            $memcache->set("unitTest_key", "New Data")
+        );
 
         $this->assertSame( "New Data", $memcache->get("unitTest_key") );
     }
@@ -110,60 +110,14 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
         $this->assertNull( $memcache->get("unitTest_key") );
     }
 
-    public function testYield_inCache ()
-    {
-        $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", "Value");
-
-        $callback = $this->getMock('stdClass', array('__invoke'));
-        $callback->expects( $this->never() )
-            ->method("__invoke");
-
-        $this->assertSame(
-                "Value",
-                $memcache->yield("unitTest_key", 0, $callback)
-            );
-    }
-
-    public function testYield_notCached ()
-    {
-        $memcache = $this->getTestLink();
-        $memcache->delete("unitTest_key");
-
-        $callback = $this->getMock('stdClass', array('__invoke'));
-        $callback->expects( $this->once() )
-            ->method("__invoke")
-            ->will( $this->returnValue("Not Cached") );
-
-        $this->assertSame(
-                "Not Cached",
-                $memcache->yield("unitTest_key", 0, $callback)
-            );
-
-        $this->assertSame( "Not Cached", $memcache->get("unitTest_key") );
-    }
-
-    public function testYield_invalidArg ()
-    {
-        $memcache = $this->getTestLink();
-
-        try {
-            $memcache->yield("unitTest_key", 0, "This isnt callable");
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( "Must be callable", $err->getMessage() );
-        }
-    }
-
     public function testSet_Expire ()
     {
         $memcache = $this->getTestLink();
 
         $this->assertSame(
-                $memcache,
-                $memcache->set("unitTest_key", "Expiring Data", 1)
-            );
+            $memcache,
+            $memcache->set("unitTest_key", "Expiring Data", 1)
+        );
 
         usleep(1250000);
 
@@ -199,16 +153,16 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
 
         $memcache->delete("unitTest_key");
         $this->assertSame(
-                $memcache,
-                $memcache->replace("unitTest_key", "value")
-            );
+            $memcache,
+            $memcache->replace("unitTest_key", "value")
+        );
         $this->assertNull( $memcache->get("unitTest_key") );
 
         $memcache->set("unitTest_key", "original");
         $this->assertSame(
-                $memcache,
-                $memcache->replace("unitTest_key", "value")
-            );
+            $memcache,
+            $memcache->replace("unitTest_key", "value")
+        );
         $this->assertSame("value", $memcache->get("unitTest_key"));
     }
 
