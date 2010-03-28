@@ -40,221 +40,250 @@ class classes_Cache_Local extends PHPUnit_Framework_TestCase
 
     public function testGet ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
         $this->assertSame(
-            $memcache,
-            $memcache->set("unitTest_key", "Chunk of Data")
+            $cache,
+            $cache->set("unitTest_key", "Chunk of Data")
         );
 
-        $this->assertSame( "Chunk of Data", $memcache->get("unitTest_key") );
+        $this->assertSame( "Chunk of Data", $cache->get("unitTest_key") );
 
 
         $this->assertSame(
-            $memcache,
-            $memcache->set("unitTest_key", "New Data")
+            $cache,
+            $cache->set("unitTest_key", "New Data")
         );
 
-        $this->assertSame( "New Data", $memcache->get("unitTest_key") );
+        $this->assertSame( "New Data", $cache->get("unitTest_key") );
     }
 
     public function testGet_notSet ()
     {
-        $memcache = $this->getTestLink();
-        $this->assertNull( $memcache->get("unitTest_notSet") );
+        $cache = $this->getTestLink();
+        $this->assertNull( $cache->get("unitTest_notSet") );
     }
 
     public function testGet_Types ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
         $obj = new stdClass;
         $obj->key = "Data";
 
-        $memcache->set("null", NULL);
-        $memcache->set("false", FALSE);
-        $memcache->set("true", TRUE);
-        $memcache->set("int", 12345);
-        $memcache->set("flt", 3.1415);
-        $memcache->set("str", "Data");
-        $memcache->set("ary", array(1,2,3));
-        $memcache->set("obj", $obj);
+        $cache->set("null", NULL);
+        $cache->set("false", FALSE);
+        $cache->set("true", TRUE);
+        $cache->set("int", 12345);
+        $cache->set("flt", 3.1415);
+        $cache->set("str", "Data");
+        $cache->set("ary", array(1,2,3));
+        $cache->set("obj", $obj);
 
-        $this->assertEquals( NULL, $memcache->get("null") );
-        $this->assertEquals( FALSE, $memcache->get("false") );
-        $this->assertEquals( TRUE, $memcache->get("true") );
-        $this->assertEquals( 12345, $memcache->get("int") );
-        $this->assertEquals( 3.1415, $memcache->get("flt") );
-        $this->assertEquals( "Data", $memcache->get("str") );
-        $this->assertEquals( array(1,2,3), $memcache->get("ary") );
+        $this->assertEquals( NULL, $cache->get("null") );
+        $this->assertEquals( FALSE, $cache->get("false") );
+        $this->assertEquals( TRUE, $cache->get("true") );
+        $this->assertEquals( 12345, $cache->get("int") );
+        $this->assertEquals( 3.1415, $cache->get("flt") );
+        $this->assertEquals( "Data", $cache->get("str") );
+        $this->assertEquals( array(1,2,3), $cache->get("ary") );
 
-        $this->assertEquals( $obj, $memcache->get("obj") );
-        $this->assertNotSame( $obj, $memcache->get("obj") );
+        $this->assertEquals( $obj, $cache->get("obj") );
+        $this->assertNotSame( $obj, $cache->get("obj") );
     }
 
     public function testSet_Expire ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
         $this->assertSame(
-            $memcache,
-            $memcache->set("unitTest_key", "Expiring Data", 1)
+            $cache,
+            $cache->set("unitTest_key", "Expiring Data", 1)
         );
 
         usleep(1250000);
 
-        $this->assertNull( $memcache->get("unitTest_key") );
+        $this->assertNull( $cache->get("unitTest_key") );
     }
 
     public function testDelete ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->set("unitTest_key", "Initial Data");
+        $cache->set("unitTest_key", "Initial Data");
 
-        $this->assertSame( $memcache, $memcache->delete("unitTest_key") );
+        $this->assertSame( $cache, $cache->delete("unitTest_key") );
 
-        $this->assertNull( $memcache->get("unitTest_key") );
+        $this->assertNull( $cache->get("unitTest_key") );
     }
 
     public function testAdd ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->delete("unitTest_key");
-        $this->assertSame( $memcache, $memcache->add("unitTest_key", "value") );
-        $this->assertSame("value", $memcache->get("unitTest_key"));
+        $cache->delete("unitTest_key");
+        $this->assertSame( $cache, $cache->add("unitTest_key", "value") );
+        $this->assertSame("value", $cache->get("unitTest_key"));
 
-        $this->assertSame( $memcache, $memcache->add("unitTest_key", "new") );
-        $this->assertSame("value", $memcache->get("unitTest_key"));
+        $this->assertSame( $cache, $cache->add("unitTest_key", "new") );
+        $this->assertSame("value", $cache->get("unitTest_key"));
     }
 
     public function testReplace ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->delete("unitTest_key");
+        $cache->delete("unitTest_key");
         $this->assertSame(
-            $memcache,
-            $memcache->replace("unitTest_key", "value")
+            $cache,
+            $cache->replace("unitTest_key", "value")
         );
-        $this->assertNull( $memcache->get("unitTest_key") );
+        $this->assertNull( $cache->get("unitTest_key") );
 
-        $memcache->set("unitTest_key", "original");
+        $cache->set("unitTest_key", "original");
         $this->assertSame(
-            $memcache,
-            $memcache->replace("unitTest_key", "value")
+            $cache,
+            $cache->replace("unitTest_key", "value")
         );
-        $this->assertSame("value", $memcache->get("unitTest_key"));
+        $this->assertSame("value", $cache->get("unitTest_key"));
     }
 
     public function testIncrement ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", 1);
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", 1);
 
-        $this->assertSame($memcache, $memcache->increment("unitTest_key"));
-        $this->assertSame(2, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->increment("unitTest_key"));
+        $this->assertSame(2, $cache->get("unitTest_key"));
 
-        $this->assertSame($memcache, $memcache->increment("unitTest_key"));
-        $this->assertSame(3, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->increment("unitTest_key"));
+        $this->assertSame(3, $cache->get("unitTest_key"));
     }
 
     public function testIncrement_nonNumber ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", "Some Value");
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", "Some Value");
 
-        $this->assertSame($memcache, $memcache->increment("unitTest_key"));
-        $this->assertSame(0, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->increment("unitTest_key"));
+        $this->assertSame(0, $cache->get("unitTest_key"));
     }
 
     public function testDecrement ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", 3);
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", 3);
 
-        $this->assertSame($memcache, $memcache->decrement("unitTest_key"));
-        $this->assertSame(2, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->decrement("unitTest_key"));
+        $this->assertSame(2, $cache->get("unitTest_key"));
 
-        $this->assertSame($memcache, $memcache->decrement("unitTest_key"));
-        $this->assertSame(1, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->decrement("unitTest_key"));
+        $this->assertSame(1, $cache->get("unitTest_key"));
     }
 
     public function testDecrement_nonNumber ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->set("unitTest_key", "Some Value");
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", "Some Value");
 
-        $this->assertSame($memcache, $memcache->decrement("unitTest_key"));
-        $this->assertSame(0, $memcache->get("unitTest_key"));
+        $this->assertSame($cache, $cache->decrement("unitTest_key"));
+        $this->assertSame(0, $cache->get("unitTest_key"));
     }
 
     public function testAppend ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->delete("unitTest_key");
+        $cache = $this->getTestLink();
+        $cache->delete("unitTest_key");
 
-        $memcache->append("unitTest_key", "first");
-        $this->assertSame("first", $memcache->get("unitTest_key"));
+        $cache->append("unitTest_key", "first");
+        $this->assertSame("first", $cache->get("unitTest_key"));
 
-        $memcache->append("unitTest_key", "second");
-        $this->assertSame("firstsecond", $memcache->get("unitTest_key"));
+        $cache->append("unitTest_key", "second");
+        $this->assertSame("firstsecond", $cache->get("unitTest_key"));
 
-        $memcache->append("unitTest_key", "third");
-        $this->assertSame("firstsecondthird", $memcache->get("unitTest_key"));
+        $cache->append("unitTest_key", "third");
+        $this->assertSame("firstsecondthird", $cache->get("unitTest_key"));
     }
 
     public function testAppend_NonPrimitives ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->set("unitTest_key", new stdClass);
-        $memcache->append("unitTest_key", "suffix");
-        $this->assertSame("suffix", $memcache->get("unitTest_key"));
+        $cache->set("unitTest_key", new stdClass);
+        $cache->append("unitTest_key", "suffix");
+        $this->assertSame("suffix", $cache->get("unitTest_key"));
 
-        $memcache->set("unitTest_key", array(1,2,3));
-        $memcache->append("unitTest_key", "suffix");
-        $this->assertSame("suffix", $memcache->get("unitTest_key"));
+        $cache->set("unitTest_key", array(1,2,3));
+        $cache->append("unitTest_key", "suffix");
+        $this->assertSame("suffix", $cache->get("unitTest_key"));
     }
 
     public function testPrepend ()
     {
-        $memcache = $this->getTestLink();
-        $memcache->delete("unitTest_key");
+        $cache = $this->getTestLink();
+        $cache->delete("unitTest_key");
 
-        $memcache->prepend("unitTest_key", "first");
-        $this->assertSame("first", $memcache->get("unitTest_key"));
+        $cache->prepend("unitTest_key", "first");
+        $this->assertSame("first", $cache->get("unitTest_key"));
 
-        $memcache->prepend("unitTest_key", "second");
-        $this->assertSame("secondfirst", $memcache->get("unitTest_key"));
+        $cache->prepend("unitTest_key", "second");
+        $this->assertSame("secondfirst", $cache->get("unitTest_key"));
 
-        $memcache->prepend("unitTest_key", "third");
-        $this->assertSame("thirdsecondfirst", $memcache->get("unitTest_key"));
+        $cache->prepend("unitTest_key", "third");
+        $this->assertSame("thirdsecondfirst", $cache->get("unitTest_key"));
     }
 
     public function testPrepend_NonPrimitives ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->set("unitTest_key", new stdClass);
-        $memcache->prepend("unitTest_key", "suffix");
-        $this->assertSame("suffix", $memcache->get("unitTest_key"));
+        $cache->set("unitTest_key", new stdClass);
+        $cache->prepend("unitTest_key", "suffix");
+        $this->assertSame("suffix", $cache->get("unitTest_key"));
 
-        $memcache->set("unitTest_key", array(1,2,3));
-        $memcache->prepend("unitTest_key", "suffix");
-        $this->assertSame("suffix", $memcache->get("unitTest_key"));
+        $cache->set("unitTest_key", array(1,2,3));
+        $cache->prepend("unitTest_key", "suffix");
+        $this->assertSame("suffix", $cache->get("unitTest_key"));
     }
 
     public function testFlush ()
     {
-        $memcache = $this->getTestLink();
+        $cache = $this->getTestLink();
 
-        $memcache->set("unitTest_key", "Value");
+        $cache->set("unitTest_key", "Value");
 
-        $this->assertSame( $memcache, $memcache->flush() );
+        $this->assertSame( $cache, $cache->flush() );
 
-        $this->assertNull( $memcache->get("unitTest_key") );
+        $this->assertNull( $cache->get("unitTest_key") );
+    }
+
+    public function testGetForUpdate ()
+    {
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", "Value");
+
+        $forUpdate = $cache->getForUpdate("unitTest_key");
+        $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+        $this->assertSame( "Value", $forUpdate->getValue() );
+
+        $forUpdate->setIfSame("New Value");
+
+        $this->assertSame("New Value", $cache->get("unitTest_key"));
+    }
+
+    public function testGetForUpdate_Changed ()
+    {
+        $cache = $this->getTestLink();
+        $cache->set("unitTest_key", "Value");
+
+        $forUpdate = $cache->getForUpdate("unitTest_key");
+        $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+        $this->assertSame( "Value", $forUpdate->getValue() );
+
+        $cache->set("unitTest_key", "Changed");
+
+        $forUpdate->setIfSame("New Value");
+        $this->assertSame("Changed", $cache->get("unitTest_key"));
     }
 
 }

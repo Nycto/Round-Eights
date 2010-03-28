@@ -225,6 +225,48 @@ class Local extends \r8\Cache\Base
         return $this;
     }
 
+    /**
+     * Returns a cached value based on it's key
+     *
+     * This returns a cached value in the form of an object. This object will allow
+     * you to run an update on the value with the clause that it shouldn't be
+     * changed if it has changed since it was retrieved. This can be used to
+     * prevent race conditions.
+     *
+     * @param String $key The value to retrieve
+     * @return \r8\Cache\Result
+     */
+    public function getForUpdate ( $key )
+    {
+        $value = $this->get($key);
+        return new \r8\Cache\Result(
+            $this,
+            $key,
+            sha1( serialize($value) ),
+            $value
+        );
+    }
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param \r8\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @return \r8\iface\Cache Returns a self reference
+     */
+    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 )
+    {
+        $currentValue = $this->get( $result->getKey() );
+
+        if ( sha1( serialize( $currentValue ) ) == $result->getHash() )
+            $this->set( $result->getKey(), $value, $expire );
+
+        return $this;
+    }
+
 }
 
 ?>

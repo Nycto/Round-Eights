@@ -236,6 +236,7 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
 
         $forUpdate = $memcache->getForUpdate("unitTest_key");
         $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+        $this->assertSame( "Value", $forUpdate->getValue() );
 
         $forUpdate->setIfSame("New Value");
 
@@ -249,6 +250,7 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
 
         $forUpdate = $memcache->getForUpdate("unitTest_key");
         $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+        $this->assertSame( "Value", $forUpdate->getValue() );
 
         $memcache->set("unitTest_key", "Changed");
 
