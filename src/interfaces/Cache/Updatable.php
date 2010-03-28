@@ -23,7 +23,7 @@
  * @package Cache
  */
 
-namespace r8\iface\Updatable;
+namespace r8\iface\Cache;
 
 /**
  * A Cache that provides the ability to update a value if it hasn't changed
