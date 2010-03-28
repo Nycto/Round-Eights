@@ -222,12 +222,38 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
     public function testFlush ()
     {
         $memcache = $this->getTestLink();
-
         $memcache->set("unitTest_key", "Value");
 
         $this->assertSame( $memcache, $memcache->flush() );
 
         $this->assertNull( $memcache->get("unitTest_key") );
+    }
+
+    public function testGetForUpdate ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->set("unitTest_key", "Value");
+
+        $forUpdate = $memcache->getForUpdate("unitTest_key");
+        $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+
+        $forUpdate->setIfSame("New Value");
+
+        $this->assertSame("New Value", $memcache->get("unitTest_key"));
+    }
+
+    public function testGetForUpdate_Changed ()
+    {
+        $memcache = $this->getTestLink();
+        $memcache->set("unitTest_key", "Value");
+
+        $forUpdate = $memcache->getForUpdate("unitTest_key");
+        $this->assertThat( $forUpdate, $this->isInstanceOf( '\r8\Cache\Result' ) );
+
+        $memcache->set("unitTest_key", "Changed");
+
+        $forUpdate->setIfSame("New Value");
+        $this->assertSame("Changed", $memcache->get("unitTest_key"));
     }
 
 }

@@ -28,7 +28,7 @@ namespace r8\Cache;
 /**
  * Adapter for the Memcached extension to the standardized cache interface
  */
-class Memcached extends \r8\Cache\Base
+class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
 {
 
     /**
@@ -227,6 +227,46 @@ class Memcached extends \r8\Cache\Base
     public function flush ()
     {
         $this->memcached->flush();
+        return $this;
+    }
+
+    /**
+     * Returns a cached value based on it's key
+     *
+     * This returns a cached value in the form of an object. This object will allow
+     * you to run an update on the value with the clause that it shouldn't be
+     * changed if it has changed since it was retrieved. This can be used to
+     * prevent race conditions.
+     *
+     * @param String $key The value to retrieve
+     * @return \r8\Cache\Result
+     */
+    public function getForUpdate ( $key )
+    {
+        $token = NULL;
+        $value = $this->memcached->get( $key, NULL, $token );
+        return new \r8\Cache\Result( $this, $key, $token, $value );
+    }
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param \r8\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @return \r8\iface\Cache Returns a self reference
+     */
+    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 )
+    {
+        $this->memcached->cas(
+            $result->getHash(),
+            $result->getKey(),
+            $value,
+            $expire
+        );
+
         return $this;
     }
 
