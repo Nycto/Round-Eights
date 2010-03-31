@@ -71,7 +71,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function set ( $key, $value, $expire = 0 )
     {
@@ -117,7 +117,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * Deletes a value from the cache
      *
      * @param String $key The value to delete
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function delete ( $key )
     {
@@ -131,7 +131,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function add ( $key, $value, $expire = 0 )
     {
@@ -149,7 +149,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function replace ( $key, $value, $expire = 0 )
     {
@@ -169,7 +169,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * @param String $key The key for the value
      * @param mixed $value The value to append
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function append ( $key, $value, $expire = 0 )
     {
@@ -186,7 +186,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
      * @param Integer $expire The lifespan of this cache value, in seconds
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function prepend ( $key, $value, $expire = 0 )
     {
@@ -199,7 +199,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * Increments a given value by one
      *
      * @param String $key The key for the value
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function increment ( $key )
     {
@@ -211,7 +211,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      * Decrements a given value by one
      *
      * @param String $key The key for the value
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function decrement ( $key )
     {
@@ -222,7 +222,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     /**
      * Deletes all values in the cache
      *
-     * @return \r8\Cache\Memcache Returns a self reference
+     * @return \r8\Cache\Memcached Returns a self reference
      */
     public function flush ()
     {
