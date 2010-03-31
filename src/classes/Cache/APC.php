@@ -122,6 +122,11 @@ class APC extends \r8\Cache\Base
     /**
      * Sets a new caching value, but only if the value already exists
      *
+     * Due to limitations in the APC interface, this is not an atomic operation.
+     * Instead, it is a two step process. The value is pulled from the cache,
+     * updated and then saved. This means that race conditions can possibly
+     * occur in the momemnt between the read and write.
+     *
      * @param String $key The key for the value
      * @param mixed $value The value to set
      * @param Integer $expire The lifespan of this cache value, in seconds
@@ -138,6 +143,11 @@ class APC extends \r8\Cache\Base
      * Appends a value to the end of an existing cached value.
      *
      * If the value doesn't exist, it will be set with the given value
+     *
+     * Due to limitations in the APC interface, this is not an atomic operation.
+     * Instead, it is a two step process. The value is pulled from the cache,
+     * updated and then saved. This means that race conditions can possibly
+     * occur in the momemnt between the read and write.
      *
      * @param String $key The key for the value
      * @param mixed $value The value to append
@@ -158,6 +168,11 @@ class APC extends \r8\Cache\Base
      *
      * If the value doesn't exist, it will be set with the given value
      *
+     * Due to limitations in the APC interface, this is not an atomic operation.
+     * Instead, it is a two step process. The value is pulled from the cache,
+     * updated and then saved. This means that race conditions can possibly
+     * occur in the momemnt between the read and write.
+     *
      * @param String $key The key for the value
      * @param mixed $value The value to prepend
      * @param Integer $expire The lifespan of this cache value, in seconds
@@ -175,6 +190,11 @@ class APC extends \r8\Cache\Base
     /**
      * Increments a given value by one
      *
+     * Due to limitations in the APC interface, this is not an atomic operation.
+     * Instead, it is a two step process. The value is pulled from the cache,
+     * updated and then saved. This means that race conditions can possibly
+     * occur in the momemnt between the read and write.
+     *
      * @param String $key The key for the value
      * @return \r8\Cache\Memcache Returns a self reference
      */
@@ -186,6 +206,11 @@ class APC extends \r8\Cache\Base
 
     /**
      * Decrements a given value by one
+     *
+     * Due to limitations in the APC interface, this is not an atomic operation.
+     * Instead, it is a two step process. The value is pulled from the cache,
+     * updated and then saved. This means that race conditions can possibly
+     * occur in the momemnt between the read and write.
      *
      * @param String $key The key for the value
      * @return \r8\Cache\Memcache Returns a self reference
