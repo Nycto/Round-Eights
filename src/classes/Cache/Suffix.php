@@ -65,9 +65,9 @@ class Suffix extends \r8\Cache\Base
      * @param String $key
      * @return String
      */
-    private function attach ( $key )
+    private function prepareKey ( $key )
     {
-
+        return \r8\indexVal( $key ) . $this->suffix;
     }
 
     /**
@@ -80,7 +80,8 @@ class Suffix extends \r8\Cache\Base
      */
     public function set ( $key, $value, $expire = 0 )
     {
-
+        $this->inner->set( $this->prepareKey($key), $value, $expire );
+        return $this;
     }
 
     /**
@@ -91,7 +92,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function get ( $key )
     {
-
+        return $this->inner->get( $this->prepareKey($key) );
     }
 
     /**
@@ -102,6 +103,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function delete ( $key )
     {
+        $this->inner->delete( $this->prepareKey($key) );
         return $this;
     }
 
@@ -115,6 +117,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function add ( $key, $value, $expire = 0 )
     {
+        $this->inner->add( $this->prepareKey($key), $value, $expire );
         return $this;
     }
 
@@ -128,6 +131,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function replace ( $key, $value, $expire = 0 )
     {
+        $this->inner->replace( $this->prepareKey($key), $value, $expire );
         return $this;
     }
 
@@ -143,6 +147,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function append ( $key, $value, $expire = 0 )
     {
+        $this->inner->append( $this->prepareKey($key), $value, $expire );
         return $this;
     }
 
@@ -158,6 +163,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function prepend ( $key, $value, $expire = 0 )
     {
+        $this->inner->prepend( $this->prepareKey($key), $value, $expire );
         return $this;
     }
 
@@ -169,6 +175,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function increment ( $key )
     {
+        $this->inner->increment( $this->prepareKey($key) );
         return $this;
     }
 
@@ -180,6 +187,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function decrement ( $key )
     {
+        $this->inner->decrement( $this->prepareKey($key) );
         return $this;
     }
 
@@ -190,6 +198,7 @@ class Suffix extends \r8\Cache\Base
      */
     public function flush ()
     {
+        $this->inner->flush();
         return $this;
     }
 
