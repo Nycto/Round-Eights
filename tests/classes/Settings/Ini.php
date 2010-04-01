@@ -76,6 +76,22 @@ class classes_Settings_Ini extends PHPUnit_EmptyFile_Framework_TestCase
         $this->assertFalse( $settings->exists('STUFF', 'ONE')  );
     }
 
+    public function testGetGroup ()
+    {
+        $settings = new \r8\Settings\Ini( $this->file );
+
+        $this->assertSame(
+            array( 'one' => 'first', 'two' => 'second' ),
+            $settings->getGroup('stuff')
+        );
+        $this->assertSame(
+            array( 'burninate' => '1', 'killable' => '0' ),
+            $settings->getGroup('trogdor')
+        );
+
+        $this->assertSame( array(), $settings->getGroup('things') );
+    }
+
 }
 
 ?>
