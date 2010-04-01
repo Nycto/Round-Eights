@@ -30,8 +30,41 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Settings_Ini extends PHPUnit_Framework_TestCase
+class classes_Settings_Ini extends PHPUnit_EmptyFile_Framework_TestCase
 {
+
+    /**
+     * Setup creates the file
+     */
+    public function setUp ()
+    {
+        parent::setUp();
+
+        $wrote = file_put_contents(
+            $this->file,
+            "[stuff]\n"
+            ."one=first\n"
+            ."two=second\n"
+            ."[trogdor]\n"
+            ."burninate=1\n"
+            ."killable=0\n"
+        );
+
+        if ( $wrote == 0 ) {
+            $this->markTestSkipped("Unable to write data to test file");
+            @unlink( $this->file );
+        }
+    }
+
+    public function testGet ()
+    {
+        $settings = new \r8\Settings\Ini( $this->file );
+
+        $this->assertSame( "first", $settings->get('stuff', 'one') );
+        $this->assertSame( "1", $settings->get('trogdor', 'burninate') );
+        $this->assertNull( $settings->get('Group', 'Key')  );
+        $this->assertNull( $settings->get('STUFF', 'ONE')  );
+    }
 
 }
 

@@ -23,7 +23,7 @@
  * @package Settings
  */
 
-namespace r8;
+namespace r8\Settings;
 
 /**
  * Pulls Settings an ini file
@@ -57,6 +57,70 @@ class Ini implements \r8\iface\Settings\Read
     public function __construct ( $file )
     {
         $this->file = (string) $file;
+    }
+
+    /**
+     * Lazily loads the data from the ini file into this instance
+     *
+     * @return NULL
+     */
+    private function load ()
+    {
+        if ( !is_file($this->file) )
+            throw new \r8\Exception\FileSystem\Missing($this->file, "Ini file does not exist");
+
+        if ( !is_readable($this->file) )
+            throw new \r8\Exception\FileSystem\Permissions($this->file, "Ini file is not readable");
+
+        $settings = parse_ini_file( $this->file, TRUE );
+
+        if ( $settings === FALSE )
+            throw new \r8\Exception\FileSystem($this->file, "Ini file could not be parsed");
+
+        $this->settings = $settings;
+    }
+
+    /**
+     * Returns a the value of a setting
+     *
+     * @param String $group The higher level group in which to look for the key
+     * @param String $key The key to pull
+     * @return Mixed
+     */
+    public function get ( $group, $key )
+    {
+        if ( !isset($this->settings) )
+            $this->load();
+
+        if ( isset($this->settings[$group][$key]) )
+            return $this->settings[$group][$key];
+        else
+            return NULL;
+    }
+
+    /**
+     * Returns whether a setting exists
+     *
+     * @param String $group The higher level group in which to look for the key
+     * @param String $key TThe key to look up
+     * @return Boolean
+     */
+    public function exists ( $group, $key )
+    {
+        if ( !isset($this->settings) )
+            $this->load();
+    }
+
+    /**
+     * Returns all the values from a group as a Key/Value list
+     *
+     * @param String $group The higher level group to pull
+     * @return Array
+     */
+    public function getGroup ( $group )
+    {
+        if ( !isset($this->settings) )
+            $this->load();
     }
 
 }
