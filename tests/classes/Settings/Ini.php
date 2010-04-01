@@ -66,6 +66,16 @@ class classes_Settings_Ini extends PHPUnit_EmptyFile_Framework_TestCase
         $this->assertNull( $settings->get('STUFF', 'ONE')  );
     }
 
+    public function testExists ()
+    {
+        $settings = new \r8\Settings\Ini( $this->file );
+
+        $this->assertTrue( $settings->exists('stuff', 'one') );
+        $this->assertTrue( $settings->exists('trogdor', 'burninate') );
+        $this->assertFalse( $settings->exists('Group', 'Key')  );
+        $this->assertFalse( $settings->exists('STUFF', 'ONE')  );
+    }
+
 }
 
 ?>

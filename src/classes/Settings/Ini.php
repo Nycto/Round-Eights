@@ -109,6 +109,7 @@ class Ini implements \r8\iface\Settings\Read
     {
         if ( !isset($this->settings) )
             $this->load();
+        return isset($this->settings[$group][$key]);
     }
 
     /**
