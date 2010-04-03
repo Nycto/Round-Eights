@@ -30,7 +30,36 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Settings_Ini extends PHPUnit_EmptyFile_Framework_TestCase
+class classes_Settings_Ini
+{
+
+    public static function suite()
+    {
+        $suite = new r8_Base_TestSuite;
+        $suite->addTestSuite( 'classes_Settings_Ini_NoFile' );
+        $suite->addTestSuite( 'classes_Settings_Ini_WithFile' );
+        return $suite;
+    }
+
+}
+
+class classes_Settings_Ini_NoFile extends PHPUnit_Framework_TestCase
+{
+
+    public function testNoFile ()
+    {
+        $settings = new \r8\Settings\Ini( "Not a real file" );
+
+        try {
+            $settings->get('stuff', 'one');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Filesystem\Missing $err ) {}
+    }
+
+}
+
+class classes_Settings_Ini_WithFile extends PHPUnit_EmptyFile_Framework_TestCase
 {
 
     /**
@@ -54,6 +83,19 @@ class classes_Settings_Ini extends PHPUnit_EmptyFile_Framework_TestCase
             $this->markTestSkipped("Unable to write data to test file");
             @unlink( $this->file );
         }
+    }
+
+    public function testUnreadable ()
+    {
+        chmod( $this->file, 0000 );
+
+        $settings = new \r8\Settings\Ini( $this->file );
+
+        try {
+            $settings->get('stuff', 'one');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Filesystem\Permissions $err ) {}
     }
 
     public function testGet ()
