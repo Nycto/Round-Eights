@@ -32,7 +32,7 @@ namespace r8\Settings;
  * see the parse_ini_file method:
  * http://us.php.net/manual/en/function.parse-ini-file.php
  */
-class Ini implements \r8\iface\Settings\Read
+class Ini implements \r8\iface\Settings\Read, \Serializable
 {
 
     /**
@@ -127,6 +127,27 @@ class Ini implements \r8\iface\Settings\Read
             return $this->settings[$group];
         else
             return array();
+    }
+
+    /**
+     * Handles object serialization
+     *
+     * @return String
+     */
+    public function serialize ()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Unserializes this object
+     *
+     * @param String $data The serialized data
+     * @return NULL
+     */
+    public function unserialize ( $data )
+    {
+        $this->__construct( $data );
     }
 
 }

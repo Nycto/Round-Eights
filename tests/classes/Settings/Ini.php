@@ -134,6 +134,14 @@ class classes_Settings_Ini_WithFile extends PHPUnit_EmptyFile_Framework_TestCase
         $this->assertSame( array(), $settings->getGroup('things') );
     }
 
+    public function testSerialize ()
+    {
+        $settings = new \r8\Settings\Ini( $this->file );
+
+        $unserialized = unserialize( serialize($settings) );
+        $this->assertEquals( $settings, $unserialized );
+    }
+
 }
 
 ?>
