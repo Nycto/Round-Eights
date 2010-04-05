@@ -26,7 +26,7 @@
 namespace r8\Settings;
 
 /**
- * A set settings stored in a local array
+ * A set of settings stored in a local array
  */
 class Ary implements \r8\iface\Settings\Read
 {
