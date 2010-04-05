@@ -30,8 +30,39 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Settings_Collection
+class classes_Settings_Collection extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * Returns a test settings collection
+     *
+     * @return \r8\Settings\Collection
+     */
+    public function getTestSettings ()
+    {
+        return new \r8\Settings\Collection(
+            new \r8\Settings\Ary(array(
+                "stuff" => array( 'one' => 'first', 'two' => 'second' ),
+                "trogdor" => array( 'burninate' => 1, 'killable' => 0 ),
+            )),
+            new \r8\Settings\Ary(array(
+                "stuff" => array( 'one' => 1, 'three' => 'third' )
+            )),
+            new \r8\Settings\Ary(array(
+                "stuff" => array( 'two' => 2, 'four' => 'fourth' )
+            ))
+        );
+    }
+
+    public function testGet ()
+    {
+        $settings = $this->getTestSettings();
+        $this->assertSame( 1, $settings->get('stuff', 'one') );
+        $this->assertSame( 2, $settings->get('stuff', 'two') );
+        $this->assertSame( 'fourth', $settings->get('stuff', 'four') );
+        $this->assertSame( 1, $settings->get('trogdor', 'burninate') );
+        $this->assertNull( $settings->get('nothing', 'toSeeHere' ) );
+    }
 
 }
 

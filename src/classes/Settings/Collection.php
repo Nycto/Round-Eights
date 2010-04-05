@@ -40,9 +40,17 @@ class Collection implements \r8\iface\Settings\Read
 
     /**
      * Constructor...
+     *
+     * @param \r8\Settings\Collections $settings... The list of settings being collected
      */
     public function __construct ()
     {
+        $args = func_get_args();
+        $this->settings = array_reverse(
+            array_filter( $args, function ( $value ) {
+                return $value instanceof \r8\iface\Settings\Read;
+            })
+        );
     }
 
     /**
@@ -54,7 +62,13 @@ class Collection implements \r8\iface\Settings\Read
      */
     public function get ( $group, $key )
     {
+        foreach ( $this->settings AS $setting )
+        {
+            if ( $setting->exists( $group, $key ) )
+                return $setting->get( $group, $key );
+        }
 
+        return NULL;
     }
 
     /**
@@ -66,7 +80,6 @@ class Collection implements \r8\iface\Settings\Read
      */
     public function exists ( $group, $key )
     {
-
     }
 
     /**
