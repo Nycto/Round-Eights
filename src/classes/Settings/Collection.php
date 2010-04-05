@@ -80,6 +80,13 @@ class Collection implements \r8\iface\Settings\Read
      */
     public function exists ( $group, $key )
     {
+        foreach ( $this->settings AS $setting )
+        {
+            if ( $setting->exists( $group, $key ) )
+                return TRUE;
+        }
+
+        return FALSE;
     }
 
     /**

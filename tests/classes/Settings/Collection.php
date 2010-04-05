@@ -64,6 +64,16 @@ class classes_Settings_Collection extends PHPUnit_Framework_TestCase
         $this->assertNull( $settings->get('nothing', 'toSeeHere' ) );
     }
 
+    public function testExists ()
+    {
+        $settings = $this->getTestSettings();
+        $this->assertTrue( $settings->exists('stuff', 'one') );
+        $this->assertTrue( $settings->exists('stuff', 'two') );
+        $this->assertTrue( $settings->exists('stuff', 'four') );
+        $this->assertTrue( $settings->exists('trogdor', 'burninate') );
+        $this->assertFalse( $settings->exists('nothing', 'toSeeHere' ) );
+    }
+
 }
 
 ?>
