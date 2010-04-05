@@ -74,6 +74,25 @@ class classes_Settings_Collection extends PHPUnit_Framework_TestCase
         $this->assertFalse( $settings->exists('nothing', 'toSeeHere' ) );
     }
 
+    public function testGetGroup ()
+    {
+        $settings = $this->getTestSettings();
+        $this->assertSame(
+            array(
+                'two' => 2, 'four' => 'fourth',
+                'one' => 1, 'three' => 'third'
+            ),
+            $settings->getGroup('stuff')
+        );
+
+        $this->assertSame(
+            array( 'burninate' => 1, 'killable' => 0 ),
+            $settings->getGroup('trogdor')
+        );
+
+        $this->assertSame( array(), $settings->getGroup('nothingHere') );
+    }
+
 }
 
 ?>

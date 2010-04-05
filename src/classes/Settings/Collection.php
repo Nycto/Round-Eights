@@ -97,7 +97,12 @@ class Collection implements \r8\iface\Settings\Read
      */
     public function getGroup ( $group )
     {
-
+        $result = array();
+        foreach ( $this->settings AS $setting )
+        {
+            $result += $setting->getGroup( $group );
+        }
+        return $result;
     }
 
 }
