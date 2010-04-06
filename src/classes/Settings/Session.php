@@ -105,7 +105,13 @@ class Session implements \r8\iface\Settings\ReadWrite
      */
     public function set ( $group, $key, $value )
     {
+        $val = $this->session->get();
+        if ( !($val instanceof \r8\iface\Settings\Write) )
+            $val = new \r8\Settings\Ary;
 
+        $val->set( $group, $key, $value );
+        $this->session->set( $val );
+        return $this;
     }
 
     /**

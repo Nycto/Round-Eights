@@ -81,6 +81,46 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $settings->getGroup('other') );
     }
 
+    public function testSet_NoValue ()
+    {
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->once() )
+            ->method( "get" )
+            ->will( $this->returnValue( NULL ) );
+        $session->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo(
+                new \r8\Settings\Ary(
+                    array('group' => array('key' => 'value'))
+                )
+            ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertSame( $settings, $settings->set( 'group', 'key', 'value' ) );
+    }
+
+    public function testSet_WithInitial ()
+    {
+        $inner = new \r8\Settings\Ary( array('group' => array('one' => 'first')) );
+
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->once() )
+            ->method( "get" )
+            ->will( $this->returnValue( $inner ) );
+        $session->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo(
+                new \r8\Settings\Ary(
+                    array('group' => array('one' => 'first', 'key' => 'value'))
+                )
+            ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertSame( $settings, $settings->set( 'group', 'key', 'value' ) );
+    }
+
 }
 
 ?>
