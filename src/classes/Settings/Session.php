@@ -88,7 +88,11 @@ class Session implements \r8\iface\Settings\ReadWrite
      */
     public function getGroup ( $group )
     {
-
+        $val = $this->session->get();
+        if ( $val instanceof \r8\iface\Settings\Read )
+            return (array) $val->getGroup( $group );
+        else
+            return array();
     }
 
     /**

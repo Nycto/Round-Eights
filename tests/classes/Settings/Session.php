@@ -36,7 +36,7 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
     public function testRead_NoValue ()
     {
         $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
-        $session->expects( $this->exactly(2) )
+        $session->expects( $this->exactly(3) )
             ->method( "get" )
             ->will( $this->returnValue( NULL ) );
 
@@ -44,12 +44,13 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
 
         $this->assertNull( $settings->get('group', 'key') );
         $this->assertFalse( $settings->exists('group', 'key') );
+        $this->assertSame( array(), $settings->getGroup('group') );
     }
 
     public function testRead_WrongType ()
     {
         $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
-        $session->expects( $this->exactly(2) )
+        $session->expects( $this->exactly(3) )
             ->method( "get" )
             ->will( $this->returnValue( new stdClass ) );
 
@@ -57,6 +58,7 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
 
         $this->assertNull( $settings->get('group', 'key') );
         $this->assertFalse( $settings->exists('group', 'key') );
+        $this->assertSame( array(), $settings->getGroup('group') );
     }
 
     public function testRead_Valid ()
@@ -64,7 +66,7 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
         $inner = new \r8\Settings\Ary(array('group' => array('key' => 'value')));
 
         $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
-        $session->expects( $this->exactly(4) )
+        $session->expects( $this->exactly(6) )
             ->method( "get" )
             ->will( $this->returnValue( $inner ) );
 
@@ -72,9 +74,11 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
 
         $this->assertSame( 'value', $settings->get('group', 'key') );
         $this->assertTrue( $settings->exists('group', 'key') );
+        $this->assertSame( array('key' => 'value'), $settings->getGroup('group') );
 
         $this->assertNull( $settings->get('other', 'index') );
         $this->assertFalse( $settings->exists('other', 'index') );
+        $this->assertSame( array(), $settings->getGroup('other') );
     }
 
 }
