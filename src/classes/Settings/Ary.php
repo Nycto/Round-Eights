@@ -116,6 +116,13 @@ class Ary implements \r8\iface\Settings\ReadWrite
      */
     public function delete ( $group, $key )
     {
+        if ( isset( $this->settings[ $group ] ) )
+            unset( $this->settings[ $group ][ $key ] );
+
+        if ( empty($this->settings[ $group ]) )
+            unset( $this->settings[ $group ] );
+
+        return $this;
     }
 
 }

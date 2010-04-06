@@ -96,6 +96,19 @@ class classes_Settings_Ary extends PHPUnit_Framework_TestCase
         $this->assertSame( 'Chunk of Data', $settings->get('blah', 'key') );
     }
 
+    public function testDelete ()
+    {
+        $settings = $this->getTestSettings();
+
+        $this->assertSame( "first", $settings->get('stuff', 'one') );
+        $this->assertSame( $settings, $settings->delete('stuff', 'one') );
+        $this->assertNull( $settings->get('stuff', 'one') );
+
+        $this->assertSame( "second", $settings->get('stuff', 'two') );
+        $this->assertSame( $settings, $settings->delete('stuff', 'two') );
+        $this->assertNull( $settings->get('stuff', 'two') );
+    }
+
 }
 
 ?>
