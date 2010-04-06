@@ -121,6 +121,42 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
         $this->assertSame( $settings, $settings->set( 'group', 'key', 'value' ) );
     }
 
+    public function testDelete_NoValue ()
+    {
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->once() )
+            ->method( "get" )
+            ->will( $this->returnValue( NULL ) );
+        $session->expects( $this->never() )->method( "set" );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertSame( $settings, $settings->delete( 'group', 'key' ) );
+    }
+
+    public function testDelete_WithInitial ()
+    {
+        $inner = new \r8\Settings\Ary( array(
+            'group' => array('one' => 'first', 'key' => 'value')
+        ));
+
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->once() )
+            ->method( "get" )
+            ->will( $this->returnValue( $inner ) );
+        $session->expects( $this->once() )
+            ->method( "set" )
+            ->with( $this->equalTo(
+                new \r8\Settings\Ary( array(
+                    'group' => array('one' => 'first')
+                ))
+            ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertSame( $settings, $settings->delete( 'group', 'key' ) );
+    }
+
 }
 
 ?>

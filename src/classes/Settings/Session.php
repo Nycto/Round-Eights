@@ -123,7 +123,12 @@ class Session implements \r8\iface\Settings\ReadWrite
      */
     public function delete ( $group, $key )
     {
-
+        $val = $this->session->get();
+        if ( $val instanceof \r8\iface\Settings\Write ) {
+            $val->delete( $group, $key );
+            $this->session->set( $val );
+        }
+        return $this;
     }
 
 }
