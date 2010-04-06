@@ -82,6 +82,20 @@ class classes_Settings_Ary extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), $settings->getGroup('things') );
     }
 
+    public function testSet ()
+    {
+        $settings = $this->getTestSettings();
+
+        $this->assertNull( $settings->get('blah', 'key') );
+        $this->assertSame( $settings, $settings->set('blah', 'key', 'Chunk of Data') );
+        $this->assertSame( 'Chunk of Data', $settings->get('blah', 'key') );
+
+        $this->assertNull( $settings->get('blah', 'idx') );
+        $this->assertSame( $settings, $settings->set('blah', 'idx', 1234) );
+        $this->assertSame( 1234, $settings->get('blah', 'idx') );
+        $this->assertSame( 'Chunk of Data', $settings->get('blah', 'key') );
+    }
+
 }
 
 ?>

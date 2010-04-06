@@ -28,7 +28,7 @@ namespace r8\Settings;
 /**
  * A set of settings stored in a local array
  */
-class Ary implements \r8\iface\Settings\Read
+class Ary implements \r8\iface\Settings\ReadWrite
 {
 
     /**
@@ -87,6 +87,35 @@ class Ary implements \r8\iface\Settings\Read
             return $this->settings[$group];
         else
             return array();
+    }
+
+    /**
+     * Sets the value of a setting
+     *
+     * @param String $group The higher level group in which to look for the key
+     * @param String $key The key to set
+     * @param Mixed $value The value to set
+     * @return \r8\iface\Settings\Write Returns a self reference
+     */
+    public function set ( $group, $key, $value )
+    {
+        if ( !isset( $this->settings[ $group ] ) )
+            $this->settings[ $group ] = array( $key => $value );
+        else
+            $this->settings[ $group ][ $key ] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Deletes a settings
+     *
+     * @param String $group The higher level group in which to look for the key
+     * @param String $key The key to delete
+     * @return \r8\iface\Settings\Write Returns a self reference
+     */
+    public function delete ( $group, $key )
+    {
     }
 
 }
