@@ -57,7 +57,11 @@ class Session implements \r8\iface\Settings\ReadWrite
      */
     public function get ( $group, $key )
     {
-
+        $val = $this->session->get();
+        if ( $val instanceof \r8\iface\Settings\Read )
+            return $val->get( $group, $key );
+        else
+            return NULL;
     }
 
     /**
@@ -69,7 +73,11 @@ class Session implements \r8\iface\Settings\ReadWrite
      */
     public function exists ( $group, $key )
     {
-
+        $val = $this->session->get();
+        if ( $val instanceof \r8\iface\Settings\Read )
+            return (bool) $val->exists( $group, $key );
+        else
+            return FALSE;
     }
 
     /**

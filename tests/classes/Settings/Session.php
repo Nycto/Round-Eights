@@ -32,7 +32,51 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
  */
 class classes_Settings_Session extends PHPUnit_Framework_TestCase
 {
-    
+
+    public function testRead_NoValue ()
+    {
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->exactly(2) )
+            ->method( "get" )
+            ->will( $this->returnValue( NULL ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertNull( $settings->get('group', 'key') );
+        $this->assertFalse( $settings->exists('group', 'key') );
+    }
+
+    public function testRead_WrongType ()
+    {
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->exactly(2) )
+            ->method( "get" )
+            ->will( $this->returnValue( new stdClass ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertNull( $settings->get('group', 'key') );
+        $this->assertFalse( $settings->exists('group', 'key') );
+    }
+
+    public function testRead_Valid ()
+    {
+        $inner = new \r8\Settings\Ary(array('group' => array('key' => 'value')));
+
+        $session = $this->getMock('\r8\Session\Value', array(), array(), '', FALSE);
+        $session->expects( $this->exactly(4) )
+            ->method( "get" )
+            ->will( $this->returnValue( $inner ) );
+
+        $settings = new \r8\Settings\Session( $session );
+
+        $this->assertSame( 'value', $settings->get('group', 'key') );
+        $this->assertTrue( $settings->exists('group', 'key') );
+
+        $this->assertNull( $settings->get('other', 'index') );
+        $this->assertFalse( $settings->exists('other', 'index') );
+    }
+
 }
 
 ?>
