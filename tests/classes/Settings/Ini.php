@@ -59,7 +59,7 @@ class classes_Settings_Ini_NoFile extends PHPUnit_Framework_TestCase
 
 }
 
-class classes_Settings_Ini_WithFile extends PHPUnit_EmptyFile_Framework_TestCase
+class classes_Settings_Ini_WithFile extends \r8\Test\TestCase\EmptyFile
 {
 
     /**

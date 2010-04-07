@@ -38,72 +38,9 @@ error_reporting( E_ALL | E_STRICT );
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Base test class for tests that require an empty temporary file
- */
-abstract class PHPUnit_EmptyFile_Framework_TestCase extends PHPUnit_Framework_TestCase
-{
-
-    /**
-     * This is a list of all the files created with getTempFileName. They will
-     * automatically be removed on teardown
-     */
-    private $cleanup = array();
-
-    /**
-     * The name of the temporary file
-     */
-    protected $file;
-
-    /**
-     * Returns the name of a temporary file
-     *
-     * This does not create the file, it mearly returns a unique, temporary path
-     *
-     * @return string
-     */
-    public function getTempFileName ()
-    {
-        $result = rtrim( sys_get_temp_dir(), "/" ) ."/r8_unitTest_". uniqid();
-        $this->cleanup[] = $result;
-        return $result;
-    }
-
-    /**
-     * Setup creates the file
-     */
-    public function setUp ()
-    {
-        $this->file = $this->getTempFileName();
-
-        if ( !@touch( $this->file ) )
-            $this->markTestSkipped("Unable to create temporary file");
-    }
-
-    /**
-     * Teardown will automatically remove the file
-     */
-    public function tearDown ()
-    {
-        foreach ( $this->cleanup AS $file ) {
-
-            if ( file_exists($file) ) {
-
-                // Fix the permissions so we can delete it
-                if ( !is_writable($file) )
-                    @chmod($file, 0600);
-
-                @unlink( $file );
-
-            }
-        }
-    }
-
-}
-
-/**
  * Base test class for tests that require a temporary file that has content
  */
-abstract class PHPUnit_TestFile_Framework_TestCase extends PHPUnit_EmptyFile_Framework_TestCase
+abstract class PHPUnit_TestFile_Framework_TestCase extends \r8\Test\TestCase\EmptyFile
 {
 
     /**
