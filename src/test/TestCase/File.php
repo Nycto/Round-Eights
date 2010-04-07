@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -22,21 +20,34 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package PHPUnit
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+namespace r8\Test\TestCase;
 
 /**
- * unit tests
+ * Base test class for tests that require a temporary file that has content
  */
-class classes_stream_in_stdin extends \r8\Test\TestCase\File
+abstract class File extends \r8\Test\TestCase\EmptyFile
 {
 
-    public function testRead ()
+    /**
+     * Setup creates the file
+     */
+    public function setUp ()
     {
-        $stream = new \r8\Stream\In\StdIn;
-        $this->assertType( "boolean", $stream->canRead() );
+        parent::setUp();
+
+        $wrote = file_put_contents(
+                $this->file,
+                "This is a string\nof data that is put\nin the test file"
+            );
+
+        if ( $wrote == 0 ) {
+            $this->markTestSkipped("Unable to write data to test file");
+            @unlink( $this->file );
+        }
+
     }
 
 }

@@ -246,7 +246,7 @@ class classes_filesystem_file_noFile extends PHPUnit_Framework_TestCase
 /**
  * Unit Tests that use a temporary file
  */
-class classes_filesystem_file_withFile extends PHPUnit_TestFile_Framework_TestCase
+class classes_filesystem_file_withFile extends \r8\Test\TestCase\File
 {
 
     public function testExists ()

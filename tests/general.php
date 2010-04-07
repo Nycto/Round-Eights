@@ -38,33 +38,6 @@ error_reporting( E_ALL | E_STRICT );
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Base test class for tests that require a temporary file that has content
- */
-abstract class PHPUnit_TestFile_Framework_TestCase extends \r8\Test\TestCase\EmptyFile
-{
-
-    /**
-     * Setup creates the file
-     */
-    public function setUp ()
-    {
-        parent::setUp();
-
-        $wrote = file_put_contents(
-                $this->file,
-                "This is a string\nof data that is put\nin the test file"
-            );
-
-        if ( $wrote == 0 ) {
-            $this->markTestSkipped("Unable to write data to test file");
-            @unlink( $this->file );
-        }
-
-    }
-
-}
-
-/**
  * Base test class for tests that use temporary files/directories
  */
 abstract class PHPUnit_Dir_Framework_TestCase extends PHPUnit_Framework_TestCase
