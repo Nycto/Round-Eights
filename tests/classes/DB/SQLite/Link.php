@@ -42,7 +42,7 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("SQLite extension is not loaded");
 
         // Ensure the proper configuration exists
-        $config = new r8_Test_Config( "SQLITE", array("FILE", "TABLE") );
+        $config = new \r8\Test\Config( "SQLITE", array("FILE", "TABLE") );
         $config->test();
 
         // Test the connection

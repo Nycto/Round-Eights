@@ -29,92 +29,13 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 
 define("r8_SUPPRESS_HANDLERS", TRUE);
+define("r8_TESTCONFIG", rtrim( __DIR__, "/" ) .'/config.php');
 
 require_once rtrim( __DIR__, "/" ) ."/../src/RoundEights.php";
 
 error_reporting( E_ALL | E_STRICT );
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-/**
- * Includes the config file and ensures that a set of constants exists
- */
-class r8_Test_Config
-{
-
-    /**
-     * The prefix for the constants
-     *
-     * @param String
-     */
-    private $prefix;
-
-    /**
-     * The list of constants
-     *
-     * @var array
-     */
-    private $constants;
-
-    /**
-     * Constructor...
-     *
-     * @param String $prefix The prefix for all the constants
-     * @param array $constants The list of constants
-     */
-    public function __construct( $prefix, array $constants )
-    {
-        $this->prefix = trim( strval($prefix) );
-        $this->constants = $constants;
-    }
-
-    /**
-     * Helper function for throwing the skip exception
-     *
-     * @throws PHPUnit_Framework_SkippedTestError
-     * @param String $message The message to skip with
-     */
-    private function skip ( $message )
-    {
-        throw new PHPUnit_Framework_SkippedTestError($message);
-    }
-
-    /**
-     * Tests to ensure the config file exists and that all the required
-     * constants are defined
-     *
-     * @throws PHPUnit_Framework_SkippedTestError This will be thrown if any
-     *      of the constants dont exist
-     * @return null
-     */
-    public function test ()
-    {
-        $config = rtrim( __DIR__, "/") ."/config.php";
-
-        if ( !file_exists($config) )
-            $this->skip("Config file does not exist: $config");
-
-        if ( !is_readable($config) )
-            $this->skip("Config file is not readable: $config");
-
-        require_once $config;
-
-        foreach ( $this->constants AS $constant ) {
-
-            $constant = $this->prefix ."_". trim( strval($constant) );
-
-            if ( !defined($constant) )
-                $this->skip("Required constant is not defined: ". $constant);
-
-            $value = constant($constant);
-
-            if ( empty($value) )
-                $this->skip("Required constant must not be empty: ". $constant);
-        }
-    }
-
-}
-
 
 /**
  * Base test class for tests that require an empty temporary file

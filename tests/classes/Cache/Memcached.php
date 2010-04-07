@@ -39,7 +39,7 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("Memcached extension not loaded");
 
         // Ensure the proper configuration exists
-        $config = new r8_Test_Config( "MEMCACHE", array( "HOST", "PORT" ) );
+        $config = new \r8\Test\Config( "MEMCACHE", array( "HOST", "PORT" ) );
         $config->test();
 
 

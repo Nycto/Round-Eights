@@ -49,7 +49,7 @@ class classes_DB_Mysqli_Result extends PHPUnit_Framework_TestCase
             $this->markTestSkipped("MySQLi extension is not loaded");
 
         // Ensure the proper configuration exists
-        $config = new r8_Test_Config(
+        $config = new \r8\Test\Config(
                 "MYSQLI",
                 array( "HOST", "PORT", "DATABASE", "USERNAME", "PASSWORD", "TABLE" )
             );
