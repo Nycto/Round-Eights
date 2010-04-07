@@ -268,7 +268,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
+            ->with( new \r8\Test\Constraint\SQL( "SELECT *" ) )
             ->will( $this->returnValue("not a result") );
 
         $link = new \r8\DB\Link( $adapter );
@@ -291,7 +291,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
+            ->with( new \r8\Test\Constraint\SQL( "SELECT *" ) )
             ->will( $this->throwException(
                 new \r8\Exception\DB\Query(
                     "SELECT *",
@@ -321,7 +321,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
+            ->with( new \r8\Test\Constraint\SQL( "SELECT *" ) )
             ->will( $this->returnValue( $result ) );
 
         $link = new \r8\DB\Link( $adapter );
@@ -340,7 +340,7 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
         $adapter->expects( $this->once() )
             ->method( "query" )
-            ->with( new PHPUnit_Framework_Constraint_SQL( "SELECT *" ) )
+            ->with( new \r8\Test\Constraint\SQL( "SELECT *" ) )
             ->will( $this->returnValue( $result ) );
 
         $link = new \r8\DB\Link( $adapter );

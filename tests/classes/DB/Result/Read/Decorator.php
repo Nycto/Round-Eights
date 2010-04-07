@@ -211,7 +211,7 @@ class classes_DB_Result_Read_Decorator extends PHPUnit_Framework_TestCase
 
         $dec = $this->getTestDecorator( $result );
 
-        PHPUnit_Framework_Constraint_SQL::assert(
+        \r8\Test\Constraint\SQL::assert(
             "SELECT 1 + 1",
             $result->getQuery()
         );

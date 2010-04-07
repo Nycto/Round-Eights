@@ -173,7 +173,7 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
         $this->assertSame( 1, $result->getAffected() );
         $this->assertSame( 1, $result->getInsertID() );
 
-        PHPUnit_Framework_Constraint_SQL::assert(
+        \r8\Test\Constraint\SQL::assert(
             "INSERT INTO ". MYSQLI_TABLE ." SET id = NULL",
             $result->getQuery()
         );

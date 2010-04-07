@@ -117,7 +117,7 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\DB\Result\Read') );
 
-        PHPUnit_Framework_Constraint_SQL::assert(
+        \r8\Test\Constraint\SQL::assert(
             "SELECT 50 + 10 AS result",
             $result->getQuery()
         );
@@ -146,7 +146,7 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
         $this->assertSame( 1, $result->getAffected() );
         $this->assertSame( 1, $result->getInsertID() );
 
-        PHPUnit_Framework_Constraint_SQL::assert(
+        \r8\Test\Constraint\SQL::assert(
             "INSERT INTO ". SQLITE_TABLE ." (str) VALUES ('alpha')",
             $result->getQuery()
         );
