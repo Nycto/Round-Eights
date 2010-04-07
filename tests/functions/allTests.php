@@ -35,7 +35,7 @@ class functions_allTests
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite('Round Eights Functions');
+        $suite = new \r8\Test\Suite('Round Eights Functions');
         $suite->addFromFiles( "functions_", __DIR__, basename(__FILE__) );
         return $suite;
     }

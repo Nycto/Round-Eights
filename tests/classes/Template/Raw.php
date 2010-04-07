@@ -35,7 +35,7 @@ class classes_template_raw
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_Template_Raw_Standard' );
         $suite->addTestSuite( 'classes_Template_Raw_Output' );
         return $suite;

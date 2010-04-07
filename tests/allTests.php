@@ -37,7 +37,7 @@ class AllTests
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite('All Round Eights Tests');
+        $suite = new \r8\Test\Suite('All Round Eights Tests');
         $suite->addTestSuite( 'functions_allTests' );
         $suite->addTestSuite( 'classes_allTests' );
         return $suite;

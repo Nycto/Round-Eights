@@ -65,7 +65,7 @@ class classes_Template_Iterate
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_Template_Iterate_Standard' );
         $suite->addTestSuite( 'classes_Template_Iterate_Output' );
         return $suite;

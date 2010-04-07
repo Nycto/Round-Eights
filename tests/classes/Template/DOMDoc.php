@@ -35,7 +35,7 @@ class classes_template_domdoc
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_template_DOMDoc_Standard' );
         $suite->addTestSuite( 'classes_template_DOMDoc_Output' );
         return $suite;

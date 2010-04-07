@@ -35,7 +35,7 @@ class classes_filesys_dir
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_filesys_dir_noData' );
         $suite->addTestSuite( 'classes_filesys_dir_withData' );
         return $suite;

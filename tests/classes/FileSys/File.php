@@ -35,7 +35,7 @@ class classes_filesys_file
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_filesystem_file_noFile' );
         $suite->addTestSuite( 'classes_filesystem_file_withFile' );
         return $suite;

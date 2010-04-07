@@ -63,6 +63,9 @@ if (!defined("r8_DIR_CLASSES"))
 if (!defined("r8_DIR_INTERFACES"))
     define("r8_DIR_INTERFACES", r8_DIR ."interfaces/");
 
+if (!defined("r8_DIR_TEST"))
+    define("r8_DIR_TEST", r8_DIR ."test/");
+
 /**
  * Include the required files
  */
@@ -78,7 +81,8 @@ require_once r8_DIR_FUNCTIONS ."array.php";
  */
 \r8\Autoload::getInstance()
     ->register('r8', r8_DIR_CLASSES)
-    ->register('r8\iface', r8_DIR_INTERFACES);
+    ->register('r8\iface', r8_DIR_INTERFACES)
+    ->register('r8\Test', r8_DIR_TEST);
 
 spl_autoload_register( array( \r8\Autoload::getInstance(), "load" ) );
 
@@ -141,7 +145,7 @@ if ( !function_exists('r8') ) {
     /**
      * An identity method that simply returns the input argument
      *
-     * This helper method exists to aid with inline instantiation. 
+     * This helper method exists to aid with inline instantiation.
      *
      * @param Object $object The input object
      * @return Object Returns the input object

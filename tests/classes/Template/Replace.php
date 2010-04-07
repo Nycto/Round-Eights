@@ -35,7 +35,7 @@ class classes_Template_Replace
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_Template_Replace_Standard' );
         $suite->addTestSuite( 'classes_Template_Replace_Output' );
         return $suite;

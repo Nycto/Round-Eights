@@ -35,7 +35,7 @@ class classes_Settings_Ini
 
     public static function suite()
     {
-        $suite = new r8_Base_TestSuite;
+        $suite = new \r8\Test\Suite;
         $suite->addTestSuite( 'classes_Settings_Ini_NoFile' );
         $suite->addTestSuite( 'classes_Settings_Ini_WithFile' );
         return $suite;
