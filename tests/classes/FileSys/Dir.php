@@ -261,7 +261,7 @@ class classes_filesys_dir_noData extends PHPUnit_Framework_TestCase
 /**
  * unit tests that use temporary files/directories
  */
-class classes_filesys_dir_withData extends PHPUnit_Dir_Framework_TestCase
+class classes_filesys_dir_withData extends \r8\Test\TestCase\Dir
 {
 
     public function testToArray ()
