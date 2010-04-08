@@ -52,18 +52,18 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
     {
         $offset = new \r8\Iterator\Offset( 10, new \ArrayIterator( array() ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
     }
 
     public function testIterate_Seekable_FromZero ()
     {
         $offset = new \r8\Iterator\Offset( 0, new \ArrayIterator( array(1, 2, 3) ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
     }
 
     public function testIterate_Seekable_WithOffset ()
@@ -73,9 +73,9 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new \ArrayIterator( range("a", "e") )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
     }
 
     public function testIterate_Seekable_OutOfBounds ()
@@ -85,9 +85,9 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new \ArrayIterator( range("a", "e") )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
     }
 
     public function testIterate_Seekable_Negative ()
@@ -97,9 +97,9 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new \ArrayIterator( range("a", "e") )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(3 => 'd', 4 => 'e'), $offset );
     }
 
     public function testIterate_Unseekable_Empty ()
@@ -109,18 +109,18 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new IteratorIterator( new \ArrayIterator( array() ) )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
     }
 
     public function testIterate_Unseekable_FromZero ()
     {
         $offset = new \r8\Iterator\Offset( 0, new \ArrayIterator( array(1, 2, 3) ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(1, 2, 3), $offset );
     }
 
     public function testIterate_Unseekable_WithOffset ()
@@ -130,9 +130,9 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new IteratorIterator( new \ArrayIterator( range("a", "e") ) )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(2 => 'c', 3 => 'd', 4 => 'e'), $offset );
     }
 
     public function testIterate_Unseekable_OutOfBounds ()
@@ -142,9 +142,9 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
             new IteratorIterator( new \ArrayIterator( range("a", "e") ) )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
+        \r8\Test\Constraint\Iterator::assert( array(), $offset );
     }
 
 }

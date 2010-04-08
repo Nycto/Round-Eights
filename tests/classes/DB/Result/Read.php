@@ -311,7 +311,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
         $read = new \r8\DB\Result\Read( $adapter, "SELECT *" );
 
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(
                 array("one", "two"),
                 array("three", "four"),
@@ -320,7 +320,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             $read
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(
                 array("one", "two"),
                 array("three", "four"),
@@ -341,7 +341,7 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
 
         $result->free();
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $result
         );
@@ -357,13 +357,13 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
             "SELECT 1"
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( array( 1, 2 ), array( 3, 4 ) ),
             $result
         );
 
         $result->free();
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $result
         );

@@ -40,7 +40,7 @@ class classes_Iterator_Pluck extends PHPUnit_Framework_TestCase
             new ArrayIterator(array())
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $pluck );
+        \r8\Test\Constraint\Iterator::assert( array(), $pluck );
     }
 
     public function testIterate_SubArray ()
@@ -54,7 +54,7 @@ class classes_Iterator_Pluck extends PHPUnit_Framework_TestCase
             ))
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( 50 => "blah", 100 => "blip", 150 => "bloop" ),
             $pluck
         );
@@ -76,7 +76,7 @@ class classes_Iterator_Pluck extends PHPUnit_Framework_TestCase
             ))
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( 50 => "blah", 100 => "blip" ),
             $pluck
         );
@@ -102,7 +102,7 @@ class classes_Iterator_Pluck extends PHPUnit_Framework_TestCase
             ))
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(
                 50 => NULL,
                 75 => NULL,

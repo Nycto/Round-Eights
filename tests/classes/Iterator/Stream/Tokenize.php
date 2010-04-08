@@ -39,17 +39,17 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
@@ -61,7 +61,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
@@ -74,7 +74,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BREAK" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
@@ -86,7 +86,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BREAK" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "break", "Split"),
                 $iter
             );
@@ -98,7 +98,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
@@ -108,7 +108,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BR" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String"),
                 $iter
             );
@@ -120,7 +120,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "\n" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String", "To", "Split"),
                 $iter
             );
@@ -130,7 +130,7 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
         $iter = new \r8\Iterator\Stream\Tokenize( $stream, "BR" );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
                 array("String"),
                 $iter
             );

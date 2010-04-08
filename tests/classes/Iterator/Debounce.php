@@ -65,9 +65,9 @@ class classes_Iterator_Debounce extends PHPUnit_Framework_TestCase
 
         $iterator = new \r8\Iterator\Debounce( new ArrayIterator($data) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
     public function testNext ()
@@ -158,9 +158,9 @@ class classes_Iterator_Debounce extends PHPUnit_Framework_TestCase
 
         $iterator = unserialize( $serialized );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
 }

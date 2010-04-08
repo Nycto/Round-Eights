@@ -206,7 +206,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $result = $parser->getHeaders();
         $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $result
         );
@@ -227,7 +227,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $result = $parser->getHeaders();
         $this->assertThat( $result, $this->isInstanceOf("\Iterator") );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $result
         );
@@ -254,7 +254,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $iterator = $parser->getHeaders();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
 
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             10,
             $iterator
         );
@@ -286,7 +286,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $iterator = $parser->getMessages();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
 
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             10,
             $iterator
         );
@@ -315,7 +315,7 @@ class classes_soap_parser extends PHPUnit_Framework_TestCase
         $iterator = $parser->getMessages();
         $this->assertThat( $iterator, $this->isInstanceOf("\Iterator") );
 
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             10,
             $iterator
         );

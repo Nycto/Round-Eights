@@ -73,12 +73,12 @@ class classes_DB_Result_Read_AutoFree extends PHPUnit_Framework_TestCase
             )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( array( 1, 2 ), array( 3, 4 ) ),
             $result
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $result );
+        \r8\Test\Constraint\Iterator::assert( array(), $result );
     }
 
 }

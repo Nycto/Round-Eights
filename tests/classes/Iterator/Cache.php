@@ -88,9 +88,9 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
 
         $iterator = new \r8\Iterator\Cache( $this->getMockIterator( $data ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
     public function testIterate_Restart ()
@@ -102,18 +102,18 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
         $iterator->rewind();
         $iterator->next();
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
     public function testIterate_Empty ()
     {
         $iterator = new \r8\Iterator\Cache( $this->getMockIterator( array() ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( array(), $iterator );
+        \r8\Test\Constraint\Iterator::assert( array(), $iterator );
+        \r8\Test\Constraint\Iterator::assert( array(), $iterator );
+        \r8\Test\Constraint\Iterator::assert( array(), $iterator );
     }
 
     public function testIterate_KeyConflict ()
@@ -147,9 +147,9 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $iterator, $iterator->fillCache() );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
 
@@ -164,9 +164,9 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $iterator, $iterator->fillCache() );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
     }
 
     public function testSleep ()
@@ -188,9 +188,9 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
         $unserialized = unserialize( $serialized );
         $this->assertThat( $unserialized, $this->isInstanceOf( '\r8\Iterator\Cache' ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $unserialized );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $unserialized );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $unserialized );
+        \r8\Test\Constraint\Iterator::assert( $data, $unserialized );
+        \r8\Test\Constraint\Iterator::assert( $data, $unserialized );
+        \r8\Test\Constraint\Iterator::assert( $data, $unserialized );
     }
 
 }

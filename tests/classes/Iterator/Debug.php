@@ -40,9 +40,9 @@ class classes_Iterator_Debug extends PHPUnit_Framework_TestCase
         $iterator = new \r8\Iterator\Debug( new ArrayIterator($data) );
 
         ob_start();
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
-        PHPUnit_Framework_Constraint_Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
+        \r8\Test\Constraint\Iterator::assert( $data, $iterator );
         $result = ob_end_clean();
         
         $this->assertGreaterThan( 0, strlen($result) );

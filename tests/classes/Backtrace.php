@@ -131,7 +131,7 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
         $backtrace->pushEvent( $events[1] );
         $backtrace->pushEvent( $events[2] );
 
-        PHPUnit_Framework_Constraint_Iterator::assert( $events, $backtrace );
+        \r8\Test\Constraint\Iterator::assert( $events, $backtrace );
     }
 
     public function testGetEvent ()

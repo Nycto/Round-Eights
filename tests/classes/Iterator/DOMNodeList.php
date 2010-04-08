@@ -60,7 +60,7 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
             $this->runTestXPath("/none")
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $iterator
         );
@@ -72,7 +72,7 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
             $this->runTestXPath("/doc")
         );
 
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             5,
             $iterator
         );
@@ -89,7 +89,7 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
             $this->runTestXPath("/doc/*")
         );
 
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             10,
             $iterator
         );

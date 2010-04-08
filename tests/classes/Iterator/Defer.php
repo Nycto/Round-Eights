@@ -72,7 +72,7 @@ class classes_Iterator_Defer extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $inner, $this->isInstanceOf( 'ArrayIterator' ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "one", "two", "three" ),
             $inner
         );
@@ -92,7 +92,7 @@ class classes_Iterator_Defer extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $inner, $this->isInstanceOf( 'ArrayIterator' ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "Non Iterator" ),
             $inner
         );
@@ -108,17 +108,17 @@ class classes_Iterator_Defer extends PHPUnit_Framework_TestCase
             $this->getTestCallback( array( "one", "two", "three" ) )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "one", "two", "three" ),
             $defer
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "one", "two", "three" ),
             $defer
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "one", "two", "three" ),
             $defer
         );
@@ -130,7 +130,7 @@ class classes_Iterator_Defer extends PHPUnit_Framework_TestCase
             $this->getTestCallback( array( "one", "two", "three" ) )
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array( "one", "two", "three" ),
             unserialize( serialize( $defer ) )
         );

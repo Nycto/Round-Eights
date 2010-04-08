@@ -95,7 +95,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
 
     public function testIterate ()
     {
-        $result = PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+        $result = \r8\Test\Constraint\Iterator::iteratorToArray(
             10,
             $this->getTestIterator( "num" )
         );
@@ -108,7 +108,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
         $this->assertThat( $result[5], $this->isInstanceOf( 'Traversable' ) );
         $this->assertThat( $result[6], $this->isInstanceOf( 'Traversable' ) );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(
                 array( "num" => 5, "color" => "blue", "shape" => "square" ),
                 array( "num" => 5, "color" => "red" ),
@@ -116,7 +116,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
             $result[5]
         );
 
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(
                 array( "num" => 6, "color" => "red", "shape" => "square" ),
                 array( "num" => 6, "color" => "red", "shape" => "triangle" ),
@@ -142,7 +142,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
                     array( "num" => 6, "color" => "blue" )
                 )
             ),
-            PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            \r8\Test\Constraint\Iterator::iteratorToArray(
                 10, $this->getTestIterator( "color" ), TRUE
             )
         );
@@ -160,7 +160,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
                     array( "num" => 6, "color" => "red", "shape" => "triangle" ),
                 )
             ),
-            PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            \r8\Test\Constraint\Iterator::iteratorToArray(
                 10, $this->getTestIterator( "shape" ), TRUE
             )
         );
@@ -183,7 +183,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
                 5 => array( $data[0], $data[1], ),
                 6 => array( $data[3], ),
             ),
-            PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            \r8\Test\Constraint\Iterator::iteratorToArray(
                 10, $iter, TRUE
             )
         );
@@ -206,7 +206,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
                 5 => array( $data[0], $data[1], ),
                 6 => array( $data[3], ),
             ),
-            PHPUnit_Framework_Constraint_Iterator::iteratorToArray(
+            \r8\Test\Constraint\Iterator::iteratorToArray(
                 10, $iter, TRUE
             )
         );
@@ -215,7 +215,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
     public function testIterate_nonField ()
     {
         // Notice that "fruit" is not a field in the iterator that getTestIterator returns
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             $this->getTestIterator( "fruit" )
         );
@@ -223,7 +223,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
 
     public function testIterate_OneDimension ()
     {
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             new \r8\Iterator\Group(
                 "field",
@@ -234,7 +234,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
 
     public function testIterate_empty ()
     {
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             new \r8\Iterator\Group(
                 "field",
@@ -245,7 +245,7 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
 
     public function testIterate_BadKeys ()
     {
-        PHPUnit_Framework_Constraint_Iterator::assert(
+        \r8\Test\Constraint\Iterator::assert(
             array(),
             new \r8\Iterator\Group(
                 "field",
