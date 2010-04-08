@@ -60,9 +60,9 @@ echo "Temporary directory created: ". $dest->getPath() ."\n";
 $copy = array(
     "src" => "",
     "tests" => "",
-    "INSTALL.txt" => "",
-    "LICENSE.txt" => "",
-    "tools/RoundEights.phar" => ""
+    "README.md" => "README.txt",
+    "LICENSE.md" => "LICENSE.txt",
+    "tools/RoundEights-". r8_VERSION .".phar" => ""
 );
 
 
@@ -71,11 +71,14 @@ foreach ( $copy AS $source => $destination ) {
 
     echo "Copying: ". $source ." ";
 
+    if ( !file_exists($base . $source) )
+        die ("\nCould not locate required path: ". $base . $source);
+
     $result = system(
-            "cp -R "
-            . escapeshellarg($base . $source) ." "
-            . escapeshellarg( $dest->getSubPath($destination)->getPath() )
-        );
+        "cp -R "
+        . escapeshellarg($base . $source) ." "
+        . escapeshellarg( $dest->getSubPath($destination)->getPath() )
+    );
 
     if ( $result === FALSE )
         die("Failed");
@@ -110,24 +113,24 @@ if ( $targzFile->exists() ) {
 // Create the archives archive
 echo "Creating zip archive\n";
 system(
-        "cd ". escapeshellarg($tempDir) ."; "
-        ."zip -r "
-        .escapeshellarg( $zipFile->getPath() ) ." "
-        .escapeshellarg( "RoundEights" )
-    );
+    "cd ". escapeshellarg($tempDir) ."; "
+    ."zip -r "
+    .escapeshellarg( $zipFile->getPath() ) ." "
+    .escapeshellarg( "RoundEights" )
+);
 
 echo "Creating tar.gz archive\n";
 system(
-        "cd ". escapeshellarg($tempDir) ."; "
-        ."tar -cvzf "
-        .escapeshellarg( $targzFile->getPath()  ) ." "
-        .escapeshellarg( "RoundEights" )
-    );
+    "cd ". escapeshellarg($tempDir) ."; "
+    ."tar -cvzf "
+    .escapeshellarg( $targzFile->getPath()  ) ." "
+    .escapeshellarg( "RoundEights" )
+);
 
 
 // Purge and remove the temporary dir
 echo "Removing temporary directory\n";
-//$tempDir->purge()->delete();
+$tempDir->purge()->delete();
 
 
 echo "End of script\n";
