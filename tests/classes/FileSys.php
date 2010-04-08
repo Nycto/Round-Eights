@@ -272,7 +272,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $cTime = $mock->getCTime();
 
-        $this->assertThat( $cTime, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $cTime, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
     }
 
@@ -289,7 +289,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $cTime = $mock->getCTime();
 
-        $this->assertThat( $cTime, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $cTime, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $cTime->getTimeStamp() );
     }
 
@@ -322,7 +322,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getATime();
 
-        $this->assertThat( $time, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -339,7 +339,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getATime();
 
-        $this->assertThat( $time, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -372,7 +372,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getMTime();
 
-        $this->assertThat( $time, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 
@@ -389,7 +389,7 @@ class classes_filesys extends PHPUnit_Framework_TestCase
 
         $time = $mock->getMTime();
 
-        $this->assertThat( $time, $this->isInstanceOf("r8\DateTime") );
+        $this->assertThat( $time, $this->isInstanceOf('\DateTime') );
         $this->assertGreaterThan( 0, $time->getTimeStamp() );
     }
 

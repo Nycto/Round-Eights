@@ -291,7 +291,7 @@ abstract class FileSys
     /**
      * Returns when a file was created
      *
-     * @return \r8\DateTime Returns a date/time object
+     * @return \DateTime Returns a date/time object
      */
     public function getCTime ()
     {
@@ -306,13 +306,13 @@ abstract class FileSys
                 );
         }
 
-        return new \r8\DateTime( $time );
+        return new \DateTime( "@$time" );
     }
 
     /**
      * Returns the last access time of a file
      *
-     * @return \r8\DateTime Returns a date/time object
+     * @return \DateTime Returns a date/time object
      */
     public function getATime ()
     {
@@ -327,13 +327,13 @@ abstract class FileSys
                 );
         }
 
-        return new \r8\DateTime( $time );
+        return new \DateTime( "@$time" );
     }
 
     /**
      * Returns the last modified time of a file
      *
-     * @return \r8\DateTime Returns a date/time object
+     * @return \DateTime Returns a date/time object
      */
     public function getMTime ()
     {
@@ -348,7 +348,7 @@ abstract class FileSys
                 );
         }
 
-        return new \r8\DateTime( $time );
+        return new \DateTime( "@$time" );
     }
 
     /**
