@@ -76,6 +76,6 @@ to your code base. Then, include the contained "RoundEights.php" file, like so:
 # Requirements
 
 Round Eights requires version 5.3.1 or later of PHP. There are a few components
-that require specific PHP extensions. The dependencies are usually obvious, but
-if something is missing an exception will be raised that lets you know exactly
-what you are missing.
+that require specific PHP extensions, but the dependencies are usually obvious.
+If something is missing, an exception will be raised that lets you know exactly
+what you need.
