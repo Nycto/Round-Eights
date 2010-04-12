@@ -101,7 +101,7 @@ class Suite extends \PHPUnit_Framework_TestSuite
             $file = str_replace( "/", "_", $file );
 
             if ( !class_exists($testPrefix . $file) )
-                throw new Exception("Could not find unit test: ". $testPrefix . $file);
+                throw new \Exception("Could not find unit test: ". $testPrefix . $file);
 
             $this->addTestSuite( $testPrefix . $file );
         }
