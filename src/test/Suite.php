@@ -109,6 +109,30 @@ class Suite extends \PHPUnit_Framework_TestSuite
         return $this;
     }
 
+    /**
+     * Adds all the subdirectories of a given directory, but none of the files
+     * directly within that directory
+     *
+     * @param String $prefix The prefix to attach to each test name
+     * @param String $dir The directory to look in for sub directories
+     * @return \r8\Test\Suite Returns a self reference
+     */
+    public function addSubDirs ( $prefix, $dir )
+    {
+        $dir = rtrim( $dir, "/" );
+
+        foreach ( new \DirectoryIterator($dir) AS $subdir ) {
+            if ( $subdir->isDir() && !$subdir->isDot() ) {
+                $this->addFromFiles(
+                    $prefix . $subdir ."_",
+                    $dir ."/". $subdir,
+                    null
+                );
+            }
+        }
+        return $this;
+    }
+
 }
 
 ?>
