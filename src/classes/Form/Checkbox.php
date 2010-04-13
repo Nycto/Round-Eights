@@ -70,6 +70,17 @@ class Checkbox extends \r8\Form\Field
         return $tag;
     }
 
+    /**
+     * Provides an interface for visiting this field
+     *
+     * @param \r8\iface\Form\Visitor $visitor The visitor object to call
+     * @return NULL
+     */
+    public function visit ( \r8\iface\Form\Visitor $visitor )
+    {
+        $visitor->checkbox( $this );
+    }
+
 }
 
 ?>

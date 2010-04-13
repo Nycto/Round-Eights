@@ -33,9 +33,19 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_Form_Field extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test field
+     *
+     * @return \r8\Form\Field
+     */
+    public function getMockField ()
+    {
+        return $this->getMock("r8\Form\Field", array("visit"), array("fld"));
+    }
+
     public function testSetGetName ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $this->assertSame("fld", $field->getName());
 
@@ -53,7 +63,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetFilter ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $filter = $field->getFilter();
 
@@ -64,7 +74,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testSetFilter ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $filter = $this->getMock("r8\iface\Filter", array("filter"));
 
@@ -75,7 +85,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetOutputFilter ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $filter = $field->getOutputFilter();
 
@@ -86,7 +96,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testSetOutputFilter ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $filter = $this->getMock("r8\iface\Filter", array("filter"));
 
@@ -98,7 +108,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetValidator ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $validator = $field->getValidator();
 
@@ -109,7 +119,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testSetValidator ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
 
@@ -120,7 +130,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testAndValidator ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
         $validator3 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
@@ -151,7 +161,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testSetValue ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $this->assertNull( $field->getRawValue() );
 
@@ -173,7 +183,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetValue ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $field->setValue("New Value");
 
@@ -191,7 +201,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetForOutput ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
 
         $field->setValue("New 123 Value");
 
@@ -205,7 +215,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testValidate ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $field->setValidator( new \r8\Validator\NoSpaces );
 
         $field->setValue("Some String 123");
@@ -221,7 +231,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testIsValid ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $field->setValidator( new \r8\Validator\NoSpaces );
 
         $field->setValue("Some String 123");
@@ -233,7 +243,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetTag ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $field->setValue("New Value")
             ->setName("fldName");
 
@@ -249,7 +259,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testGetTag_outFilter ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $field->setValue("New Value")
             ->setName("fldName");
 
@@ -269,7 +279,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
 
     public function testToString ()
     {
-        $field = $this->getMock("r8\Form\Field", array("_mock"), array("fld"));
+        $field = $this->getMockField();
         $field->setValue("New Value")
             ->setName("fldName");
 

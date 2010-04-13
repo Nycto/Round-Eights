@@ -66,6 +66,17 @@ class Select extends \r8\Form\Multi
             );
     }
 
+    /**
+     * Provides an interface for visiting this field
+     *
+     * @param \r8\iface\Form\Visitor $visitor The visitor object to call
+     * @return NULL
+     */
+    public function visit ( \r8\iface\Form\Visitor $visitor )
+    {
+        $visitor->select( $this );
+    }
+
 }
 
 ?>

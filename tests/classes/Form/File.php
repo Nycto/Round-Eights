@@ -152,6 +152,18 @@ class classes_Form_File extends PHPUnit_Framework_TestCase
         $this->assertSame( "file", $tag['type'] );
     }
 
+    public function testVisit ()
+    {
+        $field = new \r8\Form\File("fld");
+
+        $visitor = $this->getMock('\r8\iface\Form\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "file" )
+            ->with( $this->equalTo( $field ) );
+
+        $this->assertNull( $field->visit( $visitor ) );
+    }
+
 }
 
 ?>

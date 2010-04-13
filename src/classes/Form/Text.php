@@ -42,6 +42,17 @@ class Text extends \r8\Form\Field
             ->setAttr("type", "text");
     }
 
+    /**
+     * Provides an interface for visiting this field
+     *
+     * @param \r8\iface\Form\Visitor $visitor The visitor object to call
+     * @return NULL
+     */
+    public function visit ( \r8\iface\Form\Visitor $visitor )
+    {
+        $visitor->text( $this );
+    }
+
 }
 
 ?>

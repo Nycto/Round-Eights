@@ -30,12 +30,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_multifield extends PHPUnit_Framework_TestCase
+class classes_Validator_MultiField extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * Returns a mock multi field
+     *
+     * @return \r8\Form\Multi
+     */
+    public function getTestField ()
+    {
+        return $this->getMock("r8\Form\Multi", array("visit"), array("fld"));
+    }
 
     public function testNonBasics ()
     {
-        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getTestField();
         $valid = new \r8\Validator\MultiField( $field );
 
         $result = $valid->validate( array() );
@@ -56,7 +66,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
 
     public function testEmptyField ()
     {
-        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getTestField();
         $valid = new \r8\Validator\MultiField( $field );
 
         $result = $valid->validate( 50 );
@@ -69,7 +79,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
 
     public function testInvalidOption ()
     {
-        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getTestField();
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $valid = new \r8\Validator\MultiField( $field );
@@ -98,7 +108,7 @@ class classes_validator_multifield extends PHPUnit_Framework_TestCase
 
     public function testValid ()
     {
-        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getTestField();
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $valid = new \r8\Validator\MultiField( $field );

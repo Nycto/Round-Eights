@@ -77,6 +77,18 @@ class classes_Form_text extends PHPUnit_Framework_TestCase
         $this->assertSame( "Filtered New Value", $tag['value'] );
     }
 
+    public function testVisit ()
+    {
+        $field = new \r8\Form\Text("fld");
+
+        $visitor = $this->getMock('\r8\iface\Form\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "text" )
+            ->with( $this->equalTo( $field ) );
+
+        $this->assertNull( $field->visit( $visitor ) );
+    }
+
 }
 
 ?>

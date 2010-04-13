@@ -36,9 +36,9 @@ class classes_form extends PHPUnit_Framework_TestCase
     public function getMockField ()
     {
         return $this->getMock(
-                '\r8\iface\Form\Field',
-                array("getName", "getValue", "setValue", "validate", "isValid")
-            );
+            '\r8\iface\Form\Field',
+            array("getName", "getValue", "setValue", "validate", "isValid", "visit")
+        );
     }
 
     public function testSetAction ()
@@ -650,6 +650,35 @@ class classes_form extends PHPUnit_Framework_TestCase
                 .'<input value="" name="fld3" type="hidden" />',
                 $form->getHiddenHTML()
             );
+    }
+
+    public function testVisit ()
+    {
+        $form = new \r8\Form;
+
+        $visitor = $this->getMock('\r8\iface\Form\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "begin" )
+            ->with( $this->equalTo( $form ) );
+
+        $field1 = $this->getMockField();
+        $field1->expects( $this->once() )
+            ->method( "visit" )
+            ->with( $this->equalTo( $visitor ) );
+        $form->addField($field1);
+
+        $field2 = $this->getMockField();
+        $field2->expects( $this->once() )
+            ->method( "visit" )
+            ->with( $this->equalTo( $visitor ) );
+        $form->addField($field2);
+
+        $visitor->expects( $this->once() )
+            ->method( "end" )
+            ->with( $this->equalTo( $form ) )
+            ->will( $this->returnValue( "Data" ) );
+
+        $this->assertSame( "Data", $form->visit( $visitor ) );
     }
 
 }

@@ -42,6 +42,17 @@ class Hidden extends \r8\Form\Field
             ->setAttr("type", "hidden");
     }
 
+    /**
+     * Provides an interface for visiting this field
+     *
+     * @param \r8\iface\Form\Visitor $visitor The visitor object to call
+     * @return NULL
+     */
+    public function visit ( \r8\iface\Form\Visitor $visitor )
+    {
+        $visitor->hidden( $this );
+    }
+
 }
 
 ?>

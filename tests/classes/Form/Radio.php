@@ -200,6 +200,18 @@ class classes_Form_radio extends PHPUnit_Framework_TestCase
             );
     }
 
+    public function testVisit ()
+    {
+        $field = new \r8\Form\Radio("fld");
+
+        $visitor = $this->getMock('\r8\iface\Form\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "radio" )
+            ->with( $this->equalTo( $field ) );
+
+        $this->assertNull( $field->visit( $visitor ) );
+    }
+
 }
 
 ?>

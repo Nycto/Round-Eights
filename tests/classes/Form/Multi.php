@@ -30,12 +30,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_form_multi extends PHPUnit_Framework_TestCase
+class classes_Form_Multi extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * Returns a mock multi field
+     *
+     * @return \r8\Form\Multi
+     */
+    public function getTestField ()
+    {
+        return $this->getMock("r8\Form\Multi", array("visit"), array("fld"));
+    }
 
     public function testAddOption_strValue ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption("str", "lbl") );
 
@@ -44,7 +54,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_intValue ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption(50, "lbl") );
 
@@ -53,7 +63,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_floatValue ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption(1.5, "othr") );
 
@@ -66,7 +76,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_boolValue ()
     {
 
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption(FALSE, "lbl") );
 
@@ -86,7 +96,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_nullValue ()
     {
 
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption(null, "lbl") );
 
@@ -99,7 +109,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_objValue ()
     {
 
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption( $this->getMock("stub"), "lbl") );
 
@@ -111,7 +121,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testAddOption_nonStringLabel ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption( 1, 5) );
         $this->assertSame(
@@ -129,7 +139,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testAddOption_conflict ()
     {
 
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame( $mock, $mock->addOption( "val", "one") );
         $this->assertSame(
@@ -147,7 +157,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testHasOption ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -161,7 +171,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testGetOptionLabel ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -185,7 +195,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testRemoveOption ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -204,7 +214,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
     public function testClearOptions ()
     {
 
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
         $mock->addOption( 1, "one");
         $mock->addOption( 2, "two");
         $mock->addOption( 3, "three");
@@ -220,7 +230,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testImportOptions ()
     {
-        $mock = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $mock = $this->getTestField();
 
         $this->assertSame(
                 $mock,
@@ -235,7 +245,7 @@ class classes_form_multi extends PHPUnit_Framework_TestCase
 
     public function testDefaultValidator ()
     {
-        $field = $this->getMock("r8\Form\Multi", array("_mock"), array("fld"));
+        $field = $this->getTestField();
         $field->importOptions(array("one" => "Single", 2 => "Double", "three" => "Triple"));
 
         $this->assertThat(

@@ -70,6 +70,18 @@ class classes_Form_textarea extends PHPUnit_Framework_TestCase
         $this->assertSame( "Filtered New Value", $tag->getContent() );
     }
 
+    public function testVisit ()
+    {
+        $field = new \r8\Form\TextArea("fld");
+
+        $visitor = $this->getMock('\r8\iface\Form\Visitor');
+        $visitor->expects( $this->once() )
+            ->method( "textArea" )
+            ->with( $this->equalTo( $field ) );
+
+        $this->assertNull( $field->visit( $visitor ) );
+    }
+
 }
 
 ?>

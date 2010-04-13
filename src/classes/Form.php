@@ -447,6 +447,23 @@ class Form implements \Countable
             );
     }
 
+    /**
+     * Visits all the fields in this form
+     *
+     * @param \r8\iface\Form\Visitor The visitor object
+     * @return Mixed Returns the results from the visitor object
+     */
+    public function visit ( \r8\iface\Form\Visitor $visitor )
+    {
+        $visitor->begin( $this );
+
+        foreach ( $this->fields AS $field ) {
+            $field->visit( $visitor );
+        }
+
+        return $visitor->end( $this );
+    }
+
 }
 
 ?>
