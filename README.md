@@ -23,7 +23,7 @@ The reasons to use it are straight forward:
    graphs.
 
 
-# What do you get?
+## What do you get?
 
 The list of features is long, but here are a few highlights:
 
@@ -38,13 +38,13 @@ The list of features is long, but here are a few highlights:
  * And a whole lot more!
 
 
-# Installing Round Eights
+## Installing Round Eights
 
 Round Eights comes in two flavors, the raw source files and the single file PHP
 archive. Both are equivalent as far as functionality is concerned.
 
 
-## Installing the PHP archive
+### Installing the PHP archive
 
 Included in your download is RoundEights.phar. If you choose this path, this
 file is all you need. You can think of phar files like Java's jar files:
@@ -63,7 +63,7 @@ For more information about phar files, visit the PHP manual here:
 http://www.php.net/phar
 
 
-## Installing the Source Files
+### Installing the Source Files
 
 If you prefer, you can simply copy the "src" directory and all of its contents
 to your code base. Then, include the contained "RoundEights.php" file, like so:
@@ -73,7 +73,7 @@ to your code base. Then, include the contained "RoundEights.php" file, like so:
     ?>
 
 
-# Requirements
+## Requirements
 
 Round Eights requires version 5.3.1 or later of PHP. There are a few components
 that require specific PHP extensions, but the dependencies are usually obvious.
