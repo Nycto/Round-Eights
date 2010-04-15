@@ -119,6 +119,24 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
         $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Iterate') );
     }
 
+    public function testCallback ()
+    {
+        $builder = new \r8\Template\Builder( $this->getMockFinder() );
+        $builder->set( "one", 1 );
+        $builder->set( "two", 2 );
+
+        $result = $builder->callback(
+            array('one', 'two'),
+            function ( $one, $two ) {
+                return $one ."-". $two;
+            }
+        );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\Template\Callback') );
+        $this->assertSame( array( "one" => 1, "two" => 2), $result->getValues() );
+        $this->assertSame( "1-2", $result->render() );
+    }
+
 }
 
 ?>

@@ -130,6 +130,20 @@ class Builder extends \r8\Template\Access
         return new \r8\Template\Iterate( $prototype, $iterator );
     }
 
+    /**
+     * Builds a new callback template
+     *
+     * @param Array $arg The arguments to pass into the callback
+     * @param Callable $callback The callback to invoke
+     * @return \r8\Template\Callback
+     */
+    public function callback ( array $args, $callback )
+    {
+        $tpl = new \r8\Template\Callback( $args, $callback );
+        $tpl->import( $this->getValues() );
+        return $tpl;
+    }
+
 }
 
 ?>
