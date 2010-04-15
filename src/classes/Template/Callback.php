@@ -48,23 +48,16 @@ class Callback extends \r8\Template\Access implements \r8\iface\Template\Access
     /**
      * Constructor...
      *
-     * @param String $arg... The arguments to pass into the callback
+     * @param Array $arg The arguments to pass into the callback
      * @param Callable $callback The callback to invoke
      */
-    public function __construct ()
+    public function __construct ( array $args, $callback )
     {
-        $numArgs = func_num_args();
+        if ( !is_callable($callback) )
+            throw new \r8\Exception\Argument( 1, "Callback", "Must be callable");
 
-        if ( $numArgs <= 0 )
-            throw new \r8\Exception\Interaction("At least one argument must be defined");
-
-        $args = func_get_args();
-
-        if ( !is_callable($args[ $numArgs - 1 ]) )
-            throw new \r8\Exception\Argument( $numArgs - 1, "Callback", "Must be callable");
-
-        $this->callback = $args[ $numArgs - 1 ];
-        $this->args = array_slice($args, 0, -1);
+        $this->callback = $callback;
+        $this->args = $args;
     }
 
     /**

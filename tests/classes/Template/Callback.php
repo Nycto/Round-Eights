@@ -49,16 +49,10 @@ class classes_Template_Callback
 class classes_Template_Callback_Standard extends PHPUnit_Framework_TestCase
 {
 
-    public function testConstruct_Errors ()
+    public function testConstruct_Error ()
     {
         try {
-            new \r8\Template\Callback;
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Interaction $err ) {}
-
-        try {
-            new \r8\Template\Callback("Not Callable");
+            new \r8\Template\Callback(array(), "Not Callable");
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument $err ) {}
@@ -71,7 +65,7 @@ class classes_Template_Callback_Standard extends PHPUnit_Framework_TestCase
             ->method( "__invoke" )
             ->will( $this->returnValue( "data" ) );
 
-        $tpl = new \r8\Template\Callback( $callback );
+        $tpl = new \r8\Template\Callback( array(), $callback );
 
         $this->assertSame( "data", $tpl->render() );
     }
@@ -88,7 +82,7 @@ class classes_Template_Callback_Standard extends PHPUnit_Framework_TestCase
             )
             ->will( $this->returnValue( "data" ) );
 
-        $tpl = new \r8\Template\Callback( 'one', 'two', 'three', $callback );
+        $tpl = new \r8\Template\Callback( array('one', 'two', 'three'), $callback );
         $tpl->set("one", "a string");
         $tpl->set("three", 3.1415);
 
@@ -114,7 +108,7 @@ class classes_Template_Callback_Output extends PHPUnit_Extensions_OutputTestCase
             )
             ->will( $this->returnValue( "data" ) );
 
-        $tpl = new \r8\Template\Callback( 'one', 'two', 'three', $callback );
+        $tpl = new \r8\Template\Callback( array('one', 'two', 'three'), $callback );
         $tpl->set("one", "a string");
         $tpl->set("three", 3.1415);
 
