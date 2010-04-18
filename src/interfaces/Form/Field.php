@@ -79,6 +79,13 @@ interface Field
     public function isValid ();
 
     /**
+     * Returns a \r8\HTML\Tag object that represents this instance
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getTag();
+
+    /**
      * Provides an interface for visiting this field
      *
      * @param \r8\iface\Form\Visitor $visitor The visitor object to call

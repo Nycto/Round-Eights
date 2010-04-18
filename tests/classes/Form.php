@@ -35,10 +35,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
 
     public function getMockField ()
     {
-        return $this->getMock(
-            '\r8\iface\Form\Field',
-            array("getName", "getLabel", "getValue", "setValue", "validate", "isValid", "visit")
-        );
+        return $this->getMock( '\r8\iface\Form\Field' );
     }
 
     public function testSetAction ()
