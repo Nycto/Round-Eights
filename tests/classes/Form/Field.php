@@ -43,6 +43,16 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
         return $this->getMock("r8\Form\Field", array("visit"), array("fld"));
     }
 
+    public function testSetGetLabel ()
+    {
+        $field = $this->getMockField();
+
+        $this->assertNull($field->getLabel());
+
+        $this->assertSame( $field, $field->setLabel("The Field") );
+        $this->assertSame("The Field", $field->getLabel());
+    }
+
     public function testSetGetName ()
     {
         $field = $this->getMockField();

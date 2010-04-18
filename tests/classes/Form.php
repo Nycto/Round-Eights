@@ -30,14 +30,14 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_form extends PHPUnit_Framework_TestCase
+class classes_Form extends PHPUnit_Framework_TestCase
 {
 
     public function getMockField ()
     {
         return $this->getMock(
             '\r8\iface\Form\Field',
-            array("getName", "getValue", "setValue", "validate", "isValid", "visit")
+            array("getName", "getLabel", "getValue", "setValue", "validate", "isValid", "visit")
         );
     }
 

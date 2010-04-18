@@ -39,6 +39,13 @@ abstract class Field implements \r8\iface\Form\Field
     private $name;
 
     /**
+     * The label that describes this input field
+     *
+     * @var String
+     */
+    private $label;
+
+    /**
      * The current, raw value of this field
      *
      * The value stored here is unfiltered and unvalidated
@@ -75,10 +82,12 @@ abstract class Field implements \r8\iface\Form\Field
      * Constructor...
      *
      * @param String $name The name of this form field
+     * @param String|NULL $label The label that describes this input field
      */
-    public function __construct( $name )
+    public function __construct( $name, $label = NULL )
     {
         $this->setName( $name );
+        $this->setLabel( $label );
     }
 
     /**
@@ -107,6 +116,28 @@ abstract class Field implements \r8\iface\Form\Field
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Sets the label that describes this form field
+     *
+     * @param String $label
+     * @return \r8\Form\Field Returns a self reference
+     */
+    public function setLabel ( $label )
+    {
+        $this->label = \r8\isEmpty( (string) $label ) ? NULL : (string) $label;
+        return $this;
+    }
+
+    /**
+     * Returns the label that describes this input
+     *
+     * @return String
+     */
+    public function getLabel ()
+    {
+        return $this->label;
     }
 
     /**
@@ -302,13 +333,13 @@ abstract class Field implements \r8\iface\Form\Field
     public function getTag()
     {
         return new \r8\HTML\Tag(
-                'input',
-                null,
-                array(
-                        "value" => $this->getForOutput(),
-                        "name" => $this->getName()
-                    )
-            );
+            'input',
+            null,
+            array(
+                "value" => $this->getForOutput(),
+                "name" => $this->getName()
+            )
+        );
     }
 
     /**

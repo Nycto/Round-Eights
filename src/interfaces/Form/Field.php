@@ -42,9 +42,16 @@ interface Field
     public function getName ();
 
     /**
+     * Returns the label that describes this input
+     *
+     * @return String
+     */
+    public function getLabel ();
+
+    /**
      * Returns the value of this field
      *
-     * @return mixed The value of this field
+     * @return Mixed The value of this field
      */
     public function getValue ();
 
@@ -52,7 +59,7 @@ interface Field
      * Sets the value for this field
      *
      * @param mixed $value The value of this field
-     * @return Object Returns a self reference
+     * @return \r8\iface\Form\Field Returns a self reference
      */
     public function setValue ( $value );
 
@@ -60,7 +67,7 @@ interface Field
      * Applies the validator to the value in this instance and returns an
      * instance of Validator Results.
      *
-     * @return object An instance of validator results
+     * @return \r8\Validator\Result
      */
     public function validate ();
 
