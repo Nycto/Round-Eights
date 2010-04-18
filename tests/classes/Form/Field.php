@@ -287,6 +287,20 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
         $this->assertSame( "Filtered New Value", $tag['value'] );
     }
 
+    public function testGetLabelTag ()
+    {
+        $field = $this->getMockField();
+        $field->setName("fldName")
+            ->setLabel("Some Field");
+
+        $tag = $field->getLabelTag();
+
+        $this->assertThat( $tag, $this->isInstanceOf("r8\HTML\Tag") );
+        $this->assertSame( "label", $tag->getTag() );
+        $this->assertSame( array( "for" => "fldName" ), $tag->getAttrs() );
+        $this->assertSame( "Some Field", $tag->getContent() );
+    }
+
     public function testToString ()
     {
         $field = $this->getMockField();

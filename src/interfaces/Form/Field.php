@@ -79,11 +79,18 @@ interface Field
     public function isValid ();
 
     /**
-     * Returns a \r8\HTML\Tag object that represents this instance
+     * Returns an HTML Tag that represents this field
      *
      * @return \r8\HTML\Tag
      */
     public function getTag();
+
+    /**
+     * Returns an HTML Tag for the Label of this field
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getLabelTag();
 
     /**
      * Provides an interface for visiting this field

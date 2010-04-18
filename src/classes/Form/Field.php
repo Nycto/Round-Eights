@@ -326,7 +326,7 @@ abstract class Field implements \r8\iface\Form\Field
     }
 
     /**
-     * Returns a \r8\HTML\Tag object that represents this instance
+     * Returns an HTML Tag that represents this field
      *
      * @return \r8\HTML\Tag
      */
@@ -339,6 +339,20 @@ abstract class Field implements \r8\iface\Form\Field
                 "value" => $this->getForOutput(),
                 "name" => $this->getName()
             )
+        );
+    }
+
+    /**
+     * Returns an HTML Tag for the Label of this field
+     *
+     * @return \r8\HTML\Tag
+     */
+    public function getLabelTag()
+    {
+        return new \r8\HTML\Tag(
+            'label',
+            $this->label,
+            array( "for" => $this->getName() )
         );
     }
 
