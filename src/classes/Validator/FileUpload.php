@@ -42,7 +42,7 @@ class FileUpload extends \r8\Validator
     protected function process ( $field )
     {
         if ( !($field instanceof \r8\Input\File) )
-            throw new \r8\Exception\Argument( 0, "Upload File", 'Must be an instance of \r8\Input\File' );
+            return "No file was uploaded";
 
         if ( !$field->isValid() )
             return $field->getMessage();

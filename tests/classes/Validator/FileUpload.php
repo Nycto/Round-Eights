@@ -37,13 +37,13 @@ class classes_Validator_FileUpload extends PHPUnit_Framework_TestCase
     {
         $valid = new \r8\Validator\FileUpload;
 
-        try {
-            $valid->validate( "A String" );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( 'Must be an instance of \r8\Input\File', $err->getMessage() );
-        }
+        $result = $valid->validate( "A String" );
+
+        $this->assertFalse( $result->isValid() );
+        $this->assertSame(
+            array( "No file was uploaded" ),
+            $result->getErrors()
+        );
     }
 
     public function testProcess_Invalid ()
