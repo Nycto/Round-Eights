@@ -50,6 +50,7 @@ class File extends \r8\Form\Field
      * Constructor...
      *
      * @param String $name The name of this form field
+     * @param String|NULL $label The label that describes this input field
      * @param \r8\Validator\FileUpload $validator The validator to use
      *      for checking the uploaded file. If left empty, a default
      *      instance will be created
@@ -59,10 +60,11 @@ class File extends \r8\Form\Field
      */
     public function __construct(
         $name,
+        $label = null,
         \r8\Validator\FileUpload $validator = null,
         \r8\Input\Files $files = null
     ) {
-        parent::__construct( $name );
+        parent::__construct( $name, $label );
         $this->validator = $validator ?: new \r8\Validator\FileUpload;
         $this->files = $files ?: \r8\Env::request()->getFiles();
     }

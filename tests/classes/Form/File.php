@@ -43,7 +43,7 @@ class classes_Form_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue(NULL) );
 
-        $field = new \r8\Form\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", NULL, $validator, $files );
 
         $this->assertNull( $field->getRawValue() );
     }
@@ -60,7 +60,7 @@ class classes_Form_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", NULL, $validator, $files );
 
         $this->assertSame( $file, $field->getRawValue() );
     }
@@ -89,7 +89,7 @@ class classes_Form_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", NULL, $validator, $files );
         $field->setValidator( $upperValid );
 
         $this->assertSame( $result, $field->validate() );
@@ -127,7 +127,7 @@ class classes_Form_File extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("fld") )
             ->will( $this->returnValue( $file ) );
 
-        $field = new \r8\Form\File( "fld", $validator, $files );
+        $field = new \r8\Form\File( "fld", NULL, $validator, $files );
         $field->setValidator( $upperValid );
 
         $this->assertSame( $upperResult, $field->validate() );
