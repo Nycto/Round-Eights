@@ -118,7 +118,7 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
             $memcache->set("unitTest_key", "Expiring Data", 1)
         );
 
-        usleep(1250000);
+        usleep(1750000);
 
         $this->assertNull( $memcache->get("unitTest_key") );
     }
