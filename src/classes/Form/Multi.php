@@ -47,14 +47,12 @@ abstract class Multi extends \r8\Form\Field
      * Loads in the default validator
      *
      * @param String The name of this form field
+     * @param String|NULL $label The label that describes this input field
      */
-    public function __construct( $name )
+    public function __construct( $name, $label = NULL )
     {
-        parent::__construct($name);
-
-        $this->setValidator(
-                new \r8\Validator\MultiField( $this )
-            );
+        parent::__construct($name, $label);
+        $this->setValidator( new \r8\Validator\MultiField( $this ) );
     }
 
     /**

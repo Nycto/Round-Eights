@@ -37,14 +37,12 @@ class Checkbox extends \r8\Form\Field
      * Sets the default boolean filter
      *
      * @param String The name of this form field
+     * @param String|NULL $label The label that describes this input field
      */
-    public function __construct( $name )
+    public function __construct( $name, $label = NULL )
     {
-        parent::__construct( $name );
-
-        $this->setFilter(
-                new \r8\Filter\Boolean
-            );
+        parent::__construct( $name, $label );
+        $this->setFilter( new \r8\Filter\Boolean );
     }
 
     /**
