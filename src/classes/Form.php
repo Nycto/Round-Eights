@@ -332,9 +332,9 @@ class Form implements \Countable
         }
         else {
             $this->validator = new \r8\Validator\All(
-                    $this->validator,
-                    $validator
-                );
+                $this->validator,
+                $validator
+            );
         }
 
         return $this;
@@ -397,14 +397,14 @@ class Form implements \Countable
     public function getTag()
     {
         return new \r8\HTML\Tag(
-                'form',
-                null,
-                array(
-                        "method" => $this->getMethod(),
-                        "encoding" => $this->getEncoding(),
-                        "action" => $this->getAction()
-                    )
-            );
+            'form',
+            null,
+            array(
+                "method" => $this->getMethod(),
+                "encoding" => $this->getEncoding(),
+                "action" => $this->getAction()
+            )
+        );
     }
 
     /**
@@ -427,11 +427,11 @@ class Form implements \Countable
     public function getHidden ()
     {
         return array_filter(
-                $this->fields,
-                function ( $field ) {
-                    return ($field instanceof \r8\Form\Hidden);
-                }
-            );
+            $this->fields,
+            function ( $field ) {
+                return $field->isHidden();
+            }
+        );
     }
 
     /**
@@ -441,10 +441,7 @@ class Form implements \Countable
      */
     public function getHiddenHTML ()
     {
-        return implode(
-                "",
-                \r8\ary\invoke($this->getHidden(), "__toString")
-            );
+        return implode( "", \r8\ary\invoke($this->getHidden(), "__toString") );
     }
 
     /**

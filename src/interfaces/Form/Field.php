@@ -35,6 +35,13 @@ interface Field
 {
 
     /**
+     * Returns whether this field should be considered a Hidden field
+     *
+     * @return Boolean
+     */
+    public function isHidden ();
+
+    /**
      * Returns the name of this field
      *
      * @return String

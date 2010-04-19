@@ -30,8 +30,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_Form_hidden extends PHPUnit_Framework_TestCase
+class classes_Form_Hidden extends PHPUnit_Framework_TestCase
 {
+
+    public function testIsHidden ()
+    {
+        $field = new \r8\Form\Hidden("fld");
+        $this->assertTrue( $field->isHidden() );
+    }
 
     public function testGetTag ()
     {

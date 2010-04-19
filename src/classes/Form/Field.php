@@ -91,6 +91,16 @@ abstract class Field implements \r8\iface\Form\Field
     }
 
     /**
+     * Returns whether this field should be considered a Hidden field
+     *
+     * @return Boolean
+     */
+    public function isHidden ()
+    {
+        return FALSE;
+    }
+
+    /**
      * Returns the name of this field
      *
      * @return String

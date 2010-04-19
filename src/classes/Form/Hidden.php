@@ -32,6 +32,16 @@ class Hidden extends \r8\Form\Field
 {
 
     /**
+     * Returns whether this field should be considered a Hidden field
+     *
+     * @return Boolean
+     */
+    public function isHidden ()
+    {
+        return TRUE;
+    }
+
+    /**
      * Returns a \r8\HTML\Tag object that represents this instance
      *
      * @return \r8\HTML\Tag

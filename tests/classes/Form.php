@@ -643,10 +643,10 @@ class classes_Form extends PHPUnit_Framework_TestCase
 
 
         $this->assertSame(
-                '<input value="" name="fld1" type="hidden" />'
-                .'<input value="" name="fld3" type="hidden" />',
-                $form->getHiddenHTML()
-            );
+            '<input value="" name="fld1" type="hidden" />'
+            .'<input value="" name="fld3" type="hidden" />',
+            $form->getHiddenHTML()
+        );
     }
 
     public function testVisit ()

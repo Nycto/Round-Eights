@@ -43,6 +43,12 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
         return $this->getMock("r8\Form\Field", array("visit"), array("fld"));
     }
 
+    public function testIsHidden ()
+    {
+        $field = $this->getMockField();
+        $this->assertFalse( $field->isHidden() );
+    }
+
     public function testSetGetLabel ()
     {
         $field = $this->getMockField();
