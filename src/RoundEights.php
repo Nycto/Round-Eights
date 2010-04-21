@@ -77,6 +77,19 @@ require_once r8_DIR_FUNCTIONS ."debug.php";
 require_once r8_DIR_FUNCTIONS ."array.php";
 
 /**
+ * An identity method that simply returns the input argument
+ *
+ * This helper method exists to aid with inline instantiation.
+ *
+ * @param Object $object The input object
+ * @return Object Returns the input object
+ */
+function r8 ( $object )
+{
+    return $object;
+}
+
+/**
  * Register the autoloader
  */
 \r8\Autoload::getInstance()
@@ -137,24 +150,6 @@ if ( !defined("r8_SUPPRESS_HANDLERS") ) {
             )
         )
     );
-}
-
-// Only define the r8 helper function if it doesn't already exist
-if ( !function_exists('r8') ) {
-
-    /**
-     * An identity method that simply returns the input argument
-     *
-     * This helper method exists to aid with inline instantiation.
-     *
-     * @param Object $object The input object
-     * @return Object Returns the input object
-     */
-    function r8 ( $object )
-    {
-        return $object;
-    }
-
 }
 
 // @codeCoverageIgnoreEnd
