@@ -75,21 +75,34 @@ class classes_Form_Visitor_Formatter extends PHPUnit_Framework_TestCase
         return $form;
     }
 
+    /**
+     * Returns a test visitor object
+     *
+     * @return \r8\Form\Visitor\Formatter
+     */
+    public function getTestVisitor ( $showErrors )
+    {
+        return new \r8\Form\Visitor\Formatter(
+            $showErrors,
+            new \r8\Template\Replace("#{label}\n#{errors}\n#{field}\n\n"),
+            new \r8\Template\Callback( array('errors'), function ( $errors ) {
+                return implode("; ", $errors);
+            }),
+            new \r8\Template\Replace(
+                "#{errors}\n#{form}\n#{hidden}\n#{fields}</form>"
+            )
+        );
+    }
+
     public function testVisit_WithoutErrors ()
     {
         $form = $this->getTestForm();
-
-        $tpl = $form->visit( \r8\Form\Visitor\Formatter::Table(
-            FALSE,
-            "Form Title",
-            "Submit Button"
-        ) );
+        $tpl = $form->visit( $this->getTestVisitor( FALSE ) );
 
         $result = $tpl->render();
 
         $this->assertContains( 'http://www.example.com/submit.php', $result );
         $this->assertContains( 'HiddenFld', $result );
-        $this->assertContains( 'Form Title', $result );
         $this->assertContains( 'Checkbox Label', $result );
         $this->assertContains( 'name="CheckboxFld"', $result );
         $this->assertContains( 'File Label', $result );
@@ -104,7 +117,6 @@ class classes_Form_Visitor_Formatter extends PHPUnit_Framework_TestCase
         $this->assertContains( 'name="TextFld"', $result );
         $this->assertContains( 'TextArea Label', $result );
         $this->assertContains( 'name="TextAreaFld"', $result );
-        $this->assertContains( 'Submit Button', $result );
 
         $this->assertNotContains( "Form Error", $result );
         $this->assertNotContains( "Checkbox Error", $result );
@@ -118,12 +130,7 @@ class classes_Form_Visitor_Formatter extends PHPUnit_Framework_TestCase
     public function testVisit_WithErrors ()
     {
         $form = $this->getTestForm();
-
-        $tpl = $form->visit( \r8\Form\Visitor\Formatter::Table(
-            TRUE,
-            "Form Title",
-            "Submit Button"
-        ) );
+        $tpl = $form->visit( $this->getTestVisitor( TRUE ) );
 
         $result = $tpl->render();
 
