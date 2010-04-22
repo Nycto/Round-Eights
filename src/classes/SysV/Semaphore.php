@@ -70,7 +70,7 @@ class Semaphore
         if ( $source instanceof \r8\Seed )
             return $source->getInteger();
         else if ( !is_int($source) )
-            return \r8\num\intHash( sha1( (string) $source ) );
+            return abs( (int) crc32( sha1( (string) $source ) ) );
         else
             return $source;
     }

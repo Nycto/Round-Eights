@@ -216,13 +216,6 @@ class functions_numbers extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, \r8\num\offsetWrap(5, 15, \r8\num\OFFSET_LIMIT) );
     }
 
-    public function testIntHash ()
-    {
-        $this->assertSame( 1945669750, \r8\num\intHash("Data") );
-        $this->assertSame( 1595238312, \r8\num\intHash(3.1415) );
-        $this->assertSame( 821412000, \r8\num\intHash(11235813) );
-    }
-
 }
 
 ?>

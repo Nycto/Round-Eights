@@ -56,9 +56,9 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
 
     public function testMakeKey ()
     {
-        $this->assertSame( 231240019, \r8\SysV\Semaphore::makeKey("Test") );
-        $this->assertSame( 1271194237, \r8\SysV\Semaphore::makeKey(new \r8\Seed("Test")) );
-        $this->assertSame( 11235813, \r8\SysV\Semaphore::makeKey(11235813) );
+        $this->assertEquals( 379708464, \r8\SysV\Semaphore::makeKey("Some Key") );
+        $this->assertEquals( 848621046, \r8\SysV\Semaphore::makeKey(new \r8\Seed("Test")) );
+        $this->assertEquals( 11235813, \r8\SysV\Semaphore::makeKey(11235813) );
     }
 
     public function testLock ()
@@ -104,7 +104,7 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $unserial, $this->isInstanceOf( '\r8\SysV\Semaphore' ) );
         $this->assertFalse( $sem->isLocked() );
-        $this->assertSame( 2097006524, $sem->getKey() );
+        $this->assertEquals( 2103443141, $sem->getKey() );
         $this->assertSame( 20, $sem->getMax() );
     }
 

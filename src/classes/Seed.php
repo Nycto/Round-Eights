@@ -114,26 +114,7 @@ class Seed
      */
     public function getInteger ()
     {
-        $source = $this->getString();
-
-        $len = strlen($source);
-        $hash = 0;
-
-        // Loop over every hex pair
-        for ( $i = 0; $i < $len; $i += 2 )
-        {
-            // Convert the hex pair back to binary
-            $num = hexdec( substr($source, $i, 2) );
-
-            // Mutate it to generate the hash
-            // This is the sdbm hash algorithm
-            $hash = $num + ($hash << 6) + ($hash << 16) - $hash;
-
-            // Ensure it fits within an integer
-            $hash = abs( $hash % self::MAX_INT );
-        }
-
-        return $hash;
+        return abs( (int) crc32( $this->getString() ) );
     }
 
     /**

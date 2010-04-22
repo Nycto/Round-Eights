@@ -36,19 +36,19 @@ class classes_Seed extends PHPUnit_Framework_TestCase
     public function testRandom ()
     {
         $this->assertThat(
-                \r8\Seed::random(),
-                $this->isInstanceOf('\r8\Seed')
-            );
+            \r8\Seed::random(),
+            $this->isInstanceOf('\r8\Seed')
+        );
 
         $this->assertNotEquals(
-                \r8\Seed::random()->getSource(),
-                \r8\Seed::random()->getSource()
-            );
+            \r8\Seed::random()->getSource(),
+            \r8\Seed::random()->getSource()
+        );
 
         $this->assertNotEquals(
-                \r8\Seed::random()->getSource(),
-                \r8\Seed::random()->getSource()
-            );
+            \r8\Seed::random()->getSource(),
+            \r8\Seed::random()->getSource()
+        );
     }
 
     public function testSourceAccessors ()
@@ -103,53 +103,53 @@ class classes_Seed extends PHPUnit_Framework_TestCase
     public function testGetInteger ()
     {
         $seed = new \r8\Seed("Initial value");
-        $this->assertSame( 1929230368, $seed->getInteger() );
-        $this->assertSame( 1929230368, $seed->getInteger() );
+        $this->assertEquals( 792973122, $seed->getInteger() );
+        $this->assertEquals( 792973122, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
-        $this->assertSame( 2051062495, $seed->getInteger() );
-        $this->assertSame( 2051062495, $seed->getInteger() );
+        $this->assertEquals( 1950733356, $seed->getInteger() );
+        $this->assertEquals( 1950733356, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(array("value")) );
-        $this->assertSame( 2097715088, $seed->getInteger() );
+        $this->assertEquals( 1712766562, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(NULL) );
-        $this->assertSame( 1031720634, $seed->getInteger() );
+        $this->assertEquals( 1993286084, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(1.98) );
-        $this->assertSame( 348155489, $seed->getInteger() );
+        $this->assertEquals( 2054267500, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource(TRUE) );
-        $this->assertSame( 34500168, $seed->getInteger() );
+        $this->assertEquals( 642853861, $seed->getInteger() );
 
         $this->assertSame( $seed, $seed->setSource( new stdClass ) );
-        $this->assertSame( 1347529798, $seed->getInteger() );
+        $this->assertEquals( 273878817, $seed->getInteger() );
     }
 
     public function testGetFloat ()
     {
         $seed = new \r8\Seed("Initial value");
-        $this->assertSame( 0.8983678970944, $seed->getFloat() );
-        $this->assertSame( 0.8983678970944, $seed->getFloat() );
+        $this->assertEquals( 0.36925688496291, $seed->getFloat() );
+        $this->assertEquals( 0.36925688496291, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(123456) );
-        $this->assertSame( 0.95510040221508, $seed->getFloat() );
-        $this->assertSame( 0.95510040221508, $seed->getFloat() );
+        $this->assertEquals( 0.9083810061721, $seed->getFloat() );
+        $this->assertEquals( 0.9083810061721, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(array("value")) );
-        $this->assertSame( 0.97682470873782, $seed->getFloat() );
+        $this->assertEquals( 0.79756908248997, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(NULL) );
-        $this->assertSame( 0.48043235879412, $seed->getFloat() );
+        $this->assertEquals( 0.92819616428027, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(1.98) );
-        $this->assertSame( 0.16212253326649, $seed->getFloat() );
+        $this->assertEquals( 0.9565928489699, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource(TRUE) );
-        $this->assertSame( 0.01606539265069, $seed->getFloat() );
+        $this->assertEquals( 0.29935215660341, $seed->getFloat() );
 
         $this->assertSame( $seed, $seed->setSource( new stdClass ) );
-        $this->assertSame( 0.62749246071442, $seed->getFloat() );
+        $this->assertEquals( 0.12753476254993, $seed->getFloat() );
     }
 
 }
