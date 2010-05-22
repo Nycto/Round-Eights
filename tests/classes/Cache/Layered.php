@@ -52,7 +52,7 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
      *
      * @return \r8\iface\Cache
      */
-    public function getTestCacheComplex ( $method, $result )
+    public function getTestCacheComplex ( $method )
     {
         $cache = $this->getMock('\r8\iface\Cache');
         $cache->expects( $this->once() )->method( $method )
@@ -60,16 +60,15 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
                 $this->equalTo( "key" ),
                 $this->equalTo( "value" ),
                 $this->equalTo( 1234 )
-            )
-            ->will( $this->returnValue( $result) );
+            );
         return $cache;
     }
 
     public function testSet ()
     {
         $cache = new \r8\Cache\Layered(
-            $this->getTestCacheComplex("set", NULL),
-            $this->getTestCacheComplex("set", NULL)
+            $this->getTestCacheComplex("set"),
+            $this->getTestCacheComplex("set")
         );
 
         $this->assertSame( $cache, $cache->set("key", "value", 1234) );
@@ -110,8 +109,8 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
     public function testAdd ()
     {
         $cache = new \r8\Cache\Layered(
-            $this->getTestCacheComplex("add", NULL),
-            $this->getTestCacheComplex("add", NULL)
+            $this->getTestCacheComplex("add"),
+            $this->getTestCacheComplex("add")
         );
 
         $this->assertSame( $cache, $cache->add("key", "value", 1234) );
@@ -120,8 +119,8 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
     public function testReplace ()
     {
         $cache = new \r8\Cache\Layered(
-            $this->getTestCacheComplex("replace", NULL),
-            $this->getTestCacheComplex("replace", NULL)
+            $this->getTestCacheComplex("replace"),
+            $this->getTestCacheComplex("replace")
         );
 
         $this->assertSame( $cache, $cache->replace("key", "value", 1234) );
@@ -130,8 +129,8 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
     public function testAppend ()
     {
         $cache = new \r8\Cache\Layered(
-            $this->getTestCacheComplex("append", NULL),
-            $this->getTestCacheComplex("append", NULL)
+            $this->getTestCacheComplex("append"),
+            $this->getTestCacheComplex("append")
         );
 
         $this->assertSame( $cache, $cache->append("key", "value", 1234) );
@@ -140,8 +139,8 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
     public function testPrepend ()
     {
         $cache = new \r8\Cache\Layered(
-            $this->getTestCacheComplex("prepend", NULL),
-            $this->getTestCacheComplex("prepend", NULL)
+            $this->getTestCacheComplex("prepend"),
+            $this->getTestCacheComplex("prepend")
         );
 
         $this->assertSame( $cache, $cache->prepend("key", "value", 1234) );
