@@ -39,20 +39,6 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     private $memcached;
 
     /**
-     * Formats the given data for storage on the server
-     *
-     * @param Mixed $input
-     * @return String
-     */
-    static private function encode ( $value )
-    {
-        if ( $value === NULL || is_numeric($value) || is_string($value) )
-            return $value;
-
-        return serialize( $value );
-    }
-
-    /**
      * Constructor...
      *
      * @param \Memcached $memcached The Memcached server object
@@ -77,7 +63,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $this->memcached->set(
             $key,
-            self::encode( $value ),
+            $value,
             max(0, (int) $expire)
         );
         return $this;
@@ -93,24 +79,14 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $result =  $this->memcached->get( $key );
 
-        if ( $result === FALSE )
+        if (
+            $result === FALSE
+            && $this->memcached->getResultCode() === \Memcached::RES_NOTFOUND
+        ) {
             return NULL;
+        }
 
-        else if ( is_numeric($result) )
-            return \r8\numVal( $result );
-
-        else if ( $result == "b:0;" )
-            return FALSE;
-
-        else if ( !is_string($result) )
-            return $result;
-
-        $unserialized = @unserialize( $result );
-
-        if ( $unserialized === FALSE )
-            return $result;
-
-        return $unserialized;
+        return $result;
     }
 
     /**
@@ -137,7 +113,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $this->memcached->add(
             $key,
-            self::encode( $value ),
+            $value,
             max(0, (int) $expire)
         );
         return $this;
@@ -155,7 +131,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $this->memcached->replace(
             $key,
-            self::encode( $value ),
+            $value,
             max(0, (int) $expire)
         );
         return $this;
