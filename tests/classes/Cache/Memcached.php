@@ -109,6 +109,25 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
         $this->assertEquals( $obj, $memcache->get("obj") );
     }
 
+    public function testGet_LongKey ()
+    {
+        $memcache = $this->getTestLink();
+
+        $key = str_repeat("~", 500);
+        $this->assertSame( $memcache, $memcache->set($key, "Value", 30) );
+        $this->assertSame( "Value", $memcache->get($key) );
+    }
+
+    public function testGet_InvalidChars ()
+    {
+        $memcache = $this->getTestLink();
+
+        $key = implode(' ',array_map( 'chr', range(0, 510) ));
+
+        $this->assertSame( $memcache, $memcache->set($key, "Value", 30) );
+        $this->assertSame( "Value", $memcache->get($key) );
+    }
+
     public function testSet_Expire ()
     {
         $memcache = $this->getTestLink();

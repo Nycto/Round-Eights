@@ -52,6 +52,20 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     }
 
     /**
+     * Prepares a key to be saved in Memcached
+     *
+     * @param String $key The key to modify
+     * @return String
+     */
+    private function prepareKey ( $key )
+    {
+        // Memcached has a 250 character limit on it's keys. Hashing will
+        // compensate for that. It will also compensate for the character
+        // restrictions imposed.
+        return base_convert( sha1( (string) $key ), 16, 36 );
+    }
+
+    /**
      * Sets a new caching value, overwriting any existing values
      *
      * @param String $key The key for the value
@@ -62,7 +76,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function set ( $key, $value, $expire = 0 )
     {
         $this->memcached->set(
-            $key,
+            $this->prepareKey($key),
             $value,
             max(0, (int) $expire)
         );
@@ -77,7 +91,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function get ( $key )
     {
-        $result =  $this->memcached->get( $key );
+        $result =  $this->memcached->get( $this->prepareKey($key) );
 
         if (
             $result === FALSE
@@ -97,7 +111,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function delete ( $key )
     {
-        $this->memcached->delete( $key );
+        $this->memcached->delete( $this->prepareKey($key) );
         return $this;
     }
 
@@ -112,7 +126,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function add ( $key, $value, $expire = 0 )
     {
         $this->memcached->add(
-            $key,
+            $this->prepareKey($key),
             $value,
             max(0, (int) $expire)
         );
@@ -130,7 +144,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function replace ( $key, $value, $expire = 0 )
     {
         $this->memcached->replace(
-            $key,
+            $this->prepareKey($key),
             $value,
             max(0, (int) $expire)
         );
@@ -149,7 +163,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function append ( $key, $value, $expire = 0 )
     {
-        if ( !$this->memcached->append( $key, (string) $value ) )
+        if ( !$this->memcached->append( $this->prepareKey($key), (string) $value ) )
             $this->set( $key, $value, $expire );
         return $this;
     }
@@ -166,7 +180,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function prepend ( $key, $value, $expire = 0 )
     {
-        if ( !$this->memcached->prepend( $key, (string) $value ) )
+        if ( !$this->memcached->prepend( $this->prepareKey($key), (string) $value ) )
             $this->set( $key, $value, $expire );
         return $this;
     }
@@ -179,7 +193,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function increment ( $key )
     {
-        $this->memcached->increment( $key );
+        $this->memcached->increment( $this->prepareKey($key) );
         return $this;
     }
 
@@ -191,7 +205,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
      */
     public function decrement ( $key )
     {
-        $this->memcached->decrement( $key );
+        $this->memcached->decrement( $this->prepareKey($key) );
         return $this;
     }
 
@@ -220,7 +234,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function getForUpdate ( $key )
     {
         $token = NULL;
-        $value = $this->memcached->get( $key, NULL, $token );
+        $value = $this->memcached->get( $this->prepareKey($key), NULL, $token );
         return new \r8\Cache\Result( $this, $key, $token, $value );
     }
 
@@ -238,7 +252,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $this->memcached->cas(
             $result->getHash(),
-            $result->getKey(),
+            $this->prepareKey( $result->getKey() ),
             $value,
             $expire
         );
