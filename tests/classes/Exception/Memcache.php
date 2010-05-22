@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception Class
+ * Unit Test File
  *
  * @license Artistic License 2.0
  *
@@ -22,26 +22,26 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package Exception
+ * @package UnitTests
  */
 
-namespace r8\Exception\Memcache;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Exception class for Memcache connection errors
+ * unit tests
  */
-class Connection extends \r8\Exception\Memcache
+class classes_Exception_Memcache extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Title of this exception
-     */
-    const TITLE = "Memcache Connection Error";
+    public function testConstruct ()
+    {
+        $err = new \r8\Exception\Memcache( 'Error', 300, 0 );
 
-    /**
-     * A brief description of this exception
-     */
-    const DESCRIPTION = "Errors encountered while connecting to a Memcache Server";
+        $this->assertEquals( "Error", $err->getMessage() );
+        $this->assertEquals( 300, $err->getCode() );
+
+        $this->assertEquals( 0, $err->getFaultOffset() );
+    }
 
 }
 

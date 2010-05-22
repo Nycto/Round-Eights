@@ -25,23 +25,23 @@
  * @package Exception
  */
 
-namespace r8\Exception\Memcache;
+namespace r8\Exception;
 
 /**
- * Exception class for Memcache connection errors
+ * Exception class for Memcache errors
  */
-class Connection extends \r8\Exception\Memcache
+class Memcache extends \r8\Exception
 {
 
     /**
      * Title of this exception
      */
-    const TITLE = "Memcache Connection Error";
+    const TITLE = "Memcache Error";
 
     /**
      * A brief description of this exception
      */
-    const DESCRIPTION = "Errors encountered while connecting to a Memcache Server";
+    const DESCRIPTION = "Errors encountered while interacting with a Memcache Server";
 
 }
 

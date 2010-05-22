@@ -52,6 +52,40 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     }
 
     /**
+     * Checks and handles errors
+     *
+     * @return NULL
+     */
+    private function handleErrors ()
+    {
+        $result = $this->memcached->getResultCode();
+        if (
+            $result === \Memcached::RES_SUCCESS
+            || $result === \Memcached::RES_NOTFOUND
+            || $result === \Memcached::RES_NOTSTORED
+            || $result === \Memcached::RES_DATA_EXISTS
+        ) {
+            return NULL;
+        }
+
+        $refl = new \ReflectionClass( '\Memcached' );
+        $constant = \r8\ary\first( preg_grep(
+            '/^RES_/',
+            array_keys( array_filter(
+                $refl->getConstants(),
+                function ( $value ) use ($result) {
+                    return $result == $value;
+                }
+            ) )
+        ) );
+
+        if ( empty($constant) )
+            $constant = "UNKNOWN";
+
+        throw new \r8\Exception\Memcache( "Memcache Error: ". $constant, $result );
+    }
+
+    /**
      * Prepares a key to be saved in Memcached
      *
      * @param String $key The key to modify
@@ -80,6 +114,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
             $value,
             max(0, (int) $expire)
         );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -99,6 +136,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
         ) {
             return NULL;
         }
+        else {
+            $this->handleErrors();
+        }
 
         return $result;
     }
@@ -112,6 +152,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function delete ( $key )
     {
         $this->memcached->delete( $this->prepareKey($key) );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -130,6 +173,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
             $value,
             max(0, (int) $expire)
         );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -148,6 +194,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
             $value,
             max(0, (int) $expire)
         );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -165,6 +214,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         if ( !$this->memcached->append( $this->prepareKey($key), (string) $value ) )
             $this->set( $key, $value, $expire );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -182,6 +234,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         if ( !$this->memcached->prepend( $this->prepareKey($key), (string) $value ) )
             $this->set( $key, $value, $expire );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -194,6 +249,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function increment ( $key )
     {
         $this->memcached->increment( $this->prepareKey($key) );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -206,6 +264,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function decrement ( $key )
     {
         $this->memcached->decrement( $this->prepareKey($key) );
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -217,6 +278,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     public function flush ()
     {
         $this->memcached->flush();
+
+        $this->handleErrors();
+
         return $this;
     }
 
@@ -235,6 +299,9 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     {
         $token = NULL;
         $value = $this->memcached->get( $this->prepareKey($key), NULL, $token );
+
+        $this->handleErrors();
+
         return new \r8\Cache\Result( $this, $key, $token, $value );
     }
 
@@ -256,6 +323,8 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
             $value,
             $expire
         );
+
+        $this->handleErrors();
 
         return $this;
     }
