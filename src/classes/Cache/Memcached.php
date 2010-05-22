@@ -32,6 +32,11 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
 {
 
     /**
+     * The maximum cache time is 30 days
+     */
+    const MAX_EXPIRATION = 2592000;
+
+    /**
      * The Memcached server object
      *
      * @var Memcached
@@ -100,6 +105,17 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
     }
 
     /**
+     * Prepares an expiration to be used against a cache
+     *
+     * @param Integer $expire
+     * @return Integer
+     */
+    private function prepareExpire ( $expire )
+    {
+        return $expire < 0 ? 1 : min( (int) $expire, self::MAX_EXPIRATION );
+    }
+
+    /**
      * Sets a new caching value, overwriting any existing values
      *
      * @param String $key The key for the value
@@ -112,7 +128,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
         $this->memcached->set(
             $this->prepareKey($key),
             $value,
-            max(0, (int) $expire)
+            $this->prepareExpire( $expire )
         );
 
         $this->handleErrors();
@@ -171,7 +187,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
         $this->memcached->add(
             $this->prepareKey($key),
             $value,
-            max(0, (int) $expire)
+            $this->prepareExpire( $expire )
         );
 
         $this->handleErrors();
@@ -321,7 +337,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
             $result->getHash(),
             $this->prepareKey( $result->getKey() ),
             $value,
-            $expire
+            $this->prepareExpire( $expire )
         );
 
         $this->handleErrors();

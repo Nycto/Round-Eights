@@ -142,6 +142,16 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
         $this->assertNull( $memcache->get("unitTest_key") );
     }
 
+    public function testSet_NegativeExpire ()
+    {
+        $memcache = $this->getTestLink();
+
+        $this->assertSame(
+            $memcache,
+            $memcache->set("unitTest_key", "Expiring Data", -1)
+        );
+    }
+
     public function testDelete ()
     {
         $memcache = $this->getTestLink();
