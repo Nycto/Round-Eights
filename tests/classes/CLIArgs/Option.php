@@ -30,18 +30,18 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit Tests
  */
-class classes_Args_Option extends PHPUnit_Framework_TestCase
+class classes_CLIArgs_Option extends PHPUnit_Framework_TestCase
 {
 
     public function testGetDescription ()
     {
-        $opt = new \r8\Args\Option("Test");
+        $opt = new \r8\CLIArgs\Option("Test");
         $this->assertSame( "Test", $opt->getDescription() );
     }
 
     public function testAddFlag ()
     {
-        $opt = new \r8\Args\Option("Test");
+        $opt = new \r8\CLIArgs\Option("Test");
         $this->assertSame( array(), $opt->getFlags() );
 
         $this->assertSame( $opt, $opt->addFlag("A") );

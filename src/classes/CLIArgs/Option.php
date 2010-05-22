@@ -20,10 +20,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package Args
+ * @package CLIArgs
  */
 
-namespace r8\Args;
+namespace r8\CLIArgs;
 
 /**
  * A command-line option
@@ -103,6 +103,18 @@ class Option
     public function getFlags ()
     {
         return $this->flags;
+    }
+
+    /**
+     * Adds a argument that this option will consume
+     *
+     * @param String $arg
+     * @return \r8\Args\Option Returns a self reference
+     */
+    public function addArg ( $arg )
+    {
+        $this->args[] = $arg;
+        return $this;
     }
 
 }
