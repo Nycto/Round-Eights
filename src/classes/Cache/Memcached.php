@@ -87,7 +87,7 @@ class Memcached extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
         if ( empty($constant) )
             $constant = "UNKNOWN";
 
-        throw new \r8\Exception\Memcache( "Memcache Error: ". $constant, $result );
+        throw new \r8\Exception\Cache( "Memcache Error: ". $constant, $result );
     }
 
     /**

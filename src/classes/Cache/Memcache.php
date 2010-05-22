@@ -136,7 +136,7 @@ class Memcache extends \r8\Cache\Base
         // If an error occured while connect, translate it to an exception
         if ( !$result ) {
             $error = \error_get_last();
-            throw new \r8\Exception\Memcache\Connection(
+            throw new \r8\Exception\Cache\Connection(
                 $error['message'],
                 $error['type']
             );

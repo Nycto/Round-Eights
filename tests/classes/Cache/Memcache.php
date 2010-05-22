@@ -59,7 +59,7 @@ class classes_Cache_MemCache extends PHPUnit_Framework_TestCase
         try {
             $memcache->connect();
         }
-        catch ( \r8\Exception\Memcache\Connection $err ) {}
+        catch ( \r8\Exception\Cache\Connection $err ) {}
     }
 
     public function testIsConnected ()

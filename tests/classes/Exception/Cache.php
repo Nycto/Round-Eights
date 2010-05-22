@@ -25,23 +25,19 @@
  * @package UnitTests
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
  * unit tests
  */
-class classes_exception_memcache_connection extends PHPUnit_Framework_TestCase
+class classes_Exception_Cache extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
-        $err = new \r8\Exception\Memcache\Connection(
-                'Connection Error',
-                300,
-                0
-            );
+        $err = new \r8\Exception\Cache( 'Error', 300, 0 );
 
-        $this->assertEquals( "Connection Error", $err->getMessage() );
+        $this->assertEquals( "Error", $err->getMessage() );
         $this->assertEquals( 300, $err->getCode() );
 
         $this->assertEquals( 0, $err->getFaultOffset() );
