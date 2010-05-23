@@ -31,7 +31,7 @@ namespace r8\Cache;
  * This also provieds functionality for all the values in this group to be flushed
  * at the same time without affecting anything in the rest of the cache.
  */
-class Group extends \r8\Cache\Base
+class Group extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
 {
 
     /**
@@ -215,6 +215,69 @@ class Group extends \r8\Cache\Base
     {
         $this->groupValue = base_convert( uniqid( dechex( mt_rand(0, 99999) ) ), 16, 36 );
         $this->cache->set( $this->group ."_GroupValue", $this->groupValue, 0 );
+        return $this;
+    }
+
+    /**
+     * Returns a cached value based on it's key
+     *
+     * This returns a cached value in the form of an object. This object will allow
+     * you to run an update on the value with the clause that it shouldn't be
+     * changed if it has changed since it was retrieved. This can be used to
+     * prevent race conditions.
+     *
+     * @param String $key The value to retrieve
+     * @return \r8\Cache\Result
+     */
+    public function getForUpdate ( $key )
+    {
+        if ( !($this->cache instanceof \r8\iface\Cache\Updatable) ) {
+            throw new \r8\Exception\Data(
+                $this->cache,
+                'Inner Cache',
+                'Must be an instance of \r8\iface\Cache\Updatable'
+            );
+        }
+
+        $result = $this->cache->getForUpdate( $this->modifyKey($key) );
+        return new \r8\Cache\Result(
+            $this,
+            $key,
+            $result->getHash(),
+            $result->getValue()
+        );
+    }
+
+    /**
+     * Sets the value for this key only if the value hasn't changed in the cache
+     * since it was originally pulled
+     *
+     * @param \r8\Cache\Result $result A result object that was returned by
+     *      the getForUpdate method
+     * @param mixed $value The value to set
+     * @param Integer $expire The lifespan of this cache value, in seconds
+     * @return \r8\iface\Cache Returns a self reference
+     */
+    public function setIfSame ( \r8\Cache\Result $result, $value, $expire = 0 )
+    {
+        if ( !($this->cache instanceof \r8\iface\Cache\Updatable) ) {
+            throw new \r8\Exception\Data(
+                $this->cache,
+                'Inner Cache',
+                'Must be an instance of \r8\iface\Cache\Updatable'
+            );
+        }
+
+        $this->cache->setIfSame(
+            new \r8\Cache\Result(
+                $this->cache,
+                $this->modifyKey( $result->getKey() ),
+                $result->getHash(),
+                $result->getValue()
+            ),
+            $value,
+            $expire
+        );
         return $this;
     }
 

@@ -173,6 +173,85 @@ class classes_Cache_Group extends PHPUnit_Framework_TestCase
         $this->assertSame( "value", $cache->get("key") );
     }
 
+    public function testGetForUpdate_NonUpdatable ()
+    {
+        $inner = $this->getMock('\r8\iface\Cache');
+        $cache = new \r8\Cache\Group("group", $inner);
+
+        try {
+            $cache->getForUpdate("key");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
+    public function testGetForUpdate ()
+    {
+        $inner = $this->getMock('\r8\iface\Cache\Updatable');
+        $inner->expects( $this->once() )->method( "get" )
+            ->with( $this->equalTo( "group_GroupValue" ) )
+            ->will( $this->returnValue( "abc123" ) );
+        $inner->expects( $this->once() )->method( "getForUpdate" )
+            ->with( $this->equalTo( "group_abc123_key" ) )
+            ->will( $this->returnValue(
+                new \r8\Cache\Result(
+                    $inner, "group_abc123_key", "xyz789", "value"
+                )
+            ) );
+
+        $cache = new \r8\Cache\Group("group", $inner);
+
+        $this->assertEquals(
+            new \r8\Cache\Result( $cache, "key", "xyz789", "value" ),
+            $cache->getForUpdate('key')
+        );
+    }
+
+    public function testSetIfSame_NonUpdatable ()
+    {
+        $inner = $this->getMock('\r8\iface\Cache');
+        $cache = new \r8\Cache\Group("group", $inner);
+
+        try {
+            $cache->setIfSame(
+                new \r8\Cache\Result($cache, "key", "xyz789", "value"),
+                "new value",
+                1234
+            );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
+    public function testSetIfSame ()
+    {
+        $inner = $this->getMock('\r8\iface\Cache\Updatable');
+        $inner->expects( $this->once() )->method( "get" )
+            ->with( $this->equalTo( "group_GroupValue" ) )
+            ->will( $this->returnValue( "abc123" ) );
+        $inner->expects( $this->once() )->method( "setIfSame" )
+            ->with(
+                $this->equalTo(
+                    new \r8\Cache\Result(
+                        $inner, "group_abc123_key", "xyz789", "value"
+                    )
+                ),
+                $this->equalTo( "new value" ),
+                $this->equalTo( 1234 )
+            );
+
+        $cache = new \r8\Cache\Group("group", $inner);
+
+        $this->assertSame(
+            $cache,
+            $cache->setIfSame(
+                new \r8\Cache\Result( $cache, "key", "xyz789", "value" ),
+                "new value",
+                1234
+            )
+        );
+    }
+
 }
 
 ?>
