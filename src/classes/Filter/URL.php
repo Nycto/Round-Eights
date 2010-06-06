@@ -36,15 +36,12 @@ class URL extends \r8\Filter
     /**
      * Cleans up a string in preparation for using it as an e-mail address
      *
-     * @param mixed $value The value to filter
-     * @return string
+     * @param Mixed $value The value to filter
+     * @return String
      */
     public function filter ( $value )
     {
-        return filter_var(
-            (string) $value,
-            FILTER_SANITIZE_URL
-        );
+        return filter_var( (string) $value, FILTER_SANITIZE_URL );
     }
 
 }

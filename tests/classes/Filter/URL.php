@@ -38,42 +38,49 @@ class classes_filter_url extends PHPUnit_Framework_TestCase
         $filter = new \r8\Filter\URL;
 
         $this->assertEquals(
-                "abcdefghijklmnopqrstuvwxyz",
-                $filter->filter("abcdefghijklmnopqrstuvwxyz")
-            );
+            "abcdefghijklmnopqrstuvwxyz",
+            $filter->filter("abcdefghijklmnopqrstuvwxyz")
+        );
 
         $this->assertEquals(
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                $filter->filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-            );
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            $filter->filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        );
 
         $this->assertEquals(
-                "1234567890",
-                $filter->filter("1234567890")
-            );
+            "1234567890",
+            $filter->filter("1234567890")
+        );
 
         $this->assertEquals(
-                "$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=",
-                $filter->filter("$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=")
-            );
+            "$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=",
+            $filter->filter("$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=")
+        );
     }
 
     public function testInvalidChars ()
     {
         $filter = new \r8\Filter\URL;
 
-        $this->assertEquals("", $filter->filter(''));
-        $this->assertEquals("", $filter->filter(''));
-        $this->assertEquals("", $filter->filter(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»'));
-        $this->assertEquals("", $filter->filter('¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâ'));
-        $this->assertEquals("", $filter->filter('ãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'));
+        $this->assertEquals(
+            "",
+            $filter->filter( implode( "", array_map("chr", range(0, 31) ) ) )
+        );
+
+        $this->assertEquals(
+            "",
+            $filter->filter( implode( "", array_map("chr", range(127, 255) ) ) )
+        );
     }
 
     public function testMixedChars ()
     {
         $filter = new \r8\Filter\URL;
 
-        $this->assertEquals('ab12!@#$asd%<>?D{}', $filter->filter('ab12!@#$asd%<>?D{}'));
+        $this->assertEquals(
+            'ab12!@#$asd%<>?D{}',
+            $filter->filter('ab12!@#$asd%<>?D{}')
+        );
     }
 
 }

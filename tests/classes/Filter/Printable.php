@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,44 +22,37 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package Filters
+ * @package UnitTests
  */
 
-namespace r8\Filter;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * Converts a value to either a float or an integer
+ * unit tests
  */
-class Number extends \r8\Filter
+class classes_Filter_Printable extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Converts the given value to a float or an integer
-     *
-     * @param Mixed $value The value to filter
-     * @return Float|Integer
-     */
-    public function filter ( $value )
+    public function testValidChars ()
     {
-        if ( is_array($value) ) {
-            if ( count($value) == 0 )
-                return 0;
-            else
-                $value = \r8\reduce($value);
-        }
+        $filter = new \r8\Filter\Printable;
 
-        if ( is_string($value) ) {
-            $value = filter_var(
-                $value,
-                FILTER_SANITIZE_NUMBER_FLOAT,
-                FILTER_FLAG_ALLOW_FRACTION
-            );
-        }
-        else if ( is_object($value) ) {
-            return 1;
-        }
+        $chars = implode("", array_map("chr", range(32, 126) ));
 
-        return (float) $value == (int) $value ? (int) $value : (float) $value;
+        $this->assertEquals(
+            $chars,
+            $filter->filter($chars)
+        );
+    }
+
+    public function testInvalidChars ()
+    {
+        $filter = new \r8\Filter\Printable;
+
+        $chars = implode("", array_map("chr", range(0, 31) ));
+        $chars .= implode("", array_map("chr", range(128, 255) ));
+
+        $this->assertSame( "", $filter->filter($chars) );
     }
 
 }

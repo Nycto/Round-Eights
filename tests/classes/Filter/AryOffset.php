@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
+class classes_Filter_AryOffset extends PHPUnit_Framework_TestCase
 {
 
     public function testSetFilter ()
@@ -39,36 +39,36 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
 
         $intFilter = new \r8\Filter\Integer;
         $this->assertEquals(
-                $filter,
-                $filter->setFilter( 50, $intFilter )
-            );
+            $filter,
+            $filter->setFilter( 50, $intFilter )
+        );
 
         $this->assertSame(
-                array( 50 => $intFilter ),
-                $filter->getFilters()
-            );
+            array( 50 => $intFilter ),
+            $filter->getFilters()
+        );
 
 
         $boolFilter = new \r8\Filter\Boolean;
         $this->assertEquals(
-                $filter,
-                $filter->setFilter( 50, $boolFilter )
-            );
+            $filter,
+            $filter->setFilter( 50, $boolFilter )
+        );
 
         $this->assertSame(
-                array( 50 => $boolFilter ),$filter->getFilters()
-            );
+            array( 50 => $boolFilter ),$filter->getFilters()
+        );
 
 
         $this->assertEquals(
-                $filter,
-                $filter->setFilter( "str", $intFilter)
-            );
+            $filter,
+            $filter->setFilter( "str", $intFilter)
+        );
 
         $this->assertSame(
-                array( 50 => $boolFilter, "str" => $intFilter ),
-                $filter->getFilters()
-            );
+            array( 50 => $boolFilter, "str" => $intFilter ),
+            $filter->getFilters()
+        );
     }
 
     public function testImport ()
@@ -79,17 +79,14 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
         $filter2 = new \r8\Filter\URL;
 
         $filter->import(array(
-                5 => new \r8\Filter\Number,
-                "index" => new \r8\Filter\URL
-            ));
+            5 => new \r8\Filter\Number,
+            "index" => new \r8\Filter\URL
+        ));
 
         $this->assertEquals(
-                array(
-                        5 => $filter1,
-                        "index" => $filter2
-                    ),
-                $filter->getFilters()
-            );
+            array( 5 => $filter1, "index" => $filter2 ),
+            $filter->getFilters()
+        );
     }
 
     public function testConstruct ()
@@ -98,30 +95,27 @@ class classes_filter_aryoffset extends PHPUnit_Framework_TestCase
         $filter2 = new \r8\Filter\URL;
 
         $filter = new \r8\Filter\AryOffset(array(
-                5 => $filter1,
-                "index" => $filter2
-            ));
+            5 => $filter1,
+            "index" => $filter2
+        ));
 
         $this->assertSame(
-                array(
-                        5 => $filter1,
-                        "index" => $filter2
-                    ),
-                $filter->getFilters()
-            );
+            array( 5 => $filter1, "index" => $filter2 ),
+            $filter->getFilters()
+        );
     }
 
     public function testFilter ()
     {
         $filter = new \r8\Filter\AryOffset(array(
-                1 => new \r8\Filter\Number,
-                5 => new \r8\Filter\Boolean
-            ));
+            1 => new \r8\Filter\Number,
+            5 => new \r8\Filter\Boolean
+        ));
 
         $this->assertSame(
-                array( 1 => 10, 5 => true ),
-                $filter->filter( array( 1 => "10", 5 => 1 ) )
-            );
+            array( 1 => 10, 5 => true ),
+            $filter->filter( array( 1 => "10", 5 => 1 ) )
+        );
     }
 
 }

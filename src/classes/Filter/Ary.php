@@ -39,33 +39,21 @@ class Ary extends \r8\Filter
     /**
      * Constructor...
      *
-     * @param Object The filter to apply to each value in the array
+     * @param \r8\iface\Filter The filter to apply to each value in the array
      */
     public function __construct( \r8\iface\Filter $filter )
     {
-        $this->setFilter( $filter );
+        $this->filter = $filter;
     }
 
     /**
      * Returns the filter loaded in this instance
      *
-     * @return Object
+     * @return \r8\iface\Filter
      */
     public function getFilter ()
     {
         return $this->filter;
-    }
-
-    /**
-     * Sets the filter that will be applied to each value of a filtered array
-     *
-     * @param Object The filter to load in to this instance
-     * @return Object Returns a self reference
-     */
-    public function setFilter ( \r8\iface\Filter $filter )
-    {
-        $this->filter = $filter;
-        return $this;
     }
 
     /**

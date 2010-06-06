@@ -39,11 +39,10 @@ class AlphaNum extends \r8\Filter
      */
     public function filter ( $value )
     {
-        return preg_replace(
-                '/[^a-zA-Z0-9]/',
-                '',
-                (string) $value
-            );
+        if ( ctype_alnum($value) )
+            return $value;
+        else
+            return preg_replace( '/[^a-zA-Z0-9]/', '', (string) $value );
     }
 
 }

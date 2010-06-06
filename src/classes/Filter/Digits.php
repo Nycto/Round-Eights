@@ -34,16 +34,15 @@ class Digits extends \r8\Filter
     /**
      * Cleans up a string in preparation for
      *
-     * @param mixed $value The value to filter
-     * @return
+     * @param Mixed $value The value to filter
+     * @return Mixed
      */
     public function filter ( $value )
     {
-        return preg_replace(
-                '/[^0-9]/',
-                '',
-                (string) $value
-            );
+        if ( ctype_digit($value) )
+            return (string) $value;
+        else
+            return preg_replace( '/[^0-9]/', '', (string) $value );
     }
 
 }

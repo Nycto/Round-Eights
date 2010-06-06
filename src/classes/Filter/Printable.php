@@ -26,38 +26,24 @@
 namespace r8\Filter;
 
 /**
- * Converts a value to either a float or an integer
+ * Strips out non-printable characters from a string
  */
-class Number extends \r8\Filter
+class Printable extends \r8\Filter
 {
 
     /**
-     * Converts the given value to a float or an integer
+     * Cleans up a string in preparation for
      *
      * @param Mixed $value The value to filter
-     * @return Float|Integer
+     * @return String
      */
     public function filter ( $value )
     {
-        if ( is_array($value) ) {
-            if ( count($value) == 0 )
-                return 0;
-            else
-                $value = \r8\reduce($value);
-        }
-
-        if ( is_string($value) ) {
-            $value = filter_var(
-                $value,
-                FILTER_SANITIZE_NUMBER_FLOAT,
-                FILTER_FLAG_ALLOW_FRACTION
-            );
-        }
-        else if ( is_object($value) ) {
-            return 1;
-        }
-
-        return (float) $value == (int) $value ? (int) $value : (float) $value;
+        return filter_var(
+            (string) $value,
+            FILTER_UNSAFE_RAW,
+            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
+        );
     }
 
 }

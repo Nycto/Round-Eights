@@ -34,27 +34,28 @@ class Float extends \r8\Filter
     /**
      * Converts the given value to a float
      *
-     * @param mixed $value The value to filter
-     * @return float
+     * @param Mixed $value The value to filter
+     * @return Float
      */
     public function filter ( $value )
     {
         if ( is_array($value) ) {
-
             if ( count($value) == 0 )
                 return 0.0;
             else
                 $value = \r8\reduce($value);
-
         }
 
         if ( is_string($value) ) {
-            $value = preg_replace('/[^\-0-9\.]/', '', $value);
-            $value = preg_replace('/(?<!^)\-/', '', $value);
+            $value = filter_var(
+                $value,
+                FILTER_SANITIZE_NUMBER_FLOAT,
+                FILTER_FLAG_ALLOW_FRACTION
+            );
         }
-
-        if ( is_object($value) )
+        else if ( is_object($value) ) {
             return 1.0;
+        }
 
         return (float) $value;
     }

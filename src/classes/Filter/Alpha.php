@@ -39,11 +39,10 @@ class Alpha extends \r8\Filter
      */
     public function filter ( $value )
     {
-        return preg_replace(
-                '/[^a-zA-Z]/',
-                '',
-                (string) $value
-            );
+        if ( ctype_alpha($value) )
+            return $value;
+        else
+            return preg_replace( '/[^a-zA-Z]/', '', (string) $value );
     }
 
 }

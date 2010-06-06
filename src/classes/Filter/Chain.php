@@ -35,13 +35,15 @@ class Chain extends \r8\Filter
 
     /**
      * The list of filters to run through
+     *
+     * @var Array A list of \r8\iface\Filter objects
      */
-    protected $filters = array();
+    private $filters = array();
 
     /**
      * Constructor
      *
-     * @param object $filters... Allows you to add filters on instantiation
+     * @param \r8\iface\Filter $filters... The list of filters being chained
      */
     public function __construct ()
     {
@@ -57,7 +59,7 @@ class Chain extends \r8\Filter
     /**
      * Removes all the filters from this instance
      *
-     * @return object Returns a self reference
+     * @return \r8\Filter\Chain Returns a self reference
      */
     public function clear ()
     {
@@ -68,8 +70,8 @@ class Chain extends \r8\Filter
     /**
      * Adds a new filter to this interface
      *
-     * @param object $filter The filter to add
-     * @return object Returns a self reference
+     * @param \r8\iface\Filter $filter The filter to add
+     * @return \r8\Filter\Chain Returns a self reference
      */
     public function add ( \r8\iface\Filter $filter )
     {
@@ -80,7 +82,7 @@ class Chain extends \r8\Filter
     /**
      * Returns the array of filters contained in this instance
      *
-     * @return Object Returns an Array object
+     * @return \r8\Filter\Chain Returns an Array object
      */
     public function getFilters ()
     {
@@ -90,8 +92,8 @@ class Chain extends \r8\Filter
     /**
      * Applies the contained filters to the given value and returns the results
      *
-     * @param mixed $value The value to filter
-     * @return mixed The result of the filtering
+     * @param Mixed $value The value to filter
+     * @return Mixed The result of the filtering
      */
     public function filter ( $value )
     {

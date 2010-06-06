@@ -34,7 +34,7 @@ class Boolean extends \r8\Filter
     /**
      * Converts the given value to boolean
      *
-     * @param mixed $value The value to filter
+     * @param Mixed $value The value to filter
      * @return Boolean
      */
     public function filter ( $value )
