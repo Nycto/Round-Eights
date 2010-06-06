@@ -155,7 +155,14 @@ function stripW ($string, $allow = "")
  */
 function stripNoPrint ($string)
 {
-    return preg_replace( '/[^\x20-\x7E]/', '', (string) $string );
+    return filter_var(
+
+        // chr #127 isn't picked up by the filter method. So, we do it manually
+        str_replace( chr(127), "", (string) $string ),
+
+        FILTER_UNSAFE_RAW,
+        FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
+    );
 }
 
 /**

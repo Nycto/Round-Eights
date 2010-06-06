@@ -39,11 +39,7 @@ class Printable extends \r8\Filter
      */
     public function filter ( $value )
     {
-        return filter_var(
-            (string) $value,
-            FILTER_UNSAFE_RAW,
-            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-        );
+        return \r8\str\stripNoPrint($value);
     }
 
 }
