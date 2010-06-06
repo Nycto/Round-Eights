@@ -55,101 +55,164 @@ class functions_strings extends PHPUnit_Framework_TestCase
     {
 
         $this->assertSame(
-                array(0, 8, 52, 60, 70),
-                \r8\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string' )
-            );
+            array(0, 8, 52, 60, 70),
+            \r8\str\offsets(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string'
+            )
+        );
 
         $this->assertEquals(
-                array(0, 8, 52, 60, 70),
-                \r8\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', TRUE )
-            );
+            array(0, 8, 52, 60, 70),
+            \r8\str\offsets(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                TRUE
+            )
+        );
 
         $this->assertEquals(
-                array(8, 52, 70),
-                \r8\str\offsets( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
-            );
+            array(8, 52, 70),
+            \r8\str\offsets(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                array(0, 60),
-                \r8\str\offsets( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
-            );
+            array(0, 60),
+            \r8\str\offsets(
+                'String',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                array(),
-                \r8\str\offsets( 'Not in Haystack', 'Stringy string with multiple occurances of the word string, Stringity string' )
-            );
+            array(),
+            \r8\str\offsets(
+                'Not in Haystack',
+                'Stringy string with multiple occurances of the word string'
+            )
+        );
 
         $this->assertEquals(
-                array(),
-                \r8\str\offsets( 'Multiple', 'Stringy string with multiple occurances of the word string, Stringity string', FALSE )
-            );
+            array(),
+            \r8\str\offsets(
+                'Multiple',
+                'Stringy string with multiple occurances of the word string',
+                FALSE
+            )
+        );
 
     }
 
     public function testOffsetsException ()
     {
         $this->setExpectedException('\r8\Exception\Argument');
-        \r8\str\offsets( '', 'Stringy string with multiple occurances of the word string, Stringity string' );
+        \r8\str\offsets(
+            '',
+            'Stringy string with multiple occurances of the word string'
+        );
     }
 
     public function testNPos ()
     {
+        $this->assertEquals(
+            0,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string',
+                0
+            )
+        );
 
         $this->assertEquals(
+            52,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                2
+            )
+        );
+
+        $this->assertEquals(
+            70,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                -1
+            )
+        );
+
+        $this->assertEquals(
+            52,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                -3
+            )
+        );
+
+        $this->assertEquals(
+            8,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
                 0,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0 )
-            );
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                52,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 2 )
-            );
+            52,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                1,
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                70,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1 )
-            );
+            70,
+            \r8\str\npos(
+                'string',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                -1,
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                52,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -3 )
-            );
-
-        $this->assertEquals(
-                8,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
-            );
-
-        $this->assertEquals(
-                52,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', 1, FALSE )
-            );
-
-        $this->assertEquals(
-                70,
-                \r8\str\npos( 'string', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
-            );
-
-        $this->assertEquals(
+            0,
+            \r8\str\npos(
+                'String',
+                'Stringy string with multiple occurances of the word string, Stringity string',
                 0,
-                \r8\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', 0, FALSE )
-            );
+                FALSE
+            )
+        );
 
         $this->assertEquals(
-                60,
-                \r8\str\npos( 'String', 'Stringy string with multiple occurances of the word string, Stringity string', -1, FALSE )
-            );
+            60,
+            \r8\str\npos(
+                'String',
+                'Stringy string with multiple occurances of the word string, Stringity string',
+                -1,
+                FALSE
+            )
+        );
 
     }
 
     public function testUnshout ()
     {
-
         $this->assertEquals(
             'This is A String with Some odd Capitals',
             \r8\str\unshout( "This is A STRING wiTH SoMe odd CAPITALs" )
         );
-
     }
 
     public function testStripW ()
@@ -157,21 +220,21 @@ class functions_strings extends PHPUnit_Framework_TestCase
         $this->assertSame( "", \r8\str\stripW("") );
 
         $this->assertEquals(
-                "123abc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc")
-            );
+            "123abc",
+            \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc")
+        );
         $this->assertEquals(
-                "  1 23 a bc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " ")
-            );
+            "  1 23 a bc",
+            \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " ")
+        );
         $this->assertEquals(
-                "  1_ 23 a bc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " _")
-            );
+            "  1_ 23 a bc",
+            \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", " _")
+        );
         $this->assertEquals(
-                "12\n3ab\rc",
-                \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", "\n\r")
-            );
+            "12\n3ab\rc",
+            \r8\str\stripW("  !@#^1^%_ 2\n3\t <>?a )))b\rc", "\n\r")
+        );
     }
 
     public function testStripNoPrint ()
@@ -180,114 +243,131 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
         $chars = implode("", array_map( 'chr', range(0, 255) ));
         $this->assertSame(
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
-                ."\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
-                \r8\str\stripNoPrint($chars)
-            );
+            " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
+            ."\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+            \r8\str\stripNoPrint($chars)
+        );
     }
 
     public function testStripRepeats ()
     {
         $this->assertEquals(
-                "start T tytyty yyyy end",
-                \r8\str\stripRepeats('start TTT ttytyty yyyy end', 't')
-            );
+            "start T tytyty yyyy end",
+            \r8\str\stripRepeats('start TTT ttytyty yyyy end', 't')
+        );
 
         $this->assertEquals(
-                "start TTT tty yyyy end",
-                \r8\str\stripRepeats('start TTT ttytyty yyyy end', 'ty')
-            );
+            "start TTT tty yyyy end",
+            \r8\str\stripRepeats('start TTT ttytyty yyyy end', 'ty')
+        );
 
         $this->assertEquals(
-                "start TTT tytyty yyyy end",
-                \r8\str\stripRepeats('start TTT ttytyty yyyy end', 't', FALSE)
-            );
+            "start TTT tytyty yyyy end",
+            \r8\str\stripRepeats('start TTT ttytyty yyyy end', 't', FALSE)
+        );
 
         $this->assertEquals(
-                "start T ttytyty yyyy end",
-                \r8\str\stripRepeats('start TTT ttytyty yyyy end', 'T', FALSE)
-            );
+            "start T ttytyty yyyy end",
+            \r8\str\stripRepeats('start TTT ttytyty yyyy end', 'T', FALSE)
+        );
 
         $this->assertEquals(
-                " a string with repeats",
-                \r8\str\stripRepeats('  a   string with   repeats', ' ')
-            );
+            " a string with repeats",
+            \r8\str\stripRepeats('  a   string with   repeats', ' ')
+        );
 
         $this->assertEquals(
-                "start T tyty yyyy end",
-                \r8\str\stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
-            );
+            "start T tyty yyyy end",
+            \r8\str\stripRepeats('start TTT ttytyty yyyy end', array( array('t'), 'ty'))
+        );
     }
 
     public function testStripRepeats_Exception ()
     {
         $this->setExpectedException('\r8\Exception\Argument');
-        \r8\str\stripRepeats( 'Stringy string with multiple occurances of the word string, Stringity string', '' );
+        \r8\str\stripRepeats(
+            'Stringy string with multiple occurances of the word string',
+            ''
+        );
     }
 
     public function testTruncateWords ()
     {
         $this->assertEquals(
-                "string with so...ds that ne...ed down",
-                \r8\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10)
-            );
-
-        $this->assertEquals(
-                "string with so...s that ne...d down",
-                \r8\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6)
-            );
-
-        $this->assertEquals(
-                "string with so..ds that ne..ed down",
-                \r8\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 10, 6, '..')
-            );
-
-        $this->assertEquals(
+            "string with so...ds that ne...ed down",
+            \r8\str\truncateWords(
                 "string with someverylongwords that needtobetrimmed down",
-                \r8\str\truncateWords( "string with someverylongwords that needtobetrimmed down", 20 )
-            );
+                10
+            )
+        );
+
+        $this->assertEquals(
+            "string with so...s that ne...d down",
+            \r8\str\truncateWords(
+                "string with someverylongwords that needtobetrimmed down",
+                10, 6
+            )
+        );
+
+        $this->assertEquals(
+            "string with so..ds that ne..ed down",
+            \r8\str\truncateWords(
+                "string with someverylongwords that needtobetrimmed down",
+                10, 6, '..'
+            )
+        );
+
+        $this->assertEquals(
+            "string with someverylongwords that needtobetrimmed down",
+            \r8\str\truncateWords(
+                "string with someverylongwords that needtobetrimmed down",
+                20
+            )
+        );
     }
 
     public function testStripQuoted ()
     {
         $this->assertEquals(
-                "This  with quotes",
-                \r8\str\stripQuoted( "This 'is a string' with\"\" quotes" )
-            );
+            "This  with quotes",
+            \r8\str\stripQuoted( "This 'is a string' with\"\" quotes" )
+        );
 
         $this->assertEquals(
-                "This  withot",
-                \r8\str\stripQuoted( "This /is a string& with/ qu&ot&es", array('/', '&') )
-            );
+            "This  withot",
+            \r8\str\stripQuoted(
+                "This /is a string& with/ qu&ot&es",
+                array('/', '&')
+            )
+        );
     }
 
     public function testSubstr_icount ()
     {
+        $this->assertEquals(
+            2,
+            \r8\str\substr_icount( 'This Is A Test', 'is' )
+        );
 
         $this->assertEquals(
-                2,
-                \r8\str\substr_icount( 'This Is A Test', 'is' )
-            );
+            2,
+            \r8\str\substr_icount( 'This Is A Test', 'Is' )
+        );
 
         $this->assertEquals(
-                2,
-                \r8\str\substr_icount( 'This Is A Test', 'Is' )
-            );
+            2,
+            \r8\str\substr_icount( 'This Is A Test', 'IS' )
+        );
 
         $this->assertEquals(
-                2,
-                \r8\str\substr_icount( 'This Is A Test', 'IS' )
-            );
+            1,
+            \r8\str\substr_icount( 'This Is A Test', 'is', 3 )
+        );
 
         $this->assertEquals(
-                1,
-                \r8\str\substr_icount( 'This Is A Test', 'is', 3 )
-            );
-
-        $this->assertEquals(
-                0,
-                \r8\str\substr_icount( 'This Is A Test', 'is', 3, 3 )
-            );
+            0,
+            \r8\str\substr_icount( 'This Is A Test', 'is', 3, 3 )
+        );
     }
 
     public function testStartsWith ()
@@ -321,231 +401,231 @@ class functions_strings extends PHPUnit_Framework_TestCase
     public function testTail ()
     {
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('string', 'tail')
-            );
+            'stringtail',
+            \r8\str\tail('string', 'tail')
+        );
 
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('stringtail', 'tail')
-            );
+            'stringtail',
+            \r8\str\tail('stringtail', 'tail')
+        );
 
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('string', 'tail', TRUE)
-            );
+            'stringtail',
+            \r8\str\tail('string', 'tail', TRUE)
+        );
 
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('stringtail', 'tail', TRUE)
-            );
+            'stringtail',
+            \r8\str\tail('stringtail', 'tail', TRUE)
+        );
 
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('string', 'tail', FALSE)
-            );
+            'stringtail',
+            \r8\str\tail('string', 'tail', FALSE)
+        );
 
         $this->assertEquals(
-                'stringtail',
-                \r8\str\tail('stringtail', 'tail', FALSE)
-            );
+            'stringtail',
+            \r8\str\tail('stringtail', 'tail', FALSE)
+        );
 
         $this->assertEquals(
-                'stringtailTail',
-                \r8\str\tail('stringtail', 'Tail', FALSE)
-            );
+            'stringtailTail',
+            \r8\str\tail('stringtail', 'Tail', FALSE)
+        );
 
         $this->assertEquals(
-                'stringTail',
-                \r8\str\tail('stringTail', 'Tail', FALSE)
-            );
+            'stringTail',
+            \r8\str\tail('stringTail', 'Tail', FALSE)
+        );
     }
 
     public function testStripTail ()
     {
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with content", "ent" )
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with content", "ent" )
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with cont", "ent" )
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with cont", "ent" )
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with content", "ent", TRUE )
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with content", "ent", TRUE )
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with content", "ENT", TRUE )
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with content", "ENT", TRUE )
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with cont", "ent", TRUE)
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with cont", "ent", TRUE)
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with content", "ent", FALSE )
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with content", "ent", FALSE )
+        );
 
         $this->assertEquals(
-                'string with content',
-                \r8\str\stripTail( "string with content", "Ent", FALSE )
-            );
+            'string with content',
+            \r8\str\stripTail( "string with content", "Ent", FALSE )
+        );
 
         $this->assertEquals(
-                'string with cont',
-                \r8\str\stripTail( "string with cont", "ent", FALSE)
-            );
+            'string with cont',
+            \r8\str\stripTail( "string with cont", "ent", FALSE)
+        );
 
         $this->assertEquals(
-                '',
-                \r8\str\stripTail( "string", "string", TRUE )
-            );
+            '',
+            \r8\str\stripTail( "string", "string", TRUE )
+        );
 
         $this->assertEquals(
-                'string',
-                \r8\str\stripTail( "string", "" )
-            );
+            'string',
+            \r8\str\stripTail( "string", "" )
+        );
     }
 
     public function testHead ()
     {
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('string', 'head')
-            );
+            'headstring',
+            \r8\str\head('string', 'head')
+        );
 
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('headstring', 'head')
-            );
+            'headstring',
+            \r8\str\head('headstring', 'head')
+        );
 
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('string', 'head', TRUE)
-            );
+            'headstring',
+            \r8\str\head('string', 'head', TRUE)
+        );
 
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('headstring', 'head', TRUE)
-            );
+            'headstring',
+            \r8\str\head('headstring', 'head', TRUE)
+        );
 
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('string', 'head', FALSE)
-            );
+            'headstring',
+            \r8\str\head('string', 'head', FALSE)
+        );
 
         $this->assertEquals(
-                'headstring',
-                \r8\str\head('headstring', 'head', FALSE)
-            );
+            'headstring',
+            \r8\str\head('headstring', 'head', FALSE)
+        );
 
         $this->assertEquals(
-                'Headheadstring',
-                \r8\str\head('headstring', 'Head', FALSE)
-            );
+            'Headheadstring',
+            \r8\str\head('headstring', 'Head', FALSE)
+        );
 
         $this->assertEquals(
-                'Headstring',
-                \r8\str\head('Headstring', 'Head', FALSE)
-            );
+            'Headstring',
+            \r8\str\head('Headstring', 'Head', FALSE)
+        );
     }
 
     public function testStripHead ()
     {
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "ing with content", "str" )
-            );
+            'ing with content',
+            \r8\str\stripHead( "ing with content", "str" )
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "ing with content", "str" )
-            );
+            'ing with content',
+            \r8\str\stripHead( "ing with content", "str" )
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "ing with content", "str", TRUE )
-            );
+            'ing with content',
+            \r8\str\stripHead( "ing with content", "str", TRUE )
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "string with content", "STR", TRUE )
-            );
+            'ing with content',
+            \r8\str\stripHead( "string with content", "STR", TRUE )
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "ing with content", "str", TRUE)
-            );
+            'ing with content',
+            \r8\str\stripHead( "ing with content", "str", TRUE)
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "string with content", "str", FALSE )
-            );
+            'ing with content',
+            \r8\str\stripHead( "string with content", "str", FALSE )
+        );
 
         $this->assertEquals(
-                'string with content',
-                \r8\str\stripHead( "string with content", "Str", FALSE )
-            );
+            'string with content',
+            \r8\str\stripHead( "string with content", "Str", FALSE )
+        );
 
         $this->assertEquals(
-                'ing with content',
-                \r8\str\stripHead( "ing with content", "str", FALSE)
-            );
+            'ing with content',
+            \r8\str\stripHead( "ing with content", "str", FALSE)
+        );
 
         $this->assertEquals(
-                '',
-                \r8\str\stripHead( "string", "string", TRUE )
-            );
+            '',
+            \r8\str\stripHead( "string", "string", TRUE )
+        );
 
         $this->assertEquals(
-                'string',
-                \r8\str\stripHead( "string", "" )
-            );
+            'string',
+            \r8\str\stripHead( "string", "" )
+        );
     }
 
     public function testWeld ()
     {
         $this->assertEquals(
-                '/dir/file',
-                \r8\str\weld('/dir', 'file', '/')
-            );
+            '/dir/file',
+            \r8\str\weld('/dir', 'file', '/')
+        );
 
         $this->assertEquals(
-                '/dir/file',
-                \r8\str\weld('/dir/', 'file', '/')
-            );
+            '/dir/file',
+            \r8\str\weld('/dir/', 'file', '/')
+        );
 
         $this->assertEquals(
-                '/dir/file',
-                \r8\str\weld('/dir', '/file', '/')
-            );
+            '/dir/file',
+            \r8\str\weld('/dir', '/file', '/')
+        );
 
         $this->assertEquals(
-                '/dir/file',
-                \r8\str\weld('/dir/', '/file', '/')
-            );
+            '/dir/file',
+            \r8\str\weld('/dir/', '/file', '/')
+        );
 
         $this->assertEquals(
-                'onEleven',
-                \r8\str\weld('one', 'eleven', 'E')
-            );
+            'onEleven',
+            \r8\str\weld('one', 'eleven', 'E')
+        );
 
         $this->assertEquals(
-                'onEleven',
-                \r8\str\weld('one', 'eleven', 'E', TRUE)
-            );
+            'onEleven',
+            \r8\str\weld('one', 'eleven', 'E', TRUE)
+        );
 
         $this->assertEquals(
-                'oneEeleven',
-                \r8\str\weld('one', 'eleven', 'E', FALSE)
-            );
+            'oneEeleven',
+            \r8\str\weld('one', 'eleven', 'E', FALSE)
+        );
     }
 
     public function testPartition ()
@@ -553,164 +633,163 @@ class functions_strings extends PHPUnit_Framework_TestCase
         $this->assertSame( array(), \r8\str\partition("", 5, 10, 12) );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", 5, 10, 12)
-            );
-
-
-        $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", array( 5, 10 ), 12)
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", 5, 10, 12)
+        );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", -10, 5, 10, 12)
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", array( 5, 10 ), 12)
+        );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", 0, 5, 10, 12)
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", -10, 5, 10, 12)
+        );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", 12, 10, 5)
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", 0, 5, 10, 12)
+        );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition("This is a string to split", 5, 10, 12, 10)
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", 12, 10, 5)
+        );
 
         $this->assertSame(
-                array( "This ", "is a ", "st", "ring to split" ),
-                \r8\str\partition( "This is a string to split", array( 5, -10 ), 12, 10, 12, 10, 50 )
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition("This is a string to split", 5, 10, 12, 10)
+        );
 
         $this->assertSame(
-                array( "T", "his is a string to spli", "t" ),
-                \r8\str\partition( "This is a string to split", 0, 1, 24, 25 )
-            );
+            array( "This ", "is a ", "st", "ring to split" ),
+            \r8\str\partition(
+                "This is a string to split",
+                array( 5, -10 ), 12, 10, 12, 10, 50
+            )
+        );
+
+        $this->assertSame(
+            array( "T", "his is a string to spli", "t" ),
+            \r8\str\partition( "This is a string to split", 0, 1, 24, 25 )
+        );
     }
 
     public function testCompare ()
     {
         $this->assertEquals(
-                0,
-                \r8\str\compare('Test', 'test', TRUE)
-            );
+            0,
+            \r8\str\compare('Test', 'test', TRUE)
+        );
 
         $this->assertEquals(
-                -6,
-                \r8\str\compare('Not The Same', 'test', TRUE)
-            );
+            -6,
+            \r8\str\compare('Not The Same', 'test', TRUE)
+        );
 
         $this->assertEquals(
-                16,
-                \r8\str\compare('test', 'Different Than', TRUE)
-            );
+            16,
+            \r8\str\compare('test', 'Different Than', TRUE)
+        );
 
         $this->assertEquals(
-                0,
-                \r8\str\compare('The Same', 'The Same', FALSE)
-            );
+            0,
+            \r8\str\compare('The Same', 'The Same', FALSE)
+        );
 
         $this->assertEquals(
-                -1,
-                \r8\str\compare('Test', 'test', FALSE)
-            );
+            -1,
+            \r8\str\compare('Test', 'test', FALSE)
+        );
 
         $this->assertEquals(
-                1,
-                \r8\str\compare('Casesensitive', 'CaseSensitivE', FALSE)
-            );
+            1,
+            \r8\str\compare('Casesensitive', 'CaseSensitivE', FALSE)
+        );
     }
 
     public function testEnclose ()
     {
+        $this->assertEquals(
+            "wrap data wrap",
+            \r8\str\enclose( " data ", "wrap" )
+        );
 
         $this->assertEquals(
-                "wrap data wrap",
-                \r8\str\enclose( " data ", "wrap" )
-            );
+            "wrap data wrap",
+            \r8\str\enclose( "wrap data ", "wrap" )
+        );
 
         $this->assertEquals(
-                "wrap data wrap",
-                \r8\str\enclose( "wrap data ", "wrap" )
-            );
+            "wrap data wrap",
+            \r8\str\enclose( " data wrap", "wrap" )
+        );
 
         $this->assertEquals(
-                "wrap data wrap",
-                \r8\str\enclose( " data wrap", "wrap" )
-            );
-
-        $this->assertEquals(
-                "wrap data wrap",
-                \r8\str\enclose( "wrap data wrap", "wrap" )
-            );
-
+            "wrap data wrap",
+            \r8\str\enclose( "wrap data wrap", "wrap" )
+        );
 
 
         $this->assertEquals(
-                "Wrap data Wrap",
-                \r8\str\enclose( " data ", "Wrap", TRUE )
-            );
+            "Wrap data Wrap",
+            \r8\str\enclose( " data ", "Wrap", TRUE )
+        );
 
         $this->assertEquals(
-                "wrap data Wrap",
-                \r8\str\enclose( "wrap data ", "Wrap", TRUE )
-            );
+            "wrap data Wrap",
+            \r8\str\enclose( "wrap data ", "Wrap", TRUE )
+        );
 
         $this->assertEquals(
-                "Wrap data wrap",
-                \r8\str\enclose( " data wrap", "Wrap", TRUE )
-            );
+            "Wrap data wrap",
+            \r8\str\enclose( " data wrap", "Wrap", TRUE )
+        );
 
         $this->assertEquals(
-                "wrap data wrap",
-                \r8\str\enclose( "wrap data wrap", "Wrap", TRUE )
-            );
-
+            "wrap data wrap",
+            \r8\str\enclose( "wrap data wrap", "Wrap", TRUE )
+        );
 
 
         $this->assertEquals(
-                "Wrap data Wrap",
-                \r8\str\enclose( " data ", "Wrap", FALSE )
-            );
+            "Wrap data Wrap",
+            \r8\str\enclose( " data ", "Wrap", FALSE )
+        );
 
         $this->assertEquals(
-                "Wrapwrap data Wrap",
-                \r8\str\enclose( "wrap data ", "Wrap", FALSE )
-            );
+            "Wrapwrap data Wrap",
+            \r8\str\enclose( "wrap data ", "Wrap", FALSE )
+        );
 
         $this->assertEquals(
-                "Wrap data wrapWrap",
-                \r8\str\enclose( " data wrap", "Wrap", FALSE )
-            );
+            "Wrap data wrapWrap",
+            \r8\str\enclose( " data wrap", "Wrap", FALSE )
+        );
 
         $this->assertEquals(
-                "Wrapwrap data wrapWrap",
-                \r8\str\enclose( "wrap data wrap", "Wrap", FALSE )
-            );
+            "Wrapwrap data wrapWrap",
+            \r8\str\enclose( "wrap data wrap", "Wrap", FALSE )
+        );
     }
 
     public function testTruncate ()
     {
         $this->assertEquals (
-                "Not long enough",
-                \r8\str\truncate ( "Not long enough", 30 )
-            );
+            "Not long enough",
+            \r8\str\truncate ( "Not long enough", 30 )
+        );
 
         $this->assertEquals (
-                "too long ...own good",
-                \r8\str\truncate ( "too long for it's own good", 20 )
-            );
+            "too long ...own good",
+            \r8\str\truncate ( "too long for it's own good", 20 )
+        );
 
         $this->assertEquals (
-                "too long -- own good",
-                \r8\str\truncate ( "too long for it's own good", 20, "--" )
-            );
+            "too long -- own good",
+            \r8\str\truncate ( "too long for it's own good", 20, "--" )
+        );
     }
 
 }
