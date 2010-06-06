@@ -37,6 +37,8 @@ class AryOffset extends \r8\Filter
 
     /**
      * The filters to apply indexed by their matching offset
+     *
+     * @var Array An array of \r8\iface\filter objects
      */
     private $filters = array();
 
@@ -80,7 +82,7 @@ class AryOffset extends \r8\Filter
      * Imports a list of filters in to this instance
      *
      * @param Array The list of filters to import indexed by the offsets to apply each filter to
-     * @return Object Returns a self reference
+     * @return \r8\Filter\AryOffset Returns a self reference
      */
     public function import ( array $filters )
     {

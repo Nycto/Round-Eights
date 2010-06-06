@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_email extends PHPUnit_Framework_TestCase
+class classes_Filter_Email extends PHPUnit_Framework_TestCase
 {
 
     public function testValidChars ()
@@ -38,42 +38,46 @@ class classes_filter_email extends PHPUnit_Framework_TestCase
         $filter = new \r8\Filter\Email;
 
         $this->assertEquals(
-                "abcdefghijklmnopqrstuvwxyz",
-                $filter->filter("abcdefghijklmnopqrstuvwxyz")
-            );
+            "abcdefghijklmnopqrstuvwxyz",
+            $filter->filter("abcdefghijklmnopqrstuvwxyz")
+        );
 
         $this->assertEquals(
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                $filter->filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-            );
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            $filter->filter("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        );
 
         $this->assertEquals(
-                "1234567890",
-                $filter->filter("1234567890")
-            );
+            "1234567890",
+            $filter->filter("1234567890")
+        );
 
         $this->assertEquals(
-                "!#$%&'*+-=?^_`{|}~@.[]",
-                $filter->filter("!#$%&'*+-=?^_`{|}~@.[]")
-            );
+            "!#$%&'*+-=?^_`{|}~@.[]",
+            $filter->filter("!#$%&'*+-=?^_`{|}~@.[]")
+        );
     }
 
     public function testInvalidChars ()
     {
         $filter = new \r8\Filter\Email;
 
-        $this->assertEquals("", $filter->filter('/"():;<>\'));
-        $this->assertEquals("", $filter->filter(''));
-        $this->assertEquals("", $filter->filter(' ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»'));
-        $this->assertEquals("", $filter->filter('¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâ'));
-        $this->assertEquals("", $filter->filter('ãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'));
+        $this->assertEquals(
+            "",
+            $filter->filter( implode( "", array_map("chr", range(127, 255) ) ) )
+        );
+
+        $this->assertEquals("", $filter->filter('/"():;<>\\'));
     }
 
     public function testMixedChars ()
     {
         $filter = new \r8\Filter\Email;
 
-        $this->assertEquals('ab12!@#$asd%?D{}', $filter->filter('ab12!@#$asd%<>?D{}'));
+        $this->assertEquals(
+            'ab12!@#$asd%?D{}',
+            $filter->filter('ab12!@#$asd%<>?D{}')
+        );
     }
 
 }

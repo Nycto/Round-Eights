@@ -36,18 +36,22 @@ class StandardEmpty extends \r8\Filter
 
     /**
      * Any flags to use while calling \r8\isEmpty
+     *
+     * @var Integer
      */
     protected $flags = 0;
 
     /**
      * The value returned when the filter input is empty
+     *
+     * @var Mixed
      */
     protected $value = NULL;
 
     /**
      * Constructor
      *
-     * @param mixed $value The value to return when the filter input is empty
+     * @param Mixed $value The value to return when the filter input is empty
      * @param Integer $flags Any flags to pass to isEmpty
      */
     public function __construct ( $value = NULL, $flags = 0 )
@@ -72,7 +76,7 @@ class StandardEmpty extends \r8\Filter
      * This unsets any existing values and replaces it with the given parameter
      *
      * @param Integer $flags
-     * @return Object Returns a self reference
+     * @return \r8\Filter\StandardEmpty Returns a self reference
      */
     public function setFlags ( $flags )
     {
@@ -86,7 +90,7 @@ class StandardEmpty extends \r8\Filter
      * This adds the given flags in to the existing flags, leaving the current values set.
      *
      * @param Integer $flags
-     * @return Object Returns a self reference
+     * @return \r8\Filter\StandardEmpty Returns a self reference
      */
     public function addFlags ( $flags )
     {
@@ -98,7 +102,7 @@ class StandardEmpty extends \r8\Filter
     /**
      * Returns the standard empty value
      *
-     * @return mixed
+     * @return Mixed
      */
     public function getValue ()
     {
@@ -108,8 +112,8 @@ class StandardEmpty extends \r8\Filter
     /**
      * Sets the standard empty value
      *
-     * @param mixed $value The new value
-     * @return object Returns a self reference
+     * @param Mixed $value The new value
+     * @return \r8\Filter\StandardEmpty Returns a self reference
      */
     public function setValue ( $value )
     {
@@ -120,15 +124,12 @@ class StandardEmpty extends \r8\Filter
     /**
      * Performs the filtering
      *
-     * @param mixed $value The value to filter
-     * @return mixed
+     * @param Mixed $value The value to filter
+     * @return Mixed
      */
     public function filter ( $value )
     {
-        if ( \r8\isEmpty( $value, $this->flags ) )
-            return $this->value;
-
-        return $value;
+        return \r8\isEmpty( $value, $this->flags ) ? $this->value : $value;
     }
 
 }

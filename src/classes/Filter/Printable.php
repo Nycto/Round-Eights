@@ -34,8 +34,8 @@ class Printable extends \r8\Filter
     /**
      * Cleans up a string in preparation for
      *
-     * @param mixed $value The value to filter
-     * @return
+     * @param Mixed $value The value to filter
+     * @return String
      */
     public function filter ( $value )
     {

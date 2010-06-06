@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_ary extends PHPUnit_Framework_TestCase
+class classes_Filter_Ary extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
@@ -42,29 +42,15 @@ class classes_filter_ary extends PHPUnit_Framework_TestCase
         $this->assertSame( $int, $filter->getFilter() );
     }
 
-    public function testSetFilter ()
-    {
-        $int = new \r8\Filter\Integer;
-
-        $filter = new \r8\Filter\Ary( $int );
-
-        $this->assertSame( $int, $filter->getFilter() );
-
-        $bool = new \r8\Filter\Boolean;
-        $this->assertSame( $filter, $filter->setFilter($bool) );
-
-        $this->assertSame( $bool, $filter->getFilter() );
-    }
-
     public function testFilter ()
     {
         $int = new \r8\Filter\Integer;
         $filter = new \r8\Filter\Ary( $int );
 
         $this->assertSame(
-                array(5, 10, 20),
-                $filter->filter(array("5", "10.5", 20.2))
-            );
+            array(5, 10, 20),
+            $filter->filter(array("5", "10.5", 20.2))
+        );
     }
 
     public function testFilter_nonAry ()
@@ -72,15 +58,9 @@ class classes_filter_ary extends PHPUnit_Framework_TestCase
         $int = new \r8\Filter\Integer;
         $filter = new \r8\Filter\Ary( $int );
 
-        $this->assertSame(
-                array( 28 ),
-                $filter->filter("28")
-            );
+        $this->assertSame( array( 28 ), $filter->filter("28") );
 
-        $this->assertSame(
-                array( 28 ),
-                $filter->filter( array("28") )
-            );
+        $this->assertSame( array( 28 ), $filter->filter( array("28") ) );
     }
 
 }

@@ -36,15 +36,12 @@ class Email extends \r8\Filter
     /**
      * Filters the given value
      *
-     * @param mixed $value The value to filter
+     * @param Mixed $value The value to filter
      * @return Mixed Returns the filtered value
      */
     public function filter ( $value )
     {
-        return filter_var(
-                (string) $value,
-                FILTER_SANITIZE_EMAIL
-            );
+        return filter_var( (string) $value, FILTER_SANITIZE_EMAIL );
     }
 
 }

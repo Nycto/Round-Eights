@@ -30,21 +30,19 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_alpha extends PHPUnit_Framework_TestCase
+class classes_Filter_Alpha extends PHPUnit_Framework_TestCase
 {
 
     public function testValidChars ()
     {
         $filter = new \r8\Filter\Alpha;
 
-        $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-            .'abcdefghijklmnopqrstuvwxyz';
+        $valid = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         $this->assertEquals(
-                $valid,
-                $filter->filter($valid)
-            );
-
+            $valid,
+            $filter->filter($valid)
+        );
     }
 
     public function testInvalidChars ()
@@ -55,12 +53,9 @@ class classes_filter_alpha extends PHPUnit_Framework_TestCase
         $this->assertEquals("", $filter->filter('!"#$%&\'()*+,-/:;<=>?@[\]^`{|}~'));
 
         $this->assertEquals(
-                "",
-                $filter->filter(
-                        implode( "", array_map("chr", range(127, 255) ) )
-                    )
-            );
-
+            "",
+            $filter->filter( implode( "", array_map("chr", range(127, 255) ) ) )
+        );
     }
 
 }

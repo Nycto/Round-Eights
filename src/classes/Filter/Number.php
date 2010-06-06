@@ -34,32 +34,30 @@ class Number extends \r8\Filter
     /**
      * Converts the given value to a float or an integer
      *
-     * @param mixed $value The value to filter
+     * @param Mixed $value The value to filter
      * @return Float|Integer
      */
     public function filter ( $value )
     {
         if ( is_array($value) ) {
-
             if ( count($value) == 0 )
                 return 0;
             else
                 $value = \r8\reduce($value);
-
         }
 
         if ( is_string($value) ) {
-            $value = preg_replace('/[^\-0-9\.]/', '', $value);
-            $value = preg_replace('/(?<!^)\-/', '', $value);
+            $value = filter_var(
+                $value,
+                FILTER_SANITIZE_NUMBER_FLOAT,
+                FILTER_FLAG_ALLOW_FRACTION
+            );
+        }
+        else if ( is_object($value) ) {
+            return 1;
         }
 
-        if ( is_object($value) )
-            return 1;
-
-        if ( (float) $value == (int) $value )
-            return (int) $value;
-        else
-            return (float) $value;
+        return (float) $value == (int) $value ? (int) $value : (float) $value;
     }
 
 }

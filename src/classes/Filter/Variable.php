@@ -34,16 +34,12 @@ class Variable extends \r8\Filter
     /**
      * Cleans up a string in preparation for
      *
-     * @param mixed $value The value to filter
-     * @return
+     * @param Mixed $value The value to filter
+     * @return String
      */
     public function filter ( $value )
     {
-        return preg_replace(
-                '/[^a-zA-Z0-9_\x7f-\xff]/',
-                '',
-                (string) $value
-            );
+        return preg_replace( '/[^a-zA-Z0-9_\x7f-\xff]/', '', (string) $value );
     }
 
 }

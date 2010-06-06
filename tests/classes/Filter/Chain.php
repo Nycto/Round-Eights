@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_chain extends PHPUnit_Framework_TestCase
+class classes_Filter_Chain extends PHPUnit_Framework_TestCase
 {
 
     public function testAdd ()

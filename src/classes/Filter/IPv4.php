@@ -36,16 +36,12 @@ class IPv4 extends \r8\Filter
     /**
      * Cleans up a string in preparation for using it as an IP (version 4)
      *
-     * @param mixed $value The value to filter
-     * @return
+     * @param Mixed $value The value to filter
+     * @return String
      */
     public function filter ( $value )
     {
-        return preg_replace(
-                '/[^0-9\.]/',
-                '',
-                (string) $value
-            );
+        return preg_replace( '/[^0-9\.]/', '', (string) $value );
     }
 
 }

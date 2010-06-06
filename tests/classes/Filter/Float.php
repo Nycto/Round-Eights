@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_filter_float extends PHPUnit_Framework_TestCase
+class classes_Filter_Float extends PHPUnit_Framework_TestCase
 {
 
     public function testInteger ()
@@ -73,8 +73,6 @@ class classes_filter_float extends PHPUnit_Framework_TestCase
         $this->assertSame( 20.0, $filter->filter("20") );
         $this->assertSame( -20.0, $filter->filter("-20") );
         $this->assertSame( -40.0, $filter->filter("- 40") );
-        $this->assertSame( 404040.0, $filter->filter("40-40-40") );
-        $this->assertSame( -402030.0, $filter->filter("-40-20-30") );
         $this->assertSame( 50.0, $filter->filter("Some50String") );
 
     }
