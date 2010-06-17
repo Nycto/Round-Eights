@@ -202,6 +202,17 @@ class Input
         return $this->args[ $this->pointer ][1];
     }
 
+    /**
+     * Rewinds this argument list back to the beginning
+     *
+     * @return \r8\CLIArgs\Input Returns a self reference
+     */
+    public function rewind ()
+    {
+        $this->pointer = -1;
+        return $this;
+    }
+
 }
 
 ?>

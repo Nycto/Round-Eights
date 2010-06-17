@@ -160,6 +160,17 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
         $this->assertSame( 'two', $input->popArgument() );
     }
 
+    public function testRewind ()
+    {
+        $input = new \r8\CLIArgs\Input(array('-a', '-B'));
+        $this->assertSame( 'a', $input->popOption() );
+        $this->assertSame( 'B', $input->popOption() );
+
+        $this->assertSame( $input, $input->rewind() );
+        $this->assertSame( 'a', $input->popOption() );
+        $this->assertSame( 'B', $input->popOption() );
+    }
+
 }
 
 ?>
