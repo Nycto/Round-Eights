@@ -35,16 +35,13 @@ class classes_CLIArgs_Option extends PHPUnit_Framework_TestCase
 
     public function testGetDescription ()
     {
-        $opt = new \r8\CLIArgs\Option("Test");
+        $opt = new \r8\CLIArgs\Option("a", "Test");
         $this->assertSame( "Test", $opt->getDescription() );
     }
 
     public function testAddFlag ()
     {
-        $opt = new \r8\CLIArgs\Option("Test");
-        $this->assertSame( array(), $opt->getFlags() );
-
-        $this->assertSame( $opt, $opt->addFlag("A") );
+        $opt = new \r8\CLIArgs\Option("A", "Test");
         $this->assertSame( array("A"), $opt->getFlags() );
 
         $this->assertSame( $opt, $opt->addFlag("a") );
@@ -76,6 +73,21 @@ class classes_CLIArgs_Option extends PHPUnit_Framework_TestCase
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Argument $err ) {}
+    }
+
+    public function testHasFlag ()
+    {
+        $opt = new \r8\CLIArgs\Option("A", "Test");
+        $opt->addFlag( "switch" );
+
+        $this->assertFalse( $opt->hasFlag("   ") );
+        $this->assertFalse( $opt->hasFlag("") );
+
+        $this->assertTrue( $opt->hasFlag("A") );
+        $this->assertFalse( $opt->hasFlag("B") );
+        $this->assertFalse( $opt->hasFlag("a") );
+        $this->assertTrue( $opt->hasFlag("switch") );
+        $this->assertTrue( $opt->hasFlag("Switch") );
     }
 
 }

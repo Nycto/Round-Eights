@@ -55,10 +55,12 @@ class Option
     /**
      * Constructor...
      *
+     * @param String $flag The flag that will trigger this option
      * @param String A human readable description of this option
      */
-    public function __construct ( $description )
+    public function __construct ( $flag, $description )
     {
+        $this->addFlag( $flag );
         $this->description = trim( (string) $description );
     }
 
@@ -83,7 +85,7 @@ class Option
         $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
         $flag = \r8\str\stripW( $flag, "-" );
 
-        if ( empty($flag) )
+        if ( \r8\isEmpty($flag) )
             throw new \r8\Exception\Argument(0, "Flag", "Must not be empty");
 
         else if ( strlen($flag) > 1 )
@@ -103,6 +105,26 @@ class Option
     public function getFlags ()
     {
         return $this->flags;
+    }
+
+    /**
+     * Returns whether a given input is a flag associated with this option
+     *
+     * @param String $flag The flag to test
+     * @return Boolean
+     */
+    public function hasFlag ( $flag )
+    {
+        $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
+        $flag = \r8\str\stripW( $flag, "-" );
+
+        if ( \r8\isEmpty($flag) )
+            return FALSE;
+
+        else if ( strlen($flag) > 1 )
+            $flag = strtolower($flag);
+
+        return in_array($flag, $this->flags);
     }
 
     /**
