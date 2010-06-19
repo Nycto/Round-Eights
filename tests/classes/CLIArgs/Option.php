@@ -33,10 +33,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_CLIArgs_Option extends PHPUnit_Framework_TestCase
 {
 
-    public function testGetDescription ()
+    public function testConstruct ()
     {
         $opt = new \r8\CLIArgs\Option("a", "Test");
+        $this->assertSame( "a", $opt->getPrimaryFlag() );
         $this->assertSame( "Test", $opt->getDescription() );
+        $this->assertSame( array("a"), $opt->getFlags() );
     }
 
     public function testAddFlag ()
@@ -88,6 +90,20 @@ class classes_CLIArgs_Option extends PHPUnit_Framework_TestCase
         $this->assertFalse( $opt->hasFlag("a") );
         $this->assertTrue( $opt->hasFlag("switch") );
         $this->assertTrue( $opt->hasFlag("Switch") );
+    }
+
+    public function testAddArg ()
+    {
+        $opt = new \r8\CLIArgs\Option("A", "Test");
+        $this->assertSame( array(), $opt->getArgs() );
+
+        $arg1 = $this->getMock('r8\iface\CLIArgs\Arg');
+        $this->assertSame( $opt, $opt->addArg($arg1) );
+        $this->assertSame( array($arg1), $opt->getArgs() );
+
+        $arg2 = $this->getMock('r8\iface\CLIArgs\Arg');
+        $this->assertSame( $opt, $opt->addArg($arg2) );
+        $this->assertSame( array($arg1, $arg2), $opt->getArgs() );
     }
 
 }

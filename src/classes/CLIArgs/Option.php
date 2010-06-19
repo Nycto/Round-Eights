@@ -32,6 +32,13 @@ class Option
 {
 
     /**
+     * The primary flag that will trigger this option
+     *
+     * @var String
+     */
+    private $primaryFlag;
+
+    /**
      * The list of flags that will trigger this option
      *
      * @var Array
@@ -41,7 +48,7 @@ class Option
     /**
      * The list of arguments this option will consume
      *
-     * @var Array
+     * @var Array An array of \r8\iface\CLIArgs\Arg objects
      */
     private $args = array();
 
@@ -53,15 +60,50 @@ class Option
     private $description;
 
     /**
+     * Cleans and normalizes a flag
+     *
+     * @param String $flag
+     * @param Boolean $require Whether to throw an exception if
+     *      this flag is empty
+     * @return String
+     */
+    static private function cleanFlag ( $flag, $require = TRUE )
+    {
+        $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
+        $flag = \r8\str\stripW( $flag, "-" );
+
+        if ( $require && \r8\isEmpty($flag) )
+            throw new \r8\Exception\Argument(0, "Flag", "Must not be empty");
+
+        else if ( strlen($flag) > 1 )
+            $flag = strtolower($flag);
+
+        return $flag;
+    }
+
+    /**
      * Constructor...
      *
-     * @param String $flag The flag that will trigger this option
+     * @param String $primaryFlag The primary flag that will trigger this option
      * @param String A human readable description of this option
      */
-    public function __construct ( $flag, $description )
+    public function __construct ( $primaryFlag, $description )
     {
-        $this->addFlag( $flag );
+        $primaryFlag = self::cleanFlag( $primaryFlag );
+        $this->primaryFlag = $primaryFlag;
+        $this->flags[] = $primaryFlag;
+
         $this->description = trim( (string) $description );
+    }
+
+    /**
+     * Returns the Primary Flag of this option
+     *
+     * @return String
+     */
+    public function getPrimaryFlag ()
+    {
+        return $this->primaryFlag;
     }
 
     /**
@@ -82,14 +124,7 @@ class Option
      */
     public function addFlag ( $flag )
     {
-        $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
-        $flag = \r8\str\stripW( $flag, "-" );
-
-        if ( \r8\isEmpty($flag) )
-            throw new \r8\Exception\Argument(0, "Flag", "Must not be empty");
-
-        else if ( strlen($flag) > 1 )
-            $flag = strtolower($flag);
+        $flag = self::cleanFlag( $flag );
 
         if ( !in_array($flag, $this->flags) )
             $this->flags[] = $flag;
@@ -115,28 +150,29 @@ class Option
      */
     public function hasFlag ( $flag )
     {
-        $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
-        $flag = \r8\str\stripW( $flag, "-" );
-
-        if ( \r8\isEmpty($flag) )
-            return FALSE;
-
-        else if ( strlen($flag) > 1 )
-            $flag = strtolower($flag);
-
-        return in_array($flag, $this->flags);
+        return in_array( self::cleanFlag( $flag, FALSE ), $this->flags );
     }
 
     /**
      * Adds a argument that this option will consume
      *
-     * @param String $arg
+     * @param \r8\iface\CLIArgs\Arg $arg
      * @return \r8\Args\Option Returns a self reference
      */
-    public function addArg ( $arg )
+    public function addArg ( \r8\iface\CLIArgs\Arg $arg )
     {
         $this->args[] = $arg;
         return $this;
+    }
+
+    /**
+     * Returns the Arguments loaded into this option
+     *
+     * @return Array An array of \r8\iface\CLIArgs\Arg objects
+     */
+    public function getArgs ()
+    {
+        return $this->args;
     }
 
 }
