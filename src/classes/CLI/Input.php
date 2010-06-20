@@ -20,10 +20,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs;
+namespace r8\CLI;
 
 /**
  * Parses a list of raw command line arguments
@@ -205,7 +205,7 @@ class Input
     /**
      * Rewinds this argument list back to the beginning
      *
-     * @return \r8\CLIArgs\Input Returns a self reference
+     * @return \r8\CLI\Input Returns a self reference
      */
     public function rewind ()
     {

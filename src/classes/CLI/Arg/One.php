@@ -1,7 +1,5 @@
 <?php
 /**
- * Unit Test File
- *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -22,41 +20,29 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package UnitTests
+ * @package CLI
  */
 
-require_once rtrim( __DIR__, "/" ) ."/../../general.php";
+namespace r8\CLI\Arg;
 
 /**
- * Unit Tests
+ * A command line argument that consumes a single argument
  */
-class classes_CLIArgs_Arg extends PHPUnit_Framework_TestCase
+class One extends \r8\CLI\Arg
 {
 
     /**
-     * Returns a test argument
+     * Given an input of arguments, pops elements off, filters them, validates
+     * them and returns an array of everything it consumes
      *
-     * @return \r8\CLIArgs\Arg
+     * @param \r8\CLI\Input $input The input list to consume
+     * @return Array
      */
-    public function getTestArg ( $name, $filter, $validator )
+    public function consume ( \r8\CLI\Input $input )
     {
-        return $this->getMock(
-            '\r8\CLIArgs\Arg',
-            array( 'consume' ),
-            array( $name, $filter, $validator )
-        );
-    }
-
-    public function testConstructor ()
-    {
-        $filter = $this->getMock('\r8\iface\Filter');
-        $validator = $this->getMock('\r8\iface\Validator');
-
-        $arg = $this->getTestArg( "Name\0 Of \x10Arg", $filter, $validator );
-
-        $this->assertSame( "Name Of Arg", $arg->getName() );
-        $this->assertSame( $filter, $arg->getFilter() );
-        $this->assertSame( $validator, $arg->getValidator() );
+        $arg = $this->getFilter()->filter( $input->popArgument() );
+        $this->getValidator()->ensure( $arg );
+        return array( $arg );
     }
 
 }

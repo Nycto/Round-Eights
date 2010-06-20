@@ -20,36 +20,50 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs\Arg;
+namespace r8\CLI;
 
 /**
- * A command line argument that consumes a single argument
+ * A collection of CLI options
  */
-class Many extends \r8\CLIArgs\Arg
+class Collection
 {
 
     /**
-     * Given an input of arguments, pops elements off, filters them, validates
-     * them and returns an array of everything it consumes
+     * The list of command line options
      *
-     * @param \r8\CLIArgs\Input $input The input list to consume
-     * @return Array
+     * @var Array
      */
-    public function consume ( \r8\CLIArgs\Input $input )
+    private $options = array();
+
+    /**
+     * Adds a new option to this collection
+     *
+     * @param \r8\CLI\Option $option
+     * @return \r8\CLI\Collection Returns a self reference
+     */
+    public function addOption ( \r8\CLI\Option $option )
     {
-        $result = array();
+        $this->options[] = $option;
+        return $this;
+    }
 
-        while ( $input->hasNextArg() )
-        {
-            $arg = $this->getFilter()->filter( $input->popArgument() );
-            $this->getValidator()->ensure( $arg );
-            $result[] = $arg;
+    /**
+     * Finds an option based on a flag
+     *
+     * @param String $flag The flag to look up
+     * @return \r8\CLI\Option Returns NULL if there were no ptions with that
+     *      flag registered
+     */
+    public function findByFlag ( $flag )
+    {
+        foreach ( $this->options AS $option ) {
+            if ( $option->hasFlag($flag) )
+                return $option;
         }
-
-        return $result;
+        return NULL;
     }
 
 }

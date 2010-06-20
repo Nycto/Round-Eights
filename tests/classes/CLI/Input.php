@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit Tests
  */
-class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
+class classes_CLI_Input extends PHPUnit_Framework_TestCase
 {
 
     public function testPopOption_EndOfList ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a', '-B'));
+        $input = new \r8\CLI\Input(array('-a', '-B'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'B', $input->popOption() );
 
@@ -48,7 +48,7 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testPopOption_MissedArgument ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a=blah', '-B'));
+        $input = new \r8\CLI\Input(array('-a=blah', '-B'));
         $this->assertSame( 'a', $input->popOption() );
 
         try {
@@ -60,7 +60,7 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testPopArgument_OptionPadding ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a=blah', '-B'));
+        $input = new \r8\CLI\Input(array('-a=blah', '-B'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'blah', $input->popArgument() );
         $this->assertNull( $input->popArgument() );
@@ -74,7 +74,7 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testParse_Empty ()
     {
-        $input = new \r8\CLIArgs\Input(array());
+        $input = new \r8\CLI\Input(array());
         $this->assertFalse( $input->hasNextOption() );
         $this->assertFalse( $input->hasNextArg() );
         $this->assertNull( $input->popArgument() );
@@ -82,22 +82,22 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testParse_Flag ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a', '-B'));
+        $input = new \r8\CLI\Input(array('-a', '-B'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'B', $input->popOption() );
 
-        $input = new \r8\CLIArgs\Input(array('-abc', '-de'));
+        $input = new \r8\CLI\Input(array('-abc', '-de'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'b', $input->popOption() );
         $this->assertSame( 'c', $input->popOption() );
         $this->assertSame( 'd', $input->popOption() );
         $this->assertSame( 'e', $input->popOption() );
 
-        $input = new \r8\CLIArgs\Input(array('-a=value'));
+        $input = new \r8\CLI\Input(array('-a=value'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'value', $input->popArgument() );
 
-        $input = new \r8\CLIArgs\Input(array('-abC=value'));
+        $input = new \r8\CLI\Input(array('-abC=value'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'b', $input->popOption() );
         $this->assertSame( 'C', $input->popOption() );
@@ -106,14 +106,14 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testParse_EmptyFlag ()
     {
-        $input = new \r8\CLIArgs\Input(array('-'));
+        $input = new \r8\CLI\Input(array('-'));
         try {
             $input->popOption();
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}
 
-        $input = new \r8\CLIArgs\Input(array('-=value'));
+        $input = new \r8\CLI\Input(array('-=value'));
         try {
             $input->popOption();
             $this->fail("An expected exception was not thrown");
@@ -123,29 +123,29 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testParse_Switch ()
     {
-        $input = new \r8\CLIArgs\Input(array('--word'));
+        $input = new \r8\CLI\Input(array('--word'));
         $this->assertSame( 'word', $input->popOption() );
 
-        $input = new \r8\CLIArgs\Input(array('--Word=Value'));
+        $input = new \r8\CLI\Input(array('--Word=Value'));
         $this->assertSame( 'word', $input->popOption() );
         $this->assertSame( 'Value', $input->popArgument() );
     }
 
     public function testParse_Args ()
     {
-        $input = new \r8\CLIArgs\Input(array('one', 'two'));
+        $input = new \r8\CLI\Input(array('one', 'two'));
         $this->assertSame( 'one', $input->popArgument() );
         $this->assertSame( 'two', $input->popArgument() );
     }
 
     public function testParse_Duplicates ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a', 'arg', '-a'));
+        $input = new \r8\CLI\Input(array('-a', 'arg', '-a'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'arg', $input->popArgument() );
         $this->assertSame( 'a', $input->popOption() );
 
-        $input = new \r8\CLIArgs\Input(array('--switch', 'arg', '--switch'));
+        $input = new \r8\CLI\Input(array('--switch', 'arg', '--switch'));
         $this->assertSame( 'switch', $input->popOption() );
         $this->assertSame( 'arg', $input->popArgument() );
         $this->assertSame( 'switch', $input->popOption() );
@@ -153,7 +153,7 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testParse_DoubleDash ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a', 'one', '--', '-b', 'two'));
+        $input = new \r8\CLI\Input(array('-a', 'one', '--', '-b', 'two'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'one', $input->popArgument() );
         $this->assertSame( '-b', $input->popArgument() );
@@ -162,7 +162,7 @@ class classes_CLIArgs_Input extends PHPUnit_Framework_TestCase
 
     public function testRewind ()
     {
-        $input = new \r8\CLIArgs\Input(array('-a', '-B'));
+        $input = new \r8\CLI\Input(array('-a', '-B'));
         $this->assertSame( 'a', $input->popOption() );
         $this->assertSame( 'B', $input->popOption() );
 

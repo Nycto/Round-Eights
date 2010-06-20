@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * Unit Tests
  */
-class classes_CLIArgs_Arg_Many extends PHPUnit_Framework_TestCase
+class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
 {
 
     public function testConsume_Empty ()
     {
-        $arg = new \r8\CLIArgs\Arg\Many(
+        $arg = new \r8\CLI\Arg\Many(
             "test",
             new \r8\Curry\Call('strtoupper'),
             new \r8\Validator\NotEmpty
@@ -44,14 +44,14 @@ class classes_CLIArgs_Arg_Many extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array(),
             $arg->consume(
-                new \r8\CLIArgs\Input( array() )
+                new \r8\CLI\Input( array() )
             )
         );
     }
 
     public function testConsume_Valid ()
     {
-        $arg = new \r8\CLIArgs\Arg\Many(
+        $arg = new \r8\CLI\Arg\Many(
             "test",
             new \r8\Curry\Call('strtoupper'),
             new \r8\Validator\NotEmpty
@@ -60,21 +60,21 @@ class classes_CLIArgs_Arg_Many extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array("ONE", "TWO", "THREE"),
             $arg->consume(
-                new \r8\CLIArgs\Input( array("one", "two", "three") )
+                new \r8\CLI\Input( array("one", "two", "three") )
             )
         );
     }
 
     public function testConsume_Invalid ()
     {
-        $arg = new \r8\CLIArgs\Arg\Many(
+        $arg = new \r8\CLI\Arg\Many(
             "test",
             new \r8\Curry\Call('strtoupper'),
             new \r8\Validator\Compare("=", "one")
         );
 
         try {
-            $arg->consume( new \r8\CLIArgs\Input( array("one", "two") ) );
+            $arg->consume( new \r8\CLI\Input( array("one", "two") ) );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}

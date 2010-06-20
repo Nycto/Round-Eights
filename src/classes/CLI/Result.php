@@ -20,10 +20,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs;
+namespace r8\CLI;
 
 /**
  * The result of an argument parsing
@@ -55,7 +55,7 @@ class Result
      * @param Array $flags The list of flag aliases that all reference the given
      *      argument list
      * @param Array $args The list of arguments associated with the flags
-     * @return \r8\CLIArgs\Result Returns a self reference
+     * @return \r8\CLI\Result Returns a self reference
      */
     public function addOption ( array $flags, array $args )
     {

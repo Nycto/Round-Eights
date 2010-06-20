@@ -23,7 +23,7 @@
  * @package Forms
  */
 
-namespace r8\iface\CLIArgs;
+namespace r8\iface\CLI;
 
 /**
  * A command line argument
@@ -42,10 +42,10 @@ interface Arg
      * Given an input of arguments, pops elements off, filters them, validates
      * them and returns an array of everything it consumes
      *
-     * @param \r8\CLIArgs\Input $input The input list to consume
+     * @param \r8\CLI\Input $input The input list to consume
      * @return Array
      */
-    public function consume ( \r8\CLIArgs\Input $input );
+    public function consume ( \r8\CLI\Input $input );
 
 }
 

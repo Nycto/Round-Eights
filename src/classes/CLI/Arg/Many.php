@@ -20,50 +20,36 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs;
+namespace r8\CLI\Arg;
 
 /**
- * A collection of CLI options
+ * A command line argument that consumes a single argument
  */
-class Collection
+class Many extends \r8\CLI\Arg
 {
 
     /**
-     * The list of command line options
+     * Given an input of arguments, pops elements off, filters them, validates
+     * them and returns an array of everything it consumes
      *
-     * @var Array
+     * @param \r8\CLI\Input $input The input list to consume
+     * @return Array
      */
-    private $options = array();
-
-    /**
-     * Adds a new option to this collection
-     *
-     * @param \r8\CLIArgs\Option $option
-     * @return \r8\CLIArgs\Collection Returns a self reference
-     */
-    public function addOption ( \r8\CLIArgs\Option $option )
+    public function consume ( \r8\CLI\Input $input )
     {
-        $this->options[] = $option;
-        return $this;
-    }
+        $result = array();
 
-    /**
-     * Finds an option based on a flag
-     *
-     * @param String $flag The flag to look up
-     * @return \r8\CLIArgs\Option Returns NULL if there were no ptions with that
-     *      flag registered
-     */
-    public function findByFlag ( $flag )
-    {
-        foreach ( $this->options AS $option ) {
-            if ( $option->hasFlag($flag) )
-                return $option;
+        while ( $input->hasNextArg() )
+        {
+            $arg = $this->getFilter()->filter( $input->popArgument() );
+            $this->getValidator()->ensure( $arg );
+            $result[] = $arg;
         }
-        return NULL;
+
+        return $result;
     }
 
 }

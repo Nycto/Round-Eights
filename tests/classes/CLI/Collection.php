@@ -1,5 +1,7 @@
 <?php
 /**
+ * Unit Test File
+ *
  * @license Artistic License 2.0
  *
  * This file is part of Round Eights.
@@ -20,29 +22,31 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package UnitTests
  */
 
-namespace r8\CLIArgs\Arg;
+require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 
 /**
- * A command line argument that consumes a single argument
+ * Unit Tests
  */
-class One extends \r8\CLIArgs\Arg
+class classes_CLI_Collection extends PHPUnit_Framework_TestCase
 {
 
-    /**
-     * Given an input of arguments, pops elements off, filters them, validates
-     * them and returns an array of everything it consumes
-     *
-     * @param \r8\CLIArgs\Input $input The input list to consume
-     * @return Array
-     */
-    public function consume ( \r8\CLIArgs\Input $input )
+    public function testFindByFlag ()
     {
-        $arg = $this->getFilter()->filter( $input->popArgument() );
-        $this->getValidator()->ensure( $arg );
-        return array( $arg );
+        $opt1 = new \r8\CLI\Option('a', 'blah');
+        $opt2 = new \r8\CLI\Option('b', 'hork');
+        $opt3 = new \r8\CLI\Option('b', 'another');
+
+        $collection = new \r8\CLI\Collection;
+        $collection->addOption( $opt1 )
+            ->addOption( $opt2 )
+            ->addOption( $opt3 );
+
+        $this->assertSame( $opt1, $collection->findByFlag('a') );
+        $this->assertSame( $opt2, $collection->findByFlag('b') );
+        $this->assertNull( $collection->findbyFlag('switch') );
     }
 
 }

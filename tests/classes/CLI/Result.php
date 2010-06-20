@@ -30,17 +30,17 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit Tests
  */
-class classes_CLIArgs_Result extends PHPUnit_Framework_TestCase
+class classes_CLI_Result extends PHPUnit_Framework_TestCase
 {
 
     /**
      * Returns a test result object filled with data
      *
-     * @return \r8\CLIArgs\Result
+     * @return \r8\CLI\Result
      */
     public function getTestResult ()
     {
-        return r8( new \r8\CLIArgs\Result )
+        return r8( new \r8\CLI\Result )
             ->addOption( array('a', 'b'), array( 'arg1', 'arg2' ) )
             ->addOption( array('x', 'LONG'), array() );
     }

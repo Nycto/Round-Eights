@@ -20,15 +20,15 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs;
+namespace r8\CLI;
 
 /**
  * A command line argument
  */
-abstract class Arg implements \r8\iface\CLIArgs\Arg
+abstract class Arg implements \r8\iface\CLI\Arg
 {
 
     /**

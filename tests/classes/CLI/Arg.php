@@ -30,23 +30,33 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit Tests
  */
-class classes_CLIArgs_Collection extends PHPUnit_Framework_TestCase
+class classes_CLI_Arg extends PHPUnit_Framework_TestCase
 {
 
-    public function testFindByFlag ()
+    /**
+     * Returns a test argument
+     *
+     * @return \r8\CLI\Arg
+     */
+    public function getTestArg ( $name, $filter, $validator )
     {
-        $opt1 = new \r8\CLIArgs\Option('a', 'blah');
-        $opt2 = new \r8\CLIArgs\Option('b', 'hork');
-        $opt3 = new \r8\CLIArgs\Option('b', 'another');
+        return $this->getMock(
+            '\r8\CLI\Arg',
+            array( 'consume' ),
+            array( $name, $filter, $validator )
+        );
+    }
 
-        $collection = new \r8\CLIArgs\Collection;
-        $collection->addOption( $opt1 )
-            ->addOption( $opt2 )
-            ->addOption( $opt3 );
+    public function testConstructor ()
+    {
+        $filter = $this->getMock('\r8\iface\Filter');
+        $validator = $this->getMock('\r8\iface\Validator');
 
-        $this->assertSame( $opt1, $collection->findByFlag('a') );
-        $this->assertSame( $opt2, $collection->findByFlag('b') );
-        $this->assertNull( $collection->findbyFlag('switch') );
+        $arg = $this->getTestArg( "Name\0 Of \x10Arg", $filter, $validator );
+
+        $this->assertSame( "Name Of Arg", $arg->getName() );
+        $this->assertSame( $filter, $arg->getFilter() );
+        $this->assertSame( $validator, $arg->getValidator() );
     }
 
 }

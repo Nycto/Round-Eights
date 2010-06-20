@@ -20,10 +20,10 @@
  *
  * @author James Frasca <James@RoundEights.com>
  * @copyright Copyright 2009, James Frasca, All Rights Reserved
- * @package CLIArgs
+ * @package CLI
  */
 
-namespace r8\CLIArgs;
+namespace r8\CLI;
 
 /**
  * A command-line option
@@ -48,7 +48,7 @@ class Option
     /**
      * The list of arguments this option will consume
      *
-     * @var Array An array of \r8\iface\CLIArgs\Arg objects
+     * @var Array An array of \r8\iface\CLI\Arg objects
      */
     private $args = array();
 
@@ -156,10 +156,10 @@ class Option
     /**
      * Adds a argument that this option will consume
      *
-     * @param \r8\iface\CLIArgs\Arg $arg
+     * @param \r8\iface\CLI\Arg $arg
      * @return \r8\Args\Option Returns a self reference
      */
-    public function addArg ( \r8\iface\CLIArgs\Arg $arg )
+    public function addArg ( \r8\iface\CLI\Arg $arg )
     {
         $this->args[] = $arg;
         return $this;
@@ -168,7 +168,7 @@ class Option
     /**
      * Returns the Arguments loaded into this option
      *
-     * @return Array An array of \r8\iface\CLIArgs\Arg objects
+     * @return Array An array of \r8\iface\CLI\Arg objects
      */
     public function getArgs ()
     {
