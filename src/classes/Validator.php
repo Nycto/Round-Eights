@@ -34,8 +34,8 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
     /**
      * Performs the validation and returns the result
      *
-     * @param mixed $value The value to validate
-     * @return Object Returns an instance of \r8\Validator\Result
+     * @param Mixed $value The value to validate
+     * @return \r8\Validator\Result
      */
     public function validate ( $value )
     {
@@ -83,7 +83,7 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
     /**
      * Runs the validation and returns whether the value passes or not
      *
-     * @param mixed $value The value to validate
+     * @param Mixed $value The value to validate
      * @return Boolean
      */
     public function isValid ( $value )
@@ -94,8 +94,8 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
     /**
      * Throws an exception if the given value doesn't validate
      *
-     * @param mixed $value The value to validate
-     * @return Object Returns a self reference
+     * @param Mixed $value The value to validate
+     * @return \r8\Validator Returns a self reference
      */
     public function ensure ( $value )
     {
@@ -117,8 +117,8 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
     /**
      * The function that actually performs the validation
      *
-     * @param mixed $value It will be given the value to validate
-     * @return mixed Should return any errors that are encountered.
+     * @param Mixed $value It will be given the value to validate
+     * @return Mixed Should return any errors that are encountered.
      *      This can be an array, a string, a \r8\Validator\Result instance
      */
     abstract protected function process ($value);
