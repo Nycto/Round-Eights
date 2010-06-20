@@ -33,24 +33,51 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_CLIArgs_Arg_One extends PHPUnit_Framework_TestCase
 {
 
-    public function testConsume ()
+    public function testConsume_Empty ()
     {
-        $filter = $this->getMock('\r8\iface\Filter');
-        $filter->expects( $this->once() )->method( "filter" )
-            ->with( $this->equalTo( "input" ) )
-            ->will( $this->returnValue( "filtered" ) );
+        $arg = new \r8\CLIArgs\Arg\One(
+            "test",
+            new \r8\Filter\Identity,
+            new \r8\Validator\Compare("===", NULL)
+        );
 
-        $validator = $this->getMock('\r8\iface\Validator');
-        $validator->expects( $this->once() )->method( "ensure" )
-            ->with( $this->equalTo( "filtered" ) );
+        $this->assertEquals(
+            array( NULL ),
+            $arg->consume(
+                new \r8\CLIArgs\Input( array() )
+            )
+        );
+    }
 
-        $input = $this->getMock('\r8\CLIArgs\Input', array(), array(array()));
-        $input->expects( $this->once() )->method( "popArgument" )
-            ->will( $this->returnValue( "input" ) );
+    public function testConsume_Valid ()
+    {
+        $arg = new \r8\CLIArgs\Arg\One(
+            "test",
+            new \r8\Curry\Call('strtoupper'),
+            new \r8\Validator\NotEmpty
+        );
 
-        $arg = new \r8\CLIArgs\Arg\One( "test", $filter, $validator );
+        $this->assertSame(
+            array("ONE"),
+            $arg->consume(
+                new \r8\CLIArgs\Input( array("one", "two", "three") )
+            )
+        );
+    }
 
-        $this->assertSame( array("filtered"), $arg->consume($input) );
+    public function testConsume_Invalid ()
+    {
+        $arg = new \r8\CLIArgs\Arg\One(
+            "test",
+            new \r8\Curry\Call('strtoupper'),
+            new \r8\Validator\Compare("=", "yes")
+        );
+
+        try {
+            $arg->consume( new \r8\CLIArgs\Input( array("no", "no") ) );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
     }
 
 }
