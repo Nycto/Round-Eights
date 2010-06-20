@@ -106,6 +106,46 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
         $this->assertSame( array($arg1, $arg2), $opt->getArgs() );
     }
 
+    public function testConsume_NoArgs ()
+    {
+        $opt = new \r8\CLI\Option("A", "Test");
+
+        $this->assertSame(
+            array(),
+            $opt->consume( new \r8\CLI\Input(array()) )
+        );
+    }
+
+    public function testConsume_WithArgs ()
+    {
+        $input = new \r8\CLI\Input(array());
+
+        $opt = new \r8\CLI\Option("A", "Test");
+
+        $arg1 = $this->getMock('\r8\iface\CLI\Arg');
+        $arg1->expects( $this->once() )->method( "consume" )
+            ->with( $this->equalTo( $input ) )
+            ->will( $this->returnValue( array( "one", "two" ) ) );
+        $opt->addArg( $arg1 );
+
+        $arg2 = $this->getMock('\r8\iface\CLI\Arg');
+        $arg2->expects( $this->once() )->method( "consume" )
+            ->with( $this->equalTo( $input ) )
+            ->will( $this->returnValue( array() ) );
+        $opt->addArg( $arg2 );
+
+        $arg3 = $this->getMock('\r8\iface\CLI\Arg');
+        $arg3->expects( $this->once() )->method( "consume" )
+            ->with( $this->equalTo( $input ) )
+            ->will( $this->returnValue( array( "three" ) ) );
+        $opt->addArg( $arg3 );
+
+        $this->assertSame(
+            array( "one", "two", "three" ),
+            $opt->consume( $input )
+        );
+    }
+
 }
 
 ?>

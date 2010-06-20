@@ -175,6 +175,24 @@ class Option
         return $this->args;
     }
 
+    /**
+     * Consumes the arguments from an input list and returns them after
+     * processing
+     *
+     * @param \r8\CLI\Input $input The input argument list
+     * @return Array
+     */
+    public function consume ( \r8\CLI\Input $input )
+    {
+        return array_reduce(
+            $this->args,
+            function ( $accum, $arg ) use ( $input ) {
+                return array_merge( $accum, (array) $arg->consume( $input ) );
+            },
+            array()
+        );
+    }
+
 }
 
 ?>
