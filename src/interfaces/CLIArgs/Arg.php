@@ -38,6 +38,15 @@ interface Arg
      */
     public function getName ();
 
+    /**
+     * Given an input of arguments, pops elements off, filters them, validates
+     * them and returns an array of everything it consumes
+     *
+     * @param \r8\CLIArgs\Input $input The input list to consume
+     * @return Array
+     */
+    public function consume ( \r8\CLIArgs\Input $input );
+
 }
 
 ?>

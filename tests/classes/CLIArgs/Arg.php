@@ -42,7 +42,7 @@ class classes_CLIArgs_Arg extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
             '\r8\CLIArgs\Arg',
-            array( '_mock' ),
+            array( 'consume' ),
             array( $name, $filter, $validator )
         );
     }
