@@ -30,12 +30,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_iterator_validator extends PHPUnit_Framework_TestCase
+class classes_Iterator_Validator extends PHPUnit_Framework_TestCase
 {
 
     public function testIncludeAll ()
     {
-        $validator = $this->getMock('r8\iface\Validator', array('validate', 'isValid'));
+        $validator = $this->getMock('r8\iface\Validator');
         $validator->expects( $this->exactly(5) )
             ->method('isValid')
             ->will($this->returnValue(TRUE));
@@ -53,7 +53,7 @@ class classes_iterator_validator extends PHPUnit_Framework_TestCase
 
     public function testExcludeAll ()
     {
-        $validator = $this->getMock('r8\iface\Validator', array('validate', 'isValid'));
+        $validator = $this->getMock('r8\iface\Validator');
         $validator->expects( $this->exactly(5) )
             ->method('isValid')
             ->will($this->returnValue(FALSE));

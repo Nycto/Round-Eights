@@ -399,7 +399,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
     {
         $form = new \r8\Form;
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
 
         $this->assertSame( $form, $form->setFormValidator($validator) );
 
@@ -409,9 +409,9 @@ class classes_Form extends PHPUnit_Framework_TestCase
     public function testAndValidator ()
     {
         $form = new \r8\Form;
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $validator2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $validator3 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
+        $validator2 = $this->getMock("r8\iface\Validator");
+        $validator3 = $this->getMock("r8\iface\Validator");
 
         $form->setFormValidator( $validator );
         $this->assertSame( $validator, $form->getFormValidator() );
@@ -443,7 +443,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
 
         $result = new \r8\Validator\Result( $form );
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -469,7 +469,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
             ->method("isValid")
             ->will( $this->returnValue(TRUE) );
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -489,7 +489,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
             ->method("isValid")
             ->will( $this->returnValue(FALSE) );
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )
@@ -509,7 +509,7 @@ class classes_Form extends PHPUnit_Framework_TestCase
             ->method("isValid")
             ->will( $this->returnValue(FALSE) );
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
         $validator->expects( $this->once() )
             ->method("validate")
             ->with( $this->equalTo($form) )

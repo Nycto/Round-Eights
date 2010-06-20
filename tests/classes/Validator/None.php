@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_none extends PHPUnit_Framework_TestCase
+class classes_Validator_None extends PHPUnit_Framework_TestCase
 {
 
     public function testNoValidators ()
@@ -45,7 +45,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
 
     public function testInvalidResult ()
     {
-        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator");
         $valid->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -64,7 +64,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
     public function testValid ()
     {
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("Spoof Error");
         $valid1->expects( $this->once() )
@@ -72,7 +72,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $result2 = new \r8\Validator\Result("example value");
         $result2->addError("Spoof Error");
         $valid2->expects( $this->once() )
@@ -94,7 +94,7 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
     {
 
         $result1 = new \r8\Validator\Result("example value");
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -118,13 +118,13 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
     {
 
         $result1 = new \r8\Validator\Result("example value");
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->never() )
             ->method( "validate" );
 
@@ -147,14 +147,14 @@ class classes_validator_none extends PHPUnit_Framework_TestCase
 
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an error");
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
         $result2 = new \r8\Validator\Result("example value");
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )

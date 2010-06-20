@@ -35,7 +35,7 @@ interface Validator
      * Takes a value, processes it, and returns an instance of Validator Results
      *
      * @param mixed $value The value to validate
-     * @return object An instance of validator results
+     * @return \r8\Validator\Result
      */
     public function validate ( $value );
 
@@ -46,6 +46,15 @@ interface Validator
      * @return Boolean
      */
     public function isValid ( $value );
+
+    /**
+     * Throws an exception if the given value doesn't validate
+     *
+     * @throws \r8\Exception\Data Thrown if validation fails
+     * @param Mixed $value The value to validate
+     * @return \r8\iface\Validator Returns a self reference
+     */
+    public function ensure ( $value );
 
 }
 

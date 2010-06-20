@@ -31,14 +31,14 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_collection extends PHPUnit_Framework_TestCase
+class classes_Validator_Collection extends PHPUnit_Framework_TestCase
 {
 
     public function testAddObject ()
     {
         $collection = $this->getMock("r8\Validator\Collection", array("process"));
 
-        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator");
 
         $this->assertSame( $collection, $collection->add($valid) );
 
@@ -59,7 +59,7 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     {
         $collection = $this->getMock("r8\Validator\Collection", array("process"));
 
-        $valid = get_class( $this->getMock("r8\iface\Validator", array("validate", "isValid")) );
+        $valid = get_class( $this->getMock("r8\iface\Validator") );
 
         $this->assertSame( $collection, $collection->add($valid) );
 
@@ -93,8 +93,8 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     {
         $collection = $this->getMock( '\r8\Validator\Collection', array("process") );
 
-        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator");
+        $valid2 = $this->getMock("r8\iface\Validator");
 
         $this->assertSame(
                 $collection,
@@ -107,8 +107,8 @@ class classes_validator_collection extends PHPUnit_Framework_TestCase
     public function testConstruct ()
     {
 
-        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator");
+        $valid2 = $this->getMock("r8\iface\Validator");
 
         $collection = $this->getMock(
                 '\r8\Validator\Collection',

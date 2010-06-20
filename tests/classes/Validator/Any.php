@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_any extends PHPUnit_Framework_TestCase
+class classes_Validator_Any extends PHPUnit_Framework_TestCase
 {
 
     public function testNoValidators ()
@@ -45,7 +45,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
 
     public function testInvalidResult ()
     {
-        $valid = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid = $this->getMock("r8\iface\Validator");
         $valid->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -64,14 +64,14 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
     public function testFirstValid ()
     {
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( new \r8\Validator\Result("example value") ) );
 
         // This should never be called because the first validator should short circuit things
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->never() )
             ->method( "validate" );
 
@@ -90,13 +90,13 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
             ->will( $this->returnValue( $result1 ) );
 
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -118,7 +118,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -144,7 +144,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -154,7 +154,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result2 = new \r8\Validator\Result("example value");
         $result2->addError("This is another Error");
 
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -180,7 +180,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result1 = new \r8\Validator\Result("example value");
         $result1->addError("This is an Error");
 
-        $valid1 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid1 = $this->getMock("r8\iface\Validator");
         $valid1->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )
@@ -190,7 +190,7 @@ class classes_validator_any extends PHPUnit_Framework_TestCase
         $result2 = new \r8\Validator\Result("example value");
         $result2->addError("This is an Error");
 
-        $valid2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $valid2 = $this->getMock("r8\iface\Validator");
         $valid2->expects( $this->once() )
             ->method( "validate" )
             ->with( $this->equalTo("example value") )

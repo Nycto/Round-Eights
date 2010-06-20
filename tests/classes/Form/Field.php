@@ -92,7 +92,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
     {
         $field = $this->getMockField();
 
-        $filter = $this->getMock("r8\iface\Filter", array("filter"));
+        $filter = $this->getMock("r8\iface\Filter");
 
         $this->assertSame( $field, $field->setFilter($filter) );
 
@@ -114,7 +114,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
     {
         $field = $this->getMockField();
 
-        $filter = $this->getMock("r8\iface\Filter", array("filter"));
+        $filter = $this->getMock("r8\iface\Filter");
 
         $this->assertSame( $field, $field->setOutputFilter($filter) );
 
@@ -137,7 +137,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
     {
         $field = $this->getMockField();
 
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
 
         $this->assertSame( $field, $field->setValidator($validator) );
 
@@ -147,9 +147,9 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
     public function testAndValidator ()
     {
         $field = $this->getMockField();
-        $validator = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $validator2 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
-        $validator3 = $this->getMock("r8\iface\Validator", array("validate", "isValid"));
+        $validator = $this->getMock("r8\iface\Validator");
+        $validator2 = $this->getMock("r8\iface\Validator");
+        $validator3 = $this->getMock("r8\iface\Validator");
 
         $field->setValidator( $validator );
         $this->assertSame( $validator, $field->getValidator() );
@@ -279,7 +279,7 @@ class classes_Form_Field extends PHPUnit_Framework_TestCase
         $field->setValue("New Value")
             ->setName("fldName");
 
-        $outFilter = $this->getMock("r8\iface\Filter", array("filter"));
+        $outFilter = $this->getMock("r8\iface\Filter");
         $outFilter->expects( $this->once() )
             ->method("filter")
             ->with("New Value")
