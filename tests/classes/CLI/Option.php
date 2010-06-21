@@ -33,6 +33,23 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_CLI_Option extends PHPUnit_Framework_TestCase
 {
 
+    public function testNormalizeFlag ()
+    {
+        $this->assertSame( "a", \r8\CLI\Option::normalizeFlag("a") );
+        $this->assertSame( "A", \r8\CLI\Option::normalizeFlag("A") );
+        $this->assertSame( "test", \r8\CLI\Option::normalizeFlag("TesT") );
+        $this->assertSame( "with-spaces", \r8\CLI\Option::normalizeFlag("with spaces") );
+        $this->assertSame( "trim-this", \r8\CLI\Option::normalizeFlag("--trim-this--") );
+
+        try {
+            \r8\CLI\Option::normalizeFlag("   ");
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {}
+
+        $this->assertSame( "", \r8\CLI\Option::normalizeFlag(NULL, FALSE) );
+    }
+
     public function testConstruct ()
     {
         $opt = new \r8\CLI\Option("a", "Test");

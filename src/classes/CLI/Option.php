@@ -67,7 +67,7 @@ class Option
      *      this flag is empty
      * @return String
      */
-    static private function cleanFlag ( $flag, $require = TRUE )
+    static public function normalizeFlag ( $flag, $require = TRUE )
     {
         $flag = trim( str_replace(" ", "-", (string) $flag), "-" );
         $flag = \r8\str\stripW( $flag, "-" );
@@ -89,7 +89,7 @@ class Option
      */
     public function __construct ( $primaryFlag, $description )
     {
-        $primaryFlag = self::cleanFlag( $primaryFlag );
+        $primaryFlag = self::normalizeFlag( $primaryFlag );
         $this->primaryFlag = $primaryFlag;
         $this->flags[] = $primaryFlag;
 
@@ -124,7 +124,7 @@ class Option
      */
     public function addFlag ( $flag )
     {
-        $flag = self::cleanFlag( $flag );
+        $flag = self::normalizeFlag( $flag );
 
         if ( !in_array($flag, $this->flags) )
             $this->flags[] = $flag;
@@ -150,7 +150,7 @@ class Option
      */
     public function hasFlag ( $flag )
     {
-        return in_array( self::cleanFlag( $flag, FALSE ), $this->flags );
+        return in_array( self::normalizeFlag( $flag, FALSE ), $this->flags );
     }
 
     /**
