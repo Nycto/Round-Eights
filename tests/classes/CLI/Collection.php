@@ -35,18 +35,68 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
 
     public function testFindByFlag ()
     {
-        $opt1 = new \r8\CLI\Option('a', 'blah');
+        $opt1 = \r8( new \r8\CLI\Option('a', 'blah') )->addFlag('C');
         $opt2 = new \r8\CLI\Option('b', 'hork');
         $opt3 = new \r8\CLI\Option('b', 'another');
 
-        $collection = new \r8\CLI\Collection;
-        $collection->addOption( $opt1 )
+        $collect = new \r8\CLI\Collection;
+        $collect->addOption( $opt1 )
             ->addOption( $opt2 )
             ->addOption( $opt3 );
 
-        $this->assertSame( $opt1, $collection->findByFlag('a') );
-        $this->assertSame( $opt2, $collection->findByFlag('b') );
-        $this->assertNull( $collection->findbyFlag('switch') );
+        $this->assertSame( $opt1, $collect->findByFlag('a') );
+        $this->assertSame( $opt1, $collect->findByFlag('C') );
+        $this->assertSame( $opt3, $collect->findByFlag('b') );
+        $this->assertNull( $collect->findbyFlag('switch') );
+    }
+
+    public function testProcess_Empty ()
+    {
+        $collect = new \r8\CLI\Collection;
+
+        $this->assertEquals(
+            new \r8\CLI\Result,
+            $collect->process( new \r8\CLI\Input(array()) )
+        );
+    }
+
+    public function testProcess_WithFlags ()
+    {
+        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
+
+        $arg = new \r8\CLI\Arg\Many(
+            'test',
+            new \r8\Filter\Identity,
+            new \r8\Validator\Pass
+        );
+
+        $collect = new \r8\CLI\Collection;
+        $collect->addOption(
+            \r8( new \r8\CLI\Option('a', 'test') )->addArg( $arg )
+        );
+
+        $result = $collect->process( $input );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
+        $this->assertTrue( $result->flagExists('a') );
+        $this->assertSame( array('one', 'two'), $result->getOneArgList('a') );
+        $this->assertSame(
+            array( array('one', 'two') ),
+            $result->getAllArgLists('a')
+        );
+    }
+
+    public function testProcess_UnrecognizedFlag ()
+    {
+        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
+
+        $collect = new \r8\CLI\Collection;
+
+        try {
+            $collect->process( $input );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
     }
 
 }

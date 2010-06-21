@@ -46,7 +46,7 @@ class Collection
      */
     public function addOption ( \r8\CLI\Option $option )
     {
-        $this->options[] = $option;
+        $this->options[ $option->getPrimaryFlag() ] = $option;
         return $this;
     }
 
@@ -59,11 +59,44 @@ class Collection
      */
     public function findByFlag ( $flag )
     {
+        $flag = \r8\CLI\Option::normalizeFlag( $flag, FALSE );
+
+        if ( isset($this->options[$flag]) )
+            return $this->options[$flag];
+
         foreach ( $this->options AS $option ) {
             if ( $option->hasFlag($flag) )
                 return $option;
         }
         return NULL;
+    }
+
+    /**
+     * Processes a list of input arguments
+     *
+     * @param \r8\CLI\Input $input
+     * @return \r8\CLI\Result
+     */
+    public function process ( \r8\CLI\Input $input )
+    {
+        $result = new \r8\CLI\Result;
+
+        while ( $input->hasNextOption() ) {
+            $flag = $input->popOption();
+            $option = $this->findByFlag( $flag );
+
+            if ( $option === NULL ) {
+                throw new \r8\Exception\Data(
+                    "Flag",
+                    $option,
+                    "Unrecognized flag"
+                );
+            }
+
+            $result->addOption( $option, $option->consume($input) );
+        }
+
+        return $result;
     }
 
 }
