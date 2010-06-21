@@ -39,35 +39,43 @@ class Result
     private $flags = array();
 
     /**
-     * Normalizes a flag
+     * Add a set of options to this result
+     *
+     * @param \r8\CLI\Option $option The option that was matched
+     * @param Array $args The list of arguments associated with the flags
+     * @return \r8\CLI\Result Returns a self reference
+     */
+    public function addOption ( \r8\CLI\Option $option, array $args )
+    {
+        $primary = $option->getPrimaryFlag();
+
+        if ( !isset( $this->flags[$primary] ) )
+            $this->flags[$primary] = array('opt' => $option, 'args' => array());
+
+        $this->flags[$primary]['args'][] = $args;
+
+        return $this;
+    }
+
+    /**
+     * A helper method for finding the appropriate data set index based on a flag
      *
      * @param String $flag
      * @return String
      */
-    static private function normalizeFlag ( $flag )
+    private function findFlagIndex ( $flag )
     {
-        return strtolower( \r8\str\stripW($flag) );
-    }
+        $flag = \r8\CLI\Option::normalizeFlag($flag, FALSE);
 
-    /**
-     * Add a set of options to this result
-     *
-     * @param Array $flags The list of flag aliases that all reference the given
-     *      argument list
-     * @param Array $args The list of arguments associated with the flags
-     * @return \r8\CLI\Result Returns a self reference
-     */
-    public function addOption ( array $flags, array $args )
-    {
-        $flags = array_map( array(__CLASS__, 'normalizeFlag'), $flags );
-        $flags = \r8\ary\compact( $flags );
+        if ( isset( $this->flags[ $flag ] ) )
+            return $flag;
 
-        foreach ( $flags AS $flag )
-        {
-            $this->flags[ $flag ] =& $args;
+        foreach ( $this->flags AS $primary => $option ) {
+            if ( $option['opt']->hasFlag($flag) )
+                return $primary;
         }
 
-        return $this;
+        return NULL;
     }
 
     /**
@@ -78,19 +86,38 @@ class Result
      */
     public function flagExists ( $flag )
     {
-        return isset( $this->flags[ self::normalizeFlag($flag) ] );
+        return $this->findFlagIndex( $flag ) !== NULL;
     }
 
     /**
-     * Returns the arguments associated with a flag
+     * Returns a single set of arguments for the given flag
      *
      * @param String $flag The flag to look up
-     * @return Array
+     * @return Array The list of arguments for this flag
      */
-    public function getArgs ( $flag )
+    public function getOneArgList ( $flag )
     {
-        $flag = self::normalizeFlag($flag);
-        return isset( $this->flags[ $flag ] ) ? $this->flags[ $flag ] : NULL;
+        $flag = $this->findFlagIndex( $flag );
+
+        if ( !isset( $this->flags[ $flag ] ) )
+            return array();
+
+        return \reset( $this->flags[ $flag ]['args'] );
+    }
+
+    /**
+     * Returns all the list of arguments for the given flag. This is useful when
+     * a flag can appear multiple times in the input
+     *
+     * @param String $flag The flag to look up
+     * @return Array The multi-dimensional list of arguments for this flag
+     */
+    public function getAllArgLists ( $flag )
+    {
+        $flag = $this->findFlagIndex( $flag );
+
+        return isset( $this->flags[ $flag ] )
+            ? $this->flags[ $flag ]['args'] : array();
     }
 
 }
