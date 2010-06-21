@@ -160,6 +160,16 @@ class classes_CLI_Input extends PHPUnit_Framework_TestCase
         $this->assertSame( 'two', $input->popArgument() );
     }
 
+    public function testGetRemainingArgs ()
+    {
+        $input = new \r8\CLI\Input(array('-a', 'one', '--', '-b', 'two'));
+        $this->assertSame( 'a', $input->popOption() );
+        $this->assertSame( 'one', $input->popArgument() );
+
+        $this->assertSame( array('-b', 'two'), $input->getRemainingArgs() );
+        $this->assertSame( array(), $input->getRemainingArgs() );
+    }
+
     public function testRewind ()
     {
         $input = new \r8\CLI\Input(array('-a', '-B'));

@@ -203,6 +203,20 @@ class Input
     }
 
     /**
+     * Returns all the remaining arguments left
+     *
+     * @return Array
+     */
+    public function getRemainingArgs ()
+    {
+        $result = array();
+        while ( $this->hasNextArg() ) {
+            $result[] = $this->popArgument();
+        }
+        return $result;
+    }
+
+    /**
      * Rewinds this argument list back to the beginning
      *
      * @return \r8\CLI\Input Returns a self reference
