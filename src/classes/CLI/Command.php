@@ -32,6 +32,20 @@ class Command
 {
 
     /**
+     * The name of this command
+     *
+     * @var String
+     */
+    private $name;
+
+    /**
+     * A description of this command
+     *
+     * @var String
+     */
+    private $description;
+
+    /**
      * The list of command line options
      *
      * @var Array
@@ -44,6 +58,46 @@ class Command
      * @var Array An array of \r8\iface\CLI\Arg objects
      */
     private $args = array();
+
+    /**
+     * Constructor...
+     *
+     * @param String $name The name of this command
+     * @param String $description A description of this command
+     */
+    public function __construct ( $name, $description )
+    {
+        $name = \r8\str\stripNoPrint( $name );
+        if ( \r8\isEmpty($name) )
+            throw new \r8\Exception\Argument(0, "Name", "Must not be empty");
+
+        $description = \r8\str\stripNoPrint( $description );
+        if ( \r8\isEmpty($description) )
+            throw new \r8\Exception\Argument(0, "Description", "Must not be empty");
+
+        $this->name = $name;
+        $this->description = $description;
+    }
+
+    /**
+     * Returns the Name of this command
+     *
+     * @return String
+     */
+    public function getName ()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Returns the Description of this command
+     *
+     * @return String
+     */
+    public function getDescription ()
+    {
+        return $this->description;
+    }
 
     /**
      * Adds a new option to this collection

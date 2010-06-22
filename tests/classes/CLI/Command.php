@@ -33,13 +33,32 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_CLI_Command extends PHPUnit_Framework_TestCase
 {
 
+    public function testConstruct ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+        $this->assertSame( 'name', $command->getName() );
+        $this->assertSame( 'desc', $command->getDescription() );
+
+        try {
+            new \r8\CLI\Command('', 'desc');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {}
+
+        try {
+            new \r8\CLI\Command('name', '');
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {}
+    }
+
     public function testFindByFlag ()
     {
         $opt1 = \r8( new \r8\CLI\Option('a', 'blah') )->addFlag('C');
         $opt2 = new \r8\CLI\Option('b', 'hork');
         $opt3 = new \r8\CLI\Option('b', 'another');
 
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
         $command->addOption( $opt1 )
             ->addOption( $opt2 )
             ->addOption( $opt3 );
@@ -52,7 +71,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
 
     public function testAddArg ()
     {
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
         $this->assertSame( array(), $command->getArgs() );
 
         $arg1 = $this->getMock('r8\iface\CLI\Arg');
@@ -66,7 +85,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
 
     public function testProcess_Empty ()
     {
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
 
         $this->assertEquals(
             new \r8\CLI\Result,
@@ -84,7 +103,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
             new \r8\Validator\Pass
         );
 
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
         $command->addOption(
             \r8( new \r8\CLI\Option('a', 'test') )->addArg( $arg )
         );
@@ -104,7 +123,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
 
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
 
         try {
             $command->process( $input );
@@ -117,7 +136,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('one', 'two') );
 
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
         $command->addArg( new \r8\CLI\Arg\Many(
             'input',
             new \r8\Filter\Identity,
@@ -134,7 +153,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('one', 'two') );
 
-        $command = new \r8\CLI\Command;
+        $command = new \r8\CLI\Command('name', 'desc');
 
         try {
             $command->process( $input );
