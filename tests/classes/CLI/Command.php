@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * Unit Tests
  */
-class classes_CLI_Collection extends PHPUnit_Framework_TestCase
+class classes_CLI_Command extends PHPUnit_Framework_TestCase
 {
 
     public function testFindByFlag ()
@@ -39,38 +39,38 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
         $opt2 = new \r8\CLI\Option('b', 'hork');
         $opt3 = new \r8\CLI\Option('b', 'another');
 
-        $collect = new \r8\CLI\Collection;
-        $collect->addOption( $opt1 )
+        $command = new \r8\CLI\Command;
+        $command->addOption( $opt1 )
             ->addOption( $opt2 )
             ->addOption( $opt3 );
 
-        $this->assertSame( $opt1, $collect->findByFlag('a') );
-        $this->assertSame( $opt1, $collect->findByFlag('C') );
-        $this->assertSame( $opt3, $collect->findByFlag('b') );
-        $this->assertNull( $collect->findbyFlag('switch') );
+        $this->assertSame( $opt1, $command->findByFlag('a') );
+        $this->assertSame( $opt1, $command->findByFlag('C') );
+        $this->assertSame( $opt3, $command->findByFlag('b') );
+        $this->assertNull( $command->findbyFlag('switch') );
     }
 
     public function testAddArg ()
     {
-        $collect = new \r8\CLI\Collection;
-        $this->assertSame( array(), $collect->getArgs() );
+        $command = new \r8\CLI\Command;
+        $this->assertSame( array(), $command->getArgs() );
 
         $arg1 = $this->getMock('r8\iface\CLI\Arg');
-        $this->assertSame( $collect, $collect->addArg($arg1) );
-        $this->assertSame( array($arg1), $collect->getArgs() );
+        $this->assertSame( $command, $command->addArg($arg1) );
+        $this->assertSame( array($arg1), $command->getArgs() );
 
         $arg2 = $this->getMock('r8\iface\CLI\Arg');
-        $this->assertSame( $collect, $collect->addArg($arg2) );
-        $this->assertSame( array($arg1, $arg2), $collect->getArgs() );
+        $this->assertSame( $command, $command->addArg($arg2) );
+        $this->assertSame( array($arg1, $arg2), $command->getArgs() );
     }
 
     public function testProcess_Empty ()
     {
-        $collect = new \r8\CLI\Collection;
+        $command = new \r8\CLI\Command;
 
         $this->assertEquals(
             new \r8\CLI\Result,
-            $collect->process( new \r8\CLI\Input(array()) )
+            $command->process( new \r8\CLI\Input(array()) )
         );
     }
 
@@ -84,12 +84,12 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
             new \r8\Validator\Pass
         );
 
-        $collect = new \r8\CLI\Collection;
-        $collect->addOption(
+        $command = new \r8\CLI\Command;
+        $command->addOption(
             \r8( new \r8\CLI\Option('a', 'test') )->addArg( $arg )
         );
 
-        $result = $collect->process( $input );
+        $result = $command->process( $input );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
         $this->assertTrue( $result->flagExists('a') );
@@ -104,10 +104,10 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
 
-        $collect = new \r8\CLI\Collection;
+        $command = new \r8\CLI\Command;
 
         try {
-            $collect->process( $input );
+            $command->process( $input );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}
@@ -117,14 +117,14 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('one', 'two') );
 
-        $collect = new \r8\CLI\Collection;
-        $collect->addArg( new \r8\CLI\Arg\Many(
+        $command = new \r8\CLI\Command;
+        $command->addArg( new \r8\CLI\Arg\Many(
             'input',
             new \r8\Filter\Identity,
             new \r8\Validator\Pass
         ));
 
-        $result = $collect->process( $input );
+        $result = $command->process( $input );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
         $this->assertSame( array('one', 'two'), $result->getArgs() );
@@ -134,10 +134,10 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('one', 'two') );
 
-        $collect = new \r8\CLI\Collection;
+        $command = new \r8\CLI\Command;
 
         try {
-            $collect->process( $input );
+            $command->process( $input );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}

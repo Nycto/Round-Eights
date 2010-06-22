@@ -26,9 +26,9 @@
 namespace r8\CLI;
 
 /**
- * A collection of CLI options
+ * A CLI command represented as a collection of options and arguments
  */
-class Collection
+class Command
 {
 
     /**
