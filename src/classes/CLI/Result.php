@@ -39,6 +39,13 @@ class Result
     private $flags = array();
 
     /**
+     * The general arguments not attached to a flag
+     *
+     * @var Array
+     */
+    private $args = array();
+
+    /**
      * Add a set of options to this result
      *
      * @param \r8\CLI\Option $option The option that was matched
@@ -92,10 +99,14 @@ class Result
     /**
      * Returns a single set of arguments for the given flag
      *
+     * If a flag has appeared multiple times in a command, this will return the
+     * argument list for the first appearance. To get all the incarnations,
+     * use getAllArgsForFlag() instead
+     *
      * @param String $flag The flag to look up
      * @return Array The list of arguments for this flag
      */
-    public function getOneArgList ( $flag )
+    public function getArgsForFlag ( $flag )
     {
         $flag = $this->findFlagIndex( $flag );
 
@@ -112,12 +123,37 @@ class Result
      * @param String $flag The flag to look up
      * @return Array The multi-dimensional list of arguments for this flag
      */
-    public function getAllArgLists ( $flag )
+    public function getAllArgsForFlag ( $flag )
     {
         $flag = $this->findFlagIndex( $flag );
 
         return isset( $this->flags[ $flag ] )
             ? $this->flags[ $flag ]['args'] : array();
+    }
+
+    /**
+     * Adds a new set of arguments to this result set
+     *
+     * @param Array $args The list of arguments to add
+     * @return \r8\CLI\Result Returns a self reference
+     */
+    public function addArgs ( array $args )
+    {
+        $this->args = array_merge( $this->args, $args );
+        return $this;
+    }
+
+    /**
+     * Returns the general argument list
+     *
+     * These were arguments passed in to the command, but not directly
+     * associated with a specific flag
+     *
+     * @return Array
+     */
+    public function getArgs ()
+    {
+        return $this->args;
     }
 
 }

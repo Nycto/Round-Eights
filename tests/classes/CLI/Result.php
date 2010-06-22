@@ -64,39 +64,54 @@ class classes_CLI_Result extends PHPUnit_Framework_TestCase
         $this->assertFalse( $result->flagExists('Longer') );
     }
 
-    public function testGetOneArgList ()
+    public function testGetArgsForFlag ()
     {
         $result = $this->getTestResult();
 
-        $this->assertSame( array(), $result->getOneArgList( NULL ) );
-        $this->assertSame( array(), $result->getOneArgList('not a flag') );
+        $this->assertSame( array(), $result->getArgsForFlag( NULL ) );
+        $this->assertSame( array(), $result->getArgsForFlag('not a flag') );
 
-        $this->assertSame( array(), $result->getOneArgList('x') );
-        $this->assertSame( array(), $result->getOneArgList('long') );
-        $this->assertSame( array('arg1', 'arg2'), $result->getOneArgList('a') );
-        $this->assertSame( array('arg1', 'arg2'), $result->getOneArgList('b') );
-        $this->assertSame( array('arg1', 'arg2'), $result->getOneArgList('A') );
+        $this->assertSame( array(), $result->getArgsForFlag('x') );
+        $this->assertSame( array(), $result->getArgsForFlag('long') );
+        $this->assertSame( array('arg1', 'arg2'), $result->getArgsForFlag('a') );
+        $this->assertSame( array('arg1', 'arg2'), $result->getArgsForFlag('b') );
+        $this->assertSame( array('arg1', 'arg2'), $result->getArgsForFlag('A') );
     }
 
-    public function testGetAllArgLists ()
+    public function testGetAllArgsForFlag ()
     {
         $result = $this->getTestResult();
 
-        $this->assertSame( array(), $result->getAllArgLists( NULL ) );
-        $this->assertSame( array(), $result->getAllArgLists('not a flag') );
+        $this->assertSame( array(), $result->getAllArgsForFlag( NULL ) );
+        $this->assertSame( array(), $result->getAllArgsForFlag('not a flag') );
 
-        $this->assertSame( array( array() ), $result->getAllArgLists('x') );
-        $this->assertSame( array( array() ), $result->getAllArgLists('long') );
+        $this->assertSame( array( array() ), $result->getAllArgsForFlag('x') );
+        $this->assertSame( array( array() ), $result->getAllArgsForFlag('long') );
 
         $this->assertSame(
             array( array('arg1', 'arg2'), array('two', 'three'), array('four') ),
-            $result->getAllArgLists('a')
+            $result->getAllArgsForFlag('a')
         );
 
         $this->assertSame(
             array( array('arg1', 'arg2'), array('two', 'three'), array('four') ),
-            $result->getAllArgLists('A')
+            $result->getAllArgsForFlag('A')
         );
+    }
+
+    public function testAddArgs ()
+    {
+        $result = $this->getTestResult();
+        $this->assertSame( array(), $result->getArgs() );
+
+        $this->assertSame( $result, $result->addArgs(array("one", "two")) );
+        $this->assertSame( array("one", "two"), $result->getArgs() );
+
+        $this->assertSame( $result, $result->addArgs(array()) );
+        $this->assertSame( array("one", "two"), $result->getArgs() );
+
+        $this->assertSame( $result, $result->addArgs(array("three")) );
+        $this->assertSame( array("one", "two", "three"), $result->getArgs() );
     }
 
 }

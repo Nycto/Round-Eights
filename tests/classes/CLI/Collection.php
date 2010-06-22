@@ -50,6 +50,20 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
         $this->assertNull( $collect->findbyFlag('switch') );
     }
 
+    public function testAddArg ()
+    {
+        $collect = new \r8\CLI\Collection;
+        $this->assertSame( array(), $collect->getArgs() );
+
+        $arg1 = $this->getMock('r8\iface\CLI\Arg');
+        $this->assertSame( $collect, $collect->addArg($arg1) );
+        $this->assertSame( array($arg1), $collect->getArgs() );
+
+        $arg2 = $this->getMock('r8\iface\CLI\Arg');
+        $this->assertSame( $collect, $collect->addArg($arg2) );
+        $this->assertSame( array($arg1, $arg2), $collect->getArgs() );
+    }
+
     public function testProcess_Empty ()
     {
         $collect = new \r8\CLI\Collection;
@@ -79,16 +93,46 @@ class classes_CLI_Collection extends PHPUnit_Framework_TestCase
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
         $this->assertTrue( $result->flagExists('a') );
-        $this->assertSame( array('one', 'two'), $result->getOneArgList('a') );
+        $this->assertSame( array('one', 'two'), $result->getArgsForFlag('a') );
         $this->assertSame(
             array( array('one', 'two') ),
-            $result->getAllArgLists('a')
+            $result->getAllArgsForFlag('a')
         );
     }
 
     public function testProcess_UnrecognizedFlag ()
     {
         $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
+
+        $collect = new \r8\CLI\Collection;
+
+        try {
+            $collect->process( $input );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
+    public function testProcess_WithArgs ()
+    {
+        $input = new \r8\CLI\Input( array('one', 'two') );
+
+        $collect = new \r8\CLI\Collection;
+        $collect->addArg( new \r8\CLI\Arg\Many(
+            'input',
+            new \r8\Filter\Identity,
+            new \r8\Validator\Pass
+        ));
+
+        $result = $collect->process( $input );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
+        $this->assertSame( array('one', 'two'), $result->getArgs() );
+    }
+
+    public function testProcess_UnrecognizedArgs ()
+    {
+        $input = new \r8\CLI\Input( array('one', 'two') );
 
         $collect = new \r8\CLI\Collection;
 

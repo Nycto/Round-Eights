@@ -39,6 +39,13 @@ class Collection
     private $options = array();
 
     /**
+     * The list of arguments this command will consume
+     *
+     * @var Array An array of \r8\iface\CLI\Arg objects
+     */
+    private $args = array();
+
+    /**
      * Adds a new option to this collection
      *
      * @param \r8\CLI\Option $option
@@ -72,6 +79,28 @@ class Collection
     }
 
     /**
+     * Adds a argument that this command will consume
+     *
+     * @param \r8\iface\CLI\Arg $arg
+     * @return \r8\Args\Option Returns a self reference
+     */
+    public function addArg ( \r8\iface\CLI\Arg $arg )
+    {
+        $this->args[] = $arg;
+        return $this;
+    }
+
+    /**
+     * Returns the Arguments loaded into this command
+     *
+     * @return Array An array of \r8\iface\CLI\Arg objects
+     */
+    public function getArgs ()
+    {
+        return $this->args;
+    }
+
+    /**
      * Processes a list of input arguments
      *
      * @param \r8\CLI\Input $input
@@ -81,6 +110,7 @@ class Collection
     {
         $result = new \r8\CLI\Result;
 
+        // Loop over all the flags and process each in turn
         while ( $input->hasNextOption() ) {
             $flag = $input->popOption();
             $option = $this->findByFlag( $flag );
@@ -94,6 +124,20 @@ class Collection
             }
 
             $result->addOption( $option, $option->consume($input) );
+        }
+
+        // Now collect any command level arguments
+        foreach ( $this->args AS $arg ) {
+            $result->addArgs( $arg->consume($input) );
+        }
+
+        // If there are any arguments left over, let someone know
+        if ( $input->hasNextArg() ) {
+            throw new \r8\Exception\Data(
+                "Flag",
+                $input->popArgument(),
+                "Unrecognized flag"
+            );
         }
 
         return $result;
