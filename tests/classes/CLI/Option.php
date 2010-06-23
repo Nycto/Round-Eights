@@ -104,10 +104,11 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $opt = new \r8\CLI\Option("a", "Test");
+        $opt = new \r8\CLI\Option("a", "Test", TRUE);
         $this->assertSame( "a", $opt->getPrimaryFlag() );
         $this->assertSame( "Test", $opt->getDescription() );
         $this->assertSame( array("a"), $opt->getFlags() );
+        $this->assertTrue( $opt->allowMany() );
     }
 
     public function testAddFlag ()

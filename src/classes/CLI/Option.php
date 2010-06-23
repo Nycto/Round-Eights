@@ -39,6 +39,21 @@ class Option
     private $primaryFlag;
 
     /**
+     * A human readable description of this option
+     *
+     * @var String
+     */
+    private $description;
+
+    /**
+     * Whether to allow this option to appear multiple times in the command
+     * line list
+     *
+     * @var Boolean
+     */
+    private $many;
+
+    /**
      * The list of flags that will trigger this option
      *
      * @var Array
@@ -51,13 +66,6 @@ class Option
      * @var Array An array of \r8\iface\CLI\Arg objects
      */
     private $args = array();
-
-    /**
-     * A human readable description of this option
-     *
-     * @var String
-     */
-    private $description;
 
     /**
      * Cleans and normalizes a flag
@@ -85,15 +93,18 @@ class Option
      * Constructor...
      *
      * @param String $primaryFlag The primary flag that will trigger this option
-     * @param String A human readable description of this option
+     * @param String $description A human readable description of this option
+     * @param Boolean $many Whether to allow this option to appear multiple times
+     *      in the command line list
      */
-    public function __construct ( $primaryFlag, $description )
+    public function __construct ( $primaryFlag, $description, $many = FALSE )
     {
         $primaryFlag = self::normalizeFlag( $primaryFlag );
         $this->primaryFlag = $primaryFlag;
         $this->flags[] = $primaryFlag;
 
         $this->description = trim( (string) $description );
+        $this->many = (bool) $many;
     }
 
     /**
@@ -138,6 +149,17 @@ class Option
     public function getDescription ()
     {
         return $this->description;
+    }
+
+    /**
+     * Returns whether this option is allowed to appear multiple times in
+     * the command line argument list
+     *
+     * @return Boolean
+     */
+    public function allowMany ()
+    {
+        return $this->many;
     }
 
     /**

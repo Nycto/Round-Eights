@@ -207,9 +207,15 @@ class Command
 
             if ( $option === NULL ) {
                 throw new \r8\Exception\Data(
-                    "Flag",
-                    $option,
+                    $flag, "Flag",
                     "Unrecognized flag"
+                );
+            }
+
+            if ( !$option->allowMany() && $result->flagExists($flag) ) {
+                throw new \r8\Exception\Data(
+                    $option, "Flag",
+                    "Flag can not appear multiple times"
                 );
             }
 

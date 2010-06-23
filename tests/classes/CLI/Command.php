@@ -219,6 +219,20 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         catch ( \r8\Exception\Data $err ) {}
     }
 
+    public function testProcess_RepeatedFlag ()
+    {
+        $input = new \r8\CLI\Input( array('-a', '-a') );
+
+        $command = new \r8\CLI\Command('name', 'desc');
+        $command->addOption( new \r8\CLI\Option('a', 'test', FALSE) );
+
+        try {
+            $command->process( $input );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
 }
 
 ?>
