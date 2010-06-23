@@ -42,7 +42,7 @@ class classes_CLI_Arg extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
             '\r8\CLI\Arg',
-            array( 'consume', 'describe' ),
+            array( 'consume', 'describe', 'isGreedy' ),
             array( $name, $filter, $validator )
         );
     }

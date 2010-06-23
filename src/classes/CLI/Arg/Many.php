@@ -32,6 +32,19 @@ class Many extends \r8\CLI\Arg
 {
 
     /**
+     * Returns whether this argument considers itself to be greedy
+     *
+     * A greedy argument will consume as many values as it can, leaving no room
+     * for any arguments placed after it
+     *
+     * @return Boolean
+     */
+    public function isGreedy ()
+    {
+        return TRUE;
+    }
+
+    /**
      * Returns a string description of this argument for use in the help view
      *
      * @return String

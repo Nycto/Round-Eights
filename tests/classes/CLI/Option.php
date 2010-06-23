@@ -33,6 +33,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_CLI_Option extends PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Returns a test argument
+     *
+     * @return \r8\iface\CLI\Arg
+     */
+    public function getTestArg ( $greedy = FALSE, $consume = array() )
+    {
+        $arg = $this->getMock('\r8\iface\CLI\Arg');
+        $arg->expects( $this->any() )->method( "isGreedy" )
+            ->will( $this->returnValue( $greedy ) );
+        $arg->expects( $this->any() )->method( "consume" )
+            ->will( $this->returnValue( $consume ) );
+        return $arg;
+    }
+
     public function testDescribe ()
     {
         $opt = new \r8\CLI\Option("A", "Testing the description");
@@ -151,13 +166,27 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
         $opt = new \r8\CLI\Option("A", "Test");
         $this->assertSame( array(), $opt->getArgs() );
 
-        $arg1 = $this->getMock('r8\iface\CLI\Arg');
+        $arg1 = $this->getTestArg();
         $this->assertSame( $opt, $opt->addArg($arg1) );
         $this->assertSame( array($arg1), $opt->getArgs() );
 
-        $arg2 = $this->getMock('r8\iface\CLI\Arg');
+        $arg2 = $this->getTestArg();
         $this->assertSame( $opt, $opt->addArg($arg2) );
         $this->assertSame( array($arg1, $arg2), $opt->getArgs() );
+    }
+
+    public function testAddArg_Greedy ()
+    {
+        $opt = new \r8\CLI\Option("A", "Test");
+
+        // Add a greedy argument
+        $opt->addArg( $this->getTestArg(TRUE) );
+
+        try {
+            $opt->addArg( $this->getTestArg() );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
     }
 
     public function testConsume_NoArgs ()
@@ -176,22 +205,13 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
 
         $opt = new \r8\CLI\Option("A", "Test");
 
-        $arg1 = $this->getMock('\r8\iface\CLI\Arg');
-        $arg1->expects( $this->once() )->method( "consume" )
-            ->with( $this->equalTo( $input ) )
-            ->will( $this->returnValue( array( "one", "two" ) ) );
+        $arg1 = $this->getTestArg(FALSE, array( "one", "two" ));
         $opt->addArg( $arg1 );
 
-        $arg2 = $this->getMock('\r8\iface\CLI\Arg');
-        $arg2->expects( $this->once() )->method( "consume" )
-            ->with( $this->equalTo( $input ) )
-            ->will( $this->returnValue( array() ) );
+        $arg2 = $this->getTestArg(FALSE, array());
         $opt->addArg( $arg2 );
 
-        $arg3 = $this->getMock('\r8\iface\CLI\Arg');
-        $arg3->expects( $this->once() )->method( "consume" )
-            ->with( $this->equalTo( $input ) )
-            ->will( $this->returnValue( array( "three" ) ) );
+        $arg3 = $this->getTestArg(FALSE, array( "three" ));
         $opt->addArg( $arg3 );
 
         $this->assertSame(

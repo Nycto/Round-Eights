@@ -185,6 +185,16 @@ class Option
      */
     public function addArg ( \r8\iface\CLI\Arg $arg )
     {
+        // Don't let them add any more arguments if the previous argument is
+        // greedy... it would be pointless.
+        $last = end( $this->args );
+        if ( $last && $last->isGreedy() ) {
+            throw new \r8\Exception\Data(
+                $last, "Greedy Arg",
+                "Addition arguments can not be added after a greedy argument"
+            );
+        }
+
         $this->args[] = $arg;
         return $this;
     }

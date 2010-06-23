@@ -83,6 +83,20 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $this->assertSame( array($arg1, $arg2), $command->getArgs() );
     }
 
+    public function testAddArg_Greedy ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+
+        // Add a greedy argument
+        $command->addArg( new \r8\CLI\Arg\Many('arg') );
+
+        try {
+            $command->addArg( new \r8\CLI\Arg\One('arg2') );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
     public function testGetHelp ()
     {
         $command = new \r8\CLI\Command('cmd', 'A description of this command');
@@ -148,11 +162,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
     {
         $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
 
-        $arg = new \r8\CLI\Arg\Many(
-            'test',
-            new \r8\Filter\Identity,
-            new \r8\Validator\Pass
-        );
+        $arg = new \r8\CLI\Arg\Many('test');
 
         $command = new \r8\CLI\Command('name', 'desc');
         $command->addOption(
@@ -188,11 +198,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $input = new \r8\CLI\Input( array('one', 'two') );
 
         $command = new \r8\CLI\Command('name', 'desc');
-        $command->addArg( new \r8\CLI\Arg\Many(
-            'input',
-            new \r8\Filter\Identity,
-            new \r8\Validator\Pass
-        ));
+        $command->addArg( new \r8\CLI\Arg\Many('input') );
 
         $result = $command->process( $input );
 

@@ -33,6 +33,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
 {
 
+    public function testIsGreedy ()
+    {
+        $arg = new \r8\CLI\Arg\Many( "Test" );
+        $this->assertTrue( $arg->isGreedy() );
+    }
+
     public function testDescribe ()
     {
         $arg = new \r8\CLI\Arg\Many( "Test" );
