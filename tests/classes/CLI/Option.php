@@ -33,6 +33,43 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 class classes_CLI_Option extends PHPUnit_Framework_TestCase
 {
 
+    public function testDescribe ()
+    {
+        $opt = new \r8\CLI\Option("A", "Testing the description");
+        $this->assertSame(
+            "    -A\n"
+            ."        Testing the description\n",
+            $opt->describe()
+        );
+
+        $opt->addFlag('b')->addFlag('long');
+        $this->assertSame(
+            "    -A, -b, --long\n"
+            ."        Testing the description\n",
+            $opt->describe()
+        );
+
+        $opt->addArg( new \r8\CLI\Arg\One("Arg1") );
+        $opt->addArg( new \r8\CLI\Arg\Many("Arg2") );
+        $this->assertSame(
+            "    -A, -b, --long [Arg1] [Arg2]...\n"
+            ."        Testing the description\n",
+            $opt->describe()
+        );
+
+        $opt = new \r8\CLI\Option(
+            'opt',
+            'A particularly long description of this command that will need '
+            .'to be wrapped because of its length'
+        );
+        $this->assertSame(
+            "    --opt\n"
+            ."        A particularly long description of this command that will need to be\n"
+            ."        wrapped because of its length\n",
+            $opt->describe()
+        );
+    }
+
     public function testNormalizeFlag ()
     {
         $this->assertSame( "a", \r8\CLI\Option::normalizeFlag("a") );

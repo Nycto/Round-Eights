@@ -42,7 +42,7 @@ class classes_CLI_Arg extends PHPUnit_Framework_TestCase
     {
         return $this->getMock(
             '\r8\CLI\Arg',
-            array( 'consume' ),
+            array( 'consume', 'describe' ),
             array( $name, $filter, $validator )
         );
     }
@@ -57,6 +57,21 @@ class classes_CLI_Arg extends PHPUnit_Framework_TestCase
         $this->assertSame( "Name Of Arg", $arg->getName() );
         $this->assertSame( $filter, $arg->getFilter() );
         $this->assertSame( $validator, $arg->getValidator() );
+    }
+
+    public function testConstructor_Defaults ()
+    {
+        $arg = $this->getTestArg("Arg", NULL, NULL);
+
+        $this->assertThat(
+            $arg->getFilter(),
+            $this->isInstanceOf('\r8\Filter\Identity')
+        );
+
+        $this->assertThat(
+            $arg->getValidator(),
+            $this->isInstanceOf('\r8\Validator\Pass')
+        );
     }
 
 }

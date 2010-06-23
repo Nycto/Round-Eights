@@ -33,6 +33,12 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 class classes_CLI_Arg_One extends PHPUnit_Framework_TestCase
 {
 
+    public function testDescribe ()
+    {
+        $arg = new \r8\CLI\Arg\One("Test");
+        $this->assertSame( "[Test]", $arg->describe() );
+    }
+
     public function testConsume_Empty ()
     {
         $arg = new \r8\CLI\Arg\One(

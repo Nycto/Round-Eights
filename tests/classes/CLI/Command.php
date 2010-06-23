@@ -83,6 +83,57 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $this->assertSame( array($arg1, $arg2), $command->getArgs() );
     }
 
+    public function testGetHelp ()
+    {
+        $command = new \r8\CLI\Command('cmd', 'A description of this command');
+        $this->assertSame(
+            "USAGE:\n"
+            ."    cmd\n\n"
+            ."DESCRIPTION:\n"
+            ."    A description of this command\n\n",
+            $command->getHelp()
+        );
+
+        $command->addArg( new \r8\CLI\Arg\One("Arg1") );
+        $command->addArg( new \r8\CLI\Arg\Many("Arg2") );
+        $this->assertSame(
+            "USAGE:\n"
+            ."    cmd [Arg1] [Arg2]...\n\n"
+            ."DESCRIPTION:\n"
+            ."    A description of this command\n\n",
+            $command->getHelp()
+        );
+
+        $command->addOption( new \r8\CLI\Option('help', 'Displays the help view') );
+        $command->addOption( new \r8\CLI\Option('f', 'Performs an action') );
+        $this->assertSame(
+            "USAGE:\n"
+            ."    cmd [OPTIONS]... [Arg1] [Arg2]...\n\n"
+            ."DESCRIPTION:\n"
+            ."    A description of this command\n\n"
+            ."OPTIONS:\n"
+            ."    --help\n"
+            ."        Displays the help view\n"
+            ."    -f\n"
+            ."        Performs an action\n\n",
+            $command->getHelp()
+        );
+
+        $command = new \r8\CLI\Command(
+            'cmd',
+            'A particularly long description of this command that will need '
+            .'to be wrapped because of its length'
+        );
+        $this->assertSame(
+            "USAGE:\n"
+            ."    cmd\n\n"
+            ."DESCRIPTION:\n"
+            ."    A particularly long description of this command that will need to be wrapped\n"
+            ."    because of its length\n\n",
+            $command->getHelp()
+        );
+    }
+
     public function testProcess_Empty ()
     {
         $command = new \r8\CLI\Command('name', 'desc');

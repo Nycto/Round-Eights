@@ -39,6 +39,13 @@ interface Arg
     public function getName ();
 
     /**
+     * Returns a string description of this argument for use in the help view
+     *
+     * @return String
+     */
+    public function describe ();
+
+    /**
      * Given an input of arguments, pops elements off, filters them, validates
      * them and returns an array of everything it consumes
      *

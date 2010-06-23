@@ -155,6 +155,32 @@ class Command
     }
 
     /**
+     * Returns the help details for this command
+     *
+     * @return String
+     */
+    public function getHelp ()
+    {
+        $args = \r8\ary\invoke($this->args, "describe");
+
+        if ( !empty($this->options) )
+            array_unshift($args, "[OPTIONS]...");
+
+        $result = "USAGE:\n"
+            ."    ". trim($this->name ." ". implode(" ", $args)) ."\n\n"
+            ."DESCRIPTION:\n"
+            ."    ". wordwrap($this->description, 76, "\n    ", TRUE) ."\n\n";
+
+        if ( !empty($this->options) ) {
+            $result .= "OPTIONS:\n"
+                .implode("", \r8\ary\invoke($this->options, 'describe') )
+                ."\n";
+        }
+
+        return $result;
+    }
+
+    /**
      * Processes a list of input arguments
      *
      * @param \r8\CLI\Input $input

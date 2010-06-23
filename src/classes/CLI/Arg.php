@@ -62,8 +62,8 @@ abstract class Arg implements \r8\iface\CLI\Arg
      */
     public function __construct (
         $name,
-        \r8\iface\Filter $filter,
-        \r8\iface\Validator $validator
+        \r8\iface\Filter $filter = NULL,
+        \r8\iface\Validator $validator = NULL
     ) {
         $name = \r8\str\stripNoPrint( $name );
 
@@ -71,8 +71,8 @@ abstract class Arg implements \r8\iface\CLI\Arg
             throw new \r8\Exception\Argument(0, "Name", "Must not be empty");
 
         $this->name = $name;
-        $this->filter = $filter;
-        $this->validator = $validator;
+        $this->filter = $filter ?: new \r8\Filter\Identity;
+        $this->validator = $validator ?: new \r8\Validator\Pass;
     }
 
     /**

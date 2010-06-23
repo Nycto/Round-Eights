@@ -97,6 +97,30 @@ class Option
     }
 
     /**
+     * Returns a description of this option to be used in the help view
+     *
+     * @return String
+     */
+    public function describe ()
+    {
+        $flags = array_map(
+            function ($flag) {
+                return (strlen($flag) == 1 ? "-" : "--" ) . $flag;
+            },
+            $this->flags
+        );
+
+        return sprintf(
+            "    %s\n        %s\n",
+            trim(
+                implode(", ", $flags) ." "
+                .implode(" ", \r8\ary\invoke($this->args, "describe"))
+            ),
+            wordwrap($this->description, 72, "\n        ", TRUE)
+        );
+    }
+
+    /**
      * Returns the Primary Flag of this option
      *
      * @return String

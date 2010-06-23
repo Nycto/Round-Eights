@@ -32,6 +32,16 @@ class Many extends \r8\CLI\Arg
 {
 
     /**
+     * Returns a string description of this argument for use in the help view
+     *
+     * @return String
+     */
+    public function describe ()
+    {
+        return sprintf("[%s]...", $this->getName());
+    }
+
+    /**
      * Given an input of arguments, pops elements off, filters them, validates
      * them and returns an array of everything it consumes
      *
