@@ -42,47 +42,14 @@ class Exception extends \Exception
     const DESCRIPTION = "General Errors";
 
     /**
-     * Identifies the offset in the backtrace that caused the problem
-     *
-     * @var Integer
-     */
-    private $fault;
-
-    /**
      * Stores specific exception data. Each item has a label and a value
      *
      * @var Array
      */
-    protected $data = array();
+    private $data = array();
 
     /**
-     * Constructor...
-     *
-     * @param String $message The error message
-     * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
-     */
-    public function __construct ( $message = NULL, $code = 0, $fault = NULL )
-    {
-        parent::__construct($message, $code);
-
-        if ( !\r8\isVague($fault, \r8\ALLOW_ZERO) )
-            $this->setFault($fault);
-    }
-
-    /**
-     * Invoking an exception will cause it to be thrown
-     *
-     * @param Integer $shift Passing an argument allws you to shift the fault
-     */
-    public function __invoke ( $shift = -1 )
-    {
-        $this->shiftFault( $shift );
-        throw $this;
-    }
-
-    /**
-     * Returns the trace string for a given offset
+     * Returns the backtrace trace details for a given offset
      *
      * @param integer $offset The offset of the trace
      * @param integer $wrapFlag The offset wrapping mode to use
@@ -92,134 +59,11 @@ class Exception extends \Exception
     {
         $trace = $this->getTrace();
         if (count($trace) <= 0)
-            return FALSE;
+            return NULL;
 
-        return \r8\ary\offset($trace, $offset, $wrapFlag);
-    }
-
-    /**
-     * Returns the length of the trace
-     *
-     * @return integer
-     */
-    public function getTraceCount ()
-    {
-        return count($this->getTrace());
-    }
-
-    /**
-     * Returns whether the message is set
-     *
-     * @return Boolean
-     */
-    public function issetMessage ()
-    {
-        return !\r8\isEmpty($this->getMessage());
-    }
-
-    /**
-     * Returns Boolean whether the message is set
-     *
-     * @return Boolean
-     */
-    public function issetCode ()
-    {
-        return !\r8\isEmpty($this->getCode());
-    }
-
-    /**
-     * Sets the fault of the exception
-     *
-     * @param Integer $offset The offset at fault for the current exception
-     * @param integer $wrapFlag The offset wrapping mode to use
-     * @return \r8\Exception Returns a self reference
-     */
-    public function setFault ( $offset, $wrapFlag = \r8\num\OFFSET_RESTRICT )
-    {
-        $trace = $this->getTrace();
-
-        if (count($trace) <= 0)
-            return $this;
-
-        $this->fault = \r8\ary\calcOffset($trace, $offset, $wrapFlag);
-
-        return $this;
-    }
-
-    /**
-     * Unset the fault offset
-     *
-     * @return \r8\Exception Returns a self reference
-     */
-    public function unsetFault ()
-    {
-        unset($this->fault);
-        return $this;
-    }
-
-    /**
-     * Returns whether the fault is set
-     *
-     * @return Boolean
-     */
-    public function issetFault ()
-    {
-        return isset($this->fault);
-    }
-
-    /**
-     * Returns the fault offset
-     *
-     * @return Integer|Boolean Returns the offset, or FALSE if no fault is set
-     */
-    public function getFaultOffset ()
-    {
-        if (!isset($this->fault))
-            return FALSE;
-        return $this->fault;
-    }
-
-    /**
-     * Sets the fault relative to it's current value
-     *
-     * @param Integer $shift
-     * @param Integer $wrapFlag
-     * @return \r8\Exception Returns a self reference
-     */
-    public function shiftFault ($shift = 1, $wrapFlag = \r8\ary\OFFSET_RESTRICT)
-    {
-
-        // Shifting the fault when no fault is set marks it to the end of the list
-        if ( !$this->issetFault() )
-            return $this->setFault(0);
-
-        $shift = (int) $shift;
-
-        $trace = $this->getTrace();
-
-        if (count($trace) <= 0)
-            return FALSE;
-
-        $fault = $this->getFaultOffset();
-
-        $fault += $shift;
-
-        $fault = \r8\ary\calcOffset($trace, $fault, \r8\ary\OFFSET_RESTRICT);
-
-        return $this->setFault($fault);
-    }
-
-    /**
-     * Returns the fault trace
-     *
-     * @return array Returns the details for the fault of the current exception
-     */
-    public function getFault ()
-    {
-        if ( !$this->issetFault() )
-            return FALSE;
-
-        return $this->getTraceByOffset( $this->getFaultOffset() );
+        return \r8\Backgtrace\Event::from(
+            \r8\ary\offset($trace, $offset, $wrapFlag)
+        );
     }
 
     /**

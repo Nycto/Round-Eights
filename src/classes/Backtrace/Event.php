@@ -160,6 +160,22 @@ abstract class Event
     }
 
     /**
+     * Returns a specific argument from this event
+     *
+     * @param Integer $offset The offset of the argument to return
+     * @return Mixed
+     */
+    public function getArg ( $offset )
+    {
+        try {
+            return \r8\ary\offset($this->getArgs(), $offset);
+        }
+        catch ( \r8\Exception\Index $err ) {
+            return NULL;
+        }
+    }
+
+    /**
      * Invokes the appropriate visitor method
      *
      * @param \r8\iface\Backtrace\Visitor $visitor The object to visit

@@ -35,9 +35,8 @@ class classes_Backtrace_Event_Call extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $event = $this->getMock(
+        $event = $this->getMockForAbstractClass(
             '\r8\Backtrace\Event\Call',
-            array('visit', 'getResolvedName'),
             array(
                 '/path/example.php',
                 1423,
@@ -48,6 +47,21 @@ class classes_Backtrace_Event_Call extends PHPUnit_Framework_TestCase
         $this->assertSame( "/path/example.php", $event->getFile() );
         $this->assertSame( 1423, $event->getLine() );
         $this->assertSame( array( "arg1", "arg2" ), $event->getArgs() );
+    }
+
+    public function testGetArg ()
+    {
+        $event = $this->getMockForAbstractClass(
+            '\r8\Backtrace\Event\Call',
+            array(
+                '/path/example.php',
+                1423,
+                array( "arg1", "arg2" )
+            )
+        );
+
+        $this->assertSame( 'arg1', $event->getArg(0) );
+        $this->assertSame( 'arg2', $event->getArg(-1) );
     }
 
 }
