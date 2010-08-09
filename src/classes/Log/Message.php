@@ -149,6 +149,20 @@ class Message
     }
 
     /**
+     * Returns a nicely formatted version of the time
+     *
+     * @return String
+     */
+    public function getFormattedTime ()
+    {
+        return sprintf(
+            '%s.%02d',
+            date( "Y-m-d H:i:s", (int) $this->time ),
+            ($this->time - (int) $this->time) * 100
+        );
+    }
+
+    /**
      * Returns the Backtrace that lead to this message
      *
      * @return Array

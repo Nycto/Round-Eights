@@ -69,6 +69,16 @@ class classes_Log_Message extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetFormattedTime ()
+    {
+        $message = new \r8\Log\Message( 'Test Message', 'Error', 1234 );
+
+        $this->assertRegExp(
+            '/^\d{4}\-\d\d-\d\d \d\d:\d\d:\d\d\.\d+$/',
+            $message->getFormattedTime()
+        );
+    }
+
 }
 
 ?>
