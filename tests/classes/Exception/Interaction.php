@@ -30,26 +30,16 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_interaction extends PHPUnit_Framework_TestCase
+class classes_Exception_Interaction extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
-        $err = new \r8\Exception\Interaction(
-                'Variable was not set',
-                2020,
-                0
-            );
+        $err = new \r8\Exception\Interaction( 'Variable was not set', 2020 );
 
         $this->assertEquals( "Variable was not set", $err->getMessage() );
         $this->assertEquals( 2020, $err->getCode() );
-
-        $this->assertEquals(
-                array(),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+        $this->assertEquals( array(), $err->getData() );
     }
 
 }

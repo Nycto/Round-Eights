@@ -30,27 +30,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_extension extends PHPUnit_Framework_TestCase
+class classes_Exception_Extension extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
         $err = new \r8\Exception\Extension(
-                'Ext Name',
-                'Extension not loaded',
-                300,
-                0
-            );
+            'Ext Name', 'Extension not loaded', 300
+        );
 
         $this->assertEquals( "Extension not loaded", $err->getMessage() );
         $this->assertEquals( 300, $err->getCode() );
-
         $this->assertEquals(
-                array("Extension" => "Ext Name"),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+            array("Extension" => "Ext Name"),
+            $err->getData()
+        );
     }
 
 }

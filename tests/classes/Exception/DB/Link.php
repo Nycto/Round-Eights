@@ -40,21 +40,11 @@ class classes_Exception_DB_Link extends PHPUnit_Framework_TestCase
             ->method("getIdentifier")
             ->will( $this->returnValue("db://ident") );
 
-        $err = new \r8\Exception\DB\Link(
-                'Oops, an error was encountered',
-                404,
-                $link,
-                0
-            );
+        $err = new \r8\Exception\DB\Link( 'Oops!', 404, $link );
 
-        $this->assertEquals( "Oops, an error was encountered", $err->getMessage() );
+        $this->assertEquals( "Oops!", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
-        $this->assertEquals(
-                array("Link" => "db://ident"),
-                $err->getData()
-            );
+        $this->assertEquals( array("Link" => "db://ident"), $err->getData() );
     }
 
 }

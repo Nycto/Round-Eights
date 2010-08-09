@@ -30,27 +30,14 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 /**
  * unit tests
  */
-class classes_exception extends PHPUnit_Framework_TestCase
+class classes_Exception extends PHPUnit_Framework_TestCase
 {
 
-    public function testMessage ()
+    public function testConstruct ()
     {
-        $err = new \r8\Exception();
-        $this->assertFalse( $err->issetMessage() );
-
-        $err = new \r8\Exception("This is a message");
-        $this->assertTrue( $err->issetMessage() );
-        $this->assertEquals( "This is a message", $err->getMessage() );
-    }
-
-    public function testCode ()
-    {
-        $err = new \r8\Exception();
-        $this->assertFalse( $err->issetCode() );
-
         $err = new \r8\Exception("This is a message", 543);
-        $this->assertTrue( $err->issetCode() );
         $this->assertEquals( 543, $err->getCode() );
+        $this->assertEquals( "This is a message", $err->getMessage() );
     }
 
     public function testGetTraceByOffset ()
@@ -59,45 +46,8 @@ class classes_exception extends PHPUnit_Framework_TestCase
 
         $trace = $err->getTraceByOffset(0);
 
-        $this->assertType( 'array', $trace );
-        $this->assertEquals( __FUNCTION__, $trace['function'] );
-    }
-
-    public function testGetTraceCount ()
-    {
-        $err = new \r8\Exception();
-
-        $this->assertThat( $err->getTraceCount(0), $this->isType("int") );
-        $this->assertThat( $err->getTraceCount(0), $this->greaterThan(0) );
-    }
-
-    public function testFault ()
-    {
-        $err = new \r8\Exception();
-
-        // test whether setFault and issetFault work
-        $this->assertFalse( $err->issetFault() );
-        $this->assertSame( $err, $err->setFault(0) );
-        $this->assertTrue( $err->issetFault() );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
-        // Now reset the fault and test shiftFault without any arguments
-        $this->assertSame( $err, $err->shiftFault() );
-        $this->assertEquals( 1, $err->getFaultOffset() );
-
-        // Make sure getFault returns an array
-        $this->assertType( 'array', $err->getFault() );
-
-        // test unsetFault
-        $this->assertSame( $err, $err->unsetFault() );
-        $this->assertFalse( $err->issetFault() );
-
-
-        // Test shift Fault when no fault is currently set
-        $err->shiftFault();
-        $this->assertEquals(0, $err->getFaultOffset());
-
+        $this->assertThat( $trace, $this->isInstanceOf( '\r8\Backtrace\Event' ) );
+        $this->assertEquals( __FUNCTION__, $trace->getName() );
     }
 
     public function testData ()
@@ -107,12 +57,6 @@ class classes_exception extends PHPUnit_Framework_TestCase
         $this->assertSame( $err, $err->addData("Data Label", 20) );
         $this->assertSame( array("Data Label" => 20), $err->getData() );
         $this->assertEquals( 20, $err->getDataValue("Data Label") );
-    }
-
-    public function testThrowing ()
-    {
-        $this->setExpectedException('\r8\Exception');
-        throw new \r8\Exception;
     }
 
 }

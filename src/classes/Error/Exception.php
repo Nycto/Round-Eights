@@ -149,35 +149,8 @@ class Exception implements \r8\iface\Error
         if ( !($this->exception instanceof \r8\Exception) )
             return array();
 
-        $result = array(
-            "Exception" => $this->exception->getDescription()
-        );
-
-        $fault = $this->exception->getFault();
-
-        if ( $fault !== FALSE ) {
-
-            if ( !empty($fault['function']) ) {
-
-                $function = $fault['function'];
-
-                if ( !empty($fault['type']) && !empty($fault['class']) )
-                    $function = $fault['class'] . $fault['type'] . $function;
-
-                $result['Caused By'] = $function ."()";
-            }
-
-            if ( isset($fault['file']) ) {
-                $result['Caused in File'] = $fault['file'];
-
-                if ( isset($fault['line']) )
-                    $result['Caused on Line'] = $fault['line'];
-            }
-        }
-
-        $result += $this->exception->getData();
-
-        return $result;
+        return array("Exception" => $this->exception->getDescription())
+            + $this->exception->getData();
     }
 
 }

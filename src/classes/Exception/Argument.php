@@ -43,8 +43,10 @@ class Argument extends \r8\Exception
 
     /**
      * The offset of the argument at fault
+     *
+     * @var Integer
      */
-    protected $arg;
+    private $arg;
 
     /**
      * Constructor
@@ -53,75 +55,15 @@ class Argument extends \r8\Exception
      * @param String $label The name of the argument
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct($arg, $label = NULL, $message = NULL, $code = 0, $fault = 0)
+    public function __construct( $arg, $label = NULL, $message = NULL, $code = 0 )
     {
-        $this->setFault($fault);
+        parent::__construct( $message, $code );
+
+        $this->arg = (int) $arg;
 
         if ( !\r8\isVague($label) )
             $this->addData("Arg Label", $label);
-
-        if ( !\r8\isVague($message) )
-            $this->message = $message;
-
-        if ( !\r8\isVague( $code ) )
-            $this->code = $code;
-
-        if (!\r8\isVague($arg, \r8\ALLOW_ZERO) && $this->getTraceCount() > 0)
-            $this->setArg($arg);
-    }
-
-    /**
-     * Identify the argument that caused the problem
-     *
-     * @param Integer $offset
-     * @param Integer $wrapFlag
-     * @return object Returns a self reference
-     */
-    public function setArg ( $offset, $wrapFlag = \r8\ary\OFFSET_RESTRICT )
-    {
-        // If the fault isn't set, default to the end of the trace
-        if ( !$this->issetFault())
-            $this->setFault(0);
-
-        $fault = $this->getFault();
-
-        if ($fault === FALSE || !isset($fault['args']) || !is_array($fault['args']))
-            trigger_error("Error fetching fault trace arguments", E_USER_ERROR);
-
-        if (count($fault['args']) <= 0)
-            return $this->unsetArg();
-
-        $offset = \r8\ary\calcOffset($fault['args'], $offset, $wrapFlag);
-
-        if (is_int($offset))
-            $this->arg = $offset;
-        else
-            unset($this->arg);
-
-        return $this;
-    }
-
-    /**
-     * Boolean whether or not an argument is set
-     *
-     * @return Boolean
-     */
-    public function issetArg ()
-    {
-        return isset($this->arg);
-    }
-
-    /**
-     * Unsets the argument pointer
-     *
-     * @return object Returns a self reference
-     */
-    public function unsetArg ()
-    {
-        $this->arg = NULL;
-        return $this;
     }
 
     /**
@@ -131,41 +73,16 @@ class Argument extends \r8\Exception
      */
     public function getArgOffset ()
     {
-        if ( !$this->issetArg() )
-            return FALSE;
-        else
-            return $this->arg;
-    }
-
-    /**
-     * Change the fault
-     *
-     * @param Integer $offset The new fault
-     * @param Integer $arg If a new argument is responsible, it can be set here
-     * @return Object Returns a self reference
-     */
-    public function setFault ($offset, $arg = NULL)
-    {
-        parent::setFault($offset);
-
-        if (!\r8\isVague($arg, \r8\ALLOW_ZERO))
-            $this->setArg( $arg );
-
-        else if ( $this->issetArg() )
-            $this->setArg( $this->arg );
-
-        return $this;
-    }
-
-    /**
-     * Unsets the fault
-     *
-     * @return Object Returns a self reference
-     */
-    public function unsetFault ()
-    {
-        $this->unsetArg();
-        return parent::unsetFault();
+        try {
+            return \r8\ary\calcOffset(
+                $this->getTraceByOffset(0)->getArgs(),
+                $this->arg,
+                \r8\ary\OFFSET_RESTRICT
+            );
+        }
+        catch ( \r8\Exception\Index $err ) {
+            return NULL;
+        }
     }
 
     /**
@@ -175,14 +92,7 @@ class Argument extends \r8\Exception
      */
     public function getArgData ()
     {
-        if ( !$this->issetArg() )
-            return NULL;
-
-        $trace = $this->getFault();
-        if (count($trace['args']) <= 0)
-            return NULL;
-
-        return $trace['args'][ $this->getArgOffset() ];
+        return $this->getTraceByOffset(0)->getArg( $this->arg );
     }
 
     /**
@@ -196,7 +106,7 @@ class Argument extends \r8\Exception
                 "Arg Offset" => $this->getArgOffset(),
                 "Arg Value" => \r8\getDump( $this->getArgData() )
             )
-            + $this->data;
+            + parent::getData();
     }
 
 }

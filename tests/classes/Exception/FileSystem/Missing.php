@@ -30,27 +30,19 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_exception_filesystem_missing extends PHPUnit_Framework_TestCase
+class classes_Exception_FileSystem_Missing extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
         $err = new \r8\Exception\FileSystem\Missing(
-                '/path/to/file.txt',
-                'Could not open file',
-                123,
-                0
-            );
+            '/path/file.txt', 'Could not open file', 123
+        );
 
         $this->assertEquals( "Could not open file", $err->getMessage() );
         $this->assertEquals( 123, $err->getCode() );
+        $this->assertEquals(array("Path" => "/path/file.txt"), $err->getData());
 
-        $this->assertEquals(
-                array("Path" => "/path/to/file.txt"),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }

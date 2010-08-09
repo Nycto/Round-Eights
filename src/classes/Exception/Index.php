@@ -50,12 +50,10 @@ class Index extends \r8\Exception
      * @param String $label The name of the data
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct($value, $label = NULL, $message = NULL, $code = 0, $fault = NULL)
+    public function __construct( $value, $label = NULL, $message = NULL, $code = 0 )
     {
-        parent::__construct($message, $code, $fault);
-
+        parent::__construct($message, $code);
         $this->addData( "Index Label", (string) $label );
         $this->addData( "Value", \r8\getDump($value) );
     }

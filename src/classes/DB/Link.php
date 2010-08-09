@@ -177,13 +177,7 @@ class Link implements \r8\iface\DB\Link
         if ( !$this->adapter->isConnected() )
             $this->adapter->connect();
 
-        try {
-            $result = $this->adapter->query( $query );
-        }
-        catch (\r8\Exception\DB\Query $err) {
-            $err->shiftFault();
-            throw $err;
-        }
+        $result = $this->adapter->query( $query );
 
         if ( !( $result instanceof \r8\iface\DB\Result ) ) {
             throw new \r8\Exception\DB\Query(

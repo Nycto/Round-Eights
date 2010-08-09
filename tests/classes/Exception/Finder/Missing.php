@@ -44,22 +44,18 @@ class classes_Exception_Finder_Missing extends PHPUnit_Framework_TestCase
 
 
         $err = new \r8\Exception\Finder\Missing(
-                '/path/to/file.txt',
-                $tracker
-            );
+            '/path/to/file.txt', $tracker
+        );
 
         $this->assertEquals( "Finder was unable to locate file", $err->getMessage() );
         $this->assertEquals( 0, $err->getCode() );
-
         $this->assertEquals(
-                array(
-                    "Search Path" => "/path/to/file.txt",
-                    "Tested Paths" => array("/path1", "/path2", "/path1", "/path3")
-                ),
-                $err->getData()
-            );
-
-        $this->assertGreaterThan( 0, $err->getFaultOffset() );
+            array(
+                "Search Path" => "/path/to/file.txt",
+                "Tested Paths" => array("/path1", "/path2", "/path1", "/path3")
+            ),
+            $err->getData()
+        );
     }
 
 }

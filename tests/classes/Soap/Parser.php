@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_soap_parser extends PHPUnit_Framework_TestCase
+class classes_Soap_Parser extends PHPUnit_Framework_TestCase
 {
 
     public function testCountMessages_none ()

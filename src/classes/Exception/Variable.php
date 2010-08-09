@@ -49,16 +49,11 @@ class Variable extends \r8\Exception
      * @param String $variable The name of the variable that caused the error
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct($variable, $message = NULL, $code = 0, $fault = NULL)
+    public function __construct ( $variable, $message = NULL, $code = 0 )
     {
-        parent::__construct($message, $code, $fault);
-
-        $this->addData(
-                "Variable Name",
-                (string) $variable
-            );
+        parent::__construct($message, $code);
+        $this->addData( "Variable Name", (string) $variable );
     }
 
 }

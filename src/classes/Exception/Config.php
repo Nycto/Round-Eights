@@ -49,11 +49,10 @@ class Config extends \r8\Exception
      * @param String $config The configuration label that caused the error
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct($config = NULL, $message = NULL, $code = 0, $fault = NULL)
+    public function __construct ( $config = NULL, $message = NULL, $code = 0 )
     {
-        parent::__construct($message, $code, $fault);
+        parent::__construct($message, $code);
         $this->addData( "Config", (string) $config );
     }
 }

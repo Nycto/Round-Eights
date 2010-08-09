@@ -41,24 +41,15 @@ class classes_Exception_DB_Deadlock extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("db://ident") );
 
         $err = new \r8\Exception\DB\Deadlock(
-                'SELECT * FROM table FOR UPDATE',
-                'Deadlock Encountered',
-                404,
-                $link,
-                0
-            );
+            'SELECT 1 + 1', 'Deadlock Encountered', 404, $link
+        );
 
         $this->assertEquals( "Deadlock Encountered", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
         $this->assertEquals(
-                array(
-                        "Link" => "db://ident",
-                        "Query" => "SELECT * FROM table FOR UPDATE"
-                    ),
-                $err->getData()
-            );
+            array( "Link" => "db://ident", "Query" => "SELECT 1 + 1" ),
+            $err->getData()
+        );
     }
 
 }

@@ -51,7 +51,7 @@ class Missing extends \r8\Exception
      */
     public function __construct ( $path, \r8\Finder\Tracker $tracker )
     {
-        parent::__construct( "Finder was unable to locate file", 0, -1 );
+        parent::__construct( "Finder was unable to locate file", 0  );
         $this->addData( "Search Path", (string) $path );
         $this->addData( "Tested Paths", $tracker->getTested() );
     }

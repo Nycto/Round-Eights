@@ -41,36 +41,26 @@ class classes_Exception_DB extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("db://ident") );
 
         $err = new \r8\Exception\DB(
-                'Oops, an error was encountered',
-                404,
-                $link,
-                0
-            );
+            'Oops, an error was encountered', 404, $link
+        );
 
         $this->assertEquals( "Oops, an error was encountered", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
         $this->assertEquals( array("Link" => "db://ident"), $err->getData() );
     }
 
     public function testConstruct_other ()
     {
         $err = new \r8\Exception\DB(
-                'Oops, an error was encountered',
-                404,
-                "ident",
-                0
-            );
+            'Oops, an error was encountered', 404, "ident"
+        );
 
         $this->assertEquals( "Oops, an error was encountered", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
         $this->assertEquals(
-                array("Link" => "string('ident')"),
-                $err->getData()
-            );
+            array("Link" => "string('ident')"),
+            $err->getData()
+        );
     }
 
 }

@@ -50,11 +50,10 @@ class DB extends \r8\Exception
      * @param String $message The error message
      * @param Integer $code The error code
      * @param Mixed $link The database Link associated with this error
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct ( $message = NULL, $code = 0, $link = null, $fault = NULL )
+    public function __construct ( $message = NULL, $code = 0, $link = null )
     {
-        parent::__construct( $message, $code, $fault );
+        parent::__construct( $message, $code );
 
         if ( $link instanceof \r8\iface\DB\Identified )
             $this->addData( 'Link', $link->getIdentifier() );

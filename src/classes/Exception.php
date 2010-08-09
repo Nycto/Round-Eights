@@ -61,7 +61,7 @@ class Exception extends \Exception
         if (count($trace) <= 0)
             return NULL;
 
-        return \r8\Backgtrace\Event::from(
+        return \r8\Backtrace\Event::from(
             \r8\ary\offset($trace, $offset, $wrapFlag)
         );
     }

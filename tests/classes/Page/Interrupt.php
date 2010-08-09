@@ -35,21 +35,10 @@ class classes_Page_Interrupt extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $err = new \r8\Page\Interrupt(
-                'Interrupted',
-                2020,
-                0
-            );
-
+        $err = new \r8\Page\Interrupt( 'Interrupted', 2020 );
         $this->assertEquals( "Interrupted", $err->getMessage() );
         $this->assertEquals( 2020, $err->getCode() );
-
-        $this->assertEquals(
-                array(),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+        $this->assertEquals( array(), $err->getData() );
     }
 
 }

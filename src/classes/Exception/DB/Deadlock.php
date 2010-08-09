@@ -50,11 +50,10 @@ class Deadlock extends \r8\Exception\DB
      * @param String $message The error message
      * @param Integer $code The error code
      * @param mixed $link The database Link associated with this error
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct ( $query, $message = NULL, $code = 0, $link = null, $fault = NULL )
+    public function __construct ( $query, $message = NULL, $code = 0, $link = null )
     {
-        parent::__construct( $message, $code, $link, $fault );
+        parent::__construct( $message, $code, $link );
         $this->addData("Query", $query);
     }
 

@@ -30,27 +30,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_variable extends PHPUnit_Framework_TestCase
+class classes_Exception_Variable extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
         $err = new \r8\Exception\Variable(
-                'Observer',
-                'Observer was not set',
-                2020,
-                0
-            );
+            'Observer', 'Observer was not set', 2020
+        );
 
         $this->assertEquals( "Observer was not set", $err->getMessage() );
         $this->assertEquals( 2020, $err->getCode() );
 
         $this->assertEquals(
-                array('Variable Name' => 'Observer'),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+            array('Variable Name' => 'Observer'),
+            $err->getData()
+        );
     }
 
 }

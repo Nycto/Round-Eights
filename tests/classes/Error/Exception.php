@@ -92,23 +92,12 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue(
                 array( 'Key' => 'Value', 'More' => 505050 )
             ));
-        $exception->expects( $this->once() )
-            ->method( 'getFault' )
-            ->will( $this->returnValue(
-                array(
-                    'function' => 'method', 'class' => 'cls', 'type' => '->',
-                    'file' => '/test.php', 'line' => 50
-                )
-            ));
 
         $error = new \r8\Error\Exception( $exception );
 
         $this->assertSame(
             array(
                 'Exception' => 'Exception Name',
-                'Caused By' => 'cls->method()',
-                'Caused in File' => '/test.php',
-                'Caused on Line' => 50,
                 'Key' => 'Value',
                 'More' => 505050
             ),

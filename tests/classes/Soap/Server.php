@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_soap_server extends PHPUnit_Framework_TestCase
+class classes_Soap_Server extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct_Defaults ()

@@ -49,15 +49,11 @@ class Extension extends \r8\Exception
      * @param String $extension The PHP extension related to this error
      * @param String $message The error message
      * @param Integer $code The error code
-     * @param Integer $fault The backtrace offset that caused the error
      */
-    public function __construct($extension, $message = NULL, $code = 0, $fault = NULL)
+    public function __construct ( $extension, $message = NULL, $code = 0 )
     {
-        parent::__construct($message, $code, $fault);
-
-        $extension = (string) $extension;
-
-        $this->addData( "Extension", $extension );
+        parent::__construct($message, $code);
+        $this->addData( "Extension", (string) $extension );
     }
 
 }

@@ -30,28 +30,22 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_data extends PHPUnit_Framework_TestCase
+class classes_Exception_Data extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
         $err = new \r8\Exception\Data(
-                'lorm ipsum',
-                'Nonsense',
-                'An error occured with this data',
-                404,
-                0
-            );
+            'lorm ipsum', 'Nonsense',
+            'An error occured with this data', 404
+        );
 
         $this->assertEquals( "An error occured with this data", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
-
         $this->assertEquals(
-                array("Nonsense" => "string('lorm ipsum')"),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+            array("Nonsense" => "string('lorm ipsum')"),
+            $err->getData()
+        );
     }
 
 }

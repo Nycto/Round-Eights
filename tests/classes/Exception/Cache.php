@@ -35,12 +35,9 @@ class classes_Exception_Cache extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $err = new \r8\Exception\Cache( 'Error', 300, 0 );
-
+        $err = new \r8\Exception\Cache( 'Error', 300 );
         $this->assertEquals( "Error", $err->getMessage() );
         $this->assertEquals( 300, $err->getCode() );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }

@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_argument extends PHPUnit_Framework_TestCase
+class classes_Exception_Argument extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -41,7 +41,7 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
     public function getTestException ()
     {
         $throw = function ( $arg1, $arg2 ) {
-            return new \r8\Exception\Argument(0, "test", "From our sponsors", 505, 0);
+            return new \r8\Exception\Argument(0, "test", "blah", 505);
         };
         return $throw("arg value", "other arg");
     }
@@ -51,7 +51,7 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
         $err = $this->getTestException();
 
         $this->assertEquals( 0, $err->getArgOffset() );
-        $this->assertEquals( "From our sponsors", $err->getMessage() );
+        $this->assertEquals( "blah", $err->getMessage() );
         $this->assertEquals( 505, $err->getCode() );
 
         $this->assertSame(
@@ -62,81 +62,22 @@ class classes_exception_argument extends PHPUnit_Framework_TestCase
             ),
             $err->getData()
         );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
     public function testArg ()
     {
         $err = $this->getTestException();
 
-        $this->assertTrue( $err->issetArg() );
         $this->assertEquals( 0, $err->getArgOffset() );
         $this->assertEquals( "arg value", $err->getArgData() );
-
-        $this->assertSame( $err, $err->setArg(1) );
-        $this->assertEquals( "other arg", $err->getArgData() );
-
-        $this->assertSame( $err, $err->unsetArg() );
-    }
-
-    public function testUnsetArg ()
-    {
-        $err = $this->getTestException();
-
-        $this->assertTrue( $err->issetArg() );
-
-        $this->assertSame( $err, $err->unsetArg() );
-
-        $this->assertFalse( $err->issetArg() );
-        $this->assertFalse( $err->getArgOffset() );
-        $this->assertNull( $err->getArgData() );
-    }
-
-    public function testFaultChange ()
-    {
-        $err = $this->getTestException("garbage arg", "arg v2", "yet another");
-
-        $this->assertEquals( "arg value", $err->getArgData() );
-
-        $err->shiftFault();
-
-        $this->assertTrue( $err->issetArg() );
-        $this->assertEquals( "garbage arg", $err->getArgData() );
-    }
-
-    public function testNoFault ()
-    {
-        $err = $this->getTestException();
-
-        $this->assertTrue( $err->issetFault() );
-        $this->assertTrue( $err->issetArg() );
-
-        $this->assertSame( $err, $err->unsetFault() );
-
-        $this->assertFalse( $err->issetFault() );
-        $this->assertFalse( $err->issetArg() );
-
-
-        $this->assertSame( $err, $err->setArg(1) );
-
-        $this->assertTrue( $err->issetFault() );
-        $this->assertTrue( $err->issetArg() );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
-        $this->assertEquals( 1, $err->getArgOffset() );
     }
 
     public function testNoArgs ()
     {
-        $err = $this->getTestException();
-
-        // Shift the fault to a function call that doesn't have any arguments
-        $err->shiftFault();
-
-        $this->assertFalse( $err->issetArg() );
-        $this->assertFalse( $err->getArgOffset() );
-        $this->assertNull( $err->getArgData() );
+        $throw = function () {
+            return new \r8\Exception\Argument(0, "test", "blah", 505);
+        };
+        $this->assertNull( $throw()->getArgOffset() );
     }
 
 }

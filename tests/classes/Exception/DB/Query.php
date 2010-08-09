@@ -41,24 +41,15 @@ class classes_Exception_DB_Query extends PHPUnit_Framework_TestCase
             ->will( $this->returnValue("db://ident") );
 
         $err = new \r8\Exception\DB\Query(
-                'SELECT * FROM table FOR UPDATE',
-                'Table does not exist',
-                550,
-                $link,
-                0
-            );
+            'SELECT 1 + 1', 'Table does not exist', 550, $link
+        );
 
         $this->assertEquals( "Table does not exist", $err->getMessage() );
         $this->assertEquals( 550, $err->getCode() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
-
         $this->assertEquals(
-                array(
-                        "Link" => "db://ident",
-                        "Query" => "SELECT * FROM table FOR UPDATE"
-                    ),
-                $err->getData()
-            );
+            array( "Link" => "db://ident", "Query" => "SELECT 1 + 1" ),
+            $err->getData()
+        );
     }
 
 }

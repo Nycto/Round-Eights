@@ -30,28 +30,21 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_exception_index extends PHPUnit_Framework_TestCase
+class classes_Exception_Index extends PHPUnit_Framework_TestCase
 {
 
     public function testConstruct ()
     {
         $err = new \r8\Exception\Index(
-                5,
-                'Array Offset',
-                'Out of bounds',
-                219,
-                0
-            );
+            5, 'Array Offset', 'Out of bounds', 219
+        );
 
         $this->assertEquals( "Out of bounds", $err->getMessage() );
         $this->assertEquals( 219, $err->getCode() );
-
         $this->assertEquals(
-                array("Index Label" => "Array Offset", 'Value' => "int(5)"),
-                $err->getData()
-            );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
+            array("Index Label" => "Array Offset", 'Value' => "int(5)"),
+            $err->getData()
+        );
     }
 
 }

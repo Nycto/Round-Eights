@@ -35,17 +35,11 @@ class classes_Exception_Config extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $err = new \r8\Exception\Config(
-                'Nonsense',
-                'An error occured with this data',
-                404,
-                0
-            );
+        $err = new \r8\Exception\Config( 'Nonsense', 'An error occured', 404 );
 
-        $this->assertEquals( "An error occured with this data", $err->getMessage() );
+        $this->assertEquals( "An error occured", $err->getMessage() );
         $this->assertEquals( 404, $err->getCode() );
         $this->assertEquals( array("Config" => "Nonsense"), $err->getData() );
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }

@@ -35,16 +35,9 @@ class classes_Exception_Cache_Connection extends PHPUnit_Framework_TestCase
 
     public function testConstruct ()
     {
-        $err = new \r8\Exception\Cache\Connection(
-                'Connection Error',
-                300,
-                0
-            );
-
+        $err = new \r8\Exception\Cache\Connection( 'Connection Error', 300 );
         $this->assertEquals( "Connection Error", $err->getMessage() );
         $this->assertEquals( 300, $err->getCode() );
-
-        $this->assertEquals( 0, $err->getFaultOffset() );
     }
 
 }

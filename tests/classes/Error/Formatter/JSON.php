@@ -41,7 +41,6 @@ class classes_Error_Formatter_JSON extends PHPUnit_Framework_TestCase
 
 
         $exception = new \r8\Exception("Test", 5050);
-        $exception->setFault(0);
         $exception->addData("key", "data");
         $exception->addData("test", new stdClass);
 
