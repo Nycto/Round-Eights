@@ -23,53 +23,21 @@
  * @package Log
  */
 
-namespace r8\Log;
+namespace r8\iface\Log;
 
 /**
- * The error message levels
+ * An interface for reporting nodes
  */
-class Level extends \r8\Enum
+interface Node
 {
 
     /**
-     * System is unusable
+     * Dispatches a message across this node
+     *
+     * @param \r8\Log\Message $message The message to dispatch
+     * @return \r8\iface\Log\Node Returns a self reference
      */
-    const EMERG = "Emergency";
-
-    /**
-     * Action must be taken immediately
-     */
-    const ALERT = "Alert";
-
-    /**
-     * Critical conditions
-     */
-    const CRIT = "Critical";
-
-    /**
-     * Error conditions
-     */
-    const ERR = "Error";
-
-    /**
-     * Warning conditions
-     */
-    const WARN = "Warning";
-
-    /**
-     * Normal, but significant, condition
-     */
-    const NOTICE = "Notice";
-
-    /**
-     * Informational message
-     */
-    const INFO = "Information";
-
-    /**
-     * Debug-level message
-     */
-    const DEBUG = "Debug";
+    public function dispatch ( \r8\Log\Message $message );
 
 }
 
