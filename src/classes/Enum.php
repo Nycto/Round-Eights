@@ -92,7 +92,9 @@ abstract class Enum
 
             if ( in_array($label, $reserved) || in_array($value, $reserved) )
             {
-                $err = new \r8\Exception\Interaction("Enum contains a conflicting label and value");
+                $err = new \r8\Exception\Interaction(
+                    "Enum contains a conflicting label and value"
+                );
                 $err->addData("Class", $class);
                 $err->addData("Label", $label);
                 $err->addData("Value", $value);
@@ -106,6 +108,48 @@ abstract class Enum
         self::$cache[$class] = $consts;
 
         return self::$cache[$class];
+    }
+
+    /**
+     * Using a label or a value as it's input, this will select the label/value
+     * pair that matches it
+     *
+     * @param String $input
+     * @return stdClass
+     */
+    static public function resolve ( $input )
+    {
+        foreach ( static::getValues() AS $label => $value )
+        {
+            if (strcasecmp($label, $input) == 0 || strcasecmp($value, $input) == 0)
+                return (object) array('label' => $label, 'value' => $value);
+        }
+
+        throw new \r8\Exception\Argument(
+            0, "input", "Invalid Enum input value"
+        );
+    }
+
+    /**
+     * Resolves the value of an enum
+     *
+     * @param String $input
+     * @return String|Integer
+     */
+    static public function resolveValue ( $input )
+    {
+        return static::resolve( $input )->value;
+    }
+
+    /**
+     * Resolves the label of an enum
+     *
+     * @param String $input
+     * @return String|Integer
+     */
+    static public function resolveLabel ( $input )
+    {
+        return static::resolve( $input )->label;
     }
 
     /**
@@ -127,24 +171,9 @@ abstract class Enum
      */
     public function __construct ( $input )
     {
-        list( $this->label, $this->value ) = $this->find( $input );
-    }
-
-    /**
-     * Using a label or a value as it's input, this will select the label/value
-     * pair that matches it
-     *
-     * @return Array
-     */
-    private function find ( $input )
-    {
-        foreach ( static::getValues() AS $label => $value )
-        {
-            if ( strcasecmp($label, $input) == 0 || strcasecmp($value, $input) == 0 )
-                return array( $label, $value );
-        }
-
-        throw new \r8\Exception\Argument( 0, "input", "Invalid Enum input value" );
+        $input = self::resolve( $input );
+        $this->label = $input->label;
+        $this->value = $input->value;
     }
 
     /**

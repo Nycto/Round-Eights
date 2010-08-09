@@ -104,9 +104,7 @@ class classes_Enum extends PHPUnit_Framework_TestCase
             new \stub_Enum("Invalid value");
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( "Invalid Enum input value", $err->getMessage() );
-        }
+        catch ( \r8\Exception\Argument $err ) {}
     }
 
     public function testConstruct_FromLabel ()
@@ -153,9 +151,43 @@ class classes_Enum extends PHPUnit_Framework_TestCase
             stub_Enum::INVALID();
             $this->fail("An expected exception was not thrown");
         }
-        catch ( \r8\Exception\Argument $err ) {
-            $this->assertSame( "Invalid Enum input value", $err->getMessage() );
+        catch ( \r8\Exception\Argument $err ) {}
+    }
+
+    public function testResolve ()
+    {
+        $this->assertEquals(
+            (object) array('label' => 'ONE', 'value' => 1 ),
+            stub_Enum::resolve( 'one' )
+        );
+
+        try {
+            stub_Enum::resolve( 'INVALID' );
+            $this->fail("An expected exception was not thrown");
         }
+        catch ( \r8\Exception\Argument $err ) {}
+    }
+
+    public function testResolveLabel ()
+    {
+        $this->assertEquals( 'ONE', stub_Enum::resolveLabel('one') );
+
+        try {
+            stub_Enum::resolveLabel( 'INVALID' );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {}
+    }
+
+    public function testResolveValue ()
+    {
+        $this->assertEquals( 1, stub_Enum::resolveValue('one') );
+
+        try {
+            stub_Enum::resolveValue( 'INVALID' );
+            $this->fail("An expected exception was not thrown");
+        }
+        catch ( \r8\Exception\Argument $err ) {}
     }
 
 }
