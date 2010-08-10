@@ -550,4 +550,22 @@ function seek ( array &$array, $offset, $wrapFlag = FALSE )
     return current( $array );
 }
 
+/**
+ * Converts an array to a CSV string
+ *
+ * @param Array $data The data to convert
+ * @param String $delimiter The delimiter for separating fields
+ * @param String $enclosure The string to use for quoting fields
+ * @return String
+ */
+function toCSV ( array $data, $delimiter = ',', $enclosure = '"' )
+{
+    $temp = fopen("php://memory", 'r+');
+    fputcsv($temp, $data, $delimiter, $enclosure);
+    rewind($temp);
+    $result = stream_get_contents($temp);
+    fclose($temp);
+    return $result;
+}
+
 ?>

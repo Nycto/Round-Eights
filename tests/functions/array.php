@@ -595,6 +595,24 @@ class functions_array extends PHPUnit_Framework_TestCase
         $this->assertEquals( 106, current( $ary ) );
     }
 
+    public function testToCSV ()
+    {
+        $this->assertSame(
+            "one,two,three\n",
+            \r8\ary\toCSV(array("one", "two", "three"))
+        );
+
+        $this->assertSame(
+            '"a string","with ""some"" quotes"' ."\n",
+            \r8\ary\toCSV(array('a string', 'with "some" quotes'))
+        );
+
+        $this->assertSame(
+            "one|-two--three-\n",
+            \r8\ary\toCSV(array("one", "two-three"), '|', '-')
+        );
+    }
+
 }
 
 ?>
