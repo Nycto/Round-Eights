@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_stream_out_stdout extends PHPUnit_Extensions_OutputTestCase
+class classes_Stream_Out_StdOut extends PHPUnit_Extensions_OutputTestCase
 {
 
     public function testWrite ()

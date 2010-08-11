@@ -46,18 +46,13 @@ class URI implements \r8\iface\Stream\Out
      */
     public function __construct ( $uri, $append = FALSE )
     {
-        $uri = (string) $uri;
-
-        $this->resource = @fopen(
-                $uri,
-                $append ? "a" : "w"
-            );
+        $this->resource = @fopen( (string) $uri, $append ? "a" : "w" );
 
         if ( $this->resource === FALSE ) {
             throw new \r8\Exception\FileSystem\Permissions(
-                    $uri,
-                    "Could not open URI for writing"
-                );
+                (string) $uri,
+                "Could not open URI for writing"
+            );
         }
     }
 

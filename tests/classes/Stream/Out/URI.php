@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_stream_out_uri extends \r8\Test\TestCase\File
+class classes_Stream_Out_Uri extends \r8\Test\TestCase\File
 {
 
     public function testNoPermissiosn ()

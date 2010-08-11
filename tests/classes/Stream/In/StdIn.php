@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_stream_in_stdin extends \r8\Test\TestCase\File
+class classes_Stream_In_StdIn extends \r8\Test\TestCase\File
 {
 
     public function testRead ()

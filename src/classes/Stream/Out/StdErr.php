@@ -39,8 +39,10 @@ class StdErr implements \r8\iface\Stream\Out
      */
     public function write ( $data )
     {
+        // @codeCoverageIgnoreStart
         fwrite( STDERR, (string) $data );
         return $this;
+        // @codeCoverageIgnoreEnd
     }
 
 }

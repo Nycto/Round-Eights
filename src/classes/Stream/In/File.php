@@ -42,9 +42,9 @@ class File extends \r8\Stream\In\URI
 
         if ( !$file->isReadable() ) {
             throw new \r8\Exception\FileSystem\Permissions(
-                    $file->getPath(),
-                    "File is not readable"
-                );
+                $file->getPath(),
+                "File is not readable"
+            );
         }
 
         parent::__construct( $file->getPath() );

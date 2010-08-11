@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_stream_in_file extends \r8\Test\TestCase\File
+class classes_Stream_In_File extends \r8\Test\TestCase\File
 {
 
     public function testInvalidFile ()
@@ -64,8 +64,8 @@ class classes_stream_in_file extends \r8\Test\TestCase\File
     public function testRead ()
     {
         $stream = new \r8\Stream\In\File(
-                new \r8\FileSys\File( $this->file )
-            );
+            new \r8\FileSys\File( $this->file )
+        );
 
         $this->assertSame( "This is a ", $stream->read(10) );
         $this->assertTrue( $stream->canRead() );

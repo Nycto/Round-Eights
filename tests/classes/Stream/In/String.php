@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_stream_in_string extends PHPUnit_Framework_TestCase
+class classes_Stream_In_String extends PHPUnit_Framework_TestCase
 {
 
     public function testRead_simple ()
@@ -48,8 +48,8 @@ class classes_stream_in_string extends PHPUnit_Framework_TestCase
     public function testRead_multiByte ()
     {
         $stream = new \r8\Stream\In\String(
-                "This is a longer string to read"
-            );
+            "This is a longer string to read"
+        );
 
         $this->assertSame("This is a ", $stream->read(10));
         $this->assertSame("longer ", $stream->read(7));

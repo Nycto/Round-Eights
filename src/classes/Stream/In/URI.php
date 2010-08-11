@@ -45,15 +45,13 @@ class URI implements \r8\iface\Stream\In
      */
     public function __construct ( $uri )
     {
-        $uri = (string) $uri;
-
-        $this->resource = @fopen( $uri, "r" );
+        $this->resource = @fopen( (string) $uri, "r" );
 
         if ( $this->resource === FALSE ) {
             throw new \r8\Exception\FileSystem\Permissions(
-                    $uri,
-                    "Could not open URI for reading"
-                );
+                (string) $uri,
+                "Could not open URI for reading"
+            );
         }
     }
 
