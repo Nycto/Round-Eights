@@ -44,9 +44,6 @@ class classes_Log_Message extends PHPUnit_Framework_TestCase
         $this->assertSame( '1234', $message->getCode() );
         $this->assertEquals( array( 'key' => 'value' ), $message->getData() );
         $this->assertGreaterThan( time() - 5, $message->getTime() );
-
-        $this->assertType( 'array', $message->getBacktrace() );
-        $this->assertGreaterThan( 0, count($message->getBacktrace()) );
     }
 
     public function testConstruct_WithoutData ()
@@ -77,6 +74,22 @@ class classes_Log_Message extends PHPUnit_Framework_TestCase
             '/^\d{4}\-\d\d-\d\d \d\d:\d\d:\d\d\.\d+$/',
             $message->getFormattedTime()
         );
+    }
+
+    public function testToString ()
+    {
+        $message = new \r8\Log\Message(
+            'Test Message', 'Error', 1234, array( 'DataKey' => 'DataValue' )
+        );
+        $str = $message->__toString();
+
+        $this->assertContains((string) getmypid(), $str);
+        $this->assertContains('Test Message', $str);
+        $this->assertContains('Error', $str);
+        $this->assertContains('1234', $str);
+        $this->assertContains('DataKey', $str);
+        $this->assertContains('DataValue', $str);
+        $this->assertEquals("\n", substr($str, -1));
     }
 
 }

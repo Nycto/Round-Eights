@@ -60,13 +60,6 @@ class Message
     private $data;
 
     /**
-     * A limited backtrace that includes only the file and line
-     *
-     * @var Array
-     */
-    private $backtrace;
-
-    /**
      * The time at which this message was created
      *
      * @var Float
@@ -91,21 +84,7 @@ class Message
         $this->level = \r8\Log\Level::resolveValue( $level );
         $this->code = (string) $code;
         $this->data = $data;
-
         $this->time = \microtime( TRUE );
-
-        $backtrace = \debug_backtrace();
-        \array_pop( $backtrace );
-        $this->backtrace = \array_map(
-            function ( $call ) {
-                return sprintf(
-                    '%s:%d',
-                    isset($call['file']) ? $call['file'] : '{none}',
-                    isset($call['line']) ? $call['line'] : 0
-                );
-            },
-            $backtrace
-        );
     }
 
     /**
@@ -163,16 +142,6 @@ class Message
     }
 
     /**
-     * Returns the Backtrace that lead to this message
-     *
-     * @return Array
-     */
-    public function getBacktrace ()
-    {
-        return $this->backtrace;
-    }
-
-    /**
      * Returns the Data associated with this log message
      *
      * @return Array
@@ -193,6 +162,23 @@ class Message
     {
         $this->data[ $key ] = $value;
         return $this;
+    }
+
+    /**
+     * Converts this message to a string
+     *
+     * @return String
+     */
+    public function __toString ()
+    {
+        return json_encode(array(
+            $this->getFormattedTime(),
+            "PID: ". getmypid(),
+            $this->level,
+            $this->code,
+            $this->message,
+            $this->data
+        )) ."\n";
     }
 
 }
