@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../../general.php";
 /**
  * unit tests
  */
-class classes_Log_Node_Split extends PHPUnit_Framework_TestCase
+class classes_Log_Node_Hub extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -49,7 +49,7 @@ class classes_Log_Node_Split extends PHPUnit_Framework_TestCase
     public function testDispatch_One ()
     {
         $message = new \r8\Log\Message("Msg", "Error", 123);
-        $node = new \r8\Log\Node\Split( $this->getTestNode($message) );
+        $node = new \r8\Log\Node\Hub( $this->getTestNode($message) );
 
         $this->assertSame( $node, $node->dispatch( $message ) );
     }
@@ -57,7 +57,7 @@ class classes_Log_Node_Split extends PHPUnit_Framework_TestCase
     public function testDispatch_Many ()
     {
         $message = new \r8\Log\Message("Msg", "Error", 123);
-        $node = new \r8\Log\Node\Split(
+        $node = new \r8\Log\Node\Hub(
             $this->getTestNode($message),
             $this->getTestNode($message),
             $this->getTestNode($message)

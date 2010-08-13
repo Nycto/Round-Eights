@@ -26,10 +26,10 @@
 namespace r8\Log\Node;
 
 /**
- * Splits a log message between a list of other nodes. All the contained nodes
+ * Disperses a log message between a list of other nodes. All the contained nodes
  * will receive the message
  */
-class Split implements \r8\iface\Log\Node
+class Hub implements \r8\iface\Log\Node
 {
 
     /**
@@ -42,8 +42,8 @@ class Split implements \r8\iface\Log\Node
     /**
      * Constructor...
      *
-     * @param \r8\iface\Log\Node $node... The list of nodes to send the message
-     *  to
+     * @param \r8\iface\Log\Node $node... The list of nodes to send the
+     *  message to
      */
     public function __construct ( \r8\iface\Log\Node $node )
     {
