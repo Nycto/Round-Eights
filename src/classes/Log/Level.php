@@ -34,7 +34,7 @@ class Level extends \r8\Enum
     /**
      * System is unusable
      */
-    const EMERG = "Emergency";
+    const EMERGENCY = "Emergency";
 
     /**
      * Action must be taken immediately
@@ -44,17 +44,17 @@ class Level extends \r8\Enum
     /**
      * Critical conditions
      */
-    const CRIT = "Critical";
+    const CRITICAL = "Critical";
 
     /**
      * Error conditions
      */
-    const ERR = "Error";
+    const ERROR = "Error";
 
     /**
      * Warning conditions
      */
-    const WARN = "Warning";
+    const WARNING = "Warning";
 
     /**
      * Normal, but significant, condition

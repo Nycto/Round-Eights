@@ -56,11 +56,11 @@ class SysLog implements \r8\iface\Log\Node
     static public function getSysLogLevel ( $level )
     {
         $map = array(
-            \r8\Log\Level::EMERG => \LOG_EMERG,
+            \r8\Log\Level::EMERGENCY => \LOG_EMERG,
             \r8\Log\Level::ALERT => \LOG_ALERT,
-            \r8\Log\Level::CRIT => \LOG_CRIT,
-            \r8\Log\Level::ERR => \LOG_ERR,
-            \r8\Log\Level::WARN => \LOG_WARNING,
+            \r8\Log\Level::CRITICAL => \LOG_CRIT,
+            \r8\Log\Level::ERROR => \LOG_ERR,
+            \r8\Log\Level::WARNING => \LOG_WARNING,
             \r8\Log\Level::NOTICE => \LOG_NOTICE,
             \r8\Log\Level::INFO => \LOG_INFO,
             \r8\Log\Level::DEBUG => \LOG_DEBUG,

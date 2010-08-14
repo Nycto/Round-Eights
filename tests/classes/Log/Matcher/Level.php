@@ -37,7 +37,7 @@ class classes_Log_Matcher_Level extends PHPUnit_Framework_TestCase
     {
         $matcher = new \r8\Log\Matcher\Level(array(
             \r8\Log\Level::ALERT,
-            \r8\Log\Level::ERR,
+            \r8\Log\Level::ERROR,
         ));
 
         $this->assertTrue($matcher->matches(
@@ -45,7 +45,7 @@ class classes_Log_Matcher_Level extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($matcher->matches(
-            new \r8\Log\Message("Msg", \r8\Log\Level::ERR, 123)
+            new \r8\Log\Message("Msg", \r8\Log\Level::ERROR, 123)
         ));
 
         $this->assertFalse($matcher->matches(

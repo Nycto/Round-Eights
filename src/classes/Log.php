@@ -69,7 +69,7 @@ class Log implements \r8\iface\Log\Node
     public function emergency ( $message, $code, array $data = array() )
     {
         $this->dispatch( new \r8\Log\Message(
-            $message, \r8\Log\Level::EMERG, $code, $data
+            $message, \r8\Log\Level::EMERGENCY, $code, $data
         ));
         return $this;
     }
@@ -103,7 +103,7 @@ class Log implements \r8\iface\Log\Node
     public function critical ( $message, $code, array $data = array() )
     {
         $this->dispatch( new \r8\Log\Message(
-            $message, \r8\Log\Level::CRIT, $code, $data
+            $message, \r8\Log\Level::CRITICAL, $code, $data
         ));
         return $this;
     }
@@ -120,7 +120,7 @@ class Log implements \r8\iface\Log\Node
     public function error ( $message, $code, array $data = array() )
     {
         $this->dispatch( new \r8\Log\Message(
-            $message, \r8\Log\Level::ERR, $code, $data
+            $message, \r8\Log\Level::ERROR, $code, $data
         ));
         return $this;
     }
@@ -137,7 +137,7 @@ class Log implements \r8\iface\Log\Node
     public function warning ( $message, $code, array $data = array() )
     {
         $this->dispatch( new \r8\Log\Message(
-            $message, \r8\Log\Level::WARN, $code, $data
+            $message, \r8\Log\Level::WARNING, $code, $data
         ));
         return $this;
     }

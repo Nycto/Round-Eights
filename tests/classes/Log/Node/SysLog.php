@@ -41,7 +41,7 @@ class classes_Log_Node_SysLog extends PHPUnit_Framework_TestCase
         );
         $this->assertSame(
             \LOG_WARNING,
-            \r8\Log\Node\SysLog::getSysLogLevel(\r8\Log\Level::WARN)
+            \r8\Log\Node\SysLog::getSysLogLevel(\r8\Log\Level::WARNING)
         );
     }
 

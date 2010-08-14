@@ -44,7 +44,7 @@ class classes_Log_Matcher_CodeStartsWith extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertTrue($matcher->matches(
-            new \r8\Log\Message("Msg", \r8\Log\Level::ERR, "TWO_ABC")
+            new \r8\Log\Message("Msg", \r8\Log\Level::ERROR, "TWO_ABC")
         ));
 
         $this->assertFalse($matcher->matches(
