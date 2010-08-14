@@ -76,9 +76,12 @@ class Message
      */
     public function __construct ( $message, $level, $code, array $data = array() )
     {
-        $code = (string) $code;
-        if ( !ctype_alnum($code) )
-            throw new \r8\Exception\Argument(2, 'Code', 'Must be alpha-numeric');
+        $code = \r8\str\stripW($code, "_");
+        if ( \r8\isEmpty($code) ) {
+            throw new \r8\Exception\Argument(
+                2, 'Code', 'Can only contain Numbers, Strings and Underscores'
+            );
+        }
 
         $this->message = (string) $message;
         $this->level = \r8\Log\Level::resolveValue( $level );
