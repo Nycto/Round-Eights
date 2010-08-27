@@ -74,6 +74,13 @@ class Request implements \r8\iface\Env\Request
     private $cli;
 
     /**
+     * The command line arguments
+     *
+     * @var \r8\CLI\Input
+     */
+    private $cliArgs;
+
+    /**
      * The URL the client requested
      *
      * @var \r8\URL
@@ -123,8 +130,8 @@ class Request implements \r8\iface\Env\Request
         $cli = FALSE
     ) {
         $this->server = $server;
-        $this->post = $post ? $post : new \r8\Input\Void;
-        $this->files = $files ? $files : new \r8\Input\Files;
+        $this->post = $post ?: new \r8\Input\Void;
+        $this->files = $files ?: new \r8\Input\Files;
         $this->headers = $headers;
         $this->cli = (bool) $cli;
     }
@@ -245,6 +252,21 @@ class Request implements \r8\iface\Env\Request
     public function isCLI ()
     {
         return $this->cli;
+    }
+
+    /**
+     * Returns the CLI arguments for this script
+     *
+     * @return \r8\CLI\Input
+     */
+    public function getCLIArgs ()
+    {
+        if ( !isset($this->cliArgs) ) {
+            $this->cliArgs = new \r8\CLI\Input(
+                isset($this->server['argv']) ? $this->server['argv'] : array()
+            );
+        }
+        return $this->cliArgs;
     }
 
     /**

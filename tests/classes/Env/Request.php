@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_env_request extends PHPUnit_Framework_TestCase
+class classes_Env_Request extends PHPUnit_Framework_TestCase
 {
 
     public function testGetPost ()
@@ -238,6 +238,22 @@ class classes_env_request extends PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue( $req->isCLI() );
+    }
+
+    public function testGetCLIArgs_WithArgs ()
+    {
+        $req = new \r8\Env\Request( array( 'argv' => array('arg') ) );
+        $args = $req->getCLIArgs();
+        $this->assertEquals( new \r8\CLI\Input(array('arg')), $args );
+        $this->assertSame( $args, $req->getCLIArgs() );
+    }
+
+    public function testGetCLIArgs_WithoutArgs ()
+    {
+        $req = new \r8\Env\Request;
+        $args = $req->getCLIArgs();
+        $this->assertEquals( new \r8\CLI\Input(array()), $args );
+        $this->assertSame( $args, $req->getCLIArgs() );
     }
 
     public function testIsSecure ()
