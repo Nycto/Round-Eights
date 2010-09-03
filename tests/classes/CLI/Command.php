@@ -82,6 +82,18 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $this->assertSame( $opt2, $forms[0]->findByFlag('b') );
     }
 
+    public function testProcess_WithoutArgs ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+
+        try {
+            // It's okay if this throws an exception, as long as there
+            // isn't a PHP error
+            $command->process();
+        }
+        catch ( \r8\Exception\Data $err ) {}
+    }
+
     public function testProcess_OneFormPasses ()
     {
         $command = new \r8\CLI\Command('name', 'desc');

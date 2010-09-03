@@ -172,11 +172,15 @@ class Command
     /**
      * Processes a list of input arguments
      *
-     * @param \r8\CLI\Input $input
+     * @param \r8\CLI\Input $input If left empty, this will pull the input
+     *      from the environment
      * @return \r8\CLI\Result
      */
-    public function process ( \r8\CLI\Input $input )
+    public function process ( \r8\CLI\Input $input = NULL )
     {
+        if ( empty($input) )
+            $input = \r8\Env::request()->getCLIArgs();
+
         $firstError = NULL;
         foreach ( $this->forms as $form ) {
             try {
