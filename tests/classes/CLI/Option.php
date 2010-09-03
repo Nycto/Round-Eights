@@ -196,13 +196,13 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             array(),
-            $opt->consume( new \r8\CLI\Input(array()) )
+            $opt->consume( new \r8\CLI\Input(array('test.php')) )
         );
     }
 
     public function testConsume_WithArgs ()
     {
-        $input = new \r8\CLI\Input(array());
+        $input = new \r8\CLI\Input(array('test.php'));
 
         $opt = new \r8\CLI\Option("A", "Test");
 

@@ -56,7 +56,7 @@ class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array(),
             $arg->consume(
-                new \r8\CLI\Input( array() )
+                new \r8\CLI\Input(array())
             )
         );
     }
@@ -72,7 +72,7 @@ class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array("ONE", "TWO", "THREE"),
             $arg->consume(
-                new \r8\CLI\Input( array("one", "two", "three") )
+                new \r8\CLI\Input(array('test.php', "one", "two", "three"))
             )
         );
     }
@@ -86,7 +86,7 @@ class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
         );
 
         try {
-            $arg->consume( new \r8\CLI\Input( array("one", "two") ) );
+            $arg->consume( new \r8\CLI\Input(array('test.php', "one", "two")) );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}

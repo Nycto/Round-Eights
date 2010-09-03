@@ -56,7 +56,7 @@ class classes_CLI_Arg_One extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             array( NULL ),
             $arg->consume(
-                new \r8\CLI\Input( array() )
+                new \r8\CLI\Input(array())
             )
         );
     }
@@ -72,7 +72,7 @@ class classes_CLI_Arg_One extends PHPUnit_Framework_TestCase
         $this->assertSame(
             array("ONE"),
             $arg->consume(
-                new \r8\CLI\Input( array("one", "two", "three") )
+                new \r8\CLI\Input(array('test.php', "one", "two", "three"))
             )
         );
     }
@@ -86,7 +86,7 @@ class classes_CLI_Arg_One extends PHPUnit_Framework_TestCase
         );
 
         try {
-            $arg->consume( new \r8\CLI\Input( array("no", "no") ) );
+            $arg->consume(new \r8\CLI\Input(array('test.php', "no", "no")));
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}

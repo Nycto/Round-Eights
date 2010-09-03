@@ -34,8 +34,15 @@ class Input
     /**
      * The input argument that was parsed
      */
-    const TYPE_OPT = 1;
-    const TYPE_ARG = 2;
+    const TYPE_OPT = 'opt';
+    const TYPE_ARG = 'arg';
+
+    /**
+     * The 'zero' argument of the input, which is the script that was executed
+     *
+     * @var string
+     */
+    private $script;
 
     /**
      * The parsed list of argument, flags and switches
@@ -70,9 +77,21 @@ class Input
                 $this->parseSwitch($arg);
             else if ( \r8\str\startsWith($arg, "-") )
                 $this->parseFlag($arg);
+            else if ( !isset($this->script) )
+                $this->script = $arg;
             else
                 $this->args[] = array(self::TYPE_ARG, $arg);
         }
+    }
+
+    /**
+     * Returns the Script that was sent as the zero argument
+     *
+     * @return String|NULL
+     */
+    public function getScript ()
+    {
+        return $this->script;
     }
 
     /**

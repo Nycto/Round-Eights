@@ -98,13 +98,13 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new \r8\CLI\Result,
-            $form->process( new \r8\CLI\Input(array()) )
+            $form->process( new \r8\CLI\Input(array('test.php')) )
         );
     }
 
     public function testProcess_WithFlags ()
     {
-        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
+        $input = new \r8\CLI\Input(array('test.php', '-a', 'one', 'two'));
 
         $arg = new \r8\CLI\Arg\Many('test');
 
@@ -126,7 +126,7 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
     public function testProcess_UnrecognizedFlag ()
     {
-        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
+        $input = new \r8\CLI\Input(array('test.php', '-a', 'one', 'two'));
 
         $form = new \r8\CLI\Form;
 
@@ -139,7 +139,7 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
     public function testProcess_WithArgs ()
     {
-        $input = new \r8\CLI\Input( array('one', 'two') );
+        $input = new \r8\CLI\Input(array('test.php', 'one', 'two'));
 
         $form = new \r8\CLI\Form;
         $form->addArg( new \r8\CLI\Arg\Many('input') );
@@ -152,7 +152,7 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
     public function testProcess_UnrecognizedArgs ()
     {
-        $input = new \r8\CLI\Input( array('one', 'two') );
+        $input = new \r8\CLI\Input(array('test.php', 'one', 'two'));
 
         $form = new \r8\CLI\Form;
 
@@ -165,7 +165,7 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
     public function testProcess_RepeatedFlag ()
     {
-        $input = new \r8\CLI\Input( array('-a', '-a') );
+        $input = new \r8\CLI\Input(array('test.php', '-a', '-a'));
 
         $form = new \r8\CLI\Form;
         $form->addOption( new \r8\CLI\Option('a', 'test', FALSE) );

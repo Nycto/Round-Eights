@@ -88,7 +88,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new \r8\CLI\Result,
-            $command->process( new \r8\CLI\Input(array()) )
+            $command->process( new \r8\CLI\Input(array('test.php')) )
         );
     }
 
@@ -99,7 +99,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $command->addForm( new \r8\CLI\Form );
 
         try {
-            $command->process( new \r8\CLI\Input(array('extra')) );
+            $command->process( new \r8\CLI\Input(array('test.php', 'extra')) );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}
@@ -112,7 +112,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
             \r8( new \r8\CLI\Form )->addArg( new \r8\CLI\Arg\One('test') )
         );
 
-        $result = $command->process( new \r8\CLI\Input(array('one')) );
+        $result = $command->process( new \r8\CLI\Input(array('test.php', 'one')) );
 
         $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
         $this->assertSame( array('one'), $result->getArgs() );
