@@ -46,18 +46,11 @@ class Command
     private $description;
 
     /**
-     * The list of command line options
+     * The list of forms this command can accept
      *
-     * @var Array
+     * @var Array An array of \r8\CLI\Form objects
      */
-    private $options = array();
-
-    /**
-     * The list of arguments this command will consume
-     *
-     * @var Array An array of \r8\iface\CLI\Arg objects
-     */
-    private $args = array();
+    private $forms = array();
 
     /**
      * Constructor...
@@ -77,6 +70,8 @@ class Command
 
         $this->name = $name;
         $this->description = $description;
+
+        $this->forms[] = new \r8\CLI\Form;
     }
 
     /**
@@ -100,6 +95,28 @@ class Command
     }
 
     /**
+     * Returns the Forms this command can accept
+     *
+     * @return Array An array of \r8\CLI\Form objects
+     */
+    public function getForms ()
+    {
+        return $this->forms;
+    }
+
+    /**
+     * Adds a Form this command can accept
+     *
+     * @param \r8\CLI\Form $form
+     * @return \r8\CLI\Command Returns a self reference
+     */
+    public function addForm ( \r8\CLI\Form $form )
+    {
+        $this->forms[] = $form;
+        return $this;
+    }
+
+    /**
      * Adds a new option to this collection
      *
      * @param \r8\CLI\Option $option
@@ -107,29 +124,8 @@ class Command
      */
     public function addOption ( \r8\CLI\Option $option )
     {
-        $this->options[ $option->getPrimaryFlag() ] = $option;
+        \r8\ary\first($this->forms)->addOption($option);
         return $this;
-    }
-
-    /**
-     * Finds an option based on a flag
-     *
-     * @param String $flag The flag to look up
-     * @return \r8\CLI\Option Returns NULL if there were no ptions with that
-     *      flag registered
-     */
-    public function findByFlag ( $flag )
-    {
-        $flag = \r8\CLI\Option::normalizeFlag( $flag, FALSE );
-
-        if ( isset($this->options[$flag]) )
-            return $this->options[$flag];
-
-        foreach ( $this->options AS $option ) {
-            if ( $option->hasFlag($flag) )
-                return $option;
-        }
-        return NULL;
     }
 
     /**
@@ -140,28 +136,8 @@ class Command
      */
     public function addArg ( \r8\iface\CLI\Arg $arg )
     {
-        // Don't let them add any more arguments if the previous argument is
-        // greedy... it would be pointless.
-        $last = end( $this->args );
-        if ( $last && $last->isGreedy() ) {
-            throw new \r8\Exception\Data(
-                $last, "Greedy Arg",
-                "Addition arguments can not be added after a greedy argument"
-            );
-        }
-
-        $this->args[] = $arg;
+        \r8\ary\first($this->forms)->addArg($arg);
         return $this;
-    }
-
-    /**
-     * Returns the Arguments loaded into this command
-     *
-     * @return Array An array of \r8\iface\CLI\Arg objects
-     */
-    public function getArgs ()
-    {
-        return $this->args;
     }
 
     /**
@@ -171,19 +147,22 @@ class Command
      */
     public function getHelp ()
     {
-        $args = \r8\ary\invoke($this->args, "describe");
-
-        if ( !empty($this->options) )
-            array_unshift($args, "[OPTIONS]...");
+        $forms = array();
+        $options = array();
+        foreach ( $this->forms as $form ) {
+            $forms[] = $form->describe($this->name);
+            $options = array_merge( $options, $form->getOptions() );
+        }
 
         $result = "USAGE:\n"
-            ."    ". trim($this->name ." ". implode(" ", $args)) ."\n\n"
+            ."    ". implode("\n    ", $forms) ."\n\n"
             ."DESCRIPTION:\n"
             ."    ". wordwrap($this->description, 76, "\n    ", TRUE) ."\n\n";
 
-        if ( !empty($this->options) ) {
+        if ( !empty($options) ) {
+            ksort($options);
             $result .= "OPTIONS:\n"
-                .implode("", \r8\ary\invoke($this->options, 'describe') )
+                .implode("", \r8\ary\invoke($options, 'describe') )
                 ."\n";
         }
 
@@ -198,45 +177,18 @@ class Command
      */
     public function process ( \r8\CLI\Input $input )
     {
-        $result = new \r8\CLI\Result;
-
-        // Loop over all the flags and process each in turn
-        while ( $input->hasNextOption() ) {
-            $flag = $input->popOption();
-            $option = $this->findByFlag( $flag );
-
-            if ( $option === NULL ) {
-                throw new \r8\Exception\Data(
-                    $flag, "Flag",
-                    "Unrecognized flag"
-                );
+        $firstError = NULL;
+        foreach ( $this->forms as $form ) {
+            try {
+                $input->rewind();
+                return $form->process($input);
             }
-
-            if ( !$option->allowMany() && $result->flagExists($flag) ) {
-                throw new \r8\Exception\Data(
-                    $option, "Flag",
-                    "Flag can not appear multiple times"
-                );
+            catch ( \r8\Exception\Data $err ) {
+                if ( !isset($firstError) )
+                    $firstError = $err;
             }
-
-            $result->addOption( $option, $option->consume($input) );
         }
-
-        // Now collect any command level arguments
-        foreach ( $this->args AS $arg ) {
-            $result->addArgs( $arg->consume($input) );
-        }
-
-        // If there are any arguments left over, let someone know
-        if ( $input->hasNextArg() ) {
-            throw new \r8\Exception\Data(
-                "Flag",
-                $input->popArgument(),
-                "Unrecognized flag"
-            );
-        }
-
-        return $result;
+        throw $firstError;
     }
 
 }

@@ -38,6 +38,7 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         $command = new \r8\CLI\Command('name', 'desc');
         $this->assertSame( 'name', $command->getName() );
         $this->assertSame( 'desc', $command->getDescription() );
+        $this->assertEquals( array(new \r8\CLI\Form), $command->getForms() );
 
         try {
             new \r8\CLI\Command('', 'desc');
@@ -52,52 +53,72 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
         catch ( \r8\Exception\Argument $err ) {}
     }
 
-    public function testFindByFlag ()
-    {
-        $opt1 = \r8( new \r8\CLI\Option('a', 'blah') )->addFlag('C');
-        $opt2 = new \r8\CLI\Option('b', 'hork');
-        $opt3 = new \r8\CLI\Option('b', 'another');
-
-        $command = new \r8\CLI\Command('name', 'desc');
-        $command->addOption( $opt1 )
-            ->addOption( $opt2 )
-            ->addOption( $opt3 );
-
-        $this->assertSame( $opt1, $command->findByFlag('a') );
-        $this->assertSame( $opt1, $command->findByFlag('C') );
-        $this->assertSame( $opt3, $command->findByFlag('b') );
-        $this->assertNull( $command->findbyFlag('switch') );
-    }
-
     public function testAddArg ()
     {
         $command = new \r8\CLI\Command('name', 'desc');
-        $this->assertSame( array(), $command->getArgs() );
 
         $arg1 = $this->getMock('r8\iface\CLI\Arg');
-        $this->assertSame( $command, $command->addArg($arg1) );
-        $this->assertSame( array($arg1), $command->getArgs() );
-
         $arg2 = $this->getMock('r8\iface\CLI\Arg');
+        $this->assertSame( $command, $command->addArg($arg1) );
         $this->assertSame( $command, $command->addArg($arg2) );
-        $this->assertSame( array($arg1, $arg2), $command->getArgs() );
+
+        $forms = $command->getforms();
+        $this->assertArrayHasKey(0, $forms);
+        $this->assertSame( array($arg1, $arg2), $forms[0]->getArgs() );
     }
 
-    public function testAddArg_Greedy ()
+    public function testAddOption ()
     {
         $command = new \r8\CLI\Command('name', 'desc');
 
-        // Add a greedy argument
-        $command->addArg( new \r8\CLI\Arg\Many('arg') );
+        $opt1 = new r8\CLI\Option('a', 'test');
+        $opt2 = new r8\CLI\Option('b', 'test');
+        $this->assertSame( $command, $command->addOption($opt1) );
+        $this->assertSame( $command, $command->addOption($opt2) );
+
+        $forms = $command->getforms();
+        $this->assertArrayHasKey(0, $forms);
+        $this->assertSame( $opt1, $forms[0]->findByFlag('a') );
+        $this->assertSame( $opt2, $forms[0]->findByFlag('b') );
+    }
+
+    public function testProcess_OneFormPasses ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+
+        $this->assertEquals(
+            new \r8\CLI\Result,
+            $command->process( new \r8\CLI\Input(array()) )
+        );
+    }
+
+    public function testProcess_AllFormsFail ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+        $command->addForm( new \r8\CLI\Form );
+        $command->addForm( new \r8\CLI\Form );
 
         try {
-            $command->addArg( new \r8\CLI\Arg\One('arg2') );
+            $command->process( new \r8\CLI\Input(array('extra')) );
             $this->fail("An expected exception was not thrown");
         }
         catch ( \r8\Exception\Data $err ) {}
     }
 
-    public function testGetHelp ()
+    public function testProcess_SecondFormReturns ()
+    {
+        $command = new \r8\CLI\Command('name', 'desc');
+        $command->addForm(
+            \r8( new \r8\CLI\Form )->addArg( new \r8\CLI\Arg\One('test') )
+        );
+
+        $result = $command->process( new \r8\CLI\Input(array('one')) );
+
+        $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
+        $this->assertSame( array('one'), $result->getArgs() );
+    }
+
+    public function testGetHelp_Bare ()
     {
         $command = new \r8\CLI\Command('cmd', 'A description of this command');
         $this->assertSame(
@@ -107,32 +128,36 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
             ."    A description of this command\n\n",
             $command->getHelp()
         );
+    }
 
+    public function testGetHelp_MultipleForms ()
+    {
+        $command = new \r8\CLI\Command('cmd', 'A description of this command');
         $command->addArg( new \r8\CLI\Arg\One("Arg1") );
         $command->addArg( new \r8\CLI\Arg\Many("Arg2") );
-        $this->assertSame(
-            "USAGE:\n"
-            ."    cmd [Arg1] [Arg2]...\n\n"
-            ."DESCRIPTION:\n"
-            ."    A description of this command\n\n",
-            $command->getHelp()
-        );
 
-        $command->addOption( new \r8\CLI\Option('help', 'Displays the help view') );
-        $command->addOption( new \r8\CLI\Option('f', 'Performs an action') );
+        $form = new \r8\CLI\Form;
+        $form->addOption( new \r8\CLI\Option('help', 'Displays the help view') );
+        $form->addOption( new \r8\CLI\Option('f', 'Performs an action') );
+        $command->addForm( $form );
+
         $this->assertSame(
             "USAGE:\n"
-            ."    cmd [OPTIONS]... [Arg1] [Arg2]...\n\n"
+            ."    cmd [Arg1] [Arg2]...\n"
+            ."    cmd [--help,-f]\n\n"
             ."DESCRIPTION:\n"
             ."    A description of this command\n\n"
             ."OPTIONS:\n"
-            ."    --help\n"
-            ."        Displays the help view\n"
             ."    -f\n"
-            ."        Performs an action\n\n",
+            ."        Performs an action\n"
+            ."    --help\n"
+            ."        Displays the help view\n\n",
             $command->getHelp()
         );
+    }
 
+    public function testGetHelp_LongDescription ()
+    {
         $command = new \r8\CLI\Command(
             'cmd',
             'A particularly long description of this command that will need '
@@ -146,91 +171,6 @@ class classes_CLI_Command extends PHPUnit_Framework_TestCase
             ."    because of its length\n\n",
             $command->getHelp()
         );
-    }
-
-    public function testProcess_Empty ()
-    {
-        $command = new \r8\CLI\Command('name', 'desc');
-
-        $this->assertEquals(
-            new \r8\CLI\Result,
-            $command->process( new \r8\CLI\Input(array()) )
-        );
-    }
-
-    public function testProcess_WithFlags ()
-    {
-        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
-
-        $arg = new \r8\CLI\Arg\Many('test');
-
-        $command = new \r8\CLI\Command('name', 'desc');
-        $command->addOption(
-            \r8( new \r8\CLI\Option('a', 'test') )->addArg( $arg )
-        );
-
-        $result = $command->process( $input );
-
-        $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
-        $this->assertTrue( $result->flagExists('a') );
-        $this->assertSame( array('one', 'two'), $result->getArgsForFlag('a') );
-        $this->assertSame(
-            array( array('one', 'two') ),
-            $result->getAllArgsForFlag('a')
-        );
-    }
-
-    public function testProcess_UnrecognizedFlag ()
-    {
-        $input = new \r8\CLI\Input( array('-a', 'one', 'two') );
-
-        $command = new \r8\CLI\Command('name', 'desc');
-
-        try {
-            $command->process( $input );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Data $err ) {}
-    }
-
-    public function testProcess_WithArgs ()
-    {
-        $input = new \r8\CLI\Input( array('one', 'two') );
-
-        $command = new \r8\CLI\Command('name', 'desc');
-        $command->addArg( new \r8\CLI\Arg\Many('input') );
-
-        $result = $command->process( $input );
-
-        $this->assertThat( $result, $this->isInstanceOf('\r8\CLI\Result') );
-        $this->assertSame( array('one', 'two'), $result->getArgs() );
-    }
-
-    public function testProcess_UnrecognizedArgs ()
-    {
-        $input = new \r8\CLI\Input( array('one', 'two') );
-
-        $command = new \r8\CLI\Command('name', 'desc');
-
-        try {
-            $command->process( $input );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Data $err ) {}
-    }
-
-    public function testProcess_RepeatedFlag ()
-    {
-        $input = new \r8\CLI\Input( array('-a', '-a') );
-
-        $command = new \r8\CLI\Command('name', 'desc');
-        $command->addOption( new \r8\CLI\Option('a', 'test', FALSE) );
-
-        try {
-            $command->process( $input );
-            $this->fail("An expected exception was not thrown");
-        }
-        catch ( \r8\Exception\Data $err ) {}
     }
 
 }
