@@ -156,6 +156,16 @@ class Result
         return $this->args;
     }
 
+    /**
+     * Returns the number of arguments associated with this result
+     *
+     * @return Integer
+     */
+    public function countArgs ()
+    {
+        return count($this->args);
+    }
+
 }
 
 ?>

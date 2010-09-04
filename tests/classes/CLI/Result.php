@@ -114,6 +114,15 @@ class classes_CLI_Result extends PHPUnit_Framework_TestCase
         $this->assertSame( array("one", "two", "three"), $result->getArgs() );
     }
 
+    public function testCountArgs ()
+    {
+        $result = $this->getTestResult();
+        $this->assertSame( 0, $result->countArgs() );
+
+        $this->assertSame( $result, $result->addArgs(array("one", "two")) );
+        $this->assertSame( 2, $result->countArgs() );
+    }
+
 }
 
 ?>
