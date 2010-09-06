@@ -48,14 +48,55 @@ class Iterator extends \PHPUnit_Framework_Constraint
     /**
      * Asserts that the given value produces the expected result when iterated over
      *
+     * @param Array $expected The expected value
+     * @param Mixed $actual The value to compare
      * @return null
      */
     static public function assert ( array $expected, $actual )
     {
         \PHPUnit_Framework_TestCase::assertThat(
             $actual,
+            new \PHPUnit_Framework_Constraint_IsInstanceOf('\Traversable')
+        );
+
+        \PHPUnit_Framework_TestCase::assertThat(
+            $actual,
             new self( $expected )
         );
+    }
+
+    /**
+     * Asserts that a given value contains the specified number of elements
+     *
+     * @param Integer $expected The expected value
+     * @param Mixed $actual The value to compare
+     * @return null
+     */
+    static public function assertCount ( $expected, $actual )
+    {
+        \PHPUnit_Framework_TestCase::assertThat(
+            $actual,
+            new \PHPUnit_Framework_Constraint_IsInstanceOf('\Traversable')
+        );
+
+        \PHPUnit_Framework_TestCase::assertThat(
+            self::sizeOf( $expected * 1.5, $actual ),
+            new \PHPUnit_Framework_Constraint_IsEqual( $expected )
+        );
+    }
+
+    /**
+     * Counts the number of values in an iterator
+     *
+     * The name count was already taken
+     *
+     * @param Integer $max The maximum number of results
+     * @param \Traversable $iterator
+     * @return Integer
+     */
+    static public function sizeOf ( $max, \Traversable $iterator )
+    {
+        return count( self::iteratorToArray($max, $iterator) );
     }
 
     /**
