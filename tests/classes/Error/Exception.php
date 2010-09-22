@@ -75,7 +75,8 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             array(
-                'Exception' => 'General Exception (General Errors)'
+                'Exception' => '\r8\Exception',
+                'Description' => 'General Exception (General Errors)'
             ),
             $error->getDetails()
         );
@@ -83,7 +84,10 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
 
     public function testGetDetails_Full ()
     {
-        $exception = $this->getMock('\r8\Exception');
+        $exception = $this->getMock(
+            '\r8\Exception', array(), array(), 'r8_Exception_Test'
+        );
+
         $exception->expects( $this->once() )
             ->method( 'getDescription' )
             ->will( $this->returnValue("Exception Name"));
@@ -97,7 +101,8 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             array(
-                'Exception' => 'Exception Name',
+                'Exception' => '\r8_Exception_Test',
+                'Description' => 'Exception Name',
                 'Key' => 'Value',
                 'More' => 505050
             ),

@@ -149,7 +149,10 @@ class Exception implements \r8\iface\Error
         if ( !($this->exception instanceof \r8\Exception) )
             return array();
 
-        return array("Exception" => $this->exception->getDescription())
+        return array(
+                "Exception" => '\\'. get_class($this->exception),
+                "Description" => $this->exception->getDescription()
+            )
             + $this->exception->getData();
     }
 
