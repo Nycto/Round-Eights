@@ -74,4 +74,3 @@ class classes_Log_Matcher_Any extends PHPUnit_Framework_TestCase
 
 }
 
-?>

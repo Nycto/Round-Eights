@@ -268,4 +268,3 @@ class classes_Transform_MIME_Q extends PHPUnit_Framework_TestCase
 
 }
 
-?>

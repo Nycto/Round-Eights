@@ -324,4 +324,3 @@ class classes_XMLBuilder_Quick_Attrs extends PHPUnit_Framework_TestCase
 
 }
 
-?>

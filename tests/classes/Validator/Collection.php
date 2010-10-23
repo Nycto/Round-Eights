@@ -122,4 +122,3 @@ class classes_Validator_Collection extends PHPUnit_Framework_TestCase
 
 }
 
-?>

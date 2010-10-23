@@ -118,4 +118,3 @@ class classes_xmlbuilder_node extends PHPUnit_Framework_TestCase
 
 }
 
-?>

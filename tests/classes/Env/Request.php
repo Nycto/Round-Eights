@@ -276,4 +276,3 @@ class classes_Env_Request extends PHPUnit_Framework_TestCase
 
 }
 
-?>

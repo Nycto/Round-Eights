@@ -96,4 +96,3 @@ class classes_HTML_Conditional extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -260,4 +260,3 @@ class classes_Iterator_Group extends PHPUnit_Framework_TestCase
 
 }
 
-?>

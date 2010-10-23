@@ -95,4 +95,3 @@ class classes_Stream_In_String extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -41,4 +41,3 @@ class classes_Filter_Identity extends PHPUnit_Framework_TestCase
 
 }
 
-?>

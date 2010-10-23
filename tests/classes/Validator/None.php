@@ -176,4 +176,3 @@ class classes_Validator_None extends PHPUnit_Framework_TestCase
 
 }
 
-?>

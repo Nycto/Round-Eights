@@ -99,4 +99,3 @@ class classes_template_DOMDoc_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

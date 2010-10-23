@@ -68,4 +68,3 @@ class classes_Form_password extends PHPUnit_Framework_TestCase
 
 }
 
-?>

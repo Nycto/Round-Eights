@@ -42,4 +42,3 @@ class classes_Exception_Cache extends PHPUnit_Framework_TestCase
 
 }
 
-?>

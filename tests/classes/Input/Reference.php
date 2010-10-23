@@ -65,4 +65,3 @@ class classes_Input_Reference extends PHPUnit_Framework_TestCase
 
 }
 
-?>

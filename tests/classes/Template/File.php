@@ -126,4 +126,3 @@ class classes_Template_File extends PHPUnit_Framework_TestCase
 
 }
 
-?>

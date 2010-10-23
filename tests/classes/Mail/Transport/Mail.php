@@ -132,4 +132,3 @@ class classes_Mail_Transport_Mail extends PHPUnit_Framework_TestCase
 
 }
 
-?>

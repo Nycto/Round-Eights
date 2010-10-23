@@ -75,4 +75,3 @@ class classes_Transform_base64 extends PHPUnit_Framework_TestCase
 
 }
 
-?>

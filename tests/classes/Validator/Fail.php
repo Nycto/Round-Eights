@@ -46,4 +46,3 @@ class classes_Validator_Fail extends PHPUnit_Framework_TestCase
 
 }
 
-?>

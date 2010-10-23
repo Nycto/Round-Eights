@@ -78,4 +78,3 @@ class classes_Template_Blank_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

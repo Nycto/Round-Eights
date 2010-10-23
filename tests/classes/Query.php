@@ -124,4 +124,3 @@ class classes_query extends PHPUnit_Framework_TestCase
 
 }
 
-?>

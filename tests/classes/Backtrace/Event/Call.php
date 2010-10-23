@@ -66,4 +66,3 @@ class classes_Backtrace_Event_Call extends PHPUnit_Framework_TestCase
 
 }
 
-?>

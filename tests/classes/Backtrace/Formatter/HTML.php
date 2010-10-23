@@ -107,4 +107,3 @@ class classes_Backtrace_Formatter_HTML extends PHPUnit_Framework_TestCase
 
 }
 
-?>

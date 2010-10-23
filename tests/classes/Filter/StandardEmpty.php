@@ -144,4 +144,3 @@ class classes_Filter_StandardEmpty extends PHPUnit_Framework_TestCase
 
 }
 
-?>

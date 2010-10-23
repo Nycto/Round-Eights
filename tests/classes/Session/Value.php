@@ -125,4 +125,3 @@ class classes_Session_Value extends PHPUnit_Framework_TestCase
 
 }
 
-?>

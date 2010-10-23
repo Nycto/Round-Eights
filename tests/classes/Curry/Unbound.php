@@ -187,4 +187,3 @@ class classes_curry_unbound extends PHPUnit_Framework_TestCase
 
 }
 
-?>

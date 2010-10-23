@@ -145,4 +145,3 @@ class classes_Input_Files extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -95,4 +95,3 @@ class classes_Transform_Encrypt extends PHPUnit_Framework_TestCase
 
 }
 
-?>

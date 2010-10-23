@@ -195,4 +195,3 @@ class classes_Iterator_Cache extends PHPUnit_Framework_TestCase
 
 }
 
-?>

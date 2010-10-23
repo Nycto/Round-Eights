@@ -198,4 +198,3 @@ class classes_Transform_Hash extends PHPUnit_Framework_TestCase
 
 }
 
-?>

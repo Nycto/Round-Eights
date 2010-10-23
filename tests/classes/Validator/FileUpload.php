@@ -84,4 +84,3 @@ class classes_Validator_FileUpload extends PHPUnit_Framework_TestCase
 
 }
 
-?>

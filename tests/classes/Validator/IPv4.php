@@ -76,4 +76,3 @@ class classes_validator_ipv4 extends PHPUnit_Framework_TestCase
 
 }
 
-?>

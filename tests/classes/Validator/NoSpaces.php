@@ -110,4 +110,3 @@ class classes_validator_nospaces extends PHPUnit_Framework_TestCase
 
 }
 
-?>

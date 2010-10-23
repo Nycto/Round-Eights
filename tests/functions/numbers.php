@@ -218,4 +218,3 @@ class functions_numbers extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -123,4 +123,3 @@ class classes_validator_alpha extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -54,4 +54,3 @@ class classes_Log_Matcher_CodeStartsWith extends PHPUnit_Framework_TestCase
 
 }
 
-?>

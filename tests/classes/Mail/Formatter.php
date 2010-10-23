@@ -448,4 +448,3 @@ class classes_Mail_Formatter extends PHPUnit_Framework_TestCase
 
 }
 
-?>

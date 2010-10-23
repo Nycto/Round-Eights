@@ -92,4 +92,3 @@ class classes_xmlbuilder_series extends PHPUnit_Framework_TestCase
 
 }
 
-?>

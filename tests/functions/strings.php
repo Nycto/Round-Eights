@@ -794,4 +794,3 @@ class functions_strings extends PHPUnit_Framework_TestCase
 
 }
 
-?>

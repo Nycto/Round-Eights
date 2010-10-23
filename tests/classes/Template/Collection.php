@@ -193,4 +193,3 @@ class classes_Template_Collection_Output extends PHPUnit_Extensions_OutputTestCa
 
 }
 
-?>

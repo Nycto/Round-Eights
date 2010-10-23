@@ -106,4 +106,3 @@ class classes_quoter_section extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -82,4 +82,3 @@ class classes_page_raw extends PHPUnit_Framework_TestCase
 
 }
 
-?>

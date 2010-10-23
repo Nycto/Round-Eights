@@ -362,4 +362,3 @@ class classes_DB_Config extends PHPUnit_Framework_TestCase
 
 }
 
-?>

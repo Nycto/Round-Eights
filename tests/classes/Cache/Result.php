@@ -142,4 +142,3 @@ class classes_cache_result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

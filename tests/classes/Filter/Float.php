@@ -105,4 +105,3 @@ class classes_Filter_Float extends PHPUnit_Framework_TestCase
 
 }
 
-?>

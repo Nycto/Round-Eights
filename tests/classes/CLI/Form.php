@@ -205,4 +205,3 @@ class classes_CLI_Form extends PHPUnit_Framework_TestCase
 
 }
 
-?>

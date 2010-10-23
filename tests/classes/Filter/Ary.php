@@ -65,4 +65,3 @@ class classes_Filter_Ary extends PHPUnit_Framework_TestCase
 
 }
 
-?>

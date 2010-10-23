@@ -119,4 +119,3 @@ class classes_XMLBuilder_Soap_Envelope extends PHPUnit_Framework_TestCase
 
 }
 
-?>

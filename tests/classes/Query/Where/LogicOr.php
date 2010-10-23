@@ -89,4 +89,3 @@ class classes_Query_Where_LogicOr extends PHPUnit_Framework_TestCase
 
 }
 
-?>

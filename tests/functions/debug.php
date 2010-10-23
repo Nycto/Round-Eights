@@ -83,4 +83,3 @@ class functions_debug extends PHPUnit_Framework_TestCase
 
 }
 
-?>

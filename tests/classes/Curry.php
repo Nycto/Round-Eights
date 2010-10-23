@@ -250,4 +250,3 @@ class classes_Curry extends PHPUnit_Framework_TestCase
 
 }
 
-?>

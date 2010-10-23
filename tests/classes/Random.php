@@ -98,4 +98,3 @@ class classes_random extends PHPUnit_Framework_TestCase
 
 }
 
-?>

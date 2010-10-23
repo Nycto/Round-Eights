@@ -121,4 +121,3 @@ class classes_Validator_MultiField extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -50,4 +50,3 @@ class classes_Log_Matcher_Code extends PHPUnit_Framework_TestCase
 
 }
 
-?>

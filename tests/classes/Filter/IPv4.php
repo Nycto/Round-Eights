@@ -52,4 +52,3 @@ class classes_Filter_IPv4 extends PHPUnit_Framework_TestCase
 
 }
 
-?>

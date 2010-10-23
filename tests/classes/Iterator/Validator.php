@@ -88,4 +88,3 @@ class classes_Iterator_Validator extends PHPUnit_Framework_TestCase
 
 }
 
-?>

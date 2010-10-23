@@ -113,4 +113,3 @@ class classes_Query_Select_Star extends PHPUnit_Framework_TestCase
 
 }
 
-?>

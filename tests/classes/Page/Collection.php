@@ -120,4 +120,3 @@ class classes_page_collection extends PHPUnit_Framework_TestCase
 
 }
 
-?>

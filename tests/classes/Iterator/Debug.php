@@ -50,4 +50,3 @@ class classes_Iterator_Debug extends PHPUnit_Framework_TestCase
     
 }
 
-?>

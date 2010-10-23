@@ -558,4 +558,3 @@ class classes_DB_Link extends PHPUnit_Framework_TestCase
 
 }
 
-?>

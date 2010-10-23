@@ -47,4 +47,4 @@ class classes_Query_Where_LessThan extends PHPUnit_Framework_TestCase
 
 }
 
-?>
+

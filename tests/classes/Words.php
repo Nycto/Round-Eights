@@ -220,4 +220,3 @@ class classes_Words extends PHPUnit_Framework_TestCase
 
 }
 
-?>

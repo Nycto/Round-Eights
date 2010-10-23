@@ -87,4 +87,3 @@ class classes_Backtrace_Formatter_JSON extends PHPUnit_Framework_TestCase
 
 }
 
-?>

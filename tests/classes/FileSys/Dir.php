@@ -866,4 +866,3 @@ class classes_filesys_dir_withData extends \r8\Test\TestCase\Dir
 
 }
 
-?>

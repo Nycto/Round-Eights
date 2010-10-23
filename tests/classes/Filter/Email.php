@@ -82,4 +82,3 @@ class classes_Filter_Email extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -89,4 +89,3 @@ class classes_Form_checkbox extends PHPUnit_Framework_TestCase
 
 }
 
-?>

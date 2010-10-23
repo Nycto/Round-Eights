@@ -152,4 +152,3 @@ class classes_Finder_SubDir extends PHPUnit_Framework_TestCase
 
 }
 
-?>

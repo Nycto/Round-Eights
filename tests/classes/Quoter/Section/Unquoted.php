@@ -49,4 +49,3 @@ class classes_quoter_section_unquoted extends PHPUnit_Framework_TestCase
 
 }
 
-?>

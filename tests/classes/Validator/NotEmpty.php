@@ -131,4 +131,3 @@ class classes_validator_notempty extends PHPUnit_Framework_TestCase
 
 }
 
-?>

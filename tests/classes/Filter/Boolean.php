@@ -119,4 +119,3 @@ class classes_Filter_Boolean extends PHPUnit_Framework_TestCase
 
 }
 
-?>

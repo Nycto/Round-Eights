@@ -346,4 +346,3 @@ class classes_Template_Access extends PHPUnit_Framework_TestCase
 
 }
 
-?>

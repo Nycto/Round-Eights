@@ -149,4 +149,3 @@ class classes_HTML_Head extends PHPUnit_Framework_TestCase
 
 }
 
-?>

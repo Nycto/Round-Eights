@@ -201,4 +201,3 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
 }
 
-?>

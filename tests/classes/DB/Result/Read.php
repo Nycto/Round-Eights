@@ -439,4 +439,3 @@ class classes_DB_Result_Read extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -44,4 +44,3 @@ class classes_page_blank extends PHPUnit_Framework_TestCase
 
 }
 
-?>

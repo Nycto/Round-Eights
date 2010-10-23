@@ -154,4 +154,3 @@ class classes_Seed extends PHPUnit_Framework_TestCase
 
 }
 
-?>

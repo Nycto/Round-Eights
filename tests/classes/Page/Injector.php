@@ -138,4 +138,3 @@ class classes_Page_Injector extends PHPUnit_Framework_TestCase
 
 }
 
-?>

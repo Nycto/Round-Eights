@@ -172,4 +172,3 @@ class classes_DB_BlackHole_Link extends PHPUnit_Framework_TestCase
 
 }
 
-?>

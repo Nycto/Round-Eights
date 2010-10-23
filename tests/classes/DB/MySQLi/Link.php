@@ -236,4 +236,3 @@ class classes_DB_Mysqli_Link extends PHPUnit_Framework_TestCase
 
 }
 
-?>

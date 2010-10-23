@@ -119,4 +119,3 @@ class classes_validator_alphanum extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -41,4 +41,3 @@ class classes_Stream_In_StdIn extends \r8\Test\TestCase\File
 
 }
 
-?>

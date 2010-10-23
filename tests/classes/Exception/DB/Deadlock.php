@@ -54,4 +54,3 @@ class classes_Exception_DB_Deadlock extends PHPUnit_Framework_TestCase
 
 }
 
-?>

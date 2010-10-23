@@ -213,4 +213,3 @@ class classes_validator_email extends PHPUnit_Framework_TestCase
 
 }
 
-?>

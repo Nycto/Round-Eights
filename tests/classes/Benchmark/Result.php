@@ -105,4 +105,3 @@ class classes_Benchmark_Result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

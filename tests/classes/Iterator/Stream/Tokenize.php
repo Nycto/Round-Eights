@@ -138,4 +138,3 @@ class classes_iterator_stream_tokenize extends PHPUnit_Framework_TestCase
 
 }
 
-?>

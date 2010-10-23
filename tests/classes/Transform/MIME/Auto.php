@@ -85,4 +85,3 @@ class classes_Transform_MIME_Auto extends PHPUnit_Framework_TestCase
 
 }
 
-?>

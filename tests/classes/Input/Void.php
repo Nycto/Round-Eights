@@ -43,4 +43,3 @@ class classes_Input_Void extends PHPUnit_Framework_TestCase
 
 }
 
-?>

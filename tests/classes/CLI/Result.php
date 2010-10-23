@@ -125,4 +125,3 @@ class classes_CLI_Result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

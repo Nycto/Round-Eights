@@ -262,4 +262,3 @@ class classes_Form_Multi extends PHPUnit_Framework_TestCase
 
 }
 
-?>

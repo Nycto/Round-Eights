@@ -223,4 +223,3 @@ class classes_CLI_Option extends PHPUnit_Framework_TestCase
 
 }
 
-?>

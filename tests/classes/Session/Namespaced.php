@@ -374,4 +374,3 @@ class classes_Session_Namespaced extends PHPUnit_Framework_TestCase
 
 }
 
-?>

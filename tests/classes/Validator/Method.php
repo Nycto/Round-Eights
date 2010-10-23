@@ -113,4 +113,3 @@ class classes_validator_method extends PHPUnit_Framework_TestCase
 
 }
 
-?>

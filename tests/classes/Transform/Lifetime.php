@@ -103,4 +103,3 @@ class classes_Transform_Lifetime extends PHPUnit_Framework_TestCase
 
 }
 
-?>

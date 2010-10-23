@@ -98,4 +98,3 @@ class classes_Filter_Integer extends PHPUnit_Framework_TestCase
 
 }
 
-?>

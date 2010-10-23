@@ -104,4 +104,3 @@ class classes_random_cmwc extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -57,4 +57,3 @@ class classes_Validator_Pass extends PHPUnit_Framework_TestCase
 
 }
 
-?>

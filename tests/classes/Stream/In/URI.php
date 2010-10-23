@@ -140,4 +140,3 @@ class classes_Stream_In_Uri extends \r8\Test\TestCase\File
 
 }
 
-?>

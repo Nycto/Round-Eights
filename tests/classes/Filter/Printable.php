@@ -57,4 +57,3 @@ class classes_Filter_Printable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -221,4 +221,3 @@ class classes_DB_SQLite_Result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

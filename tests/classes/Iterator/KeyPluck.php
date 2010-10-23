@@ -136,4 +136,3 @@ class classes_Iterator_KeyPluck extends PHPUnit_Framework_TestCase
 
 }
 
-?>

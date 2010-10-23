@@ -108,4 +108,3 @@ class classes_Query_Expr_Aliased extends PHPUnit_Framework_TestCase
 
 }
 
-?>

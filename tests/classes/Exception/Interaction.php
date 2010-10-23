@@ -44,4 +44,3 @@ class classes_Exception_Interaction extends PHPUnit_Framework_TestCase
 
 }
 
-?>

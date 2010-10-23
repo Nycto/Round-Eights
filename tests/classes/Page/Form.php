@@ -195,4 +195,3 @@ class classes_page_form extends PHPUnit_Framework_TestCase
 
 }
 
-?>

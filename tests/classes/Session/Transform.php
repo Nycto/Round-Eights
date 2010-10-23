@@ -350,4 +350,3 @@ class classes_Session_Transform extends PHPUnit_Framework_TestCase
 
 }
 
-?>

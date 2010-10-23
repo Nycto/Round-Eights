@@ -55,4 +55,3 @@ class classes_Log_Matcher_Level extends PHPUnit_Framework_TestCase
 
 }
 
-?>

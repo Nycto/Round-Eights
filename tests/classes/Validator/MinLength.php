@@ -159,4 +159,3 @@ class classes_validator_minlength extends PHPUnit_Framework_TestCase
 
 }
 
-?>

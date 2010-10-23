@@ -117,4 +117,3 @@ class classes_Template_Callback_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

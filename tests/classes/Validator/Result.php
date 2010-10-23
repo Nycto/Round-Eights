@@ -58,4 +58,3 @@ class classes_validator_result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

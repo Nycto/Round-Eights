@@ -61,4 +61,3 @@ class classes_Iterator_OffsetAsKey extends PHPUnit_Framework_TestCase
 
 }
 
-?>

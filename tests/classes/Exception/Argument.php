@@ -82,4 +82,3 @@ class classes_Exception_Argument extends PHPUnit_Framework_TestCase
 
 }
 
-?>

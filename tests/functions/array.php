@@ -615,4 +615,3 @@ class functions_array extends PHPUnit_Framework_TestCase
 
 }
 
-?>

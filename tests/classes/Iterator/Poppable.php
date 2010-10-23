@@ -83,4 +83,3 @@ class classes_Iterator_Poppable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

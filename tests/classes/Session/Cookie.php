@@ -410,4 +410,3 @@ class classes_Session_Cookie extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -163,4 +163,3 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
 }
 
-?>

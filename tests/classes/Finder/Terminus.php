@@ -65,4 +65,3 @@ class classes_Finder_Terminus extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -632,4 +632,3 @@ class classes_Mail extends PHPUnit_Framework_TestCase
 
 }
 
-?>

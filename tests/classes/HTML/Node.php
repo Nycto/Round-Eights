@@ -161,4 +161,3 @@ class classes_HTML_Node extends PHPUnit_Framework_TestCase
 
 }
 
-?>

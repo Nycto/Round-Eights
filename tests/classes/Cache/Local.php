@@ -288,4 +288,3 @@ class classes_Cache_Local extends PHPUnit_Framework_TestCase
 
 }
 
-?>

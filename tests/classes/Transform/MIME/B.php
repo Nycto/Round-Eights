@@ -202,4 +202,3 @@ class classes_Transform_MIME_B extends PHPUnit_Framework_TestCase
 
 }
 
-?>
