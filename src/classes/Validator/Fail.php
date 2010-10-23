@@ -61,4 +61,3 @@ class Fail extends \r8\Validator
 
 }
 
-?>

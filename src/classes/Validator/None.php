@@ -56,4 +56,3 @@ class None extends \r8\Validator\Collection
 
 }
 
-?>

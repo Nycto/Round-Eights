@@ -75,4 +75,3 @@ class Raw extends \r8\Query\Atom
 
 }
 
-?>

@@ -250,4 +250,3 @@ class classes_Backtrace extends PHPUnit_Framework_TestCase
 
 }
 
-?>

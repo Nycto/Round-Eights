@@ -1161,4 +1161,3 @@ class classes_URL extends PHPUnit_Framework_TestCase
 
 }
 
-?>

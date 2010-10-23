@@ -59,4 +59,3 @@ class classes_Filter_AlphaNum extends PHPUnit_Framework_TestCase
 
 }
 
-?>

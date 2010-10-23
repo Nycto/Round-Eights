@@ -94,4 +94,3 @@ class classes_CLI_Arg_Many extends PHPUnit_Framework_TestCase
 
 }
 
-?>

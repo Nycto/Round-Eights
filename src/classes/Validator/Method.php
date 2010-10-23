@@ -50,4 +50,3 @@ class Method extends \r8\Validator
 
 }
 
-?>

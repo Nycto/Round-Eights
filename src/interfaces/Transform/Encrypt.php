@@ -30,4 +30,3 @@ namespace r8\iface\Transform;
  */
 interface Encrypt extends \r8\iface\Transform {}
 
-?>

@@ -122,4 +122,3 @@ abstract class Node implements \r8\iface\HTML\Node
 
 }
 
-?>

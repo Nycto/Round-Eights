@@ -66,4 +66,3 @@ class MultiField extends \r8\Validator
 
 }
 
-?>

@@ -57,4 +57,3 @@ class All extends \r8\Validator\Collection
 
 }
 
-?>

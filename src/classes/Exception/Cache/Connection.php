@@ -45,4 +45,3 @@ class Connection extends \r8\Exception\Cache
 
 }
 
-?>

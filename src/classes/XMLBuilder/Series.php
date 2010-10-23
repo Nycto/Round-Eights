@@ -97,4 +97,3 @@ class Series implements \r8\iface\XMLBuilder
 
 }
 
-?>

@@ -112,4 +112,3 @@ class classes_Error_Exception extends PHPUnit_Framework_TestCase
 
 }
 
-?>

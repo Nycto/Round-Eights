@@ -50,4 +50,3 @@ class FileUpload extends \r8\Validator
 
 }
 
-?>

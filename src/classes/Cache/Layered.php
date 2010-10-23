@@ -205,4 +205,3 @@ class Layered extends \r8\Cache\Base
 
 }
 
-?>

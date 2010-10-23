@@ -200,4 +200,3 @@ class classes_CLI_Input extends PHPUnit_Framework_TestCase
 
 }
 
-?>

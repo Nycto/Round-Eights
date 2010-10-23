@@ -78,4 +78,3 @@ class Auto extends \r8\Transform\MIME
 
 }
 
-?>

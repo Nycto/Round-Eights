@@ -146,4 +146,3 @@ class Radio extends \r8\Form\Multi
 
 }
 
-?>

@@ -73,4 +73,3 @@ class Deflate implements \r8\iface\Transform\Compress
 
 }
 
-?>

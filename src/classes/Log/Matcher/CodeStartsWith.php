@@ -64,4 +64,3 @@ class CodeStartsWith implements \r8\iface\Log\Matcher
 
 }
 
-?>

@@ -108,4 +108,3 @@ class classes_Page_Head extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -111,4 +111,3 @@ class classes_Settings_Ary extends PHPUnit_Framework_TestCase
 
 }
 
-?>

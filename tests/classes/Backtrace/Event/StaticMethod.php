@@ -66,4 +66,3 @@ class classes_Backtrace_Event_StaticMethod extends PHPUnit_Framework_TestCase
 
 }
 
-?>

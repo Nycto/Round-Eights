@@ -78,4 +78,3 @@ abstract class Formatter implements \r8\iface\Error\Formatter
 
 }
 
-?>

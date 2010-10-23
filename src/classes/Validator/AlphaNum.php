@@ -50,4 +50,3 @@ class AlphaNum extends \r8\Validator
 
 }
 
-?>

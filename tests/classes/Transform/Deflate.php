@@ -80,4 +80,3 @@ class classes_Transform_Deflate extends PHPUnit_Framework_TestCase
 
 }
 
-?>

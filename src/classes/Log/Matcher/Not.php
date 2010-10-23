@@ -58,4 +58,3 @@ class Not implements \r8\iface\Log\Matcher
 
 }
 
-?>

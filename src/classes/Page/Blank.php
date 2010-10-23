@@ -45,4 +45,3 @@ class Blank implements \r8\iface\Page
 
 }
 
-?>

@@ -41,4 +41,3 @@ interface Formatter
 
 }
 
-?>

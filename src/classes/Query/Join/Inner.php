@@ -43,4 +43,3 @@ class Inner extends \r8\Query\Join
 
 }
 
-?>

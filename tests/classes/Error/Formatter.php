@@ -48,4 +48,3 @@ class classes_Error_Formatter extends PHPUnit_Framework_TestCase
 
 }
 
-?>

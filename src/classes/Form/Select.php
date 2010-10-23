@@ -79,4 +79,3 @@ class Select extends \r8\Form\Multi
 
 }
 
-?>

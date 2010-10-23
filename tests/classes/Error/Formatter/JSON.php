@@ -56,4 +56,4 @@ class classes_Error_Formatter_JSON extends PHPUnit_Framework_TestCase
 
 }
 
-?>
+

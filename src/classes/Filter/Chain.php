@@ -105,4 +105,3 @@ class Chain extends \r8\Filter
 
 }
 
-?>

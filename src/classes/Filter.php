@@ -46,4 +46,3 @@ abstract class Filter implements \r8\iface\Filter
 
 }
 
-?>

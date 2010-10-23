@@ -166,4 +166,3 @@ class classes_SysV_Semaphore extends PHPUnit_Framework_TestCase
 
 }
 
-?>

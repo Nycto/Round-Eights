@@ -45,4 +45,3 @@ class Interrupt extends \r8\Exception
 
 }
 
-?>

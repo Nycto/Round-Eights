@@ -232,4 +232,3 @@ class Range implements \Iterator
 
 }
 
-?>

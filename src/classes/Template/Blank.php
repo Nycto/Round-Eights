@@ -65,4 +65,3 @@ class Blank implements \r8\iface\Template
 
 }
 
-?>

@@ -103,4 +103,3 @@ class Iterate implements \r8\iface\Template
 
 }
 
-?>

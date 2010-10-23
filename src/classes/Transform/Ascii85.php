@@ -249,4 +249,3 @@ class Ascii85 implements \r8\iface\Transform\Encode
 
 }
 
-?>

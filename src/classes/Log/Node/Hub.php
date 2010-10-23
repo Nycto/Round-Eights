@@ -65,4 +65,3 @@ class Hub implements \r8\iface\Log\Node
 
 }
 
-?>

@@ -46,4 +46,3 @@ class Interaction extends \r8\Exception
 
 }
 
-?>

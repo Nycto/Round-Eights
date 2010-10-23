@@ -62,4 +62,3 @@ class LogicAnd extends \r8\Query\Where\Logic
 
 }
 
-?>

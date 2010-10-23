@@ -150,4 +150,3 @@ class classes_DB_Link_Decorator extends PHPUnit_Framework_TestCase
 
 }
 
-?>

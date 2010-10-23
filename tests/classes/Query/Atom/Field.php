@@ -159,4 +159,3 @@ class classes_query_atom_field extends PHPUnit_Framework_TestCase
 
 }
 
-?>

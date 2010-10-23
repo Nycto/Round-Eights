@@ -54,4 +54,3 @@ class Closure extends \r8\Backtrace\Event\Call
 
 }
 
-?>

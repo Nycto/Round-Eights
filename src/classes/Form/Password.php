@@ -55,4 +55,3 @@ class Password extends \r8\Form\Field
 
 }
 
-?>

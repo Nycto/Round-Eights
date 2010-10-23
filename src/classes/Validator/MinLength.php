@@ -75,4 +75,3 @@ class MinLength extends \r8\Validator
 
 }
 
-?>

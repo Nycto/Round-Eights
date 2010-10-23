@@ -41,4 +41,3 @@ class classes_Stream_Out_Void extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -53,4 +53,3 @@ class classes_Log_Node_Stream extends PHPUnit_Framework_TestCase
 
 }
 
-?>

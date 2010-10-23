@@ -44,4 +44,3 @@ class classes_Log_Node_Void extends PHPUnit_Framework_TestCase
 
 }
 
-?>

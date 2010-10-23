@@ -47,4 +47,3 @@ class IPv4 extends \r8\Validator
 
 }
 
-?>

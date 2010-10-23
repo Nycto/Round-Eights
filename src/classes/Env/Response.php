@@ -70,4 +70,3 @@ class Response implements \r8\iface\Env\Response
 
 }
 
-?>

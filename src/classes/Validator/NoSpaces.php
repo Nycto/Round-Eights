@@ -59,4 +59,3 @@ class NoSpaces extends \r8\Validator
 
 }
 
-?>

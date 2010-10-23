@@ -85,4 +85,3 @@ class Head implements \r8\iface\Page
 
 }
 
-?>

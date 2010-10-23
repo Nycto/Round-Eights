@@ -152,4 +152,3 @@ abstract class Join implements \r8\iface\Query\Joinable
 
 }
 
-?>

@@ -140,4 +140,3 @@ class URI implements \r8\iface\Stream\In
 
 }
 
-?>

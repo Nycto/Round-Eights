@@ -58,4 +58,3 @@ class TextArea extends \r8\Form\Field
 
 }
 
-?>

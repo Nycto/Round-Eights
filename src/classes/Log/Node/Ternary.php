@@ -85,4 +85,3 @@ class Ternary implements \r8\iface\Log\Node
 
 }
 
-?>

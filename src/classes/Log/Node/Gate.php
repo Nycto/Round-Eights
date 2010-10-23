@@ -72,4 +72,3 @@ class Gate implements \r8\iface\Log\Node
 
 }
 
-?>

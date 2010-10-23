@@ -72,4 +72,3 @@ class IncludePath implements \r8\iface\Finder
 
 }
 
-?>

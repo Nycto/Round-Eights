@@ -102,4 +102,3 @@ class classes_DB_Result_Write extends PHPUnit_Framework_TestCase
 
 }
 
-?>

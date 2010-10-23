@@ -584,4 +584,3 @@ class classes_DB_Link_Querier extends PHPUnit_Framework_TestCase
 
 }
 
-?>

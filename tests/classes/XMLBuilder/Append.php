@@ -146,4 +146,3 @@ class classes_xmlbuilder_append extends PHPUnit_Framework_TestCase
 
 }
 
-?>

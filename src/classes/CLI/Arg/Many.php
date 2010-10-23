@@ -77,4 +77,3 @@ class Many extends \r8\CLI\Arg
 
 }
 
-?>

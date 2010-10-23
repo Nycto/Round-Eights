@@ -212,4 +212,3 @@ class classes_Validator_Any extends PHPUnit_Framework_TestCase
 
 }
 
-?>

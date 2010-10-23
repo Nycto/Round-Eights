@@ -70,4 +70,3 @@ class Wrap extends \r8\XMLBuilder\Node
 
 }
 
-?>

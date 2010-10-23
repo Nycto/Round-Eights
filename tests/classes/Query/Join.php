@@ -140,4 +140,3 @@ class classes_Query_Join extends PHPUnit_Framework_TestCase
 
 }
 
-?>

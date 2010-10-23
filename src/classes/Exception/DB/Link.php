@@ -45,4 +45,3 @@ class Link extends \r8\Exception\DB
 
 }
 
-?>

@@ -43,4 +43,3 @@ class classes_Page_Interrupt extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -138,4 +138,3 @@ class classes_Form_Visitor_Table extends PHPUnit_Framework_TestCase
 
 }
 
-?>

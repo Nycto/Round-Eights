@@ -304,4 +304,3 @@ class Request implements \r8\iface\Env\Request
 
 }
 
-?>

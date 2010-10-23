@@ -516,4 +516,3 @@ class Config implements \Serializable
 
 }
 
-?>

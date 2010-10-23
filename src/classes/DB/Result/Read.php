@@ -344,4 +344,3 @@ class Read extends \r8\DB\Result\Base implements \r8\iface\DB\Result\Read
 
 }
 
-?>

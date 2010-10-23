@@ -540,4 +540,3 @@ class Dir extends \r8\FileSys implements \RecursiveIterator
 
 }
 
-?>

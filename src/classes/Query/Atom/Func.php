@@ -138,4 +138,3 @@ class Func extends \r8\Query\Atom
 
 }
 
-?>

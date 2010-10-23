@@ -60,4 +60,3 @@ class Level implements \r8\iface\Log\Matcher
 
 }
 
-?>

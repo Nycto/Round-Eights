@@ -49,4 +49,3 @@ class classes_Exception_Index extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -177,4 +177,3 @@ class Reference implements \r8\iface\Session
 
 }
 
-?>

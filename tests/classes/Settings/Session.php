@@ -159,4 +159,3 @@ class classes_Settings_Session extends PHPUnit_Framework_TestCase
 
 }
 
-?>

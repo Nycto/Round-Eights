@@ -286,4 +286,3 @@ class classes_validator_callback extends PHPUnit_Framework_TestCase
 
 }
 
-?>

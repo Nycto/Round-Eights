@@ -75,4 +75,3 @@ class classes_Query_Atom_Primitive extends PHPUnit_Framework_TestCase
 
 }
 
-?>

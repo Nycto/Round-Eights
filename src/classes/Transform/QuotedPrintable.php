@@ -58,4 +58,3 @@ class QuotedPrintable implements \r8\iface\Transform\Encode
 
 }
 
-?>

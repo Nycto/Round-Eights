@@ -115,4 +115,3 @@ abstract class Section
     abstract public function __toString();
 }
 
-?>

@@ -83,4 +83,3 @@ class DOMDoc implements \r8\iface\Template
 
 }
 
-?>

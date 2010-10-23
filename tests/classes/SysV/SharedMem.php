@@ -151,4 +151,3 @@ class classes_SysV_SharedMem extends PHPUnit_Framework_TestCase
 
 }
 
-?>

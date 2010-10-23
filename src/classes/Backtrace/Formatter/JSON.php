@@ -93,4 +93,3 @@ class JSON implements \r8\iface\Backtrace\Formatter
 
 }
 
-?>

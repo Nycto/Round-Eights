@@ -413,4 +413,3 @@ class Tag extends \r8\HTML\Node implements \ArrayAccess
 
 }
 
-?>

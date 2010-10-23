@@ -57,4 +57,3 @@ abstract class Atom implements \r8\iface\Query\Atom, \r8\iface\Query\Ordered, \r
 
 }
 
-?>

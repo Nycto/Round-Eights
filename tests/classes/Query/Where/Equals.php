@@ -47,4 +47,3 @@ class classes_Query_Where_Equals extends PHPUnit_Framework_TestCase
 
 }
 
-?>

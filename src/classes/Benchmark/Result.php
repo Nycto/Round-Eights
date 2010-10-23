@@ -129,4 +129,3 @@ class Result implements \Countable
 
 }
 
-?>

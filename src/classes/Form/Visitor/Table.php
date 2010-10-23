@@ -258,4 +258,3 @@ class Table implements \r8\iface\Form\Visitor
 
 }
 
-?>

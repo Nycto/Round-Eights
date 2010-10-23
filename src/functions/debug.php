@@ -119,4 +119,3 @@ function getDump ($value)
 
 }
 
-?>

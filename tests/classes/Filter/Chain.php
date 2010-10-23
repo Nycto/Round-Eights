@@ -115,4 +115,3 @@ class classes_Filter_Chain extends PHPUnit_Framework_TestCase
 
 }
 
-?>

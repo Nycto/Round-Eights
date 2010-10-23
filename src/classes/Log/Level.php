@@ -73,4 +73,3 @@ class Level extends \r8\Enum
 
 }
 
-?>

@@ -30,4 +30,3 @@ namespace r8\iface\Transform;
  */
 interface Encode extends \r8\iface\Transform {}
 
-?>

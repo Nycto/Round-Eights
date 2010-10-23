@@ -54,4 +54,3 @@ class Variable extends \r8\Validator
 
 }
 
-?>

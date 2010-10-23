@@ -269,4 +269,3 @@ class Local extends \r8\Cache\Base implements \r8\iface\Cache\Updatable
 
 }
 
-?>

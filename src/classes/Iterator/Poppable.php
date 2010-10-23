@@ -116,4 +116,3 @@ class Poppable implements \IteratorAggregate
 
 }
 
-?>

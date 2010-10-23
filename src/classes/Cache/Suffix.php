@@ -204,4 +204,3 @@ class Suffix extends \r8\Cache\Base
 
 }
 
-?>

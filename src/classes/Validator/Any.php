@@ -60,4 +60,3 @@ class Any extends \r8\Validator\Collection
 
 }
 
-?>

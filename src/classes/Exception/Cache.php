@@ -45,4 +45,3 @@ class Cache extends \r8\Exception
 
 }
 
-?>

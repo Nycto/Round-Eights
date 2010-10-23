@@ -65,4 +65,3 @@ class classes_Error_Handler_IniDisplay extends PHPUnit_Framework_TestCase
 
 }
 
-?>

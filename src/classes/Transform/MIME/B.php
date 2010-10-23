@@ -146,4 +146,3 @@ class B extends \r8\Transform\MIME
 
 }
 
-?>

@@ -186,4 +186,3 @@ class classes_Validator_All extends PHPUnit_Framework_TestCase
 
 }
 
-?>

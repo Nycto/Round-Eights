@@ -132,4 +132,3 @@ class PHPUnit_Include_Framework_TestCase extends PHPUnit_Framework_TestCase
 
 }
 
-?>

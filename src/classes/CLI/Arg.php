@@ -107,4 +107,3 @@ abstract class Arg implements \r8\iface\CLI\Arg
 
 }
 
-?>

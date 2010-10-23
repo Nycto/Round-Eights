@@ -54,4 +54,3 @@ class Method extends \r8\Backtrace\Event\Object
 
 }
 
-?>

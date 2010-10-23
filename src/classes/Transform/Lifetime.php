@@ -90,4 +90,3 @@ class Lifetime implements \r8\iface\Transform
 
 }
 
-?>

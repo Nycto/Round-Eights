@@ -378,4 +378,3 @@ abstract class Field implements \r8\iface\Form\Field
 
 }
 
-?>

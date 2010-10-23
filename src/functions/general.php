@@ -274,4 +274,3 @@ function respondTo ($object, $function)
     return in_array( $function, get_class_methods($object) );
 }
 
-?>

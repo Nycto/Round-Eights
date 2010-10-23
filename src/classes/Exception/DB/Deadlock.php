@@ -59,4 +59,3 @@ class Deadlock extends \r8\Exception\DB
 
 }
 
-?>

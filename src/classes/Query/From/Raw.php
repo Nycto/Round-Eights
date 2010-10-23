@@ -117,4 +117,3 @@ class Raw implements \r8\iface\Query\From
 
 }
 
-?>

@@ -117,4 +117,3 @@ class classes_Iterator_Pluck extends PHPUnit_Framework_TestCase
 
 }
 
-?>

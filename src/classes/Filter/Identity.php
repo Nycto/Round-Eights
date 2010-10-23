@@ -44,4 +44,3 @@ class Identity extends \r8\Filter
 
 }
 
-?>

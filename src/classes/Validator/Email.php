@@ -113,4 +113,3 @@ class Email extends \r8\Validator
 
 }
 
-?>

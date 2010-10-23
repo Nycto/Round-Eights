@@ -157,4 +157,3 @@ class Defer implements \Iterator
 
 }
 
-?>

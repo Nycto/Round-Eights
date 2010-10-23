@@ -60,4 +60,3 @@ class classes_Filter_Alpha extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -118,4 +118,3 @@ class Injector implements \r8\iface\Page
 
 }
 
-?>

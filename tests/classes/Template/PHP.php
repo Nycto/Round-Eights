@@ -99,4 +99,3 @@ class classes_Template_PHP extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

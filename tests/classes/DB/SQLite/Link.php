@@ -210,4 +210,3 @@ class classes_DB_SQLite_Link extends PHPUnit_Framework_TestCase
 
 }
 
-?>

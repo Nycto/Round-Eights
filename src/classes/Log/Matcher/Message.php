@@ -58,4 +58,3 @@ class Message implements \r8\iface\Log\Matcher
 
 }
 
-?>

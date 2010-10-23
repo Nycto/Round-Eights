@@ -366,4 +366,3 @@ class classes_XMLBuilder_Quick_Values extends PHPUnit_Framework_TestCase
 
 }
 
-?>

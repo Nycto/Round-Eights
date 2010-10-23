@@ -680,4 +680,3 @@ class classes_Form extends PHPUnit_Framework_TestCase
 
 }
 
-?>

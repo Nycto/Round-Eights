@@ -571,4 +571,3 @@ class classes_Quoter extends PHPUnit_Framework_TestCase
 
 }
 
-?>

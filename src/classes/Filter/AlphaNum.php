@@ -47,4 +47,3 @@ class AlphaNum extends \r8\Filter
 
 }
 
-?>

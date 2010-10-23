@@ -92,4 +92,3 @@ class classes_Transform_quotedprintable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

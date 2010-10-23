@@ -121,4 +121,3 @@ class Mail extends \r8\Mail\Transport
 
 }
 
-?>

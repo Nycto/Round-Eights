@@ -92,4 +92,3 @@ class Append implements \r8\iface\XMLBuilder
 
 }
 
-?>

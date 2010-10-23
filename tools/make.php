@@ -46,4 +46,3 @@ $phar->setStub( $stub ) ;
 
 echo "Phar file packed\n";
 
-?>

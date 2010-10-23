@@ -69,4 +69,3 @@ class classes_Query_From_Raw extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -117,4 +117,3 @@ class Extension implements \r8\iface\Finder
 
 }
 
-?>

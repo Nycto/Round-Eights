@@ -71,4 +71,3 @@ abstract class Object extends \r8\Backtrace\Event\Named
 
 }
 
-?>

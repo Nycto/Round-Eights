@@ -83,4 +83,3 @@ class classes_Stream_In_File extends \r8\Test\TestCase\File
 
 }
 
-?>

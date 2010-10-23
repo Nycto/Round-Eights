@@ -66,4 +66,3 @@ class classes_page_template extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -66,4 +66,3 @@ class Pass implements \r8\iface\Validator
 
 }
 
-?>

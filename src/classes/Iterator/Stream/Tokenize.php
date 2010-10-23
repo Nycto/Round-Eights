@@ -199,4 +199,3 @@ class Tokenize implements \Iterator
 
 }
 
-?>

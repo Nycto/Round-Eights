@@ -58,4 +58,3 @@ interface Updatable extends \r8\iface\Cache
 
 }
 
-?>

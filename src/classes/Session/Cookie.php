@@ -242,4 +242,3 @@ class Cookie implements \r8\iface\Session
 
 }
 
-?>

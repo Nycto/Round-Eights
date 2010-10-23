@@ -50,4 +50,3 @@ class classes_Exception_Variable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

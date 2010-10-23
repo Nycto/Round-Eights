@@ -114,4 +114,3 @@ class Conditional extends \r8\HTML\Node
 
 }
 
-?>

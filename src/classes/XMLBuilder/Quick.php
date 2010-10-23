@@ -185,4 +185,3 @@ abstract class Quick implements \r8\iface\XMLBuilder
 
 }
 
-?>

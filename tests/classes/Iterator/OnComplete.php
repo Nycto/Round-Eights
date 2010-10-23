@@ -101,4 +101,3 @@ class classes_Iterator_OnComplete extends PHPUnit_Framework_TestCase
 
 }
 
-?>

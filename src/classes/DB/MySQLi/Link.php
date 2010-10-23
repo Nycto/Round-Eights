@@ -208,4 +208,3 @@ class Link implements \r8\iface\DB\Adapter\Link
 
 }
 
-?>

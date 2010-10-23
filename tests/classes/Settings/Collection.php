@@ -95,4 +95,3 @@ class classes_Settings_Collection extends PHPUnit_Framework_TestCase
 
 }
 
-?>

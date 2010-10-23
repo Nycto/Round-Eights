@@ -47,4 +47,4 @@ class Digits extends \r8\Filter
 
 }
 
-?>
+

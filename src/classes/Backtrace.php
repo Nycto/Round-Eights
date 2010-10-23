@@ -193,4 +193,3 @@ class Backtrace implements \IteratorAggregate, \Countable
 
 }
 
-?>

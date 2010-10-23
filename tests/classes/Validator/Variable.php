@@ -120,4 +120,3 @@ class classes_validator_variable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

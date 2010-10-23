@@ -81,4 +81,3 @@ class classes_Error extends PHPUnit_Framework_TestCase
 
 }
 
-?>

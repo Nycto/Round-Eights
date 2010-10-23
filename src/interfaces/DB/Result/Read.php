@@ -71,4 +71,3 @@ interface Read extends \r8\iface\DB\Result, \Countable, \SeekableIterator
 
 }
 
-?>

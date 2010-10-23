@@ -159,4 +159,3 @@ class classes_Template_Raw_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

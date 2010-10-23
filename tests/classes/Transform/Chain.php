@@ -84,4 +84,3 @@ class classes_Transform_Chain extends PHPUnit_Framework_TestCase
 
 }
 
-?>

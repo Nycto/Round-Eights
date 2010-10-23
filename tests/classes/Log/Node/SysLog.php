@@ -58,4 +58,3 @@ class classes_Log_Node_SysLog extends PHPUnit_Framework_TestCase
 
 }
 
-?>

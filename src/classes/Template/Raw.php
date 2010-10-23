@@ -130,4 +130,3 @@ class Raw implements \r8\iface\Template
 
 }
 
-?>

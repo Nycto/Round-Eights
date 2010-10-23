@@ -187,4 +187,3 @@ class SQL extends \PHPUnit_Framework_Constraint
 
 }
 
-?>

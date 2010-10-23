@@ -100,4 +100,3 @@ class Attrs extends \r8\XMLBuilder\Quick
 
 }
 
-?>

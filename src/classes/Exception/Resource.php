@@ -45,4 +45,3 @@ class Resource extends \r8\Exception
 
 }
 
-?>

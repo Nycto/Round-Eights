@@ -306,4 +306,3 @@ class classes_Iterator_Range extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -79,4 +79,3 @@ class Instantiate extends \r8\Curry\Unbound
 
 }
 
-?>

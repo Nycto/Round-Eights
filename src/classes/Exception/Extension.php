@@ -58,4 +58,3 @@ class Extension extends \r8\Exception
 
 }
 
-?>

@@ -126,4 +126,3 @@ class String implements \r8\iface\Stream\In
 
 }
 
-?>

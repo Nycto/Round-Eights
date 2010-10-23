@@ -69,4 +69,4 @@ class Text extends \r8\Error\Formatter
 
 }
 
-?>
+

@@ -77,4 +77,3 @@ class Call extends \r8\Curry\Unbound
 
 }
 
-?>

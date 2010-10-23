@@ -63,4 +63,3 @@ class DB extends \r8\Exception
 
 }
 
-?>

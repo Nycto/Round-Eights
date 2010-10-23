@@ -821,4 +821,3 @@ class classes_query_select extends PHPUnit_Framework_TestCase
 
 }
 
-?>

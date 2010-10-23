@@ -49,4 +49,3 @@ class classes_Log_Matcher_Not extends PHPUnit_Framework_TestCase
 
 }
 
-?>

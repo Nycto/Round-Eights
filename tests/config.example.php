@@ -39,4 +39,3 @@ define ( "SQLITE_TABLE", "r8_Test_Table" );
 define ( "MEMCACHE_HOST", "127.0.0.1" );
 define ( "MEMCACHE_PORT", 11211 );
 
-?>

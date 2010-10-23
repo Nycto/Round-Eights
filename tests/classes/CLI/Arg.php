@@ -76,4 +76,3 @@ class classes_CLI_Arg extends PHPUnit_Framework_TestCase
 
 }
 
-?>

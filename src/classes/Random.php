@@ -73,4 +73,3 @@ abstract class Random implements \r8\iface\Random
 
 }
 
-?>

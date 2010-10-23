@@ -59,4 +59,3 @@ abstract class Base implements \r8\iface\Cache
 
 }
 
-?>

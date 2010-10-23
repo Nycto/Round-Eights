@@ -30,4 +30,3 @@ namespace r8\iface\Transform;
  */
 interface Compress extends \r8\iface\Transform {}
 
-?>

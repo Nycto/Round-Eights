@@ -63,4 +63,3 @@ abstract class Call extends \r8\Backtrace\Event
 
 }
 
-?>

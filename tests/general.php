@@ -37,4 +37,3 @@ error_reporting( E_ALL | E_STRICT );
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-?>

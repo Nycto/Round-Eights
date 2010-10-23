@@ -70,4 +70,3 @@ class One extends \r8\CLI\Arg
 
 }
 
-?>

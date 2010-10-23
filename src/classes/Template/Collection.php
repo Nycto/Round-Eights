@@ -97,4 +97,3 @@ class Collection implements \r8\iface\Template
 
 }
 
-?>

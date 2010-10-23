@@ -164,4 +164,3 @@ class classes_Cache_Suffix extends PHPUnit_Framework_TestCase
 
 }
 
-?>

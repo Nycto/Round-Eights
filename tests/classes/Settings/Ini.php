@@ -144,4 +144,3 @@ class classes_Settings_Ini_WithFile extends \r8\Test\TestCase\EmptyFile
 
 }
 
-?>

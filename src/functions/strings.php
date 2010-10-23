@@ -554,4 +554,3 @@ function truncate ($string, $maxLength, $delimiter = '...')
         .substr( $string, strlen( $string ) - ( $maxLength - strlen($delimiter) - $firstLength ) );
 }
 
-?>

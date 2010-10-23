@@ -87,4 +87,3 @@ class classes_Finder_IncludePath extends PHPUnit_Framework_TestCase
 
 }
 
-?>

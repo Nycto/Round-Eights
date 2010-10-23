@@ -142,4 +142,3 @@ abstract class Logic implements \r8\iface\Query\Where
 
 }
 
-?>

@@ -139,4 +139,3 @@ class classes_Template_Builder extends PHPUnit_Framework_TestCase
 
 }
 
-?>

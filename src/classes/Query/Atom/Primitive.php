@@ -73,4 +73,3 @@ class Primitive extends \r8\Query\Atom
 
 }
 
-?>

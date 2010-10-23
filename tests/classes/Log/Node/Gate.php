@@ -74,4 +74,3 @@ class classes_Log_Node_Gate extends PHPUnit_Framework_TestCase
 
 }
 
-?>

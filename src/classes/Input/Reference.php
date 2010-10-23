@@ -82,4 +82,3 @@ class Reference implements \r8\iface\Input
 
 }
 
-?>

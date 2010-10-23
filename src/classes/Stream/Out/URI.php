@@ -99,4 +99,3 @@ class URI implements \r8\iface\Stream\Out
 
 }
 
-?>

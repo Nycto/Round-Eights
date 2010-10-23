@@ -51,4 +51,3 @@ class Terminus implements \r8\iface\Finder
 
 }
 
-?>

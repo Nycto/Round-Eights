@@ -73,4 +73,3 @@ class classes_HTML_Javascript extends PHPUnit_Framework_TestCase
 
 }
 
-?>

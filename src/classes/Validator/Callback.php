@@ -75,4 +75,3 @@ class Callback extends \r8\Validator
 
 }
 
-?>

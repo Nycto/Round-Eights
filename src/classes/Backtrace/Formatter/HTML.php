@@ -128,4 +128,3 @@ class HTML implements \r8\iface\Backtrace\Formatter
 
 }
 
-?>

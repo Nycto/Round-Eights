@@ -138,4 +138,3 @@ class DOMNodeList implements \Iterator, \Countable
 
 }
 
-?>

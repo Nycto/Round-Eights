@@ -245,4 +245,3 @@ class classes_Transform_Ascii85 extends PHPUnit_Framework_TestCase
 
 }
 
-?>

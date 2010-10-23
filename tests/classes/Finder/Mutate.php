@@ -184,4 +184,3 @@ class classes_Finder_Mutate extends PHPUnit_Framework_TestCase
 
 }
 
-?>

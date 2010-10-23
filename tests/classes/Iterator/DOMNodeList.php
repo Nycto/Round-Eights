@@ -147,4 +147,3 @@ class classes_Iterator_DOMNodeList extends PHPUnit_Framework_TestCase
 
 }
 
-?>

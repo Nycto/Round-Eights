@@ -207,4 +207,3 @@ class Form extends \r8\Page
 
 }
 
-?>

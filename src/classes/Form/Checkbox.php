@@ -81,4 +81,3 @@ class Checkbox extends \r8\Form\Field
 
 }
 
-?>

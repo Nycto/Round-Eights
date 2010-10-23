@@ -152,4 +152,3 @@ class classes_Finder_Extension extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -74,4 +74,3 @@ class Void implements \r8\iface\Stream\In
 
 }
 
-?>

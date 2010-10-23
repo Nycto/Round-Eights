@@ -50,4 +50,3 @@ class AutoFree extends \r8\DB\Result\Read\Decorator
 
 }
 
-?>

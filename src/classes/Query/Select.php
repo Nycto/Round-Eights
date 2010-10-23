@@ -857,4 +857,3 @@ class Select implements \r8\iface\DB\Query
 
 }
 
-?>

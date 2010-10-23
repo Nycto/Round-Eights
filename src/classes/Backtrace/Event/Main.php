@@ -54,4 +54,3 @@ class Main extends \r8\Backtrace\Event
 
 }
 
-?>

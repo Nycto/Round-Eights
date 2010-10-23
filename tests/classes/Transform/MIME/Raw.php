@@ -283,4 +283,3 @@ class classes_Transform_MIME_Raw extends PHPUnit_Framework_TestCase
 
 }
 
-?>

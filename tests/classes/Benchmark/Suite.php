@@ -173,4 +173,3 @@ class classes_Benchmark_Suite extends PHPUnit_Framework_TestCase
 
 }
 
-?>

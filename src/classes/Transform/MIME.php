@@ -330,4 +330,3 @@ abstract class MIME implements \r8\iface\Transform\Encode
 
 }
 
-?>

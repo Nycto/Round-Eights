@@ -105,4 +105,3 @@ class classes_Error_PHP extends PHPUnit_Framework_TestCase
 
 }
 
-?>

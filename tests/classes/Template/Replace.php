@@ -154,4 +154,3 @@ class classes_Template_Replace_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

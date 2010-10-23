@@ -149,4 +149,3 @@ class classes_Iterator_Offset extends PHPUnit_Framework_TestCase
 
 }
 
-?>

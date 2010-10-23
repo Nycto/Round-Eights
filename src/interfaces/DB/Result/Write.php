@@ -49,4 +49,3 @@ interface Write extends \r8\iface\DB\Result
 
 }
 
-?>

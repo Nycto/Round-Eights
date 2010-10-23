@@ -95,4 +95,3 @@ class MWC extends \r8\Random
 
 }
 
-?>

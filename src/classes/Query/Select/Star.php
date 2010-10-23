@@ -165,4 +165,3 @@ class Star implements \r8\iface\Query\Selectable
 
 }
 
-?>

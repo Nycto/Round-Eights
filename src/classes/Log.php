@@ -195,4 +195,3 @@ class Log implements \r8\iface\Log\Node
 
 }
 
-?>

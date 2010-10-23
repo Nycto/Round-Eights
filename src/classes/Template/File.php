@@ -140,4 +140,3 @@ abstract class File extends \r8\Template\Access implements \r8\iface\Template\Ac
 
 }
 
-?>

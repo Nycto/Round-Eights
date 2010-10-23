@@ -55,4 +55,3 @@ class Text extends \r8\Form\Field
 
 }
 
-?>

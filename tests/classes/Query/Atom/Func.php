@@ -110,4 +110,3 @@ class classes_Query_Atom_Func extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -158,4 +158,3 @@ class Exception implements \r8\iface\Error
 
 }
 
-?>

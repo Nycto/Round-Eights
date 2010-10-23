@@ -197,4 +197,3 @@ class Cache implements \Iterator
 
 }
 
-?>

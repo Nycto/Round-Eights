@@ -142,4 +142,3 @@ abstract class Decorator implements \r8\iface\Session
 
 }
 
-?>

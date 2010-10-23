@@ -158,4 +158,3 @@ abstract class Multi extends \r8\Form\Field
 
 }
 
-?>

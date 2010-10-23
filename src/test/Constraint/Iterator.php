@@ -213,4 +213,3 @@ class Iterator extends \PHPUnit_Framework_Constraint
 
 }
 
-?>

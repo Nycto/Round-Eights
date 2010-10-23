@@ -152,4 +152,3 @@ class Ini implements \r8\iface\Settings\Read, \Serializable
 
 }
 
-?>

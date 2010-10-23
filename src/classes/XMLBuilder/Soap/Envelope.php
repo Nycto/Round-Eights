@@ -105,4 +105,3 @@ class Envelope implements \r8\iface\XMLBuilder
 
 }
 
-?>

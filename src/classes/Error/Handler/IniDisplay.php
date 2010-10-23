@@ -64,4 +64,3 @@ class IniDisplay implements \r8\iface\Error\Handler
 
 }
 
-?>

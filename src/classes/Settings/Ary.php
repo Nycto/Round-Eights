@@ -127,4 +127,3 @@ class Ary implements \r8\iface\Settings\ReadWrite
 
 }
 
-?>

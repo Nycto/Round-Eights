@@ -46,4 +46,3 @@ class classes_DB_Result_Base extends PHPUnit_Framework_TestCase
 
 }
 
-?>

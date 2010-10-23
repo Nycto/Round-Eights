@@ -68,4 +68,3 @@ interface Formatter
 
 }
 
-?>

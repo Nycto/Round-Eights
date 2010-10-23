@@ -75,4 +75,3 @@ class Ary extends \r8\Filter
 
 }
 
-?>

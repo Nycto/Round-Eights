@@ -70,4 +70,3 @@ abstract class Named extends \r8\Backtrace\Event\Call
 
 }
 
-?>

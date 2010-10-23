@@ -47,4 +47,3 @@ class StdErr implements \r8\iface\Stream\Out
 
 }
 
-?>

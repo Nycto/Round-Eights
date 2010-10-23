@@ -69,4 +69,3 @@ class KeyPluck extends \IteratorIterator
 
 }
 
-?>

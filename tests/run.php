@@ -59,4 +59,3 @@ if ( !is_file($file) )
 // Finally... execute phpunit
 system( "phpunit ". escapeshellarg( implode("_", $test) ) ." ". escapeshellarg($file) );
 
-?>

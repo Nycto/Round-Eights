@@ -95,4 +95,3 @@ class Text implements \r8\iface\Backtrace\Formatter
 
 }
 
-?>

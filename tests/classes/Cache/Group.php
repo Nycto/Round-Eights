@@ -254,4 +254,3 @@ class classes_Cache_Group extends PHPUnit_Framework_TestCase
 
 }
 
-?>

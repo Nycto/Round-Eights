@@ -226,4 +226,3 @@ class Table implements \r8\iface\Query\From
 
 }
 
-?>

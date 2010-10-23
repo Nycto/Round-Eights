@@ -214,4 +214,3 @@ class classes_Form_radio extends PHPUnit_Framework_TestCase
 
 }
 
-?>

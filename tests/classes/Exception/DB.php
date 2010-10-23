@@ -65,4 +65,3 @@ class classes_Exception_DB extends PHPUnit_Framework_TestCase
 
 }
 
-?>

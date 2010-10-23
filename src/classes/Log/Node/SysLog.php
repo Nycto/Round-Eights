@@ -94,4 +94,3 @@ class SysLog implements \r8\iface\Log\Node
 
 }
 
-?>

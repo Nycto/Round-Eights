@@ -208,4 +208,3 @@ class Group implements \OuterIterator
 
 }
 
-?>

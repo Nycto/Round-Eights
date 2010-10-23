@@ -65,4 +65,3 @@ class Values extends \r8\XMLBuilder\Quick
 
 }
 
-?>

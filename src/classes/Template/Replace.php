@@ -170,4 +170,3 @@ class Replace extends \r8\Template\Access implements \r8\iface\Template\Access
 
 }
 
-?>

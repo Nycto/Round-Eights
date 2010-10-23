@@ -43,4 +43,3 @@ class classes_Stream_Out_StdOut extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

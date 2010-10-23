@@ -152,4 +152,3 @@ class classes_validator_maxlength extends PHPUnit_Framework_TestCase
 
 }
 
-?>

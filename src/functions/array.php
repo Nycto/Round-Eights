@@ -568,4 +568,3 @@ function toCSV ( array $data, $delimiter = ',', $enclosure = '"' )
     return $result;
 }
 
-?>

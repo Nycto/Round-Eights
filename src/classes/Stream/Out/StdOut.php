@@ -48,4 +48,3 @@ class StdOut implements \r8\iface\Stream\Out
 
 }
 
-?>

@@ -75,4 +75,3 @@ class Stream implements \r8\iface\Error\Handler
 
 }
 
-?>

@@ -145,4 +145,3 @@ class classes_Form_Visitor_Formatter extends PHPUnit_Framework_TestCase
 
 }
 
-?>

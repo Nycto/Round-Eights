@@ -156,4 +156,3 @@ class OnComplete implements \OuterIterator
 
 }
 
-?>

@@ -42,4 +42,3 @@ class DocType extends \r8\Enum
     const XHTML2 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 2.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml2.dtd">';
 }
 
-?>

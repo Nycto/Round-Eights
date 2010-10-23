@@ -59,4 +59,3 @@ class Index extends \r8\Exception
     }
 }
 
-?>

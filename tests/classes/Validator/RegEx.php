@@ -164,4 +164,3 @@ class classes_validator_regex extends PHPUnit_Framework_TestCase
 
 }
 
-?>

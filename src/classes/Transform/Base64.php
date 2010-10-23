@@ -85,4 +85,3 @@ class Base64 implements \r8\iface\Transform\Encode
 
 }
 
-?>

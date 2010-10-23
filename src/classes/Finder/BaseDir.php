@@ -111,4 +111,3 @@ class BaseDir implements \r8\iface\Finder
 
 }
 
-?>

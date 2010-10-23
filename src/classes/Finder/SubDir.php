@@ -116,4 +116,3 @@ class SubDir implements \r8\iface\Finder
 
 }
 
-?>

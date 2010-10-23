@@ -58,4 +58,3 @@ class Code implements \r8\iface\Log\Matcher
 
 }
 
-?>

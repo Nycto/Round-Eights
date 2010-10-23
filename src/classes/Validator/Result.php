@@ -70,4 +70,3 @@ class Result extends \r8\Validator\ErrorList
 
 }
 
-?>

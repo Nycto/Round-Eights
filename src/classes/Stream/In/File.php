@@ -52,4 +52,3 @@ class File extends \r8\Stream\In\URI
 
 }
 
-?>

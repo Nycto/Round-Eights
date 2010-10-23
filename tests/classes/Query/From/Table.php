@@ -171,4 +171,3 @@ class classes_query_from_table extends PHPUnit_Framework_TestCase
 
 }
 
-?>

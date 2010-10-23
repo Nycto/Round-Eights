@@ -67,4 +67,3 @@ class Thrower implements \r8\iface\Error\Handler
 
 }
 
-?>

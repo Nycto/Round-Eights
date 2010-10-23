@@ -163,4 +163,3 @@ class Quoted extends \r8\Quoter\Section
     }
 }
 
-?>

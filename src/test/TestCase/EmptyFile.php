@@ -88,4 +88,3 @@ abstract class EmptyFile extends \PHPUnit_Framework_TestCase
 
 }
 
-?>

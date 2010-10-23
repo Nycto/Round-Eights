@@ -120,4 +120,3 @@ class classes_Filter_AryOffset extends PHPUnit_Framework_TestCase
 
 }
 
-?>

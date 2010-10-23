@@ -142,4 +142,3 @@ class classes_DB_BlackHole_Result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

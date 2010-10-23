@@ -68,4 +68,3 @@ class Void implements \r8\iface\Settings\Read
 
 }
 
-?>

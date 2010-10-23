@@ -47,4 +47,3 @@ class ErrorLog implements \r8\iface\Stream\Out
 
 }
 
-?>

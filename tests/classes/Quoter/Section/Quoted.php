@@ -139,4 +139,3 @@ class classes_quoter_section_quoted extends PHPUnit_Framework_TestCase
 
 }
 
-?>

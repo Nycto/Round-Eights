@@ -64,4 +64,3 @@ class classes_Query_Where_Compare extends PHPUnit_Framework_TestCase
 
 }
 
-?>

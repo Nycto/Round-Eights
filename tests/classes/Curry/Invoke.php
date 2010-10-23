@@ -275,4 +275,3 @@ class classes_Curry_Invoke extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -289,4 +289,3 @@ class classes_Cache_MemCached extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -46,4 +46,3 @@ class classes_Query_Join_Inner extends PHPUnit_Framework_TestCase
 
 }
 
-?>

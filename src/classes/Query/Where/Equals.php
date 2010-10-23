@@ -48,4 +48,3 @@ class Equals extends \r8\Query\Where\Compare
 
 }
 
-?>

@@ -47,4 +47,3 @@ class Alpha extends \r8\Filter
 
 }
 
-?>

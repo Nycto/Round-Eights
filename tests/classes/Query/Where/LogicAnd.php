@@ -90,4 +90,3 @@ class classes_Query_Where_LogicAnd extends PHPUnit_Framework_TestCase
 
 }
 
-?>

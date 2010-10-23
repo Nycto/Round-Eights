@@ -57,4 +57,3 @@ class Config extends \r8\Exception
     }
 }
 
-?>

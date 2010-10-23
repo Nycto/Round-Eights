@@ -89,4 +89,3 @@ abstract class Compare implements \r8\iface\Query\Where
 
 }
 
-?>

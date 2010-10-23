@@ -133,4 +133,3 @@ class classes_Session_Decorator extends PHPUnit_Framework_TestCase
 
 }
 
-?>

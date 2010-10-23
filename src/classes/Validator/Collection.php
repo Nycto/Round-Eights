@@ -119,4 +119,3 @@ abstract class Collection extends \r8\Validator
 
 }
 
-?>

@@ -61,4 +61,3 @@ class classes_Query_Atom extends PHPUnit_Framework_TestCase
 
 }
 
-?>

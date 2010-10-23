@@ -295,4 +295,3 @@ function offsetWrap ($length, $offset, $wrapFlag)
 
 }
 
-?>

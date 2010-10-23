@@ -65,4 +65,3 @@ class Void implements \r8\iface\Input
 
 }
 
-?>

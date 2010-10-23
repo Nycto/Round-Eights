@@ -52,4 +52,4 @@ class classes_Error_Formatter_HTML extends PHPUnit_Framework_TestCase
 
 }
 
-?>
+

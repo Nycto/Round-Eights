@@ -66,4 +66,3 @@ class All implements \r8\iface\Log\Matcher
 
 }
 
-?>

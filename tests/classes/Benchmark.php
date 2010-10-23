@@ -80,4 +80,3 @@ class classes_Benchmark extends PHPUnit_Framework_TestCase
 
 }
 
-?>

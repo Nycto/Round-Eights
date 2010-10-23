@@ -62,4 +62,4 @@ class Float extends \r8\Filter
 
 }
 
-?>
+

@@ -68,4 +68,3 @@ class classes_Log_Node_Hub extends PHPUnit_Framework_TestCase
 
 }
 
-?>

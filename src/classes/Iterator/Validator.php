@@ -65,4 +65,3 @@ class Validator extends \FilterIterator
 
 }
 
-?>

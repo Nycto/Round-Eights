@@ -94,4 +94,3 @@ class classes_Log_Message extends PHPUnit_Framework_TestCase
 
 }
 
-?>

@@ -49,4 +49,3 @@ class classes_Exception_DB_Link extends PHPUnit_Framework_TestCase
 
 }
 
-?>

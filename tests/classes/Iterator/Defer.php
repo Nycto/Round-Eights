@@ -138,4 +138,3 @@ class classes_Iterator_Defer extends PHPUnit_Framework_TestCase
 
 }
 
-?>

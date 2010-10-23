@@ -82,4 +82,3 @@ class classes_Stream_Out_Uri extends \r8\Test\TestCase\File
 
 }
 
-?>

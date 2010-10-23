@@ -55,4 +55,3 @@ class None implements \r8\iface\Transform
 
 }
 
-?>

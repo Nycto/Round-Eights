@@ -154,4 +154,3 @@ class classes_xmlbuilder_wrap extends PHPUnit_Framework_TestCase
 
 }
 
-?>

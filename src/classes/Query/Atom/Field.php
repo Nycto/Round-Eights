@@ -225,4 +225,3 @@ class Field extends \r8\Query\Atom
 
 }
 
-?>

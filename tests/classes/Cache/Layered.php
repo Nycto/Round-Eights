@@ -181,4 +181,3 @@ class classes_Cache_Layered extends PHPUnit_Framework_TestCase
 
 }
 
-?>

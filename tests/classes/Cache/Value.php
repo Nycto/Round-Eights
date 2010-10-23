@@ -120,4 +120,3 @@ class classes_Cache_Value extends PHPUnit_Framework_TestCase
 
 }
 
-?>

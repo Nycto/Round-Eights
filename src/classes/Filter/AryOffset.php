@@ -115,4 +115,3 @@ class AryOffset extends \r8\Filter
 
 }
 
-?>

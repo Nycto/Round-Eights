@@ -140,4 +140,3 @@ class classes_validator_in extends PHPUnit_Framework_TestCase
 
 }
 
-?>

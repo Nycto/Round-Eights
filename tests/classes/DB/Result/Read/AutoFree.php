@@ -83,4 +83,3 @@ class classes_DB_Result_Read_AutoFree extends PHPUnit_Framework_TestCase
 
 }
 
-?>

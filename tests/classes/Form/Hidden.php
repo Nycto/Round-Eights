@@ -74,4 +74,3 @@ class classes_Form_Hidden extends PHPUnit_Framework_TestCase
 
 }
 
-?>

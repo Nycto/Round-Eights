@@ -79,4 +79,4 @@ class JSON extends \r8\Error\Formatter
 
 }
 
-?>
+

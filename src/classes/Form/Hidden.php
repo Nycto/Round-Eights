@@ -65,4 +65,3 @@ class Hidden extends \r8\Form\Field
 
 }
 
-?>

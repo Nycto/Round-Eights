@@ -102,4 +102,3 @@ class classes_Error_Handler_Thrower extends PHPUnit_Framework_TestCase
 
 }
 
-?>

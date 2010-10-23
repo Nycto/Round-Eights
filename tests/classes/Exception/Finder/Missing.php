@@ -60,4 +60,3 @@ class classes_Exception_Finder_Missing extends PHPUnit_Framework_TestCase
 
 }
 
-?>

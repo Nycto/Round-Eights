@@ -528,4 +528,3 @@ class classes_filesystem_file_withFile extends \r8\Test\TestCase\File
 
 }
 
-?>

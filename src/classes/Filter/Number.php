@@ -62,4 +62,4 @@ class Number extends \r8\Filter
 
 }
 
-?>
+

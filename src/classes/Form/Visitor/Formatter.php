@@ -248,4 +248,3 @@ class Formatter implements \r8\iface\Form\Visitor
 
 }
 
-?>

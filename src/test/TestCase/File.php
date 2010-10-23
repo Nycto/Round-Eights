@@ -52,4 +52,3 @@ abstract class File extends \r8\Test\TestCase\EmptyFile
 
 }
 
-?>

@@ -44,4 +44,3 @@ class Variable extends \r8\Filter
 
 }
 
-?>

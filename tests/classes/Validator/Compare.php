@@ -132,4 +132,3 @@ class classes_validator_compare extends PHPUnit_Framework_TestCase
 
 }
 
-?>

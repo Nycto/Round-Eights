@@ -41,4 +41,3 @@ class Void implements \r8\iface\Log\Node
 
 }
 
-?>

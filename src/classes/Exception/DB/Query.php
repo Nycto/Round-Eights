@@ -59,4 +59,3 @@ class Query extends \r8\Exception\DB
 
 }
 
-?>

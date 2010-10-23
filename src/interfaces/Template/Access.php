@@ -67,4 +67,3 @@ interface Access extends \r8\iface\Template
 
 }
 
-?>

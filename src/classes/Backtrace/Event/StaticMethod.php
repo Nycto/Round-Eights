@@ -54,4 +54,3 @@ class StaticMethod extends \r8\Backtrace\Event\Object
 
 }
 
-?>

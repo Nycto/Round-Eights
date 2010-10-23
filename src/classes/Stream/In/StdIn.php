@@ -43,4 +43,3 @@ class StdIn extends \r8\Stream\In\URI
 
 }
 
-?>

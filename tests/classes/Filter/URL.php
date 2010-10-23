@@ -85,4 +85,3 @@ class classes_filter_url extends PHPUnit_Framework_TestCase
 
 }
 
-?>

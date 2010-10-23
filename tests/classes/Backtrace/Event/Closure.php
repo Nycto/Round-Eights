@@ -62,4 +62,3 @@ class classes_Backtrace_Event_Closure extends PHPUnit_Framework_TestCase
 
 }
 
-?>

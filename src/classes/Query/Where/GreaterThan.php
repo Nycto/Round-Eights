@@ -49,4 +49,3 @@ class GreaterThan extends \r8\Query\Where\Compare
 
 }
 
-?>

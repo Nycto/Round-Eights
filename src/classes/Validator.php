@@ -125,4 +125,3 @@ abstract class Validator extends \r8\Validator\ErrorList implements \r8\iface\Va
 
 }
 
-?>

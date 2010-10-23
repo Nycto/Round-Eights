@@ -146,4 +146,3 @@ class Builder extends \r8\Template\Access
 
 }
 
-?>

@@ -54,4 +54,3 @@ class Func extends \r8\Backtrace\Event\Named
 
 }
 
-?>

@@ -337,4 +337,3 @@ class Memcache extends \r8\Cache\Base
 
 }
 
-?>

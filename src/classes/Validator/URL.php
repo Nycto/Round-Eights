@@ -96,4 +96,3 @@ class URL extends \r8\Validator
 
 }
 
-?>

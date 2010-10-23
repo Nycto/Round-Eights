@@ -72,4 +72,3 @@ class classes_Transform_Hex extends PHPUnit_Framework_TestCase
 
 }
 
-?>

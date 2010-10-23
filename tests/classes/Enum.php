@@ -192,4 +192,3 @@ class classes_Enum extends PHPUnit_Framework_TestCase
 
 }
 
-?>

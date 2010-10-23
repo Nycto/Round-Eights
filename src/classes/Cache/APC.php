@@ -234,4 +234,3 @@ class APC extends \r8\Cache\Base
 
 }
 
-?>

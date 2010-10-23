@@ -135,4 +135,3 @@ $tempDir->purge()->delete();
 
 echo "End of script\n";
 
-?>

@@ -241,4 +241,3 @@ class Querier extends \r8\DB\Link\Decorator
 
 }
 
-?>

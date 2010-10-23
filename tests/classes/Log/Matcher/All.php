@@ -75,4 +75,3 @@ class classes_Log_Matcher_All extends PHPUnit_Framework_TestCase
 
 }
 
-?>

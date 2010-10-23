@@ -134,4 +134,3 @@ class Debug extends \IteratorIterator
 
 }
 
-?>

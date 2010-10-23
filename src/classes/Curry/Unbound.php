@@ -89,4 +89,3 @@ abstract class Unbound extends \r8\Curry
 
 }
 
-?>

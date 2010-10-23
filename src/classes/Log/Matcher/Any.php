@@ -65,4 +65,3 @@ class Any implements \r8\iface\Log\Matcher
 
 }
 
-?>

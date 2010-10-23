@@ -110,4 +110,3 @@ class classes_curry_instantiate extends PHPUnit_Framework_TestCase
 
 }
 
-?>

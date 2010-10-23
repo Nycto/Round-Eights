@@ -64,4 +64,3 @@ class NotEmpty extends \r8\Validator
 
 }
 
-?>

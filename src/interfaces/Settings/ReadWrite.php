@@ -33,4 +33,3 @@ interface ReadWrite extends \r8\iface\Settings\Read, \r8\iface\Settings\Write
 
 }
 
-?>

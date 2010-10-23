@@ -107,4 +107,3 @@ class Collection implements \r8\iface\Settings\Read
 
 }
 
-?>

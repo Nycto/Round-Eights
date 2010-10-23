@@ -57,4 +57,3 @@ class classes_Filter_Variable extends PHPUnit_Framework_TestCase
 
 }
 
-?>

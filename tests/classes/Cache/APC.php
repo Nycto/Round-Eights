@@ -165,4 +165,3 @@ class classes_Cache_APC extends PHPUnit_Framework_TestCase
 
 }
 
-?>

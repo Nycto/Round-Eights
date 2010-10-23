@@ -227,4 +227,3 @@ class functions_general extends PHPUnit_Framework_TestCase
 
 }
 
-?>

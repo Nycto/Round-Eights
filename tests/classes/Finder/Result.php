@@ -80,4 +80,3 @@ class classes_Finder_Result extends PHPUnit_Framework_TestCase
 
 }
 
-?>

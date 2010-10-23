@@ -211,4 +211,3 @@ class Namespaced extends \r8\Session\Decorator
 
 }
 
-?>

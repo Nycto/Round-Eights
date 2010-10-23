@@ -122,4 +122,3 @@ class Compare extends \r8\Validator
 
 }
 
-?>

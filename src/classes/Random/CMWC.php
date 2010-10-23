@@ -95,4 +95,3 @@ class CMWC extends \r8\Random
 
 }
 
-?>

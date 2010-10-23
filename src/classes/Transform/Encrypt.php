@@ -172,4 +172,3 @@ class Encrypt implements \r8\iface\Transform\Encrypt
 
 }
 
-?>

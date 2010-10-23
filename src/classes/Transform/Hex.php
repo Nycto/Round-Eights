@@ -60,4 +60,3 @@ class Hex implements \r8\iface\Transform\Encode
 
 }
 
-?>

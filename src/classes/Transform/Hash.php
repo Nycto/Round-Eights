@@ -170,4 +170,3 @@ class Hash implements \r8\iface\Transform
 
 }
 
-?>

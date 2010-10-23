@@ -60,4 +60,3 @@ class classes_Filter_Digits extends PHPUnit_Framework_TestCase
 
 }
 
-?>

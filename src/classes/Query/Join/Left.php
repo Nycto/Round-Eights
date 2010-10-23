@@ -43,4 +43,3 @@ class Left extends \r8\Query\Join
 
 }
 
-?>

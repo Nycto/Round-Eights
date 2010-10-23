@@ -286,4 +286,3 @@ abstract class Curry implements \r8\iface\Filter
 
 }
 
-?>

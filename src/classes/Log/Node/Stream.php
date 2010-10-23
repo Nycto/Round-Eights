@@ -59,4 +59,3 @@ class Stream implements \r8\iface\Log\Node
 
 }
 
-?>

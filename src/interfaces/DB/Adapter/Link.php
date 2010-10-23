@@ -86,4 +86,3 @@ interface Link extends \r8\iface\DB\Identified
 
 }
 
-?>

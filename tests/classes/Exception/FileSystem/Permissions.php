@@ -46,4 +46,3 @@ class classes_Exception_FileSystem_Permissions extends PHPUnit_Framework_TestCas
 
 }
 
-?>

@@ -172,4 +172,3 @@ class Transform extends \r8\Session\Decorator
 
 }
 
-?>

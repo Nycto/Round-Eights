@@ -78,4 +78,3 @@ class RegEx extends \r8\Validator
 
 }
 
-?>

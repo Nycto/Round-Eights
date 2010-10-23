@@ -75,4 +75,3 @@ class MaxLength extends \r8\Validator
 
 }
 
-?>

@@ -132,4 +132,3 @@ class classes_Template_Iterate_Output extends PHPUnit_Extensions_OutputTestCase
 
 }
 
-?>

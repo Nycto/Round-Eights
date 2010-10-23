@@ -231,4 +231,3 @@ class classes_Finder extends PHPUnit_Framework_TestCase
 
 }
 
-?>

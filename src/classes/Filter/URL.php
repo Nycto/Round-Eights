@@ -46,4 +46,3 @@ class URL extends \r8\Filter
 
 }
 
-?>

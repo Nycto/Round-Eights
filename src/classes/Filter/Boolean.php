@@ -73,4 +73,3 @@ class Boolean extends \r8\Filter
 
 }
 
-?>

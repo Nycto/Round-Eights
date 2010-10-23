@@ -219,4 +219,3 @@ class classes_DB_Result_Read_Decorator extends PHPUnit_Framework_TestCase
 
 }
 
-?>

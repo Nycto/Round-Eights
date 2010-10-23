@@ -138,4 +138,3 @@ class Result implements \r8\iface\DB\Adapter\Result
 
 }
 
-?>

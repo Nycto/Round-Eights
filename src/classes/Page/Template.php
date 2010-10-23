@@ -87,4 +87,3 @@ class Template implements \r8\iface\Page
 
 }
 
-?>
