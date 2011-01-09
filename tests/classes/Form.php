@@ -710,4 +710,22 @@ class classes_Form extends PHPUnit_Framework_TestCase
         $this->assertSame( "Data", $form->visit( $visitor ) );
     }
 
+    public function testToArray ()
+    {
+        $form = new \r8\Form;
+        $this->assertSame(array(), $form->toArray());
+
+        $form->addField(
+            \r8( new \r8\Form\Text("test1") )->setValue("abc")
+        );
+        $form->addField(
+            \r8( new \r8\Form\Text("test2") )->setValue("blah")
+        );
+
+        $this->assertSame(
+            array('test1' => 'abc', 'test2' => 'blah'),
+            $form->toArray()
+        );
+    }
+
 }

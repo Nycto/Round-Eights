@@ -483,4 +483,18 @@ class Form implements \Countable
         return $visitor->end( $this );
     }
 
+    /**
+     * Returns an array of the values in this form indexed by their field name
+     *
+     * @return Array
+     */
+    public function toArray ()
+    {
+        $result = array();
+        foreach ( $this->fields AS $field ) {
+            $result[ $field->getName() ] = $field->getValue();
+        }
+        return $result;
+    }
+
 }
