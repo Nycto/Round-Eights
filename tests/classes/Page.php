@@ -33,14 +33,9 @@ require_once rtrim( __DIR__, "/" ) ."/../general.php";
 class classes_Page extends PHPUnit_Framework_TestCase
 {
 
-    public function getTestPage ()
-    {
-        return $this->getMock("r8\iface\Page", array("getContent"));
-    }
-
     public function testPageAccessors ()
     {
-        $page = $this->getTestPage();
+        $page = $this->getMock("r8\iface\Page");
 
         $root = new \r8\Page( $page );
 
@@ -50,7 +45,7 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testContextAccessors ()
     {
-        $root = new \r8\Page( $this->getTestPage() );
+        $root = new \r8\Page( $this->getMock("r8\iface\Page") );
 
         $context = $root->getContext();
 
@@ -68,16 +63,13 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testResponseAccessors ()
     {
-        $root = new \r8\Page( $this->getTestPage() );
+        $root = new \r8\Page( $this->getMock("r8\iface\Page") );
 
         $this->assertSame( \r8\Env::Response(), $root->getResponse() );
         $this->assertSame( \r8\Env::Response(), $root->getResponse() );
         $this->assertSame( \r8\Env::Response(), $root->getResponse() );
 
-        $response = $this->getMock(
-                'r8\iface\Env\Response',
-                array('headersSent', 'setHeader')
-            );
+        $response = $this->getMock('r8\iface\Env\Response');
 
         $this->assertSame( $root, $root->setResponse( $response ) );
 
@@ -88,36 +80,33 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testGetTemplate_standard ()
     {
-        $tpl = $this->getMock('r8\iface\Template', array('render', 'display', '__toString'));
+        $tpl = $this->getMock('r8\iface\Template');
 
-        $page = $this->getTestPage();
+        $page = $this->getMock("r8\iface\Page");
 
         $root = new \r8\Page( $page );
 
         $context = $root->getContext();
 
-        $page->expects( $this->once() )
-            ->method("getContent")
+        $page->expects( $this->once() )->method("getContent")
             ->with( $this->equalTo($context) )
             ->will( $this->returnValue($tpl) );
 
         $this->assertSame( $tpl, $root->getTemplate() );
-
     }
 
     public function testGetTemplate_suppress ()
     {
-        $tpl = $this->getMock('r8\iface\Template', array('render', 'display', '__toString'));
+        $tpl = $this->getMock('r8\iface\Template');
 
-        $page = $this->getTestPage();
+        $page = $this->getMock("r8\iface\Page");
 
         $root = new \r8\Page( $page );
 
         $context = $root->getContext();
         $context->suppress();
 
-        $page->expects( $this->once() )
-            ->method("getContent")
+        $page->expects( $this->once() )->method("getContent")
             ->with( $this->equalTo($context) )
             ->will( $this->returnValue($tpl) );
 
@@ -130,12 +119,11 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testGetTemplate_interrupt ()
     {
-        $page = $this->getTestPage();
+        $page = $this->getMock("r8\iface\Page");
 
         $root = new \r8\Page( $page );
 
-        $page->expects( $this->once() )
-            ->method("getContent")
+        $page->expects( $this->once() )->method("getContent")
             ->with( $this->isInstanceOf('r8\Page\Context') )
             ->will( $this->throwException(
                     new \r8\Page\Interrupt
@@ -150,29 +138,23 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testGetTemplate_redirect ()
     {
-        $tpl = $this->getMock('r8\iface\Template', array('render', 'display', '__toString'));
+        $tpl = $this->getMock('r8\iface\Template');
 
-        $page = $this->getTestPage();
+        $page = $this->getMock("r8\iface\Page");
 
-        $context = $this->getMock('r8\Page\Context', array('getRedirect'));
-        $context->expects( $this->once() )
-            ->method('getRedirect')
+        $context = $this->getMock('r8\Page\Context');
+        $context->expects( $this->once() )->method('getRedirect')
             ->will( $this->returnValue('http://www.example.com') );
 
-        $response = $this->getMock(
-                'r8\iface\Env\Response',
-                array('headersSent', 'setHeader')
-            );
-        $response->expects( $this->once() )
-            ->method('setHeader')
+        $response = $this->getMock('r8\iface\Env\Response');
+        $response->expects( $this->once() )->method('setHeader')
             ->with( $this->equalTo('Location: http://www.example.com') );
 
         $root = new \r8\Page( $page );
         $root->setContext( $context );
         $root->setResponse( $response );
 
-        $page->expects( $this->once() )
-            ->method("getContent")
+        $page->expects( $this->once() )->method("getContent")
             ->with( $this->isInstanceOf('r8\Page\Context') )
             ->will( $this->returnValue($tpl) );
 
@@ -181,23 +163,19 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
     public function testDisplay ()
     {
-        $tpl = $this->getMock('r8\iface\Template', array('render', 'display', '__toString'));
-
-        $tpl->expects( $this->once() )
-            ->method('display');
+        $tpl = $this->getMock('r8\iface\Template');
+        $tpl->expects( $this->once() )->method('display');
 
         $root = $this->getMock(
-                'r8\Page',
-                array('getTemplate'),
-                array( $this->getTestPage() )
-            );
+            'r8\Page',
+            array('getTemplate'),
+            array( $this->getMock("r8\iface\Page") )
+        );
 
-        $root->expects( $this->once() )
-            ->method('getTemplate')
+        $root->expects( $this->once() )->method('getTemplate')
             ->will( $this->returnValue($tpl) );
 
         $this->assertSame( $root, $root->display() );
     }
 
 }
-
