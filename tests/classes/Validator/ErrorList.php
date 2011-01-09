@@ -165,4 +165,20 @@ class classes_Validator_ErrorList extends PHPUnit_Framework_TestCase
         $this->assertEquals("Test Error", $result->getFirstError());
     }
 
+    public function testIteration ()
+    {
+        $result = new \r8\Validator\ErrorList;
+        \r8\Test\Constraint\Iterator::assertCount(0, $result);
+
+        $result->addError("Test Error");
+        \r8\Test\Constraint\Iterator::assert(
+            array("Test Error"), $result
+        );
+
+        $result->addError("Error Two");
+        \r8\Test\Constraint\Iterator::assert(
+            array("Test Error", "Error Two"), $result
+        );
+    }
+
 }

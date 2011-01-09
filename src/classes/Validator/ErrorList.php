@@ -28,7 +28,7 @@ namespace r8\Validator;
 /**
  * Helper class for managing a list of errors
  */
-class ErrorList
+class ErrorList implements \IteratorAggregate
 {
 
     /**
@@ -133,5 +133,12 @@ class ErrorList
         return reset( $this->errors );
     }
 
-}
+    /**
+     * @see \IteratorAggregate
+     */
+    public function getIterator ()
+    {
+        return new \ArrayIterator( $this->errors );
+    }
 
+}
