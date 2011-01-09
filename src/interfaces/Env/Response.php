@@ -39,14 +39,25 @@ interface Response
     public function headersSent ();
 
     /**
+     * Sends a raw header value ala the PHP header method
+     *
+     * This will overwrite any previously sent headers of the same type
+     *
+     * @param String $header The full header string to send
+     * @return \r8\iface\Env\Response Returns a self reference
+     */
+    public function setRawHeader ( $header );
+
+    /**
      * Sends a header back to the client
      *
      * This will overwrite any previously sent headers of the same type
      *
-     * @param String $header The header string to send
+     * @param String $header The header to set
+     * @param String $value The vaule of the header
      * @return \r8\iface\Env\Response Returns a self reference
      */
-    public function setHeader ( $header );
+    public function setHeader ( $header, $value );
 
     /**
      * Sends the given HTTP response status code and message

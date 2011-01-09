@@ -145,7 +145,7 @@ class Page
 
         // If the redirect URL isn't empty, send the appropriate header
         if ( !\r8\isEmpty( $redirect ) )
-            $this->getResponse()->setHeader( "Location: ". $redirect );
+            $this->getResponse()->setHeader( "Location", $redirect );
 
         // If the context denotes a suppressed page, return a blank template
         if ( $context->isSuppressed() )
@@ -166,4 +166,3 @@ class Page
     }
 
 }
-

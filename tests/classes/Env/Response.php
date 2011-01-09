@@ -39,10 +39,22 @@ class classes_Env_Response extends PHPUnit_Framework_TestCase
         $this->assertType( "boolean", $response->headersSent() );
     }
 
+    public function testSetHeader ()
+    {
+        $response = $this->getMock('\r8\Env\Response', array('setRawHeader'));
+        $response->expects( $this->once() )->method( "setRawHeader" )
+            ->with( $this->equalTo("Location: http://www.example.com") );
+
+        $this->assertSame(
+            $response,
+            $response->setHeader("Location", "http://www.example.com")
+        );
+    }
+
     public function testSetResponseCode ()
     {
-        $response = $this->getMock('\r8\Env\Response', array('setHeader'));
-        $response->expects( $this->once() )->method( "setHeader" )
+        $response = $this->getMock('\r8\Env\Response', array('setRawHeader'));
+        $response->expects( $this->once() )->method( "setRawHeader" )
             ->with( $this->equalTo("HTTP/1.0 404 Not Found") );
 
         $this->assertSame(

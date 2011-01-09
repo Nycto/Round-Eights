@@ -40,9 +40,9 @@ class Response implements \r8\iface\Env\Response
     }
 
     /**
-     * @see \r8\iface\Env\Response::setHeader
+     * @see \r8\iface\Env\Response::setRawHeader
      */
-    public function setHeader ( $header )
+    public function setRawHeader ( $header )
     {
         // @codeCoverageIgnoreStart
         $file = null;
@@ -62,11 +62,25 @@ class Response implements \r8\iface\Env\Response
     }
 
     /**
+     * @see \r8\iface\Env\Response::setHeader
+     */
+    public function setHeader ( $header, $value )
+    {
+        $this->setRawHeader(sprintf(
+            "%s: %s",
+            $header,
+            $value
+        ));
+
+        return $this;
+    }
+
+    /**
      * @see \r8\iface\Env\Response::setResponseCode
      */
     public function setResponseCode ( $code, $message )
     {
-        $this->setHeader(sprintf(
+        $this->setRawHeader(sprintf(
             "HTTP/1.0 %d %s",
             $code,
             preg_replace('/[^a-z0-9 ]/i', '', $message)

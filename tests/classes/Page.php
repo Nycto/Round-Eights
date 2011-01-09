@@ -148,7 +148,10 @@ class classes_Page extends PHPUnit_Framework_TestCase
 
         $response = $this->getMock('r8\iface\Env\Response');
         $response->expects( $this->once() )->method('setHeader')
-            ->with( $this->equalTo('Location: http://www.example.com') );
+            ->with(
+                $this->equalTo('Location'),
+                $this->equalTo('http://www.example.com')
+            );
 
         $root = new \r8\Page( $page );
         $root->setContext( $context );
