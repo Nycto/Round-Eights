@@ -390,6 +390,28 @@ class Form implements \Countable
     }
 
     /**
+     * Returns an aggregated list of all the errors in this form
+     *
+     * @return \r8\ErrorList
+     */
+    public function getErrors ()
+    {
+        $errors = new \r8\Validator\ErrorList;
+
+        foreach ( $this->validateForm() AS $message) {
+            $errors->addError($message);
+        }
+
+        foreach ( $this->fields AS $field ) {
+            foreach ( $field->validate() AS $message) {
+                $errors->addError($message);
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
      * Returns a \r8\HTML\Tag object that represents this instance
      *
      * @return Object A \r8\HTML\Tag object
@@ -462,4 +484,3 @@ class Form implements \Countable
     }
 
 }
-

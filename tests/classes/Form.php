@@ -567,6 +567,38 @@ class classes_Form extends PHPUnit_Framework_TestCase
         $this->assertFalse( $form->isValid() );
     }
 
+    public function testGetErrors_Valid ()
+    {
+        $form = new \r8\Form;
+        $form->setFormValidator( new \r8\Validator\Pass );
+        $form->addField(
+            \r8(new \r8\Form\Text("test"))
+                ->setValidator( new \r8\Validator\Pass )
+        );
+
+        $this->assertEquals( new \r8\Validator\ErrorList, $form->getErrors() );
+    }
+
+    public function testGetErrors_Invalid ()
+    {
+        $form = new \r8\Form;
+        $form->setFormValidator( new \r8\Validator\Fail("Form") );
+        $form->addField(
+            \r8(new \r8\Form\Text("test"))
+                ->setValidator( new \r8\Validator\Fail("Field 1") )
+        );
+        $form->addField(
+            \r8(new \r8\Form\Text("test"))
+                ->setValidator( new \r8\Validator\Fail("Field 2") )
+        );
+
+        $this->assertEquals(
+            \r8( new \r8\Validator\ErrorList )
+                ->addErrors("Form", "Field 1", "Field 2"),
+            $form->getErrors()
+        );
+    }
+
     public function testGetTag ()
     {
         $form = new \r8\Form;
@@ -679,4 +711,3 @@ class classes_Form extends PHPUnit_Framework_TestCase
     }
 
 }
-
