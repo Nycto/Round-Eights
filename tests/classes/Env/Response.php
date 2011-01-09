@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_env_response extends PHPUnit_Framework_TestCase
+class classes_Env_Response extends PHPUnit_Framework_TestCase
 {
 
     public function testHeadersSent ()
@@ -39,6 +39,16 @@ class classes_env_response extends PHPUnit_Framework_TestCase
         $this->assertType( "boolean", $response->headersSent() );
     }
 
+    public function testSetResponseCode ()
+    {
+        $response = $this->getMock('\r8\Env\Response', array('setHeader'));
+        $response->expects( $this->once() )->method( "setHeader" )
+            ->with( $this->equalTo("HTTP/1.0 404 Not Found") );
+
+        $this->assertSame(
+            $response,
+            $response->setResponseCode(404, "Not Found")
+        );
+    }
+
 }
-
-

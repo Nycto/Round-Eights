@@ -48,5 +48,13 @@ interface Response
      */
     public function setHeader ( $header );
 
-}
+    /**
+     * Sends the given HTTP response status code and message
+     *
+     * @param Integer $code
+     * @param String $message
+     * @return \r8\iface\Env\Response Returns a self reference
+     */
+    public function setResponseCode ( $code, $message );
 
+}

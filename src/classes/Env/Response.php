@@ -32,9 +32,7 @@ class Response implements \r8\iface\Env\Response
 {
 
     /**
-     * Returns whether the headers have been sent to the client
-     *
-     * @return Boolean
+     * @see \r8\iface\Env\Response::headersSent
      */
     public function headersSent ()
     {
@@ -42,12 +40,7 @@ class Response implements \r8\iface\Env\Response
     }
 
     /**
-     * Sends a header back to the client
-     *
-     * This will overwrite any previously sent headers of the same type
-     *
-     * @param String $header The header string to send
-     * @return \r8\iface\Env\Response Returns a self reference
+     * @see \r8\iface\Env\Response::setHeader
      */
     public function setHeader ( $header )
     {
@@ -68,5 +61,18 @@ class Response implements \r8\iface\Env\Response
         // @codeCoverageIgnoreEnd
     }
 
-}
+    /**
+     * @see \r8\iface\Env\Response::setResponseCode
+     */
+    public function setResponseCode ( $code, $message )
+    {
+        $this->setHeader(sprintf(
+            "HTTP/1.0 %d %s",
+            $code,
+            preg_replace('/[^a-z0-9 ]/i', '', $message)
+        ));
 
+        return $this;
+    }
+
+}
