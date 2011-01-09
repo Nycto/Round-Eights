@@ -48,12 +48,8 @@ class Response implements \r8\iface\Env\Response
         $file = null;
         $line = null;
 
-        if ( headers_sent($file, $line) ) {
-            $err = new \r8\Exception\Interaction("HTTP Headers have already been sent");
-            $err->addData("Output Started in File", $file);
-            $err->addData("Output Started on Line", $line);
-            throw $err;
-        }
+        if ( headers_sent($file, $line) )
+            throw new \r8\Env\HeadersSent($file, $line);
 
         header( (string) $header );
 
