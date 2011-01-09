@@ -30,7 +30,7 @@ require_once rtrim( __DIR__, "/" ) ."/../../general.php";
 /**
  * unit tests
  */
-class classes_validator_errorlist extends PHPUnit_Framework_TestCase
+class classes_Validator_ErrorList extends PHPUnit_Framework_TestCase
 {
 
     public function testAddError ()
@@ -41,16 +41,16 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
 
         $this->assertEquals(
-                array("This is an error message"),
-                $result->getErrors()
-            );
+            array("This is an error message"),
+            $result->getErrors()
+        );
 
         $this->assertSame( $result, $result->addError("This is another error message") );
 
         $this->assertEquals(
-                array("This is an error message", "This is another error message"),
-                $result->getErrors()
-            );
+            array("This is an error message", "This is another error message"),
+            $result->getErrors()
+        );
 
 
         try {
@@ -66,21 +66,25 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
 
         $this->assertSame( $result, $result->addErrors("Error Message") );
         $this->assertEquals(
-                array("Error Message"),
-                $result->getErrors()
-            );
+            array("Error Message"),
+            $result->getErrors()
+        );
 
         $result->clearErrors();
 
 
         $this->assertSame(
-                $result,
-                $result->addErrors( array(("Error Message"), "more"), "Another", "", array("more", "then some") )
-            );
+            $result,
+            $result->addErrors(
+                array(("Error Message"), "more"),
+                "Another", "",
+                array("more", "then some")
+            )
+        );
         $this->assertEquals(
-                array("Error Message", "more", "Another", "then some"),
-                $result->getErrors()
-            );
+            array("Error Message", "more", "Another", "then some"),
+            $result->getErrors()
+        );
     }
 
     public function testAddDuplicateError ()
@@ -91,9 +95,9 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
         $this->assertSame( $result, $result->addError("This is an error message") );
 
         $this->assertEquals(
-                array("This is an error message"),
-                $result->getErrors()
-            );
+            array("This is an error message"),
+            $result->getErrors()
+        );
     }
 
     public function testClearErrors ()
@@ -103,9 +107,9 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
         $result->addError("This is an error message");
 
         $this->assertEquals(
-                array("This is an error message"),
-                $result->getErrors()
-            );
+            array("This is an error message"),
+            $result->getErrors()
+        );
 
         $this->assertSame( $result, $result->clearErrors() );
 
@@ -119,16 +123,16 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
         $result->addError("This is an error message");
 
         $this->assertEquals(
-                array("This is an error message"),
-                $result->getErrors()
-            );
+            array("This is an error message"),
+            $result->getErrors()
+        );
 
         $this->assertSame( $result, $result->setError("This is a new error") );
 
         $this->assertEquals(
-                array("This is a new error"),
-                $result->getErrors()
-            );
+            array("This is a new error"),
+            $result->getErrors()
+        );
     }
 
     public function testHasErrors ()
@@ -162,4 +166,3 @@ class classes_validator_errorlist extends PHPUnit_Framework_TestCase
     }
 
 }
-
