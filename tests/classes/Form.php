@@ -728,4 +728,31 @@ class classes_Form extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetTemplateValues ()
+    {
+        $form = new \r8\Form;
+        $form->setAction("http://www.example.com");
+        $form->setMethod(\r8\Form::METHOD_GET);
+        $form->setEncoding(\r8\Form::ENCODING_URLENCODED);
+
+        $field1 = new \r8\Form\Text("test1");
+        $form->addField( $field1 );
+
+        $field2 = new \r8\Form\Hidden("test2");
+        $form->addField( $field2 );
+
+        $this->assertEquals(
+            array(
+                'form' => $form,
+                'action' => 'http://www.example.com',
+                'encoding' => 'application/x-www-form-urlencoded',
+                'method' => 'GET',
+                'hidden' => '<input value="" name="test2" type="hidden" />',
+                'test1' => $field1,
+                'test2' => $field2,
+            ),
+            $form->getTemplateValues()
+        );
+    }
+
 }

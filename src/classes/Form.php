@@ -28,7 +28,7 @@ namespace r8;
 /**
  * Collects a list of form fields and allows them to be manipulated as a group
  */
-class Form implements \Countable
+class Form implements \Countable, \r8\iface\Template\Importable
 {
 
     /**
@@ -495,6 +495,27 @@ class Form implements \Countable
             $result[ $field->getName() ] = $field->getValue();
         }
         return $result;
+    }
+
+    /**
+     * @see \r8\iface\Template\Importable::getTemplateValues
+     */
+    public function getTemplateValues ()
+    {
+        $data = array(
+            "form" => $this,
+            "action" => $this->action,
+            "encoding" => $this->encoding,
+            "method" => $this->method,
+            "hidden" => $this->getHiddenHTML(),
+        );
+
+        foreach ( $this->fields AS $field )
+        {
+            $data[ $field->getName() ] = $field;
+        }
+
+        return $data;
     }
 
 }
